@@ -38,7 +38,7 @@ func NewAttestationStatusesClient(credential azcore.TokenCredential, options *ar
 // Get - Implements AttestationStatus GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - AttestationStatusesClientGetOptions contains the optional parameters for the AttestationStatusesClient.Get method.
 func (client *AttestationStatusesClient) Get(ctx context.Context, resourceURI string, options *AttestationStatusesClientGetOptions) (AttestationStatusesClientGetResponse, error) {
@@ -75,7 +75,7 @@ func (client *AttestationStatusesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

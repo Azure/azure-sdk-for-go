@@ -43,7 +43,7 @@ func NewVirtualHardDisksClient(subscriptionID string, credential azcore.TokenCre
 // during virtual hard disk creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualHardDiskName - Name of the virtual hard disk
 //   - resource - Resource create parameters.
@@ -71,7 +71,7 @@ func (client *VirtualHardDisksClient) BeginCreateOrUpdate(ctx context.Context, r
 // virtual hard disk creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualHardDisksClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHardDiskName string, resource VirtualHardDisk, options *VirtualHardDisksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualHardDisksClient.BeginCreateOrUpdate"
@@ -113,7 +113,7 @@ func (client *VirtualHardDisksClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -126,7 +126,7 @@ func (client *VirtualHardDisksClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - The operation to delete a virtual hard disk.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualHardDiskName - Name of the virtual hard disk
 //   - options - VirtualHardDisksClientBeginDeleteOptions contains the optional parameters for the VirtualHardDisksClient.BeginDelete
@@ -151,7 +151,7 @@ func (client *VirtualHardDisksClient) BeginDelete(ctx context.Context, resourceG
 // Delete - The operation to delete a virtual hard disk.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualHardDisksClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHardDiskName string, options *VirtualHardDisksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualHardDisksClient.BeginDelete"
@@ -193,7 +193,7 @@ func (client *VirtualHardDisksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -201,7 +201,7 @@ func (client *VirtualHardDisksClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets a virtual hard disk
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualHardDiskName - Name of the virtual hard disk
 //   - options - VirtualHardDisksClientGetOptions contains the optional parameters for the VirtualHardDisksClient.Get method.
@@ -247,7 +247,7 @@ func (client *VirtualHardDisksClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *VirtualHardDisksClient) getHandleResponse(resp *http.Response) (Vi
 // NewListAllPager - Lists all of the virtual hard disks in the specified subscription. Use the nextLink property in the response
 // to get the next page of virtual hard disks.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - options - VirtualHardDisksClientListAllOptions contains the optional parameters for the VirtualHardDisksClient.NewListAllPager
 //     method.
 func (client *VirtualHardDisksClient) NewListAllPager(options *VirtualHardDisksClientListAllOptions) *runtime.Pager[VirtualHardDisksClientListAllResponse] {
@@ -303,7 +303,7 @@ func (client *VirtualHardDisksClient) listAllCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *VirtualHardDisksClient) listAllHandleResponse(resp *http.Response)
 // NewListByResourceGroupPager - Lists all of the virtual hard disks in the specified resource group. Use the nextLink property
 // in the response to get the next page of virtual hard disks.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VirtualHardDisksClientListByResourceGroupOptions contains the optional parameters for the VirtualHardDisksClient.NewListByResourceGroupPager
 //     method.
@@ -364,7 +364,7 @@ func (client *VirtualHardDisksClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -382,7 +382,7 @@ func (client *VirtualHardDisksClient) listByResourceGroupHandleResponse(resp *ht
 // BeginUpdate - The operation to update a virtual hard disk.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualHardDiskName - Name of the virtual hard disk
 //   - properties - The resource properties to be updated.
@@ -408,7 +408,7 @@ func (client *VirtualHardDisksClient) BeginUpdate(ctx context.Context, resourceG
 // Update - The operation to update a virtual hard disk.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualHardDisksClient) update(ctx context.Context, resourceGroupName string, virtualHardDiskName string, properties VirtualHardDisksUpdateRequest, options *VirtualHardDisksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualHardDisksClient.BeginUpdate"
@@ -450,7 +450,7 @@ func (client *VirtualHardDisksClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -463,7 +463,7 @@ func (client *VirtualHardDisksClient) updateCreateRequest(ctx context.Context, r
 // BeginUpload - The operation to upload a virtual hard disk.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualHardDiskName - Name of the virtual hard disk
 //   - body - The content of the action request
@@ -489,7 +489,7 @@ func (client *VirtualHardDisksClient) BeginUpload(ctx context.Context, resourceG
 // Upload - The operation to upload a virtual hard disk.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualHardDisksClient) upload(ctx context.Context, resourceGroupName string, virtualHardDiskName string, body VirtualHardDiskUploadRequest, options *VirtualHardDisksClientBeginUploadOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualHardDisksClient.BeginUpload"
@@ -531,7 +531,7 @@ func (client *VirtualHardDisksClient) uploadCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/SecurityRules_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/SecurityRules_CreateOrUpdate.json
 func ExampleSecurityRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/SecurityRules_Delete.json
+// Generated from example definition: 2026-02-01-preview/SecurityRules_Delete.json
 func ExampleSecurityRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleSecurityRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/SecurityRules_Get.json
+// Generated from example definition: 2026-02-01-preview/SecurityRules_Get.json
 func ExampleSecurityRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleSecurityRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/SecurityRules_ListByNetworkSecurityGroup.json
+// Generated from example definition: 2026-02-01-preview/SecurityRules_ListByNetworkSecurityGroup.json
 func ExampleSecurityRulesClient_NewListByNetworkSecurityGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

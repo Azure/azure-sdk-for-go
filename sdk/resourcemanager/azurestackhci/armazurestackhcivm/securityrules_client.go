@@ -42,7 +42,7 @@ func NewSecurityRulesClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates or updates a security rule in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - securityRuleName - Name of the security rule.
@@ -70,7 +70,7 @@ func (client *SecurityRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Creates or updates a security rule in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *SecurityRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, resource SecurityRule, options *SecurityRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityRulesClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *SecurityRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,7 +129,7 @@ func (client *SecurityRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes the specified security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - securityRuleName - Name of the security rule.
@@ -155,7 +155,7 @@ func (client *SecurityRulesClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes the specified security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *SecurityRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, options *SecurityRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityRulesClient.BeginDelete"
@@ -201,7 +201,7 @@ func (client *SecurityRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -209,7 +209,7 @@ func (client *SecurityRulesClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets the specified security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - securityRuleName - Name of the security rule.
@@ -260,7 +260,7 @@ func (client *SecurityRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *SecurityRulesClient) getHandleResponse(resp *http.Response) (Secur
 
 // NewListByNetworkSecurityGroupPager - Gets all security rules in a Network Security Group.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - options - SecurityRulesClientListByNetworkSecurityGroupOptions contains the optional parameters for the SecurityRulesClient.NewListByNetworkSecurityGroupPager
@@ -325,7 +325,7 @@ func (client *SecurityRulesClient) listByNetworkSecurityGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

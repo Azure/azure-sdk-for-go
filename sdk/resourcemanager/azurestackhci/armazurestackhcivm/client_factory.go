@@ -61,6 +61,14 @@ func (c *ClientFactory) NewHybridIdentityMetadataClient() *HybridIdentityMetadat
 	}
 }
 
+// NewLoadBalancersClient creates a new instance of LoadBalancersClient.
+func (c *ClientFactory) NewLoadBalancersClient() *LoadBalancersClient {
+	return &LoadBalancersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewLogicalNetworksClient creates a new instance of LogicalNetworksClient.
 func (c *ClientFactory) NewLogicalNetworksClient() *LogicalNetworksClient {
 	return &LogicalNetworksClient{
@@ -72,6 +80,14 @@ func (c *ClientFactory) NewLogicalNetworksClient() *LogicalNetworksClient {
 // NewMarketplaceGalleryImagesClient creates a new instance of MarketplaceGalleryImagesClient.
 func (c *ClientFactory) NewMarketplaceGalleryImagesClient() *MarketplaceGalleryImagesClient {
 	return &MarketplaceGalleryImagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNatGatewaysClient creates a new instance of NatGatewaysClient.
+func (c *ClientFactory) NewNatGatewaysClient() *NatGatewaysClient {
+	return &NatGatewaysClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -93,9 +109,32 @@ func (c *ClientFactory) NewNetworkSecurityGroupsClient() *NetworkSecurityGroupsC
 	}
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	return &OperationsClient{
+		internal: c.internal,
+	}
+}
+
+// NewPublicIPAddressesClient creates a new instance of PublicIPAddressesClient.
+func (c *ClientFactory) NewPublicIPAddressesClient() *PublicIPAddressesClient {
+	return &PublicIPAddressesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSecurityRulesClient creates a new instance of SecurityRulesClient.
 func (c *ClientFactory) NewSecurityRulesClient() *SecurityRulesClient {
 	return &SecurityRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSnapshotsClient creates a new instance of SnapshotsClient.
+func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
+	return &SnapshotsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -121,5 +160,21 @@ func (c *ClientFactory) NewVirtualHardDisksClient() *VirtualHardDisksClient {
 func (c *ClientFactory) NewVirtualMachineInstancesClient() *VirtualMachineInstancesClient {
 	return &VirtualMachineInstancesClient{
 		internal: c.internal,
+	}
+}
+
+// NewVirtualNetworkSubnetsClient creates a new instance of VirtualNetworkSubnetsClient.
+func (c *ClientFactory) NewVirtualNetworkSubnetsClient() *VirtualNetworkSubnetsClient {
+	return &VirtualNetworkSubnetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVirtualNetworksClient creates a new instance of VirtualNetworksClient.
+func (c *ClientFactory) NewVirtualNetworksClient() *VirtualNetworksClient {
+	return &VirtualNetworksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }

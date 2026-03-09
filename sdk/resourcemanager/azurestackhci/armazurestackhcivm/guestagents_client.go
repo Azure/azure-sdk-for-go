@@ -38,7 +38,7 @@ func NewGuestAgentsClient(credential azcore.TokenCredential, options *arm.Client
 // BeginCreate - Create Or Update GuestAgent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - resource - Resource create parameters.
 //   - options - GuestAgentsClientBeginCreateOptions contains the optional parameters for the GuestAgentsClient.BeginCreate method.
@@ -63,7 +63,7 @@ func (client *GuestAgentsClient) BeginCreate(ctx context.Context, resourceURI st
 // Create - Create Or Update GuestAgent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *GuestAgentsClient) create(ctx context.Context, resourceURI string, resource GuestAgent, options *GuestAgentsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GuestAgentsClient.BeginCreate"
@@ -97,7 +97,7 @@ func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -110,7 +110,7 @@ func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resour
 // BeginDelete - Implements GuestAgent DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - GuestAgentsClientBeginDeleteOptions contains the optional parameters for the GuestAgentsClient.BeginDelete method.
 func (client *GuestAgentsClient) BeginDelete(ctx context.Context, resourceURI string, options *GuestAgentsClientBeginDeleteOptions) (*runtime.Poller[GuestAgentsClientDeleteResponse], error) {
@@ -133,7 +133,7 @@ func (client *GuestAgentsClient) BeginDelete(ctx context.Context, resourceURI st
 // Delete - Implements GuestAgent DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *GuestAgentsClient) deleteOperation(ctx context.Context, resourceURI string, options *GuestAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GuestAgentsClient.BeginDelete"
@@ -167,7 +167,7 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -175,7 +175,7 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Implements GuestAgent GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - GuestAgentsClientGetOptions contains the optional parameters for the GuestAgentsClient.Get method.
 func (client *GuestAgentsClient) Get(ctx context.Context, resourceURI string, options *GuestAgentsClientGetOptions) (GuestAgentsClientGetResponse, error) {
@@ -212,7 +212,7 @@ func (client *GuestAgentsClient) getCreateRequest(ctx context.Context, resourceU
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,7 +229,7 @@ func (client *GuestAgentsClient) getHandleResponse(resp *http.Response) (GuestAg
 
 // NewListByVirtualMachineInstancePager - Returns the list of GuestAgent of the given vm.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - GuestAgentsClientListByVirtualMachineInstanceOptions contains the optional parameters for the GuestAgentsClient.NewListByVirtualMachineInstancePager
 //     method.
@@ -268,7 +268,7 @@ func (client *GuestAgentsClient) listByVirtualMachineInstanceCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

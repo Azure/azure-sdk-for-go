@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/NetworkInterfaces_CreateOrUpdate.json
 func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_putNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_putNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces__CreateOrUpdate_CreateFromLocal.json
+// Generated from example definition: 2026-02-01-preview/NetworkInterfaces__CreateOrUpdate_CreateFromLocal.json
 func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceFromLocal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceFr
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_Delete.json
+// Generated from example definition: 2026-02-01-preview/NetworkInterfaces_Delete.json
 func ExampleNetworkInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleNetworkInterfacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_Get.json
+// Generated from example definition: 2026-02-01-preview/NetworkInterfaces_Get.json
 func ExampleNetworkInterfacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleNetworkInterfacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_ListAll.json
+// Generated from example definition: 2026-02-01-preview/NetworkInterfaces_ListAll.json
 func ExampleNetworkInterfacesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleNetworkInterfacesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/NetworkInterfaces_ListByResourceGroup.json
 func ExampleNetworkInterfacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func ExampleNetworkInterfacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_Update.json
+// Generated from example definition: 2026-02-01-preview/NetworkInterfaces_Update.json
 func ExampleNetworkInterfacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

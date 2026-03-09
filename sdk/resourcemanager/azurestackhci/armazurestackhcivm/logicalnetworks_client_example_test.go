@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/LogicalNetworks_CreateOrUpdate.json
 func ExampleLogicalNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleLogicalNetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_Delete.json
+// Generated from example definition: 2026-02-01-preview/LogicalNetworks_Delete.json
 func ExampleLogicalNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleLogicalNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_Get.json
+// Generated from example definition: 2026-02-01-preview/LogicalNetworks_Get.json
 func ExampleLogicalNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleLogicalNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_ListAll.json
+// Generated from example definition: 2026-02-01-preview/LogicalNetworks_ListAll.json
 func ExampleLogicalNetworksClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleLogicalNetworksClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/LogicalNetworks_ListByResourceGroup.json
 func ExampleLogicalNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleLogicalNetworksClient_NewListByResourceGroupPager() {
 		// 					Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 		// 					Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/galleryImages/test-lnet"),
+		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
 		// 				Location: to.Ptr("West US2"),
 		// 				Properties: &armazurestackhcivm.LogicalNetworkProperties{
 		// 					ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
@@ -201,7 +201,7 @@ func ExampleLogicalNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_Update.json
+// Generated from example definition: 2026-02-01-preview/LogicalNetworks_Update.json
 func ExampleLogicalNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

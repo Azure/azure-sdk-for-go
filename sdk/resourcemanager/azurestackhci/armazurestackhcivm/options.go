@@ -78,6 +78,42 @@ type HybridIdentityMetadataClientListByVirtualMachineInstanceOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LoadBalancersClientBeginCreateOrUpdateOptions contains the optional parameters for the LoadBalancersClient.BeginCreateOrUpdate
+// method.
+type LoadBalancersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LoadBalancersClientBeginDeleteOptions contains the optional parameters for the LoadBalancersClient.BeginDelete method.
+type LoadBalancersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LoadBalancersClientBeginUpdateTagsOptions contains the optional parameters for the LoadBalancersClient.BeginUpdateTags
+// method.
+type LoadBalancersClientBeginUpdateTagsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LoadBalancersClientGetOptions contains the optional parameters for the LoadBalancersClient.Get method.
+type LoadBalancersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LoadBalancersClientListAllOptions contains the optional parameters for the LoadBalancersClient.NewListAllPager method.
+type LoadBalancersClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LoadBalancersClientListByResourceGroupOptions contains the optional parameters for the LoadBalancersClient.NewListByResourceGroupPager
+// method.
+type LoadBalancersClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LogicalNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the LogicalNetworksClient.BeginCreateOrUpdate
 // method.
 type LogicalNetworksClientBeginCreateOrUpdateOptions struct {
@@ -148,6 +184,41 @@ type MarketplaceGalleryImagesClientListAllOptions struct {
 // MarketplaceGalleryImagesClientListByResourceGroupOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListByResourceGroupPager
 // method.
 type MarketplaceGalleryImagesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NatGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the NatGatewaysClient.BeginCreateOrUpdate
+// method.
+type NatGatewaysClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NatGatewaysClientBeginDeleteOptions contains the optional parameters for the NatGatewaysClient.BeginDelete method.
+type NatGatewaysClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NatGatewaysClientBeginUpdateTagsOptions contains the optional parameters for the NatGatewaysClient.BeginUpdateTags method.
+type NatGatewaysClientBeginUpdateTagsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NatGatewaysClientGetOptions contains the optional parameters for the NatGatewaysClient.Get method.
+type NatGatewaysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.NewListAllPager method.
+type NatGatewaysClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NatGatewaysClientListByResourceGroupOptions contains the optional parameters for the NatGatewaysClient.NewListByResourceGroupPager
+// method.
+type NatGatewaysClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -227,6 +298,49 @@ type NetworkSecurityGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PublicIPAddressesClientBeginCreateOrUpdateOptions contains the optional parameters for the PublicIPAddressesClient.BeginCreateOrUpdate
+// method.
+type PublicIPAddressesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PublicIPAddressesClientBeginDeleteOptions contains the optional parameters for the PublicIPAddressesClient.BeginDelete
+// method.
+type PublicIPAddressesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PublicIPAddressesClientBeginUpdateTagsOptions contains the optional parameters for the PublicIPAddressesClient.BeginUpdateTags
+// method.
+type PublicIPAddressesClientBeginUpdateTagsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PublicIPAddressesClientGetOptions contains the optional parameters for the PublicIPAddressesClient.Get method.
+type PublicIPAddressesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PublicIPAddressesClientListAllOptions contains the optional parameters for the PublicIPAddressesClient.NewListAllPager
+// method.
+type PublicIPAddressesClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PublicIPAddressesClientListByResourceGroupOptions contains the optional parameters for the PublicIPAddressesClient.NewListByResourceGroupPager
+// method.
+type PublicIPAddressesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SecurityRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the SecurityRulesClient.BeginCreateOrUpdate
 // method.
 type SecurityRulesClientBeginCreateOrUpdateOptions struct {
@@ -248,6 +362,41 @@ type SecurityRulesClientGetOptions struct {
 // SecurityRulesClientListByNetworkSecurityGroupOptions contains the optional parameters for the SecurityRulesClient.NewListByNetworkSecurityGroupPager
 // method.
 type SecurityRulesClientListByNetworkSecurityGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SnapshotsClientBeginCreateOrUpdateOptions contains the optional parameters for the SnapshotsClient.BeginCreateOrUpdate
+// method.
+type SnapshotsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SnapshotsClientBeginDeleteOptions contains the optional parameters for the SnapshotsClient.BeginDelete method.
+type SnapshotsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SnapshotsClientBeginUpdateOptions contains the optional parameters for the SnapshotsClient.BeginUpdate method.
+type SnapshotsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
+type SnapshotsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SnapshotsClientListAllOptions contains the optional parameters for the SnapshotsClient.NewListAllPager method.
+type SnapshotsClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.NewListByResourceGroupPager
+// method.
+type SnapshotsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -394,5 +543,73 @@ type VirtualMachineInstancesClientGetOptions struct {
 // VirtualMachineInstancesClientListOptions contains the optional parameters for the VirtualMachineInstancesClient.NewListPager
 // method.
 type VirtualMachineInstancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkSubnetsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkSubnetsClient.BeginCreateOrUpdate
+// method.
+type VirtualNetworkSubnetsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkSubnetsClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkSubnetsClient.BeginDelete
+// method.
+type VirtualNetworkSubnetsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkSubnetsClientBeginUpdateOptions contains the optional parameters for the VirtualNetworkSubnetsClient.BeginUpdate
+// method.
+type VirtualNetworkSubnetsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkSubnetsClientGetOptions contains the optional parameters for the VirtualNetworkSubnetsClient.Get method.
+type VirtualNetworkSubnetsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkSubnetsClientListByVirtualNetworkOptions contains the optional parameters for the VirtualNetworkSubnetsClient.NewListByVirtualNetworkPager
+// method.
+type VirtualNetworkSubnetsClientListByVirtualNetworkOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworksClient.BeginCreateOrUpdate
+// method.
+type VirtualNetworksClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworksClientBeginDeleteOptions contains the optional parameters for the VirtualNetworksClient.BeginDelete method.
+type VirtualNetworksClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworksClientBeginUpdateTagsOptions contains the optional parameters for the VirtualNetworksClient.BeginUpdateTags
+// method.
+type VirtualNetworksClientBeginUpdateTagsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworksClientGetOptions contains the optional parameters for the VirtualNetworksClient.Get method.
+type VirtualNetworksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworksClientListAllOptions contains the optional parameters for the VirtualNetworksClient.NewListAllPager method.
+type VirtualNetworksClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworksClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworksClient.NewListByResourceGroupPager
+// method.
+type VirtualNetworksClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }

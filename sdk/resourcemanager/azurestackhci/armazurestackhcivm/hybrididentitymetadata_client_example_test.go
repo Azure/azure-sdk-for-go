@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/HybridIdentityMetadataGroup_Get.json
+// Generated from example definition: 2026-02-01-preview/HybridIdentityMetadataGroup_Get.json
 func ExampleHybridIdentityMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleHybridIdentityMetadataClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/HybridIdentityMetadata_ListByVirtualMachineInstance.json
+// Generated from example definition: 2026-02-01-preview/HybridIdentityMetadata_ListByVirtualMachineInstance.json
 func ExampleHybridIdentityMetadataClient_NewListByVirtualMachineInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

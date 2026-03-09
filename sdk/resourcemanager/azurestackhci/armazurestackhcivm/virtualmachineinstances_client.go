@@ -39,7 +39,7 @@ func NewVirtualMachineInstancesClient(credential azcore.TokenCredential, options
 // set only during virtual machine instance creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - resource - Resource create parameters.
 //   - options - VirtualMachineInstancesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginCreateOrUpdate
@@ -66,7 +66,7 @@ func (client *VirtualMachineInstancesClient) BeginCreateOrUpdate(ctx context.Con
 // during virtual machine instance creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) createOrUpdate(ctx context.Context, resourceURI string, resource VirtualMachineInstance, options *VirtualMachineInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginCreateOrUpdate"
@@ -100,7 +100,7 @@ func (client *VirtualMachineInstancesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -113,7 +113,7 @@ func (client *VirtualMachineInstancesClient) createOrUpdateCreateRequest(ctx con
 // BeginDelete - The operation to delete a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientBeginDeleteOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginDelete
 //     method.
@@ -137,7 +137,7 @@ func (client *VirtualMachineInstancesClient) BeginDelete(ctx context.Context, re
 // Delete - The operation to delete a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) deleteOperation(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginDelete"
@@ -171,7 +171,7 @@ func (client *VirtualMachineInstancesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -179,7 +179,7 @@ func (client *VirtualMachineInstancesClient) deleteCreateRequest(ctx context.Con
 // Get - Gets a virtual machine instance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientGetOptions contains the optional parameters for the VirtualMachineInstancesClient.Get
 //     method.
@@ -217,7 +217,7 @@ func (client *VirtualMachineInstancesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -234,7 +234,7 @@ func (client *VirtualMachineInstancesClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Lists all of the virtual machine instances within the specified parent resource.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientListOptions contains the optional parameters for the VirtualMachineInstancesClient.NewListPager
 //     method.
@@ -273,7 +273,7 @@ func (client *VirtualMachineInstancesClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +291,7 @@ func (client *VirtualMachineInstancesClient) listHandleResponse(resp *http.Respo
 // BeginPause - The operation to pause a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientBeginPauseOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginPause
 //     method.
@@ -315,7 +315,7 @@ func (client *VirtualMachineInstancesClient) BeginPause(ctx context.Context, res
 // Pause - The operation to pause a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) pause(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginPauseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginPause"
@@ -349,7 +349,7 @@ func (client *VirtualMachineInstancesClient) pauseCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -357,7 +357,7 @@ func (client *VirtualMachineInstancesClient) pauseCreateRequest(ctx context.Cont
 // BeginRestart - The operation to restart a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientBeginRestartOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginRestart
 //     method.
@@ -381,7 +381,7 @@ func (client *VirtualMachineInstancesClient) BeginRestart(ctx context.Context, r
 // Restart - The operation to restart a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) restart(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginRestart"
@@ -415,7 +415,7 @@ func (client *VirtualMachineInstancesClient) restartCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -423,7 +423,7 @@ func (client *VirtualMachineInstancesClient) restartCreateRequest(ctx context.Co
 // BeginSave - The operation to save a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientBeginSaveOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginSave
 //     method.
@@ -447,7 +447,7 @@ func (client *VirtualMachineInstancesClient) BeginSave(ctx context.Context, reso
 // Save - The operation to save a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) save(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginSaveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginSave"
@@ -481,7 +481,7 @@ func (client *VirtualMachineInstancesClient) saveCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -489,7 +489,7 @@ func (client *VirtualMachineInstancesClient) saveCreateRequest(ctx context.Conte
 // BeginStart - The operation to start a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientBeginStartOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginStart
 //     method.
@@ -513,7 +513,7 @@ func (client *VirtualMachineInstancesClient) BeginStart(ctx context.Context, res
 // Start - The operation to start a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) start(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginStart"
@@ -547,7 +547,7 @@ func (client *VirtualMachineInstancesClient) startCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -555,7 +555,7 @@ func (client *VirtualMachineInstancesClient) startCreateRequest(ctx context.Cont
 // BeginStop - The operation to stop a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - VirtualMachineInstancesClientBeginStopOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginStop
 //     method.
@@ -579,7 +579,7 @@ func (client *VirtualMachineInstancesClient) BeginStop(ctx context.Context, reso
 // Stop - The operation to stop a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) stop(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginStop"
@@ -613,7 +613,7 @@ func (client *VirtualMachineInstancesClient) stopCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -621,7 +621,7 @@ func (client *VirtualMachineInstancesClient) stopCreateRequest(ctx context.Conte
 // BeginUpdate - The operation to update a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - properties - The resource properties to be updated.
 //   - options - VirtualMachineInstancesClientBeginUpdateOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginUpdate
@@ -646,7 +646,7 @@ func (client *VirtualMachineInstancesClient) BeginUpdate(ctx context.Context, re
 // Update - The operation to update a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *VirtualMachineInstancesClient) update(ctx context.Context, resourceURI string, properties VirtualMachineInstanceUpdateRequest, options *VirtualMachineInstancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineInstancesClient.BeginUpdate"
@@ -680,7 +680,7 @@ func (client *VirtualMachineInstancesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

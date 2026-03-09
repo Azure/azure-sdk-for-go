@@ -43,7 +43,7 @@ func NewMarketplaceGalleryImagesClient(subscriptionID string, credential azcore.
 // set only during marketplace gallery image creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - marketplaceGalleryImageName - Name of the marketplace gallery image
 //   - resource - Resource create parameters.
@@ -71,7 +71,7 @@ func (client *MarketplaceGalleryImagesClient) BeginCreateOrUpdate(ctx context.Co
 // only during marketplace gallery image creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *MarketplaceGalleryImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, resource MarketplaceGalleryImage, options *MarketplaceGalleryImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MarketplaceGalleryImagesClient.BeginCreateOrUpdate"
@@ -113,7 +113,7 @@ func (client *MarketplaceGalleryImagesClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -126,7 +126,7 @@ func (client *MarketplaceGalleryImagesClient) createOrUpdateCreateRequest(ctx co
 // BeginDelete - The operation to delete a marketplace gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - marketplaceGalleryImageName - Name of the marketplace gallery image
 //   - options - MarketplaceGalleryImagesClientBeginDeleteOptions contains the optional parameters for the MarketplaceGalleryImagesClient.BeginDelete
@@ -151,7 +151,7 @@ func (client *MarketplaceGalleryImagesClient) BeginDelete(ctx context.Context, r
 // Delete - The operation to delete a marketplace gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *MarketplaceGalleryImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, options *MarketplaceGalleryImagesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MarketplaceGalleryImagesClient.BeginDelete"
@@ -193,7 +193,7 @@ func (client *MarketplaceGalleryImagesClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -201,7 +201,7 @@ func (client *MarketplaceGalleryImagesClient) deleteCreateRequest(ctx context.Co
 // Get - Gets a marketplace gallery image
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - marketplaceGalleryImageName - Name of the marketplace gallery image
 //   - options - MarketplaceGalleryImagesClientGetOptions contains the optional parameters for the MarketplaceGalleryImagesClient.Get
@@ -248,7 +248,7 @@ func (client *MarketplaceGalleryImagesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *MarketplaceGalleryImagesClient) getHandleResponse(resp *http.Respo
 // NewListAllPager - Lists all of the marketplace gallery images in the specified subscription. Use the nextLink property
 // in the response to get the next page of marketplace gallery images.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - options - MarketplaceGalleryImagesClientListAllOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListAllPager
 //     method.
 func (client *MarketplaceGalleryImagesClient) NewListAllPager(options *MarketplaceGalleryImagesClientListAllOptions) *runtime.Pager[MarketplaceGalleryImagesClientListAllResponse] {
@@ -304,7 +304,7 @@ func (client *MarketplaceGalleryImagesClient) listAllCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +322,7 @@ func (client *MarketplaceGalleryImagesClient) listAllHandleResponse(resp *http.R
 // NewListByResourceGroupPager - Lists all of the marketplace gallery images in the specified resource group. Use the nextLink
 // property in the response to get the next page of marketplace gallery images.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MarketplaceGalleryImagesClientListByResourceGroupOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListByResourceGroupPager
 //     method.
@@ -365,7 +365,7 @@ func (client *MarketplaceGalleryImagesClient) listByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -383,7 +383,7 @@ func (client *MarketplaceGalleryImagesClient) listByResourceGroupHandleResponse(
 // BeginUpdate - The operation to update a marketplace gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - marketplaceGalleryImageName - Name of the marketplace gallery image
 //   - properties - The resource properties to be updated.
@@ -409,7 +409,7 @@ func (client *MarketplaceGalleryImagesClient) BeginUpdate(ctx context.Context, r
 // Update - The operation to update a marketplace gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-02-01-preview
 func (client *MarketplaceGalleryImagesClient) update(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, properties MarketplaceGalleryImageTagsUpdate, options *MarketplaceGalleryImagesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MarketplaceGalleryImagesClient.BeginUpdate"
@@ -451,7 +451,7 @@ func (client *MarketplaceGalleryImagesClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

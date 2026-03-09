@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks_CreateOrUpdate.json
 func ExampleVirtualHardDisksClient_BeginCreateOrUpdate_putVirtualHardDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleVirtualHardDisksClient_BeginCreateOrUpdate_putVirtualHardDisk() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks__CreateOrUpdate_CreateFromLocal.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks__CreateOrUpdate_CreateFromLocal.json
 func ExampleVirtualHardDisksClient_BeginCreateOrUpdate_createVirtualHardDiskFromLocal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleVirtualHardDisksClient_BeginCreateOrUpdate_createVirtualHardDiskFrom
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualHardDisksClient().BeginCreateOrUpdate(ctx, "test-rg", "test-vhd", armazurestackhcivm.VirtualHardDisk{
+	poller, err := clientFactory.NewVirtualHardDisksClient().BeginCreateOrUpdate(ctx, "test-rg", "rehome-datadisk-1", armazurestackhcivm.VirtualHardDisk{
 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -86,7 +86,7 @@ func ExampleVirtualHardDisksClient_BeginCreateOrUpdate_createVirtualHardDiskFrom
 		Location: to.Ptr("West US2"),
 		Properties: &armazurestackhcivm.VirtualHardDiskProperties{
 			CreateFromLocal: to.Ptr(true),
-			ContainerID:     to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-storage-container"),
+			LocalVhdPath:    to.Ptr("C:\\ClusterStorage\\UserStorage_2\\e35803d0bd82d61\\rehome555-dd1-a95612cb-f1fa-4daa-a4fd-272844fa512c-dogfoodarc.vhdx"),
 		},
 	}, nil)
 	if err != nil {
@@ -101,13 +101,13 @@ func ExampleVirtualHardDisksClient_BeginCreateOrUpdate_createVirtualHardDiskFrom
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualHardDisksClientCreateOrUpdateResponse{
 	// 	VirtualHardDisk: &armazurestackhcivm.VirtualHardDisk{
-	// 		Name: to.Ptr("test-vhd"),
+	// 		Name: to.Ptr("rehome-datadisk-1"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualHardDisks"),
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/virtualHardDisks/test-vhd"),
+	// 		ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/virtualHardDisks/rehome-datadisk-1"),
 	// 		Location: to.Ptr("West US2"),
 	// 		Properties: &armazurestackhcivm.VirtualHardDiskProperties{
 	// 			BlockSizeBytes: to.Ptr[int32](0),
@@ -118,14 +118,14 @@ func ExampleVirtualHardDisksClient_BeginCreateOrUpdate_createVirtualHardDiskFrom
 	// 			LogicalSectorBytes: to.Ptr[int32](512),
 	// 			PhysicalSectorBytes: to.Ptr[int32](512),
 	// 			CreateFromLocal: to.Ptr(true),
-	// 			ContainerID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-storage-container"),
+	// 			ContainerID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/UserStorage_2"),
 	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks_Delete.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks_Delete.json
 func ExampleVirtualHardDisksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleVirtualHardDisksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks_Get.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks_Get.json
 func ExampleVirtualHardDisksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleVirtualHardDisksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks_ListAll.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks_ListAll.json
 func ExampleVirtualHardDisksClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleVirtualHardDisksClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks_ListByResourceGroup.json
 func ExampleVirtualHardDisksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleVirtualHardDisksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks_Update.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks_Update.json
 func ExampleVirtualHardDisksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +355,7 @@ func ExampleVirtualHardDisksClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualHardDisks_Upload.json
+// Generated from example definition: 2026-02-01-preview/VirtualHardDisks_Upload.json
 func ExampleVirtualHardDisksClient_BeginUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -4,6 +4,21 @@
 
 package armazurestackhcivm
 
+// ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	// ActionTypeInternal - Actions are for internal-only APIs.
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
+
 // AttestBootIntegrityPropertyEnum - The status of whether the list of boot integrity properties is validated.
 type AttestBootIntegrityPropertyEnum string
 
@@ -170,6 +185,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DiskCreateOption - Disk creation option values [Copy, Empty]
+type DiskCreateOption string
+
+const (
+	// DiskCreateOptionCopy - Create a disk by copying from a source resource
+	DiskCreateOptionCopy DiskCreateOption = "Copy"
+	// DiskCreateOptionEmpty - Create an empty disk
+	DiskCreateOptionEmpty DiskCreateOption = "Empty"
+)
+
+// PossibleDiskCreateOptionValues returns the possible values for the DiskCreateOption const type.
+func PossibleDiskCreateOptionValues() []DiskCreateOption {
+	return []DiskCreateOption{
+		DiskCreateOptionCopy,
+		DiskCreateOptionEmpty,
+	}
+}
+
 // DiskFileFormat - The format of the actual VHD file [vhd, vhdx]
 type DiskFileFormat string
 
@@ -203,6 +236,75 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
+// FabricConnectionHealthEnum - Fabric connection health state type
+type FabricConnectionHealthEnum string
+
+const (
+	// FabricConnectionHealthEnumError - Fabric connection health state - error type
+	FabricConnectionHealthEnumError FabricConnectionHealthEnum = "Error"
+	// FabricConnectionHealthEnumHealthy - Fabric connection health state - healthy type
+	FabricConnectionHealthEnumHealthy FabricConnectionHealthEnum = "Healthy"
+	// FabricConnectionHealthEnumUnknown - Fabric connection health state - unknown type
+	FabricConnectionHealthEnumUnknown FabricConnectionHealthEnum = "Unknown"
+	// FabricConnectionHealthEnumWarning - Fabric connection health state - warning type
+	FabricConnectionHealthEnumWarning FabricConnectionHealthEnum = "Warning"
+)
+
+// PossibleFabricConnectionHealthEnumValues returns the possible values for the FabricConnectionHealthEnum const type.
+func PossibleFabricConnectionHealthEnumValues() []FabricConnectionHealthEnum {
+	return []FabricConnectionHealthEnum{
+		FabricConnectionHealthEnumError,
+		FabricConnectionHealthEnumHealthy,
+		FabricConnectionHealthEnumUnknown,
+		FabricConnectionHealthEnumWarning,
+	}
+}
+
+// FabricIntegrationStateEnum - Fabric integration state type
+type FabricIntegrationStateEnum string
+
+const (
+	// FabricIntegrationStateEnumConnected - Fabric integration state - connected type
+	FabricIntegrationStateEnumConnected FabricIntegrationStateEnum = "Connected"
+	// FabricIntegrationStateEnumConnecting - Fabric integration state - connecting type
+	FabricIntegrationStateEnumConnecting FabricIntegrationStateEnum = "Connecting"
+	// FabricIntegrationStateEnumDisconnected - Fabric integration state - disconnected type
+	FabricIntegrationStateEnumDisconnected FabricIntegrationStateEnum = "Disconnected"
+	// FabricIntegrationStateEnumMisconfigured - Fabric integration state - misconfigured type
+	FabricIntegrationStateEnumMisconfigured FabricIntegrationStateEnum = "Misconfigured"
+	// FabricIntegrationStateEnumNotApplicable - Fabric integration state - notapplicable type
+	FabricIntegrationStateEnumNotApplicable FabricIntegrationStateEnum = "NotApplicable"
+)
+
+// PossibleFabricIntegrationStateEnumValues returns the possible values for the FabricIntegrationStateEnum const type.
+func PossibleFabricIntegrationStateEnumValues() []FabricIntegrationStateEnum {
+	return []FabricIntegrationStateEnum{
+		FabricIntegrationStateEnumConnected,
+		FabricIntegrationStateEnumConnecting,
+		FabricIntegrationStateEnumDisconnected,
+		FabricIntegrationStateEnumMisconfigured,
+		FabricIntegrationStateEnumNotApplicable,
+	}
+}
+
+// FabricResourceTypeEnum - Fabric resource type
+type FabricResourceTypeEnum string
+
+const (
+	// FabricResourceTypeEnumL2IsolationDomain - Fabric resource of L2IsolationDomain type
+	FabricResourceTypeEnumL2IsolationDomain FabricResourceTypeEnum = "L2IsolationDomain"
+	// FabricResourceTypeEnumL3InternalNetwork - Fabric resource of L3InternalNetwork type
+	FabricResourceTypeEnumL3InternalNetwork FabricResourceTypeEnum = "L3InternalNetwork"
+)
+
+// PossibleFabricResourceTypeEnumValues returns the possible values for the FabricResourceTypeEnum const type.
+func PossibleFabricResourceTypeEnumValues() []FabricResourceTypeEnum {
+	return []FabricResourceTypeEnum{
+		FabricResourceTypeEnumL2IsolationDomain,
+		FabricResourceTypeEnumL3InternalNetwork,
+	}
+}
+
 // GpuAssignmentTypeEnum - Gpu Assignment types
 type GpuAssignmentTypeEnum string
 
@@ -225,6 +327,8 @@ func PossibleGpuAssignmentTypeEnumValues() []GpuAssignmentTypeEnum {
 type HyperVGeneration string
 
 const (
+	// HyperVGenerationNA - Not applicable/determined by platform
+	HyperVGenerationNA HyperVGeneration = "NA"
 	// HyperVGenerationV1 - Generation 1 (V1) hypervisor
 	HyperVGenerationV1 HyperVGeneration = "V1"
 	// HyperVGenerationV2 - Generation 2 (V2) hypervisor
@@ -234,6 +338,7 @@ const (
 // PossibleHyperVGenerationValues returns the possible values for the HyperVGeneration const type.
 func PossibleHyperVGenerationValues() []HyperVGeneration {
 	return []HyperVGeneration{
+		HyperVGenerationNA,
 		HyperVGenerationV1,
 		HyperVGenerationV2,
 	}
@@ -272,6 +377,103 @@ func PossibleIPPoolTypeEnumValues() []IPPoolTypeEnum {
 	return []IPPoolTypeEnum{
 		IPPoolTypeEnumVM,
 		IPPoolTypeEnumVippool,
+	}
+}
+
+// InboundNATRuleProtocol - Protocol for inbound NAT rules
+type InboundNATRuleProtocol string
+
+const (
+	// InboundNATRuleProtocolTCP - TCP - load balance only tcp traffic
+	InboundNATRuleProtocolTCP InboundNATRuleProtocol = "Tcp"
+	// InboundNATRuleProtocolUDP - Udp - load balance only UDP traffic
+	InboundNATRuleProtocolUDP InboundNATRuleProtocol = "Udp"
+)
+
+// PossibleInboundNATRuleProtocolValues returns the possible values for the InboundNATRuleProtocol const type.
+func PossibleInboundNATRuleProtocolValues() []InboundNATRuleProtocol {
+	return []InboundNATRuleProtocol{
+		InboundNATRuleProtocolTCP,
+		InboundNATRuleProtocolUDP,
+	}
+}
+
+// LoadBalancerBackendAddressAdminState - Backend Address Admin states
+type LoadBalancerBackendAddressAdminState string
+
+const (
+	// LoadBalancerBackendAddressAdminStateDown - Down - forced admin state down
+	LoadBalancerBackendAddressAdminStateDown LoadBalancerBackendAddressAdminState = "Down"
+	// LoadBalancerBackendAddressAdminStateUp - Up - forced admin state up
+	LoadBalancerBackendAddressAdminStateUp LoadBalancerBackendAddressAdminState = "Up"
+)
+
+// PossibleLoadBalancerBackendAddressAdminStateValues returns the possible values for the LoadBalancerBackendAddressAdminState const type.
+func PossibleLoadBalancerBackendAddressAdminStateValues() []LoadBalancerBackendAddressAdminState {
+	return []LoadBalancerBackendAddressAdminState{
+		LoadBalancerBackendAddressAdminStateDown,
+		LoadBalancerBackendAddressAdminStateUp,
+	}
+}
+
+// LoadBalancerProbeProtocol - Protocol for health probes
+type LoadBalancerProbeProtocol string
+
+const (
+	// LoadBalancerProbeProtocolHTTP - HTTP - HTTP request
+	LoadBalancerProbeProtocolHTTP LoadBalancerProbeProtocol = "Http"
+	// LoadBalancerProbeProtocolTCP - TCP - TCP port checking
+	LoadBalancerProbeProtocolTCP LoadBalancerProbeProtocol = "Tcp"
+)
+
+// PossibleLoadBalancerProbeProtocolValues returns the possible values for the LoadBalancerProbeProtocol const type.
+func PossibleLoadBalancerProbeProtocolValues() []LoadBalancerProbeProtocol {
+	return []LoadBalancerProbeProtocol{
+		LoadBalancerProbeProtocolHTTP,
+		LoadBalancerProbeProtocolTCP,
+	}
+}
+
+// LoadBalancerRuleSessionPersistenceType - Type of session persistence [Default, SourceIP, SourceIPProtocol]
+type LoadBalancerRuleSessionPersistenceType string
+
+const (
+	// LoadBalancerRuleSessionPersistenceTypeDefault - Default - 5-tuple hashing
+	LoadBalancerRuleSessionPersistenceTypeDefault LoadBalancerRuleSessionPersistenceType = "Default"
+	// LoadBalancerRuleSessionPersistenceTypeSourceIP - Source IP - 2-tuple hashing looking at src-dst ip
+	LoadBalancerRuleSessionPersistenceTypeSourceIP LoadBalancerRuleSessionPersistenceType = "SourceIP"
+	// LoadBalancerRuleSessionPersistenceTypeSourceIPProtocol - SourceIPProtocol - 3-tuple hashing looking at src-dst ip and ip
+	// protocol
+	LoadBalancerRuleSessionPersistenceTypeSourceIPProtocol LoadBalancerRuleSessionPersistenceType = "SourceIPProtocol"
+)
+
+// PossibleLoadBalancerRuleSessionPersistenceTypeValues returns the possible values for the LoadBalancerRuleSessionPersistenceType const type.
+func PossibleLoadBalancerRuleSessionPersistenceTypeValues() []LoadBalancerRuleSessionPersistenceType {
+	return []LoadBalancerRuleSessionPersistenceType{
+		LoadBalancerRuleSessionPersistenceTypeDefault,
+		LoadBalancerRuleSessionPersistenceTypeSourceIP,
+		LoadBalancerRuleSessionPersistenceTypeSourceIPProtocol,
+	}
+}
+
+// LoadBalancerRuleTransportProtocol - Protocol for load balancing rules
+type LoadBalancerRuleTransportProtocol string
+
+const (
+	// LoadBalancerRuleTransportProtocolAll - All - load balance all UDP and TCP traffic
+	LoadBalancerRuleTransportProtocolAll LoadBalancerRuleTransportProtocol = "All"
+	// LoadBalancerRuleTransportProtocolTCP - TCP - load balance only tcp traffic
+	LoadBalancerRuleTransportProtocolTCP LoadBalancerRuleTransportProtocol = "Tcp"
+	// LoadBalancerRuleTransportProtocolUDP - Udp - load balance only UDP traffic
+	LoadBalancerRuleTransportProtocolUDP LoadBalancerRuleTransportProtocol = "Udp"
+)
+
+// PossibleLoadBalancerRuleTransportProtocolValues returns the possible values for the LoadBalancerRuleTransportProtocol const type.
+func PossibleLoadBalancerRuleTransportProtocolValues() []LoadBalancerRuleTransportProtocol {
+	return []LoadBalancerRuleTransportProtocol{
+		LoadBalancerRuleTransportProtocolAll,
+		LoadBalancerRuleTransportProtocolTCP,
+		LoadBalancerRuleTransportProtocolUDP,
 	}
 }
 
@@ -332,6 +534,28 @@ func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return []OperatingSystemTypes{
 		OperatingSystemTypesLinux,
 		OperatingSystemTypesWindows,
+	}
+}
+
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	// OriginSystem - Indicates the operation is initiated by a system.
+	OriginSystem Origin = "system"
+	// OriginUser - Indicates the operation is initiated by a user.
+	OriginUser Origin = "user"
+	// OriginUserSystem - Indicates the operation is initiated by a user or system.
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
 	}
 }
 
@@ -422,6 +646,24 @@ func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
 		ProvisioningStateEnumFailed,
 		ProvisioningStateEnumInProgress,
 		ProvisioningStateEnumSucceeded,
+	}
+}
+
+// PublicIPAddressType - Type of public IP addresses
+type PublicIPAddressType string
+
+const (
+	// PublicIPAddressTypeIPv4 - IPv4 IP Address
+	PublicIPAddressTypeIPv4 PublicIPAddressType = "IPv4"
+	// PublicIPAddressTypeIPv6 - IPv6 IP Address
+	PublicIPAddressTypeIPv6 PublicIPAddressType = "IPv6"
+)
+
+// PossiblePublicIPAddressTypeValues returns the possible values for the PublicIPAddressType const type.
+func PossiblePublicIPAddressTypeValues() []PublicIPAddressType {
+	return []PublicIPAddressType{
+		PublicIPAddressTypeIPv4,
+		PublicIPAddressTypeIPv6,
 	}
 }
 

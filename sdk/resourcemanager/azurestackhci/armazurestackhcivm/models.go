@@ -57,6 +57,39 @@ type AttestationStatusProperties struct {
 	Timestamp *string
 }
 
+// BackendAddressPool - Backend address pool for the load balancer.
+type BackendAddressPool struct {
+	// REQUIRED; name of the backend pool.
+	Name *string
+
+	// REQUIRED; properties for the backend pool
+	Properties *BackendAddressPoolProperties
+}
+
+// BackendAddressPoolProperties - Backend address pool for the load balancer.
+type BackendAddressPoolProperties struct {
+	// List of backend addresses for the backend pool
+	LoadBalancerBackendAddresses []*LoadBalancerBackendAddress
+
+	// Reference to the logical network for this backend pool. Mutually exclusive with virtualNetwork
+	LogicalNetwork *LogicalNetworkArmReference
+
+	// Reference to the virtual network for this backend pool. Mutually exclusive with logicalNetwork
+	VirtualNetwork *VirtualNetworkArmReference
+}
+
+// CreationData - Data used when creating a disk or snapshot
+type CreationData struct {
+	// REQUIRED; This enumerates the possible sources of a disk's creation
+	CreateOption *DiskCreateOption
+
+	// ARM ID of the source resource used for disk creation. Required when createOption is Copy
+	SourceResourceID *string
+
+	// READ-ONLY; Unique ID of the source resource used for disk creation. Read-only and not required for disk creation.
+	SourceUniqueID *string
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -91,6 +124,66 @@ type ExtendedLocation struct {
 
 	// The type of the extended location.
 	Type *ExtendedLocationTypes
+}
+
+// FabricIntegrationStatus - Enhanced fabric integration status with detailed health monitoring and connectivity state.
+type FabricIntegrationStatus struct {
+	// READ-ONLY; Health status of the fabric connection.
+	Health *FabricConnectionHealthEnum
+
+	// READ-ONLY; Issues raised by fabric
+	Issues []*FabricIssue
+
+	// READ-ONLY; Timestamp of the last fabric health check as ISO 8601 string
+	LastChecked *time.Time
+
+	// READ-ONLY; Type of fabric resource referenced.
+	ResourceType *FabricResourceTypeEnum
+
+	// READ-ONLY; Current fabric integration state.
+	State *FabricIntegrationStateEnum
+}
+
+// FabricIssue - Issues exposed by managed network fabric
+type FabricIssue struct {
+	// READ-ONLY; Specific error/warning code.
+	Code *string
+
+	// READ-ONLY; Description of the issue
+	Message *string
+
+	// READ-ONLY; issue severity
+	Severity *string
+
+	// READ-ONLY; specific property or resource that has the issue
+	Target *string
+
+	// READ-ONLY; Timestamp of the issue as ISO 8601 string
+	Timestamp *time.Time
+}
+
+// FrontendIPConfiguration - FrontendIP Configuration object for a load balancer.
+type FrontendIPConfiguration struct {
+	// REQUIRED; name for the frontend IP configuration.
+	Name *string
+
+	// REQUIRED; properties for this frontendIPConfiguration
+	Properties *FrontendIPConfigurationProperties
+}
+
+// FrontendIPConfigurationProperties - FrontendIP Configuration object for a load balancer.
+type FrontendIPConfigurationProperties struct {
+	// Private IP Address that was allocated (dynamic) or is to be allocated (static) from the subnet.
+	PrivateIPAddress *string
+
+	// privateIPAllocationMethod - set to Static for requesting a specific IP
+	PrivateIPAllocationMethod *IPAllocationMethodEnum
+
+	// Public IP
+	PublicIPAddress *PublicIPAddressArmReference
+
+	// subnet - the subnet from which to allocate the private IP
+	Subnet *VirtualNetworkSubnetArmReference
 }
 
 // GalleryImage - The gallery images resource definition.
@@ -390,6 +483,12 @@ type IPConfiguration struct {
 	Properties *IPConfigurationProperties
 }
 
+// IPConfigurationArmReference - The Azure Resource ID of an IPConfiguration resource
+type IPConfigurationArmReference struct {
+	// The Azure Resource ID of an IPConfiguration resource
+	ResourceID *string
+}
+
 // IPConfigurationProperties - InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
 type IPConfigurationProperties struct {
 	// PrivateIPAddress - Private IP address of the IP configuration.
@@ -451,6 +550,33 @@ type ImageArmReference struct {
 	ID *string
 }
 
+// InboundNATRule - Inbound nat rule properties
+type InboundNATRule struct {
+	// REQUIRED; name of the inbound nat rule
+	Name *string
+
+	// REQUIRED; properties of the inbound nat rule
+	Properties *InboundNATRuleProperties
+}
+
+// InboundNATRuleProperties - Inbound nat rule properties
+type InboundNATRuleProperties struct {
+	// REQUIRED; IP configuration for the target backend.
+	BackendIPConfiguration *IPConfigurationArmReference
+
+	// REQUIRED; backend Port for the inbound rule
+	BackendPort *int32
+
+	// REQUIRED; Frontend Port for the inbound rule
+	FrontendPort *int32
+
+	// REQUIRED; Protocol for the NAT rule
+	Protocol *InboundNATRuleProtocol
+
+	// REQUIRED; Public IP Address for this NAT rule
+	PublicIPAddress *PublicIPAddressArmReference
+}
+
 // InstanceViewStatus - Instance view status.
 type InstanceViewStatus struct {
 	// The status code.
@@ -473,6 +599,177 @@ type InstanceViewStatus struct {
 type InterfaceDNSSettings struct {
 	// List of DNS server IP Addresses for the interface
 	DNSServers []*string
+}
+
+// LoadBalancer - The LoadBalancer resource definition.
+type LoadBalancer struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// The resource-specific properties for this resource.
+	Properties *LoadBalancerProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LoadBalancerBackendAddress - LoadBalancer Backend Address
+type LoadBalancerBackendAddress struct {
+	// REQUIRED; name of the backend address
+	Name *string
+
+	// REQUIRED; backend address properties
+	Properties *LoadBalancerBackendAddressProperties
+}
+
+// LoadBalancerBackendAddressPoolReference - Reference to a LoadBalancer backend address pool reference
+type LoadBalancerBackendAddressPoolReference struct {
+	// REQUIRED; name of the backend address pool
+	Name *string
+}
+
+// LoadBalancerBackendAddressProperties - LoadBalancer Backend Address properties
+type LoadBalancerBackendAddressProperties struct {
+	// admin state - if set to false, the address is removed from the pool
+	AdminState *LoadBalancerBackendAddressAdminState
+
+	// Nic Based backend-ip association
+	NetworkInterfaceIPConfiguration *IPConfigurationArmReference
+
+	// READ-ONLY; IP address of the backend target. Populated automatically from the referenced IP configuration.
+	IPAddress *string
+
+	// READ-ONLY; Reference to the logical network containing this backend address. Populated automatically from the referenced
+	// IP configuration. Mutually exclusive with subnet and virtualNetwork.
+	LogicalNetwork *LogicalNetworkArmReference
+
+	// READ-ONLY; Reference to the subnet containing the backend address. Populated automatically from the referenced IP configuration.
+	// Mutually exclusive with logicalNetwork.
+	Subnet *VirtualNetworkSubnetArmReference
+
+	// READ-ONLY; Reference to the virtual network containing the backend address. Populated automatically from the referenced
+	// IP configuration. Mutually exclusive with logicalNetwork.
+	VirtualNetwork *VirtualNetworkArmReference
+}
+
+// LoadBalancerFrontendIPConfigurationReference - Reference to a LoadBalancer Frontend IPConfiguration
+type LoadBalancerFrontendIPConfigurationReference struct {
+	// REQUIRED; name of the frontnedIPConfiguration
+	Name *string
+}
+
+// LoadBalancerListResult - The response of a LoadBalancer list operation.
+type LoadBalancerListResult struct {
+	// REQUIRED; The LoadBalancer items on this page
+	Value []*LoadBalancer
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// LoadBalancerProbeReference - Reference to a LoadBalancer health probe
+type LoadBalancerProbeReference struct {
+	// REQUIRED; name of the health probe
+	Name *string
+}
+
+// LoadBalancerProperties - Load Balancer resource properties
+type LoadBalancerProperties struct {
+	// REQUIRED; Frontend IPs for the loadbalancer.
+	FrontendIPConfigurations []*FrontendIPConfiguration
+
+	// backendAddressPools for the loadbalancer
+	BackendAddressPools []*BackendAddressPool
+
+	// load balancer rules
+	LoadBalancingRules []*LoadBalancerRule
+
+	// load balancer health probes
+	Probes []*Probe
+
+	// READ-ONLY; Provisioning state of the Load Balancer
+	ProvisioningState *ProvisioningStateEnum
+
+	// READ-ONLY; observed state of the load balancer
+	Status *LoadBalancerStatus
+}
+
+// LoadBalancerRule - LoadBalancer Rules
+type LoadBalancerRule struct {
+	// REQUIRED; name of the load balancer rule
+	Name *string
+
+	// REQUIRED; load balancer rule properties
+	Properties *LoadBalancerRuleProperties
+}
+
+// LoadBalancerRuleProperties - Properties for LoadBalancerRules
+type LoadBalancerRuleProperties struct {
+	// REQUIRED; arm reference to backend pool being used by ths pool
+	BackendAddressPool *LoadBalancerBackendAddressPoolReference
+
+	// REQUIRED; backendPort to forward connections
+	BackendPort *int32
+
+	// REQUIRED; arm reference to frontend IP being used by this LB
+	FrontendIPConfiguration *LoadBalancerFrontendIPConfigurationReference
+
+	// REQUIRED; Frontend port to accept connections
+	FrontendPort *int32
+
+	// REQUIRED; IP Protocol that the rule must load-balance
+	Protocol *LoadBalancerRuleTransportProtocol
+
+	// Time for which connections are preserved before being torn down.
+	IdleTimeoutInMinutes *int32
+
+	// SessionPersistence: Default (5-tuple), SourceIP(2-tuple), sourceIPProtocol(3-tuple)
+	LoadDistribution *LoadBalancerRuleSessionPersistenceType
+
+	// Reference for the health probe for this connection
+	Probe *LoadBalancerProbeReference
+}
+
+// LoadBalancerStatus - The observed status of the virtual network
+type LoadBalancerStatus struct {
+	// LoadBalancer provisioning error code
+	ErrorCode *string
+
+	// Descriptive error message
+	ErrorMessage *string
+
+	// virtual network provisioning status
+	ProvisioningStatus *LoadBalancerStatusProvisioningStatus
+}
+
+// LoadBalancerStatusProvisioningStatus - Status of load balancer operations
+type LoadBalancerStatusProvisioningStatus struct {
+	// The ID of the operation performed on the load balancer
+	OperationID *string
+
+	// The status of the operation performed on the loadbalancer [Succeeded, Failed, InProgress]
+	Status *Status
+}
+
+// LoadBalancerTagsUpdate - The type used for updating tags in LoadBalancer resources.
+type LoadBalancerTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // LogicalNetwork - The logical network resource definition.
@@ -523,6 +820,9 @@ type LogicalNetworkProperties struct {
 	// a subnet overrides logical network DHCP options.
 	DhcpOptions *LogicalNetworkPropertiesDhcpOptions
 
+	// Managed network fabric l2/l3 ISD for this logical network. If set empty, the logical network remains entirely local.
+	FabricNetworkConfiguration *ManagedNetworkFabricArmReference
+
 	// Subnet - list of subnets under the logical network
 	Subnets []*Subnet
 
@@ -554,6 +854,9 @@ type LogicalNetworkStatus struct {
 	// Descriptive error message
 	ErrorMessage *string
 
+	// Enhanced fabric integration status with detailed health monitoring and connectivity state.
+	FabricIntegration *FabricIntegrationStatus
+
 	// Logical network provisioning status
 	ProvisioningStatus *LogicalNetworkStatusProvisioningStatus
 }
@@ -571,6 +874,12 @@ type LogicalNetworkStatusProvisioningStatus struct {
 type LogicalNetworksUpdateRequest struct {
 	// Resource tags
 	Tags map[string]*string
+}
+
+// ManagedNetworkFabricArmReference - The Azure Resource ID for a Managed Network Fabric L2ISD or L3ISD internal network
+type ManagedNetworkFabricArmReference struct {
+	// The Azure Resource ID for a Managed Network Fabric L2ISD or L3ISD internal network
+	ResourceID *string
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
@@ -691,6 +1000,93 @@ type MarketplaceGalleryImageTagsUpdate struct {
 	Tags map[string]*string
 }
 
+// NatGateway - The NatGateway resource definition.
+type NatGateway struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// The resource-specific properties for this resource.
+	Properties *NatGatewayProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NatGatewayArmReference - The ARM ID for a Network Security Group.
+type NatGatewayArmReference struct {
+	// The ARM ID for a Network Security Group.
+	ResourceID *string
+}
+
+// NatGatewayListResult - The response of a NatGateway list operation.
+type NatGatewayListResult struct {
+	// REQUIRED; The NatGateway items on this page
+	Value []*NatGateway
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NatGatewayProperties - Nat Gateway resource properties
+type NatGatewayProperties struct {
+	// List of inbound NAT rules. InboundNATRules can only be set after the NAT Gateway has been associated with a vnet
+	InboundNATRules []*InboundNATRule
+
+	// List of public ip addresses that the gateway can use for NAT.
+	PublicIPAddresses []*PublicIPAddressArmReference
+
+	// READ-ONLY; Provisioning state of the public IP
+	ProvisioningState *ProvisioningStateEnum
+
+	// READ-ONLY; The observed state of Nat Gateway
+	Status *NatGatewayStatus
+
+	// READ-ONLY; List of subnets associated with the nat gateway. These can only be vnet subnets and must be from the same vnet
+	Subnets []*VirtualNetworkSubnetArmReference
+}
+
+// NatGatewayStatus - Nat Gateway resource status
+type NatGatewayStatus struct {
+	// NatGateway provisioning error code
+	ErrorCode *string
+
+	// Descriptive error message
+	ErrorMessage *string
+
+	// NatGateway provisioning status
+	ProvisioningStatus *NatGatewayStatusProvisioningStatus
+}
+
+// NatGatewayStatusProvisioningStatus - Provisioning status of Nat Gateway
+type NatGatewayStatusProvisioningStatus struct {
+	// The ID of the operation performed on the nat gateway
+	OperationID *string
+
+	// The status of the operation performed on the nat gateway [Succeeded, Failed, InProgress]
+	Status *Status
+}
+
+// NatGatewayTagsUpdate - The type used for updating tags in NatGateway resources.
+type NatGatewayTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // NetworkInterface - The network interface resource definition.
 type NetworkInterface struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -735,6 +1131,11 @@ type NetworkInterfaceListResult struct {
 
 // NetworkInterfaceProperties - Properties under the network interface resource
 type NetworkInterfaceProperties struct {
+	// This setting is applicable only when SDN is supported and enabled in the environment. Indicates whether SDN policies should
+	// be bypassed for this network interface. By default, SDN is enabled. Set this value to true only if you want to disable
+	// SDN for the network interface.
+	BypassSdnPolicies *bool
+
 	// Boolean indicating whether this is a existing local network interface or if one should be created.
 	CreateFromLocal *bool
 
@@ -780,6 +1181,11 @@ type NetworkInterfaceStatusProvisioningStatus struct {
 
 // NetworkInterfacesUpdateProperties - Defines the resource properties for the update.
 type NetworkInterfacesUpdateProperties struct {
+	// This setting is applicable only when SDN is supported and enabled in the environment. Indicates whether SDN policies should
+	// be bypassed for this network interface. By default, SDN is enabled. Set this value to true only if you want to disable
+	// SDN for the network interface.
+	BypassSdnPolicies *bool
+
 	// DNS Settings for the interface
 	DNSSettings *InterfaceDNSSettings
 
@@ -892,6 +1298,57 @@ type NetworkSecurityGroupTagsUpdate struct {
 	Tags map[string]*string
 }
 
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
+type Operation struct {
+	// Localized display information for this particular operation.
+	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
+	// Resource Manager/control-plane operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
+	Name *string
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
+}
+
+// OperationDisplay - Localized display information for an operation.
+type OperationDisplay struct {
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string
+
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
+	Operation *string
+
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
+	Provider *string
+
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
+	Resource *string
+}
+
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
+type OperationListResult struct {
+	// REQUIRED; The Operation items on this page
+	Value []*Operation
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // OsProfileUpdate - OsProfile - describes the update configuration of the operating system
 type OsProfileUpdate struct {
 	// ComputerName - name of the computer
@@ -922,6 +1379,102 @@ type OsProfileUpdateWindowsConfiguration struct {
 
 	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
 	ProvisionVMConfigAgent *bool
+}
+
+// Probe - Load balancer health probes
+type Probe struct {
+	// REQUIRED; name of the load balancer health probe
+	Name *string
+
+	// REQUIRED; load balancer rule properties
+	Properties *ProbeProperties
+}
+
+// ProbeProperties - properties for LoadBalancer health probes
+type ProbeProperties struct {
+	// REQUIRED; Port on the backend address to probe
+	Port *int32
+
+	// REQUIRED; Protocol for this probe: Can be Tcp or Http - Diverges from Azure where Https is also an option
+	Protocol *LoadBalancerProbeProtocol
+
+	// Probe interval in seconds (5-300) default 15
+	IntervalInSeconds *int32
+
+	// number of consecutive probe failures before marking unhealthy (1-20) default 2
+	NumberOfProbes *int32
+
+	// For http probes, specify the request path e.g. /health
+	RequestPath *string
+}
+
+// PublicIPAddress - The publicIP resource definition.
+type PublicIPAddress struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// The resource-specific properties for this resource.
+	Properties *PublicIPAddressProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PublicIPAddressArmReference - The Azure Resource ID of a Public IP resource
+type PublicIPAddressArmReference struct {
+	// The Azure Resource ID of a Public IP resource
+	ResourceID *string
+}
+
+// PublicIPAddressListResult - The response of a PublicIPAddress list operation.
+type PublicIPAddressListResult struct {
+	// REQUIRED; The PublicIPAddress items on this page
+	Value []*PublicIPAddress
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PublicIPAddressProperties - Public IP Properties resource.
+type PublicIPAddressProperties struct {
+	// IP Address. This is static. If the user specifies, we allocate that otherwise allocate from logical network address space.
+	IPAddress *string
+
+	// ipAllocationScope: Azure Reference to a particular IP Pool (ALM) or a LogicalNetwork (ALL) for allocating public IP
+	IPAllocationScope *string
+
+	// Whether the public IP is v4 or v6. Defaults to IPv4
+	PublicIPAddressVersion *PublicIPAddressType
+
+	// READ-ONLY; network interface or LoadBalancer frontendIPconfiguration using this public IP
+	IPConfiguration *IPConfigurationArmReference
+
+	// READ-ONLY; natGateway using this public IP
+	NatGateway *NatGatewayArmReference
+
+	// READ-ONLY; Provisioning state of the public IP
+	ProvisioningState *ProvisioningStateEnum
+}
+
+// PublicIPAddressTagsUpdate - The type used for updating tags in PublicIPAddress resources.
+type PublicIPAddressTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // Route - Route resource.
@@ -1043,6 +1596,90 @@ type SecurityRuleProperties struct {
 
 	// READ-ONLY; Provisioning state of the SR
 	ProvisioningState *ProvisioningStateEnum
+}
+
+// Snapshot - The snapshot resource definition.
+type Snapshot struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// The resource-specific properties for this resource.
+	Properties *SnapshotProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SnapshotListResult - The response of a Snapshot list operation.
+type SnapshotListResult struct {
+	// REQUIRED; The Snapshot items on this page
+	Value []*Snapshot
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SnapshotProperties - Properties under the snapshot resource
+type SnapshotProperties struct {
+	// Data used when creating a snapshot
+	CreationData *CreationData
+
+	// READ-ONLY; The size of the disk in bytes.
+	DiskSizeBytes *int64
+
+	// READ-ONLY; Provisioning state of the snapshot.
+	ProvisioningState *ProvisioningStateEnum
+
+	// READ-ONLY; The observed state of snapshots
+	Status *SnapshotStatus
+
+	// READ-ONLY; The time when the snapshot was created.
+	TimeCreated *time.Time
+
+	// READ-ONLY; Unique identifier for the snapshot.
+	UniqueID *string
+}
+
+// SnapshotStatus - The observed state of snapshots
+type SnapshotStatus struct {
+	// Snapshot provisioning error code
+	ErrorCode *string
+
+	// Descriptive error message
+	ErrorMessage *string
+
+	// Provisioning status of the snapshot
+	ProvisioningStatus *SnapshotStatusProvisioningStatus
+}
+
+// SnapshotStatusProvisioningStatus - Snapshot Status provisioning status
+type SnapshotStatusProvisioningStatus struct {
+	// The ID of the operation performed on the snapshot
+	OperationID *string
+
+	// The status of the operation performed on the snapshot [Succeeded, Failed, InProgress]
+	Status *Status
+}
+
+// SnapshotTagsUpdate - The type used for updating tags in Snapshot resources.
+type SnapshotTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // StorageContainer - The storage container resource definition.
@@ -1172,6 +1809,9 @@ type SubnetProperties struct {
 
 	// Vlan to use for the subnet
 	Vlan *int32
+
+	// READ-ONLY; Provisioning state of the subnet resource.
+	ProvisioningState *ProvisioningStateEnum
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1277,6 +1917,9 @@ type VirtualHardDiskProperties struct {
 	// Boolean indicating whether it is an existing local hard disk or if one should be created.
 	CreateFromLocal *bool
 
+	// Data used when creating a virtual hard disk
+	CreationData *CreationData
+
 	// The format of the actual VHD file [vhd, vhdx]
 	DiskFileFormat *DiskFileFormat
 
@@ -1292,6 +1935,9 @@ type VirtualHardDiskProperties struct {
 
 	// The hypervisor generation of the Virtual Machine [V1, V2]
 	HyperVGeneration *HyperVGeneration
+
+	// Absolute path of the VHD. This is only applicable when createFromLocal is true.
+	LocalVhdPath *string
 
 	// Logical sector in bytes
 	LogicalSectorBytes *int32
@@ -1452,6 +2098,9 @@ type VirtualMachineInstanceProperties struct {
 
 	// HardwareProfile - Specifies the hardware settings for the virtual machine instance.
 	HardwareProfile *VirtualMachineInstancePropertiesHardwareProfile
+
+	// HyperV name of the VM. This is only applicable when createFromLocal is true.
+	LocalVMName *string
 
 	// NetworkProfile - describes the network configuration the virtual machine instance
 	NetworkProfile *VirtualMachineInstancePropertiesNetworkProfile
@@ -1712,4 +2361,202 @@ type VirtualMachineInstanceUpdateRequest struct {
 type VirtualMachineInstanceView struct {
 	// The VM Config Agent running on the virtual machine.
 	VMAgent *VirtualMachineConfigAgentInstanceView
+}
+
+// VirtualNetwork - The virtual network resource definition.
+type VirtualNetwork struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// The resource-specific properties for this resource.
+	Properties *VirtualNetworkProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VirtualNetworkAddressSpace - Address Space Information
+type VirtualNetworkAddressSpace struct {
+	// REQUIRED; A list of one or more CIDR blocks that define the address space.
+	AddressPrefixes []*string
+}
+
+// VirtualNetworkArmReference - The Azure Resource ID for a Virtual Network
+type VirtualNetworkArmReference struct {
+	// The Azure Resource ID for a Virtual Network.
+	ResourceID *string
+}
+
+// VirtualNetworkDhcpOptions - DHCP options for virtual networks
+type VirtualNetworkDhcpOptions struct {
+	// An array of DNS server IP addresses that VMs or wokloads in the vnet can inherit
+	DNSServers []*string
+}
+
+// VirtualNetworkListResult - The response of a VirtualNetwork list operation.
+type VirtualNetworkListResult struct {
+	// REQUIRED; The VirtualNetwork items on this page
+	Value []*VirtualNetwork
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// VirtualNetworkProperties - Virtual network resource properties
+type VirtualNetworkProperties struct {
+	// REQUIRED; Virtual Network address space. All subnets must be within the defined range.
+	AddressSpace *VirtualNetworkAddressSpace
+
+	// REQUIRED; Virtual Network DHCP options. Inherited by all subnets and VMs.
+	DhcpOptions *VirtualNetworkDhcpOptions
+
+	// The observed status of Virtual Network
+	Status *VirtualNetworkStatus
+
+	// READ-ONLY; The provisioning state of the virtual network resource.
+	ProvisioningState *ProvisioningStateEnum
+}
+
+// VirtualNetworkStatus - The observed status of the virtual network
+type VirtualNetworkStatus struct {
+	// VirtualNetwork provisioning error code
+	ErrorCode *string
+
+	// Descriptive error message
+	ErrorMessage *string
+
+	// virtual network provisioning status
+	ProvisioningStatus *VirtualNetworkStatusProvisioningStatus
+}
+
+// VirtualNetworkStatusProvisioningStatus - Status of virtual network operations
+type VirtualNetworkStatusProvisioningStatus struct {
+	// The ID of the operation performed on the virtual network
+	OperationID *string
+
+	// The status of the operation performed on the virtual network [Succeeded, Failed, InProgress]
+	Status *Status
+}
+
+// VirtualNetworkSubnet - The virtual network resource definition.
+type VirtualNetworkSubnet struct {
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// The resource-specific properties for this resource.
+	Properties *VirtualNetworkSubnetProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VirtualNetworkSubnetArmReference - The Azure Resource ID for a Virtual Network subnet
+type VirtualNetworkSubnetArmReference struct {
+	// The Azure Resource ID for a Virtual Network subnet.
+	ResourceID *string
+}
+
+// VirtualNetworkSubnetIPConfigurationReference - The Azure Resource ID for a resource consuming IP on a subnet
+type VirtualNetworkSubnetIPConfigurationReference struct {
+	// The Azure Resource ID for a Network Interface.
+	ID *string
+}
+
+// VirtualNetworkSubnetListResult - The response of a VirtualNetworkSubnet list operation.
+type VirtualNetworkSubnetListResult struct {
+	// REQUIRED; The VirtualNetworkSubnet items on this page
+	Value []*VirtualNetworkSubnet
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// VirtualNetworkSubnetProperties - VirtualNetwork subnet resource
+type VirtualNetworkSubnetProperties struct {
+	// REQUIRED; Subnet CIDR
+	AddressPrefix *string
+
+	// Nat Gateway attached to the subnet for non-vnet traffic.
+	NatGateway *NatGatewayArmReference
+
+	// Network Security Group attached to the subnet.
+	NetworkSecurityGroup *NetworkSecurityGroupArmReference
+
+	// RouteTable defining custom routes for the subnet.
+	RouteTable *RouteTable
+
+	// READ-ONLY; List of ip configurations for the subnet
+	IPConfigurations []*VirtualNetworkSubnetIPConfigurationReference
+
+	// READ-ONLY; The provisioning state of the virtual network subnet resource.
+	ProvisioningState *ProvisioningStateEnum
+
+	// READ-ONLY; The observed status of the virtual network subnet resource.
+	Status *VirtualNetworkSubnetStatus
+}
+
+// VirtualNetworkSubnetStatus - Status of virtual network subnet operations
+type VirtualNetworkSubnetStatus struct {
+	// VirtualNetworkSubnet provisioning error code
+	ErrorCode *string
+
+	// Descriptive error message
+	ErrorMessage *string
+
+	// Public IP provisioning status
+	ProvisioningStatus *VirtualNetworkSubnetStatusProvisioningStatus
+}
+
+// VirtualNetworkSubnetStatusProvisioningStatus - Status of virtual network subnet operations
+type VirtualNetworkSubnetStatusProvisioningStatus struct {
+	// The ID of the operation performed on the virtual network subnet
+	OperationID *string
+
+	// The status of the operation performed on the virtual network subnet [Succeeded, Failed, InProgress]
+	Status *Status
+}
+
+// VirtualNetworkSubnetUpdateProperties - The virtual network subnet resource patch properties definition.
+type VirtualNetworkSubnetUpdateProperties struct {
+	// NatGateway - NatGateway attached to the subnet.
+	NatGateway *NatGatewayArmReference
+
+	// NetworkSecurityGroup - Network Security Group attached to the subnet.
+	NetworkSecurityGroup *NetworkSecurityGroupArmReference
+}
+
+// VirtualNetworkSubnetUpdateRequest - The virtual network subnet resource patch definition.
+type VirtualNetworkSubnetUpdateRequest struct {
+	// properties to update
+	Properties *VirtualNetworkSubnetUpdateProperties
+}
+
+// VirtualNetworkTagsUpdate - The type used for updating tags in VirtualNetwork resources.
+type VirtualNetworkTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
 }

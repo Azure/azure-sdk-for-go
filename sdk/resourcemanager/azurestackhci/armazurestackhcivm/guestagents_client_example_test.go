@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/GuestAgents_Create.json
+// Generated from example definition: 2026-02-01-preview/GuestAgents_Create.json
 func ExampleGuestAgentsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleGuestAgentsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/GuestAgents_Delete.json
+// Generated from example definition: 2026-02-01-preview/GuestAgents_Delete.json
 func ExampleGuestAgentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleGuestAgentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/GuestAgents_Get.json
+// Generated from example definition: 2026-02-01-preview/GuestAgents_Get.json
 func ExampleGuestAgentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleGuestAgentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/GuestAgents_ListByVirtualMachineInstance.json
+// Generated from example definition: 2026-02-01-preview/GuestAgents_ListByVirtualMachineInstance.json
 func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

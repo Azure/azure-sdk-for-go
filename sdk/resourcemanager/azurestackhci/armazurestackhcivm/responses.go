@@ -80,6 +80,41 @@ type HybridIdentityMetadataClientListByVirtualMachineInstanceResponse struct {
 	HybridIdentityMetadataListResult
 }
 
+// LoadBalancersClientCreateOrUpdateResponse contains the response from method LoadBalancersClient.BeginCreateOrUpdate.
+type LoadBalancersClientCreateOrUpdateResponse struct {
+	// The LoadBalancer resource definition.
+	LoadBalancer
+}
+
+// LoadBalancersClientDeleteResponse contains the response from method LoadBalancersClient.BeginDelete.
+type LoadBalancersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// LoadBalancersClientGetResponse contains the response from method LoadBalancersClient.Get.
+type LoadBalancersClientGetResponse struct {
+	// The LoadBalancer resource definition.
+	LoadBalancer
+}
+
+// LoadBalancersClientListAllResponse contains the response from method LoadBalancersClient.NewListAllPager.
+type LoadBalancersClientListAllResponse struct {
+	// The response of a LoadBalancer list operation.
+	LoadBalancerListResult
+}
+
+// LoadBalancersClientListByResourceGroupResponse contains the response from method LoadBalancersClient.NewListByResourceGroupPager.
+type LoadBalancersClientListByResourceGroupResponse struct {
+	// The response of a LoadBalancer list operation.
+	LoadBalancerListResult
+}
+
+// LoadBalancersClientUpdateTagsResponse contains the response from method LoadBalancersClient.BeginUpdateTags.
+type LoadBalancersClientUpdateTagsResponse struct {
+	// The LoadBalancer resource definition.
+	LoadBalancer
+}
+
 // LogicalNetworksClientCreateOrUpdateResponse contains the response from method LogicalNetworksClient.BeginCreateOrUpdate.
 type LogicalNetworksClientCreateOrUpdateResponse struct {
 	// The logical network resource definition.
@@ -148,6 +183,41 @@ type MarketplaceGalleryImagesClientListByResourceGroupResponse struct {
 type MarketplaceGalleryImagesClientUpdateResponse struct {
 	// The marketplace gallery image resource definition.
 	MarketplaceGalleryImage
+}
+
+// NatGatewaysClientCreateOrUpdateResponse contains the response from method NatGatewaysClient.BeginCreateOrUpdate.
+type NatGatewaysClientCreateOrUpdateResponse struct {
+	// The NatGateway resource definition.
+	NatGateway
+}
+
+// NatGatewaysClientDeleteResponse contains the response from method NatGatewaysClient.BeginDelete.
+type NatGatewaysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NatGatewaysClientGetResponse contains the response from method NatGatewaysClient.Get.
+type NatGatewaysClientGetResponse struct {
+	// The NatGateway resource definition.
+	NatGateway
+}
+
+// NatGatewaysClientListAllResponse contains the response from method NatGatewaysClient.NewListAllPager.
+type NatGatewaysClientListAllResponse struct {
+	// The response of a NatGateway list operation.
+	NatGatewayListResult
+}
+
+// NatGatewaysClientListByResourceGroupResponse contains the response from method NatGatewaysClient.NewListByResourceGroupPager.
+type NatGatewaysClientListByResourceGroupResponse struct {
+	// The response of a NatGateway list operation.
+	NatGatewayListResult
+}
+
+// NatGatewaysClientUpdateTagsResponse contains the response from method NatGatewaysClient.BeginUpdateTags.
+type NatGatewaysClientUpdateTagsResponse struct {
+	// The NatGateway resource definition.
+	NatGateway
 }
 
 // NetworkInterfacesClientCreateOrUpdateResponse contains the response from method NetworkInterfacesClient.BeginCreateOrUpdate.
@@ -220,6 +290,47 @@ type NetworkSecurityGroupsClientUpdateTagsResponse struct {
 	NetworkSecurityGroup
 }
 
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
+type OperationsClientListResponse struct {
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
+}
+
+// PublicIPAddressesClientCreateOrUpdateResponse contains the response from method PublicIPAddressesClient.BeginCreateOrUpdate.
+type PublicIPAddressesClientCreateOrUpdateResponse struct {
+	// The publicIP resource definition.
+	PublicIPAddress
+}
+
+// PublicIPAddressesClientDeleteResponse contains the response from method PublicIPAddressesClient.BeginDelete.
+type PublicIPAddressesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PublicIPAddressesClientGetResponse contains the response from method PublicIPAddressesClient.Get.
+type PublicIPAddressesClientGetResponse struct {
+	// The publicIP resource definition.
+	PublicIPAddress
+}
+
+// PublicIPAddressesClientListAllResponse contains the response from method PublicIPAddressesClient.NewListAllPager.
+type PublicIPAddressesClientListAllResponse struct {
+	// The response of a PublicIPAddress list operation.
+	PublicIPAddressListResult
+}
+
+// PublicIPAddressesClientListByResourceGroupResponse contains the response from method PublicIPAddressesClient.NewListByResourceGroupPager.
+type PublicIPAddressesClientListByResourceGroupResponse struct {
+	// The response of a PublicIPAddress list operation.
+	PublicIPAddressListResult
+}
+
+// PublicIPAddressesClientUpdateTagsResponse contains the response from method PublicIPAddressesClient.BeginUpdateTags.
+type PublicIPAddressesClientUpdateTagsResponse struct {
+	// The publicIP resource definition.
+	PublicIPAddress
+}
+
 // SecurityRulesClientCreateOrUpdateResponse contains the response from method SecurityRulesClient.BeginCreateOrUpdate.
 type SecurityRulesClientCreateOrUpdateResponse struct {
 	// Security Rule resource.
@@ -241,6 +352,41 @@ type SecurityRulesClientGetResponse struct {
 type SecurityRulesClientListByNetworkSecurityGroupResponse struct {
 	// The response of a SecurityRule list operation.
 	SecurityRuleListResult
+}
+
+// SnapshotsClientCreateOrUpdateResponse contains the response from method SnapshotsClient.BeginCreateOrUpdate.
+type SnapshotsClientCreateOrUpdateResponse struct {
+	// The snapshot resource definition.
+	Snapshot
+}
+
+// SnapshotsClientDeleteResponse contains the response from method SnapshotsClient.BeginDelete.
+type SnapshotsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SnapshotsClientGetResponse contains the response from method SnapshotsClient.Get.
+type SnapshotsClientGetResponse struct {
+	// The snapshot resource definition.
+	Snapshot
+}
+
+// SnapshotsClientListAllResponse contains the response from method SnapshotsClient.NewListAllPager.
+type SnapshotsClientListAllResponse struct {
+	// The response of a Snapshot list operation.
+	SnapshotListResult
+}
+
+// SnapshotsClientListByResourceGroupResponse contains the response from method SnapshotsClient.NewListByResourceGroupPager.
+type SnapshotsClientListByResourceGroupResponse struct {
+	// The response of a Snapshot list operation.
+	SnapshotListResult
+}
+
+// SnapshotsClientUpdateResponse contains the response from method SnapshotsClient.BeginUpdate.
+type SnapshotsClientUpdateResponse struct {
+	// The snapshot resource definition.
+	Snapshot
 }
 
 // StorageContainersClientCreateOrUpdateResponse contains the response from method StorageContainersClient.BeginCreateOrUpdate.
@@ -371,4 +517,68 @@ type VirtualMachineInstancesClientStopResponse struct {
 type VirtualMachineInstancesClientUpdateResponse struct {
 	// The virtual machine instance resource definition.
 	VirtualMachineInstance
+}
+
+// VirtualNetworkSubnetsClientCreateOrUpdateResponse contains the response from method VirtualNetworkSubnetsClient.BeginCreateOrUpdate.
+type VirtualNetworkSubnetsClientCreateOrUpdateResponse struct {
+	// The virtual network resource definition.
+	VirtualNetworkSubnet
+}
+
+// VirtualNetworkSubnetsClientDeleteResponse contains the response from method VirtualNetworkSubnetsClient.BeginDelete.
+type VirtualNetworkSubnetsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualNetworkSubnetsClientGetResponse contains the response from method VirtualNetworkSubnetsClient.Get.
+type VirtualNetworkSubnetsClientGetResponse struct {
+	// The virtual network resource definition.
+	VirtualNetworkSubnet
+}
+
+// VirtualNetworkSubnetsClientListByVirtualNetworkResponse contains the response from method VirtualNetworkSubnetsClient.NewListByVirtualNetworkPager.
+type VirtualNetworkSubnetsClientListByVirtualNetworkResponse struct {
+	// The response of a VirtualNetworkSubnet list operation.
+	VirtualNetworkSubnetListResult
+}
+
+// VirtualNetworkSubnetsClientUpdateResponse contains the response from method VirtualNetworkSubnetsClient.BeginUpdate.
+type VirtualNetworkSubnetsClientUpdateResponse struct {
+	// The virtual network resource definition.
+	VirtualNetworkSubnet
+}
+
+// VirtualNetworksClientCreateOrUpdateResponse contains the response from method VirtualNetworksClient.BeginCreateOrUpdate.
+type VirtualNetworksClientCreateOrUpdateResponse struct {
+	// The virtual network resource definition.
+	VirtualNetwork
+}
+
+// VirtualNetworksClientDeleteResponse contains the response from method VirtualNetworksClient.BeginDelete.
+type VirtualNetworksClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualNetworksClientGetResponse contains the response from method VirtualNetworksClient.Get.
+type VirtualNetworksClientGetResponse struct {
+	// The virtual network resource definition.
+	VirtualNetwork
+}
+
+// VirtualNetworksClientListAllResponse contains the response from method VirtualNetworksClient.NewListAllPager.
+type VirtualNetworksClientListAllResponse struct {
+	// The response of a VirtualNetwork list operation.
+	VirtualNetworkListResult
+}
+
+// VirtualNetworksClientListByResourceGroupResponse contains the response from method VirtualNetworksClient.NewListByResourceGroupPager.
+type VirtualNetworksClientListByResourceGroupResponse struct {
+	// The response of a VirtualNetwork list operation.
+	VirtualNetworkListResult
+}
+
+// VirtualNetworksClientUpdateTagsResponse contains the response from method VirtualNetworksClient.BeginUpdateTags.
+type VirtualNetworksClientUpdateTagsResponse struct {
+	// The virtual network resource definition.
+	VirtualNetwork
 }

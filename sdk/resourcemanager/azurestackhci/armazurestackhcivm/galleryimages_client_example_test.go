@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/GalleryImages_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/GalleryImages_CreateOrUpdate.json
 func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/GalleryImages_Delete.json
+// Generated from example definition: 2026-02-01-preview/GalleryImages_Delete.json
 func ExampleGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/GalleryImages_Get.json
+// Generated from example definition: 2026-02-01-preview/GalleryImages_Get.json
 func ExampleGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/GalleryImages_ListAll.json
+// Generated from example definition: 2026-02-01-preview/GalleryImages_ListAll.json
 func ExampleGalleryImagesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleGalleryImagesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/GalleryImages_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/GalleryImages_ListByResourceGroup.json
 func ExampleGalleryImagesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleGalleryImagesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/GalleryImages_Update.json
+// Generated from example definition: 2026-02-01-preview/GalleryImages_Update.json
 func ExampleGalleryImagesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

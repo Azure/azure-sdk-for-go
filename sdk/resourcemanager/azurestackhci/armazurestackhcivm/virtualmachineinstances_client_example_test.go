@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gallery_Image.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gallery_Image.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gpu.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gpu.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithGpu() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Marketplace_Gallery_Image.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Marketplace_Gallery_Image.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithMarketplaceGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Os_Disk.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Os_Disk.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -399,7 +399,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Vm_Config_Agent.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Vm_Config_Agent.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineInstanceWithVMConfigAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +512,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances__CreateOrUpdate_CreateFromLocal.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances__CreateOrUpdate_CreateFromLocal.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_createVirtualMachineInstanceFromLocal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,6 +544,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_createVirtualMachi
 				},
 			},
 			CreateFromLocal: to.Ptr(true),
+			LocalVMName:     to.Ptr("DemoVM_restored"),
 		},
 	}, nil)
 	if err != nil {
@@ -592,12 +593,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_createVirtualMachi
 	// 				VMConfigStoragePathID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-container"),
 	// 			},
 	// 			CreateFromLocal: to.Ptr(true),
+	// 			LocalVMName: to.Ptr("DemoVM_restored"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Delete.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Delete.json
 func ExampleVirtualMachineInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,7 +620,7 @@ func ExampleVirtualMachineInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Get.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Get.json
 func ExampleVirtualMachineInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -672,7 +674,7 @@ func ExampleVirtualMachineInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_List.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_List.json
 func ExampleVirtualMachineInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,7 +737,7 @@ func ExampleVirtualMachineInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Pause.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Pause.json
 func ExampleVirtualMachineInstancesClient_BeginPause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -756,7 +758,7 @@ func ExampleVirtualMachineInstancesClient_BeginPause() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Restart.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Restart.json
 func ExampleVirtualMachineInstancesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +779,7 @@ func ExampleVirtualMachineInstancesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Save.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Save.json
 func ExampleVirtualMachineInstancesClient_BeginSave() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -798,7 +800,7 @@ func ExampleVirtualMachineInstancesClient_BeginSave() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Start.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Start.json
 func ExampleVirtualMachineInstancesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -819,7 +821,7 @@ func ExampleVirtualMachineInstancesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Stop.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Stop.json
 func ExampleVirtualMachineInstancesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -840,7 +842,7 @@ func ExampleVirtualMachineInstancesClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/VirtualMachineInstances_Update.json
+// Generated from example definition: 2026-02-01-preview/VirtualMachineInstances_Update.json
 func ExampleVirtualMachineInstancesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

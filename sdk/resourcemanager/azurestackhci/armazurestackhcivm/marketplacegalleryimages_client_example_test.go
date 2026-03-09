@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/MarketplaceGalleryImages_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/MarketplaceGalleryImages_CreateOrUpdate.json
 func ExampleMarketplaceGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleMarketplaceGalleryImagesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/MarketplaceGalleryImages_Delete.json
+// Generated from example definition: 2026-02-01-preview/MarketplaceGalleryImages_Delete.json
 func ExampleMarketplaceGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleMarketplaceGalleryImagesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/MarketplaceGalleryImages_Get.json
+// Generated from example definition: 2026-02-01-preview/MarketplaceGalleryImages_Get.json
 func ExampleMarketplaceGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleMarketplaceGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/MarketplaceGalleryImages_ListAll.json
+// Generated from example definition: 2026-02-01-preview/MarketplaceGalleryImages_ListAll.json
 func ExampleMarketplaceGalleryImagesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleMarketplaceGalleryImagesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/MarketplaceGalleryImages_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/MarketplaceGalleryImages_ListByResourceGroup.json
 func ExampleMarketplaceGalleryImagesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +331,7 @@ func ExampleMarketplaceGalleryImagesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/MarketplaceGalleryImages_Update.json
+// Generated from example definition: 2026-02-01-preview/MarketplaceGalleryImages_Update.json
 func ExampleMarketplaceGalleryImagesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

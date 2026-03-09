@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/StorageContainers_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/StorageContainers_CreateOrUpdate.json
 func ExampleStorageContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleStorageContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageContainers_Delete.json
+// Generated from example definition: 2026-02-01-preview/StorageContainers_Delete.json
 func ExampleStorageContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleStorageContainersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageContainers_Get.json
+// Generated from example definition: 2026-02-01-preview/StorageContainers_Get.json
 func ExampleStorageContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleStorageContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageContainers_ListAll.json
+// Generated from example definition: 2026-02-01-preview/StorageContainers_ListAll.json
 func ExampleStorageContainersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleStorageContainersClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageContainers_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/StorageContainers_ListByResourceGroup.json
 func ExampleStorageContainersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleStorageContainersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageContainers_Update.json
+// Generated from example definition: 2026-02-01-preview/StorageContainers_Update.json
 func ExampleStorageContainersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

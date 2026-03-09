@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/NetworkSecurityGroups_CreateOrUpdate.json
 func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_Delete.json
+// Generated from example definition: 2026-02-01-preview/NetworkSecurityGroups_Delete.json
 func ExampleNetworkSecurityGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleNetworkSecurityGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_Get.json
+// Generated from example definition: 2026-02-01-preview/NetworkSecurityGroups_Get.json
 func ExampleNetworkSecurityGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleNetworkSecurityGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_ListAll.json
+// Generated from example definition: 2026-02-01-preview/NetworkSecurityGroups_ListAll.json
 func ExampleNetworkSecurityGroupsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleNetworkSecurityGroupsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/NetworkSecurityGroups_ListByResourceGroup.json
 func ExampleNetworkSecurityGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleNetworkSecurityGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkSecurityGroups_UpdateTags.json
+// Generated from example definition: 2026-02-01-preview/NetworkSecurityGroups_UpdateTags.json
 func ExampleNetworkSecurityGroupsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

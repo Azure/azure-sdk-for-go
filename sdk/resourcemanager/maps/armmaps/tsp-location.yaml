@@ -1,0 +1,4 @@
+directory: specification/maps/resource-manager/Microsoft.Maps/Maps
+commit: <replace with your value>
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

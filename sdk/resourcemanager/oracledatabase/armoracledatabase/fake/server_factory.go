@@ -150,120 +150,120 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AutonomousDatabaseBackupsClient":
-		initServer(s, &s.trAutonomousDatabaseBackupsServer, func() *AutonomousDatabaseBackupsServerTransport {
+		initServer(&s.trMu, &s.trAutonomousDatabaseBackupsServer, func() *AutonomousDatabaseBackupsServerTransport {
 			return NewAutonomousDatabaseBackupsServerTransport(&s.srv.AutonomousDatabaseBackupsServer)
 		})
 		resp, err = s.trAutonomousDatabaseBackupsServer.Do(req)
 	case "AutonomousDatabaseCharacterSetsClient":
-		initServer(s, &s.trAutonomousDatabaseCharacterSetsServer, func() *AutonomousDatabaseCharacterSetsServerTransport {
+		initServer(&s.trMu, &s.trAutonomousDatabaseCharacterSetsServer, func() *AutonomousDatabaseCharacterSetsServerTransport {
 			return NewAutonomousDatabaseCharacterSetsServerTransport(&s.srv.AutonomousDatabaseCharacterSetsServer)
 		})
 		resp, err = s.trAutonomousDatabaseCharacterSetsServer.Do(req)
 	case "AutonomousDatabaseNationalCharacterSetsClient":
-		initServer(s, &s.trAutonomousDatabaseNationalCharacterSetsServer, func() *AutonomousDatabaseNationalCharacterSetsServerTransport {
+		initServer(&s.trMu, &s.trAutonomousDatabaseNationalCharacterSetsServer, func() *AutonomousDatabaseNationalCharacterSetsServerTransport {
 			return NewAutonomousDatabaseNationalCharacterSetsServerTransport(&s.srv.AutonomousDatabaseNationalCharacterSetsServer)
 		})
 		resp, err = s.trAutonomousDatabaseNationalCharacterSetsServer.Do(req)
 	case "AutonomousDatabaseVersionsClient":
-		initServer(s, &s.trAutonomousDatabaseVersionsServer, func() *AutonomousDatabaseVersionsServerTransport {
+		initServer(&s.trMu, &s.trAutonomousDatabaseVersionsServer, func() *AutonomousDatabaseVersionsServerTransport {
 			return NewAutonomousDatabaseVersionsServerTransport(&s.srv.AutonomousDatabaseVersionsServer)
 		})
 		resp, err = s.trAutonomousDatabaseVersionsServer.Do(req)
 	case "AutonomousDatabasesClient":
-		initServer(s, &s.trAutonomousDatabasesServer, func() *AutonomousDatabasesServerTransport {
+		initServer(&s.trMu, &s.trAutonomousDatabasesServer, func() *AutonomousDatabasesServerTransport {
 			return NewAutonomousDatabasesServerTransport(&s.srv.AutonomousDatabasesServer)
 		})
 		resp, err = s.trAutonomousDatabasesServer.Do(req)
 	case "CloudExadataInfrastructuresClient":
-		initServer(s, &s.trCloudExadataInfrastructuresServer, func() *CloudExadataInfrastructuresServerTransport {
+		initServer(&s.trMu, &s.trCloudExadataInfrastructuresServer, func() *CloudExadataInfrastructuresServerTransport {
 			return NewCloudExadataInfrastructuresServerTransport(&s.srv.CloudExadataInfrastructuresServer)
 		})
 		resp, err = s.trCloudExadataInfrastructuresServer.Do(req)
 	case "CloudVMClustersClient":
-		initServer(s, &s.trCloudVMClustersServer, func() *CloudVMClustersServerTransport {
+		initServer(&s.trMu, &s.trCloudVMClustersServer, func() *CloudVMClustersServerTransport {
 			return NewCloudVMClustersServerTransport(&s.srv.CloudVMClustersServer)
 		})
 		resp, err = s.trCloudVMClustersServer.Do(req)
 	case "DNSPrivateViewsClient":
-		initServer(s, &s.trDNSPrivateViewsServer, func() *DNSPrivateViewsServerTransport {
+		initServer(&s.trMu, &s.trDNSPrivateViewsServer, func() *DNSPrivateViewsServerTransport {
 			return NewDNSPrivateViewsServerTransport(&s.srv.DNSPrivateViewsServer)
 		})
 		resp, err = s.trDNSPrivateViewsServer.Do(req)
 	case "DNSPrivateZonesClient":
-		initServer(s, &s.trDNSPrivateZonesServer, func() *DNSPrivateZonesServerTransport {
+		initServer(&s.trMu, &s.trDNSPrivateZonesServer, func() *DNSPrivateZonesServerTransport {
 			return NewDNSPrivateZonesServerTransport(&s.srv.DNSPrivateZonesServer)
 		})
 		resp, err = s.trDNSPrivateZonesServer.Do(req)
 	case "DbNodesClient":
-		initServer(s, &s.trDbNodesServer, func() *DbNodesServerTransport { return NewDbNodesServerTransport(&s.srv.DbNodesServer) })
+		initServer(&s.trMu, &s.trDbNodesServer, func() *DbNodesServerTransport { return NewDbNodesServerTransport(&s.srv.DbNodesServer) })
 		resp, err = s.trDbNodesServer.Do(req)
 	case "DbServersClient":
-		initServer(s, &s.trDbServersServer, func() *DbServersServerTransport { return NewDbServersServerTransport(&s.srv.DbServersServer) })
+		initServer(&s.trMu, &s.trDbServersServer, func() *DbServersServerTransport { return NewDbServersServerTransport(&s.srv.DbServersServer) })
 		resp, err = s.trDbServersServer.Do(req)
 	case "DbSystemShapesClient":
-		initServer(s, &s.trDbSystemShapesServer, func() *DbSystemShapesServerTransport {
+		initServer(&s.trMu, &s.trDbSystemShapesServer, func() *DbSystemShapesServerTransport {
 			return NewDbSystemShapesServerTransport(&s.srv.DbSystemShapesServer)
 		})
 		resp, err = s.trDbSystemShapesServer.Do(req)
 	case "DbSystemsClient":
-		initServer(s, &s.trDbSystemsServer, func() *DbSystemsServerTransport { return NewDbSystemsServerTransport(&s.srv.DbSystemsServer) })
+		initServer(&s.trMu, &s.trDbSystemsServer, func() *DbSystemsServerTransport { return NewDbSystemsServerTransport(&s.srv.DbSystemsServer) })
 		resp, err = s.trDbSystemsServer.Do(req)
 	case "DbVersionsClient":
-		initServer(s, &s.trDbVersionsServer, func() *DbVersionsServerTransport { return NewDbVersionsServerTransport(&s.srv.DbVersionsServer) })
+		initServer(&s.trMu, &s.trDbVersionsServer, func() *DbVersionsServerTransport { return NewDbVersionsServerTransport(&s.srv.DbVersionsServer) })
 		resp, err = s.trDbVersionsServer.Do(req)
 	case "ExadbVMClustersClient":
-		initServer(s, &s.trExadbVMClustersServer, func() *ExadbVMClustersServerTransport {
+		initServer(&s.trMu, &s.trExadbVMClustersServer, func() *ExadbVMClustersServerTransport {
 			return NewExadbVMClustersServerTransport(&s.srv.ExadbVMClustersServer)
 		})
 		resp, err = s.trExadbVMClustersServer.Do(req)
 	case "ExascaleDbNodesClient":
-		initServer(s, &s.trExascaleDbNodesServer, func() *ExascaleDbNodesServerTransport {
+		initServer(&s.trMu, &s.trExascaleDbNodesServer, func() *ExascaleDbNodesServerTransport {
 			return NewExascaleDbNodesServerTransport(&s.srv.ExascaleDbNodesServer)
 		})
 		resp, err = s.trExascaleDbNodesServer.Do(req)
 	case "ExascaleDbStorageVaultsClient":
-		initServer(s, &s.trExascaleDbStorageVaultsServer, func() *ExascaleDbStorageVaultsServerTransport {
+		initServer(&s.trMu, &s.trExascaleDbStorageVaultsServer, func() *ExascaleDbStorageVaultsServerTransport {
 			return NewExascaleDbStorageVaultsServerTransport(&s.srv.ExascaleDbStorageVaultsServer)
 		})
 		resp, err = s.trExascaleDbStorageVaultsServer.Do(req)
 	case "FlexComponentsClient":
-		initServer(s, &s.trFlexComponentsServer, func() *FlexComponentsServerTransport {
+		initServer(&s.trMu, &s.trFlexComponentsServer, func() *FlexComponentsServerTransport {
 			return NewFlexComponentsServerTransport(&s.srv.FlexComponentsServer)
 		})
 		resp, err = s.trFlexComponentsServer.Do(req)
 	case "GiMinorVersionsClient":
-		initServer(s, &s.trGiMinorVersionsServer, func() *GiMinorVersionsServerTransport {
+		initServer(&s.trMu, &s.trGiMinorVersionsServer, func() *GiMinorVersionsServerTransport {
 			return NewGiMinorVersionsServerTransport(&s.srv.GiMinorVersionsServer)
 		})
 		resp, err = s.trGiMinorVersionsServer.Do(req)
 	case "GiVersionsClient":
-		initServer(s, &s.trGiVersionsServer, func() *GiVersionsServerTransport { return NewGiVersionsServerTransport(&s.srv.GiVersionsServer) })
+		initServer(&s.trMu, &s.trGiVersionsServer, func() *GiVersionsServerTransport { return NewGiVersionsServerTransport(&s.srv.GiVersionsServer) })
 		resp, err = s.trGiVersionsServer.Do(req)
 	case "NetworkAnchorsClient":
-		initServer(s, &s.trNetworkAnchorsServer, func() *NetworkAnchorsServerTransport {
+		initServer(&s.trMu, &s.trNetworkAnchorsServer, func() *NetworkAnchorsServerTransport {
 			return NewNetworkAnchorsServerTransport(&s.srv.NetworkAnchorsServer)
 		})
 		resp, err = s.trNetworkAnchorsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "OracleSubscriptionsClient":
-		initServer(s, &s.trOracleSubscriptionsServer, func() *OracleSubscriptionsServerTransport {
+		initServer(&s.trMu, &s.trOracleSubscriptionsServer, func() *OracleSubscriptionsServerTransport {
 			return NewOracleSubscriptionsServerTransport(&s.srv.OracleSubscriptionsServer)
 		})
 		resp, err = s.trOracleSubscriptionsServer.Do(req)
 	case "ResourceAnchorsClient":
-		initServer(s, &s.trResourceAnchorsServer, func() *ResourceAnchorsServerTransport {
+		initServer(&s.trMu, &s.trResourceAnchorsServer, func() *ResourceAnchorsServerTransport {
 			return NewResourceAnchorsServerTransport(&s.srv.ResourceAnchorsServer)
 		})
 		resp, err = s.trResourceAnchorsServer.Do(req)
 	case "SystemVersionsClient":
-		initServer(s, &s.trSystemVersionsServer, func() *SystemVersionsServerTransport {
+		initServer(&s.trMu, &s.trSystemVersionsServer, func() *SystemVersionsServerTransport {
 			return NewSystemVersionsServerTransport(&s.srv.SystemVersionsServer)
 		})
 		resp, err = s.trSystemVersionsServer.Do(req)
 	case "VirtualNetworkAddressesClient":
-		initServer(s, &s.trVirtualNetworkAddressesServer, func() *VirtualNetworkAddressesServerTransport {
+		initServer(&s.trMu, &s.trVirtualNetworkAddressesServer, func() *VirtualNetworkAddressesServerTransport {
 			return NewVirtualNetworkAddressesServerTransport(&s.srv.VirtualNetworkAddressesServer)
 		})
 		resp, err = s.trVirtualNetworkAddressesServer.Do(req)
@@ -276,12 +276,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

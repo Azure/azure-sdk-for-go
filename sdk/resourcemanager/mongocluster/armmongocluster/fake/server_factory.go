@@ -74,31 +74,31 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "FirewallRulesClient":
-		initServer(s, &s.trFirewallRulesServer, func() *FirewallRulesServerTransport {
+		initServer(&s.trMu, &s.trFirewallRulesServer, func() *FirewallRulesServerTransport {
 			return NewFirewallRulesServerTransport(&s.srv.FirewallRulesServer)
 		})
 		resp, err = s.trFirewallRulesServer.Do(req)
 	case "MongoClustersClient":
-		initServer(s, &s.trMongoClustersServer, func() *MongoClustersServerTransport {
+		initServer(&s.trMu, &s.trMongoClustersServer, func() *MongoClustersServerTransport {
 			return NewMongoClustersServerTransport(&s.srv.MongoClustersServer)
 		})
 		resp, err = s.trMongoClustersServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "PrivateLinksClient":
-		initServer(s, &s.trPrivateLinksServer, func() *PrivateLinksServerTransport { return NewPrivateLinksServerTransport(&s.srv.PrivateLinksServer) })
+		initServer(&s.trMu, &s.trPrivateLinksServer, func() *PrivateLinksServerTransport { return NewPrivateLinksServerTransport(&s.srv.PrivateLinksServer) })
 		resp, err = s.trPrivateLinksServer.Do(req)
 	case "ReplicasClient":
-		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
+		initServer(&s.trMu, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
 		resp, err = s.trReplicasServer.Do(req)
 	case "UsersClient":
-		initServer(s, &s.trUsersServer, func() *UsersServerTransport { return NewUsersServerTransport(&s.srv.UsersServer) })
+		initServer(&s.trMu, &s.trUsersServer, func() *UsersServerTransport { return NewUsersServerTransport(&s.srv.UsersServer) })
 		resp, err = s.trUsersServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -109,12 +109,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

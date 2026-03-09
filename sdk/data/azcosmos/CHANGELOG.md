@@ -5,9 +5,11 @@
 ### Features Added
 
 * Adds support for float 16 datatype for vector embedding policy. See [PR 25707](https://github.com/Azure/azure-sdk-for-go/pull/25707)
-* Improved the performance of the built-in ReadMany implementation (when no QueryEngine is present). See [PR 26007](https://github.com/Azure/azure-sdk-for-go/pull/26007)
+* Improved the performance of the built-in ReadMany implementation. See [PR 26007](https://github.com/Azure/azure-sdk-for-go/pull/26007)
 
 ### Breaking Changes
+
+* Removed `QueryEngine` field from `ReadManyOptions`. ReadMany now always uses the built-in Go-native implementation.
 
 ### Bugs Fixed
 

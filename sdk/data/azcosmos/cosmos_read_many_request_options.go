@@ -5,8 +5,6 @@ package azcosmos
 
 import (
 	"strconv"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
 )
 
 // ReadManyOptions includes options for read many operations on items.
@@ -24,9 +22,6 @@ type ReadManyOptions struct {
 	ConsistencyLevel *ConsistencyLevel
 	// Options for operations in the dedicated gateway.
 	DedicatedGatewayRequestOptions *DedicatedGatewayRequestOptions
-	// QueryEngine can be set to enable the use of an external query engine for processing cross-partition queries.
-	// This is a preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes.
-	QueryEngine queryengine.QueryEngine
 	// MaxConcurrency indicates the maximum number of concurrent operations to use when reading many items.
 	// If not set, the SDK will determine an optimal number of concurrent operations to use.
 	MaxConcurrency *int32

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -140,56 +139,6 @@ func TestReadMany_PartialFailure(t *testing.T) {
 	require.True(t, returnedIDs["good"], "expected 'good' to be returned")
 	require.True(t, returnedIDs["good2"], "expected 'good2' to be returned")
 
-}
-
-func TestReadMany_WithQueryEngine_EmptyItems(t *testing.T) {
-	emulator := newEmulatorTests(t)
-	client := emulator.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
-	db := emulator.createDatabase(t, context.Background(), client, "rm_qeng_empty_db")
-	defer emulator.deleteDatabase(t, context.Background(), db)
-
-	container, err := db.NewContainer("c")
-	require.NoError(t, err)
-
-	// call ReadMany with empty list and a mock engine
-	options := &ReadManyOptions{QueryEngine: mock.NewMockQueryEngine()}
-	resp, err := container.ReadManyItems(context.Background(), []ItemIdentity{}, options)
-	require.NoError(t, err)
-	require.Empty(t, resp.Items)
-}
-
-func TestReadMany_WithQueryEngine_ReturnsItems(t *testing.T) {
-	emulator := newEmulatorTests(t)
-	client := emulator.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
-	db := emulator.createDatabase(t, context.Background(), client, "rm_qeng_db")
-	defer emulator.deleteDatabase(t, context.Background(), db)
-
-	// create container and some items
-	_, err := db.CreateContainer(context.Background(), ContainerProperties{ID: "c", PartitionKeyDefinition: PartitionKeyDefinition{
-		Paths: []string{"/pk"},
-	}}, nil)
-	require.NoError(t, err)
-	container, err := db.NewContainer("c")
-	require.NoError(t, err)
-
-	// insert two items
-	for i := 0; i < 2; i++ {
-		itm := map[string]string{"id": fmt.Sprintf("%d", i), "pk": fmt.Sprintf("pk_%d", i)}
-		b, err := json.Marshal(itm)
-		require.NoError(t, err)
-		_, err = container.CreateItem(context.Background(), NewPartitionKeyString(itm["pk"]), b, nil)
-		require.NoError(t, err)
-	}
-
-	// Build item identities to ask for
-	idents := []ItemIdentity{{ID: "0", PartitionKey: NewPartitionKeyString("pk_0")}, {ID: "1", PartitionKey: NewPartitionKeyString("pk_1")}}
-
-	// Use the mock query engine which will echo these identities as documents
-	options := &ReadManyOptions{QueryEngine: mock.NewMockQueryEngine()}
-	resp, err := container.ReadManyItems(context.Background(), idents, options)
-	require.NoError(t, err)
-	// Expect two items per engine's behavior
-	require.Equal(t, 2, len(resp.Items))
 }
 
 // TestReadManyWithQueries_MultipleLogicalPKs exercises the query-based read-many

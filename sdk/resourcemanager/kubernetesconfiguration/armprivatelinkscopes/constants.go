@@ -5,11 +5,6 @@
 
 package armprivatelinkscopes
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armprivatelinkscopes"
-	moduleVersion = "v0.1.0"
-)
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 

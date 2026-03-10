@@ -751,7 +751,7 @@ func printOwnerships(ctx context.Context, t *testing.T, cps azeventhubs.Checkpoi
 
 	for o, parts := range owners {
 		sort.Strings(parts)
-		sb.WriteString(fmt.Sprintf("  [%s (%d)] %s\n", o, len(parts), strings.Join(parts, ",")))
+		fmt.Fprintf(&sb, "  [%s (%d)] %s\n", o, len(parts), strings.Join(parts, ","))
 	}
 
 	sb.WriteString(fmt.Sprintf("  Unowned (%d): %s\n", len(unowned), strings.Join(unowned, ",")))

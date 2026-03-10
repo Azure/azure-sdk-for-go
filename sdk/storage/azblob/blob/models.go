@@ -587,3 +587,26 @@ type GetAccountInfoOptions struct {
 func (o *GetAccountInfoOptions) format() *generated.BlobClientGetAccountInfoOptions {
 	return nil
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetLayoutOptions contains the optional parameters for the Client.GetLayout method
+type GetLayoutOptions struct {
+	Marker           *string
+	MaxResults       *int32
+	Range            HTTPRange
+	AccessConditions *AccessConditions
+	CPKInfo          *CPKInfo
+}
+
+func (o *GetLayoutOptions) format() (*generated.BlobClientGetLayoutOptions,
+	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil, nil
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return nil, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------

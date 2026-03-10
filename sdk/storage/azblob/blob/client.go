@@ -6,6 +6,7 @@ package blob
 import (
 	"context"
 	"io"
+	"net/http"
 	"os"
 	"sync"
 	"sync/atomic"
@@ -473,4 +474,36 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}
+}
+
+// getLayout returns the blob's layout.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (b *Client) getLayout(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+	opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions := options.format()
+	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
+		More: func(page GetLayoutResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GetLayoutResponse) (GetLayoutResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
+			} else {
+				options.Marker = page.NextMarker
+				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
+			}
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			resp, err := b.generated().InternalClient().Pipeline().Do(req)
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GetLayoutResponse{}, runtime.NewResponseError(resp)
+			}
+			return b.generated().GetLayoutHandleResponse(resp)
+		},
+	})
 }

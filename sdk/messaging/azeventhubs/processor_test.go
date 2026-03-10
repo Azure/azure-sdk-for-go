@@ -754,7 +754,7 @@ func printOwnerships(ctx context.Context, t *testing.T, cps azeventhubs.Checkpoi
 		fmt.Fprintf(&sb, "  [%s (%d)] %s\n", o, len(parts), strings.Join(parts, ","))
 	}
 
-	sb.WriteString(fmt.Sprintf("  Unowned (%d): %s\n", len(unowned), strings.Join(unowned, ",")))
+	fmt.Fprintf(&sb, "  Unowned (%d): %s\n", len(unowned), strings.Join(unowned, ","))
 
 	sort.Strings(partitionIDs)
 

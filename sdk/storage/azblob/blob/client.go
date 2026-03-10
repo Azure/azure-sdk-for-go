@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -336,6 +337,10 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	dataDownloaded := int64(0)
 	computeReadLength := true
 	count := o.Range.Count
+
+	var enableLayoutAwareRouting atomic.Bool
+	layoutCache := temporal.NewResource(refresh)
+
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
 		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
@@ -363,11 +368,14 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		NumChunks:     uint64(((count - 1) / o.BlockSize) + 1),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
+			// TODO : Get from layout cache, if layout is empty, fall back to old behavior, never call Get again
+
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
 				Offset: chunkStart + o.Range.Offset,
 				Count:  count,
 			}, nil)
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
+			// TODO : on 5xx or 400 - fall back to old behavior
 			if err != nil {
 				return err
 			}
@@ -476,9 +484,9 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 }
 
-// getLayout returns the blob's layout.
+// getLayoutPager returns the blob's layout.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
-func (b *Client) getLayout(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+func (b *Client) getLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
 	opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions := options.format()
 	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
 		More: func(page GetLayoutResponse) bool {
@@ -500,7 +508,7 @@ func (b *Client) getLayout(options *GetLayoutOptions) *runtime.Pager[GetLayoutRe
 			if err != nil {
 				return GetLayoutResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
+			if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 				return GetLayoutResponse{}, runtime.NewResponseError(resp)
 			}
 			return b.generated().GetLayoutHandleResponse(resp)

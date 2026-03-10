@@ -8,11 +8,807 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-12-01/VolumeGroups_Create_Oracle.json
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Create_Custom.json
+func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "myRG", "account1", "group1", armnetapp.VolumeGroupDetails{
+		Location: to.Ptr("westus"),
+		Properties: &armnetapp.VolumeGroupProperties{
+			GroupMetaData: &armnetapp.VolumeGroupMetaData{
+				ApplicationIdentifier: to.Ptr("CU2"),
+				ApplicationType:       to.Ptr(armnetapp.ApplicationTypeCUSTOM),
+				GroupDescription:      to.Ptr("Volume group"),
+			},
+			Volumes: []*armnetapp.VolumeGroupVolumeProperties{
+				{
+					Name: to.Ptr("test-cus-data1"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data1"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data1"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data2"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data2"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data2"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data3"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data3"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data3"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data4"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data4"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data4"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data5"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data5"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data5"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data6"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data6"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data6"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data7"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data7"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data7"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data8"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data8"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data8"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data9"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data9"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data9"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data10"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data10"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data10"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data11"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data11"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data11"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data12"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data12"),
+						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+							Rules: []*armnetapp.ExportPolicyRule{
+								{
+									AllowedClients:      to.Ptr("0.0.0.0/0"),
+									Cifs:                to.Ptr(false),
+									HasRootAccess:       to.Ptr(true),
+									Kerberos5ReadOnly:   to.Ptr(false),
+									Kerberos5ReadWrite:  to.Ptr(false),
+									Kerberos5IReadOnly:  to.Ptr(false),
+									Kerberos5IReadWrite: to.Ptr(false),
+									Kerberos5PReadOnly:  to.Ptr(false),
+									Kerberos5PReadWrite: to.Ptr(false),
+									Nfsv3:               to.Ptr(false),
+									Nfsv41:              to.Ptr(true),
+									RuleIndex:           to.Ptr[int32](1),
+									UnixReadOnly:        to.Ptr(true),
+									UnixReadWrite:       to.Ptr(true),
+								},
+							},
+						},
+						ProtocolTypes: []*string{
+							to.Ptr("NFSv4.1"),
+						},
+						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps: to.Ptr[float32](10),
+						UsageThreshold:  to.Ptr[int64](107374182400),
+						VolumeSpecName:  to.Ptr("cus-data12"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Create_Custom_SMB.json
+func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "myRG", "account1", "group1", armnetapp.VolumeGroupDetails{
+		Location: to.Ptr("westus"),
+		Properties: &armnetapp.VolumeGroupProperties{
+			GroupMetaData: &armnetapp.VolumeGroupMetaData{
+				ApplicationIdentifier: to.Ptr("CU2"),
+				ApplicationType:       to.Ptr(armnetapp.ApplicationTypeCUSTOM),
+				GroupDescription:      to.Ptr("Volume group"),
+			},
+			Volumes: []*armnetapp.VolumeGroupVolumeProperties{
+				{
+					Name: to.Ptr("test-cus-data1"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data1"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data1"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data2"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data2"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data2"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data3"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data3"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data3"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data4"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data4"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data4"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data5"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data5"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data5"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data6"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data6"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data6"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data7"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data7"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data7"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data8"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data8"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data8"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data9"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data9"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data9"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data10"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data10"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data10"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data11"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data11"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data11"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+				{
+					Name: to.Ptr("test-cus-data12"),
+					Properties: &armnetapp.VolumeProperties{
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CreationToken:          to.Ptr("test-cus-data12"),
+						ProtocolTypes: []*string{
+							to.Ptr("CIFS"),
+						},
+						ServiceLevel:              to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:           to.Ptr[float32](10),
+						UsageThreshold:            to.Ptr[int64](107374182400),
+						VolumeSpecName:            to.Ptr("cus-data12"),
+						SmbEncryption:             to.Ptr(false),
+						SmbContinuouslyAvailable:  to.Ptr(false),
+						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Create_Oracle.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +1296,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	}
 }
 
-// Generated from example definition: 2025-12-01/VolumeGroups_Create_SapHana.json
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Create_SapHana.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -712,7 +1508,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	}
 }
 
-// Generated from example definition: 2025-12-01/VolumeGroups_Delete.json
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Delete.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -738,7 +1534,853 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/VolumeGroups_Get_Oracle.json
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Get_Custom.json
+func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVolumeGroupsClient().Get(ctx, "myRG", "account1", "group1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.VolumeGroupsClientGetResponse{
+	// 	VolumeGroupDetails: &armnetapp.VolumeGroupDetails{
+	// 		Name: to.Ptr("group1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetapp.VolumeGroupProperties{
+	// 			GroupMetaData: &armnetapp.VolumeGroupMetaData{
+	// 				ApplicationIdentifier: to.Ptr("CU2"),
+	// 				ApplicationType: to.Ptr(armnetapp.ApplicationTypeCUSTOM),
+	// 				GroupDescription: to.Ptr("Volume group"),
+	// 				VolumesCount: to.Ptr[int64](12),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Volumes: []*armnetapp.VolumeGroupVolumeProperties{
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data1"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data1"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data1"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data1"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data2"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data2"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data2"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data2"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data3"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data3"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data3"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data3"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data4"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data4"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data4"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data4"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data5"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data5"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data5"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data5"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data6"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data6"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data6"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data6"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data7"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data7"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data7"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data7"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data8"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data8"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data8"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data9"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data9"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data9"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data10"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data10"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data10"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data11"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data11"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data11"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data12"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data12"),
+	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
+	// 							Rules: []*armnetapp.ExportPolicyRule{
+	// 								{
+	// 									AllowedClients: to.Ptr("0.0.0.0/0"),
+	// 									Cifs: to.Ptr(false),
+	// 									HasRootAccess: to.Ptr(true),
+	// 									Kerberos5ReadOnly: to.Ptr(false),
+	// 									Kerberos5ReadWrite: to.Ptr(false),
+	// 									Kerberos5IReadOnly: to.Ptr(false),
+	// 									Kerberos5IReadWrite: to.Ptr(false),
+	// 									Kerberos5PReadOnly: to.Ptr(false),
+	// 									Kerberos5PReadWrite: to.Ptr(false),
+	// 									Nfsv3: to.Ptr(false),
+	// 									Nfsv41: to.Ptr(true),
+	// 									RuleIndex: to.Ptr[int32](1),
+	// 									UnixReadOnly: to.Ptr(true),
+	// 									UnixReadWrite: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("NFSv4.1"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data12"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Get_Custom_SMB.json
+func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVolumeGroupsClient().Get(ctx, "myRG", "account1", "group1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.VolumeGroupsClientGetResponse{
+	// 	VolumeGroupDetails: &armnetapp.VolumeGroupDetails{
+	// 		Name: to.Ptr("group1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetapp.VolumeGroupProperties{
+	// 			GroupMetaData: &armnetapp.VolumeGroupMetaData{
+	// 				ApplicationIdentifier: to.Ptr("CU2"),
+	// 				ApplicationType: to.Ptr(armnetapp.ApplicationTypeCUSTOM),
+	// 				GroupDescription: to.Ptr("Volume group"),
+	// 				VolumesCount: to.Ptr[int64](12),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Volumes: []*armnetapp.VolumeGroupVolumeProperties{
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data1"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data1"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data1"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data1"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data2"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data2"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data2"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data2"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data3"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data3"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data3"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data3"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data4"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data4"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data4"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data4"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data5"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data5"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data5"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data5"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data6"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data6"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data6"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data6"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data7"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data7"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data7"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data7"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data8"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data8"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data8"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data9"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data9"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data9"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data10"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data10"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data10"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data11"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data11"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data11"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("account1/pool1/test-cus-data12"),
+	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					Properties: &armnetapp.VolumeProperties{
+	// 						CreationToken: to.Ptr("test-cus-data12"),
+	// 						ProtocolTypes: []*string{
+	// 							to.Ptr("CIFS"),
+	// 						},
+	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						ThroughputMibps: to.Ptr[float32](10),
+	// 						UsageThreshold: to.Ptr[int64](107374182400),
+	// 						VolumeSpecName: to.Ptr("cus-data12"),
+	// 						SmbEncryption: to.Ptr(false),
+	// 						SmbContinuouslyAvailable: to.Ptr(false),
+	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
+	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
+	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Get_Oracle.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1257,7 +2899,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/VolumeGroups_Get_SapHana.json
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_Get_SapHana.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1486,7 +3128,53 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/VolumeGroups_List_Oracle.json
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_List_Custom.json
+func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListCustom() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVolumeGroupsClient().NewListByNetAppAccountPager("myRG", "account1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetapp.VolumeGroupsClientListByNetAppAccountResponse{
+		// 	VolumeGroupList: armnetapp.VolumeGroupList{
+		// 		Value: []*armnetapp.VolumeGroup{
+		// 			{
+		// 				Name: to.Ptr("group1"),
+		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetapp.VolumeGroupListProperties{
+		// 					GroupMetaData: &armnetapp.VolumeGroupMetaData{
+		// 						ApplicationIdentifier: to.Ptr("DEV"),
+		// 						ApplicationType: to.Ptr(armnetapp.ApplicationTypeCUSTOM),
+		// 						GroupDescription: to.Ptr("Volume group"),
+		// 						VolumesCount: to.Ptr[int64](12),
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_List_Oracle.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1532,7 +3220,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracl
 	}
 }
 
-// Generated from example definition: 2025-12-01/VolumeGroups_List_SapHana.json
+// Generated from example definition: 2025-12-15-preview/VolumeGroups_List_SapHana.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -5,11 +5,6 @@
 
 package armrecoveryservicessiterecovery
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
-	moduleVersion = "v2.4.0"
-)
-
 // A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.
 type A2ARecoveryAvailabilityType string
 
@@ -64,6 +59,23 @@ func PossibleAgentAutoUpdateStatusValues() []AgentAutoUpdateStatus {
 	}
 }
 
+type AgentReinstallBlockedReason string
+
+const (
+	AgentReinstallBlockedReasonAgentNoHeartbeat   AgentReinstallBlockedReason = "AgentNoHeartbeat"
+	AgentReinstallBlockedReasonDistroNotSupported AgentReinstallBlockedReason = "DistroNotSupported"
+	AgentReinstallBlockedReasonUnknown            AgentReinstallBlockedReason = "Unknown"
+)
+
+// PossibleAgentReinstallBlockedReasonValues returns the possible values for the AgentReinstallBlockedReason const type.
+func PossibleAgentReinstallBlockedReasonValues() []AgentReinstallBlockedReason {
+	return []AgentReinstallBlockedReason{
+		AgentReinstallBlockedReasonAgentNoHeartbeat,
+		AgentReinstallBlockedReasonDistroNotSupported,
+		AgentReinstallBlockedReasonUnknown,
+	}
+}
+
 type AgentUpgradeBlockedReason string
 
 const (
@@ -78,6 +90,7 @@ const (
 	AgentUpgradeBlockedReasonNotProtected                  AgentUpgradeBlockedReason = "NotProtected"
 	AgentUpgradeBlockedReasonProcessServerNoHeartbeat      AgentUpgradeBlockedReason = "ProcessServerNoHeartbeat"
 	AgentUpgradeBlockedReasonRcmProxyNoHeartbeat           AgentUpgradeBlockedReason = "RcmProxyNoHeartbeat"
+	AgentUpgradeBlockedReasonReInstallRequired             AgentUpgradeBlockedReason = "ReInstallRequired"
 	AgentUpgradeBlockedReasonRebootRequired                AgentUpgradeBlockedReason = "RebootRequired"
 	AgentUpgradeBlockedReasonUnknown                       AgentUpgradeBlockedReason = "Unknown"
 	AgentUpgradeBlockedReasonUnsupportedProtectionScenario AgentUpgradeBlockedReason = "UnsupportedProtectionScenario"
@@ -97,6 +110,7 @@ func PossibleAgentUpgradeBlockedReasonValues() []AgentUpgradeBlockedReason {
 		AgentUpgradeBlockedReasonNotProtected,
 		AgentUpgradeBlockedReasonProcessServerNoHeartbeat,
 		AgentUpgradeBlockedReasonRcmProxyNoHeartbeat,
+		AgentUpgradeBlockedReasonReInstallRequired,
 		AgentUpgradeBlockedReasonRebootRequired,
 		AgentUpgradeBlockedReasonUnknown,
 		AgentUpgradeBlockedReasonUnsupportedProtectionScenario,
@@ -615,6 +629,21 @@ func PossibleMigrationStateValues() []MigrationState {
 		MigrationStateResumeInProgress,
 		MigrationStateResumeInitiated,
 		MigrationStateSuspendingProtection,
+	}
+}
+
+type MobilityAgentReinstallType string
+
+const (
+	MobilityAgentReinstallTypeAutoTriggered MobilityAgentReinstallType = "AutoTriggered"
+	MobilityAgentReinstallTypeUserTriggered MobilityAgentReinstallType = "UserTriggered"
+)
+
+// PossibleMobilityAgentReinstallTypeValues returns the possible values for the MobilityAgentReinstallType const type.
+func PossibleMobilityAgentReinstallTypeValues() []MobilityAgentReinstallType {
+	return []MobilityAgentReinstallType{
+		MobilityAgentReinstallTypeAutoTriggered,
+		MobilityAgentReinstallTypeUserTriggered,
 	}
 }
 

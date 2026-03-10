@@ -47,6 +47,53 @@ func (a *A2AAddDisksInput) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type A2AAgentReinstallBlockingErrorDetails.
+func (a A2AAgentReinstallBlockingErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "errorCode", a.ErrorCode)
+	populate(objectMap, "errorMessage", a.ErrorMessage)
+	populate(objectMap, "errorMessageParameters", a.ErrorMessageParameters)
+	populate(objectMap, "errorTags", a.ErrorTags)
+	populate(objectMap, "possibleCauses", a.PossibleCauses)
+	populate(objectMap, "recommendedAction", a.RecommendedAction)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type A2AAgentReinstallBlockingErrorDetails.
+func (a *A2AAgentReinstallBlockingErrorDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "errorCode":
+			err = unpopulate(val, "ErrorCode", &a.ErrorCode)
+			delete(rawMsg, key)
+		case "errorMessage":
+			err = unpopulate(val, "ErrorMessage", &a.ErrorMessage)
+			delete(rawMsg, key)
+		case "errorMessageParameters":
+			err = unpopulate(val, "ErrorMessageParameters", &a.ErrorMessageParameters)
+			delete(rawMsg, key)
+		case "errorTags":
+			err = unpopulate(val, "ErrorTags", &a.ErrorTags)
+			delete(rawMsg, key)
+		case "possibleCauses":
+			err = unpopulate(val, "PossibleCauses", &a.PossibleCauses)
+			delete(rawMsg, key)
+		case "recommendedAction":
+			err = unpopulate(val, "RecommendedAction", &a.RecommendedAction)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type A2AApplyClusterRecoveryPointInput.
 func (a A2AApplyClusterRecoveryPointInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -563,6 +610,7 @@ func (a A2AEnableProtectionInput) MarshalJSON() ([]byte, error) {
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "multiVmGroupId", a.MultiVMGroupID)
 	populate(objectMap, "multiVmGroupName", a.MultiVMGroupName)
+	populate(objectMap, "platformFaultDomain", a.PlatformFaultDomain)
 	populate(objectMap, "protectionClusterId", a.ProtectionClusterID)
 	populate(objectMap, "recoveryAvailabilitySetId", a.RecoveryAvailabilitySetID)
 	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
@@ -607,6 +655,9 @@ func (a *A2AEnableProtectionInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "multiVmGroupName":
 			err = unpopulate(val, "MultiVMGroupName", &a.MultiVMGroupName)
+			delete(rawMsg, key)
+		case "platformFaultDomain":
+			err = unpopulate(val, "PlatformFaultDomain", &a.PlatformFaultDomain)
 			delete(rawMsg, key)
 		case "protectionClusterId":
 			err = unpopulate(val, "ProtectionClusterID", &a.ProtectionClusterID)
@@ -1425,9 +1476,13 @@ func (a A2AReplicationDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "agentCertificateExpiryDate", a.AgentCertificateExpiryDate)
 	populateDateTimeRFC3339(objectMap, "agentExpiryDate", a.AgentExpiryDate)
+	populate(objectMap, "agentReinstallAttemptToVersion", a.AgentReinstallAttemptToVersion)
 	populate(objectMap, "agentVersion", a.AgentVersion)
+	populate(objectMap, "autoAgentUpgradeRetryCount", a.AutoAgentUpgradeRetryCount)
 	populate(objectMap, "autoProtectionOfDataDisk", a.AutoProtectionOfDataDisk)
 	populate(objectMap, "churnOptionSelected", a.ChurnOptionSelected)
+	populate(objectMap, "distroName", a.DistroName)
+	populate(objectMap, "distroNameForWhichAgentIsInstalled", a.DistroNameForWhichAgentIsInstalled)
 	populate(objectMap, "fabricObjectId", a.FabricObjectID)
 	populate(objectMap, "initialPrimaryExtendedLocation", a.InitialPrimaryExtendedLocation)
 	populate(objectMap, "initialPrimaryFabricLocation", a.InitialPrimaryFabricLocation)
@@ -1436,6 +1491,10 @@ func (a A2AReplicationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "initialRecoveryFabricLocation", a.InitialRecoveryFabricLocation)
 	populate(objectMap, "initialRecoveryZone", a.InitialRecoveryZone)
 	objectMap["instanceType"] = "A2A"
+	populate(objectMap, "isAgentReinstallRequired", a.IsAgentReinstallRequired)
+	populate(objectMap, "isAgentUpgradeInProgress", a.IsAgentUpgradeInProgress)
+	populate(objectMap, "isAgentUpgradeRetryThresholdExhausted", a.IsAgentUpgradeRetryThresholdExhausted)
+	populate(objectMap, "isAgentUpgradeable", a.IsAgentUpgradeable)
 	populate(objectMap, "isClusterInfraReady", a.IsClusterInfraReady)
 	populate(objectMap, "isReplicationAgentCertificateUpdateRequired", a.IsReplicationAgentCertificateUpdateRequired)
 	populate(objectMap, "isReplicationAgentUpdateRequired", a.IsReplicationAgentUpdateRequired)
@@ -1448,13 +1507,17 @@ func (a A2AReplicationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "multiVmGroupCreateOption", a.MultiVMGroupCreateOption)
 	populate(objectMap, "multiVmGroupId", a.MultiVMGroupID)
 	populate(objectMap, "multiVmGroupName", a.MultiVMGroupName)
+	populate(objectMap, "osFamilyName", a.OSFamilyName)
 	populate(objectMap, "osType", a.OSType)
+	populate(objectMap, "platformFaultDomain", a.PlatformFaultDomain)
 	populate(objectMap, "primaryAvailabilityZone", a.PrimaryAvailabilityZone)
 	populate(objectMap, "primaryExtendedLocation", a.PrimaryExtendedLocation)
 	populate(objectMap, "primaryFabricLocation", a.PrimaryFabricLocation)
 	populate(objectMap, "protectedDisks", a.ProtectedDisks)
 	populate(objectMap, "protectedManagedDisks", a.ProtectedManagedDisks)
 	populate(objectMap, "protectionClusterId", a.ProtectionClusterID)
+	populate(objectMap, "reasonsBlockingReInstall", a.ReasonsBlockingReInstall)
+	populate(objectMap, "reasonsBlockingReinstallDetails", a.ReasonsBlockingReinstallDetails)
 	populate(objectMap, "recoveryAvailabilitySet", a.RecoveryAvailabilitySet)
 	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
 	populate(objectMap, "recoveryAzureGeneration", a.RecoveryAzureGeneration)
@@ -1498,14 +1561,26 @@ func (a *A2AReplicationDetails) UnmarshalJSON(data []byte) error {
 		case "agentExpiryDate":
 			err = unpopulateDateTimeRFC3339(val, "AgentExpiryDate", &a.AgentExpiryDate)
 			delete(rawMsg, key)
+		case "agentReinstallAttemptToVersion":
+			err = unpopulate(val, "AgentReinstallAttemptToVersion", &a.AgentReinstallAttemptToVersion)
+			delete(rawMsg, key)
 		case "agentVersion":
 			err = unpopulate(val, "AgentVersion", &a.AgentVersion)
+			delete(rawMsg, key)
+		case "autoAgentUpgradeRetryCount":
+			err = unpopulate(val, "AutoAgentUpgradeRetryCount", &a.AutoAgentUpgradeRetryCount)
 			delete(rawMsg, key)
 		case "autoProtectionOfDataDisk":
 			err = unpopulate(val, "AutoProtectionOfDataDisk", &a.AutoProtectionOfDataDisk)
 			delete(rawMsg, key)
 		case "churnOptionSelected":
 			err = unpopulate(val, "ChurnOptionSelected", &a.ChurnOptionSelected)
+			delete(rawMsg, key)
+		case "distroName":
+			err = unpopulate(val, "DistroName", &a.DistroName)
+			delete(rawMsg, key)
+		case "distroNameForWhichAgentIsInstalled":
+			err = unpopulate(val, "DistroNameForWhichAgentIsInstalled", &a.DistroNameForWhichAgentIsInstalled)
 			delete(rawMsg, key)
 		case "fabricObjectId":
 			err = unpopulate(val, "FabricObjectID", &a.FabricObjectID)
@@ -1530,6 +1605,18 @@ func (a *A2AReplicationDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "instanceType":
 			err = unpopulate(val, "InstanceType", &a.InstanceType)
+			delete(rawMsg, key)
+		case "isAgentReinstallRequired":
+			err = unpopulate(val, "IsAgentReinstallRequired", &a.IsAgentReinstallRequired)
+			delete(rawMsg, key)
+		case "isAgentUpgradeInProgress":
+			err = unpopulate(val, "IsAgentUpgradeInProgress", &a.IsAgentUpgradeInProgress)
+			delete(rawMsg, key)
+		case "isAgentUpgradeRetryThresholdExhausted":
+			err = unpopulate(val, "IsAgentUpgradeRetryThresholdExhausted", &a.IsAgentUpgradeRetryThresholdExhausted)
+			delete(rawMsg, key)
+		case "isAgentUpgradeable":
+			err = unpopulate(val, "IsAgentUpgradeable", &a.IsAgentUpgradeable)
 			delete(rawMsg, key)
 		case "isClusterInfraReady":
 			err = unpopulate(val, "IsClusterInfraReady", &a.IsClusterInfraReady)
@@ -1567,8 +1654,14 @@ func (a *A2AReplicationDetails) UnmarshalJSON(data []byte) error {
 		case "multiVmGroupName":
 			err = unpopulate(val, "MultiVMGroupName", &a.MultiVMGroupName)
 			delete(rawMsg, key)
+		case "osFamilyName":
+			err = unpopulate(val, "OSFamilyName", &a.OSFamilyName)
+			delete(rawMsg, key)
 		case "osType":
 			err = unpopulate(val, "OSType", &a.OSType)
+			delete(rawMsg, key)
+		case "platformFaultDomain":
+			err = unpopulate(val, "PlatformFaultDomain", &a.PlatformFaultDomain)
 			delete(rawMsg, key)
 		case "primaryAvailabilityZone":
 			err = unpopulate(val, "PrimaryAvailabilityZone", &a.PrimaryAvailabilityZone)
@@ -1587,6 +1680,12 @@ func (a *A2AReplicationDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "protectionClusterId":
 			err = unpopulate(val, "ProtectionClusterID", &a.ProtectionClusterID)
+			delete(rawMsg, key)
+		case "reasonsBlockingReInstall":
+			err = unpopulate(val, "ReasonsBlockingReInstall", &a.ReasonsBlockingReInstall)
+			delete(rawMsg, key)
+		case "reasonsBlockingReinstallDetails":
+			err = unpopulate(val, "ReasonsBlockingReinstallDetails", &a.ReasonsBlockingReinstallDetails)
 			delete(rawMsg, key)
 		case "recoveryAvailabilitySet":
 			err = unpopulate(val, "RecoveryAvailabilitySet", &a.RecoveryAvailabilitySet)
@@ -2102,6 +2201,7 @@ func (a A2ASwitchProtectionInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	objectMap["instanceType"] = "A2A"
+	populate(objectMap, "platformFaultDomain", a.PlatformFaultDomain)
 	populate(objectMap, "policyId", a.PolicyID)
 	populate(objectMap, "recoveryAvailabilitySetId", a.RecoveryAvailabilitySetID)
 	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
@@ -2131,6 +2231,9 @@ func (a *A2ASwitchProtectionInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "instanceType":
 			err = unpopulate(val, "InstanceType", &a.InstanceType)
+			delete(rawMsg, key)
+		case "platformFaultDomain":
+			err = unpopulate(val, "PlatformFaultDomain", &a.PlatformFaultDomain)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &a.PolicyID)
@@ -2322,6 +2425,8 @@ func (a A2AUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "managedDiskUpdateDetails", a.ManagedDiskUpdateDetails)
+	populate(objectMap, "platformFaultDomain", a.PlatformFaultDomain)
+	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
 	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
 	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
 	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
@@ -2349,6 +2454,12 @@ func (a *A2AUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "managedDiskUpdateDetails":
 			err = unpopulate(val, "ManagedDiskUpdateDetails", &a.ManagedDiskUpdateDetails)
+			delete(rawMsg, key)
+		case "platformFaultDomain":
+			err = unpopulate(val, "PlatformFaultDomain", &a.PlatformFaultDomain)
+			delete(rawMsg, key)
+		case "recoveryAvailabilityZone":
+			err = unpopulate(val, "RecoveryAvailabilityZone", &a.RecoveryAvailabilityZone)
 			delete(rawMsg, key)
 		case "recoveryBootDiagStorageAccountId":
 			err = unpopulate(val, "RecoveryBootDiagStorageAccountID", &a.RecoveryBootDiagStorageAccountID)
@@ -6982,9 +7093,12 @@ func (h HyperVReplicaAzureDiskInputDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", h.DiskEncryptionSetID)
 	populate(objectMap, "diskId", h.DiskID)
+	populate(objectMap, "diskSizeInGB", h.DiskSizeInGB)
 	populate(objectMap, "diskType", h.DiskType)
+	populate(objectMap, "iops", h.Iops)
 	populate(objectMap, "logStorageAccountId", h.LogStorageAccountID)
 	populate(objectMap, "sectorSizeInBytes", h.SectorSizeInBytes)
+	populate(objectMap, "throughputInMbps", h.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -7003,14 +7117,23 @@ func (h *HyperVReplicaAzureDiskInputDetails) UnmarshalJSON(data []byte) error {
 		case "diskId":
 			err = unpopulate(val, "DiskID", &h.DiskID)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &h.DiskSizeInGB)
+			delete(rawMsg, key)
 		case "diskType":
 			err = unpopulate(val, "DiskType", &h.DiskType)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &h.Iops)
 			delete(rawMsg, key)
 		case "logStorageAccountId":
 			err = unpopulate(val, "LogStorageAccountID", &h.LogStorageAccountID)
 			delete(rawMsg, key)
 		case "sectorSizeInBytes":
 			err = unpopulate(val, "SectorSizeInBytes", &h.SectorSizeInBytes)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &h.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7043,6 +7166,7 @@ func (h HyperVReplicaAzureEnableProtectionInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAzureV1ResourceGroupId", h.TargetAzureV1ResourceGroupID)
 	populate(objectMap, "targetAzureV2ResourceGroupId", h.TargetAzureV2ResourceGroupID)
 	populate(objectMap, "targetAzureVmName", h.TargetAzureVMName)
+	populate(objectMap, "targetCapacityReservationGroupId", h.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetManagedDiskTags", h.TargetManagedDiskTags)
 	populate(objectMap, "targetNicTags", h.TargetNicTags)
 	populate(objectMap, "targetProximityPlacementGroupId", h.TargetProximityPlacementGroupID)
@@ -7126,6 +7250,9 @@ func (h *HyperVReplicaAzureEnableProtectionInput) UnmarshalJSON(data []byte) err
 			delete(rawMsg, key)
 		case "targetAzureVmName":
 			err = unpopulate(val, "TargetAzureVMName", &h.TargetAzureVMName)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &h.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetManagedDiskTags":
 			err = unpopulate(val, "TargetManagedDiskTags", &h.TargetManagedDiskTags)
@@ -7254,10 +7381,13 @@ func (h HyperVReplicaAzureManagedDiskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", h.DiskEncryptionSetID)
 	populate(objectMap, "diskId", h.DiskID)
+	populate(objectMap, "diskSizeInGB", h.DiskSizeInGB)
+	populate(objectMap, "iops", h.Iops)
 	populate(objectMap, "replicaDiskType", h.ReplicaDiskType)
 	populate(objectMap, "sectorSizeInBytes", h.SectorSizeInBytes)
 	populate(objectMap, "seedManagedDiskId", h.SeedManagedDiskID)
 	populate(objectMap, "targetDiskAccountType", h.TargetDiskAccountType)
+	populate(objectMap, "throughputInMbps", h.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -7276,6 +7406,12 @@ func (h *HyperVReplicaAzureManagedDiskDetails) UnmarshalJSON(data []byte) error 
 		case "diskId":
 			err = unpopulate(val, "DiskID", &h.DiskID)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &h.DiskSizeInGB)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &h.Iops)
+			delete(rawMsg, key)
 		case "replicaDiskType":
 			err = unpopulate(val, "ReplicaDiskType", &h.ReplicaDiskType)
 			delete(rawMsg, key)
@@ -7287,6 +7423,9 @@ func (h *HyperVReplicaAzureManagedDiskDetails) UnmarshalJSON(data []byte) error 
 			delete(rawMsg, key)
 		case "targetDiskAccountType":
 			err = unpopulate(val, "TargetDiskAccountType", &h.TargetDiskAccountType)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &h.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7304,6 +7443,7 @@ func (h HyperVReplicaAzurePlannedFailoverProviderInput) MarshalJSON() ([]byte, e
 	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
 	populate(objectMap, "recoveryPointId", h.RecoveryPointID)
 	populate(objectMap, "secondaryKekCertificatePfx", h.SecondaryKekCertificatePfx)
+	populate(objectMap, "targetCapacityReservationGroupId", h.TargetCapacityReservationGroupID)
 	return json.Marshal(objectMap)
 }
 
@@ -7330,6 +7470,9 @@ func (h *HyperVReplicaAzurePlannedFailoverProviderInput) UnmarshalJSON(data []by
 			delete(rawMsg, key)
 		case "secondaryKekCertificatePfx":
 			err = unpopulate(val, "SecondaryKekCertificatePfx", &h.SecondaryKekCertificatePfx)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &h.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7467,6 +7610,7 @@ func (h HyperVReplicaAzureReplicationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sourceVmCpuCount", h.SourceVMCPUCount)
 	populate(objectMap, "sourceVmRamSizeInMB", h.SourceVMRAMSizeInMB)
 	populate(objectMap, "targetAvailabilityZone", h.TargetAvailabilityZone)
+	populate(objectMap, "targetCapacityReservationGroupId", h.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetManagedDiskTags", h.TargetManagedDiskTags)
 	populate(objectMap, "targetNicTags", h.TargetNicTags)
 	populate(objectMap, "targetProximityPlacementGroupId", h.TargetProximityPlacementGroupID)
@@ -7569,6 +7713,9 @@ func (h *HyperVReplicaAzureReplicationDetails) UnmarshalJSON(data []byte) error 
 			delete(rawMsg, key)
 		case "targetAvailabilityZone":
 			err = unpopulate(val, "TargetAvailabilityZone", &h.TargetAvailabilityZone)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &h.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetManagedDiskTags":
 			err = unpopulate(val, "TargetManagedDiskTags", &h.TargetManagedDiskTags)
@@ -7751,6 +7898,7 @@ func (h HyperVReplicaAzureUpdateReplicationProtectedItemInput) MarshalJSON() ([]
 	populate(objectMap, "recoveryAzureV2ResourceGroupId", h.RecoveryAzureV2ResourceGroupID)
 	populate(objectMap, "sqlServerLicenseType", h.SQLServerLicenseType)
 	populate(objectMap, "targetAvailabilityZone", h.TargetAvailabilityZone)
+	populate(objectMap, "targetCapacityReservationGroupId", h.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetManagedDiskTags", h.TargetManagedDiskTags)
 	populate(objectMap, "targetNicTags", h.TargetNicTags)
 	populate(objectMap, "targetProximityPlacementGroupId", h.TargetProximityPlacementGroupID)
@@ -7790,6 +7938,9 @@ func (h *HyperVReplicaAzureUpdateReplicationProtectedItemInput) UnmarshalJSON(da
 			delete(rawMsg, key)
 		case "targetAvailabilityZone":
 			err = unpopulate(val, "TargetAvailabilityZone", &h.TargetAvailabilityZone)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &h.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetManagedDiskTags":
 			err = unpopulate(val, "TargetManagedDiskTags", &h.TargetManagedDiskTags)
@@ -10416,6 +10567,53 @@ func (i *InMageRcmAddDisksInput) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InMageRcmAgentReinstallBlockingErrorDetails.
+func (i InMageRcmAgentReinstallBlockingErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "errorCode", i.ErrorCode)
+	populate(objectMap, "errorMessage", i.ErrorMessage)
+	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
+	populate(objectMap, "errorTags", i.ErrorTags)
+	populate(objectMap, "possibleCauses", i.PossibleCauses)
+	populate(objectMap, "recommendedAction", i.RecommendedAction)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmAgentReinstallBlockingErrorDetails.
+func (i *InMageRcmAgentReinstallBlockingErrorDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "errorCode":
+			err = unpopulate(val, "ErrorCode", &i.ErrorCode)
+			delete(rawMsg, key)
+		case "errorMessage":
+			err = unpopulate(val, "ErrorMessage", &i.ErrorMessage)
+			delete(rawMsg, key)
+		case "errorMessageParameters":
+			err = unpopulate(val, "ErrorMessageParameters", &i.ErrorMessageParameters)
+			delete(rawMsg, key)
+		case "errorTags":
+			err = unpopulate(val, "ErrorTags", &i.ErrorTags)
+			delete(rawMsg, key)
+		case "possibleCauses":
+			err = unpopulate(val, "PossibleCauses", &i.PossibleCauses)
+			delete(rawMsg, key)
+		case "recommendedAction":
+			err = unpopulate(val, "RecommendedAction", &i.RecommendedAction)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmAgentUpgradeBlockingErrorDetails.
 func (i InMageRcmAgentUpgradeBlockingErrorDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -10668,9 +10866,12 @@ func (i InMageRcmDiskInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskId", i.DiskID)
+	populate(objectMap, "diskSizeInGB", i.DiskSizeInGB)
 	populate(objectMap, "diskType", i.DiskType)
+	populate(objectMap, "iops", i.Iops)
 	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
 	populate(objectMap, "sectorSizeInBytes", i.SectorSizeInBytes)
+	populate(objectMap, "throughputInMbps", i.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -10689,14 +10890,23 @@ func (i *InMageRcmDiskInput) UnmarshalJSON(data []byte) error {
 		case "diskId":
 			err = unpopulate(val, "DiskID", &i.DiskID)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &i.DiskSizeInGB)
+			delete(rawMsg, key)
 		case "diskType":
 			err = unpopulate(val, "DiskType", &i.DiskType)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &i.Iops)
 			delete(rawMsg, key)
 		case "logStorageAccountId":
 			err = unpopulate(val, "LogStorageAccountID", &i.LogStorageAccountID)
 			delete(rawMsg, key)
 		case "sectorSizeInBytes":
 			err = unpopulate(val, "SectorSizeInBytes", &i.SectorSizeInBytes)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &i.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10710,9 +10920,12 @@ func (i *InMageRcmDiskInput) UnmarshalJSON(data []byte) error {
 func (i InMageRcmDisksDefaultInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
+	populate(objectMap, "diskSizeInGB", i.DiskSizeInGB)
 	populate(objectMap, "diskType", i.DiskType)
+	populate(objectMap, "iops", i.Iops)
 	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
 	populate(objectMap, "sectorSizeInBytes", i.SectorSizeInBytes)
+	populate(objectMap, "throughputInMbps", i.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -10728,14 +10941,23 @@ func (i *InMageRcmDisksDefaultInput) UnmarshalJSON(data []byte) error {
 		case "diskEncryptionSetId":
 			err = unpopulate(val, "DiskEncryptionSetID", &i.DiskEncryptionSetID)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &i.DiskSizeInGB)
+			delete(rawMsg, key)
 		case "diskType":
 			err = unpopulate(val, "DiskType", &i.DiskType)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &i.Iops)
 			delete(rawMsg, key)
 		case "logStorageAccountId":
 			err = unpopulate(val, "LogStorageAccountID", &i.LogStorageAccountID)
 			delete(rawMsg, key)
 		case "sectorSizeInBytes":
 			err = unpopulate(val, "SectorSizeInBytes", &i.SectorSizeInBytes)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &i.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10762,6 +10984,7 @@ func (i InMageRcmEnableProtectionInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
 	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
+	populate(objectMap, "targetCapacityReservationGroupId", i.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
 	populate(objectMap, "targetNetworkId", i.TargetNetworkID)
 	populate(objectMap, "targetNicTags", i.TargetNicTags)
@@ -10828,6 +11051,9 @@ func (i *InMageRcmEnableProtectionInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetBootDiagnosticsStorageAccountId":
 			err = unpopulate(val, "TargetBootDiagnosticsStorageAccountID", &i.TargetBootDiagnosticsStorageAccountID)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &i.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetManagedDiskTags":
 			err = unpopulate(val, "TargetManagedDiskTags", &i.TargetManagedDiskTags)
@@ -11783,14 +12009,26 @@ func (i *InMageRcmLastAgentUpgradeErrorDetails) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmMobilityAgentDetails.
 func (i InMageRcmMobilityAgentDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "agentReinstallAttemptToVersion", i.AgentReinstallAttemptToVersion)
+	populate(objectMap, "agentReinstallJobId", i.AgentReinstallJobID)
+	populate(objectMap, "agentReinstallState", i.AgentReinstallState)
 	populateDateTimeRFC3339(objectMap, "agentVersionExpiryDate", i.AgentVersionExpiryDate)
+	populate(objectMap, "distroName", i.DistroName)
+	populate(objectMap, "distroNameForWhichAgentIsInstalled", i.DistroNameForWhichAgentIsInstalled)
 	populate(objectMap, "driverVersion", i.DriverVersion)
 	populateDateTimeRFC3339(objectMap, "driverVersionExpiryDate", i.DriverVersionExpiryDate)
+	populate(objectMap, "isAgentReinstallRequired", i.IsAgentReinstallRequired)
+	populate(objectMap, "isAgentUpgradeable", i.IsAgentUpgradeable)
+	populate(objectMap, "isLastReinstallSuccessful", i.IsLastReinstallSuccessful)
 	populate(objectMap, "isUpgradeable", i.IsUpgradeable)
+	populate(objectMap, "lastAgentReinstallType", i.LastAgentReinstallType)
 	populateDateTimeRFC3339(objectMap, "lastHeartbeatUtc", i.LastHeartbeatUTC)
 	populate(objectMap, "latestAgentReleaseDate", i.LatestAgentReleaseDate)
 	populate(objectMap, "latestUpgradableVersionWithoutReboot", i.LatestUpgradableVersionWithoutReboot)
 	populate(objectMap, "latestVersion", i.LatestVersion)
+	populate(objectMap, "osFamilyName", i.OSFamilyName)
+	populate(objectMap, "reasonsBlockingReinstall", i.ReasonsBlockingReinstall)
+	populate(objectMap, "reasonsBlockingReinstallDetails", i.ReasonsBlockingReinstallDetails)
 	populate(objectMap, "reasonsBlockingUpgrade", i.ReasonsBlockingUpgrade)
 	populate(objectMap, "version", i.Version)
 	return json.Marshal(objectMap)
@@ -11805,8 +12043,23 @@ func (i *InMageRcmMobilityAgentDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "agentReinstallAttemptToVersion":
+			err = unpopulate(val, "AgentReinstallAttemptToVersion", &i.AgentReinstallAttemptToVersion)
+			delete(rawMsg, key)
+		case "agentReinstallJobId":
+			err = unpopulate(val, "AgentReinstallJobID", &i.AgentReinstallJobID)
+			delete(rawMsg, key)
+		case "agentReinstallState":
+			err = unpopulate(val, "AgentReinstallState", &i.AgentReinstallState)
+			delete(rawMsg, key)
 		case "agentVersionExpiryDate":
 			err = unpopulateDateTimeRFC3339(val, "AgentVersionExpiryDate", &i.AgentVersionExpiryDate)
+			delete(rawMsg, key)
+		case "distroName":
+			err = unpopulate(val, "DistroName", &i.DistroName)
+			delete(rawMsg, key)
+		case "distroNameForWhichAgentIsInstalled":
+			err = unpopulate(val, "DistroNameForWhichAgentIsInstalled", &i.DistroNameForWhichAgentIsInstalled)
 			delete(rawMsg, key)
 		case "driverVersion":
 			err = unpopulate(val, "DriverVersion", &i.DriverVersion)
@@ -11814,8 +12067,20 @@ func (i *InMageRcmMobilityAgentDetails) UnmarshalJSON(data []byte) error {
 		case "driverVersionExpiryDate":
 			err = unpopulateDateTimeRFC3339(val, "DriverVersionExpiryDate", &i.DriverVersionExpiryDate)
 			delete(rawMsg, key)
+		case "isAgentReinstallRequired":
+			err = unpopulate(val, "IsAgentReinstallRequired", &i.IsAgentReinstallRequired)
+			delete(rawMsg, key)
+		case "isAgentUpgradeable":
+			err = unpopulate(val, "IsAgentUpgradeable", &i.IsAgentUpgradeable)
+			delete(rawMsg, key)
+		case "isLastReinstallSuccessful":
+			err = unpopulate(val, "IsLastReinstallSuccessful", &i.IsLastReinstallSuccessful)
+			delete(rawMsg, key)
 		case "isUpgradeable":
 			err = unpopulate(val, "IsUpgradeable", &i.IsUpgradeable)
+			delete(rawMsg, key)
+		case "lastAgentReinstallType":
+			err = unpopulate(val, "LastAgentReinstallType", &i.LastAgentReinstallType)
 			delete(rawMsg, key)
 		case "lastHeartbeatUtc":
 			err = unpopulateDateTimeRFC3339(val, "LastHeartbeatUTC", &i.LastHeartbeatUTC)
@@ -11828,6 +12093,15 @@ func (i *InMageRcmMobilityAgentDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "latestVersion":
 			err = unpopulate(val, "LatestVersion", &i.LatestVersion)
+			delete(rawMsg, key)
+		case "osFamilyName":
+			err = unpopulate(val, "OSFamilyName", &i.OSFamilyName)
+			delete(rawMsg, key)
+		case "reasonsBlockingReinstall":
+			err = unpopulate(val, "ReasonsBlockingReinstall", &i.ReasonsBlockingReinstall)
+			delete(rawMsg, key)
+		case "reasonsBlockingReinstallDetails":
+			err = unpopulate(val, "ReasonsBlockingReinstallDetails", &i.ReasonsBlockingReinstallDetails)
 			delete(rawMsg, key)
 		case "reasonsBlockingUpgrade":
 			err = unpopulate(val, "ReasonsBlockingUpgrade", &i.ReasonsBlockingUpgrade)
@@ -12073,8 +12347,10 @@ func (i InMageRcmProtectedDiskDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "diskName", i.DiskName)
+	populate(objectMap, "diskSizeInGB", i.DiskSizeInGB)
 	populate(objectMap, "diskState", i.DiskState)
 	populate(objectMap, "diskType", i.DiskType)
+	populate(objectMap, "iops", i.Iops)
 	populate(objectMap, "irDetails", i.IrDetails)
 	populate(objectMap, "isInitialReplicationComplete", i.IsInitialReplicationComplete)
 	populate(objectMap, "isOSDisk", i.IsOSDisk)
@@ -12084,6 +12360,7 @@ func (i InMageRcmProtectedDiskDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "seedBlobUri", i.SeedBlobURI)
 	populate(objectMap, "seedManagedDiskId", i.SeedManagedDiskID)
 	populate(objectMap, "targetManagedDiskId", i.TargetManagedDiskID)
+	populate(objectMap, "throughputInMbps", i.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -12117,11 +12394,17 @@ func (i *InMageRcmProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 		case "diskName":
 			err = unpopulate(val, "DiskName", &i.DiskName)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &i.DiskSizeInGB)
+			delete(rawMsg, key)
 		case "diskState":
 			err = unpopulate(val, "DiskState", &i.DiskState)
 			delete(rawMsg, key)
 		case "diskType":
 			err = unpopulate(val, "DiskType", &i.DiskType)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &i.Iops)
 			delete(rawMsg, key)
 		case "irDetails":
 			err = unpopulate(val, "IrDetails", &i.IrDetails)
@@ -12149,6 +12432,9 @@ func (i *InMageRcmProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetManagedDiskId":
 			err = unpopulate(val, "TargetManagedDiskID", &i.TargetManagedDiskID)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &i.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -12272,6 +12558,7 @@ func (i InMageRcmReplicationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
 	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
+	populate(objectMap, "targetCapacityReservationGroupId", i.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetGeneration", i.TargetGeneration)
 	populate(objectMap, "targetLocation", i.TargetLocation)
 	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
@@ -12444,6 +12731,9 @@ func (i *InMageRcmReplicationDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetBootDiagnosticsStorageAccountId":
 			err = unpopulate(val, "TargetBootDiagnosticsStorageAccountID", &i.TargetBootDiagnosticsStorageAccountID)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &i.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetGeneration":
 			err = unpopulate(val, "TargetGeneration", &i.TargetGeneration)
@@ -12674,6 +12964,7 @@ func (i InMageRcmUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "osUpgradeVersion", i.OSUpgradeVersion)
 	populate(objectMap, "performShutdown", i.PerformShutdown)
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
+	populate(objectMap, "targetCapacityReservationGroupId", i.TargetCapacityReservationGroupID)
 	return json.Marshal(objectMap)
 }
 
@@ -12697,6 +12988,9 @@ func (i *InMageRcmUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryPointId":
 			err = unpopulate(val, "RecoveryPointID", &i.RecoveryPointID)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &i.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -12778,6 +13072,7 @@ func (i InMageRcmUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, err
 	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
 	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
+	populate(objectMap, "targetCapacityReservationGroupId", i.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
 	populate(objectMap, "targetNetworkId", i.TargetNetworkID)
 	populate(objectMap, "targetNicTags", i.TargetNicTags)
@@ -12788,6 +13083,7 @@ func (i InMageRcmUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, err
 	populate(objectMap, "targetVmTags", i.TargetVMTags)
 	populate(objectMap, "testNetworkId", i.TestNetworkID)
 	populate(objectMap, "userSelectedOSName", i.UserSelectedOSName)
+	populate(objectMap, "vmDisks", i.VMDisks)
 	populate(objectMap, "vmNics", i.VMNics)
 	return json.Marshal(objectMap)
 }
@@ -12822,6 +13118,9 @@ func (i *InMageRcmUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte
 		case "targetBootDiagnosticsStorageAccountId":
 			err = unpopulate(val, "TargetBootDiagnosticsStorageAccountID", &i.TargetBootDiagnosticsStorageAccountID)
 			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &i.TargetCapacityReservationGroupID)
+			delete(rawMsg, key)
 		case "targetManagedDiskTags":
 			err = unpopulate(val, "TargetManagedDiskTags", &i.TargetManagedDiskTags)
 			delete(rawMsg, key)
@@ -12851,6 +13150,9 @@ func (i *InMageRcmUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte
 			delete(rawMsg, key)
 		case "userSelectedOSName":
 			err = unpopulate(val, "UserSelectedOSName", &i.UserSelectedOSName)
+			delete(rawMsg, key)
+		case "vmDisks":
+			err = unpopulate(val, "VMDisks", &i.VMDisks)
 			delete(rawMsg, key)
 		case "vmNics":
 			err = unpopulate(val, "VMNics", &i.VMNics)
@@ -18207,6 +18509,60 @@ func (r *RegisteredClusterNodes) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ReinstallMobilityServiceRequest.
+func (r ReinstallMobilityServiceRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", r.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ReinstallMobilityServiceRequest.
+func (r *ReinstallMobilityServiceRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &r.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ReinstallMobilityServiceRequestProperties.
+func (r ReinstallMobilityServiceRequestProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "runAsAccountId", r.RunAsAccountID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ReinstallMobilityServiceRequestProperties.
+func (r *ReinstallMobilityServiceRequestProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "runAsAccountId":
+			err = unpopulate(val, "RunAsAccountID", &r.RunAsAccountID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type RemoveDisksInput.
 func (r RemoveDisksInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -21608,7 +21964,10 @@ func (u *UpdateApplianceForReplicationProtectedItemProviderSpecificInput) Unmars
 func (u UpdateDiskInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskId", u.DiskID)
+	populate(objectMap, "diskSizeInGB", u.DiskSizeInGB)
+	populate(objectMap, "iops", u.Iops)
 	populate(objectMap, "targetDiskName", u.TargetDiskName)
+	populate(objectMap, "throughputInMbps", u.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -21624,8 +21983,17 @@ func (u *UpdateDiskInput) UnmarshalJSON(data []byte) error {
 		case "diskId":
 			err = unpopulate(val, "DiskID", &u.DiskID)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &u.DiskSizeInGB)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &u.Iops)
+			delete(rawMsg, key)
 		case "targetDiskName":
 			err = unpopulate(val, "TargetDiskName", &u.TargetDiskName)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &u.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -22653,11 +23021,14 @@ func (v VMwareCbtDiskInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", v.DiskEncryptionSetID)
 	populate(objectMap, "diskId", v.DiskID)
+	populate(objectMap, "diskSizeInGB", v.DiskSizeInGB)
 	populate(objectMap, "diskType", v.DiskType)
+	populate(objectMap, "iops", v.Iops)
 	populate(objectMap, "isOSDisk", v.IsOSDisk)
 	populate(objectMap, "logStorageAccountId", v.LogStorageAccountID)
 	populate(objectMap, "logStorageAccountSasSecretName", v.LogStorageAccountSasSecretName)
 	populate(objectMap, "sectorSizeInBytes", v.SectorSizeInBytes)
+	populate(objectMap, "throughputInMbps", v.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -22676,8 +23047,14 @@ func (v *VMwareCbtDiskInput) UnmarshalJSON(data []byte) error {
 		case "diskId":
 			err = unpopulate(val, "DiskID", &v.DiskID)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &v.DiskSizeInGB)
+			delete(rawMsg, key)
 		case "diskType":
 			err = unpopulate(val, "DiskType", &v.DiskType)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &v.Iops)
 			delete(rawMsg, key)
 		case "isOSDisk":
 			err = unpopulate(val, "IsOSDisk", &v.IsOSDisk)
@@ -22690,6 +23067,9 @@ func (v *VMwareCbtDiskInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sectorSizeInBytes":
 			err = unpopulate(val, "SectorSizeInBytes", &v.SectorSizeInBytes)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &v.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -22716,6 +23096,7 @@ func (v VMwareCbtEnableMigrationInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAvailabilitySetId", v.TargetAvailabilitySetID)
 	populate(objectMap, "targetAvailabilityZone", v.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", v.TargetBootDiagnosticsStorageAccountID)
+	populate(objectMap, "targetCapacityReservationGroupId", v.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetDiskTags", v.TargetDiskTags)
 	populate(objectMap, "targetNetworkId", v.TargetNetworkID)
 	populate(objectMap, "targetNicTags", v.TargetNicTags)
@@ -22783,6 +23164,9 @@ func (v *VMwareCbtEnableMigrationInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetBootDiagnosticsStorageAccountId":
 			err = unpopulate(val, "TargetBootDiagnosticsStorageAccountID", &v.TargetBootDiagnosticsStorageAccountID)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &v.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetDiskTags":
 			err = unpopulate(val, "TargetDiskTags", &v.TargetDiskTags)
@@ -22872,6 +23256,7 @@ func (v VMwareCbtMigrateInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "osUpgradeVersion", v.OSUpgradeVersion)
 	populate(objectMap, "performShutdown", v.PerformShutdown)
 	populate(objectMap, "postMigrationSteps", v.PostMigrationSteps)
+	populate(objectMap, "targetCapacityReservationGroupId", v.TargetCapacityReservationGroupID)
 	return json.Marshal(objectMap)
 }
 
@@ -22895,6 +23280,9 @@ func (v *VMwareCbtMigrateInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "postMigrationSteps":
 			err = unpopulate(val, "PostMigrationSteps", &v.PostMigrationSteps)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &v.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -22943,6 +23331,7 @@ func (v VMwareCbtMigrationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAvailabilitySetId", v.TargetAvailabilitySetID)
 	populate(objectMap, "targetAvailabilityZone", v.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", v.TargetBootDiagnosticsStorageAccountID)
+	populate(objectMap, "targetCapacityReservationGroupId", v.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetDiskTags", v.TargetDiskTags)
 	populate(objectMap, "targetGeneration", v.TargetGeneration)
 	populate(objectMap, "targetLocation", v.TargetLocation)
@@ -23076,6 +23465,9 @@ func (v *VMwareCbtMigrationDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetBootDiagnosticsStorageAccountId":
 			err = unpopulate(val, "TargetBootDiagnosticsStorageAccountID", &v.TargetBootDiagnosticsStorageAccountID)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &v.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetDiskTags":
 			err = unpopulate(val, "TargetDiskTags", &v.TargetDiskTags)
@@ -23308,8 +23700,10 @@ func (v VMwareCbtProtectedDiskDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diskId", v.DiskID)
 	populate(objectMap, "diskName", v.DiskName)
 	populate(objectMap, "diskPath", v.DiskPath)
+	populate(objectMap, "diskSizeInGB", v.DiskSizeInGB)
 	populate(objectMap, "diskType", v.DiskType)
 	populate(objectMap, "gatewayOperationDetails", v.GatewayOperationDetails)
+	populate(objectMap, "iops", v.Iops)
 	populate(objectMap, "isOSDisk", v.IsOSDisk)
 	populate(objectMap, "logStorageAccountId", v.LogStorageAccountID)
 	populate(objectMap, "logStorageAccountSasSecretName", v.LogStorageAccountSasSecretName)
@@ -23319,6 +23713,7 @@ func (v VMwareCbtProtectedDiskDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetBlobUri", v.TargetBlobURI)
 	populate(objectMap, "targetDiskName", v.TargetDiskName)
 	populate(objectMap, "targetManagedDiskId", v.TargetManagedDiskID)
+	populate(objectMap, "throughputInMbps", v.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -23346,11 +23741,17 @@ func (v *VMwareCbtProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 		case "diskPath":
 			err = unpopulate(val, "DiskPath", &v.DiskPath)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &v.DiskSizeInGB)
+			delete(rawMsg, key)
 		case "diskType":
 			err = unpopulate(val, "DiskType", &v.DiskType)
 			delete(rawMsg, key)
 		case "gatewayOperationDetails":
 			err = unpopulate(val, "GatewayOperationDetails", &v.GatewayOperationDetails)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &v.Iops)
 			delete(rawMsg, key)
 		case "isOSDisk":
 			err = unpopulate(val, "IsOSDisk", &v.IsOSDisk)
@@ -23378,6 +23779,9 @@ func (v *VMwareCbtProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetManagedDiskId":
 			err = unpopulate(val, "TargetManagedDiskID", &v.TargetManagedDiskID)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &v.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -23602,8 +24006,11 @@ func (v *VMwareCbtTestMigrateInput) UnmarshalJSON(data []byte) error {
 func (v VMwareCbtUpdateDiskInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "diskId", v.DiskID)
+	populate(objectMap, "diskSizeInGB", v.DiskSizeInGB)
+	populate(objectMap, "iops", v.Iops)
 	populate(objectMap, "isOSDisk", v.IsOSDisk)
 	populate(objectMap, "targetDiskName", v.TargetDiskName)
+	populate(objectMap, "throughputInMbps", v.ThroughputInMbps)
 	return json.Marshal(objectMap)
 }
 
@@ -23619,11 +24026,20 @@ func (v *VMwareCbtUpdateDiskInput) UnmarshalJSON(data []byte) error {
 		case "diskId":
 			err = unpopulate(val, "DiskID", &v.DiskID)
 			delete(rawMsg, key)
+		case "diskSizeInGB":
+			err = unpopulate(val, "DiskSizeInGB", &v.DiskSizeInGB)
+			delete(rawMsg, key)
+		case "iops":
+			err = unpopulate(val, "Iops", &v.Iops)
+			delete(rawMsg, key)
 		case "isOSDisk":
 			err = unpopulate(val, "IsOSDisk", &v.IsOSDisk)
 			delete(rawMsg, key)
 		case "targetDiskName":
 			err = unpopulate(val, "TargetDiskName", &v.TargetDiskName)
+			delete(rawMsg, key)
+		case "throughputInMbps":
+			err = unpopulate(val, "ThroughputInMbps", &v.ThroughputInMbps)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -23644,6 +24060,7 @@ func (v VMwareCbtUpdateMigrationItemInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetAvailabilitySetId", v.TargetAvailabilitySetID)
 	populate(objectMap, "targetAvailabilityZone", v.TargetAvailabilityZone)
 	populate(objectMap, "targetBootDiagnosticsStorageAccountId", v.TargetBootDiagnosticsStorageAccountID)
+	populate(objectMap, "targetCapacityReservationGroupId", v.TargetCapacityReservationGroupID)
 	populate(objectMap, "targetDiskTags", v.TargetDiskTags)
 	populate(objectMap, "targetNetworkId", v.TargetNetworkID)
 	populate(objectMap, "targetNicTags", v.TargetNicTags)
@@ -23691,6 +24108,9 @@ func (v *VMwareCbtUpdateMigrationItemInput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetBootDiagnosticsStorageAccountId":
 			err = unpopulate(val, "TargetBootDiagnosticsStorageAccountID", &v.TargetBootDiagnosticsStorageAccountID)
+			delete(rawMsg, key)
+		case "targetCapacityReservationGroupId":
+			err = unpopulate(val, "TargetCapacityReservationGroupID", &v.TargetCapacityReservationGroupID)
 			delete(rawMsg, key)
 		case "targetDiskTags":
 			err = unpopulate(val, "TargetDiskTags", &v.TargetDiskTags)

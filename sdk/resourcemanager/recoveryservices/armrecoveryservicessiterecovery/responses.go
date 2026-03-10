@@ -441,6 +441,12 @@ type ReplicationProtectedItemsClientPurgeResponse struct {
 	// placeholder for future response values
 }
 
+// ReplicationProtectedItemsClientReinstallMobilityServiceResponse contains the response from method ReplicationProtectedItemsClient.BeginReinstallMobilityService.
+type ReplicationProtectedItemsClientReinstallMobilityServiceResponse struct {
+	// Replication protected item.
+	ReplicationProtectedItem
+}
+
 // ReplicationProtectedItemsClientRemoveDisksResponse contains the response from method ReplicationProtectedItemsClient.BeginRemoveDisks.
 type ReplicationProtectedItemsClientRemoveDisksResponse struct {
 	// Replication protected item.

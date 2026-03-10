@@ -52,7 +52,7 @@ func (client *ContainerClient) AcquireLease(ctx context.Context, duration int32,
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
 func (client *ContainerClient) acquireLeaseCreateRequest(ctx context.Context, duration int32, options *ContainerClientAcquireLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease&restype=container"
+	urlPath := "?comp=lease&restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func (client *ContainerClient) BreakLease(ctx context.Context, options *Containe
 
 // breakLeaseCreateRequest creates the BreakLease request.
 func (client *ContainerClient) breakLeaseCreateRequest(ctx context.Context, options *ContainerClientBreakLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease&restype=container"
+	urlPath := "?comp=lease&restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -236,7 +236,7 @@ func (client *ContainerClient) ChangeLease(ctx context.Context, leaseID string, 
 
 // changeLeaseCreateRequest creates the ChangeLease request.
 func (client *ContainerClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, proposedLeaseID string, options *ContainerClientChangeLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease&restype=container"
+	urlPath := "?comp=lease&restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -323,7 +323,7 @@ func (client *ContainerClient) Create(ctx context.Context, options *ContainerCli
 
 // createCreateRequest creates the Create request.
 func (client *ContainerClient) createCreateRequest(ctx context.Context, options *ContainerClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container"
+	urlPath := "?restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -414,7 +414,7 @@ func (client *ContainerClient) Delete(ctx context.Context, options *ContainerCli
 
 // deleteCreateRequest creates the Delete request.
 func (client *ContainerClient) deleteCreateRequest(ctx context.Context, options *ContainerClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container"
+	urlPath := "?restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -489,7 +489,7 @@ func (client *ContainerClient) FilterBlobs(ctx context.Context, filterExpression
 
 // filterBlobsCreateRequest creates the FilterBlobs request.
 func (client *ContainerClient) filterBlobsCreateRequest(ctx context.Context, filterExpression string, options *ContainerClientFilterBlobsOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=blobs"
+	urlPath := "?restype=container&comp=blobs"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -572,7 +572,7 @@ func (client *ContainerClient) GetAccessPolicy(ctx context.Context, options *Con
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
 func (client *ContainerClient) getAccessPolicyCreateRequest(ctx context.Context, options *ContainerClientGetAccessPolicyOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=acl"
+	urlPath := "?restype=container&comp=acl"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -660,7 +660,7 @@ func (client *ContainerClient) GetAccountInfo(ctx context.Context, options *Cont
 
 // getAccountInfoCreateRequest creates the GetAccountInfo request.
 func (client *ContainerClient) getAccountInfoCreateRequest(ctx context.Context, options *ContainerClientGetAccountInfoOptions) (*policy.Request, error) {
-	urlPath := "/?restype=account&comp=properties"
+	urlPath := "?restype=account&comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -738,7 +738,7 @@ func (client *ContainerClient) GetProperties(ctx context.Context, options *Conta
 
 // getPropertiesCreateRequest creates the GetProperties request.
 func (client *ContainerClient) getPropertiesCreateRequest(ctx context.Context, options *ContainerClientGetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container"
+	urlPath := "?restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -870,7 +870,7 @@ func (client *ContainerClient) NewListBlobFlatSegmentPager(options *ContainerCli
 
 // listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request.
 func (client *ContainerClient) listBlobFlatSegmentCreateRequest(ctx context.Context, options *ContainerClientListBlobFlatSegmentOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=list"
+	urlPath := "?restype=container&comp=list"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -964,7 +964,7 @@ func (client *ContainerClient) NewListBlobHierarchySegmentPager(delimiter string
 
 // listBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
 func (client *ContainerClient) listBlobHierarchySegmentCreateRequest(ctx context.Context, delimiter string, options *ContainerClientListBlobHierarchySegmentOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=list"
+	urlPath := "?restype=container&comp=list"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1054,7 +1054,7 @@ func (client *ContainerClient) ReleaseLease(ctx context.Context, leaseID string,
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
 func (client *ContainerClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *ContainerClientReleaseLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease&restype=container"
+	urlPath := "?comp=lease&restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1137,7 +1137,7 @@ func (client *ContainerClient) Rename(ctx context.Context, sourceContainerName s
 
 // renameCreateRequest creates the Rename request.
 func (client *ContainerClient) renameCreateRequest(ctx context.Context, sourceContainerName string, options *ContainerClientRenameOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=rename"
+	urlPath := "?restype=container&comp=rename"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1207,7 +1207,7 @@ func (client *ContainerClient) RenewLease(ctx context.Context, leaseID string, o
 
 // renewLeaseCreateRequest creates the RenewLease request.
 func (client *ContainerClient) renewLeaseCreateRequest(ctx context.Context, leaseID string, options *ContainerClientRenewLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease&restype=container"
+	urlPath := "?comp=lease&restype=container"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1292,7 +1292,7 @@ func (client *ContainerClient) Restore(ctx context.Context, options *ContainerCl
 
 // restoreCreateRequest creates the Restore request.
 func (client *ContainerClient) restoreCreateRequest(ctx context.Context, options *ContainerClientRestoreOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=undelete"
+	urlPath := "?restype=container&comp=undelete"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1365,7 +1365,7 @@ func (client *ContainerClient) SetAccessPolicy(ctx context.Context, containerACL
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
 func (client *ContainerClient) setAccessPolicyCreateRequest(ctx context.Context, containerACL SignedIdentifiers, options *ContainerClientSetAccessPolicyOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=acl"
+	urlPath := "?restype=container&comp=acl"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1455,7 +1455,7 @@ func (client *ContainerClient) SetMetadata(ctx context.Context, options *Contain
 
 // setMetadataCreateRequest creates the SetMetadata request.
 func (client *ContainerClient) setMetadataCreateRequest(ctx context.Context, options *ContainerClientSetMetadataOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=metadata"
+	urlPath := "?restype=container&comp=metadata"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1544,7 +1544,7 @@ func (client *ContainerClient) SubmitBatch(ctx context.Context, contentLength in
 
 // submitBatchCreateRequest creates the SubmitBatch request.
 func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, contentLength int64, body SubmitBatchRequest, options *ContainerClientSubmitBatchOptions) (*policy.Request, error) {
-	urlPath := "/?restype=container&comp=batch"
+	urlPath := "?restype=container&comp=batch"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err

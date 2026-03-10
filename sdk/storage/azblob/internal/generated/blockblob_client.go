@@ -57,7 +57,7 @@ func (client *BlockBlobClient) CommitBlockList(ctx context.Context, blocks Block
 
 // commitBlockListCreateRequest creates the CommitBlockList request.
 func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context, blocks BlockLookupList, options *BlockBlobClientCommitBlockListOptions) (*policy.Request, error) {
-	urlPath := "/?comp=blocklist"
+	urlPath := "?comp=blocklist"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -242,7 +242,7 @@ func (client *BlockBlobClient) GetBlockList(ctx context.Context, listType BlockL
 
 // getBlockListCreateRequest creates the GetBlockList request.
 func (client *BlockBlobClient) getBlockListCreateRequest(ctx context.Context, listType BlockListType, options *BlockBlobClientGetBlockListOptions) (*policy.Request, error) {
-	urlPath := "/?comp=blocklist"
+	urlPath := "?comp=blocklist"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -341,7 +341,7 @@ func (client *BlockBlobClient) Query(ctx context.Context, queryRequest QueryRequ
 
 // queryCreateRequest creates the Query request.
 func (client *BlockBlobClient) queryCreateRequest(ctx context.Context, queryRequest QueryRequest, options *BlockBlobClientQueryOptions) (*policy.Request, error) {
-	urlPath := "/?comp=query"
+	urlPath := "?comp=query"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -575,7 +575,7 @@ func (client *BlockBlobClient) StageBlock(ctx context.Context, blockID string, c
 
 // stageBlockCreateRequest creates the StageBlock request.
 func (client *BlockBlobClient) stageBlockCreateRequest(ctx context.Context, blockID string, contentLength int64, body io.ReadSeekCloser, options *BlockBlobClientStageBlockOptions) (*policy.Request, error) {
-	urlPath := "/?comp=block"
+	urlPath := "?comp=block"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -709,7 +709,7 @@ func (client *BlockBlobClient) StageBlockFromURL(ctx context.Context, blockID st
 
 // stageBlockFromURLCreateRequest creates the StageBlockFromURL request.
 func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Context, blockID string, contentLength int64, sourceURL string, options *BlockBlobClientStageBlockFromURLOptions) (*policy.Request, error) {
-	urlPath := "/?comp=block"
+	urlPath := "?comp=block"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err

@@ -50,7 +50,7 @@ func (client *AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSee
 
 // appendBlockCreateRequest creates the AppendBlock request.
 func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, body io.ReadSeekCloser, contentLength int64, options *AppendBlobClientAppendBlockOptions) (*policy.Request, error) {
-	urlPath := "/?comp=appendblock"
+	urlPath := "?comp=appendblock"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -222,7 +222,7 @@ func (client *AppendBlobClient) AppendBlockFromURL(ctx context.Context, sourceUR
 
 // appendBlockFromURLCreateRequest creates the AppendBlockFromURL request.
 func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Context, sourceURL string, contentLength int64, options *AppendBlobClientAppendBlockFromURLOptions) (*policy.Request, error) {
-	urlPath := "/?comp=appendblock"
+	urlPath := "?comp=appendblock"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -577,7 +577,7 @@ func (client *AppendBlobClient) Seal(ctx context.Context, options *AppendBlobCli
 
 // sealCreateRequest creates the Seal request.
 func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *AppendBlobClientSealOptions) (*policy.Request, error) {
-	urlPath := "/?comp=seal"
+	urlPath := "?comp=seal"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err

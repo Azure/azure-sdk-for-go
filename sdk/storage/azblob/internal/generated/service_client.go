@@ -50,7 +50,7 @@ func (client *ServiceClient) FilterBlobs(ctx context.Context, filterExpression s
 
 // filterBlobsCreateRequest creates the FilterBlobs request.
 func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, filterExpression string, options *ServiceClientFilterBlobsOptions) (*policy.Request, error) {
-	urlPath := "/?comp=blobs"
+	urlPath := "?comp=blobs"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -131,7 +131,7 @@ func (client *ServiceClient) GetAccountInfo(ctx context.Context, options *Servic
 
 // getAccountInfoCreateRequest creates the GetAccountInfo request.
 func (client *ServiceClient) getAccountInfoCreateRequest(ctx context.Context, options *ServiceClientGetAccountInfoOptions) (*policy.Request, error) {
-	urlPath := "/?restype=account&comp=properties"
+	urlPath := "?restype=account&comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -209,7 +209,7 @@ func (client *ServiceClient) GetProperties(ctx context.Context, options *Service
 
 // getPropertiesCreateRequest creates the GetProperties request.
 func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, options *ServiceClientGetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/?restype=service&comp=properties"
+	urlPath := "?restype=service&comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -281,7 +281,7 @@ func (client *ServiceClient) GetStatistics(ctx context.Context, options *Service
 
 // getStatisticsCreateRequest creates the GetStatistics request.
 func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, options *ServiceClientGetStatisticsOptions) (*policy.Request, error) {
-	urlPath := "/?restype=service&comp=stats"
+	urlPath := "?restype=service&comp=stats"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -355,7 +355,7 @@ func (client *ServiceClient) GetUserDelegationKey(ctx context.Context, keyInfo K
 
 // getUserDelegationKeyCreateRequest creates the GetUserDelegationKey request.
 func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Context, keyInfo KeyInfo, options *ServiceClientGetUserDelegationKeyOptions) (*policy.Request, error) {
-	urlPath := "/?restype=service&comp=userdelegationkey"
+	urlPath := "?restype=service&comp=userdelegationkey"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -435,7 +435,7 @@ func (client *ServiceClient) NewListContainersSegmentPager(options *ServiceClien
 
 // listContainersSegmentCreateRequest creates the ListContainersSegment request.
 func (client *ServiceClient) listContainersSegmentCreateRequest(ctx context.Context, options *ServiceClientListContainersSegmentOptions) (*policy.Request, error) {
-	urlPath := "/?comp=list"
+	urlPath := "?comp=list"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -520,7 +520,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, storageServicePr
 
 // setPropertiesCreateRequest creates the SetProperties request.
 func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/?restype=service&comp=properties"
+	urlPath := "?restype=service&comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -590,7 +590,7 @@ func (client *ServiceClient) SubmitBatch(ctx context.Context, contentLength int6
 
 // submitBatchCreateRequest creates the SubmitBatch request.
 func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, contentLength int64, body SubmitBatchRequest, options *ServiceClientSubmitBatchOptions) (*policy.Request, error) {
-	urlPath := "/?comp=batch"
+	urlPath := "?comp=batch"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err

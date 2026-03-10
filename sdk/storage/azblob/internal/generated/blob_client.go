@@ -51,7 +51,7 @@ func (client *BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, o
 
 // abortCopyFromURLCreateRequest creates the AbortCopyFromURL request.
 func (client *BlobClient) abortCopyFromURLCreateRequest(ctx context.Context, copyID string, options *BlobClientAbortCopyFromURLOptions) (*policy.Request, error) {
-	urlPath := "/?comp=copy"
+	urlPath := "?comp=copy"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -123,7 +123,7 @@ func (client *BlobClient) AcquireLease(ctx context.Context, duration int32, opti
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
 func (client *BlobClient) acquireLeaseCreateRequest(ctx context.Context, duration int32, options *BlobClientAcquireLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease"
+	urlPath := "?comp=lease"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ func (client *BlobClient) BreakLease(ctx context.Context, options *BlobClientBre
 
 // breakLeaseCreateRequest creates the BreakLease request.
 func (client *BlobClient) breakLeaseCreateRequest(ctx context.Context, options *BlobClientBreakLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease"
+	urlPath := "?comp=lease"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -325,7 +325,7 @@ func (client *BlobClient) ChangeLease(ctx context.Context, leaseID string, propo
 
 // changeLeaseCreateRequest creates the ChangeLease request.
 func (client *BlobClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, proposedLeaseID string, options *BlobClientChangeLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease"
+	urlPath := "?comp=lease"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -424,7 +424,7 @@ func (client *BlobClient) CopyFromURL(ctx context.Context, copySource string, op
 
 // copyFromURLCreateRequest creates the CopyFromURL request.
 func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySource string, options *BlobClientCopyFromURLOptions) (*policy.Request, error) {
-	urlPath := "/?comp=copy"
+	urlPath := "?comp=copy"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -593,7 +593,7 @@ func (client *BlobClient) CreateSnapshot(ctx context.Context, options *BlobClien
 
 // createSnapshotCreateRequest creates the CreateSnapshot request.
 func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, options *BlobClientCreateSnapshotOptions) (*policy.Request, error) {
-	urlPath := "/?comp=snapshot"
+	urlPath := "?comp=snapshot"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -825,7 +825,7 @@ func (client *BlobClient) DeleteImmutabilityPolicy(ctx context.Context, options 
 
 // deleteImmutabilityPolicyCreateRequest creates the DeleteImmutabilityPolicy request.
 func (client *BlobClient) deleteImmutabilityPolicyCreateRequest(ctx context.Context, options *BlobClientDeleteImmutabilityPolicyOptions) (*policy.Request, error) {
-	urlPath := "/?comp=immutabilityPolicies"
+	urlPath := "?comp=immutabilityPolicies"
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1211,7 +1211,7 @@ func (client *BlobClient) GetAccountInfo(ctx context.Context, options *BlobClien
 
 // getAccountInfoCreateRequest creates the GetAccountInfo request.
 func (client *BlobClient) getAccountInfoCreateRequest(ctx context.Context, options *BlobClientGetAccountInfoOptions) (*policy.Request, error) {
-	urlPath := "/?restype=account&comp=properties"
+	urlPath := "?restype=account&comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1265,6 +1265,7 @@ func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (Blo
 
 // GetProperties - The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties
 // for the blob. It does not return the content of the blob.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-04-06
 //   - options - BlobClientGetPropertiesOptions contains the optional parameters for the BlobClient.GetProperties method.
@@ -1339,7 +1340,7 @@ func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, option
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (BlobClientGetPropertiesResponse, error) {
-	result := BlobClientGetPropertiesResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
+	result := BlobClientGetPropertiesResponse{}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
@@ -1602,7 +1603,7 @@ func (client *BlobClient) GetTags(ctx context.Context, options *BlobClientGetTag
 
 // getTagsCreateRequest creates the GetTags request.
 func (client *BlobClient) getTagsCreateRequest(ctx context.Context, options *BlobClientGetTagsOptions) (*policy.Request, error) {
-	urlPath := "/?comp=tags"
+	urlPath := "?comp=tags"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1700,7 +1701,7 @@ func (client *BlobClient) ReleaseLease(ctx context.Context, leaseID string, opti
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
 func (client *BlobClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *BlobClientReleaseLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease"
+	urlPath := "?comp=lease"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1793,7 +1794,7 @@ func (client *BlobClient) RenewLease(ctx context.Context, leaseID string, option
 
 // renewLeaseCreateRequest creates the RenewLease request.
 func (client *BlobClient) renewLeaseCreateRequest(ctx context.Context, leaseID string, options *BlobClientRenewLeaseOptions) (*policy.Request, error) {
-	urlPath := "/?comp=lease"
+	urlPath := "?comp=lease"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1888,7 +1889,7 @@ func (client *BlobClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOpt
 
 // setExpiryCreateRequest creates the SetExpiry request.
 func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOptions ExpiryOptions, options *BlobClientSetExpiryOptions) (*policy.Request, error) {
-	urlPath := "/?comp=expiry"
+	urlPath := "?comp=expiry"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1966,7 +1967,7 @@ func (client *BlobClient) SetHTTPHeaders(ctx context.Context, options *BlobClien
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
 func (client *BlobClient) setHTTPHeadersCreateRequest(ctx context.Context, options *BlobClientSetHTTPHeadersOptions) (*policy.Request, error) {
-	urlPath := "/?comp=properties"
+	urlPath := "?comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -2085,7 +2086,7 @@ func (client *BlobClient) SetImmutabilityPolicy(ctx context.Context, expiry time
 
 // setImmutabilityPolicyCreateRequest creates the SetImmutabilityPolicy request.
 func (client *BlobClient) setImmutabilityPolicyCreateRequest(ctx context.Context, expiry time.Time, options *BlobClientSetImmutabilityPolicyOptions) (*policy.Request, error) {
-	urlPath := "/?comp=immutabilityPolicies"
+	urlPath := "?comp=immutabilityPolicies"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -2173,7 +2174,7 @@ func (client *BlobClient) SetLegalHold(ctx context.Context, legalHold bool, opti
 
 // setLegalHoldCreateRequest creates the SetLegalHold request.
 func (client *BlobClient) setLegalHoldCreateRequest(ctx context.Context, legalHold bool, options *BlobClientSetLegalHoldOptions) (*policy.Request, error) {
-	urlPath := "/?comp=legalhold"
+	urlPath := "?comp=legalhold"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -2251,7 +2252,7 @@ func (client *BlobClient) SetMetadata(ctx context.Context, options *BlobClientSe
 
 // setMetadataCreateRequest creates the SetMetadata request.
 func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options *BlobClientSetMetadataOptions) (*policy.Request, error) {
-	urlPath := "/?comp=metadata"
+	urlPath := "?comp=metadata"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -2379,7 +2380,7 @@ func (client *BlobClient) SetTags(ctx context.Context, tags BlobTags, options *B
 
 // setTagsCreateRequest creates the SetTags request.
 func (client *BlobClient) setTagsCreateRequest(ctx context.Context, tags BlobTags, options *BlobClientSetTagsOptions) (*policy.Request, error) {
-	urlPath := "/?comp=tags"
+	urlPath := "?comp=tags"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -2477,7 +2478,7 @@ func (client *BlobClient) SetTier(ctx context.Context, tier AccessTier, options 
 
 // setTierCreateRequest creates the SetTier request.
 func (client *BlobClient) setTierCreateRequest(ctx context.Context, tier AccessTier, options *BlobClientSetTierOptions) (*policy.Request, error) {
-	urlPath := "/?comp=tier"
+	urlPath := "?comp=tier"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -2704,7 +2705,7 @@ func (client *BlobClient) Undelete(ctx context.Context, options *BlobClientUndel
 
 // undeleteCreateRequest creates the Undelete request.
 func (client *BlobClient) undeleteCreateRequest(ctx context.Context, options *BlobClientUndeleteOptions) (*policy.Request, error) {
-	urlPath := "/?comp=undelete"
+	urlPath := "?comp=undelete"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err

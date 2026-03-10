@@ -49,7 +49,7 @@ func (client *PageBlobClient) ClearPages(ctx context.Context, rangeParam string,
 
 // clearPagesCreateRequest creates the ClearPages request.
 func (client *PageBlobClient) clearPagesCreateRequest(ctx context.Context, rangeParam string, options *PageBlobClientClearPagesOptions) (*policy.Request, error) {
-	urlPath := "/?comp=page"
+	urlPath := "?comp=page"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -193,7 +193,7 @@ func (client *PageBlobClient) CopyIncremental(ctx context.Context, copySource st
 
 // copyIncrementalCreateRequest creates the CopyIncremental request.
 func (client *PageBlobClient) copyIncrementalCreateRequest(ctx context.Context, copySource string, options *PageBlobClientCopyIncrementalOptions) (*policy.Request, error) {
-	urlPath := "/?comp=incrementalcopy"
+	urlPath := "?comp=incrementalcopy"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -464,7 +464,7 @@ func (client *PageBlobClient) GetPageRanges(ctx context.Context, options *PageBl
 
 // getPageRangesCreateRequest creates the GetPageRanges request.
 func (client *PageBlobClient) getPageRangesCreateRequest(ctx context.Context, options *PageBlobClientGetPageRangesOptions) (*policy.Request, error) {
-	urlPath := "/?comp=pagelist"
+	urlPath := "?comp=pagelist"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -584,7 +584,7 @@ func (client *PageBlobClient) GetPageRangesDiff(ctx context.Context, options *Pa
 
 // getPageRangesDiffCreateRequest creates the GetPageRangesDiff request.
 func (client *PageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context, options *PageBlobClientGetPageRangesDiffOptions) (*policy.Request, error) {
-	urlPath := "/?comp=pagelist"
+	urlPath := "?comp=pagelist"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -710,7 +710,7 @@ func (client *PageBlobClient) Resize(ctx context.Context, size int64, options *P
 
 // resizeCreateRequest creates the Resize request.
 func (client *PageBlobClient) resizeCreateRequest(ctx context.Context, size int64, options *PageBlobClientResizeOptions) (*policy.Request, error) {
-	urlPath := "/?comp=properties"
+	urlPath := "?comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -826,7 +826,7 @@ func (client *PageBlobClient) UpdateSequenceNumber(ctx context.Context, sequence
 
 // updateSequenceNumberCreateRequest creates the UpdateSequenceNumber request.
 func (client *PageBlobClient) updateSequenceNumberCreateRequest(ctx context.Context, sequenceNumberAction SequenceNumberActionType, options *PageBlobClientUpdateSequenceNumberOptions) (*policy.Request, error) {
-	urlPath := "/?comp=properties"
+	urlPath := "?comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -932,7 +932,7 @@ func (client *PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeekC
 
 // uploadPagesCreateRequest creates the UploadPages request.
 func (client *PageBlobClient) uploadPagesCreateRequest(ctx context.Context, body io.ReadSeekCloser, contentLength int64, rangeParam string, options *PageBlobClientUploadPagesOptions) (*policy.Request, error) {
-	urlPath := "/?comp=page"
+	urlPath := "?comp=page"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
@@ -1109,7 +1109,7 @@ func (client *PageBlobClient) UploadPagesFromURL(ctx context.Context, sourceURL 
 
 // uploadPagesFromURLCreateRequest creates the UploadPagesFromURL request.
 func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Context, sourceURL string, sourceRange string, contentLength int64, rangeParam string, options *PageBlobClientUploadPagesFromURLOptions) (*policy.Request, error) {
-	urlPath := "/?comp=page"
+	urlPath := "?comp=page"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err

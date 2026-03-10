@@ -735,9 +735,6 @@ type BlobClientGetPropertiesResponse struct {
 	// An opaque, globally-unique, server-generated string identifier for the request.
 	RequestID *string
 
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-
 	// The number of tags associated with the blob
 	TagCount *int64
 

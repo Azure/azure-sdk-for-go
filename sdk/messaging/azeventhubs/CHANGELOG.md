@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.3 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed missing `consumers.Delete()` call when checkpoint initialization fails, which could block future consumer creation for the affected partition. (#24983)
+
 ## 2.0.2 (2026-03-10)
 
 ### Bugs Fixed

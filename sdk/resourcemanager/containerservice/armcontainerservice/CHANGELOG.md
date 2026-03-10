@@ -1,5 +1,9 @@
 # Release History
 
+## 8.3.0-beta.2 (2026-03-10)
+### Other Changes
+
+
 ## 8.3.0-beta.1 (2025-12-26)
 ### Features Added
 

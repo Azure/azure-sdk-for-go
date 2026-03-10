@@ -483,7 +483,7 @@ func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}
@@ -639,7 +639,7 @@ func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, optio
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}
@@ -1049,7 +1049,7 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		result.CopySource = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatus)(&val)
+		result.CopyStatus = (*CopyStatusType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-copy-status-description"); val != "" {
 		result.CopyStatusDescription = &val
@@ -1081,11 +1081,11 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		result.EncryptionScope = &val
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
-		immutabilityPolicyExpiresOn, err := time.Parse(time.RFC1123, val)
+		immutabilityPolicyExpiry, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return BlobClientDownloadResponse{}, err
 		}
-		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
+		result.ImmutabilityPolicyExpiry = &immutabilityPolicyExpiry
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
 		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
@@ -1139,22 +1139,22 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		result.LegalHold = &legalHold
 	}
 	for hh := range resp.Header {
-		if len(hh) > len("x-ms-meta") && strings.EqualFold(hh[:len("x-ms-meta")], "x-ms-meta") {
+		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
 				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta"):]] = to.Ptr(resp.Header.Get(hh))
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-or-policy-id"); val != "" {
 		result.ObjectReplicationPolicyID = &val
 	}
 	for hh := range resp.Header {
-		if len(hh) > len("x-ms-or") && strings.EqualFold(hh[:len("x-ms-or")], "x-ms-or") {
+		if len(hh) > len("x-ms-or-") && strings.EqualFold(hh[:len("x-ms-or-")], "x-ms-or-") {
 			if result.ObjectReplicationRules == nil {
 				result.ObjectReplicationRules = map[string]*string{}
 			}
-			result.ObjectReplicationRules[hh[len("x-ms-or"):]] = to.Ptr(resp.Header.Get(hh))
+			result.ObjectReplicationRules[hh[len("x-ms-or-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
@@ -1265,7 +1265,6 @@ func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (Blo
 
 // GetProperties - The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties
 // for the blob. It does not return the content of the blob.
-// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-04-06
 //   - options - BlobClientGetPropertiesOptions contains the optional parameters for the BlobClient.GetProperties method.
@@ -1340,7 +1339,7 @@ func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, option
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (BlobClientGetPropertiesResponse, error) {
-	result := BlobClientGetPropertiesResponse{}
+	result := BlobClientGetPropertiesResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
@@ -1411,6 +1410,9 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		}
 		result.ContentMD5 = contentMD5
 	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
 	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
 		copyCompletionTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1428,7 +1430,7 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		result.CopySource = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatus)(&val)
+		result.CopyStatus = (*CopyStatusType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-copy-status-description"); val != "" {
 		result.CopyStatusDescription = &val
@@ -1470,11 +1472,11 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		result.ExpiresOn = &expiresOn
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
-		immutabilityPolicyExpiresOn, err := time.Parse(time.RFC1123, val)
+		immutabilityPolicyExpiry, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return BlobClientGetPropertiesResponse{}, err
 		}
-		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
+		result.ImmutabilityPolicyExpiry = &immutabilityPolicyExpiry
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
 		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
@@ -1535,22 +1537,22 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		result.LegalHold = &legalHold
 	}
 	for hh := range resp.Header {
-		if len(hh) > len("x-ms-meta") && strings.EqualFold(hh[:len("x-ms-meta")], "x-ms-meta") {
+		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
 				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta"):]] = to.Ptr(resp.Header.Get(hh))
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-or-policy-id"); val != "" {
 		result.ObjectReplicationPolicyID = &val
 	}
 	for hh := range resp.Header {
-		if len(hh) > len("x-ms-or") && strings.EqualFold(hh[:len("x-ms-or")], "x-ms-or") {
+		if len(hh) > len("x-ms-or-") && strings.EqualFold(hh[:len("x-ms-or-")], "x-ms-or-") {
 			if result.ObjectReplicationRules == nil {
 				result.ObjectReplicationRules = map[string]*string{}
 			}
-			result.ObjectReplicationRules[hh[len("x-ms-or"):]] = to.Ptr(resp.Header.Get(hh))
+			result.ObjectReplicationRules[hh[len("x-ms-or-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-rehydrate-priority"); val != "" {
@@ -1901,7 +1903,7 @@ func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 	}
 	req.Raw().Header["x-ms-expiry-option"] = []string{string(expiryOptions)}
 	if options != nil && options.ExpiresOn != nil {
-		req.Raw().Header["x-ms-expiry-time"] = []string{options.ExpiresOn.Format(time.RFC1123)}
+		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
 	return req, nil
@@ -2127,11 +2129,11 @@ func (client *BlobClient) setImmutabilityPolicyHandleResponse(resp *http.Respons
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
-		immutabilityPolicyExpiresOn, err := time.Parse(time.RFC1123, val)
+		immutabilityPolicyExpiry, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return BlobClientSetImmutabilityPolicyResponse{}, err
 		}
-		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
+		result.ImmutabilityPolicyExpiry = &immutabilityPolicyExpiry
 	}
 	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
 		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
@@ -2295,7 +2297,7 @@ func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options 
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}
@@ -2604,7 +2606,7 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}
@@ -2646,7 +2648,7 @@ func (client *BlobClient) startCopyFromURLHandleResponse(resp *http.Response) (B
 		result.CopyID = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatus)(&val)
+		result.CopyStatus = (*CopyStatusType)(&val)
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)

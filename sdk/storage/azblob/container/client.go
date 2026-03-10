@@ -390,14 +390,14 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 		return SubmitBatchResponse{}, err
 	}
 
-	batchResponses, err := exported.ParseBlobBatchResponse(resp.Body, resp.ContentType, bb.subRequests)
+	batchResponses, err := exported.ParseBlobBatchResponse(resp.Body, resp.MultipartContentType, bb.subRequests)
 	if err != nil {
 		return SubmitBatchResponse{}, err
 	}
 
 	return SubmitBatchResponse{
 		Responses:   batchResponses,
-		ContentType: resp.ContentType,
+		ContentType: resp.MultipartContentType,
 		RequestID:   resp.RequestID,
 		Version:     resp.Version,
 	}, nil

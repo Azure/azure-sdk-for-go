@@ -139,7 +139,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}
@@ -484,7 +484,7 @@ func (client *BlockBlobClient) queryHandleResponse(resp *http.Response) (BlockBl
 		result.CopySource = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatus)(&val)
+		result.CopyStatus = (*CopyStatusType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-copy-status-description"); val != "" {
 		result.CopyStatusDescription = &val
@@ -529,11 +529,11 @@ func (client *BlockBlobClient) queryHandleResponse(resp *http.Response) (BlockBl
 		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	for hh := range resp.Header {
-		if len(hh) > len("x-ms-meta") && strings.EqualFold(hh[:len("x-ms-meta")], "x-ms-meta") {
+		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
 				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta"):]] = to.Ptr(resp.Header.Get(hh))
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
@@ -942,7 +942,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, body io.
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}
@@ -1137,7 +1137,7 @@ func (client *BlockBlobClient) uploadBlobFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}

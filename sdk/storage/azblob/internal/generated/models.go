@@ -157,7 +157,7 @@ type BlobProperties struct {
 	CopySource *string `xml:"CopySource"`
 
 	// The copy status of the blob.
-	CopyStatus *CopyStatus `xml:"CopyStatus"`
+	CopyStatus *CopyStatusType `xml:"CopyStatus"`
 
 	// The copy status description of the blob.
 	CopyStatusDescription *string `xml:"CopyStatusDescription"`
@@ -238,7 +238,7 @@ type BlobTags struct {
 // Block - Represents a single block in a block blob. It describes the block's ID and size.
 type Block struct {
 	// REQUIRED; The base64 encoded block ID.
-	Name []byte `xml:"Name"`
+	Name *string `xml:"Name"`
 
 	// REQUIRED; The block size in bytes.
 	Size *int64 `xml:"Size"`
@@ -304,7 +304,7 @@ type ContainerItem struct {
 	Properties *ContainerProperties `xml:"Properties"`
 
 	// Whether the container is deleted.
-	Delete *bool `xml:"Deleted"`
+	Deleted *bool `xml:"Deleted"`
 
 	// The metadata of the container.
 	Metadata map[string]*string `xml:"Metadata"`
@@ -530,7 +530,7 @@ type Metrics struct {
 	Enabled *bool `xml:"Enabled"`
 
 	// Whether to include API in the metrics.
-	IncludeApis *bool `xml:"IncludeAPIs"`
+	IncludeAPIs *bool `xml:"IncludeAPIs"`
 
 	// The retention policy of the metrics.
 	RetentionPolicy *RetentionPolicy `xml:"RetentionPolicy"`

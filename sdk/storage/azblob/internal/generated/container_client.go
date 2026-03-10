@@ -348,7 +348,7 @@ func (client *ContainerClient) createCreateRequest(ctx context.Context, options 
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}
@@ -597,7 +597,7 @@ func (client *ContainerClient) getAccessPolicyCreateRequest(ctx context.Context,
 func (client *ContainerClient) getAccessPolicyHandleResponse(resp *http.Response) (ContainerClientGetAccessPolicyResponse, error) {
 	result := ContainerClientGetAccessPolicyResponse{}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
-		result.Access = (*PublicAccessType)(&val)
+		result.BlobPublicAccess = (*PublicAccessType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -762,7 +762,7 @@ func (client *ContainerClient) getPropertiesCreateRequest(ctx context.Context, o
 func (client *ContainerClient) getPropertiesHandleResponse(resp *http.Response) (ContainerClientGetPropertiesResponse, error) {
 	result := ContainerClientGetPropertiesResponse{}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
-		result.Access = (*PublicAccessType)(&val)
+		result.BlobPublicAccess = (*PublicAccessType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -818,11 +818,11 @@ func (client *ContainerClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	for hh := range resp.Header {
-		if len(hh) > len("x-ms-meta") && strings.EqualFold(hh[:len("x-ms-meta")], "x-ms-meta") {
+		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
 				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta"):]] = to.Ptr(resp.Header.Get(hh))
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-deny-encryption-scope-override"); val != "" {
@@ -1477,7 +1477,7 @@ func (client *ContainerClient) setMetadataCreateRequest(ctx context.Context, opt
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
 			}
 		}
 	}

@@ -239,42 +239,6 @@ func (b BlobTags) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	return enc.EncodeElement(aux, start)
 }
 
-// MarshalXML implements the xml.Marshaller interface for type Block.
-func (b Block) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias Block
-	aux := &struct {
-		*alias
-		Name *string `xml:"Name"`
-	}{
-		alias: (*alias)(&b),
-	}
-	if b.Name != nil {
-		encodedName := runtime.EncodeByteArray(b.Name, runtime.Base64StdFormat)
-		aux.Name = &encodedName
-	}
-	return enc.EncodeElement(aux, start)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type Block.
-func (b *Block) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias Block
-	aux := &struct {
-		*alias
-		Name *string `xml:"Name"`
-	}{
-		alias: (*alias)(b),
-	}
-	if err := dec.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	if aux.Name != nil {
-		if err := runtime.DecodeByteArray(*aux.Name, &b.Name, runtime.Base64StdFormat); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MarshalXML implements the xml.Marshaller interface for type BlockList.
 func (b BlockList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias BlockList

@@ -795,7 +795,7 @@ type BlobClientSetExpiryOptions struct {
 	ClientRequestID *string
 
 	// The time this blob will expire.
-	ExpiresOn *time.Time
+	ExpiresOn *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>

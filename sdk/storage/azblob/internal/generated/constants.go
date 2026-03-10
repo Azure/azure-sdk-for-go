@@ -193,27 +193,27 @@ func PossibleBlockListTypeValues() []BlockListType {
 	}
 }
 
-// CopyStatus - The copy status.
-type CopyStatus string
+// CopyStatusType - The copy status.
+type CopyStatusType string
 
 const (
-	// CopyStatusAborted - The copy operation is aborted.
-	CopyStatusAborted CopyStatus = "aborted"
-	// CopyStatusFailed - The copy operation failed.
-	CopyStatusFailed CopyStatus = "failed"
-	// CopyStatusPending - The copy operation is pending.
-	CopyStatusPending CopyStatus = "pending"
-	// CopyStatusSuccess - The copy operation succeeded.
-	CopyStatusSuccess CopyStatus = "success"
+	// CopyStatusTypeAborted - The copy operation is aborted.
+	CopyStatusTypeAborted CopyStatusType = "aborted"
+	// CopyStatusTypeFailed - The copy operation failed.
+	CopyStatusTypeFailed CopyStatusType = "failed"
+	// CopyStatusTypePending - The copy operation is pending.
+	CopyStatusTypePending CopyStatusType = "pending"
+	// CopyStatusTypeSuccess - The copy operation succeeded.
+	CopyStatusTypeSuccess CopyStatusType = "success"
 )
 
-// PossibleCopyStatusValues returns the possible values for the CopyStatus const type.
-func PossibleCopyStatusValues() []CopyStatus {
-	return []CopyStatus{
-		CopyStatusAborted,
-		CopyStatusFailed,
-		CopyStatusPending,
-		CopyStatusSuccess,
+// PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
+func PossibleCopyStatusTypeValues() []CopyStatusType {
+	return []CopyStatusType{
+		CopyStatusTypeAborted,
+		CopyStatusTypeFailed,
+		CopyStatusTypePending,
+		CopyStatusTypeSuccess,
 	}
 }
 

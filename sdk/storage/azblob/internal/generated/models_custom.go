@@ -276,25 +276,6 @@ type SequenceNumberAccessConditions struct {
 	IfSequenceNumberLessThanOrEqualTo *int64
 }
 
-type CopyStatusType string
-
-const (
-	CopyStatusTypeAborted CopyStatusType = "aborted"
-	CopyStatusTypeFailed  CopyStatusType = "failed"
-	CopyStatusTypePending CopyStatusType = "pending"
-	CopyStatusTypeSuccess CopyStatusType = "success"
-)
-
-// PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
-func PossibleCopyStatusTypeValues() []CopyStatusType {
-	return []CopyStatusType{
-		CopyStatusTypeAborted,
-		CopyStatusTypeFailed,
-		CopyStatusTypePending,
-		CopyStatusTypeSuccess,
-	}
-}
-
 // ContainerCPKScopeInfo contains a group of parameters for the ContainerClient.Create method.
 type ContainerCPKScopeInfo struct {
 	// Optional. Version 2019-07-07 and later. Specifies the default encryption scope to set on the container and use for all
@@ -305,3 +286,6 @@ type ContainerCPKScopeInfo struct {
 	// the scope set on the container.
 	PreventEncryptionScopeOverride *bool
 }
+
+// StorageErrorCode - Error codes returned by the service
+type StorageErrorCode string

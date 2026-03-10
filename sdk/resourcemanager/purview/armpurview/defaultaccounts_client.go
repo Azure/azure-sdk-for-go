@@ -22,7 +22,7 @@ type DefaultAccountsClient struct {
 
 // NewDefaultAccountsClient creates a new instance of DefaultAccountsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDefaultAccountsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultAccountsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,7 +37,7 @@ func NewDefaultAccountsClient(credential azcore.TokenCredential, options *arm.Cl
 // Get - Get the default account for the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2024-04-01-preview
 //   - scopeTenantID - The tenant ID.
 //   - scopeType - The scope for the default account.
 //   - options - DefaultAccountsClientGetOptions contains the optional parameters for the DefaultAccountsClient.Get method.
@@ -71,12 +71,12 @@ func (client *DefaultAccountsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("scopeTenantId", scopeTenantID)
-	reqQP.Set("scopeType", string(scopeType))
+	reqQP.Set("api-version", "2024-04-01-preview")
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", *options.Scope)
 	}
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("scopeTenantId", scopeTenantID)
+	reqQP.Set("scopeType", string(scopeType))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -94,7 +94,7 @@ func (client *DefaultAccountsClient) getHandleResponse(resp *http.Response) (Def
 // Remove - Removes the default account from the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2024-04-01-preview
 //   - scopeTenantID - The tenant ID.
 //   - scopeType - The scope for the default account.
 //   - options - DefaultAccountsClientRemoveOptions contains the optional parameters for the DefaultAccountsClient.Remove method.
@@ -127,12 +127,12 @@ func (client *DefaultAccountsClient) removeCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("scopeTenantId", scopeTenantID)
-	reqQP.Set("scopeType", string(scopeType))
+	reqQP.Set("api-version", "2024-04-01-preview")
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", *options.Scope)
 	}
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("scopeTenantId", scopeTenantID)
+	reqQP.Set("scopeType", string(scopeType))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,7 +141,7 @@ func (client *DefaultAccountsClient) removeCreateRequest(ctx context.Context, sc
 // Set - Sets the default account for the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2024-04-01-preview
 //   - defaultAccountPayload - The payload containing the default account information and the scope.
 //   - options - DefaultAccountsClientSetOptions contains the optional parameters for the DefaultAccountsClient.Set method.
 func (client *DefaultAccountsClient) Set(ctx context.Context, defaultAccountPayload DefaultAccountPayload, options *DefaultAccountsClientSetOptions) (DefaultAccountsClientSetResponse, error) {
@@ -167,14 +167,14 @@ func (client *DefaultAccountsClient) Set(ctx context.Context, defaultAccountPayl
 }
 
 // setCreateRequest creates the Set request.
-func (client *DefaultAccountsClient) setCreateRequest(ctx context.Context, defaultAccountPayload DefaultAccountPayload, options *DefaultAccountsClientSetOptions) (*policy.Request, error) {
+func (client *DefaultAccountsClient) setCreateRequest(ctx context.Context, defaultAccountPayload DefaultAccountPayload, _ *DefaultAccountsClientSetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Purview/setDefaultAccount"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2024-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, defaultAccountPayload); err != nil {

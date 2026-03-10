@@ -27,7 +27,7 @@ type PrivateLinkResourcesClient struct {
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
 //   - subscriptionID - The subscription identifier
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // GetByGroupID - Gets a privately linkable resources for an account with given group identifier
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The resource group name.
 //   - accountName - The name of the account.
 //   - groupID - The group identifier.
@@ -72,7 +72,7 @@ func (client *PrivateLinkResourcesClient) GetByGroupID(ctx context.Context, reso
 }
 
 // getByGroupIDCreateRequest creates the GetByGroupID request.
-func (client *PrivateLinkResourcesClient) getByGroupIDCreateRequest(ctx context.Context, resourceGroupName string, accountName string, groupID string, options *PrivateLinkResourcesClientGetByGroupIDOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) getByGroupIDCreateRequest(ctx context.Context, resourceGroupName string, accountName string, groupID string, _ *PrivateLinkResourcesClientGetByGroupIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{accountName}/privateLinkResources/{groupId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *PrivateLinkResourcesClient) getByGroupIDCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2024-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *PrivateLinkResourcesClient) getByGroupIDHandleResponse(resp *http.
 
 // NewListByAccountPager - Gets a list of privately linkable resources for an account
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The resource group name.
 //   - accountName - The name of the account.
 //   - options - PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByAccountPager
@@ -141,7 +141,7 @@ func (client *PrivateLinkResourcesClient) NewListByAccountPager(resourceGroupNam
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *PrivateLinkResourcesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *PrivateLinkResourcesClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{accountName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -160,7 +160,7 @@ func (client *PrivateLinkResourcesClient) listByAccountCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2024-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

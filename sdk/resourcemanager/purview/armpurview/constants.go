@@ -5,10 +5,109 @@
 
 package armpurview
 
+// AccountProvisioningState - Gets the account status code.
+type AccountProvisioningState string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
-	moduleVersion = "v1.2.0"
+	AccountProvisioningStateCanceled     AccountProvisioningState = "Canceled"
+	AccountProvisioningStateCreating     AccountProvisioningState = "Creating"
+	AccountProvisioningStateDeleting     AccountProvisioningState = "Deleting"
+	AccountProvisioningStateFailed       AccountProvisioningState = "Failed"
+	AccountProvisioningStateMoving       AccountProvisioningState = "Moving"
+	AccountProvisioningStateSoftDeleted  AccountProvisioningState = "SoftDeleted"
+	AccountProvisioningStateSoftDeleting AccountProvisioningState = "SoftDeleting"
+	AccountProvisioningStateSucceeded    AccountProvisioningState = "Succeeded"
+	AccountProvisioningStateUnknown      AccountProvisioningState = "Unknown"
+	AccountProvisioningStateUpdating     AccountProvisioningState = "Updating"
 )
+
+// PossibleAccountProvisioningStateValues returns the possible values for the AccountProvisioningState const type.
+func PossibleAccountProvisioningStateValues() []AccountProvisioningState {
+	return []AccountProvisioningState{
+		AccountProvisioningStateCanceled,
+		AccountProvisioningStateCreating,
+		AccountProvisioningStateDeleting,
+		AccountProvisioningStateFailed,
+		AccountProvisioningStateMoving,
+		AccountProvisioningStateSoftDeleted,
+		AccountProvisioningStateSoftDeleting,
+		AccountProvisioningStateSucceeded,
+		AccountProvisioningStateUnknown,
+		AccountProvisioningStateUpdating,
+	}
+}
+
+// AccountSKUName - Gets or sets the sku name.
+type AccountSKUName string
+
+const (
+	AccountSKUNameFree     AccountSKUName = "Free"
+	AccountSKUNameStandard AccountSKUName = "Standard"
+)
+
+// PossibleAccountSKUNameValues returns the possible values for the AccountSKUName const type.
+func PossibleAccountSKUNameValues() []AccountSKUName {
+	return []AccountSKUName{
+		AccountSKUNameFree,
+		AccountSKUNameStandard,
+	}
+}
+
+// ConsentKind - Gets or sets the consent kind.
+type ConsentKind string
+
+const (
+	ConsentKindGovernance ConsentKind = "Governance"
+	ConsentKindMetadata   ConsentKind = "Metadata"
+)
+
+// PossibleConsentKindValues returns the possible values for the ConsentKind const type.
+func PossibleConsentKindValues() []ConsentKind {
+	return []ConsentKind{
+		ConsentKindGovernance,
+		ConsentKindMetadata,
+	}
+}
+
+// ConsentScopeType - Defines consent scope type.
+type ConsentScopeType string
+
+const (
+	ConsentScopeTypeAzure      ConsentScopeType = "Azure"
+	ConsentScopeTypeDatabricks ConsentScopeType = "Databricks"
+	ConsentScopeTypeFabric     ConsentScopeType = "Fabric"
+	ConsentScopeTypeS3         ConsentScopeType = "S3"
+	ConsentScopeTypeSnowflake  ConsentScopeType = "Snowflake"
+)
+
+// PossibleConsentScopeTypeValues returns the possible values for the ConsentScopeType const type.
+func PossibleConsentScopeTypeValues() []ConsentScopeType {
+	return []ConsentScopeType{
+		ConsentScopeTypeAzure,
+		ConsentScopeTypeDatabricks,
+		ConsentScopeTypeFabric,
+		ConsentScopeTypeS3,
+		ConsentScopeTypeSnowflake,
+	}
+}
+
+// ConsentStatus - Defines consent status.
+type ConsentStatus string
+
+const (
+	ConsentStatusDisabled     ConsentStatus = "Disabled"
+	ConsentStatusEnabled      ConsentStatus = "Enabled"
+	ConsentStatusNotSpecified ConsentStatus = "NotSpecified"
+)
+
+// PossibleConsentStatusValues returns the possible values for the ConsentStatus const type.
+func PossibleConsentStatusValues() []ConsentStatus {
+	return []ConsentStatus{
+		ConsentStatusDisabled,
+		ConsentStatusEnabled,
+		ConsentStatusNotSpecified,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -27,6 +126,74 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// EventHubType - The event hub type.
+type EventHubType string
+
+const (
+	EventHubTypeHook         EventHubType = "Hook"
+	EventHubTypeNotification EventHubType = "Notification"
+)
+
+// PossibleEventHubTypeValues returns the possible values for the EventHubType const type.
+func PossibleEventHubTypeValues() []EventHubType {
+	return []EventHubType{
+		EventHubTypeHook,
+		EventHubTypeNotification,
+	}
+}
+
+// EventStreamingState - The state of the event streaming service
+type EventStreamingState string
+
+const (
+	EventStreamingStateDisabled EventStreamingState = "Disabled"
+	EventStreamingStateEnabled  EventStreamingState = "Enabled"
+)
+
+// PossibleEventStreamingStateValues returns the possible values for the EventStreamingState const type.
+func PossibleEventStreamingStateValues() []EventStreamingState {
+	return []EventStreamingState{
+		EventStreamingStateDisabled,
+		EventStreamingStateEnabled,
+	}
+}
+
+// EventStreamingType - The event streaming service type
+type EventStreamingType string
+
+const (
+	EventStreamingTypeAzure   EventStreamingType = "Azure"
+	EventStreamingTypeManaged EventStreamingType = "Managed"
+	EventStreamingTypeNone    EventStreamingType = "None"
+)
+
+// PossibleEventStreamingTypeValues returns the possible values for the EventStreamingType const type.
+func PossibleEventStreamingTypeValues() []EventStreamingType {
+	return []EventStreamingType{
+		EventStreamingTypeAzure,
+		EventStreamingTypeManaged,
+		EventStreamingTypeNone,
+	}
+}
+
+// KafkaConfigurationIdentityType - Identity Type.
+type KafkaConfigurationIdentityType string
+
+const (
+	KafkaConfigurationIdentityTypeNone           KafkaConfigurationIdentityType = "None"
+	KafkaConfigurationIdentityTypeSystemAssigned KafkaConfigurationIdentityType = "SystemAssigned"
+	KafkaConfigurationIdentityTypeUserAssigned   KafkaConfigurationIdentityType = "UserAssigned"
+)
+
+// PossibleKafkaConfigurationIdentityTypeValues returns the possible values for the KafkaConfigurationIdentityType const type.
+func PossibleKafkaConfigurationIdentityTypeValues() []KafkaConfigurationIdentityType {
+	return []KafkaConfigurationIdentityType{
+		KafkaConfigurationIdentityTypeNone,
+		KafkaConfigurationIdentityTypeSystemAssigned,
+		KafkaConfigurationIdentityTypeUserAssigned,
 	}
 }
 
@@ -50,17 +217,96 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	}
 }
 
-// Name - Gets or sets the sku name.
-type Name string
+// ManagedEventHubState - Gets or sets the state of managed eventhub. If enabled managed eventhub will be created, if disabled
+// the managed eventhub will be removed.
+type ManagedEventHubState string
 
 const (
-	NameStandard Name = "Standard"
+	ManagedEventHubStateDisabled     ManagedEventHubState = "Disabled"
+	ManagedEventHubStateEnabled      ManagedEventHubState = "Enabled"
+	ManagedEventHubStateNotSpecified ManagedEventHubState = "NotSpecified"
 )
 
-// PossibleNameValues returns the possible values for the Name const type.
-func PossibleNameValues() []Name {
-	return []Name{
-		NameStandard,
+// PossibleManagedEventHubStateValues returns the possible values for the ManagedEventHubState const type.
+func PossibleManagedEventHubStateValues() []ManagedEventHubState {
+	return []ManagedEventHubState{
+		ManagedEventHubStateDisabled,
+		ManagedEventHubStateEnabled,
+		ManagedEventHubStateNotSpecified,
+	}
+}
+
+// ManagedIdentityType - Identity Type
+type ManagedIdentityType string
+
+const (
+	ManagedIdentityTypeNone           ManagedIdentityType = "None"
+	ManagedIdentityTypeSystemAssigned ManagedIdentityType = "SystemAssigned"
+	ManagedIdentityTypeUserAssigned   ManagedIdentityType = "UserAssigned"
+)
+
+// PossibleManagedIdentityTypeValues returns the possible values for the ManagedIdentityType const type.
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return []ManagedIdentityType{
+		ManagedIdentityTypeNone,
+		ManagedIdentityTypeSystemAssigned,
+		ManagedIdentityTypeUserAssigned,
+	}
+}
+
+// MergeAccountType - The account's type for the merge operation.
+type MergeAccountType string
+
+const (
+	MergeAccountTypePrimary   MergeAccountType = "Primary"
+	MergeAccountTypeSecondary MergeAccountType = "Secondary"
+)
+
+// PossibleMergeAccountTypeValues returns the possible values for the MergeAccountType const type.
+func PossibleMergeAccountTypeValues() []MergeAccountType {
+	return []MergeAccountType{
+		MergeAccountTypePrimary,
+		MergeAccountTypeSecondary,
+	}
+}
+
+// MergeStatus - The status of the merge operation.
+type MergeStatus string
+
+const (
+	MergeStatusFailed     MergeStatus = "Failed"
+	MergeStatusInProgress MergeStatus = "InProgress"
+	MergeStatusSucceeded  MergeStatus = "Succeeded"
+)
+
+// PossibleMergeStatusValues returns the possible values for the MergeStatus const type.
+func PossibleMergeStatusValues() []MergeStatus {
+	return []MergeStatus{
+		MergeStatusFailed,
+		MergeStatusInProgress,
+		MergeStatusSucceeded,
+	}
+}
+
+// PrivateEndpointConnectionStatus - The status.
+type PrivateEndpointConnectionStatus string
+
+const (
+	PrivateEndpointConnectionStatusApproved     PrivateEndpointConnectionStatus = "Approved"
+	PrivateEndpointConnectionStatusDisconnected PrivateEndpointConnectionStatus = "Disconnected"
+	PrivateEndpointConnectionStatusPending      PrivateEndpointConnectionStatus = "Pending"
+	PrivateEndpointConnectionStatusRejected     PrivateEndpointConnectionStatus = "Rejected"
+	PrivateEndpointConnectionStatusUnknown      PrivateEndpointConnectionStatus = "Unknown"
+)
+
+// PossiblePrivateEndpointConnectionStatusValues returns the possible values for the PrivateEndpointConnectionStatus const type.
+func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnectionStatus {
+	return []PrivateEndpointConnectionStatus{
+		PrivateEndpointConnectionStatusApproved,
+		PrivateEndpointConnectionStatusDisconnected,
+		PrivateEndpointConnectionStatusPending,
+		PrivateEndpointConnectionStatusRejected,
+		PrivateEndpointConnectionStatusUnknown,
 	}
 }
 
@@ -94,7 +340,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// PublicNetworkAccess - Gets or sets the public network access.
+// PublicNetworkAccess - Gets or sets the public network access for managed resources.
 type PublicNetworkAccess string
 
 const (
@@ -144,42 +390,20 @@ func PossibleScopeTypeValues() []ScopeType {
 	}
 }
 
-// Status - The status.
-type Status string
+// TenantEndpointState - Gets or sets the state of tenant endpoint.
+type TenantEndpointState string
 
 const (
-	StatusApproved     Status = "Approved"
-	StatusDisconnected Status = "Disconnected"
-	StatusPending      Status = "Pending"
-	StatusRejected     Status = "Rejected"
-	StatusUnknown      Status = "Unknown"
+	TenantEndpointStateDisabled     TenantEndpointState = "Disabled"
+	TenantEndpointStateEnabled      TenantEndpointState = "Enabled"
+	TenantEndpointStateNotSpecified TenantEndpointState = "NotSpecified"
 )
 
-// PossibleStatusValues returns the possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{
-		StatusApproved,
-		StatusDisconnected,
-		StatusPending,
-		StatusRejected,
-		StatusUnknown,
-	}
-}
-
-// Type - Identity Type
-type Type string
-
-const (
-	TypeNone           Type = "None"
-	TypeSystemAssigned Type = "SystemAssigned"
-	TypeUserAssigned   Type = "UserAssigned"
-)
-
-// PossibleTypeValues returns the possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{
-		TypeNone,
-		TypeSystemAssigned,
-		TypeUserAssigned,
+// PossibleTenantEndpointStateValues returns the possible values for the TenantEndpointState const type.
+func PossibleTenantEndpointStateValues() []TenantEndpointState {
+	return []TenantEndpointState{
+		TenantEndpointStateDisabled,
+		TenantEndpointStateEnabled,
+		TenantEndpointStateNotSpecified,
 	}
 }

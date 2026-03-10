@@ -13,19 +13,19 @@ type AccountsClientAddRootCollectionAdminOptions struct {
 
 // AccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the AccountsClient.BeginCreateOrUpdate method.
 type AccountsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
 type AccountsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
 type AccountsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -76,6 +76,51 @@ type DefaultAccountsClientSetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FeaturesClientAccountGetOptions contains the optional parameters for the FeaturesClient.AccountGet method.
+type FeaturesClientAccountGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturesClientSubscriptionGetOptions contains the optional parameters for the FeaturesClient.SubscriptionGet method.
+type FeaturesClientSubscriptionGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IngestionPrivateEndpointConnectionsClientListOptions contains the optional parameters for the IngestionPrivateEndpointConnectionsClient.NewListPager
+// method.
+type IngestionPrivateEndpointConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IngestionPrivateEndpointConnectionsClientUpdateStatusOptions contains the optional parameters for the IngestionPrivateEndpointConnectionsClient.UpdateStatus
+// method.
+type IngestionPrivateEndpointConnectionsClientUpdateStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KafkaConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the KafkaConfigurationsClient.CreateOrUpdate
+// method.
+type KafkaConfigurationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KafkaConfigurationsClientDeleteOptions contains the optional parameters for the KafkaConfigurationsClient.Delete method.
+type KafkaConfigurationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KafkaConfigurationsClientGetOptions contains the optional parameters for the KafkaConfigurationsClient.Get method.
+type KafkaConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KafkaConfigurationsClientListByAccountOptions contains the optional parameters for the KafkaConfigurationsClient.NewListByAccountPager
+// method.
+type KafkaConfigurationsClientListByAccountOptions struct {
+	// The skip token.
+	SkipToken *string
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -84,14 +129,14 @@ type OperationsClientListOptions struct {
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -118,4 +163,10 @@ type PrivateLinkResourcesClientGetByGroupIDOptions struct {
 // method.
 type PrivateLinkResourcesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
+}
+
+// UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
+type UsagesClientGetOptions struct {
+	// The filter, currently unused.
+	Filter *string
 }

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/BackupsUnderBackupVault_Create.json
+// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Create.json
 func ExampleBackupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,7 +26,7 @@ func ExampleBackupsClient_BeginCreate() {
 	poller, err := clientFactory.NewBackupsClient().BeginCreate(ctx, "myRG", "account1", "backupVault1", "backup1", armnetapp.Backup{
 		Properties: &armnetapp.BackupProperties{
 			Label:            to.Ptr("myLabel"),
-			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1"),
+			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 		},
 	}, nil)
 	if err != nil {
@@ -51,13 +51,13 @@ func ExampleBackupsClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Size: to.Ptr[int64](10011),
 	// 			SnapshotName: to.Ptr("backup1"),
-	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1"),
+	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/BackupsUnderBackupVault_Delete.json
+// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Delete.json
 func ExampleBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleBackupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/BackupsUnderBackupVault_Get.json
+// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Get.json
 func ExampleBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,18 +104,20 @@ func ExampleBackupsClient_Get() {
 	// 		Properties: &armnetapp.BackupProperties{
 	// 			BackupPolicyResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/policy1"),
 	// 			BackupType: to.Ptr(armnetapp.BackupTypeManual),
+	// 			CompletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
 	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
 	// 			Label: to.Ptr("myLabel"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Size: to.Ptr[int64](10011),
+	// 			SnapshotCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
 	// 			SnapshotName: to.Ptr("backup1"),
-	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1"),
+	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_LatestBackupStatus.json
+// Generated from example definition: 2025-12-01/Volumes_LatestBackupStatus.json
 func ExampleBackupsClient_GetLatestStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +149,7 @@ func ExampleBackupsClient_GetLatestStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_LatestRestoreStatus.json
+// Generated from example definition: 2025-12-01/Volumes_LatestRestoreStatus.json
 func ExampleBackupsClient_GetVolumeLatestRestoreStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +179,7 @@ func ExampleBackupsClient_GetVolumeLatestRestoreStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Backups_ListByVault.json
+// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_List.json
 func ExampleBackupsClient_NewListByVaultPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,12 +211,14 @@ func ExampleBackupsClient_NewListByVaultPager() {
 		// 				Properties: &armnetapp.BackupProperties{
 		// 					BackupPolicyResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/policy1"),
 		// 					BackupType: to.Ptr(armnetapp.BackupTypeManual),
+		// 					CompletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
 		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
 		// 					Label: to.Ptr("myLabel"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Size: to.Ptr[int64](10011),
+		// 					SnapshotCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
 		// 					SnapshotName: to.Ptr("backup1"),
-		// 					VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1"),
+		// 					VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 		// 				},
 		// 			},
 		// 		},
@@ -223,7 +227,7 @@ func ExampleBackupsClient_NewListByVaultPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/BackupsUnderBackupVault_Update.json
+// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Update.json
 func ExampleBackupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +261,7 @@ func ExampleBackupsClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Size: to.Ptr[int64](10011),
 	// 			SnapshotName: to.Ptr("backup1"),
-	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1"),
+	// 			VolumeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 	// 		},
 	// 	},
 	// }

@@ -648,5 +648,3 @@ Multiple removals of unreferenced types that are typically not used in the SDK:
 **Impact**: No impact since these types are typically not used directly by users.
 
 **Resolution**: Accept these breaking changes.
-
-**Caution**: Since these types are unreferenced, their removal should not affect existing code. We will release these changes without a new major version.

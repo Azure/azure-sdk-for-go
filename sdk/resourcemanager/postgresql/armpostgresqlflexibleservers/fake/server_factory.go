@@ -138,103 +138,103 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AdministratorsMicrosoftEntraClient":
-		initServer(s, &s.trAdministratorsMicrosoftEntraServer, func() *AdministratorsMicrosoftEntraServerTransport {
+		initServer(&s.trMu, &s.trAdministratorsMicrosoftEntraServer, func() *AdministratorsMicrosoftEntraServerTransport {
 			return NewAdministratorsMicrosoftEntraServerTransport(&s.srv.AdministratorsMicrosoftEntraServer)
 		})
 		resp, err = s.trAdministratorsMicrosoftEntraServer.Do(req)
 	case "AdvancedThreatProtectionSettingsClient":
-		initServer(s, &s.trAdvancedThreatProtectionSettingsServer, func() *AdvancedThreatProtectionSettingsServerTransport {
+		initServer(&s.trMu, &s.trAdvancedThreatProtectionSettingsServer, func() *AdvancedThreatProtectionSettingsServerTransport {
 			return NewAdvancedThreatProtectionSettingsServerTransport(&s.srv.AdvancedThreatProtectionSettingsServer)
 		})
 		resp, err = s.trAdvancedThreatProtectionSettingsServer.Do(req)
 	case "BackupsAutomaticAndOnDemandClient":
-		initServer(s, &s.trBackupsAutomaticAndOnDemandServer, func() *BackupsAutomaticAndOnDemandServerTransport {
+		initServer(&s.trMu, &s.trBackupsAutomaticAndOnDemandServer, func() *BackupsAutomaticAndOnDemandServerTransport {
 			return NewBackupsAutomaticAndOnDemandServerTransport(&s.srv.BackupsAutomaticAndOnDemandServer)
 		})
 		resp, err = s.trBackupsAutomaticAndOnDemandServer.Do(req)
 	case "BackupsLongTermRetentionClient":
-		initServer(s, &s.trBackupsLongTermRetentionServer, func() *BackupsLongTermRetentionServerTransport {
+		initServer(&s.trMu, &s.trBackupsLongTermRetentionServer, func() *BackupsLongTermRetentionServerTransport {
 			return NewBackupsLongTermRetentionServerTransport(&s.srv.BackupsLongTermRetentionServer)
 		})
 		resp, err = s.trBackupsLongTermRetentionServer.Do(req)
 	case "CapabilitiesByLocationClient":
-		initServer(s, &s.trCapabilitiesByLocationServer, func() *CapabilitiesByLocationServerTransport {
+		initServer(&s.trMu, &s.trCapabilitiesByLocationServer, func() *CapabilitiesByLocationServerTransport {
 			return NewCapabilitiesByLocationServerTransport(&s.srv.CapabilitiesByLocationServer)
 		})
 		resp, err = s.trCapabilitiesByLocationServer.Do(req)
 	case "CapabilitiesByServerClient":
-		initServer(s, &s.trCapabilitiesByServerServer, func() *CapabilitiesByServerServerTransport {
+		initServer(&s.trMu, &s.trCapabilitiesByServerServer, func() *CapabilitiesByServerServerTransport {
 			return NewCapabilitiesByServerServerTransport(&s.srv.CapabilitiesByServerServer)
 		})
 		resp, err = s.trCapabilitiesByServerServer.Do(req)
 	case "CapturedLogsClient":
-		initServer(s, &s.trCapturedLogsServer, func() *CapturedLogsServerTransport { return NewCapturedLogsServerTransport(&s.srv.CapturedLogsServer) })
+		initServer(&s.trMu, &s.trCapturedLogsServer, func() *CapturedLogsServerTransport { return NewCapturedLogsServerTransport(&s.srv.CapturedLogsServer) })
 		resp, err = s.trCapturedLogsServer.Do(req)
 	case "ConfigurationsClient":
-		initServer(s, &s.trConfigurationsServer, func() *ConfigurationsServerTransport {
+		initServer(&s.trMu, &s.trConfigurationsServer, func() *ConfigurationsServerTransport {
 			return NewConfigurationsServerTransport(&s.srv.ConfigurationsServer)
 		})
 		resp, err = s.trConfigurationsServer.Do(req)
 	case "DatabasesClient":
-		initServer(s, &s.trDatabasesServer, func() *DatabasesServerTransport { return NewDatabasesServerTransport(&s.srv.DatabasesServer) })
+		initServer(&s.trMu, &s.trDatabasesServer, func() *DatabasesServerTransport { return NewDatabasesServerTransport(&s.srv.DatabasesServer) })
 		resp, err = s.trDatabasesServer.Do(req)
 	case "FirewallRulesClient":
-		initServer(s, &s.trFirewallRulesServer, func() *FirewallRulesServerTransport {
+		initServer(&s.trMu, &s.trFirewallRulesServer, func() *FirewallRulesServerTransport {
 			return NewFirewallRulesServerTransport(&s.srv.FirewallRulesServer)
 		})
 		resp, err = s.trFirewallRulesServer.Do(req)
 	case "MigrationsClient":
-		initServer(s, &s.trMigrationsServer, func() *MigrationsServerTransport { return NewMigrationsServerTransport(&s.srv.MigrationsServer) })
+		initServer(&s.trMu, &s.trMigrationsServer, func() *MigrationsServerTransport { return NewMigrationsServerTransport(&s.srv.MigrationsServer) })
 		resp, err = s.trMigrationsServer.Do(req)
 	case "NameAvailabilityClient":
-		initServer(s, &s.trNameAvailabilityServer, func() *NameAvailabilityServerTransport {
+		initServer(&s.trMu, &s.trNameAvailabilityServer, func() *NameAvailabilityServerTransport {
 			return NewNameAvailabilityServerTransport(&s.srv.NameAvailabilityServer)
 		})
 		resp, err = s.trNameAvailabilityServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateDNSZoneSuffixClient":
-		initServer(s, &s.trPrivateDNSZoneSuffixServer, func() *PrivateDNSZoneSuffixServerTransport {
+		initServer(&s.trMu, &s.trPrivateDNSZoneSuffixServer, func() *PrivateDNSZoneSuffixServerTransport {
 			return NewPrivateDNSZoneSuffixServerTransport(&s.srv.PrivateDNSZoneSuffixServer)
 		})
 		resp, err = s.trPrivateDNSZoneSuffixServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "PrivateLinkResourcesClient":
-		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+		initServer(&s.trMu, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "QuotaUsagesClient":
-		initServer(s, &s.trQuotaUsagesServer, func() *QuotaUsagesServerTransport { return NewQuotaUsagesServerTransport(&s.srv.QuotaUsagesServer) })
+		initServer(&s.trMu, &s.trQuotaUsagesServer, func() *QuotaUsagesServerTransport { return NewQuotaUsagesServerTransport(&s.srv.QuotaUsagesServer) })
 		resp, err = s.trQuotaUsagesServer.Do(req)
 	case "ReplicasClient":
-		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
+		initServer(&s.trMu, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
 		resp, err = s.trReplicasServer.Do(req)
 	case "ServerThreatProtectionSettingsClient":
-		initServer(s, &s.trServerThreatProtectionSettingsServer, func() *ServerThreatProtectionSettingsServerTransport {
+		initServer(&s.trMu, &s.trServerThreatProtectionSettingsServer, func() *ServerThreatProtectionSettingsServerTransport {
 			return NewServerThreatProtectionSettingsServerTransport(&s.srv.ServerThreatProtectionSettingsServer)
 		})
 		resp, err = s.trServerThreatProtectionSettingsServer.Do(req)
 	case "ServersClient":
-		initServer(s, &s.trServersServer, func() *ServersServerTransport { return NewServersServerTransport(&s.srv.ServersServer) })
+		initServer(&s.trMu, &s.trServersServer, func() *ServersServerTransport { return NewServersServerTransport(&s.srv.ServersServer) })
 		resp, err = s.trServersServer.Do(req)
 	case "TuningOptionsClient":
-		initServer(s, &s.trTuningOptionsServer, func() *TuningOptionsServerTransport {
+		initServer(&s.trMu, &s.trTuningOptionsServer, func() *TuningOptionsServerTransport {
 			return NewTuningOptionsServerTransport(&s.srv.TuningOptionsServer)
 		})
 		resp, err = s.trTuningOptionsServer.Do(req)
 	case "VirtualEndpointsClient":
-		initServer(s, &s.trVirtualEndpointsServer, func() *VirtualEndpointsServerTransport {
+		initServer(&s.trMu, &s.trVirtualEndpointsServer, func() *VirtualEndpointsServerTransport {
 			return NewVirtualEndpointsServerTransport(&s.srv.VirtualEndpointsServer)
 		})
 		resp, err = s.trVirtualEndpointsServer.Do(req)
 	case "VirtualNetworkSubnetUsageClient":
-		initServer(s, &s.trVirtualNetworkSubnetUsageServer, func() *VirtualNetworkSubnetUsageServerTransport {
+		initServer(&s.trMu, &s.trVirtualNetworkSubnetUsageServer, func() *VirtualNetworkSubnetUsageServerTransport {
 			return NewVirtualNetworkSubnetUsageServerTransport(&s.srv.VirtualNetworkSubnetUsageServer)
 		})
 		resp, err = s.trVirtualNetworkSubnetUsageServer.Do(req)
@@ -247,12 +247,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -1,5 +1,91 @@
 # Release History
 
+## 3.0.0 (2026-02-04)
+### Breaking Changes
+
+- Type of `ArcSettingProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
+- Type of `ArcSettingsPatchProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
+- `StatusFailed`, `StatusInProgress`, `StatusSucceeded` from enum `Status` has been removed
+- Function `*ClientFactory.NewPublishersClient` has been removed
+- Function `NewPublishersClient` has been removed
+- Function `*PublishersClient.Get` has been removed
+- Function `*PublishersClient.NewListByClusterPager` has been removed
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+- Struct `Publisher` has been removed
+- Struct `PublisherList` has been removed
+- Struct `PublisherProperties` has been removed
+
+### Features Added
+
+- New enum type `ClusterPattern` with values `ClusterPatternRackAware`, `ClusterPatternStandard`
+- New enum type `DNSServerConfig` with values `DNSServerConfigUseDNSServer`, `DNSServerConfigUseForwarder`
+- New enum type `DeviceLogCollectionStatus` with values `DeviceLogCollectionStatusCanceled`, `DeviceLogCollectionStatusFailed`, `DeviceLogCollectionStatusNotStarted`, `DeviceLogCollectionStatusRunning`, `DeviceLogCollectionStatusSucceeded`
+- New enum type `EdgeDeviceKind` with values `EdgeDeviceKindHCI`
+- New enum type `HardwareClass` with values `HardwareClassLarge`, `HardwareClassMedium`, `HardwareClassSmall`
+- New enum type `HciEdgeDeviceJobType` with values `HciEdgeDeviceJobTypeCollectLog`, `HciEdgeDeviceJobTypeRemoteSupport`
+- New enum type `IdentityProvider` with values `IdentityProviderActiveDirectory`, `IdentityProviderLocalIdentity`
+- New enum type `JobStatus` with values `JobStatusCanceled`, `JobStatusDeploymentFailed`, `JobStatusDeploymentInProgress`, `JobStatusDeploymentSuccess`, `JobStatusFailed`, `JobStatusNotSpecified`, `JobStatusPaused`, `JobStatusScheduled`, `JobStatusSucceeded`, `JobStatusValidationFailed`, `JobStatusValidationInProgress`, `JobStatusValidationSuccess`
+- New enum type `RdmaCapability` with values `RdmaCapabilityDisabled`, `RdmaCapabilityEnabled`
+- New enum type `RemoteSupportAccessLevel` with values `RemoteSupportAccessLevelDiagnostics`, `RemoteSupportAccessLevelDiagnosticsAndRepair`, `RemoteSupportAccessLevelNone`
+- New enum type `SecretsType` with values `SecretsTypeBackupSecrets`
+- New enum type `ServiceName` with values `ServiceNameWAC`
+- New function `*ArcSettingsClient.BeginReconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*runtime.Poller[ArcSettingsClientReconcileResponse], error)`
+- New function `*ClientFactory.NewEdgeDeviceJobsClient() *EdgeDeviceJobsClient`
+- New function `*ClientFactory.NewValidatedSolutionRecipesClient() *ValidatedSolutionRecipesClient`
+- New function `*ClustersClient.BeginUpdateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*runtime.Poller[ClustersClientUpdateSecretsLocationsResponse], error)`
+- New function `*EdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
+- New function `NewEdgeDeviceJobsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeDeviceJobsClient, error)`
+- New function `*EdgeDeviceJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, options *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeDeviceJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeDeviceJobsClient.BeginDelete(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeDeviceJobsClientDeleteResponse], error)`
+- New function `*EdgeDeviceJobsClient.Get(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientGetOptions) (EdgeDeviceJobsClientGetResponse, error)`
+- New function `*EdgeDeviceJobsClient.NewListByEdgeDevicePager(resourceURI string, edgeDeviceName string, options *EdgeDeviceJobsClientListByEdgeDeviceOptions) *runtime.Pager[EdgeDeviceJobsClientListByEdgeDeviceResponse]`
+- New function `*HciCollectLogJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `*HciEdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
+- New function `*HciEdgeDeviceJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `*HciRemoteSupportJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `NewValidatedSolutionRecipesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidatedSolutionRecipesClient, error)`
+- New function `*ValidatedSolutionRecipesClient.Get(ctx context.Context, location string, validatedSolutionRecipeName string, options *ValidatedSolutionRecipesClientGetOptions) (ValidatedSolutionRecipesClientGetResponse, error)`
+- New function `*ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager(location string, options *ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions) *runtime.Pager[ValidatedSolutionRecipesClientListBySubscriptionLocationResourceResponse]`
+- New struct `ArcConnectivityProperties`
+- New struct `AssemblyInfo`
+- New struct `AssemblyInfoPayload`
+- New struct `DNSZones`
+- New struct `EdgeDeviceJobListResult`
+- New struct `HciCollectLogJobProperties`
+- New struct `HciEdgeDeviceJob`
+- New struct `HciHardwareProfile`
+- New struct `HciRemoteSupportJobProperties`
+- New struct `HciStorageProfile`
+- New struct `LocalAvailabilityZones`
+- New struct `LogCollectionJobSession`
+- New struct `LogCollectionReportedProperties`
+- New struct `ReconcileArcSettingsRequest`
+- New struct `ReconcileArcSettingsRequestProperties`
+- New struct `RemoteSupportJobNodeSettings`
+- New struct `RemoteSupportJobReportedProperties`
+- New struct `RemoteSupportSession`
+- New struct `SecretsLocationDetails`
+- New struct `SecretsLocationsChangeRequest`
+- New struct `ServiceConfiguration`
+- New struct `ValidatedSolutionRecipe`
+- New struct `ValidatedSolutionRecipeCapabilities`
+- New struct `ValidatedSolutionRecipeCapability`
+- New struct `ValidatedSolutionRecipeComponent`
+- New struct `ValidatedSolutionRecipeComponentMetadata`
+- New struct `ValidatedSolutionRecipeComponentPayload`
+- New struct `ValidatedSolutionRecipeContent`
+- New struct `ValidatedSolutionRecipeInfo`
+- New struct `ValidatedSolutionRecipeListResult`
+- New struct `ValidatedSolutionRecipeProperties`
+- New field `ClusterPattern`, `IdentityProvider`, `IsManagementCluster`, `LocalAvailabilityZones`, `SecretsLocations` in struct `ClusterProperties`
+- New field `HardwareClass`, `MsiExpirationTimeStamp` in struct `ClusterReportedProperties`
+- New field `ClusterPattern`, `HardwareClass` in struct `DeploymentCluster`
+- New field `AssemblyInfo`, `IdentityProvider`, `IsManagementCluster`, `LocalAvailabilityZones` in struct `DeploymentData`
+- New field `RdmaCapability` in struct `HciNicDetail`
+- New field `HardwareProfile`, `StorageProfile` in struct `HciReportedProperties`
+- New field `DNSServerConfig`, `DNSZones` in struct `InfrastructureNetwork`
+
+
 ## 2.0.0 (2024-08-22)
 ### Breaking Changes
 

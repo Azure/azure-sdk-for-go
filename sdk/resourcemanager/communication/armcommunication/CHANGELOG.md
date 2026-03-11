@@ -1,5 +1,16 @@
 # Release History
 
+## 2.4.0 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+- This package is now generated from TypeSpec (API version 2025-09-01)
+
 ## 2.3.0 (2026-01-23)
 ### Features Added
 

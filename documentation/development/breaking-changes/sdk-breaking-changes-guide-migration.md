@@ -596,7 +596,45 @@ New code:
 privateEndpointConnection.Etag = to.Ptr(azcore.ETag("*"))
 ```
 
-### 8. Removal of Unreferenced Types
+### 8. Parameter Group Changes
+
+**Changelog Pattern**:
+
+Multiple changes related to parameter groups where the parameter group is removed or the parameter group's parameters changed:
+
+```md
+- Function `*ServicesClient.CheckNameAvailability` parameter(s) have been changed from `(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientCheckNameAvailabilityOptions)` to `(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *ServicesClientCheckNameAvailabilityOptions)`
+- Function `*ServicesClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *ServicesClientDeleteOptions)`
+- Field `ClientRequestID` of struct `SearchManagementRequestOptions` has been removed
+- Field `ClientRequestID` of struct `ServicesClientGetOptions` has been removed
+```
+
+**Reason**: The Swagger implementation performs a literal grouping of the specified parameters. If one or more of those parameters are optional, then the group is also marked as optional and contains a mix of required/optional parameters. For TypeSpec, the behavior changes to:
+
+- All optional parameters within a parameter group are moved to the method's options type. This might mean that the parameter group is removed entirely if it contains no required parameters.
+- All required parameters are emitted as fields in the named parameter group type.
+
+**Impact**: This corrects the previous SDK behavior.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to adapt the new function signature.
+
+For example:
+
+Previous code:
+
+```go
+res, err = clientFactory.NewServicesClient().Delete(ctx, "rg1", "mysearchservice", &armsearch.SearchManagementRequestOptions{ClientRequestID: to.Ptr("test")}, nil)
+```
+
+New code:
+
+```go
+res, err := clientFactory.NewServicesClient().Delete(ctx, "rg1", "mysearchservice", &armsearch.ServicesClientDeleteOptions{ClientRequestID: to.Ptr("test")})
+```
+
+### 9. Removal of Unreferenced Types
 
 **Changelog Pattern**:
 

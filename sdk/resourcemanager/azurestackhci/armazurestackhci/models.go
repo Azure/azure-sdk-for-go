@@ -95,6 +95,39 @@ type ArcSettingsPatchProperties struct {
 	ConnectivityProperties any
 }
 
+// AssemblyInfo - Assembly Package details for Validated Solution Recipe for AzureStackHCI Cluster
+type AssemblyInfo struct {
+	// READ-ONLY; Assembly Package version for Validated Solution Recipe for AzureStackHCI Cluster
+	PackageVersion *string
+
+	// READ-ONLY; Payload properties for Validated Solution Recipe for AzureStackHCI Cluster
+	Payload []*AssemblyInfoPayload
+}
+
+// AssemblyInfoPayload - Payload properties for Validated Solution Recipe for AzureStackHCI Cluster
+type AssemblyInfoPayload struct {
+	// READ-ONLY; File name of assembly package for Validated Solution Recipe for AzureStackHCI Cluster
+	FileName *string
+
+	// READ-ONLY; Hash of assembly package for Validated Solution Recipe for AzureStackHCI Cluster
+	Hash *string
+
+	// READ-ONLY; assembly identifier for Validated Solution Recipe for AzureStackHCI Cluster
+	Identifier *string
+
+	// READ-ONLY; Url of assembly package for Validated Solution Recipe for AzureStackHCI Cluster
+	URL *string
+}
+
+type ChangeRingRequest struct {
+	Properties *ChangeRingRequestProperties
+}
+
+type ChangeRingRequestProperties struct {
+	// The target ring for the cluster.
+	TargetRing *string
+}
+
 // Cluster details.
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -102,6 +135,9 @@ type Cluster struct {
 
 	// Identity of Cluster resource
 	Identity *ManagedServiceIdentity
+
+	// This property identifies the purpose of the Cluster deployment. For example, a valid value is AzureLocal
+	Kind *string
 
 	// Cluster properties.
 	Properties *ClusterProperties
@@ -248,11 +284,17 @@ type ClusterProperties struct {
 	// Desired properties of the cluster.
 	DesiredProperties *ClusterDesiredProperties
 
+	// Local Availability Zone information for HCI cluster
+	LocalAvailabilityZones []*LocalAvailabilityZones
+
 	// Log Collection properties of the cluster.
 	LogCollectionProperties *LogCollectionProperties
 
 	// RemoteSupport properties of the cluster.
 	RemoteSupportProperties *RemoteSupportProperties
+
+	// List of secret locations.
+	SecretsLocations []*SecretsLocationDetails
 
 	// Software Assurance properties of the cluster.
 	SoftwareAssuranceProperties *SoftwareAssuranceProperties
@@ -263,8 +305,18 @@ type ClusterProperties struct {
 	// READ-ONLY; Unique, immutable resource id.
 	CloudID *string
 
-	// READ-ONLY; Overall connectivity status for the cluster resource.
+	// READ-ONLY; Supported Storage Type for HCI Cluster
+	ClusterPattern *ClusterPattern
+
+	// READ-ONLY; Overall connectivity status for the cluster resource. Indicates whether the cluster is connected to Azure, partially
+	// connected, or has not recently communicated.
 	ConnectivityStatus *ConnectivityStatus
+
+	// READ-ONLY; Identity Provider for the cluster
+	IdentityProvider *IdentityProvider
+
+	// READ-ONLY; Is Management Cluster, when true indicates that the cluster is used for managing other clusters
+	IsManagementCluster *bool
 
 	// READ-ONLY; Attestation configurations for isolated VM (e.g. TVM, CVM) of the cluster.
 	IsolatedVMAttestationConfiguration *IsolatedVMAttestationConfiguration
@@ -275,7 +327,8 @@ type ClusterProperties struct {
 	// READ-ONLY; Most recent cluster sync timestamp.
 	LastSyncTimestamp *time.Time
 
-	// READ-ONLY; Provisioning state.
+	// READ-ONLY; Provisioning state. Indicates the current lifecycle status of the resource, including creation, update, deletion,
+	// connectivity, and error states.
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; First cluster sync timestamp.
@@ -287,11 +340,18 @@ type ClusterProperties struct {
 	// READ-ONLY; Object id of RP Service Principal
 	ResourceProviderObjectID *string
 
+	// READ-ONLY; The ring to which this cluster belongs to.
+	Ring *string
+
 	// READ-ONLY; Region specific DataPath Endpoint of the cluster.
 	ServiceEndpoint *string
 
-	// READ-ONLY; Status of the cluster agent.
+	// READ-ONLY; Status of the cluster agent. Indicates the current connectivity, validation, and deployment state of the agent
+	// within the cluster.
 	Status *Status
+
+	// READ-ONLY; Indicates whether the cluster is under support.
+	SupportStatus *SupportStatus
 
 	// READ-ONLY; Number of days remaining in the trial period.
 	TrialDaysRemaining *float32
@@ -308,11 +368,15 @@ type ClusterReportedProperties struct {
 	// READ-ONLY; Name of the on-prem cluster connected to this resource.
 	ClusterName *string
 
-	// READ-ONLY; The node type of all the nodes of the cluster.
+	// READ-ONLY; Specifies the type of hardware vendor for all nodes in the cluster. Indicates whether the nodes are provided
+	// by Microsoft or a third-party vendor.
 	ClusterType *ClusterNodeType
 
 	// READ-ONLY; Version of the cluster software.
 	ClusterVersion *string
+
+	// READ-ONLY; Hardware class of the cluster.
+	HardwareClass *HardwareClass
 
 	// READ-ONLY; IMDS attestation status of the cluster.
 	ImdsAttestation *ImdsAttestation
@@ -323,6 +387,10 @@ type ClusterReportedProperties struct {
 	// READ-ONLY; The manufacturer of all the nodes of the cluster.
 	Manufacturer *string
 
+	// READ-ONLY; Specifies the expiration timestamp of the cluster's Managed Service Identity (MSI). The value is expressed in
+	// Coordinated Universal Time (UTC).
+	MsiExpirationTimeStamp *time.Time
+
 	// READ-ONLY; List of nodes reported by the cluster.
 	Nodes []*ClusterNode
 
@@ -331,6 +399,39 @@ type ClusterReportedProperties struct {
 
 	// READ-ONLY; Capabilities supported by the cluster.
 	SupportedCapabilities []*string
+}
+
+// ContentPayload - Represents details of a specific update content payload.
+type ContentPayload struct {
+	// Represents the file name of a update payload.
+	FileName *string
+
+	// Represents the group of a update payload.
+	Group *string
+
+	// Represents hash of a update payload.
+	Hash *string
+
+	// Represents hash algorithm of a update payload.
+	HashAlgorithm *string
+
+	// Represents identifier of a update payload.
+	Identifier *string
+
+	// Represents size in bytes of a update payload.
+	PackageSizeInBytes *string
+
+	// Represents url of a update payload.
+	URL *string
+}
+
+// DNSZones - Details of the DNS Zones to be configured.
+type DNSZones struct {
+	// Forwarder details of the DNS Zone to be configured.
+	DNSForwarder []*string
+
+	// Name of the DNS Zone to be configured.
+	DNSZoneName *string
 }
 
 // DefaultExtensionDetails - Properties for a particular default extension category.
@@ -351,6 +452,9 @@ type DeploymentCluster struct {
 	// Specify the Azure Storage account name for cloud witness for your Azure Stack HCI cluster.
 	CloudAccountName *string
 
+	// Cluster Pattern supported.
+	ClusterPattern *ClusterPattern
+
 	// The cluster name provided when preparing Active Directory.
 	Name *string
 
@@ -361,6 +465,9 @@ type DeploymentCluster struct {
 	// A cloud witness uses Azure Blob Storage to read or write a blob file and
 	// then uses it to arbitrate in split-brain resolution. Only allowed values are 'Cloud', 'FileShare'.
 	WitnessType *string
+
+	// READ-ONLY; Hardware class of the cluster.
+	HardwareClass *HardwareClass
 }
 
 // DeploymentConfiguration - Deployment Configuration
@@ -377,6 +484,9 @@ type DeploymentData struct {
 	// The path to the Active Directory Organizational Unit container object prepared for the deployment.
 	AdouPath *string
 
+	// Assembly Package details for Validated Solution Recipe for AzureStackHCI Cluster
+	AssemblyInfo *AssemblyInfo
+
 	// Observability config to deploy AzureStackHCI Cluster.
 	Cluster *DeploymentCluster
 
@@ -386,8 +496,17 @@ type DeploymentData struct {
 	// HostNetwork config to deploy AzureStackHCI Cluster.
 	HostNetwork *DeploymentSettingHostNetwork
 
+	// Identity Provider for the cluster
+	IdentityProvider *IdentityProvider
+
 	// InfrastructureNetwork config to deploy AzureStackHCI Cluster.
 	InfrastructureNetwork []*InfrastructureNetwork
+
+	// Is Management Cluster, when true indicates that the cluster is used for managing other clusters
+	IsManagementCluster *bool
+
+	// Local Availability Zone information for HCI cluster
+	LocalAvailabilityZones []*LocalAvailabilityZones
 
 	// naming prefix to deploy cluster.
 	NamingPrefix *string
@@ -407,7 +526,7 @@ type DeploymentData struct {
 	// secrets used for cloud deployment.
 	Secrets []*EceDeploymentSecrets
 
-	// Azure keyvault endpoint. This property is deprecated from 2023-12-01-preview. Please use secrets property instead.
+	// Azure key vault endpoint. This property is deprecated from 2023-12-01-preview. Please use secrets property instead.
 	SecretsLocation *string
 
 	// SecuritySettings to deploy AzureStackHCI Cluster.
@@ -684,6 +803,36 @@ type EdgeDevice struct {
 // GetEdgeDevice implements the EdgeDeviceClassification interface for type EdgeDevice.
 func (e *EdgeDevice) GetEdgeDevice() *EdgeDevice { return e }
 
+// EdgeDeviceJob - EdgeDevice Jobs resource
+type EdgeDeviceJob struct {
+	// REQUIRED; Edge Solution type to support polymorphic resource.
+	Kind *EdgeDeviceKind
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetEdgeDeviceJob implements the EdgeDeviceJobClassification interface for type EdgeDeviceJob.
+func (e *EdgeDeviceJob) GetEdgeDeviceJob() *EdgeDeviceJob { return e }
+
+// EdgeDeviceJobListResult - The response of a EdgeDeviceJob list operation.
+type EdgeDeviceJobListResult struct {
+	// REQUIRED; The EdgeDeviceJob items on this page
+	Value []EdgeDeviceJobClassification
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // EdgeDeviceListResult - The response of a EdgeDevice list operation.
 type EdgeDeviceListResult struct {
 	// REQUIRED; The EdgeDevice items on this page
@@ -734,7 +883,7 @@ type ExtensionInstanceViewStatus struct {
 	// The short localizable label for the status.
 	DisplayStatus *string
 
-	// The level code.
+	// The level code. Indicates the severity or importance of the status message.
 	Level *StatusLevelTypes
 
 	// The detailed status message, including for alerts and error messages.
@@ -820,16 +969,19 @@ type ExtensionProperties struct {
 	// Parameters specific to this extension type.
 	ExtensionParameters *ExtensionParameters
 
-	// READ-ONLY; Aggregate state of Arc Extensions across the nodes in this HCI cluster.
+	// READ-ONLY; Aggregate state of Arc Extensions across the nodes in this HCI cluster. This reflects the overall status of
+	// the extension deployment and operation across all nodes.
 	AggregateState *ExtensionAggregateState
 
-	// READ-ONLY; Indicates if the extension is managed by azure or the user.
+	// READ-ONLY; Indicates if the extension is managed by Azure or the user. This determines who controls the deployment and
+	// lifecycle of the extension.
 	ManagedBy *ExtensionManagedBy
 
 	// READ-ONLY; State of Arc Extension in each of the nodes.
 	PerNodeExtensionDetails []*PerNodeExtensionState
 
-	// READ-ONLY; Provisioning state of the Extension proxy resource.
+	// READ-ONLY; Provisioning state of the Extension proxy resource. Indicates the current lifecycle status of the resource,
+	// such as whether it's being created, updated, deleted, or has encountered an error.
 	ProvisioningState *ProvisioningState
 }
 
@@ -837,6 +989,55 @@ type ExtensionProperties struct {
 type ExtensionUpgradeParameters struct {
 	// Extension Upgrade Target Version.
 	TargetVersion *string
+}
+
+// HciCollectLogJobProperties - Represents the properties of an HCI Collect Log job.
+type HciCollectLogJobProperties struct {
+	// REQUIRED; From date for log collection.
+	FromDate *time.Time
+
+	// REQUIRED; Job Type to support polymorphic resource.
+	JobType *HciEdgeDeviceJobType
+
+	// REQUIRED; To date for log collection.
+	ToDate *time.Time
+
+	// Deployment mode to trigger job.
+	DeploymentMode *DeploymentMode
+
+	// READ-ONLY; The UTC date and time at which the job completed.
+	EndTimeUTC *time.Time
+
+	// READ-ONLY; Unique, immutable job id.
+	JobID *string
+
+	// READ-ONLY; To date for log collection.
+	LastLogGenerated *time.Time
+
+	// READ-ONLY; Job provisioning state
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; log collection job reported properties.
+	ReportedProperties *LogCollectionReportedProperties
+
+	// READ-ONLY; The UTC date and time at which the job started.
+	StartTimeUTC *time.Time
+
+	// READ-ONLY; Status of Edge device job.
+	Status *JobStatus
+}
+
+// GetHciEdgeDeviceJobProperties implements the HciEdgeDeviceJobPropertiesClassification interface for type HciCollectLogJobProperties.
+func (h *HciCollectLogJobProperties) GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties {
+	return &HciEdgeDeviceJobProperties{
+		DeploymentMode:    h.DeploymentMode,
+		EndTimeUTC:        h.EndTimeUTC,
+		JobID:             h.JobID,
+		JobType:           h.JobType,
+		ProvisioningState: h.ProvisioningState,
+		StartTimeUTC:      h.StartTimeUTC,
+		Status:            h.Status,
+	}
 }
 
 // HciEdgeDevice - Arc-enabled edge device with HCI OS.
@@ -897,7 +1098,7 @@ type HciEdgeDeviceArcExtension struct {
 	// READ-ONLY; Arc Extension Azure resource id.
 	ExtensionResourceID *string
 
-	// READ-ONLY; Extension managed by user or Azure.
+	// READ-ONLY; Indicates whether the extension is managed by the user or by Azure.
 	ManagedBy *ExtensionManagedBy
 
 	// READ-ONLY; Arc extension state from arc machine extension.
@@ -981,6 +1182,67 @@ type HciEdgeDeviceIntents struct {
 	VirtualSwitchConfigurationOverrides *HciEdgeDeviceVirtualSwitchConfigurationOverrides
 }
 
+// HciEdgeDeviceJob - Edge device job for Azure Stack HCI solution.
+type HciEdgeDeviceJob struct {
+	// REQUIRED; Edge Solution type to support polymorphic resource.
+	Kind *EdgeDeviceKind
+
+	// REQUIRED; HCI Edge device job properties
+	Properties HciEdgeDeviceJobPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetEdgeDeviceJob implements the EdgeDeviceJobClassification interface for type HciEdgeDeviceJob.
+func (h *HciEdgeDeviceJob) GetEdgeDeviceJob() *EdgeDeviceJob {
+	return &EdgeDeviceJob{
+		ID:         h.ID,
+		Kind:       h.Kind,
+		Name:       h.Name,
+		SystemData: h.SystemData,
+		Type:       h.Type,
+	}
+}
+
+// HciEdgeDeviceJobProperties - HCI Edge device job properties
+type HciEdgeDeviceJobProperties struct {
+	// REQUIRED; Job Type to support polymorphic resource.
+	JobType *HciEdgeDeviceJobType
+
+	// Deployment mode to trigger job.
+	DeploymentMode *DeploymentMode
+
+	// READ-ONLY; The UTC date and time at which the job completed.
+	EndTimeUTC *time.Time
+
+	// READ-ONLY; Unique, immutable job id.
+	JobID *string
+
+	// READ-ONLY; Job provisioning state
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The UTC date and time at which the job started.
+	StartTimeUTC *time.Time
+
+	// READ-ONLY; Status of Edge device job.
+	Status *JobStatus
+}
+
+// GetHciEdgeDeviceJobProperties implements the HciEdgeDeviceJobPropertiesClassification interface for type HciEdgeDeviceJobProperties.
+func (h *HciEdgeDeviceJobProperties) GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties {
+	return h
+}
+
 // HciEdgeDeviceProperties - properties for Arc-enabled edge device with HCI OS.
 type HciEdgeDeviceProperties struct {
 	// Device Configuration
@@ -1030,6 +1292,12 @@ type HciEdgeDeviceVirtualSwitchConfigurationOverrides struct {
 	LoadBalancingAlgorithm *string
 }
 
+// HciHardwareProfile - Hardware configurations for HCI device.
+type HciHardwareProfile struct {
+	// READ-ONLY; Process type of the device
+	ProcessorType *string
+}
+
 // HciNetworkProfile - The network profile of a device.
 type HciNetworkProfile struct {
 	// READ-ONLY; HostNetwork config to deploy AzureStackHCI Cluster.
@@ -1077,6 +1345,9 @@ type HciNicDetail struct {
 	// READ-ONLY; The type of NIC, physical, virtual, management.
 	NicType *string
 
+	// READ-ONLY; Describes the RDMA capability of the network adapter.
+	RdmaCapability *RdmaCapability
+
 	// READ-ONLY; The slot attached to the NIC.
 	Slot *string
 
@@ -1099,6 +1370,55 @@ type HciOsProfile struct {
 	BootType *string
 }
 
+// HciRemoteSupportJobProperties - Represents the properties of a remote support job for HCI.
+type HciRemoteSupportJobProperties struct {
+	// REQUIRED; Remote support access level.
+	AccessLevel *RemoteSupportAccessLevel
+
+	// REQUIRED; Remote support expiration timestamp.
+	ExpirationTimestamp *time.Time
+
+	// REQUIRED; Job Type to support polymorphic resource.
+	JobType *HciEdgeDeviceJobType
+
+	// REQUIRED; Remote support type.
+	Type *RemoteSupportType
+
+	// Deployment mode to trigger job.
+	DeploymentMode *DeploymentMode
+
+	// READ-ONLY; The UTC date and time at which the job completed.
+	EndTimeUTC *time.Time
+
+	// READ-ONLY; Unique, immutable job id.
+	JobID *string
+
+	// READ-ONLY; Job provisioning state
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; log collection job reported properties.
+	ReportedProperties *RemoteSupportJobReportedProperties
+
+	// READ-ONLY; The UTC date and time at which the job started.
+	StartTimeUTC *time.Time
+
+	// READ-ONLY; Status of Edge device job.
+	Status *JobStatus
+}
+
+// GetHciEdgeDeviceJobProperties implements the HciEdgeDeviceJobPropertiesClassification interface for type HciRemoteSupportJobProperties.
+func (h *HciRemoteSupportJobProperties) GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties {
+	return &HciEdgeDeviceJobProperties{
+		DeploymentMode:    h.DeploymentMode,
+		EndTimeUTC:        h.EndTimeUTC,
+		JobID:             h.JobID,
+		JobType:           h.JobType,
+		ProvisioningState: h.ProvisioningState,
+		StartTimeUTC:      h.StartTimeUTC,
+		Status:            h.Status,
+	}
+}
+
 // HciReportedProperties - The device Configuration for HCI device.
 type HciReportedProperties struct {
 	// READ-ONLY; edge device state.
@@ -1106,6 +1426,9 @@ type HciReportedProperties struct {
 
 	// READ-ONLY; Extensions details for edge device.
 	ExtensionProfile *ExtensionProfile
+
+	// READ-ONLY; Hci device hardware specific information.
+	HardwareProfile *HciHardwareProfile
 
 	// READ-ONLY; HCI device network information.
 	NetworkProfile *HciNetworkProfile
@@ -1115,6 +1438,15 @@ type HciReportedProperties struct {
 
 	// READ-ONLY; Solution builder extension (SBE) deployment package information.
 	SbeDeploymentPackageInfo *SbeDeploymentPackageInfo
+
+	// READ-ONLY; Hci device storage specific information.
+	StorageProfile *HciStorageProfile
+}
+
+// HciStorageProfile - Storage configurations for HCI device.
+type HciStorageProfile struct {
+	// READ-ONLY; Number of storage disks in the device with $CanPool as true.
+	PoolableDisksCount *int64
 }
 
 // HciValidationFailureDetail - details of validation failure
@@ -1136,8 +1468,15 @@ type IPPools struct {
 
 // InfrastructureNetwork - The InfrastructureNetwork of a AzureStackHCI Cluster.
 type InfrastructureNetwork struct {
+	// Specifies how DNS servers are configured for the infrastructure network. Allowed values are 'UseDnsServer' to use the provided
+	// DNS servers, and 'UseForwarder' to use DNS forwarders.
+	DNSServerConfig *DNSServerConfig
+
 	// IPv4 address of the DNS servers in your environment.
 	DNSServers []*string
+
+	// Details of the DNS Zones to be configured.
+	DNSZones []*DNSZones
 
 	// Default gateway that should be used for the provided IP address space.
 	Gateway *string
@@ -1165,6 +1504,48 @@ type IsolatedVMAttestationConfiguration struct {
 	RelyingPartyServiceEndpoint *string
 }
 
+// KubernetesVersion - Represents a kubernetes version resource.
+type KubernetesVersion struct {
+	// The resource-specific properties for this resource.
+	Properties *KubernetesVersionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// KubernetesVersionListResult - The response of a KubernetesVersion list operation.
+type KubernetesVersionListResult struct {
+	// REQUIRED; The KubernetesVersion items on this page
+	Value []*KubernetesVersion
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// KubernetesVersionProperties - Represents properties of a kubernetes version.
+type KubernetesVersionProperties struct {
+	// REQUIRED; Represents kubernetes version.
+	Version *string
+}
+
+// LocalAvailabilityZones - Local Availability Zone information for HCI cluster
+type LocalAvailabilityZones struct {
+	// Local Availability Zone name for HCI cluster
+	LocalAvailabilityZoneName *string
+
+	// Nodes belonging to a particular zone
+	Nodes []*string
+}
+
 // LogCollectionError - Log Collection Error details of the cluster.
 type LogCollectionError struct {
 	// READ-ONLY; Error Code of the log collection
@@ -1172,6 +1553,27 @@ type LogCollectionError struct {
 
 	// READ-ONLY; Error Message of the log collection
 	ErrorMessage *string
+}
+
+// LogCollectionJobSession - Represents a session for collecting logs from an edge device.
+type LogCollectionJobSession struct {
+	// READ-ONLY; A unique identifier for correlating this log collection session with other operations or sessions.
+	CorrelationID *string
+
+	// READ-ONLY; The timestamp when log collection ended, in ISO 8601 format.
+	EndTime *string
+
+	// READ-ONLY; The size of the collected logs in bytes.
+	LogSize *int32
+
+	// READ-ONLY; The timestamp when log collection started, in ISO 8601 format.
+	StartTime *string
+
+	// READ-ONLY; The status of the log collection session.
+	Status *DeviceLogCollectionStatus
+
+	// READ-ONLY; The total time logs were collected for, in ISO 8601 duration format.
+	TimeCollected *string
 }
 
 // LogCollectionProperties - Log Collection properties of the cluster.
@@ -1187,6 +1589,21 @@ type LogCollectionProperties struct {
 
 	// READ-ONLY; To DateTimeStamp till when logs need to be connected
 	ToDate *time.Time
+}
+
+// LogCollectionReportedProperties - Represents the reported properties of a log collection job.
+type LogCollectionReportedProperties struct {
+	// READ-ONLY; Deployment status of job.
+	DeploymentStatus *EceActionStatus
+
+	// READ-ONLY; Details of the log collection session.
+	LogCollectionSessionDetails []*LogCollectionJobSession
+
+	// READ-ONLY; The percentage of the job that is complete.
+	PercentComplete *int32
+
+	// READ-ONLY; Validation status of job.
+	ValidationStatus *EceActionStatus
 }
 
 // LogCollectionRequest - Log Collection Request
@@ -1215,7 +1632,8 @@ type LogCollectionSession struct {
 	// READ-ONLY; Log Collection Error details of the cluster.
 	LogCollectionError *LogCollectionError
 
-	// READ-ONLY; LogCollection job type
+	// READ-ONLY; Specifies the type of log collection job. Determines whether the logs are collected immediately on demand or
+	// as part of a scheduled operation.
 	LogCollectionJobType *LogCollectionJobType
 
 	// READ-ONLY; LogCollection status
@@ -1410,6 +1828,48 @@ type OptionalServices struct {
 	CustomLocation *string
 }
 
+// OsImage - Represents a os image resource.
+type OsImage struct {
+	// The resource-specific properties for this resource.
+	Properties *OsImageProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// OsImageListResult - The response of a OsImage list operation.
+type OsImageListResult struct {
+	// REQUIRED; The OsImage items on this page
+	Value []*OsImage
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// OsImageProperties - Represents properties of a os image resource.
+type OsImageProperties struct {
+	// Represents composed image iso hash of a os image.
+	ComposedImageIsoHash *string
+
+	// Represents composed image iso download url of a os image.
+	ComposedImageIsoURL *string
+
+	// Represents composed image version of a os image.
+	ComposedImageVersion *string
+
+	// Represents validated solution recipe version of a os image.
+	ValidatedSolutionRecipeVersion *string
+}
+
 // PackageVersionInfo - Current version of each updatable component.
 type PackageVersionInfo struct {
 	// Last time this component was updated.
@@ -1440,7 +1900,8 @@ type PerNodeExtensionState struct {
 	// READ-ONLY; Name of the node in HCI Cluster.
 	Name *string
 
-	// READ-ONLY; State of Arc Extension in this node.
+	// READ-ONLY; State of Arc Extension in this node. Reflects the current lifecycle status of the extension on the individual
+	// node, such as whether it's being created, updated, deleted, or has encountered an error.
 	State *NodeExtensionState
 
 	// READ-ONLY; Specifies the version of the script handler.
@@ -1476,7 +1937,8 @@ type PerNodeState struct {
 	// READ-ONLY; Name of the Node in HCI Cluster
 	Name *string
 
-	// READ-ONLY; State of Arc agent in this node.
+	// READ-ONLY; State of the Arc agent in this node. Indicates the current lifecycle status of the agent, such as whether it's
+	// being provisioned, connected, updated, or has encountered an error.
 	State *NodeArcState
 }
 
@@ -1487,6 +1949,66 @@ type PhysicalNodes struct {
 
 	// NETBIOS name of each physical server on your Azure Stack HCI cluster.
 	Name *string
+}
+
+// PlatformPayload - Represents details of a specific platform update payload.
+type PlatformPayload struct {
+	// Represents hash of a platform update payload.
+	PayloadHash *string
+
+	// Represents identifier of a platform update payload.
+	PayloadIdentifier *string
+
+	// Represents size in bytes of a platform update payload.
+	PayloadPackageSizeInBytes *string
+
+	// Represents url of a platform update payload.
+	PayloadURL *string
+}
+
+// PlatformUpdate - Represents a platform update resource.
+type PlatformUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *PlatformUpdateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PlatformUpdateDetails - Represents details of a specific platform update.
+type PlatformUpdateDetails struct {
+	// REQUIRED; Represents the platform payloads of a platform update.
+	PlatformPayloads []*PlatformPayload
+
+	// Represents version of a platform update.
+	PlatformVersion *string
+
+	// Represents validated solution recipe version of a platform update.
+	ValidatedSolutionRecipeVersion *string
+}
+
+// PlatformUpdateListResult - The response of a PlatformUpdate list operation.
+type PlatformUpdateListResult struct {
+	// REQUIRED; The PlatformUpdate items on this page
+	Value []*PlatformUpdate
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PlatformUpdateProperties - Represents properties of a platform update resource.
+type PlatformUpdateProperties struct {
+	// REQUIRED; Represents applicable platform updates.
+	PlatformUpdateDetails []*PlatformUpdateDetails
 }
 
 type PrecheckResult struct {
@@ -1511,12 +2033,12 @@ type PrecheckResult struct {
 	// Set of steps that can be taken to resolve the issue found.
 	Remediation *string
 
-	// Severity of the result (Critical, Warning, Informational, Hidden). This answers how important the result is. Critical is
-	// the only update-blocking severity.
+	// Indicates the importance or impact level of the result. Determines whether the result is informational, a warning, or a
+	// critical issue that may block updates.
 	Severity *Severity
 
-	// The status of the check running (i.e. Failed, Succeeded, In Progress). This answers whether the check ran, and passed or
-	// failed.
+	// Represents the current status of the check being performed. Indicates whether the check has completed successfully, failed,
+	// or is still in progress.
 	Status *Status
 
 	// Key-value pairs that allow grouping/filtering individual tests.
@@ -1596,6 +2118,53 @@ type RawCertificateData struct {
 	Certificates []*string
 }
 
+// ReconcileArcSettingsRequest - Request for reconciling Arc Settings.
+type ReconcileArcSettingsRequest struct {
+	// List of Arc Nodes in the cluster
+	Properties *ReconcileArcSettingsRequestProperties
+}
+
+// ReconcileArcSettingsRequestProperties - List of Arc Nodes in the cluster
+type ReconcileArcSettingsRequestProperties struct {
+	ClusterNodes []*string
+}
+
+// RemoteSupportJobNodeSettings - Represents the settings of a remote support node.
+type RemoteSupportJobNodeSettings struct {
+	// READ-ONLY; The error message, if any, from the last connection attempt.
+	ConnectionErrorMessage *string
+
+	// READ-ONLY; The current connection status of the remote support session.
+	ConnectionStatus *string
+
+	// READ-ONLY; The timestamp when the node settings were created, in UTC.
+	CreatedAt *time.Time
+
+	// READ-ONLY; The state of the remote support node.
+	State *string
+
+	// READ-ONLY; The timestamp when the node settings were last updated, in UTC.
+	UpdatedAt *time.Time
+}
+
+// RemoteSupportJobReportedProperties - Represents the reported properties of a remote support job.
+type RemoteSupportJobReportedProperties struct {
+	// READ-ONLY; Deployment status of job.
+	DeploymentStatus *EceActionStatus
+
+	// READ-ONLY; Optional settings for configuring the node for remote support.
+	NodeSettings *RemoteSupportJobNodeSettings
+
+	// READ-ONLY; The percentage of the job that is complete.
+	PercentComplete *int32
+
+	// READ-ONLY; Details of the remote support session.
+	SessionDetails []*RemoteSupportSession
+
+	// READ-ONLY; Validation status of job.
+	ValidationStatus *EceActionStatus
+}
+
 // RemoteSupportNodeSettings - Remote Support Node Settings of the cluster.
 type RemoteSupportNodeSettings struct {
 	// READ-ONLY; Arc ResourceId of the Node
@@ -1654,6 +2223,24 @@ type RemoteSupportRequestProperties struct {
 
 	// READ-ONLY; Remote Support Access Level
 	AccessLevel *AccessLevel
+}
+
+// RemoteSupportSession - Represents a remote support session.
+type RemoteSupportSession struct {
+	// READ-ONLY; The level of access granted during the remote support session.
+	AccessLevel *RemoteSupportAccessLevel
+
+	// READ-ONLY; The end time of the remote support session, in UTC.
+	SessionEndTime *time.Time
+
+	// READ-ONLY; Unique session Id.
+	SessionID *string
+
+	// READ-ONLY; The start time of the remote support session, in UTC.
+	SessionStartTime *time.Time
+
+	// READ-ONLY; The location where the session transcript is stored.
+	TranscriptLocation *string
 }
 
 // SKU - Sku details.
@@ -1795,6 +2382,21 @@ type SdnIntegration struct {
 	NetworkController *NetworkController
 }
 
+// SecretsLocationDetails - Secrets location details
+type SecretsLocationDetails struct {
+	// REQUIRED; secrets location
+	SecretsLocation *string
+
+	// REQUIRED; Type of secrets to store
+	SecretsType *SecretsType
+}
+
+// SecretsLocationsChangeRequest - Update secrets locations change Request.
+type SecretsLocationsChangeRequest struct {
+	// List of secret locations
+	Properties []*SecretsLocationDetails
+}
+
 // SecurityComplianceStatus - Security compliance properties of the resource
 type SecurityComplianceStatus struct {
 	// READ-ONLY; Indicates whether data at-rest encryption is enabled on Azure Stack HCI clustered volumes.
@@ -1863,7 +2465,8 @@ type SoftwareAssuranceChangeRequest struct {
 }
 
 type SoftwareAssuranceChangeRequestProperties struct {
-	// Customer Intent for Software Assurance Benefit.
+	// Customer Intent for Software Assurance Benefit. This indicates whether the customer wishes to opt in or out of the Software
+	// Assurance program, which provides licensing and support benefits.
 	SoftwareAssuranceIntent *SoftwareAssuranceIntent
 }
 
@@ -1983,6 +2586,39 @@ type Update struct {
 	Type *string
 }
 
+// UpdateContent - Represents a update content.
+type UpdateContent struct {
+	// The resource-specific properties for this resource.
+	Properties *UpdateContentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UpdateContentListResult - The response of a UpdateContent list operation.
+type UpdateContentListResult struct {
+	// REQUIRED; The UpdateContent items on this page
+	Value []*UpdateContent
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// UpdateContentProperties - Represents properties of a update content resource.
+type UpdateContentProperties struct {
+	// REQUIRED; Represents the payloads of a update content resource.
+	UpdatePayloads []*ContentPayload
+}
+
 // UpdateList - List of Updates
 type UpdateList struct {
 	// List of Updates
@@ -2011,7 +2647,8 @@ type UpdateProperties struct {
 	// when an update is flagged as Invalid for the stamp based on OEM type.
 	AdditionalProperties *string
 
-	// Indicates the way the update content can be downloaded.
+	// Indicates how the update content is made available for download. This determines whether the update is sourced locally,
+	// from an online repository, or requires user notification.
 	AvailabilityType *AvailabilityType
 
 	// An array of component versions for a Solution Bundle update, and an empty array otherwise.
@@ -2053,13 +2690,18 @@ type UpdateProperties struct {
 	Prerequisites []*UpdatePrerequisite
 
 	// Publisher of the update package.
-	Publisher      *string
+	Publisher *string
+
+	// Indicates whether a reboot is required after the update or operation. Helps determine if a system restart is necessary
+	// to complete the process.
 	RebootRequired *RebootRequirement
 
 	// Link to release notes for the update.
 	ReleaseLink *string
 
-	// State of the update as it relates to this stamp.
+	// Represents the current state of the update as it relates to this stamp. This includes phases such as preparation, installation,
+	// scanning, and error handling, providing insight into the update's
+	// progress and any issues encountered.
 	State *State
 
 	// Additional information regarding the state of the update. See definition of UpdateStateProperties type below for more details
@@ -2069,7 +2711,8 @@ type UpdateProperties struct {
 	// Version of the update.
 	Version *string
 
-	// READ-ONLY; Provisioning state of the Updates proxy resource.
+	// READ-ONLY; Provisioning state of the Updates proxy resource. Indicates the current lifecycle status of the update operation,
+	// such as whether it has been accepted, is in progress, or has completed.
 	ProvisioningState *ProvisioningState
 }
 
@@ -2114,13 +2757,15 @@ type UpdateRunProperties struct {
 	// Progress representation of the update run steps.
 	Progress *Step
 
-	// State of the update run.
+	// Represents the current state of the update run. Indicates whether the update is in progress, has completed successfully,
+	// failed, or is in an unknown state.
 	State *UpdateRunPropertiesState
 
 	// Timestamp of the update run was started.
 	TimeStarted *time.Time
 
-	// READ-ONLY; Provisioning state of the UpdateRuns proxy resource.
+	// READ-ONLY; Provisioning state of the UpdateRuns proxy resource. Indicates the current lifecycle status of the update operation,
+	// such as whether it has been accepted, is in progress, or has completed.
 	ProvisioningState *ProvisioningState
 }
 
@@ -2200,10 +2845,13 @@ type UpdateSummariesProperties struct {
 	// Current version of each updatable component.
 	PackageVersions []*PackageVersionInfo
 
-	// Overall update state of the stamp.
+	// Overall update state of the stamp. Indicates the current status of update deployment across the stamp, including preparation,
+	// application, and any issues encountered.
 	State *UpdateSummariesPropertiesState
 
-	// READ-ONLY; Provisioning state of the UpdateSummaries proxy resource.
+	// READ-ONLY; Provisioning state of the UpdateSummaries proxy resource. Indicates the current lifecycle status of the update
+	// summary operation, such as whether it has been accepted, is in progress, or has
+	// completed.
 	ProvisioningState *ProvisioningState
 }
 
@@ -2233,4 +2881,153 @@ type ValidateRequest struct {
 type ValidateResponse struct {
 	// READ-ONLY; edge device validation status
 	Status *string
+}
+
+// ValidatedSolutionRecipe - Represents a validated solution recipe resource.
+type ValidatedSolutionRecipe struct {
+	// The resource-specific properties for this resource.
+	Properties *ValidatedSolutionRecipeProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ValidatedSolutionRecipeCapabilities - Represents capabilities available in a validated solution recipe.
+type ValidatedSolutionRecipeCapabilities struct {
+	// REQUIRED; Represents the cluster capabilities.
+	ClusterCapabilities []*ValidatedSolutionRecipeCapability
+
+	// REQUIRED; Represents the node capabilities.
+	NodeCapabilities []*ValidatedSolutionRecipeCapability
+}
+
+// ValidatedSolutionRecipeCapability - Represents capability available in a validated solution recipe.
+type ValidatedSolutionRecipeCapability struct {
+	// REQUIRED; Represents the capability name.
+	CapabilityName *string
+}
+
+// ValidatedSolutionRecipeComponent - Represents component available in a validated solution recipe.
+type ValidatedSolutionRecipeComponent struct {
+	// REQUIRED; Represents the component's name.
+	Name *string
+
+	// REQUIRED; Represents the component's tags.
+	Tags []*string
+
+	// REQUIRED; Represents the component's type.
+	Type *string
+
+	// Represents the component's install order.
+	InstallOrder *int64
+
+	// Represents the component's metadata.
+	Metadata *ValidatedSolutionRecipeComponentMetadata
+
+	// Represents the component's payloads.
+	Payloads []*ValidatedSolutionRecipeComponentPayload
+
+	// Represents the component's required version.
+	RequiredVersion *string
+}
+
+// ValidatedSolutionRecipeComponentMetadata - Represents metadata associated with a component available in a validated solution
+// recipe.
+type ValidatedSolutionRecipeComponentMetadata struct {
+	// Specifies the catalog to which the extension belongs.
+	Catalog *string
+
+	// Indicates whether automatic upgrades of the extension are enabled.
+	EnableAutomaticUpgrade *bool
+
+	// Specifies the expected hash of the extension.
+	ExpectedHash *string
+
+	// Represents the type of extension.
+	ExtensionType *string
+
+	// Indicates whether the LCM (Lifecycle Management) update of the extension is enabled.
+	LcmUpdate *bool
+
+	// Specifies the link associated with the extension.
+	Link *string
+
+	// Specifies the name of the extension.
+	Name *string
+
+	// Specifies the preview source of the extension.
+	PreviewSource *string
+
+	// Represents the publisher of the extension.
+	Publisher *string
+
+	// Specifies the release train to which given component belongs.
+	ReleaseTrain *string
+
+	// Specifies the ring to which the extension belongs, internally used by component.
+	Ring *string
+}
+
+// ValidatedSolutionRecipeComponentPayload - Represents payloads associated with a component available in a validated solution
+// recipe.
+type ValidatedSolutionRecipeComponentPayload struct {
+	// REQUIRED; Represents the name of the file associated with the payload.
+	FileName *string
+
+	// REQUIRED; Represents the cryptographic hash of the payload, ensuring data integrity.
+	Hash *string
+
+	// REQUIRED; Represents the unique identifier of the payload used to query the URL.
+	Identifier *string
+
+	// REQUIRED; Represents the URL from which the payload can be downloaded.
+	URL *string
+}
+
+// ValidatedSolutionRecipeContent - Represents contents of a validated solution recipe resource.
+type ValidatedSolutionRecipeContent struct {
+	// REQUIRED; Represents components available in a validated solution recipe.
+	Components []*ValidatedSolutionRecipeComponent
+
+	// REQUIRED; Represents information about a validated solution recipe.
+	Info *ValidatedSolutionRecipeInfo
+
+	// Represents capabilities available in a validated solution recipe.
+	Capabilities *ValidatedSolutionRecipeCapabilities
+}
+
+// ValidatedSolutionRecipeInfo - Represents information about a validated solution recipe.
+type ValidatedSolutionRecipeInfo struct {
+	// REQUIRED; Represents the solution type for which this validated solution recipe is applicable.
+	SolutionType *string
+
+	// REQUIRED; Represents the version for which this validated solution recipe is applicable.
+	Version *string
+}
+
+// ValidatedSolutionRecipeListResult - The response of a ValidatedSolutionRecipe list operation.
+type ValidatedSolutionRecipeListResult struct {
+	// REQUIRED; The ValidatedSolutionRecipe items on this page
+	Value []*ValidatedSolutionRecipe
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ValidatedSolutionRecipeProperties - Represents properties of a validated solution recipe resource.
+type ValidatedSolutionRecipeProperties struct {
+	// REQUIRED; Represents contents of a validated solution recipe.
+	RecipeContent *ValidatedSolutionRecipeContent
+
+	// Represents the signature of the recipe, to be used for ensuring its integrity.
+	Signature *string
 }

@@ -46,3 +46,66 @@ func unmarshalEdgeDeviceClassificationArray(rawMsg json.RawMessage) ([]EdgeDevic
 	}
 	return fArray, nil
 }
+
+func unmarshalEdgeDeviceJobClassification(rawMsg json.RawMessage) (EdgeDeviceJobClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EdgeDeviceJobClassification
+	switch m["kind"] {
+	case string(EdgeDeviceKindHCI):
+		b = &HciEdgeDeviceJob{}
+	default:
+		b = &EdgeDeviceJob{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEdgeDeviceJobClassificationArray(rawMsg json.RawMessage) ([]EdgeDeviceJobClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]EdgeDeviceJobClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalEdgeDeviceJobClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalHciEdgeDeviceJobPropertiesClassification(rawMsg json.RawMessage) (HciEdgeDeviceJobPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b HciEdgeDeviceJobPropertiesClassification
+	switch m["jobType"] {
+	case string(HciEdgeDeviceJobTypeCollectLog):
+		b = &HciCollectLogJobProperties{}
+	case string(HciEdgeDeviceJobTypeRemoteSupport):
+		b = &HciRemoteSupportJobProperties{}
+	default:
+		b = &HciEdgeDeviceJobProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}

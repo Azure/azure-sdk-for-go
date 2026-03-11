@@ -5,8 +5,6 @@
 
 package armazurestackhci
 
-import "encoding/json"
-
 // ArcSettingsClientConsentAndInstallDefaultExtensionsResponse contains the response from method ArcSettingsClient.ConsentAndInstallDefaultExtensions.
 type ArcSettingsClientConsentAndInstallDefaultExtensionsResponse struct {
 	// ArcSetting details.
@@ -52,10 +50,22 @@ type ArcSettingsClientListByClusterResponse struct {
 	ArcSettingList
 }
 
+// ArcSettingsClientReconcileResponse contains the response from method ArcSettingsClient.BeginReconcile.
+type ArcSettingsClientReconcileResponse struct {
+	// ArcSetting details.
+	ArcSetting
+}
+
 // ArcSettingsClientUpdateResponse contains the response from method ArcSettingsClient.Update.
 type ArcSettingsClientUpdateResponse struct {
 	// ArcSetting details.
 	ArcSetting
+}
+
+// ClustersClientChangeRingResponse contains the response from method ClustersClient.BeginChangeRing.
+type ClustersClientChangeRingResponse struct {
+	// Cluster details.
+	Cluster
 }
 
 // ClustersClientConfigureRemoteSupportResponse contains the response from method ClustersClient.BeginConfigureRemoteSupport.
@@ -117,6 +127,12 @@ type ClustersClientUpdateResponse struct {
 	Cluster
 }
 
+// ClustersClientUpdateSecretsLocationsResponse contains the response from method ClustersClient.BeginUpdateSecretsLocations.
+type ClustersClientUpdateSecretsLocationsResponse struct {
+	// Cluster details.
+	Cluster
+}
+
 // ClustersClientUploadCertificateResponse contains the response from method ClustersClient.BeginUploadCertificate.
 type ClustersClientUploadCertificateResponse struct {
 	// placeholder for future response values
@@ -145,25 +161,33 @@ type DeploymentSettingsClientListByClustersResponse struct {
 	DeploymentSettingListResult
 }
 
+// EdgeDeviceJobsClientCreateOrUpdateResponse contains the response from method EdgeDeviceJobsClient.BeginCreateOrUpdate.
+type EdgeDeviceJobsClientCreateOrUpdateResponse struct {
+	// EdgeDevice Jobs resource
+	EdgeDeviceJobClassification
+}
+
+// EdgeDeviceJobsClientDeleteResponse contains the response from method EdgeDeviceJobsClient.BeginDelete.
+type EdgeDeviceJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EdgeDeviceJobsClientGetResponse contains the response from method EdgeDeviceJobsClient.Get.
+type EdgeDeviceJobsClientGetResponse struct {
+	// EdgeDevice Jobs resource
+	EdgeDeviceJobClassification
+}
+
+// EdgeDeviceJobsClientListByEdgeDeviceResponse contains the response from method EdgeDeviceJobsClient.NewListByEdgeDevicePager.
+type EdgeDeviceJobsClientListByEdgeDeviceResponse struct {
+	// The response of a EdgeDeviceJob list operation.
+	EdgeDeviceJobListResult
+}
+
 // EdgeDevicesClientCreateOrUpdateResponse contains the response from method EdgeDevicesClient.BeginCreateOrUpdate.
 type EdgeDevicesClientCreateOrUpdateResponse struct {
 	// Edge device resource.
 	EdgeDeviceClassification
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EdgeDevicesClientCreateOrUpdateResponse.
-func (e EdgeDevicesClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(e.EdgeDeviceClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EdgeDevicesClientCreateOrUpdateResponse.
-func (e *EdgeDevicesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalEdgeDeviceClassification(data)
-	if err != nil {
-		return err
-	}
-	e.EdgeDeviceClassification = res
-	return nil
 }
 
 // EdgeDevicesClientDeleteResponse contains the response from method EdgeDevicesClient.BeginDelete.
@@ -175,16 +199,6 @@ type EdgeDevicesClientDeleteResponse struct {
 type EdgeDevicesClientGetResponse struct {
 	// Edge device resource.
 	EdgeDeviceClassification
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EdgeDevicesClientGetResponse.
-func (e *EdgeDevicesClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalEdgeDeviceClassification(data)
-	if err != nil {
-		return err
-	}
-	e.EdgeDeviceClassification = res
-	return nil
 }
 
 // EdgeDevicesClientListResponse contains the response from method EdgeDevicesClient.NewListPager.
@@ -233,6 +247,12 @@ type ExtensionsClientUpgradeResponse struct {
 	// placeholder for future response values
 }
 
+// KubernetesVersionsClientListBySubscriptionLocationResourceResponse contains the response from method KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager.
+type KubernetesVersionsClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a KubernetesVersion list operation.
+	KubernetesVersionListResult
+}
+
 // OffersClientGetResponse contains the response from method OffersClient.Get.
 type OffersClientGetResponse struct {
 	// Offer details.
@@ -251,10 +271,34 @@ type OffersClientListByPublisherResponse struct {
 	OfferList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// OsImagesClientGetResponse contains the response from method OsImagesClient.Get.
+type OsImagesClientGetResponse struct {
+	// Represents a os image resource.
+	OsImage
+}
+
+// OsImagesClientListBySubscriptionLocationResourceResponse contains the response from method OsImagesClient.NewListBySubscriptionLocationResourcePager.
+type OsImagesClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a OsImage list operation.
+	OsImageListResult
+}
+
+// PlatformUpdatesClientGetResponse contains the response from method PlatformUpdatesClient.Get.
+type PlatformUpdatesClientGetResponse struct {
+	// Represents a platform update resource.
+	PlatformUpdate
+}
+
+// PlatformUpdatesClientListResponse contains the response from method PlatformUpdatesClient.NewListPager.
+type PlatformUpdatesClientListResponse struct {
+	// The response of a PlatformUpdate list operation.
+	PlatformUpdateListResult
 }
 
 // PublishersClientGetResponse contains the response from method PublishersClient.Get.
@@ -302,6 +346,18 @@ type SecuritySettingsClientGetResponse struct {
 type SecuritySettingsClientListByClustersResponse struct {
 	// The response of a SecuritySetting list operation.
 	SecuritySettingListResult
+}
+
+// UpdateContentsClientGetResponse contains the response from method UpdateContentsClient.Get.
+type UpdateContentsClientGetResponse struct {
+	// Represents a update content.
+	UpdateContent
+}
+
+// UpdateContentsClientListResponse contains the response from method UpdateContentsClient.NewListPager.
+type UpdateContentsClientListResponse struct {
+	// The response of a UpdateContent list operation.
+	UpdateContentListResult
 }
 
 // UpdateRunsClientDeleteResponse contains the response from method UpdateRunsClient.BeginDelete.
@@ -376,4 +432,16 @@ type UpdatesClientPostResponse struct {
 type UpdatesClientPutResponse struct {
 	// Update details
 	Update
+}
+
+// ValidatedSolutionRecipesClientGetResponse contains the response from method ValidatedSolutionRecipesClient.Get.
+type ValidatedSolutionRecipesClientGetResponse struct {
+	// Represents a validated solution recipe resource.
+	ValidatedSolutionRecipe
+}
+
+// ValidatedSolutionRecipesClientListBySubscriptionLocationResourceResponse contains the response from method ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager.
+type ValidatedSolutionRecipesClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a ValidatedSolutionRecipe list operation.
+	ValidatedSolutionRecipeListResult
 }

@@ -7,7 +7,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
 )
 
 func unmarshalEdgeDeviceClassification(rawMsg json.RawMessage) (armazurestackhci.EdgeDeviceClassification, error) {
@@ -24,6 +24,27 @@ func unmarshalEdgeDeviceClassification(rawMsg json.RawMessage) (armazurestackhci
 		b = &armazurestackhci.HciEdgeDevice{}
 	default:
 		b = &armazurestackhci.EdgeDevice{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEdgeDeviceJobClassification(rawMsg json.RawMessage) (armazurestackhci.EdgeDeviceJobClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b armazurestackhci.EdgeDeviceJobClassification
+	switch m["kind"] {
+	case string(armazurestackhci.EdgeDeviceKindHCI):
+		b = &armazurestackhci.HciEdgeDeviceJob{}
+	default:
+		b = &armazurestackhci.EdgeDeviceJob{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

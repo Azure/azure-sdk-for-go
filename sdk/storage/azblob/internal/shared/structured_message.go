@@ -37,10 +37,10 @@ type SMEncodeResult struct {
 	OriginalContentLength int64
 }
 
-// EncodeStructuredMessage encodes raw data into structured message format.
+// SMEncode encodes raw data into structured message format.
 // segmentSize specifies the maximum segment size (use 0 for default 4MB).
 // Returns the full SM binary payload and the original content length.
-func EncodeStructuredMessage(data []byte, segmentSize int) SMEncodeResult {
+func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 	if segmentSize <= 0 {
 		segmentSize = SMDefaultSegmentSize
 	}
@@ -120,9 +120,9 @@ type SMDecodeResult struct {
 	NumSegments uint16
 }
 
-// DecodeStructuredMessage decodes a structured message binary payload and validates CRC64 checksums.
+// SMDecode decodes a structured message binary payload and validates CRC64 checksums.
 // Returns the extracted raw data or an error if the SM is malformed or CRC validation fails.
-func DecodeStructuredMessage(smData []byte) (SMDecodeResult, error) {
+func SMDecode(smData []byte) (SMDecodeResult, error) {
 	if len(smData) < SMHeaderSize {
 		return SMDecodeResult{}, fmt.Errorf("structured message too short for header: %d bytes (minimum %d)", len(smData), SMHeaderSize)
 	}
@@ -229,48 +229,48 @@ func DecodeStructuredMessage(smData []byte) (SMDecodeResult, error) {
 	}, nil
 }
 
-// StructuredMessageEncoder wraps raw data as an io.ReadSeekCloser that produces SM-encoded output.
+// SMEncoder wraps raw data as an io.ReadSeekCloser that produces SM-encoded output.
 // This is used for uploads — the body content is replaced with the SM-encoded form.
-type StructuredMessageEncoder struct {
+type SMEncoder struct {
 	reader *bytes.Reader
 	result SMEncodeResult
 }
 
-// NewStructuredMessageEncoder creates a new encoder that wraps the given raw data.
+// NewSMEncoder creates a new encoder that wraps the given raw data.
 // segmentSize specifies the max segment size; use 0 for the default (4MB).
-func NewStructuredMessageEncoder(data []byte, segmentSize int) *StructuredMessageEncoder {
-	result := EncodeStructuredMessage(data, segmentSize)
-	return &StructuredMessageEncoder{
+func NewSMEncoder(data []byte, segmentSize int) *SMEncoder {
+	result := SMEncode(data, segmentSize)
+	return &SMEncoder{
 		reader: bytes.NewReader(result.EncodedData),
 		result: result,
 	}
 }
 
-func (e *StructuredMessageEncoder) Read(p []byte) (int, error) {
+func (e *SMEncoder) Read(p []byte) (int, error) {
 	return e.reader.Read(p)
 }
 
-func (e *StructuredMessageEncoder) Seek(offset int64, whence int) (int64, error) {
+func (e *SMEncoder) Seek(offset int64, whence int) (int64, error) {
 	return e.reader.Seek(offset, whence)
 }
 
-func (e *StructuredMessageEncoder) Close() error {
+func (e *SMEncoder) Close() error {
 	return nil
 }
 
 // OriginalContentLength returns the length of the original unframed data.
-func (e *StructuredMessageEncoder) OriginalContentLength() int64 {
+func (e *SMEncoder) OriginalContentLength() int64 {
 	return e.result.OriginalContentLength
 }
 
 // EncodedLength returns the total length of the SM-encoded data.
-func (e *StructuredMessageEncoder) EncodedLength() int64 {
+func (e *SMEncoder) EncodedLength() int64 {
 	return int64(len(e.result.EncodedData))
 }
 
-// StructuredMessageDecoder wraps an SM-encoded io.ReadCloser and produces raw data on Read().
+// SMDecoder wraps an SM-encoded io.ReadCloser and produces raw data on Read().
 // It reads the full SM payload, validates CRC64 checksums, and serves the extracted raw data.
-type StructuredMessageDecoder struct {
+type SMDecoder struct {
 	source    io.ReadCloser
 	reader    *bytes.Reader
 	decoded   bool
@@ -279,15 +279,15 @@ type StructuredMessageDecoder struct {
 	err       error
 }
 
-// NewStructuredMessageDecoder creates a decoder that wraps an SM-encoded body.
+// NewSMDecoder creates a decoder that wraps an SM-encoded body.
 // The full body is read and validated on the first call to Read().
-func NewStructuredMessageDecoder(body io.ReadCloser) *StructuredMessageDecoder {
-	return &StructuredMessageDecoder{
+func NewSMDecoder(body io.ReadCloser) *SMDecoder {
+	return &SMDecoder{
 		source: body,
 	}
 }
 
-func (d *StructuredMessageDecoder) decode() error {
+func (d *SMDecoder) decode() error {
 	if d.decoded {
 		return d.err
 	}
@@ -299,7 +299,7 @@ func (d *StructuredMessageDecoder) decode() error {
 		return d.err
 	}
 
-	result, err := DecodeStructuredMessage(smData)
+	result, err := SMDecode(smData)
 	if err != nil {
 		d.err = err
 		return d.err
@@ -311,14 +311,14 @@ func (d *StructuredMessageDecoder) decode() error {
 	return nil
 }
 
-func (d *StructuredMessageDecoder) Read(p []byte) (int, error) {
+func (d *SMDecoder) Read(p []byte) (int, error) {
 	if err := d.decode(); err != nil {
 		return 0, err
 	}
 	return d.reader.Read(p)
 }
 
-func (d *StructuredMessageDecoder) Close() error {
+func (d *SMDecoder) Close() error {
 	if d.source != nil {
 		return d.source.Close()
 	}
@@ -327,7 +327,7 @@ func (d *StructuredMessageDecoder) Close() error {
 
 // DecodeResult returns the decode result after the first Read().
 // Returns nil if not yet decoded.
-func (d *StructuredMessageDecoder) DecodeResult() *SMDecodeResult {
+func (d *SMDecoder) DecodeResult() *SMDecodeResult {
 	if !d.decoded {
 		return nil
 	}

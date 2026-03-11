@@ -18,12 +18,12 @@ import (
 
 func TestEncodeDecodeRoundTripSmallData(t *testing.T) {
 	data := []byte("Hello, structured message!")
-	result := EncodeStructuredMessage(data, 0)
+	result := SMEncode(data, 0)
 
 	require.Equal(t, int64(len(data)), result.OriginalContentLength)
 	require.Greater(t, len(result.EncodedData), len(data))
 
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, data, decoded.Data)
 	require.Equal(t, SMVersion, decoded.Version)
@@ -33,11 +33,11 @@ func TestEncodeDecodeRoundTripSmallData(t *testing.T) {
 
 func TestEncodeDecodeRoundTripEmptyData(t *testing.T) {
 	data := []byte{}
-	result := EncodeStructuredMessage(data, 0)
+	result := SMEncode(data, 0)
 
 	require.Equal(t, int64(0), result.OriginalContentLength)
 
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(decoded.Data))
 	require.Equal(t, uint16(1), decoded.NumSegments)
@@ -49,11 +49,11 @@ func TestEncodeDecodeRoundTripExactSegmentSize(t *testing.T) {
 	for i := range data {
 		data[i] = byte(i % 256)
 	}
-	result := EncodeStructuredMessage(data, segSize)
+	result := SMEncode(data, segSize)
 
 	require.Equal(t, int64(segSize), result.OriginalContentLength)
 
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, data, decoded.Data)
 	require.Equal(t, uint16(1), decoded.NumSegments)
@@ -65,9 +65,9 @@ func TestEncodeDecodeRoundTripMultiSegment(t *testing.T) {
 	for i := range data {
 		data[i] = byte(i % 256)
 	}
-	result := EncodeStructuredMessage(data, segSize)
+	result := SMEncode(data, segSize)
 
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, data, decoded.Data)
 	require.Equal(t, uint16(4), decoded.NumSegments)
@@ -80,11 +80,11 @@ func TestEncodeDecodeRoundTripLargerData(t *testing.T) {
 	}
 
 	segSize := 256 * 1024 // 256KB segments => 4 segments
-	result := EncodeStructuredMessage(data, segSize)
+	result := SMEncode(data, segSize)
 
 	require.Equal(t, int64(len(data)), result.OriginalContentLength)
 
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, data, decoded.Data)
 	require.Equal(t, uint16(4), decoded.NumSegments)
@@ -92,18 +92,18 @@ func TestEncodeDecodeRoundTripLargerData(t *testing.T) {
 
 func TestEncodeDecodeRoundTripSingleByte(t *testing.T) {
 	data := []byte{0x42}
-	result := EncodeStructuredMessage(data, 0)
+	result := SMEncode(data, 0)
 
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, data, decoded.Data)
 }
 
 func TestEncodeDecodeRoundTripSegmentSizeOne(t *testing.T) {
 	data := []byte("ABC")
-	result := EncodeStructuredMessage(data, 1)
+	result := SMEncode(data, 1)
 
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, data, decoded.Data)
 	require.Equal(t, uint16(3), decoded.NumSegments)
@@ -112,7 +112,7 @@ func TestEncodeDecodeRoundTripSegmentSizeOne(t *testing.T) {
 func TestEncodeMessageFormat(t *testing.T) {
 	data := []byte("ABCDEFGHIJ") // 10 bytes
 	segSize := 5                 // 2 segments of 5 bytes each
-	result := EncodeStructuredMessage(data, segSize)
+	result := SMEncode(data, segSize)
 
 	smData := result.EncodedData
 
@@ -173,10 +173,10 @@ func TestEncodeMessageFormat(t *testing.T) {
 
 func TestEncodeDefaultSegmentSize(t *testing.T) {
 	data := make([]byte, 100)
-	result := EncodeStructuredMessage(data, 0)
+	result := SMEncode(data, 0)
 
 	// With default 4MB segment size, 100 bytes should be 1 segment
-	decoded, err := DecodeStructuredMessage(result.EncodedData)
+	decoded, err := SMDecode(result.EncodedData)
 	require.NoError(t, err)
 	require.Equal(t, uint16(1), decoded.NumSegments)
 }
@@ -192,7 +192,7 @@ func TestEncodeMessageLength(t *testing.T) {
 	// Trailer: 8
 	// Total: 13 + 23 + 23 + 8 = 67
 
-	result := EncodeStructuredMessage(data, segSize)
+	result := SMEncode(data, segSize)
 	require.Equal(t, 67, len(result.EncodedData))
 }
 
@@ -200,7 +200,7 @@ func TestEncodeCRC64MatchesSharedTable(t *testing.T) {
 	data := []byte("CRC validation test data")
 	expectedCRC := crc64.Checksum(data, CRC64Table)
 
-	result := EncodeStructuredMessage(data, 0)
+	result := SMEncode(data, 0)
 	smData := result.EncodedData
 
 	// Trailer CRC is last 8 bytes
@@ -247,7 +247,7 @@ func TestDecodeInvalid(t *testing.T) {
 	}
 
 	for _, tt := range badInputs {
-		_, err := DecodeStructuredMessage(tt.data)
+		_, err := SMDecode(tt.data)
 		require.Error(t, err)
 		if tt.errText != "" {
 			require.Contains(t, err.Error(), tt.errText)
@@ -257,7 +257,7 @@ func TestDecodeInvalid(t *testing.T) {
 
 // makeCorruptedSM encodes data then applies a corruption function on the result.
 func makeCorruptedSM(data []byte, corrupt func([]byte)) []byte {
-	result := EncodeStructuredMessage(data, 0)
+	result := SMEncode(data, 0)
 	smData := make([]byte, len(result.EncodedData))
 	copy(smData, result.EncodedData)
 	corrupt(smData)
@@ -266,7 +266,7 @@ func makeCorruptedSM(data []byte, corrupt func([]byte)) []byte {
 
 func TestEncoderReadSeekClose(t *testing.T) {
 	data := []byte("encoder test data")
-	enc := NewStructuredMessageEncoder(data, 0)
+	enc := NewSMEncoder(data, 0)
 
 	require.Equal(t, int64(len(data)), enc.OriginalContentLength())
 	require.Greater(t, enc.EncodedLength(), int64(len(data)))
@@ -292,14 +292,14 @@ func TestEncoderReadSeekClose(t *testing.T) {
 	require.NoError(t, enc.Close())
 
 	// Decode the output to verify correctness
-	decoded, err := DecodeStructuredMessage(buf)
+	decoded, err := SMDecode(buf)
 	require.NoError(t, err)
 	require.Equal(t, data, decoded.Data)
 }
 
 func TestEncoderAsReadSeekCloser(t *testing.T) {
 	data := []byte("interface compliance test")
-	enc := NewStructuredMessageEncoder(data, 0)
+	enc := NewSMEncoder(data, 0)
 
 	var _ io.ReadSeekCloser = enc
 
@@ -310,10 +310,10 @@ func TestEncoderAsReadSeekCloser(t *testing.T) {
 
 func TestDecoderReadClose(t *testing.T) {
 	data := []byte("decoder test with some content here")
-	result := EncodeStructuredMessage(data, 10)
+	result := SMEncode(data, 10)
 
 	body := io.NopCloser(bytes.NewReader(result.EncodedData))
-	dec := NewStructuredMessageDecoder(body)
+	dec := NewSMDecoder(body)
 
 	rawData, err := io.ReadAll(dec)
 	require.NoError(t, err)
@@ -329,7 +329,7 @@ func TestDecoderReadClose(t *testing.T) {
 
 func TestDecoderInvalidBody(t *testing.T) {
 	body := io.NopCloser(bytes.NewReader([]byte{0xFF, 0x01, 0x02}))
-	dec := NewStructuredMessageDecoder(body)
+	dec := NewSMDecoder(body)
 
 	_, err := io.ReadAll(dec)
 	require.Error(t, err)
@@ -337,9 +337,9 @@ func TestDecoderInvalidBody(t *testing.T) {
 
 func TestDecoderDecodeResultBeforeRead(t *testing.T) {
 	data := []byte("test")
-	result := EncodeStructuredMessage(data, 0)
+	result := SMEncode(data, 0)
 	body := io.NopCloser(bytes.NewReader(result.EncodedData))
-	dec := NewStructuredMessageDecoder(body)
+	dec := NewSMDecoder(body)
 
 	require.Nil(t, dec.DecodeResult())
 }

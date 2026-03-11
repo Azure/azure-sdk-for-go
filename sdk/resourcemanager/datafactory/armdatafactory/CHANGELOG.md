@@ -1,6 +1,6 @@
 # Release History
 
-## 11.0.0 (2026-03-11)
+## 11.0.0-beta.1 (2026-03-11)
 ### Breaking Changes
 
 - Type of `JiraObjectDataset.TypeProperties` has been changed from `*GenericDatasetTypeProperties` to `*JiraTableDatasetTypeProperties`

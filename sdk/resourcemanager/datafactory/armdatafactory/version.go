@@ -6,5 +6,5 @@ package armdatafactory
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
-	moduleVersion = "v11.0.0"
+	moduleVersion = "v11.0.0-beta.1"
 )

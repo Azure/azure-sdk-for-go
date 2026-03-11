@@ -5,11 +5,6 @@
 
 package armsearch
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
-	moduleVersion = "v1.4.0"
-)
-
 // AADAuthFailureMode - Describes what response the data plane API of a search service would send for requests that failed
 // authentication.
 type AADAuthFailureMode string
@@ -86,9 +81,9 @@ type ComputeType string
 
 const (
 	// ComputeTypeConfidential - Create the service with Azure Confidential Compute.
-	ComputeTypeConfidential ComputeType = "confidential"
+	ComputeTypeConfidential ComputeType = "Confidential"
 	// ComputeTypeDefault - Create the service with the Default Compute.
-	ComputeTypeDefault ComputeType = "default"
+	ComputeTypeDefault ComputeType = "Default"
 )
 
 // PossibleComputeTypeValues returns the possible values for the ComputeType const type.
@@ -121,15 +116,15 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 
 // HostingMode - Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions
 // that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any
-// other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this value must be
-// 'default'.
+// other SKU. For the standard3 SKU, the value is either 'Default' or 'HighDensity'. For all other SKUs, this value must be
+// 'Default'.
 type HostingMode string
 
 const (
 	// HostingModeDefault - The limit on number of indexes is determined by the default limits for the SKU.
-	HostingModeDefault HostingMode = "default"
+	HostingModeDefault HostingMode = "Default"
 	// HostingModeHighDensity - Only application for standard3 SKU, where the search service can have up to 1000 indexes.
-	HostingModeHighDensity HostingMode = "highDensity"
+	HostingModeHighDensity HostingMode = "HighDensity"
 )
 
 // PossibleHostingModeValues returns the possible values for the HostingMode const type.
@@ -329,20 +324,20 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// PublicNetworkAccess - This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates.
-// If set to 'disabled', traffic over public interface is not allowed, and private endpoint
+// PublicNetworkAccess - This value can be set to 'Enabled' to avoid breaking changes on existing customer resources and templates.
+// If set to 'Disabled', traffic over public interface is not allowed, and private endpoint
 // connections would be the exclusive access method.
 type PublicNetworkAccess string
 
 const (
 	// PublicNetworkAccessDisabled - The search service is not accessible from traffic originating from the public internet. Access
 	// is only permitted over approved private endpoint connections.
-	PublicNetworkAccessDisabled PublicNetworkAccess = "disabled"
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
 	// PublicNetworkAccessEnabled - The search service is accessible from traffic originating from the public internet.
-	PublicNetworkAccessEnabled PublicNetworkAccess = "enabled"
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 	// PublicNetworkAccessSecuredByPerimeter - The network security perimeter configuration rules allow or disallow public network
 	// access to the resource. Requires an associated network security perimeter.
-	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "securedByPerimeter"
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.

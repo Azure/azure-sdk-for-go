@@ -89,7 +89,7 @@ func (m *ManagementServerTransport) dispatchUsageBySubscriptionSKU(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Search/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages/(?P<skuName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	clientRequestIDParam := getOptional(getHeaderValue(req.Header, "x-ms-client-request-id"))

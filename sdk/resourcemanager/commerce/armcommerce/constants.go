@@ -5,11 +5,6 @@
 
 package armcommerce
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce"
-	moduleVersion = "v0.3.0"
-)
-
 type AggregationGranularity string
 
 const (

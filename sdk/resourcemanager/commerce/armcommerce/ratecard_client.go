@@ -28,7 +28,7 @@ type RateCardClient struct {
 //   - subscriptionID - It uniquely identifies Microsoft Azure subscription. The subscription ID forms part of the URI for every
 //     service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRateCardClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RateCardClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -78,7 +78,7 @@ func (client *RateCardClient) Get(ctx context.Context, filter string, options *R
 }
 
 // getCreateRequest creates the Get request.
-func (client *RateCardClient) getCreateRequest(ctx context.Context, filter string, options *RateCardClientGetOptions) (*policy.Request, error) {
+func (client *RateCardClient) getCreateRequest(ctx context.Context, filter string, _ *RateCardClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/RateCard"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

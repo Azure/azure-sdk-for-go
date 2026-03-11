@@ -8,6 +8,7 @@ package armcommerce
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,7 +31,7 @@ type UsageAggregatesClient struct {
 //   - subscriptionID - It uniquely identifies Microsoft Azure subscription. The subscription ID forms part of the URI for every
 //     service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUsageAggregatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsageAggregatesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -85,18 +86,18 @@ func (client *UsageAggregatesClient) listCreateRequest(ctx context.Context, repo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("reportedStartTime", reportedStartTime.Format(time.RFC3339Nano))
-	reqQP.Set("reportedEndTime", reportedEndTime.Format(time.RFC3339Nano))
-	if options != nil && options.ShowDetails != nil {
-		reqQP.Set("showDetails", strconv.FormatBool(*options.ShowDetails))
-	}
 	if options != nil && options.AggregationGranularity != nil {
 		reqQP.Set("aggregationGranularity", string(*options.AggregationGranularity))
 	}
+	reqQP.Set("api-version", "2015-06-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	reqQP.Set("api-version", "2015-06-01-preview")
+	reqQP.Set("reportedEndTime", reportedEndTime.Format(time.RFC3339Nano))
+	reqQP.Set("reportedStartTime", reportedStartTime.Format(time.RFC3339Nano))
+	if options != nil && options.ShowDetails != nil {
+		reqQP.Set("showDetails", strconv.FormatBool(*options.ShowDetails))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
@@ -105,8 +106,21 @@ func (client *UsageAggregatesClient) listCreateRequest(ctx context.Context, repo
 // listHandleResponse handles the List response.
 func (client *UsageAggregatesClient) listHandleResponse(resp *http.Response) (UsageAggregatesClientListResponse, error) {
 	result := UsageAggregatesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.UsageAggregationListResult); err != nil {
-		return UsageAggregatesClientListResponse{}, err
+	switch resp.StatusCode {
+	case http.StatusOK:
+		var val UsageAggregationListResult
+		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
+			return UsageAggregatesClientListResponse{}, err
+		}
+		result.Value = val
+	case http.StatusAccepted:
+		var val ErrorObjectResponse
+		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
+			return UsageAggregatesClientListResponse{}, err
+		}
+		result.Value = val
+	default:
+		return UsageAggregatesClientListResponse{}, fmt.Errorf("unhandled HTTP status code %d", resp.StatusCode)
 	}
 	return result, nil
 }

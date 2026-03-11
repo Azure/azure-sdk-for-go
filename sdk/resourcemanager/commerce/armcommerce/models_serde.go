@@ -12,6 +12,33 @@ import (
 	"reflect"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type ErrorObjectResponse.
+func (e ErrorObjectResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "error", e.Error)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorObjectResponse.
+func (e *ErrorObjectResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "error":
+			err = unpopulate(val, "Error", &e.Error)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
 func (e ErrorResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -38,33 +65,6 @@ func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", e, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InfoField.
-func (i InfoField) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "project", i.Project)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InfoField.
-func (i *InfoField) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", i, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "project":
-			err = unpopulate(val, "Project", &i.Project)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", i, err)
 		}
 	}
 	return nil
@@ -432,7 +432,7 @@ func (u *UsageAggregationListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type UsageSample.
 func (u UsageSample) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "infoFields", u.InfoFields)
+	populateAny(objectMap, "infoFields", u.InfoFields)
 	populate(objectMap, "instanceData", u.InstanceData)
 	populate(objectMap, "meterCategory", u.MeterCategory)
 	populate(objectMap, "meterId", u.MeterID)
@@ -510,8 +510,18 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
+		m[k] = v
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

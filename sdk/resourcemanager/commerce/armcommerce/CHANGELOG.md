@@ -1,5 +1,18 @@
 # Release History
 
+## 0.4.0 (2026-03-11)
+### Breaking Changes
+
+- Struct `InfoField` has been removed
+- Field `UsageAggregationListResult` of struct `UsageAggregatesClientListResponse` has been removed
+
+### Features Added
+
+- Type of `UsageSample.InfoFields` has been changed from `*InfoField` to `any`
+- New struct `ErrorObjectResponse`
+- New field `Value` in struct `UsageAggregatesClientListResponse`
+
+
 ## 0.3.0 (2023-11-24)
 ### Features Added
 

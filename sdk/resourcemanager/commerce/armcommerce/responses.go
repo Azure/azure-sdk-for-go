@@ -13,6 +13,6 @@ type RateCardClientGetResponse struct {
 
 // UsageAggregatesClientListResponse contains the response from method UsageAggregatesClient.NewListPager.
 type UsageAggregatesClientListResponse struct {
-	// The Get UsageAggregates operation response.
-	UsageAggregationListResult
+	// Possible types are UsageAggregationListResult, ErrorObjectResponse
+	Value any
 }

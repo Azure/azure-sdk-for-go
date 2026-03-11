@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/commerce/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/commerce/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1a4833df7c0f60206f6dc1c66dfab2a26ae8367a/specification/commerce/resource-manager/Microsoft.Commerce/Commerce/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1a4833df7c0f60206f6dc1c66dfab2a26ae8367a/specification/commerce/resource-manager/Microsoft.Commerce/Commerce/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.3.0
+module-version: 0.4.0
 
 ```

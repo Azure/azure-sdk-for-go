@@ -23,7 +23,9 @@ import (
 // UsageAggregatesServer is a fake server for instances of the armcommerce.UsageAggregatesClient type.
 type UsageAggregatesServer struct {
 	// NewListPager is the fake for method UsageAggregatesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success:
+	//   - http.StatusOK (returns armcommerce.UsageAggregationListResult)
+	//   - http.StatusAccepted (returns armcommerce.ErrorObjectResponse)
 	NewListPager func(reportedStartTime time.Time, reportedEndTime time.Time, options *armcommerce.UsageAggregatesClientListOptions) (resp azfake.PagerResponder[armcommerce.UsageAggregatesClientListResponse])
 }
 
@@ -52,21 +54,40 @@ func (u *UsageAggregatesServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return u.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "UsageAggregatesClient.NewListPager":
-		resp, err = u.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (u *UsageAggregatesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if usageAggregatesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = usageAggregatesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "UsageAggregatesClient.NewListPager":
+				res.resp, res.err = u.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (u *UsageAggregatesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -78,7 +99,7 @@ func (u *UsageAggregatesServerTransport) dispatchNewListPager(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Commerce/UsageAggregates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -135,12 +156,18 @@ func (u *UsageAggregatesServerTransport) dispatchNewListPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		u.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
 		u.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to UsageAggregatesServerTransport
+var usageAggregatesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

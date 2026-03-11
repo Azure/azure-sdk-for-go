@@ -16,7 +16,10 @@ import (
 
 // ServerFactory is a fake server for instances of the armcommerce.ClientFactory type.
 type ServerFactory struct {
-	RateCardServer        RateCardServer
+	// RateCardServer contains the fakes for client RateCardClient
+	RateCardServer RateCardServer
+
+	// UsageAggregatesServer contains the fakes for client UsageAggregatesClient
 	UsageAggregatesServer UsageAggregatesServer
 }
 

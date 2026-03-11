@@ -602,6 +602,7 @@ privateEndpointConnection.Etag = to.Ptr(azcore.ETag("*"))
 
 ```md
 - Function `*ServicesClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *ServicesClientDeleteOptions)`
+- Field `ClientRequestID` of struct `SearchManagementRequestOptions` has been removed
 ```
 
 **Reason**: TypeSpec moves optional parameters from parameter groups into the method's options type and keeps only required parameters in the named group. If no required parameters remain, the parameter group is removed entirely.

@@ -1,0 +1,4 @@
+directory: specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory
+commit: c53f3d017008b4cc52cbbe80caf91f66d50d40a4
+repo: i-specs
+additionalDirectories: 

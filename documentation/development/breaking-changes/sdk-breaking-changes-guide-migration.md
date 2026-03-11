@@ -609,10 +609,7 @@ Multiple changes related to parameter groups where the parameter group is remove
 - Field `ClientRequestID` of struct `ServicesClientGetOptions` has been removed
 ```
 
-**Reason**: The Swagger implementation performs a literal grouping of the specified parameters. If one or more of those parameters are optional, then the group is also marked as optional and contains a mix of required/optional parameters. For TypeSpec, the behavior changes to:
-
-- All optional parameters within a parameter group are moved to the method's options type. This might mean that the parameter group is removed entirely if it contains no required parameters.
-- All required parameters are emitted as fields in the named parameter group type.
+**Reason**: TypeSpec moves optional parameters from parameter groups into the method's options type and keeps only required parameters in the named group. If no required parameters remain, the parameter group is removed entirely.
 
 **Impact**: This corrects the previous SDK behavior.
 

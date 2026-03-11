@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-03-09)
+## 2.0.0-beta.1 (2026-03-09)
 ### Breaking Changes
 
 - Enum `NetworkOperationStatus` has been removed

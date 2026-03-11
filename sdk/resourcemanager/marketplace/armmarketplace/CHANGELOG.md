@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-03-09)
+## 2.0.0-beta.1 (2026-03-09)
 ### Breaking Changes
 
 - Function `*PrivateStoreClient.CreateApprovalRequest` parameter(s) have been changed from `(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientCreateApprovalRequestOptions)` to `(ctx context.Context, privateStoreID string, requestApprovalID string, payload RequestApprovalResource, options *PrivateStoreClientCreateApprovalRequestOptions)`

@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2026-03-09)
+## 3.0.0-beta.1 (2026-03-09)
 ### Breaking Changes
 
 - Struct `ApplianceQueryParameter` has been removed

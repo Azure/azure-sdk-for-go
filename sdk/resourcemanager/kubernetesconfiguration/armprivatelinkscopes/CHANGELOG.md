@@ -1,5 +1,10 @@
 # Release History
 
+## 0.2.0 (2026-03-10)
+### Other Changes
+
+- Updated to API version `2024-11-01-preview`.
+
 ## 0.1.0 (2025-06-18)
 ### Other Changes
 

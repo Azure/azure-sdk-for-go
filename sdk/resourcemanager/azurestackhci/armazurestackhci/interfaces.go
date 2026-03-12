@@ -13,3 +13,21 @@ type EdgeDeviceClassification interface {
 	// GetEdgeDevice returns the EdgeDevice content of the underlying type.
 	GetEdgeDevice() *EdgeDevice
 }
+
+// EdgeDeviceJobClassification provides polymorphic access to related types.
+// Call the interface's GetEdgeDeviceJob() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *EdgeDeviceJob, *HciEdgeDeviceJob
+type EdgeDeviceJobClassification interface {
+	// GetEdgeDeviceJob returns the EdgeDeviceJob content of the underlying type.
+	GetEdgeDeviceJob() *EdgeDeviceJob
+}
+
+// HciEdgeDeviceJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetHciEdgeDeviceJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *HciCollectLogJobProperties, *HciEdgeDeviceJobProperties, *HciRemoteSupportJobProperties
+type HciEdgeDeviceJobPropertiesClassification interface {
+	// GetHciEdgeDeviceJobProperties returns the HciEdgeDeviceJobProperties content of the underlying type.
+	GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties
+}

@@ -27,7 +27,7 @@ type UpdatesClient struct {
 // NewUpdatesClient creates a new instance of UpdatesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdatesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginDelete - Delete specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -69,7 +69,7 @@ func (client *UpdatesClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Delete specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-11-01-preview
 func (client *UpdatesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdatesClient.BeginDelete"
@@ -92,7 +92,7 @@ func (client *UpdatesClient) deleteOperation(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -115,7 +115,7 @@ func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -124,7 +124,7 @@ func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -152,7 +152,7 @@ func (client *UpdatesClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *UpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientGetOptions) (*policy.Request, error) {
+func (client *UpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -175,7 +175,7 @@ func (client *UpdatesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,7 +192,7 @@ func (client *UpdatesClient) getHandleResponse(resp *http.Response) (UpdatesClie
 
 // NewListPager - List all Updates
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - UpdatesClientListOptions contains the optional parameters for the UpdatesClient.NewListPager method.
@@ -220,7 +220,7 @@ func (client *UpdatesClient) NewListPager(resourceGroupName string, clusterName 
 }
 
 // listCreateRequest creates the List request.
-func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *UpdatesClientListOptions) (*policy.Request, error) {
+func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpdatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -239,7 +239,7 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +257,7 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 // BeginPost - Apply Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -283,7 +283,7 @@ func (client *UpdatesClient) BeginPost(ctx context.Context, resourceGroupName st
 // Post - Apply Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-11-01-preview
 func (client *UpdatesClient) post(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPostOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdatesClient.BeginPost"
@@ -306,7 +306,7 @@ func (client *UpdatesClient) post(ctx context.Context, resourceGroupName string,
 }
 
 // postCreateRequest creates the Post request.
-func (client *UpdatesClient) postCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPostOptions) (*policy.Request, error) {
+func (client *UpdatesClient) postCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/apply"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -329,7 +329,7 @@ func (client *UpdatesClient) postCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,7 +338,7 @@ func (client *UpdatesClient) postCreateRequest(ctx context.Context, resourceGrou
 // Put - Put specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -367,7 +367,7 @@ func (client *UpdatesClient) Put(ctx context.Context, resourceGroupName string, 
 }
 
 // putCreateRequest creates the Put request.
-func (client *UpdatesClient) putCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateProperties Update, options *UpdatesClientPutOptions) (*policy.Request, error) {
+func (client *UpdatesClient) putCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateProperties Update, _ *UpdatesClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -390,7 +390,7 @@ func (client *UpdatesClient) putCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateProperties); err != nil {

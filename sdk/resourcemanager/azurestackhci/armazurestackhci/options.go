@@ -8,20 +8,26 @@ package armazurestackhci
 // ArcSettingsClientBeginCreateIdentityOptions contains the optional parameters for the ArcSettingsClient.BeginCreateIdentity
 // method.
 type ArcSettingsClientBeginCreateIdentityOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ArcSettingsClientBeginDeleteOptions contains the optional parameters for the ArcSettingsClient.BeginDelete method.
 type ArcSettingsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ArcSettingsClientBeginInitializeDisableProcessOptions contains the optional parameters for the ArcSettingsClient.BeginInitializeDisableProcess
 // method.
 type ArcSettingsClientBeginInitializeDisableProcessOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ArcSettingsClientBeginReconcileOptions contains the optional parameters for the ArcSettingsClient.BeginReconcile method.
+type ArcSettingsClientBeginReconcileOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -57,43 +63,56 @@ type ArcSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClustersClientBeginChangeRingOptions contains the optional parameters for the ClustersClient.BeginChangeRing method.
+type ClustersClientBeginChangeRingOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ClustersClientBeginConfigureRemoteSupportOptions contains the optional parameters for the ClustersClient.BeginConfigureRemoteSupport
 // method.
 type ClustersClientBeginConfigureRemoteSupportOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginCreateIdentityOptions contains the optional parameters for the ClustersClient.BeginCreateIdentity method.
 type ClustersClientBeginCreateIdentityOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 type ClustersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginExtendSoftwareAssuranceBenefitOptions contains the optional parameters for the ClustersClient.BeginExtendSoftwareAssuranceBenefit
 // method.
 type ClustersClientBeginExtendSoftwareAssuranceBenefitOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginTriggerLogCollectionOptions contains the optional parameters for the ClustersClient.BeginTriggerLogCollection
 // method.
 type ClustersClientBeginTriggerLogCollectionOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginUpdateSecretsLocationsOptions contains the optional parameters for the ClustersClient.BeginUpdateSecretsLocations
+// method.
+type ClustersClientBeginUpdateSecretsLocationsOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginUploadCertificateOptions contains the optional parameters for the ClustersClient.BeginUploadCertificate
 // method.
 type ClustersClientBeginUploadCertificateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -127,14 +146,14 @@ type ClustersClientUpdateOptions struct {
 // DeploymentSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentSettingsClient.BeginCreateOrUpdate
 // method.
 type DeploymentSettingsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DeploymentSettingsClientBeginDeleteOptions contains the optional parameters for the DeploymentSettingsClient.BeginDelete
 // method.
 type DeploymentSettingsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -149,22 +168,46 @@ type DeploymentSettingsClientListByClustersOptions struct {
 	// placeholder for future optional parameters
 }
 
+// EdgeDeviceJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeDeviceJobsClient.BeginCreateOrUpdate
+// method.
+type EdgeDeviceJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeDeviceJobsClientBeginDeleteOptions contains the optional parameters for the EdgeDeviceJobsClient.BeginDelete method.
+type EdgeDeviceJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeDeviceJobsClientGetOptions contains the optional parameters for the EdgeDeviceJobsClient.Get method.
+type EdgeDeviceJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeDeviceJobsClientListByEdgeDeviceOptions contains the optional parameters for the EdgeDeviceJobsClient.NewListByEdgeDevicePager
+// method.
+type EdgeDeviceJobsClientListByEdgeDeviceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EdgeDevicesClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeDevicesClient.BeginCreateOrUpdate
 // method.
 type EdgeDevicesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EdgeDevicesClientBeginDeleteOptions contains the optional parameters for the EdgeDevicesClient.BeginDelete method.
 type EdgeDevicesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EdgeDevicesClientBeginValidateOptions contains the optional parameters for the EdgeDevicesClient.BeginValidate method.
 type EdgeDevicesClientBeginValidateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -180,25 +223,25 @@ type EdgeDevicesClientListOptions struct {
 
 // ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
 type ExtensionsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ExtensionsClientBeginDeleteOptions contains the optional parameters for the ExtensionsClient.BeginDelete method.
 type ExtensionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ExtensionsClientBeginUpdateOptions contains the optional parameters for the ExtensionsClient.BeginUpdate method.
 type ExtensionsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ExtensionsClientBeginUpgradeOptions contains the optional parameters for the ExtensionsClient.BeginUpgrade method.
 type ExtensionsClientBeginUpgradeOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -210,6 +253,12 @@ type ExtensionsClientGetOptions struct {
 // ExtensionsClientListByArcSettingOptions contains the optional parameters for the ExtensionsClient.NewListByArcSettingPager
 // method.
 type ExtensionsClientListByArcSettingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KubernetesVersionsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager
+// method.
+type KubernetesVersionsClientListBySubscriptionLocationResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -231,8 +280,29 @@ type OffersClientListByPublisherOptions struct {
 	Expand *string
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OsImagesClientGetOptions contains the optional parameters for the OsImagesClient.Get method.
+type OsImagesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OsImagesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the OsImagesClient.NewListBySubscriptionLocationResourcePager
+// method.
+type OsImagesClientListBySubscriptionLocationResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlatformUpdatesClientGetOptions contains the optional parameters for the PlatformUpdatesClient.Get method.
+type PlatformUpdatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlatformUpdatesClientListOptions contains the optional parameters for the PlatformUpdatesClient.NewListPager method.
+type PlatformUpdatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -261,13 +331,13 @@ type SKUsClientListByOfferOptions struct {
 // SecuritySettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the SecuritySettingsClient.BeginCreateOrUpdate
 // method.
 type SecuritySettingsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SecuritySettingsClientBeginDeleteOptions contains the optional parameters for the SecuritySettingsClient.BeginDelete method.
 type SecuritySettingsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -282,9 +352,19 @@ type SecuritySettingsClientListByClustersOptions struct {
 	// placeholder for future optional parameters
 }
 
+// UpdateContentsClientGetOptions contains the optional parameters for the UpdateContentsClient.Get method.
+type UpdateContentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpdateContentsClientListOptions contains the optional parameters for the UpdateContentsClient.NewListPager method.
+type UpdateContentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // UpdateRunsClientBeginDeleteOptions contains the optional parameters for the UpdateRunsClient.BeginDelete method.
 type UpdateRunsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -305,7 +385,7 @@ type UpdateRunsClientPutOptions struct {
 
 // UpdateSummariesClientBeginDeleteOptions contains the optional parameters for the UpdateSummariesClient.BeginDelete method.
 type UpdateSummariesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -326,13 +406,13 @@ type UpdateSummariesClientPutOptions struct {
 
 // UpdatesClientBeginDeleteOptions contains the optional parameters for the UpdatesClient.BeginDelete method.
 type UpdatesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // UpdatesClientBeginPostOptions contains the optional parameters for the UpdatesClient.BeginPost method.
 type UpdatesClientBeginPostOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -348,5 +428,16 @@ type UpdatesClientListOptions struct {
 
 // UpdatesClientPutOptions contains the optional parameters for the UpdatesClient.Put method.
 type UpdatesClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ValidatedSolutionRecipesClientGetOptions contains the optional parameters for the ValidatedSolutionRecipesClient.Get method.
+type ValidatedSolutionRecipesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager
+// method.
+type ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions struct {
 	// placeholder for future optional parameters
 }

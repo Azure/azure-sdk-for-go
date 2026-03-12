@@ -57,6 +57,13 @@ func (c *ClientFactory) NewDeploymentSettingsClient() *DeploymentSettingsClient 
 	}
 }
 
+// NewEdgeDeviceJobsClient creates a new instance of EdgeDeviceJobsClient.
+func (c *ClientFactory) NewEdgeDeviceJobsClient() *EdgeDeviceJobsClient {
+	return &EdgeDeviceJobsClient{
+		internal: c.internal,
+	}
+}
+
 // NewEdgeDevicesClient creates a new instance of EdgeDevicesClient.
 func (c *ClientFactory) NewEdgeDevicesClient() *EdgeDevicesClient {
 	return &EdgeDevicesClient{
@@ -67,6 +74,14 @@ func (c *ClientFactory) NewEdgeDevicesClient() *EdgeDevicesClient {
 // NewExtensionsClient creates a new instance of ExtensionsClient.
 func (c *ClientFactory) NewExtensionsClient() *ExtensionsClient {
 	return &ExtensionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewKubernetesVersionsClient creates a new instance of KubernetesVersionsClient.
+func (c *ClientFactory) NewKubernetesVersionsClient() *KubernetesVersionsClient {
+	return &KubernetesVersionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -84,6 +99,22 @@ func (c *ClientFactory) NewOffersClient() *OffersClient {
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewOsImagesClient creates a new instance of OsImagesClient.
+func (c *ClientFactory) NewOsImagesClient() *OsImagesClient {
+	return &OsImagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPlatformUpdatesClient creates a new instance of PlatformUpdatesClient.
+func (c *ClientFactory) NewPlatformUpdatesClient() *PlatformUpdatesClient {
+	return &PlatformUpdatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 
@@ -111,6 +142,14 @@ func (c *ClientFactory) NewSecuritySettingsClient() *SecuritySettingsClient {
 	}
 }
 
+// NewUpdateContentsClient creates a new instance of UpdateContentsClient.
+func (c *ClientFactory) NewUpdateContentsClient() *UpdateContentsClient {
+	return &UpdateContentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewUpdateRunsClient creates a new instance of UpdateRunsClient.
 func (c *ClientFactory) NewUpdateRunsClient() *UpdateRunsClient {
 	return &UpdateRunsClient{
@@ -130,6 +169,14 @@ func (c *ClientFactory) NewUpdateSummariesClient() *UpdateSummariesClient {
 // NewUpdatesClient creates a new instance of UpdatesClient.
 func (c *ClientFactory) NewUpdatesClient() *UpdatesClient {
 	return &UpdatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewValidatedSolutionRecipesClient creates a new instance of ValidatedSolutionRecipesClient.
+func (c *ClientFactory) NewValidatedSolutionRecipesClient() *ValidatedSolutionRecipesClient {
+	return &ValidatedSolutionRecipesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2026-03-12)
+## 3.0.0-beta.1 (2026-03-12)
 ### Breaking Changes
 
 - Operation `*CloudHsmClusterBackupStatusClient.BeginGet` has been changed to non-LRO, use `*CloudHsmClusterBackupStatusClient.Get` instead.

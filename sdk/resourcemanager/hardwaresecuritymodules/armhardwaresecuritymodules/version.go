@@ -6,5 +6,5 @@ package armhardwaresecuritymodules
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v3.0.0-beta.1"
 )

@@ -90,7 +90,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential_DelegatedUserTenantId() {
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
@@ -117,8 +117,35 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential_DelegatedUse
 
 	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, &opts)
 	if err != nil {
-		testcommon.ValidateDatalakeErrorCode(_require, err, datalakeerror.AuthenticationFailed)
+		testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
 	}
+}
+
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	response, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+	_require.NotNil(response)
 }
 
 func (s *ServiceRecordedTestsSuite) TestCreateFilesystemsWithOptions() {

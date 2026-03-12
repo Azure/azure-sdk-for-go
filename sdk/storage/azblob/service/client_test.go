@@ -6,13 +6,14 @@ package service_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -1920,7 +1921,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientDefaultAudience() {
 	}
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential_DelegatedUserTenantId() {
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)

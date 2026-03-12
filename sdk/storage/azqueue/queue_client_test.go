@@ -1404,7 +1404,7 @@ func (s *UnrecordedTestSuite) TestQueueGetSASURL2() {
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationFailure)
 }
 
-func (s *UnrecordedTestSuite) TestQueueUserDelegationSAS_WithSduoid() {
+func (s *UnrecordedTestSuite) TestQueueUserDelegationSASWithSduoid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1469,11 +1469,11 @@ func (s *UnrecordedTestSuite) TestUserDelegationSASWithDelegatedUserTenantId() {
 
 	queueName := testcommon.GenerateQueueName(testName)
 	sv := sas.QueueSignatureValues{
-		Protocol:                    sas.ProtocolHTTPS,
-		StartTime:                   now,
-		ExpiryTime:                  expiry,
-		Permissions:                 (&sas.QueuePermissions{Read: true, Add: true}).String(),
-		QueueName:                   queueName,
+		Protocol:    sas.ProtocolHTTPS,
+		StartTime:   now,
+		ExpiryTime:  expiry,
+		Permissions: (&sas.QueuePermissions{Read: true, Add: true}).String(),
+		QueueName:   queueName,
 		// SignedDelegatedUserObjectID: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", // Optional
 	}
 	qp, err := sv.SignWithUserDelegation(udc)

@@ -90,6 +90,64 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 }
 
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
+	opts := service.GetUserDelegationCredentialOptions{
+		DelegatedUserTenantId: to.Ptr(dummyTenantID),
+	}
+
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, &opts)
+	if err != nil {
+		testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
+	}
+}
+
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	response, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+}
+
 func (s *ServiceRecordedTestsSuite) TestCreateFilesystemsWithOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

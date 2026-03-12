@@ -6,13 +6,14 @@ package service_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -1918,6 +1919,66 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientDefaultAudience() {
 		_require.NotNil(resp.ContainerItems[0].Name)
 		_require.Equal(*resp.ContainerItems[0].Name, containerName)
 	}
+}
+
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	// This is a dummy tenant ID
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
+	opts := service.GetUserDelegationCredentialOptions{
+		DelegatedUserTenantId: to.Ptr(dummyTenantID),
+	}
+
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, &opts)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	response, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+	_require.NotNil(response)
 }
 
 func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {

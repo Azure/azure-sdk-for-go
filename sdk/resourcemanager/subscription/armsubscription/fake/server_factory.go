@@ -16,13 +16,26 @@ import (
 
 // ServerFactory is a fake server for instances of the armsubscription.ClientFactory type.
 type ServerFactory struct {
-	AliasServer          AliasServer
+	// AliasServer contains the fakes for client AliasClient
+	AliasServer AliasServer
+
+	// BillingAccountServer contains the fakes for client BillingAccountClient
 	BillingAccountServer BillingAccountServer
-	Server               Server
-	OperationsServer     OperationsServer
-	PolicyServer         PolicyServer
-	SubscriptionsServer  SubscriptionsServer
-	TenantsServer        TenantsServer
+
+	// Server contains the fakes for client Client
+	Server Server
+
+	// OperationServer contains the fakes for client OperationClient
+	OperationServer OperationServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PolicyServer contains the fakes for client PolicyClient
+	PolicyServer PolicyServer
+
+	// SubscriptionsServer contains the fakes for client SubscriptionsClient
+	SubscriptionsServer SubscriptionsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -42,10 +55,10 @@ type ServerFactoryTransport struct {
 	trAliasServer          *AliasServerTransport
 	trBillingAccountServer *BillingAccountServerTransport
 	trServer               *ServerTransport
+	trOperationServer      *OperationServerTransport
 	trOperationsServer     *OperationsServerTransport
 	trPolicyServer         *PolicyServerTransport
 	trSubscriptionsServer  *SubscriptionsServerTransport
-	trTenantsServer        *TenantsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -72,6 +85,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "OperationClient":
+		initServer(s, &s.trOperationServer, func() *OperationServerTransport { return NewOperationServerTransport(&s.srv.OperationServer) })
+		resp, err = s.trOperationServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -83,9 +99,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSubscriptionsServerTransport(&s.srv.SubscriptionsServer)
 		})
 		resp, err = s.trSubscriptionsServer.Do(req)
-	case "TenantsClient":
-		initServer(s, &s.trTenantsServer, func() *TenantsServerTransport { return NewTenantsServerTransport(&s.srv.TenantsServer) })
-		resp, err = s.trTenantsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

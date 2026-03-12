@@ -22,7 +22,7 @@ type AliasClientGetResponse struct {
 	AliasResponse
 }
 
-// AliasClientListResponse contains the response from method AliasClient.List.
+// AliasClientListResponse contains the response from method AliasClient.NewListPager.
 type AliasClientListResponse struct {
 	// The list of aliases.
 	AliasListResult
@@ -63,9 +63,21 @@ type ClientRenameResponse struct {
 	RenamedSubscriptionID
 }
 
+// OperationClientGetResponse contains the response from method OperationClient.Get.
+type OperationClientGetResponse struct {
+	// The created subscription object.
+	CreationResult
+
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int64
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// Result of the request to list operations. It contains a list of operations and a URL link to get the next set of results.
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
 }
 
@@ -87,26 +99,36 @@ type PolicyClientListPolicyForTenantResponse struct {
 	GetTenantPolicyListResponse
 }
 
-// SubscriptionsClientGetResponse contains the response from method SubscriptionsClient.Get.
-type SubscriptionsClientGetResponse struct {
-	// Subscription information.
-	Subscription
+// SubscriptionsClientAcceptTargetDirectoryResponse contains the response from method SubscriptionsClient.AcceptTargetDirectory.
+type SubscriptionsClientAcceptTargetDirectoryResponse struct {
+	// placeholder for future response values
 }
 
-// SubscriptionsClientListLocationsResponse contains the response from method SubscriptionsClient.NewListLocationsPager.
-type SubscriptionsClientListLocationsResponse struct {
-	// Location list operation response.
-	LocationListResult
+// SubscriptionsClientDeleteTargetDirectoryResponse contains the response from method SubscriptionsClient.DeleteTargetDirectory.
+type SubscriptionsClientDeleteTargetDirectoryResponse struct {
+	// placeholder for future response values
 }
 
-// SubscriptionsClientListResponse contains the response from method SubscriptionsClient.NewListPager.
-type SubscriptionsClientListResponse struct {
-	// Subscription list operation response.
-	ListResult
+// SubscriptionsClientGetTargetDirectoryResponse contains the response from method SubscriptionsClient.GetTargetDirectory.
+type SubscriptionsClientGetTargetDirectoryResponse struct {
+	// Subscription Response for Changed Target Directory.
+	TargetDirectoryResult
 }
 
-// TenantsClientListResponse contains the response from method TenantsClient.NewListPager.
-type TenantsClientListResponse struct {
-	// Tenant Ids information.
-	TenantListResult
+// SubscriptionsClientListTargetDirectoryResponse contains the response from method SubscriptionsClient.NewListTargetDirectoryPager.
+type SubscriptionsClientListTargetDirectoryResponse struct {
+	// Subscription Response to list out Changed Target Directory.
+	TargetDirectoryListResult
+}
+
+// SubscriptionsClientPutTargetDirectoryResponse contains the response from method SubscriptionsClient.PutTargetDirectory.
+type SubscriptionsClientPutTargetDirectoryResponse struct {
+	// Subscription Response for Changed Target Directory.
+	TargetDirectoryResult
+}
+
+// SubscriptionsClientTargetDirectoryStatusResponse contains the response from method SubscriptionsClient.TargetDirectoryStatus.
+type SubscriptionsClientTargetDirectoryStatusResponse struct {
+	// Properties of subscription Response for Changed Target Directory.
+	TargetDirectoryResultProperties
 }

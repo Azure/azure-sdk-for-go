@@ -25,7 +25,7 @@ type AliasClient struct {
 
 // NewAliasClient creates a new instance of AliasClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAliasClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AliasClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewAliasClient(credential azcore.TokenCredential, options *arm.ClientOption
 // BeginCreate - Create Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription
 //     creation.
@@ -65,7 +65,7 @@ func (client *AliasClient) BeginCreate(ctx context.Context, aliasName string, bo
 // Create - Create Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 func (client *AliasClient) create(ctx context.Context, aliasName string, body PutAliasRequest, options *AliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AliasClient.BeginCreate"
@@ -88,7 +88,7 @@ func (client *AliasClient) create(ctx context.Context, aliasName string, body Pu
 }
 
 // createCreateRequest creates the Create request.
-func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName string, body PutAliasRequest, options *AliasClientBeginCreateOptions) (*policy.Request, error) {
+func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName string, body PutAliasRequest, _ *AliasClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/aliases/{aliasName}"
 	if aliasName == "" {
 		return nil, errors.New("parameter aliasName cannot be empty")
@@ -99,7 +99,7 @@ func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -111,7 +111,7 @@ func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName st
 // Delete - Delete Alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription
 //     creation.
@@ -138,7 +138,7 @@ func (client *AliasClient) Delete(ctx context.Context, aliasName string, options
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AliasClient) deleteCreateRequest(ctx context.Context, aliasName string, options *AliasClientDeleteOptions) (*policy.Request, error) {
+func (client *AliasClient) deleteCreateRequest(ctx context.Context, aliasName string, _ *AliasClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/aliases/{aliasName}"
 	if aliasName == "" {
 		return nil, errors.New("parameter aliasName cannot be empty")
@@ -149,7 +149,7 @@ func (client *AliasClient) deleteCreateRequest(ctx context.Context, aliasName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,7 +158,7 @@ func (client *AliasClient) deleteCreateRequest(ctx context.Context, aliasName st
 // Get - Get Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription
 //     creation.
@@ -186,7 +186,7 @@ func (client *AliasClient) Get(ctx context.Context, aliasName string, options *A
 }
 
 // getCreateRequest creates the Get request.
-func (client *AliasClient) getCreateRequest(ctx context.Context, aliasName string, options *AliasClientGetOptions) (*policy.Request, error) {
+func (client *AliasClient) getCreateRequest(ctx context.Context, aliasName string, _ *AliasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/aliases/{aliasName}"
 	if aliasName == "" {
 		return nil, errors.New("parameter aliasName cannot be empty")
@@ -197,7 +197,7 @@ func (client *AliasClient) getCreateRequest(ctx context.Context, aliasName strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,42 +212,42 @@ func (client *AliasClient) getHandleResponse(resp *http.Response) (AliasClientGe
 	return result, nil
 }
 
-// List - List Alias Subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - List Alias Subscription.
 //
-// Generated from API version 2021-10-01
-//   - options - AliasClientListOptions contains the optional parameters for the AliasClient.List method.
-func (client *AliasClient) List(ctx context.Context, options *AliasClientListOptions) (AliasClientListResponse, error) {
-	var err error
-	const operationName = "AliasClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return AliasClientListResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AliasClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AliasClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+// Generated from API version 2025-11-01-preview
+//   - options - AliasClientListOptions contains the optional parameters for the AliasClient.NewListPager method.
+func (client *AliasClient) NewListPager(options *AliasClientListOptions) *runtime.Pager[AliasClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AliasClientListResponse]{
+		More: func(page AliasClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AliasClientListResponse) (AliasClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AliasClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
+			if err != nil {
+				return AliasClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AliasClient) listCreateRequest(ctx context.Context, options *AliasClientListOptions) (*policy.Request, error) {
+func (client *AliasClient) listCreateRequest(ctx context.Context, _ *AliasClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/aliases"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

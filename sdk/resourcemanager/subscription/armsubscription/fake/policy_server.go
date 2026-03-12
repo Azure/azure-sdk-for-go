@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription/v2"
 	"net/http"
 )
 
@@ -57,25 +57,44 @@ func (p *PolicyServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PolicyClient.AddUpdatePolicyForTenant":
-		resp, err = p.dispatchAddUpdatePolicyForTenant(req)
-	case "PolicyClient.GetPolicyForTenant":
-		resp, err = p.dispatchGetPolicyForTenant(req)
-	case "PolicyClient.NewListPolicyForTenantPager":
-		resp, err = p.dispatchNewListPolicyForTenantPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PolicyServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if policyServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = policyServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PolicyClient.AddUpdatePolicyForTenant":
+				res.resp, res.err = p.dispatchAddUpdatePolicyForTenant(req)
+			case "PolicyClient.GetPolicyForTenant":
+				res.resp, res.err = p.dispatchGetPolicyForTenant(req)
+			case "PolicyClient.NewListPolicyForTenantPager":
+				res.resp, res.err = p.dispatchNewListPolicyForTenantPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PolicyServerTransport) dispatchAddUpdatePolicyForTenant(req *http.Request) (*http.Response, error) {
@@ -145,4 +164,10 @@ func (p *PolicyServerTransport) dispatchNewListPolicyForTenantPager(req *http.Re
 		p.newListPolicyForTenantPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PolicyServerTransport
+var policyServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

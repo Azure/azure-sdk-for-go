@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/Schedulers_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01/Schedulers_CreateOrUpdate.json
 func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,69 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/Schedulers_Delete.json
+// Generated from example definition: 2026-02-01/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+func ExampleSchedulersClient_BeginCreateOrUpdatePrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdurabletask.NewClientFactory("851A7597-D699-45CC-899B-7487A5B3B775", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSchedulersClient().BeginCreateOrUpdatePrivateEndpointConnection(ctx, "rgdurabletask", "testscheduler", "spzckqrbhfnabu", armdurabletask.PrivateEndpointConnection{
+		Properties: &armdurabletask.PrivateEndpointConnectionProperties{
+			PrivateEndpoint: &armdurabletask.PrivateEndpoint{},
+			PrivateLinkServiceConnectionState: &armdurabletask.PrivateLinkServiceConnectionState{
+				Status:          to.Ptr(armdurabletask.PrivateEndpointServiceConnectionStatusPending),
+				ActionsRequired: to.Ptr("mxymqfbbmpwjxsroldlsd"),
+				Description:     to.Ptr("ujdcsoyxljivwsgfkexhotaxcmzq"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdurabletask.SchedulersClientCreateOrUpdatePrivateEndpointConnectionResponse{
+	// 	PrivateEndpointConnection: &armdurabletask.PrivateEndpointConnection{
+	// 		Properties: &armdurabletask.PrivateEndpointConnectionProperties{
+	// 			PrivateEndpoint: &armdurabletask.PrivateEndpoint{
+	// 				ID: to.Ptr("vjjxatyilmgjaervqztrmlpfodvbo"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armdurabletask.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armdurabletask.PrivateEndpointServiceConnectionStatusPending),
+	// 				ActionsRequired: to.Ptr("mxymqfbbmpwjxsroldlsd"),
+	// 				Description: to.Ptr("ujdcsoyxljivwsgfkexhotaxcmzq"),
+	// 			},
+	// 			GroupIDs: []*string{
+	// 				to.Ptr("xnnrzmowptxnijdojrntrbm"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdurabletask.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/851A7597-D699-45CC-899B-7487A5B3B775/resourceGroups/rgdurabletask/providers/Microsoft.DurableTask/schedulers/testscheduler/privateEndpointConnections/spzckqrbhfnabu"),
+	// 		Name: to.Ptr("spzckqrbhfnabu"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers/privateEndpointConnections"),
+	// 		SystemData: &armdurabletask.SystemData{
+	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
+	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
+	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01/Schedulers_Delete.json
 func ExampleSchedulersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +165,28 @@ func ExampleSchedulersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/Schedulers_Get.json
+// Generated from example definition: 2026-02-01/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+func ExampleSchedulersClient_BeginDeletePrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdurabletask.NewClientFactory("851A7597-D699-45CC-899B-7487A5B3B775", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSchedulersClient().BeginDeletePrivateEndpointConnection(ctx, "rgdurabletask", "testscheduler", "spzckqrbhfnabu", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-02-01/Schedulers_Get.json
 func ExampleSchedulersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,6 +218,9 @@ func ExampleSchedulersClient_Get() {
 	// 				Capacity: to.Ptr[int32](3),
 	// 				RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 	// 			},
+	// 			PublicNetworkAccess: to.Ptr(armdurabletask.PublicNetworkAccessEnabled),
+	// 			PrivateEndpointConnections: []*armdurabletask.PrivateEndpointConnection{
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("research"),
@@ -155,7 +241,100 @@ func ExampleSchedulersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/Schedulers_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+func ExampleSchedulersClient_GetPrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdurabletask.NewClientFactory("851A7597-D699-45CC-899B-7487A5B3B775", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSchedulersClient().GetPrivateEndpointConnection(ctx, "rgdurabletask", "testscheduler", "spzckqrbhfnabu", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdurabletask.SchedulersClientGetPrivateEndpointConnectionResponse{
+	// 	PrivateEndpointConnection: &armdurabletask.PrivateEndpointConnection{
+	// 		Properties: &armdurabletask.PrivateEndpointConnectionProperties{
+	// 			PrivateEndpoint: &armdurabletask.PrivateEndpoint{
+	// 				ID: to.Ptr("vjjxatyilmgjaervqztrmlpfodvbo"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armdurabletask.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armdurabletask.PrivateEndpointServiceConnectionStatusPending),
+	// 				ActionsRequired: to.Ptr("mxymqfbbmpwjxsroldlsd"),
+	// 				Description: to.Ptr("ujdcsoyxljivwsgfkexhotaxcmzq"),
+	// 			},
+	// 			GroupIDs: []*string{
+	// 				to.Ptr("xnnrzmowptxnijdojrntrbm"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdurabletask.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/851A7597-D699-45CC-899B-7487A5B3B775/resourceGroups/rgdurabletask/providers/Microsoft.DurableTask/schedulers/testscheduler/privateEndpointConnections/spzckqrbhfnabu"),
+	// 		Name: to.Ptr("spzckqrbhfnabu"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers/privateEndpointConnections"),
+	// 		SystemData: &armdurabletask.SystemData{
+	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
+	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
+	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01/PrivateLinkResources_Get_MaximumSet_Gen.json
+func ExampleSchedulersClient_GetPrivateLink() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdurabletask.NewClientFactory("851A7597-D699-45CC-899B-7487A5B3B775", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSchedulersClient().GetPrivateLink(ctx, "rgdurabletask", "testscheduler", "ulbdiqhrmwnkejje", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdurabletask.SchedulersClientGetPrivateLinkResponse{
+	// 	SchedulerPrivateLinkResource: &armdurabletask.SchedulerPrivateLinkResource{
+	// 		Properties: &armdurabletask.PrivateLinkResourceProperties{
+	// 			GroupID: to.Ptr("mexetpneryldlrtmuxzxhwezfjkcvr"),
+	// 			RequiredMembers: []*string{
+	// 				to.Ptr("ftzshharzmwhcemnbdwlmyhtxkpa"),
+	// 			},
+	// 			RequiredZoneNames: []*string{
+	// 				to.Ptr("lkwwgycaduib"),
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/851A7597-D699-45CC-899B-7487A5B3B775/resourceGroups/rgdurabletask/providers/Microsoft.DurableTask/schedulers/testscheduler/privateLinkResources/ulbdiqhrmwnkejje"),
+	// 		Name: to.Ptr("ulbdiqhrmwnkejje"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers/privateLinkResources"),
+	// 		SystemData: &armdurabletask.SystemData{
+	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
+	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
+	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01/Schedulers_ListByResourceGroup.json
 func ExampleSchedulersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,6 +373,9 @@ func ExampleSchedulersClient_NewListByResourceGroupPager() {
 		// 						Capacity: to.Ptr[int32](3),
 		// 						RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 		// 					},
+		// 					PublicNetworkAccess: to.Ptr(armdurabletask.PublicNetworkAccessEnabled),
+		// 					PrivateEndpointConnections: []*armdurabletask.PrivateEndpointConnection{
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"department": to.Ptr("research"),
@@ -217,7 +399,7 @@ func ExampleSchedulersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/Schedulers_ListBySubscription.json
+// Generated from example definition: 2026-02-01/Schedulers_ListBySubscription.json
 func ExampleSchedulersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,6 +438,9 @@ func ExampleSchedulersClient_NewListBySubscriptionPager() {
 		// 						Capacity: to.Ptr[int32](3),
 		// 						RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 		// 					},
+		// 					PublicNetworkAccess: to.Ptr(armdurabletask.PublicNetworkAccessEnabled),
+		// 					PrivateEndpointConnections: []*armdurabletask.PrivateEndpointConnection{
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"department": to.Ptr("research"),
@@ -279,7 +464,120 @@ func ExampleSchedulersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/Schedulers_Update.json
+// Generated from example definition: 2026-02-01/PrivateEndpointConnections_List_MaximumSet_Gen.json
+func ExampleSchedulersClient_NewListPrivateEndpointConnectionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdurabletask.NewClientFactory("851A7597-D699-45CC-899B-7487A5B3B775", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSchedulersClient().NewListPrivateEndpointConnectionsPager("rgdurabletask", "testscheduler", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdurabletask.SchedulersClientListPrivateEndpointConnectionsResponse{
+		// 	PrivateEndpointConnectionListResult: armdurabletask.PrivateEndpointConnectionListResult{
+		// 		Value: []*armdurabletask.PrivateEndpointConnection{
+		// 			{
+		// 				Properties: &armdurabletask.PrivateEndpointConnectionProperties{
+		// 					PrivateEndpoint: &armdurabletask.PrivateEndpoint{
+		// 						ID: to.Ptr("vjjxatyilmgjaervqztrmlpfodvbo"),
+		// 					},
+		// 					PrivateLinkServiceConnectionState: &armdurabletask.PrivateLinkServiceConnectionState{
+		// 						Status: to.Ptr(armdurabletask.PrivateEndpointServiceConnectionStatusPending),
+		// 						ActionsRequired: to.Ptr("mxymqfbbmpwjxsroldlsd"),
+		// 						Description: to.Ptr("ujdcsoyxljivwsgfkexhotaxcmzq"),
+		// 					},
+		// 					GroupIDs: []*string{
+		// 						to.Ptr("xnnrzmowptxnijdojrntrbm"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armdurabletask.PrivateEndpointConnectionProvisioningStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/851A7597-D699-45CC-899B-7487A5B3B775/resourceGroups/rgdurabletask/providers/Microsoft.DurableTask/schedulers/testscheduler/privateEndpointConnections/spzckqrbhfnabu"),
+		// 				Name: to.Ptr("spzckqrbhfnabu"),
+		// 				Type: to.Ptr("Microsoft.DurableTask/schedulers/privateEndpointConnections"),
+		// 				SystemData: &armdurabletask.SystemData{
+		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
+		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("xfvdcegtj"),
+		// 					LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/anend"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-02-01/PrivateLinkResources_List_MaximumSet_Gen.json
+func ExampleSchedulersClient_NewListPrivateLinksPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdurabletask.NewClientFactory("851A7597-D699-45CC-899B-7487A5B3B775", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSchedulersClient().NewListPrivateLinksPager("rgdurabletask", "testscheduler", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdurabletask.SchedulersClientListPrivateLinksResponse{
+		// 	SchedulerPrivateLinkResourceListResult: armdurabletask.SchedulerPrivateLinkResourceListResult{
+		// 		Value: []*armdurabletask.SchedulerPrivateLinkResource{
+		// 			{
+		// 				Properties: &armdurabletask.PrivateLinkResourceProperties{
+		// 					GroupID: to.Ptr("mexetpneryldlrtmuxzxhwezfjkcvr"),
+		// 					RequiredMembers: []*string{
+		// 						to.Ptr("ftzshharzmwhcemnbdwlmyhtxkpa"),
+		// 					},
+		// 					RequiredZoneNames: []*string{
+		// 						to.Ptr("lkwwgycaduib"),
+		// 					},
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/851A7597-D699-45CC-899B-7487A5B3B775/resourceGroups/rgdurabletask/providers/Microsoft.DurableTask/schedulers/testscheduler/privateLinkResources/ulbdiqhrmwnkejje"),
+		// 				Name: to.Ptr("ulbdiqhrmwnkejje"),
+		// 				Type: to.Ptr("Microsoft.DurableTask/schedulers/privateLinkResources"),
+		// 				SystemData: &armdurabletask.SystemData{
+		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
+		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("xfvdcegtj"),
+		// 					LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-02-01/Schedulers_Update.json
 func ExampleSchedulersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,6 +635,65 @@ func ExampleSchedulersClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.DurableTask/schedulers/testscheduler"),
 	// 		Name: to.Ptr("testscheduler"),
 	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers"),
+	// 		SystemData: &armdurabletask.SystemData{
+	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
+	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
+	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01/PrivateEndpointConnections_Update.json
+func ExampleSchedulersClient_BeginUpdatePrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdurabletask.NewClientFactory("851A7597-D699-45CC-899B-7487A5B3B775", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSchedulersClient().BeginUpdatePrivateEndpointConnection(ctx, "rgdurabletask", "testscheduler", "spzckqrbhfnabu", armdurabletask.PrivateEndpointConnectionUpdate{
+		Properties: &armdurabletask.OptionalPropertiesUpdateableProperties{
+			PrivateLinkServiceConnectionState: &armdurabletask.PrivateLinkServiceConnectionState{
+				Status: to.Ptr(armdurabletask.PrivateEndpointServiceConnectionStatusApproved),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdurabletask.SchedulersClientUpdatePrivateEndpointConnectionResponse{
+	// 	PrivateEndpointConnection: &armdurabletask.PrivateEndpointConnection{
+	// 		Properties: &armdurabletask.PrivateEndpointConnectionProperties{
+	// 			PrivateEndpoint: &armdurabletask.PrivateEndpoint{
+	// 				ID: to.Ptr("vjjxatyilmgjaervqztrmlpfodvbo"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armdurabletask.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armdurabletask.PrivateEndpointServiceConnectionStatusApproved),
+	// 				ActionsRequired: to.Ptr("mxymqfbbmpwjxsroldlsd"),
+	// 				Description: to.Ptr("ujdcsoyxljivwsgfkexhotaxcmzq"),
+	// 			},
+	// 			GroupIDs: []*string{
+	// 				to.Ptr("xnnrzmowptxnijdojrntrbm"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdurabletask.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/851A7597-D699-45CC-899B-7487A5B3B775/resourceGroups/rgdurabletask/providers/Microsoft.DurableTask/schedulers/testscheduler/privateEndpointConnections/spzckqrbhfnabu"),
+	// 		Name: to.Ptr("spzckqrbhfnabu"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers/privateEndpointConnections"),
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),

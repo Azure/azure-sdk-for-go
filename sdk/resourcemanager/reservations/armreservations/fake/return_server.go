@@ -50,21 +50,40 @@ func (r *ReturnServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ReturnClient.BeginPost":
-		resp, err = r.dispatchBeginPost(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *ReturnServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if returnServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = returnServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ReturnClient.BeginPost":
+				res.resp, res.err = r.dispatchBeginPost(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *ReturnServerTransport) dispatchBeginPost(req *http.Request) (*http.Response, error) {
@@ -76,7 +95,7 @@ func (r *ReturnServerTransport) dispatchBeginPost(req *http.Request) (*http.Resp
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/return`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.RefundRequest](req)
@@ -109,4 +128,10 @@ func (r *ReturnServerTransport) dispatchBeginPost(req *http.Request) (*http.Resp
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ReturnServerTransport
+var returnServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

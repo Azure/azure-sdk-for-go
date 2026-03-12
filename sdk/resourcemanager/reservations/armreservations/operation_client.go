@@ -22,7 +22,7 @@ type OperationClient struct {
 
 // NewOperationClient creates a new instance of OperationClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -62,7 +62,7 @@ func (client *OperationClient) NewListPager(options *OperationClientListOptions)
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationClient) listCreateRequest(ctx context.Context, options *OperationClientListOptions) (*policy.Request, error) {
+func (client *OperationClient) listCreateRequest(ctx context.Context, _ *OperationClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

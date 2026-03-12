@@ -16,16 +16,35 @@ import (
 
 // ServerFactory is a fake server for instances of the armreservations.ClientFactory type.
 type ServerFactory struct {
+	// AzureReservationAPIServer contains the fakes for client AzureReservationAPIClient
 	AzureReservationAPIServer AzureReservationAPIServer
-	CalculateExchangeServer   CalculateExchangeServer
-	CalculateRefundServer     CalculateRefundServer
-	ExchangeServer            ExchangeServer
-	OperationServer           OperationServer
-	QuotaServer               QuotaServer
-	QuotaRequestStatusServer  QuotaRequestStatusServer
-	ReservationServer         ReservationServer
-	ReservationOrderServer    ReservationOrderServer
-	ReturnServer              ReturnServer
+
+	// CalculateExchangeServer contains the fakes for client CalculateExchangeClient
+	CalculateExchangeServer CalculateExchangeServer
+
+	// CalculateRefundServer contains the fakes for client CalculateRefundClient
+	CalculateRefundServer CalculateRefundServer
+
+	// ExchangeServer contains the fakes for client ExchangeClient
+	ExchangeServer ExchangeServer
+
+	// OperationServer contains the fakes for client OperationClient
+	OperationServer OperationServer
+
+	// QuotaServer contains the fakes for client QuotaClient
+	QuotaServer QuotaServer
+
+	// QuotaRequestStatusServer contains the fakes for client QuotaRequestStatusClient
+	QuotaRequestStatusServer QuotaRequestStatusServer
+
+	// ReservationServer contains the fakes for client ReservationClient
+	ReservationServer ReservationServer
+
+	// ReservationOrderServer contains the fakes for client ReservationOrderClient
+	ReservationOrderServer ReservationOrderServer
+
+	// ReturnServer contains the fakes for client ReturnClient
+	ReturnServer ReturnServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

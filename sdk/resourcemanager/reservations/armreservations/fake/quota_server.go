@@ -67,27 +67,46 @@ func (q *QuotaServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return q.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "QuotaClient.BeginCreateOrUpdate":
-		resp, err = q.dispatchBeginCreateOrUpdate(req)
-	case "QuotaClient.Get":
-		resp, err = q.dispatchGet(req)
-	case "QuotaClient.NewListPager":
-		resp, err = q.dispatchNewListPager(req)
-	case "QuotaClient.BeginUpdate":
-		resp, err = q.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (q *QuotaServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if quotaServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = quotaServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "QuotaClient.BeginCreateOrUpdate":
+				res.resp, res.err = q.dispatchBeginCreateOrUpdate(req)
+			case "QuotaClient.Get":
+				res.resp, res.err = q.dispatchGet(req)
+			case "QuotaClient.NewListPager":
+				res.resp, res.err = q.dispatchNewListPager(req)
+			case "QuotaClient.BeginUpdate":
+				res.resp, res.err = q.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (q *QuotaServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -99,7 +118,7 @@ func (q *QuotaServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Capacity/resourceProviders/(?P<providerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceLimits/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.CurrentQuotaLimitBase](req)
@@ -153,7 +172,7 @@ func (q *QuotaServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Capacity/resourceProviders/(?P<providerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceLimits/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
@@ -199,7 +218,7 @@ func (q *QuotaServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Capacity/resourceProviders/(?P<providerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceLimits`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
@@ -244,7 +263,7 @@ func (q *QuotaServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Capacity/resourceProviders/(?P<providerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceLimits/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.CurrentQuotaLimitBase](req)
@@ -289,4 +308,10 @@ func (q *QuotaServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to QuotaServerTransport
+var quotaServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

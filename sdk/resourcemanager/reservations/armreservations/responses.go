@@ -5,8 +5,6 @@
 
 package armreservations
 
-import "encoding/json"
-
 // AzureReservationAPIClientGetAppliedReservationListResponse contains the response from method AzureReservationAPIClient.GetAppliedReservationList.
 type AzureReservationAPIClientGetAppliedReservationListResponse struct {
 	// The response for applied reservations api
@@ -126,20 +124,10 @@ type ReservationClientMergeResponse struct {
 	ReservationResponseArray []*ReservationResponse
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationClientMergeResponse.
-func (r *ReservationClientMergeResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ReservationResponseArray)
-}
-
 // ReservationClientSplitResponse contains the response from method ReservationClient.BeginSplit.
 type ReservationClientSplitResponse struct {
 	// Array of ReservationResponse
 	ReservationResponseArray []*ReservationResponse
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationClientSplitResponse.
-func (r *ReservationClientSplitResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ReservationResponseArray)
 }
 
 // ReservationClientUnarchiveResponse contains the response from method ReservationClient.Unarchive.

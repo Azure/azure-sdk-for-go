@@ -6,7 +6,6 @@ package blob
 import (
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
@@ -77,7 +76,7 @@ func ParseURL(u string) (URLParts, error) {
 	return sas.ParseURL(u)
 }
 
-func ToGeneratedSourceCPKInfo(o *blob.CPKInfo) *generated.SourceCPKInfo {
+func ToGeneratedSourceCPKInfo(o *CPKInfo) *generated.SourceCPKInfo {
 	if o == nil {
 		return nil
 	}

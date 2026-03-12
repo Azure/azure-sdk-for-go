@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -39,7 +38,10 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewLayoutPolicy()},
+		PerRetry: []policy.Policy{authPolicy},
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -54,8 +56,11 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{
+		PerCall: []policy.Policy{shared.NewLayoutPolicy()},
+	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +74,10 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewLayoutPolicy()},
+		PerRetry: []policy.Policy{authPolicy},
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -330,7 +338,7 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // downloadBuffer downloads an Azure blob to a WriterAt in parallel.
-func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
+func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downloadOptions, resizeFile func(int64) error) (int64, error) {
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
 	}
@@ -338,24 +346,61 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	computeReadLength := true
 	count := o.Range.Count
 
-	var enableLayoutAwareRouting atomic.Bool
-	layoutCache := temporal.NewResource(refresh)
+	state := layoutState{
+		client: b,
+		opts:   o.getBlobLayoutOptions(),
+		ctx:    ctx,
+	}
+	useLayout := o.EnableLayoutAwareRouting
+	var l layout
 
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
-		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
-		if err != nil {
-			return 0, err
+		var length int64
+		// Try layout-aware routing first if enabled, otherwise use GetProperties
+		if o.EnableLayoutAwareRouting {
+			var err error
+			l, _, err = getLayout(state)
+			sc := bloberror.GetStatusCode(err)
+			if err != nil {
+				if sc == 400 || sc >= 500 { // fall back to old behavior if service doesn't support layout or layout wasn't fetched
+					useLayout = false
+				} else { // fail the operation
+					return 0, err
+				}
+			} else {
+				length = l.contentLength
+			}
 		}
-		count = *gr.ContentLength - o.Range.Offset
+
+		if !useLayout {
+			gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
+			if err != nil {
+				return 0, err
+			}
+			length = *gr.ContentLength
+		}
+		if len(l.layoutRanges) == 0 { // fall back to old behavior if layout doesn't exist
+			useLayout = false
+		}
+
+		count = length - o.Range.Offset
 		dataDownloaded = count
 		computeReadLength = false
+	}
+
+	if resizeFile != nil {
+		if err := resizeFile(count); err != nil {
+			return 0, err
+		}
 	}
 
 	if count <= 0 {
 		// The file is empty, there is nothing to download.
 		return 0, nil
 	}
+
+	// If we didn't already fetch properties earlier,
 
 	// Prepare and do parallel download.
 	progress := int64(0)
@@ -368,14 +413,20 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		NumChunks:     uint64(((count - 1) / o.BlockSize) + 1),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			// TODO : Get from layout cache, if layout is empty, fall back to old behavior, never call Get again
-
+			// Fetch ideal endpoint for this chunk from layout
+			if useLayout {
+				endpoint := getIdealEndpoint(chunkStart+o.Range.Offset, l)
+				if endpoint != "" {
+					ctx = shared.WithLayoutEndpoint(ctx, endpoint)
+				}
+			}
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
 				Offset: chunkStart + o.Range.Offset,
 				Count:  count,
 			}, nil)
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
-			// TODO : on 5xx or 400 - fall back to old behavior
+			// If the download returns a layout hint and the customer wants to use layout aware routing, refresh the layout for future downloads to use
+
 			if err != nil {
 				return err
 			}
@@ -438,7 +489,7 @@ func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadB
 	if o == nil {
 		o = &DownloadBufferOptions{}
 	}
-	return b.downloadBuffer(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o))
+	return b.downloadBuffer(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o), nil)
 }
 
 // DownloadFile downloads an Azure blob to a local file.
@@ -449,45 +500,31 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 	do := (*downloadOptions)(o)
 
-	// 1. Calculate the size of the destination file
-	var size int64
-
-	count := do.Range.Count
-	if count == CountToEnd {
-		// Try to get Azure blob's size
-		getBlobPropertiesOptions := do.getBlobPropertiesOptions()
-		props, err := b.GetProperties(ctx, getBlobPropertiesOptions)
+	// Compare and try to resize local file's size if it doesn't match Azure blob's size.
+	resizeFile := func(size int64) error {
+		stat, err := file.Stat()
 		if err != nil {
-			return 0, err
+			return err
 		}
-		size = *props.ContentLength - do.Range.Offset
-		do.Range.Count = size
-	} else {
-		size = count
-	}
-
-	// 2. Compare and try to resize local file's size if it doesn't match Azure blob's size.
-	stat, err := file.Stat()
-	if err != nil {
-		return 0, err
-	}
-	if stat.Size() != size {
-		if err = file.Truncate(size); err != nil {
-			return 0, err
+		if stat.Size() != size {
+			if err = file.Truncate(size); err != nil {
+				return err
+			}
 		}
+		return nil
 	}
-
-	if size > 0 {
-		return b.downloadBuffer(ctx, file, *do)
-	} else { // if the blob's size is 0, there is no need in downloading it
-		return 0, nil
-	}
+	return b.downloadBuffer(ctx, file, *do, resizeFile)
 }
 
-// getLayoutPager returns the blob's layout.
+// GetLayoutPager returns the blob's layout.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
-func (b *Client) getLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
 	opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions := options.format()
+	// Use user's IfMatch if provided, otherwise we'll capture the ETag from the initial response
+	var initialIfMatch *azcore.ETag
+	if modifiedAccessConditions != nil {
+		initialIfMatch = modifiedAccessConditions.IfMatch
+	}
 	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
 		More: func(page GetLayoutResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -499,7 +536,13 @@ func (b *Client) getLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLay
 				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
 			} else {
 				options.Marker = page.NextMarker
-				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
+				// Use the ETag to ensure consistency across all pages
+				mac := modifiedAccessConditions
+				if mac == nil {
+					mac = &generated.ModifiedAccessConditions{}
+				}
+				mac.IfMatch = initialIfMatch
+				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, mac, cpkInfo)
 			}
 			if err != nil {
 				return GetLayoutResponse{}, err
@@ -511,7 +554,15 @@ func (b *Client) getLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLay
 			if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 				return GetLayoutResponse{}, runtime.NewResponseError(resp)
 			}
-			return b.generated().GetLayoutHandleResponse(resp)
+			result, err := b.generated().GetLayoutHandleResponse(resp)
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			// Capture the ETag from the initial response for all subsequent requests
+			if page == nil && initialIfMatch == nil {
+				initialIfMatch = result.ETag
+			}
+			return result, nil
 		},
 	})
 }

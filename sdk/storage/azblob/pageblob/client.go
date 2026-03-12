@@ -36,7 +36,10 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewLayoutPolicy()},
+		PerRetry: []policy.Policy{authPolicy},
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -51,8 +54,11 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{
+		PerCall: []policy.Policy{shared.NewLayoutPolicy()},
+	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +72,10 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewLayoutPolicy()},
+		PerRetry: []policy.Policy{authPolicy},
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {

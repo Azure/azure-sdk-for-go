@@ -8,45 +8,103 @@ package fake
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strings"
 	"sync"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServerFactory is a fake server for instances of the armbilling.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer             AccountsServer
-	AddressServer              AddressServer
-	AgreementsServer           AgreementsServer
-	AssociatedTenantsServer    AssociatedTenantsServer
-	AvailableBalancesServer    AvailableBalancesServer
-	CustomersServer            CustomersServer
-	DepartmentsServer          DepartmentsServer
-	EnrollmentAccountsServer   EnrollmentAccountsServer
-	InvoiceSectionsServer      InvoiceSectionsServer
-	InvoicesServer             InvoicesServer
-	OperationsServer           OperationsServer
-	PartnerTransfersServer     PartnerTransfersServer
-	PaymentMethodsServer       PaymentMethodsServer
-	PermissionsServer          PermissionsServer
-	PoliciesServer             PoliciesServer
-	ProductsServer             ProductsServer
-	ProfilesServer             ProfilesServer
-	PropertyServer             PropertyServer
-	RecipientTransfersServer   RecipientTransfersServer
-	RequestsServer             RequestsServer
-	ReservationOrdersServer    ReservationOrdersServer
-	ReservationsServer         ReservationsServer
-	RoleAssignmentsServer      RoleAssignmentsServer
-	RoleDefinitionServer       RoleDefinitionServer
-	SavingsPlanOrdersServer    SavingsPlanOrdersServer
-	SavingsPlansServer         SavingsPlansServer
+	// AccountsServer contains the fakes for client AccountsClient
+	AccountsServer AccountsServer
+
+	// AddressServer contains the fakes for client AddressClient
+	AddressServer AddressServer
+
+	// AgreementsServer contains the fakes for client AgreementsClient
+	AgreementsServer AgreementsServer
+
+	// AssociatedTenantsServer contains the fakes for client AssociatedTenantsClient
+	AssociatedTenantsServer AssociatedTenantsServer
+
+	// AvailableBalancesServer contains the fakes for client AvailableBalancesClient
+	AvailableBalancesServer AvailableBalancesServer
+
+	// CustomersServer contains the fakes for client CustomersClient
+	CustomersServer CustomersServer
+
+	// DepartmentsServer contains the fakes for client DepartmentsClient
+	DepartmentsServer DepartmentsServer
+
+	// EnrollmentAccountsServer contains the fakes for client EnrollmentAccountsClient
+	EnrollmentAccountsServer EnrollmentAccountsServer
+
+	// InvoiceSectionsServer contains the fakes for client InvoiceSectionsClient
+	InvoiceSectionsServer InvoiceSectionsServer
+
+	// InvoicesServer contains the fakes for client InvoicesClient
+	InvoicesServer InvoicesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PartnerTransfersServer contains the fakes for client PartnerTransfersClient
+	PartnerTransfersServer PartnerTransfersServer
+
+	// PaymentMethodsServer contains the fakes for client PaymentMethodsClient
+	PaymentMethodsServer PaymentMethodsServer
+
+	// PermissionsServer contains the fakes for client PermissionsClient
+	PermissionsServer PermissionsServer
+
+	// PoliciesServer contains the fakes for client PoliciesClient
+	PoliciesServer PoliciesServer
+
+	// ProductsServer contains the fakes for client ProductsClient
+	ProductsServer ProductsServer
+
+	// ProfilesServer contains the fakes for client ProfilesClient
+	ProfilesServer ProfilesServer
+
+	// PropertyServer contains the fakes for client PropertyClient
+	PropertyServer PropertyServer
+
+	// RecipientTransfersServer contains the fakes for client RecipientTransfersClient
+	RecipientTransfersServer RecipientTransfersServer
+
+	// RequestsServer contains the fakes for client RequestsClient
+	RequestsServer RequestsServer
+
+	// ReservationOrdersServer contains the fakes for client ReservationOrdersClient
+	ReservationOrdersServer ReservationOrdersServer
+
+	// ReservationsServer contains the fakes for client ReservationsClient
+	ReservationsServer ReservationsServer
+
+	// RoleAssignmentsServer contains the fakes for client RoleAssignmentsClient
+	RoleAssignmentsServer RoleAssignmentsServer
+
+	// RoleDefinitionServer contains the fakes for client RoleDefinitionClient
+	RoleDefinitionServer RoleDefinitionServer
+
+	// SavingsPlanOrdersServer contains the fakes for client SavingsPlanOrdersClient
+	SavingsPlanOrdersServer SavingsPlanOrdersServer
+
+	// SavingsPlansServer contains the fakes for client SavingsPlansClient
+	SavingsPlansServer SavingsPlansServer
+
+	// SubscriptionsAliasesServer contains the fakes for client SubscriptionsAliasesClient
 	SubscriptionsAliasesServer SubscriptionsAliasesServer
-	SubscriptionsServer        SubscriptionsServer
-	TransactionsServer         TransactionsServer
-	TransfersServer            TransfersServer
+
+	// SubscriptionsServer contains the fakes for client SubscriptionsClient
+	SubscriptionsServer SubscriptionsServer
+
+	// TransactionsServer contains the fakes for client TransactionsClient
+	TransactionsServer TransactionsServer
+
+	// TransfersServer contains the fakes for client TransfersClient
+	TransfersServer TransfersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

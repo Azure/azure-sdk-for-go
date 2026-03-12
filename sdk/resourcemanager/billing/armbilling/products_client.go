@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // ProductsClient contains the methods for the Products group.
@@ -27,7 +26,7 @@ type ProductsClient struct {
 
 // NewProductsClient creates a new instance of ProductsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProductsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +69,7 @@ func (client *ProductsClient) Get(ctx context.Context, billingAccountName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProductsClient) getCreateRequest(ctx context.Context, billingAccountName string, productName string, options *ProductsClientGetOptions) (*policy.Request, error) {
+func (client *ProductsClient) getCreateRequest(ctx context.Context, billingAccountName string, productName string, _ *ProductsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -478,7 +477,7 @@ func (client *ProductsClient) move(ctx context.Context, billingAccountName strin
 }
 
 // moveCreateRequest creates the Move request.
-func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*policy.Request, error) {
+func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, _ *ProductsClientBeginMoveOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/move"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -534,7 +533,7 @@ func (client *ProductsClient) Update(ctx context.Context, billingAccountName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters ProductPatch, options *ProductsClientUpdateOptions) (*policy.Request, error) {
+func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters ProductPatch, _ *ProductsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -601,7 +600,7 @@ func (client *ProductsClient) ValidateMoveEligibility(ctx context.Context, billi
 }
 
 // validateMoveEligibilityCreateRequest creates the ValidateMoveEligibility request.
-func (client *ProductsClient) validateMoveEligibilityCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientValidateMoveEligibilityOptions) (*policy.Request, error) {
+func (client *ProductsClient) validateMoveEligibilityCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, _ *ProductsClientValidateMoveEligibilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/validateMoveEligibility"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

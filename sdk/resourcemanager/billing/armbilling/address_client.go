@@ -7,12 +7,11 @@ package armbilling
 
 import (
 	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // AddressClient contains the methods for the Address group.
@@ -23,7 +22,7 @@ type AddressClient struct {
 
 // NewAddressClient creates a new instance of AddressClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAddressClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AddressClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -64,7 +63,7 @@ func (client *AddressClient) Validate(ctx context.Context, parameters AddressDet
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *AddressClient) validateCreateRequest(ctx context.Context, parameters AddressDetails, options *AddressClientValidateOptions) (*policy.Request, error) {
+func (client *AddressClient) validateCreateRequest(ctx context.Context, parameters AddressDetails, _ *AddressClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/validateAddress"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

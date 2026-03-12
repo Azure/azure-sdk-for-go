@@ -5,11 +5,6 @@
 
 package armbilling
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	moduleVersion = "v1.0.0"
-)
-
 // AcceptanceMode - The mode of acceptance for an agreement.
 type AcceptanceMode string
 

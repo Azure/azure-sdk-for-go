@@ -8,14 +8,13 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PermissionsClient contains the methods for the BillingPermissions group.
@@ -26,7 +25,7 @@ type PermissionsClient struct {
 
 // NewPermissionsClient creates a new instance of PermissionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPermissionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PermissionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +68,7 @@ func (client *PermissionsClient) CheckAccessByBillingAccount(ctx context.Context
 }
 
 // checkAccessByBillingAccountCreateRequest creates the CheckAccessByBillingAccount request.
-func (client *PermissionsClient) checkAccessByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByBillingAccountOptions) (*policy.Request, error) {
+func (client *PermissionsClient) checkAccessByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters CheckAccessRequest, _ *PermissionsClientCheckAccessByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/checkAccess"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -130,7 +129,7 @@ func (client *PermissionsClient) CheckAccessByBillingProfile(ctx context.Context
 }
 
 // checkAccessByBillingProfileCreateRequest creates the CheckAccessByBillingProfile request.
-func (client *PermissionsClient) checkAccessByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByBillingProfileOptions) (*policy.Request, error) {
+func (client *PermissionsClient) checkAccessByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters CheckAccessRequest, _ *PermissionsClientCheckAccessByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/checkAccess"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -196,7 +195,7 @@ func (client *PermissionsClient) CheckAccessByCustomer(ctx context.Context, bill
 }
 
 // checkAccessByCustomerCreateRequest creates the CheckAccessByCustomer request.
-func (client *PermissionsClient) checkAccessByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByCustomerOptions) (*policy.Request, error) {
+func (client *PermissionsClient) checkAccessByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CheckAccessRequest, _ *PermissionsClientCheckAccessByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/checkAccess"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -265,7 +264,7 @@ func (client *PermissionsClient) CheckAccessByDepartment(ctx context.Context, bi
 }
 
 // checkAccessByDepartmentCreateRequest creates the CheckAccessByDepartment request.
-func (client *PermissionsClient) checkAccessByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByDepartmentOptions) (*policy.Request, error) {
+func (client *PermissionsClient) checkAccessByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, parameters CheckAccessRequest, _ *PermissionsClientCheckAccessByDepartmentOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/checkAccess"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -330,7 +329,7 @@ func (client *PermissionsClient) CheckAccessByEnrollmentAccount(ctx context.Cont
 }
 
 // checkAccessByEnrollmentAccountCreateRequest creates the CheckAccessByEnrollmentAccount request.
-func (client *PermissionsClient) checkAccessByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByEnrollmentAccountOptions) (*policy.Request, error) {
+func (client *PermissionsClient) checkAccessByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, parameters CheckAccessRequest, _ *PermissionsClientCheckAccessByEnrollmentAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/checkAccess"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -396,7 +395,7 @@ func (client *PermissionsClient) CheckAccessByInvoiceSection(ctx context.Context
 }
 
 // checkAccessByInvoiceSectionCreateRequest creates the CheckAccessByInvoiceSection request.
-func (client *PermissionsClient) checkAccessByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByInvoiceSectionOptions) (*policy.Request, error) {
+func (client *PermissionsClient) checkAccessByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters CheckAccessRequest, _ *PermissionsClientCheckAccessByInvoiceSectionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/checkAccess"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -463,7 +462,7 @@ func (client *PermissionsClient) NewListByBillingAccountPager(billingAccountName
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *PermissionsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *PermissionsClientListByBillingAccountOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, _ *PermissionsClientListByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -520,7 +519,7 @@ func (client *PermissionsClient) NewListByBillingProfilePager(billingAccountName
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *PermissionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *PermissionsClientListByBillingProfileOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *PermissionsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -582,7 +581,7 @@ func (client *PermissionsClient) NewListByCustomerPager(billingAccountName strin
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
-func (client *PermissionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *PermissionsClientListByCustomerOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, _ *PermissionsClientListByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -648,7 +647,7 @@ func (client *PermissionsClient) NewListByCustomerAtBillingAccountPager(billingA
 }
 
 // listByCustomerAtBillingAccountCreateRequest creates the ListByCustomerAtBillingAccount request.
-func (client *PermissionsClient) listByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *PermissionsClientListByCustomerAtBillingAccountOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, _ *PermissionsClientListByCustomerAtBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -709,7 +708,7 @@ func (client *PermissionsClient) NewListByDepartmentPager(billingAccountName str
 }
 
 // listByDepartmentCreateRequest creates the ListByDepartment request.
-func (client *PermissionsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, options *PermissionsClientListByDepartmentOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, _ *PermissionsClientListByDepartmentOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -770,7 +769,7 @@ func (client *PermissionsClient) NewListByEnrollmentAccountPager(billingAccountN
 }
 
 // listByEnrollmentAccountCreateRequest creates the ListByEnrollmentAccount request.
-func (client *PermissionsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, options *PermissionsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, _ *PermissionsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -832,7 +831,7 @@ func (client *PermissionsClient) NewListByInvoiceSectionPager(billingAccountName
 }
 
 // listByInvoiceSectionCreateRequest creates the ListByInvoiceSection request.
-func (client *PermissionsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, _ *PermissionsClientListByInvoiceSectionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

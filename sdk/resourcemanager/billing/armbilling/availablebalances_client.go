@@ -8,14 +8,13 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AvailableBalancesClient contains the methods for the AvailableBalances group.
@@ -26,7 +25,7 @@ type AvailableBalancesClient struct {
 
 // NewAvailableBalancesClient creates a new instance of AvailableBalancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailableBalancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableBalancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +70,7 @@ func (client *AvailableBalancesClient) GetByBillingAccount(ctx context.Context, 
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
-func (client *AvailableBalancesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *AvailableBalancesClientGetByBillingAccountOptions) (*policy.Request, error) {
+func (client *AvailableBalancesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, _ *AvailableBalancesClientGetByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/availableBalance/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -131,7 +130,7 @@ func (client *AvailableBalancesClient) GetByBillingProfile(ctx context.Context, 
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
-func (client *AvailableBalancesClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesClientGetByBillingProfileOptions) (*policy.Request, error) {
+func (client *AvailableBalancesClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *AvailableBalancesClientGetByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/availableBalance/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

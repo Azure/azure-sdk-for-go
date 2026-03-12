@@ -8,14 +8,13 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AgreementsClient contains the methods for the Agreements group.
@@ -26,7 +25,7 @@ type AgreementsClient struct {
 
 // NewAgreementsClient creates a new instance of AgreementsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAgreementsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AgreementsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +67,7 @@ func (client *AgreementsClient) Get(ctx context.Context, billingAccountName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *AgreementsClient) getCreateRequest(ctx context.Context, billingAccountName string, agreementName string, options *AgreementsClientGetOptions) (*policy.Request, error) {
+func (client *AgreementsClient) getCreateRequest(ctx context.Context, billingAccountName string, agreementName string, _ *AgreementsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/agreements/{agreementName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

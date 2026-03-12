@@ -4353,7 +4353,7 @@ type SubscriptionAliasProperties struct {
 	NextBillingCycleDetails *NextBillingCycleDetails
 
 	// READ-ONLY; The offer ID for the subscription. This field is only available for the Microsoft Online Services Program billing
-	// accounts.
+	// accounts or billing accounts with agreement type Enterprise Agreement.
 	OfferID *string
 
 	// READ-ONLY; The status of an operation on the subscription. When None, there is no ongoing operation. When LockedForUpdate,
@@ -4596,7 +4596,7 @@ type SubscriptionProperties struct {
 	NextBillingCycleDetails *NextBillingCycleDetails
 
 	// READ-ONLY; The offer ID for the subscription. This field is only available for the Microsoft Online Services Program billing
-	// accounts.
+	// accounts or billing accounts with agreement type Enterprise Agreement.
 	OfferID *string
 
 	// READ-ONLY; The status of an operation on the subscription. When None, there is no ongoing operation. When LockedForUpdate,

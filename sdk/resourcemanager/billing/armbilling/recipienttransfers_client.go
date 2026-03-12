@@ -8,14 +8,13 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // RecipientTransfersClient contains the methods for the RecipientTransfers group.
@@ -26,7 +25,7 @@ type RecipientTransfersClient struct {
 
 // NewRecipientTransfersClient creates a new instance of RecipientTransfersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRecipientTransfersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RecipientTransfersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +68,7 @@ func (client *RecipientTransfersClient) Accept(ctx context.Context, transferName
 }
 
 // acceptCreateRequest creates the Accept request.
-func (client *RecipientTransfersClient) acceptCreateRequest(ctx context.Context, transferName string, parameters AcceptTransferRequest, options *RecipientTransfersClientAcceptOptions) (*policy.Request, error) {
+func (client *RecipientTransfersClient) acceptCreateRequest(ctx context.Context, transferName string, parameters AcceptTransferRequest, _ *RecipientTransfersClientAcceptOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/transfers/{transferName}/accept"
 	if transferName == "" {
 		return nil, errors.New("parameter transferName cannot be empty")
@@ -128,7 +127,7 @@ func (client *RecipientTransfersClient) Decline(ctx context.Context, transferNam
 }
 
 // declineCreateRequest creates the Decline request.
-func (client *RecipientTransfersClient) declineCreateRequest(ctx context.Context, transferName string, options *RecipientTransfersClientDeclineOptions) (*policy.Request, error) {
+func (client *RecipientTransfersClient) declineCreateRequest(ctx context.Context, transferName string, _ *RecipientTransfersClientDeclineOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/transfers/{transferName}/decline"
 	if transferName == "" {
 		return nil, errors.New("parameter transferName cannot be empty")
@@ -183,7 +182,7 @@ func (client *RecipientTransfersClient) Get(ctx context.Context, transferName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecipientTransfersClient) getCreateRequest(ctx context.Context, transferName string, options *RecipientTransfersClientGetOptions) (*policy.Request, error) {
+func (client *RecipientTransfersClient) getCreateRequest(ctx context.Context, transferName string, _ *RecipientTransfersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/transfers/{transferName}"
 	if transferName == "" {
 		return nil, errors.New("parameter transferName cannot be empty")
@@ -238,7 +237,7 @@ func (client *RecipientTransfersClient) NewListPager(options *RecipientTransfers
 }
 
 // listCreateRequest creates the List request.
-func (client *RecipientTransfersClient) listCreateRequest(ctx context.Context, options *RecipientTransfersClientListOptions) (*policy.Request, error) {
+func (client *RecipientTransfersClient) listCreateRequest(ctx context.Context, _ *RecipientTransfersClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/transfers"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -292,7 +291,7 @@ func (client *RecipientTransfersClient) Validate(ctx context.Context, transferNa
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *RecipientTransfersClient) validateCreateRequest(ctx context.Context, transferName string, parameters AcceptTransferRequest, options *RecipientTransfersClientValidateOptions) (*policy.Request, error) {
+func (client *RecipientTransfersClient) validateCreateRequest(ctx context.Context, transferName string, parameters AcceptTransferRequest, _ *RecipientTransfersClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/transfers/{transferName}/validate"
 	if transferName == "" {
 		return nil, errors.New("parameter transferName cannot be empty")

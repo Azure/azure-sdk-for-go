@@ -101,8 +101,8 @@ func (testsuite *MapsTestSuite) waitForAccountTerminalProvisioningState(timeout 
 		resp, err := accountsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
 		testsuite.Require().NoError(err)
 
-		if resp.Account.Properties != nil && resp.Account.Properties.ProvisioningState != nil {
-			state := *resp.Account.Properties.ProvisioningState
+		if resp.Properties != nil && resp.Properties.ProvisioningState != nil {
+			state := *resp.Properties.ProvisioningState
 			if strings.EqualFold(state, "Succeeded") || strings.EqualFold(state, "Failed") {
 				return
 			}

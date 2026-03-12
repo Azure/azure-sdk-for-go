@@ -37,7 +37,9 @@ Requires `azure-sdk-mcp` server. Run `azsdk_verify_setup` to confirm.
 5. **Validate** — Run `azsdk_package_run_check` and `azsdk_package_run_tests`.
 6. **Metadata** — Update metadata, changelog, and version.
 7. **Next Steps** — If SDK generation succeeds for all languages, suggest pushing API spec and SDK changes to create PRs for review and release.
-8. **CLI Fallback** — If MCP unavailable, run `npx tsp-client update` then language build tools manually.
+8. **CLI Fallback** — If MCP unavailable, use `tsp-client` directly then language build tools manually:
+   - **Spec repo** (azure-rest-api-specs): run `npx tsp-client init --update-if-exists`
+   - **SDK repo** (azure-sdk-for-{language}): run `npx tsp-client update`
 
 ## Related Skills
 

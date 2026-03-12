@@ -127,7 +127,7 @@ func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFr
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, o.SourceModifiedAccessConditions, toGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -420,14 +420,3 @@ type ExpiryTypeNever = exported.ExpiryTypeNever
 
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
 type SetExpiryOptions = exported.SetExpiryOptions
-
-func toGeneratedSourceCPKInfo(o *blob.CPKInfo) *generated.SourceCPKInfo {
-	if o == nil {
-		return nil
-	}
-	return &generated.SourceCPKInfo{
-		SourceEncryptionAlgorithm: o.EncryptionAlgorithm,
-		SourceEncryptionKey:       o.EncryptionKey,
-		SourceEncryptionKeySHA256: o.EncryptionKeySHA256,
-	}
-}

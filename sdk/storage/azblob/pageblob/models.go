@@ -145,7 +145,7 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions, toGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -328,17 +328,6 @@ func (o *CopyIncrementalOptions) format() (*generated.PageBlobClientCopyIncremen
 	}
 
 	return nil, o.ModifiedAccessConditions
-}
-
-func toGeneratedSourceCPKInfo(o *blob.CPKInfo) *generated.SourceCPKInfo {
-	if o == nil {
-		return nil
-	}
-	return &generated.SourceCPKInfo{
-		SourceEncryptionAlgorithm: o.EncryptionAlgorithm,
-		SourceEncryptionKey:       o.EncryptionKey,
-		SourceEncryptionKeySHA256: o.EncryptionKeySHA256,
-	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
 directory: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/fluxConfigurations
 commit: 402bf21e472d87c1b3abcd0b2675a8b6c8a42700
-repo: https://github.com/Azure/azure-sdk-for-go/pull/26166
+repo: Azure/azure-rest-api-specs
 additionalDirectories: 

@@ -1,0 +1,79 @@
+parameters:
+  - name: BenchmarkProject
+    type: string
+    default: 'tools/azsdk-cli/Azure.Sdk.Tools.Cli.Benchmarks'
+  - name: ScenarioName
+    type: string
+    default: ' '
+  - name: Tags
+    type: string
+    default: ' '
+  - name: Model
+    type: string
+    default: ' '
+  - name: Parallelism
+    type: number
+    default: 5
+
+jobs:
+  - job: Run_Benchmark
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+      - group: 'AzSDK_Eval_Variable_group'
+    displayName: 'Run Benchmark'
+    pool:
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
+
+    steps:
+    - checkout: none
+
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        SkipCheckoutNone: true
+        Repositories:
+          - Name: $(Build.Repository.Name)
+            Commitish: $(Build.SourceVersion)
+            WorkingDirectory: $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)
+        Paths:
+          - '${{ parameters.BenchmarkProject }}/**'
+          - 'eng/common/**'
+
+    - template: /eng/pipelines/templates/steps/install-dotnet.yml
+
+    - task: PowerShell@2
+      displayName: 'Run benchmarks'
+      condition: succeeded()
+      inputs:
+        targetType: 'inline'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/${{ parameters.BenchmarkProject }}'
+        pwsh: true
+        script: |
+          $cliArgs = @("run")
+
+          # Determine scenario selection: name, tags, or all
+          if ("${{ parameters.ScenarioName }}".Trim()) {
+            $cliArgs += "${{ parameters.ScenarioName }}".Trim()
+          } elseif ("${{ parameters.Tags }}".Trim()) {
+            $cliArgs += "--tags", "${{ parameters.Tags }}".Trim()
+          } else {
+            $cliArgs += "--all"
+          }
+
+          # Optional model override
+          if ("${{ parameters.Model }}".Trim()) {
+            $cliArgs += "--model", "${{ parameters.Model }}".Trim()
+          }
+
+          $cliArgs += "--parallel", "${{ parameters.Parallelism }}"
+          $cliArgs += "--cleanup", "always"
+
+          Write-Host "Running: dotnet run -- $($cliArgs -join ' ')"
+          dotnet run -- @cliArgs
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+        DOTNET_MULTILEVEL_LOOKUP: 0
+        COPILOT_GITHUB_TOKEN: $(azuresdk-copilot-github-pat)

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/ReplicationCreate.json
+// Generated from example definition: 2026-01-01-preview/ReplicationCreate.json
 func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationCreateZoneRedundant.json
+// Generated from example definition: 2026-01-01-preview/ReplicationCreateZoneRedundant.json
 func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationDelete.json
+// Generated from example definition: 2026-01-01-preview/ReplicationDelete.json
 func ExampleReplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleReplicationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationGet.json
+// Generated from example definition: 2026-01-01-preview/ReplicationGet.json
 func ExampleReplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleReplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationList.json
+// Generated from example definition: 2026-01-01-preview/ReplicationList.json
 func ExampleReplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleReplicationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/ReplicationUpdate.json
+// Generated from example definition: 2026-01-01-preview/ReplicationUpdate.json
 func ExampleReplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -85,12 +85,17 @@ func (o *CreateOptions) format() *generated.ContainerClientCreateOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.ContainerClientCreateOptions{
-		Access:                         o.Access,
-		Metadata:                       o.Metadata,
-		DefaultEncryptionScope:         o.CPKScopeInfo.DefaultEncryptionScope,
-		PreventEncryptionScopeOverride: o.CPKScopeInfo.PreventEncryptionScopeOverride,
+
+	opts := &generated.ContainerClientCreateOptions{
+		Access:   o.Access,
+		Metadata: o.Metadata,
 	}
+	if o.CPKScopeInfo != nil {
+		opts.DefaultEncryptionScope = o.CPKScopeInfo.DefaultEncryptionScope
+		opts.PreventEncryptionScopeOverride = o.CPKScopeInfo.PreventEncryptionScopeOverride
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -104,12 +109,20 @@ func (o *DeleteOptions) format() *generated.ContainerClientDeleteOptions {
 	if o == nil {
 		return nil
 	}
-	// Note: missing o.AccessConditions.ModifiedAccessConditions.IfMatch and o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-	return &generated.ContainerClientDeleteOptions{
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.ContainerClientDeleteOptions{}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
 	}
+
+	// Note: missing o.AccessConditions.ModifiedAccessConditions.IfMatch and o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -131,9 +144,13 @@ func (o *GetPropertiesOptions) format() *generated.ContainerClientGetPropertiesO
 	if o == nil {
 		return nil
 	}
-	return &generated.ContainerClientGetPropertiesOptions{
-		LeaseID: o.LeaseAccessConditions.LeaseID,
+
+	opts := &generated.ContainerClientGetPropertiesOptions{}
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
 	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -282,12 +299,19 @@ func (o *SetMetadataOptions) format() *generated.ContainerClientSetMetadataOptio
 	if o == nil {
 		return nil
 	}
-	// Note: missing mapping for most of o.ModifiedAccessConditions
-	return &generated.ContainerClientSetMetadataOptions{
-		Metadata:        o.Metadata,
-		LeaseID:         o.LeaseAccessConditions.LeaseID,
-		IfModifiedSince: o.ModifiedAccessConditions.IfModifiedSince,
+
+	opts := &generated.ContainerClientSetMetadataOptions{
+		Metadata: o.Metadata,
 	}
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+	}
+
+	// Note: missing mapping for most of o.ModifiedAccessConditions
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -302,9 +326,12 @@ func (o *GetAccessPolicyOptions) format() *generated.ContainerClientGetAccessPol
 		return nil
 	}
 
-	return &generated.ContainerClientGetAccessPolicyOptions{
-		LeaseID: o.LeaseAccessConditions.LeaseID,
+	opts := &generated.ContainerClientGetAccessPolicyOptions{}
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
 	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -322,16 +349,29 @@ func (o *SetAccessPolicyOptions) format() *generated.ContainerClientSetAccessPol
 	if o == nil {
 		return nil
 	}
-	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions.IfMatch,  o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-	return &generated.ContainerClientSetAccessPolicyOptions{
-		Access:            o.Access,
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.ContainerClientSetAccessPolicyOptions{
+		Access: o.Access,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions.IfMatch,  o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+	return opts
 }
 
 func formatTime(c *SignedIdentifier) error {
+	if c == nil {
+		return nil
+	}
+
 	if c.AccessPolicy == nil {
 		return nil
 	}
@@ -378,17 +418,26 @@ func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.BlobClientDeleteOptions{
-		DeleteSnapshots:   o.DeleteSnapshots,
-		BlobDeleteType:    o.BlobDeleteType, // None by default
-		Snapshot:          o.Snapshot,
-		VersionID:         o.VersionID,
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.BlobClientDeleteOptions{
+		DeleteSnapshots: o.DeleteSnapshots,
+		BlobDeleteType:  o.BlobDeleteType, // None by default
+		Snapshot:        o.Snapshot,
+		VersionID:       o.VersionID,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
@@ -402,13 +451,18 @@ func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 	if o == nil {
 		return nil
 	}
-	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions
-	return &generated.BlobClientSetTierOptions{
+
+	opts := &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,
 		Snapshot:          o.Snapshot,
 		VersionID:         o.VersionID,
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
 	}
+	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
+		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	}
+
+	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions
+	return opts
 }
 
 // SubmitBatchOptions contains the optional parameters for the Client.SubmitBatch method.

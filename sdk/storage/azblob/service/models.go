@@ -315,17 +315,25 @@ func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.BlobClientDeleteOptions{
-		DeleteSnapshots:   o.DeleteSnapshots,
-		BlobDeleteType:    o.BlobDeleteType, // None by default
-		Snapshot:          o.Snapshot,
-		VersionID:         o.VersionID,
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	opts := &generated.BlobClientDeleteOptions{
+		DeleteSnapshots: o.DeleteSnapshots,
+		BlobDeleteType:  o.BlobDeleteType, // None by default
+		Snapshot:        o.Snapshot,
+		VersionID:       o.VersionID,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
@@ -340,12 +348,16 @@ func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 		return nil
 	}
 	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
-	return &generated.BlobClientSetTierOptions{
+	opts := &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,
 		Snapshot:          o.Snapshot,
 		VersionID:         o.VersionID,
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
 	}
+	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
+		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	}
+
+	return opts
 }
 
 // SubmitBatchOptions contains the optional parameters for the Client.SubmitBatch method.

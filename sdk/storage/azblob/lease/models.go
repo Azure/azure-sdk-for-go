@@ -26,12 +26,16 @@ func (o *BlobAcquireOptions) format() *generated.BlobClientAcquireLeaseOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.BlobClientAcquireLeaseOptions{
-		IfMatch:           o.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.BlobClientAcquireLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 // BlobBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
@@ -55,13 +59,17 @@ func (o *BlobBreakOptions) format() *generated.BlobClientBreakLeaseOptions {
 		period = leasePeriodPointer(*o.BreakPeriod)
 	}
 
-	return &generated.BlobClientBreakLeaseOptions{
-		BreakPeriod:       period,
-		IfMatch:           o.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+	opts := &generated.BlobClientBreakLeaseOptions{
+		BreakPeriod: period,
 	}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // BlobChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
@@ -73,12 +81,16 @@ func (o *BlobChangeOptions) format() *generated.BlobClientChangeLeaseOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.BlobClientChangeLeaseOptions{
-		IfMatch:           o.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.BlobClientChangeLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 // BlobRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.
@@ -90,12 +102,16 @@ func (o *BlobRenewOptions) format() *generated.BlobClientRenewLeaseOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.BlobClientRenewLeaseOptions{
-		IfMatch:           o.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.BlobClientRenewLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 // BlobReleaseOptions contains the optional parameters for the LeaseClient.ReleaseLease method.
@@ -108,12 +124,15 @@ func (o *BlobReleaseOptions) format() *generated.BlobClientReleaseLeaseOptions {
 		return nil
 	}
 
-	return &generated.BlobClientReleaseLeaseOptions{
-		IfMatch:           o.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+	opts := &generated.BlobClientReleaseLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 // ContainerAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
@@ -126,10 +145,14 @@ func (o *ContainerAcquireOptions) format() *generated.ContainerClientAcquireLeas
 		return nil
 	}
 	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
-	return &generated.ContainerClientAcquireLeaseOptions{
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.ContainerClientAcquireLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 // ContainerBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
@@ -154,11 +177,15 @@ func (o *ContainerBreakOptions) format() *generated.ContainerClientBreakLeaseOpt
 	}
 
 	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
-	return &generated.ContainerClientBreakLeaseOptions{
-		BreakPeriod:       period,
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+	opts := &generated.ContainerClientBreakLeaseOptions{
+		BreakPeriod: period,
 	}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // ContainerChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
@@ -171,10 +198,14 @@ func (o *ContainerChangeOptions) format() *generated.ContainerClientChangeLeaseO
 		return nil
 	}
 	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
-	return &generated.ContainerClientChangeLeaseOptions{
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.ContainerClientChangeLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 // ContainerRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.
@@ -187,10 +218,14 @@ func (o *ContainerRenewOptions) format() *generated.ContainerClientRenewLeaseOpt
 		return nil
 	}
 	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
-	return &generated.ContainerClientRenewLeaseOptions{
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.ContainerClientRenewLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 // ContainerReleaseOptions contains the optional parameters for the LeaseClient.ReleaseLease method.
@@ -203,10 +238,14 @@ func (o *ContainerReleaseOptions) format() *generated.ContainerClientReleaseLeas
 		return nil
 	}
 	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
-	return &generated.ContainerClientReleaseLeaseOptions{
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.ContainerClientReleaseLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
+
+	return opts
 }
 
 func leasePeriodPointer(period int32) *int32 {

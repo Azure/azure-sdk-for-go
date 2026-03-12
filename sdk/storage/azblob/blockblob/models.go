@@ -54,7 +54,7 @@ func (o *UploadOptions) format() *generated.BlockBlobClientUploadOptions {
 		return nil
 	}
 
-	return &generated.BlockBlobClientUploadOptions{
+	opts := &generated.BlockBlobClientUploadOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
 		Metadata:                 o.Metadata,
 		Tier:                     o.Tier,
@@ -62,22 +62,36 @@ func (o *UploadOptions) format() *generated.BlockBlobClientUploadOptions {
 		LegalHold:                o.LegalHold,
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiryTime,
-		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
-		EncryptionAlgorithm:      o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:            o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:      o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:          o.CPKScopeInfo.EncryptionScope,
-		BlobCacheControl:         o.HTTPHeaders.BlobCacheControl,
-		BlobContentDisposition:   o.HTTPHeaders.BlobContentDisposition,
-		BlobContentEncoding:      o.HTTPHeaders.BlobContentEncoding,
-		BlobContentLanguage:      o.HTTPHeaders.BlobContentLanguage,
-		BlobContentMD5:           o.HTTPHeaders.BlobContentMD5,
-		BlobContentType:          o.HTTPHeaders.BlobContentType,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+	if o.HTTPHeaders != nil {
+		opts.BlobCacheControl = o.HTTPHeaders.BlobCacheControl
+		opts.BlobContentDisposition = o.HTTPHeaders.BlobContentDisposition
+		opts.BlobContentEncoding = o.HTTPHeaders.BlobContentEncoding
+		opts.BlobContentLanguage = o.HTTPHeaders.BlobContentLanguage
+		opts.BlobContentMD5 = o.HTTPHeaders.BlobContentMD5
+		opts.BlobContentType = o.HTTPHeaders.BlobContentType
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -120,7 +134,7 @@ func (o *UploadBlobFromURLOptions) format() *generated.BlockBlobClientUploadBlob
 	if o == nil {
 		return nil
 	}
-	return &generated.BlockBlobClientUploadBlobFromURLOptions{
+	opts := &generated.BlockBlobClientUploadBlobFromURLOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
 		CopySourceAuthorization:  o.CopySourceAuthorization,
 		FileRequestIntent:        o.FileRequestIntent,
@@ -129,26 +143,42 @@ func (o *UploadBlobFromURLOptions) format() *generated.BlockBlobClientUploadBlob
 		Metadata:                 o.Metadata,
 		SourceContentMD5:         o.SourceContentMD5,
 		Tier:                     o.Tier,
-		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
-		EncryptionAlgorithm:      o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:            o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:      o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:          o.CPKScopeInfo.EncryptionScope,
-		BlobCacheControl:         o.HTTPHeaders.BlobCacheControl,
-		BlobContentDisposition:   o.HTTPHeaders.BlobContentDisposition,
-		BlobContentEncoding:      o.HTTPHeaders.BlobContentEncoding,
-		BlobContentLanguage:      o.HTTPHeaders.BlobContentLanguage,
-		BlobContentMD5:           o.HTTPHeaders.BlobContentMD5,
-		BlobContentType:          o.HTTPHeaders.BlobContentType,
-		SourceIfMatch:            o.SourceModifiedAccessConditions.SourceIfMatch,
-		SourceIfModifiedSince:    o.SourceModifiedAccessConditions.SourceIfModifiedSince,
-		SourceIfNoneMatch:        o.SourceModifiedAccessConditions.SourceIfNoneMatch,
-		SourceIfUnmodifiedSince:  o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+	if o.HTTPHeaders != nil {
+		opts.BlobCacheControl = o.HTTPHeaders.BlobCacheControl
+		opts.BlobContentDisposition = o.HTTPHeaders.BlobContentDisposition
+		opts.BlobContentEncoding = o.HTTPHeaders.BlobContentEncoding
+		opts.BlobContentLanguage = o.HTTPHeaders.BlobContentLanguage
+		opts.BlobContentMD5 = o.HTTPHeaders.BlobContentMD5
+		opts.BlobContentType = o.HTTPHeaders.BlobContentType
+	}
+	if o.SourceModifiedAccessConditions != nil {
+		opts.SourceIfMatch = o.SourceModifiedAccessConditions.SourceIfMatch
+		opts.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
+		opts.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
+		opts.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -172,13 +202,20 @@ func (o *StageBlockOptions) format() *generated.BlockBlobClientStageBlockOptions
 		return nil
 	}
 
-	return &generated.BlockBlobClientStageBlockOptions{
-		LeaseID:             o.LeaseAccessConditions.LeaseID,
-		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:       o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
+	opts := &generated.BlockBlobClientStageBlockOptions{}
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
 	}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -215,14 +252,20 @@ func (o *StageBlockFromURLOptions) format() *generated.BlockBlobClientStageBlock
 		CopySourceAuthorization: o.CopySourceAuthorization,
 		SourceRange:             exported.FormatHTTPRange(o.Range),
 		FileRequestIntent:       o.FileRequestIntent,
-		SourceIfMatch:           o.SourceModifiedAccessConditions.SourceIfMatch,
-		SourceIfModifiedSince:   o.SourceModifiedAccessConditions.SourceIfModifiedSince,
-		SourceIfNoneMatch:       o.SourceModifiedAccessConditions.SourceIfNoneMatch,
-		SourceIfUnmodifiedSince: o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
-		EncryptionAlgorithm:     o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:           o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:     o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:         o.CPKScopeInfo.EncryptionScope,
+	}
+	if o.SourceModifiedAccessConditions != nil {
+		options.SourceIfMatch = o.SourceModifiedAccessConditions.SourceIfMatch
+		options.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
+		options.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
+		options.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+	}
+	if o.CPKInfo != nil {
+		options.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		options.EncryptionKey = o.CPKInfo.EncryptionKey
+		options.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+	if o.CPKScopeInfo != nil {
+		options.EncryptionScope = o.CPKScopeInfo.EncryptionScope
 	}
 
 	if o.SourceContentValidation != nil {
@@ -261,7 +304,7 @@ func (o *CommitBlockListOptions) format() *generated.BlockBlobClientCommitBlockL
 		return nil
 	}
 	// Note: no mapping for o.RequestID
-	return &generated.BlockBlobClientCommitBlockListOptions{
+	opts := &generated.BlockBlobClientCommitBlockListOptions{
 		BlobTagsString:            shared.SerializeBlobTagsToStrPtr(o.Tags),
 		Metadata:                  o.Metadata,
 		Tier:                      o.Tier,
@@ -271,22 +314,36 @@ func (o *CommitBlockListOptions) format() *generated.BlockBlobClientCommitBlockL
 		LegalHold:                 o.LegalHold,
 		ImmutabilityPolicyMode:    o.ImmutabilityPolicyMode,
 		ImmutabilityPolicyExpiry:  o.ImmutabilityPolicyExpiryTime,
-		BlobCacheControl:          o.HTTPHeaders.BlobCacheControl,
-		BlobContentDisposition:    o.HTTPHeaders.BlobContentDisposition,
-		BlobContentEncoding:       o.HTTPHeaders.BlobContentEncoding,
-		BlobContentLanguage:       o.HTTPHeaders.BlobContentLanguage,
-		BlobContentMD5:            o.HTTPHeaders.BlobContentMD5,
-		BlobContentType:           o.HTTPHeaders.BlobContentType,
-		LeaseID:                   o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:                   o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:           o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:               o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:         o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
-		EncryptionAlgorithm:       o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:             o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:       o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:           o.CPKScopeInfo.EncryptionScope,
 	}
+	if o.HTTPHeaders != nil {
+		opts.BlobCacheControl = o.HTTPHeaders.BlobCacheControl
+		opts.BlobContentDisposition = o.HTTPHeaders.BlobContentDisposition
+		opts.BlobContentEncoding = o.HTTPHeaders.BlobContentEncoding
+		opts.BlobContentLanguage = o.HTTPHeaders.BlobContentLanguage
+		opts.BlobContentMD5 = o.HTTPHeaders.BlobContentMD5
+		opts.BlobContentType = o.HTTPHeaders.BlobContentType
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -302,10 +359,15 @@ func (o *GetBlockListOptions) format() *generated.BlockBlobClientGetBlockListOpt
 		return nil
 	}
 	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions
-	return &generated.BlockBlobClientGetBlockListOptions{
+
+	opts := &generated.BlockBlobClientGetBlockListOptions{
 		Snapshot: o.Snapshot,
-		LeaseID:  o.AccessConditions.LeaseAccessConditions.LeaseID,
 	}
+	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
+		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	}
+
+	return opts
 }
 
 // ------------------------------------------------------------

@@ -68,30 +68,44 @@ func (o *CreateOptions) format() *generated.PageBlobClientCreateOptions {
 		return nil
 	}
 
-	return &generated.PageBlobClientCreateOptions{
+	opts := &generated.PageBlobClientCreateOptions{
 		BlobSequenceNumber:       o.SequenceNumber,
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
 		Metadata:                 o.Metadata,
 		Tier:                     o.Tier,
-		BlobCacheControl:         o.HTTPHeaders.BlobCacheControl,
-		BlobContentDisposition:   o.HTTPHeaders.BlobContentDisposition,
-		BlobContentEncoding:      o.HTTPHeaders.BlobContentEncoding,
-		BlobContentLanguage:      o.HTTPHeaders.BlobContentLanguage,
-		BlobContentMD5:           o.HTTPHeaders.BlobContentMD5,
-		BlobContentType:          o.HTTPHeaders.BlobContentType,
-		EncryptionAlgorithm:      o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:            o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:      o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:          o.CPKScopeInfo.EncryptionScope,
-		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
-		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
-		LegalHold:                o.LegalHold,
+		//ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
+		LegalHold: o.LegalHold,
 	}
+	if o.HTTPHeaders != nil {
+		opts.BlobCacheControl = o.HTTPHeaders.BlobCacheControl
+		opts.BlobContentDisposition = o.HTTPHeaders.BlobContentDisposition
+		opts.BlobContentEncoding = o.HTTPHeaders.BlobContentEncoding
+		opts.BlobContentLanguage = o.HTTPHeaders.BlobContentLanguage
+		opts.BlobContentMD5 = o.HTTPHeaders.BlobContentMD5
+		opts.BlobContentType = o.HTTPHeaders.BlobContentType
+	}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -112,20 +126,34 @@ func (o *UploadPagesOptions) format() *generated.PageBlobClientUploadPagesOption
 	if o == nil {
 		return nil
 	}
-	return &generated.PageBlobClientUploadPagesOptions{
-		EncryptionAlgorithm:               o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:                     o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:               o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:                   o.CPKScopeInfo.EncryptionScope,
-		IfSequenceNumberEqualTo:           o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo,
-		IfSequenceNumberLessThan:          o.SequenceNumberAccessConditions.IfSequenceNumberLessThan,
-		IfSequenceNumberLessThanOrEqualTo: o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo,
-		LeaseID:                           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:                           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:                   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:                       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:                 o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.PageBlobClientUploadPagesOptions{}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+	if o.SequenceNumberAccessConditions != nil {
+		opts.IfSequenceNumberEqualTo = o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo
+		opts.IfSequenceNumberLessThan = o.SequenceNumberAccessConditions.IfSequenceNumberLessThan
+		opts.IfSequenceNumberLessThanOrEqualTo = o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -157,24 +185,38 @@ func (o *UploadPagesFromURLOptions) format() *generated.PageBlobClientUploadPage
 	}
 
 	options := &generated.PageBlobClientUploadPagesFromURLOptions{
-		CopySourceAuthorization:           o.CopySourceAuthorization,
-		FileRequestIntent:                 o.FileRequestIntent,
-		EncryptionAlgorithm:               o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:                     o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:               o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:                   o.CPKScopeInfo.EncryptionScope,
-		IfSequenceNumberEqualTo:           o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo,
-		IfSequenceNumberLessThan:          o.SequenceNumberAccessConditions.IfSequenceNumberLessThan,
-		IfSequenceNumberLessThanOrEqualTo: o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo,
-		SourceIfMatch:                     o.SourceModifiedAccessConditions.SourceIfMatch,
-		SourceIfModifiedSince:             o.SourceModifiedAccessConditions.SourceIfModifiedSince,
-		SourceIfNoneMatch:                 o.SourceModifiedAccessConditions.SourceIfNoneMatch,
-		SourceIfUnmodifiedSince:           o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
-		LeaseID:                           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:                           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:                   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:                       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:                 o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		CopySourceAuthorization: o.CopySourceAuthorization,
+		FileRequestIntent:       o.FileRequestIntent,
+	}
+	if o.CPKInfo != nil {
+		options.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		options.EncryptionKey = o.CPKInfo.EncryptionKey
+		options.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+	if o.CPKScopeInfo != nil {
+		options.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+	if o.SequenceNumberAccessConditions != nil {
+		options.IfSequenceNumberEqualTo = o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo
+		options.IfSequenceNumberLessThan = o.SequenceNumberAccessConditions.IfSequenceNumberLessThan
+		options.IfSequenceNumberLessThanOrEqualTo = o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo
+	}
+	if o.SourceModifiedAccessConditions != nil {
+		options.SourceIfMatch = o.SourceModifiedAccessConditions.SourceIfMatch
+		options.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
+		options.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
+		options.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			options.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			options.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
 	}
 
 	if o.SourceContentValidation != nil {
@@ -198,20 +240,34 @@ func (o *ClearPagesOptions) format() *generated.PageBlobClientClearPagesOptions 
 	if o == nil {
 		return nil
 	}
-	return &generated.PageBlobClientClearPagesOptions{
-		EncryptionAlgorithm:               o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:                     o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256:               o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:                   o.CPKScopeInfo.EncryptionScope,
-		IfSequenceNumberEqualTo:           o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo,
-		IfSequenceNumberLessThan:          o.SequenceNumberAccessConditions.IfSequenceNumberLessThan,
-		IfSequenceNumberLessThanOrEqualTo: o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo,
-		LeaseID:                           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:                           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:                   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:                       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:                 o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.PageBlobClientClearPagesOptions{}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+	if o.SequenceNumberAccessConditions != nil {
+		opts.IfSequenceNumberEqualTo = o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo
+		opts.IfSequenceNumberLessThan = o.SequenceNumberAccessConditions.IfSequenceNumberLessThan
+		opts.IfSequenceNumberLessThanOrEqualTo = o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -249,17 +305,26 @@ func (o *GetPageRangesOptions) format() *generated.PageBlobClientGetPageRangesOp
 	if o == nil {
 		return &generated.PageBlobClientGetPageRangesOptions{}
 	}
-	return &generated.PageBlobClientGetPageRangesOptions{
-		Marker:            o.Marker,
-		Maxresults:        o.MaxResults,
-		Range:             exported.FormatHTTPRange(o.Range),
-		Snapshot:          o.Snapshot,
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.PageBlobClientGetPageRangesOptions{
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Range:      exported.FormatHTTPRange(o.Range),
+		Snapshot:   o.Snapshot,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -303,19 +368,28 @@ func (o *GetPageRangesDiffOptions) format() *generated.PageBlobClientGetPageRang
 	if o == nil {
 		return nil
 	}
-	return &generated.PageBlobClientGetPageRangesDiffOptions{
-		Marker:            o.Marker,
-		Maxresults:        o.MaxResults,
-		PrevSnapshotURL:   o.PrevSnapshotURL,
-		Prevsnapshot:      o.PrevSnapshot,
-		Range:             exported.FormatHTTPRange(o.Range),
-		Snapshot:          o.Snapshot,
-		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.PageBlobClientGetPageRangesDiffOptions{
+		Marker:          o.Marker,
+		Maxresults:      o.MaxResults,
+		PrevSnapshotURL: o.PrevSnapshotURL,
+		Prevsnapshot:    o.PrevSnapshot,
+		Range:           exported.FormatHTTPRange(o.Range),
+		Snapshot:        o.Snapshot,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 
 }
 
@@ -332,17 +406,29 @@ func (o *ResizeOptions) format() *generated.PageBlobClientResizeOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.PageBlobClientResizeOptions{
-		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
-		EncryptionKey:       o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
-		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
-		LeaseID:             o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:             o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:     o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:         o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+
+	opts := &generated.PageBlobClientResizeOptions{}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -363,14 +449,20 @@ func (o *UpdateSequenceNumberOptions) format() *generated.PageBlobClientUpdateSe
 
 	options := &generated.PageBlobClientUpdateSequenceNumberOptions{
 		BlobSequenceNumber: o.SequenceNumber,
-		LeaseID:            o.AccessConditions.LeaseAccessConditions.LeaseID,
-		IfMatch:            o.AccessConditions.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:    o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:        o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince:  o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			options.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			options.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
 	}
 
-	if *o.ActionType == SequenceNumberActionTypeIncrement {
+	if o.ActionType != nil && *o.ActionType == SequenceNumberActionTypeIncrement {
 		options.BlobSequenceNumber = nil
 	}
 
@@ -389,13 +481,16 @@ func (o *CopyIncrementalOptions) format() *generated.PageBlobClientCopyIncrement
 		return nil
 	}
 
-	return &generated.PageBlobClientCopyIncrementalOptions{
-		IfMatch:           o.ModifiedAccessConditions.IfMatch,
-		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-		IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
-		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
-		IfTags:            o.ModifiedAccessConditions.IfTags,
+	opts := &generated.PageBlobClientCopyIncrementalOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfTags = o.ModifiedAccessConditions.IfTags
 	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

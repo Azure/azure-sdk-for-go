@@ -27,7 +27,7 @@ type DataConnectionsClient struct {
 // NewDataConnectionsClient creates a new instance of DataConnectionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -73,7 +73,7 @@ func (client *DataConnectionsClient) CheckNameAvailability(ctx context.Context, 
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *DataConnectionsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest, options *DataConnectionsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *DataConnectionsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest, _ *DataConnectionsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -168,7 +168,7 @@ func (client *DataConnectionsClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, _ *DataConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -257,7 +257,7 @@ func (client *DataConnectionsClient) dataConnectionValidation(ctx context.Contex
 }
 
 // dataConnectionValidationCreateRequest creates the DataConnectionValidation request.
-func (client *DataConnectionsClient) dataConnectionValidationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DataConnectionValidation, options *DataConnectionsClientBeginDataConnectionValidationOptions) (*policy.Request, error) {
+func (client *DataConnectionsClient) dataConnectionValidationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DataConnectionValidation, _ *DataConnectionsClientBeginDataConnectionValidationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnectionValidation"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -342,7 +342,7 @@ func (client *DataConnectionsClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *DataConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *DataConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, _ *DataConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -407,7 +407,7 @@ func (client *DataConnectionsClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *DataConnectionsClientGetOptions) (*policy.Request, error) {
+func (client *DataConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, _ *DataConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -482,7 +482,7 @@ func (client *DataConnectionsClient) NewListByDatabasePager(resourceGroupName st
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DataConnectionsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DataConnectionsClientListByDatabaseOptions) (*policy.Request, error) {
+func (client *DataConnectionsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DataConnectionsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -574,7 +574,7 @@ func (client *DataConnectionsClient) update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DataConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *DataConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, _ *DataConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

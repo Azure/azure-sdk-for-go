@@ -27,7 +27,7 @@ type AttachedDatabaseConfigurationsClient struct {
 // NewAttachedDatabaseConfigurationsClient creates a new instance of AttachedDatabaseConfigurationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDatabaseConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *AttachedDatabaseConfigurationsClient) CheckNameAvailability(ctx co
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, options *AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, _ *AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -162,7 +162,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.C
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, _ *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -246,7 +246,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, _ *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -307,7 +307,7 @@ func (client *AttachedDatabaseConfigurationsClient) Get(ctx context.Context, res
 }
 
 // getCreateRequest creates the Get request.
-func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientGetOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, _ *AttachedDatabaseConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -377,7 +377,7 @@ func (client *AttachedDatabaseConfigurationsClient) NewListByClusterPager(resour
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *AttachedDatabaseConfigurationsClientListByClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

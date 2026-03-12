@@ -8,14 +8,14 @@ package armkusto
 // AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate
 // method.
 type AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginDelete
 // method.
 type AttachedDatabaseConfigurationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -40,14 +40,14 @@ type AttachedDatabaseConfigurationsClientListByClusterOptions struct {
 // ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.BeginCreateOrUpdate
 // method.
 type ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClusterPrincipalAssignmentsClientBeginDeleteOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.BeginDelete
 // method.
 type ClusterPrincipalAssignmentsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -72,14 +72,14 @@ type ClusterPrincipalAssignmentsClientListOptions struct {
 // ClustersClientBeginAddCalloutPoliciesOptions contains the optional parameters for the ClustersClient.BeginAddCalloutPolicies
 // method.
 type ClustersClientBeginAddCalloutPoliciesOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginAddLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginAddLanguageExtensions
 // method.
 type ClustersClientBeginAddLanguageExtensionsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -93,59 +93,59 @@ type ClustersClientBeginCreateOrUpdateOptions struct {
 	// in a 412 Pre-condition Failed response.
 	IfNoneMatch *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 type ClustersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginDetachFollowerDatabasesOptions contains the optional parameters for the ClustersClient.BeginDetachFollowerDatabases
 // method.
 type ClustersClientBeginDetachFollowerDatabasesOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginDiagnoseVirtualNetworkOptions contains the optional parameters for the ClustersClient.BeginDiagnoseVirtualNetwork
 // method.
 type ClustersClientBeginDiagnoseVirtualNetworkOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginMigrateOptions contains the optional parameters for the ClustersClient.BeginMigrate method.
 type ClustersClientBeginMigrateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginRemoveCalloutPolicyOptions contains the optional parameters for the ClustersClient.BeginRemoveCalloutPolicy
 // method.
 type ClustersClientBeginRemoveCalloutPolicyOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginRemoveLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginRemoveLanguageExtensions
 // method.
 type ClustersClientBeginRemoveLanguageExtensionsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginStartOptions contains the optional parameters for the ClustersClient.BeginStart method.
 type ClustersClientBeginStartOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginStopOptions contains the optional parameters for the ClustersClient.BeginStop method.
 type ClustersClientBeginStopOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -155,7 +155,7 @@ type ClustersClientBeginUpdateOptions struct {
 	// accidentally overwriting concurrent changes.
 	IfMatch *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -225,26 +225,26 @@ type ClustersClientListSKUsOptions struct {
 // DataConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginCreateOrUpdate
 // method.
 type DataConnectionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DataConnectionsClientBeginDataConnectionValidationOptions contains the optional parameters for the DataConnectionsClient.BeginDataConnectionValidation
 // method.
 type DataConnectionsClientBeginDataConnectionValidationOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DataConnectionsClientBeginDeleteOptions contains the optional parameters for the DataConnectionsClient.BeginDelete method.
 type DataConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DataConnectionsClientBeginUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginUpdate method.
 type DataConnectionsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -273,14 +273,14 @@ type DatabaseClientInviteFollowerOptions struct {
 // DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.BeginCreateOrUpdate
 // method.
 type DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DatabasePrincipalAssignmentsClientBeginDeleteOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.BeginDelete
 // method.
 type DatabasePrincipalAssignmentsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -314,13 +314,13 @@ type DatabasesClientBeginCreateOrUpdateOptions struct {
 	// the caller from Admins list.
 	CallerRole *CallerRole
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DatabasesClientBeginDeleteOptions contains the optional parameters for the DatabasesClient.BeginDelete method.
 type DatabasesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -330,7 +330,7 @@ type DatabasesClientBeginUpdateOptions struct {
 	// the caller from Admins list.
 	CallerRole *CallerRole
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -369,21 +369,21 @@ type DatabasesClientRemovePrincipalsOptions struct {
 // ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginCreateOrUpdate
 // method.
 type ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ManagedPrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginDelete
 // method.
 type ManagedPrivateEndpointsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ManagedPrivateEndpointsClientBeginUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginUpdate
 // method.
 type ManagedPrivateEndpointsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -423,14 +423,14 @@ type OperationsResultsLocationClientGetOptions struct {
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -465,21 +465,21 @@ type SKUsClientListOptions struct {
 // SandboxCustomImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the SandboxCustomImagesClient.BeginCreateOrUpdate
 // method.
 type SandboxCustomImagesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SandboxCustomImagesClientBeginDeleteOptions contains the optional parameters for the SandboxCustomImagesClient.BeginDelete
 // method.
 type SandboxCustomImagesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SandboxCustomImagesClientBeginUpdateOptions contains the optional parameters for the SandboxCustomImagesClient.BeginUpdate
 // method.
 type SandboxCustomImagesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -502,19 +502,19 @@ type SandboxCustomImagesClientListByClusterOptions struct {
 
 // ScriptsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptsClient.BeginCreateOrUpdate method.
 type ScriptsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ScriptsClientBeginDeleteOptions contains the optional parameters for the ScriptsClient.BeginDelete method.
 type ScriptsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ScriptsClientBeginUpdateOptions contains the optional parameters for the ScriptsClient.BeginUpdate method.
 type ScriptsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

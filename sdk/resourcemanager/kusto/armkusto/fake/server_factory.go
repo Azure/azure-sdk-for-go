@@ -16,22 +16,53 @@ import (
 
 // ServerFactory is a fake server for instances of the armkusto.ClientFactory type.
 type ServerFactory struct {
+	// AttachedDatabaseConfigurationsServer contains the fakes for client AttachedDatabaseConfigurationsClient
 	AttachedDatabaseConfigurationsServer AttachedDatabaseConfigurationsServer
-	ClusterPrincipalAssignmentsServer    ClusterPrincipalAssignmentsServer
-	ClustersServer                       ClustersServer
-	DataConnectionsServer                DataConnectionsServer
-	DatabaseServer                       DatabaseServer
-	DatabasePrincipalAssignmentsServer   DatabasePrincipalAssignmentsServer
-	DatabasesServer                      DatabasesServer
-	ManagedPrivateEndpointsServer        ManagedPrivateEndpointsServer
-	OperationsServer                     OperationsServer
-	OperationsResultsServer              OperationsResultsServer
-	OperationsResultsLocationServer      OperationsResultsLocationServer
-	PrivateEndpointConnectionsServer     PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer           PrivateLinkResourcesServer
-	SKUsServer                           SKUsServer
-	SandboxCustomImagesServer            SandboxCustomImagesServer
-	ScriptsServer                        ScriptsServer
+
+	// ClusterPrincipalAssignmentsServer contains the fakes for client ClusterPrincipalAssignmentsClient
+	ClusterPrincipalAssignmentsServer ClusterPrincipalAssignmentsServer
+
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
+	// DataConnectionsServer contains the fakes for client DataConnectionsClient
+	DataConnectionsServer DataConnectionsServer
+
+	// DatabaseServer contains the fakes for client DatabaseClient
+	DatabaseServer DatabaseServer
+
+	// DatabasePrincipalAssignmentsServer contains the fakes for client DatabasePrincipalAssignmentsClient
+	DatabasePrincipalAssignmentsServer DatabasePrincipalAssignmentsServer
+
+	// DatabasesServer contains the fakes for client DatabasesClient
+	DatabasesServer DatabasesServer
+
+	// ManagedPrivateEndpointsServer contains the fakes for client ManagedPrivateEndpointsClient
+	ManagedPrivateEndpointsServer ManagedPrivateEndpointsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// OperationsResultsServer contains the fakes for client OperationsResultsClient
+	OperationsResultsServer OperationsResultsServer
+
+	// OperationsResultsLocationServer contains the fakes for client OperationsResultsLocationClient
+	OperationsResultsLocationServer OperationsResultsLocationServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// SKUsServer contains the fakes for client SKUsClient
+	SKUsServer SKUsServer
+
+	// SandboxCustomImagesServer contains the fakes for client SandboxCustomImagesClient
+	SandboxCustomImagesServer SandboxCustomImagesServer
+
+	// ScriptsServer contains the fakes for client ScriptsClient
+	ScriptsServer ScriptsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

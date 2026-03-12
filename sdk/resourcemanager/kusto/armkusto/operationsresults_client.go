@@ -27,7 +27,7 @@ type OperationsResultsClient struct {
 // NewOperationsResultsClient creates a new instance of OperationsResultsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *OperationsResultsClient) Get(ctx context.Context, location string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationsResultsClientGetOptions) (*policy.Request, error) {
+func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *OperationsResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

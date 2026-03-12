@@ -22,11 +22,11 @@ import (
 // ClustersServer is a fake server for instances of the armkusto.ClustersClient type.
 type ClustersServer struct {
 	// BeginAddCalloutPolicies is the fake for method ClustersClient.BeginAddCalloutPolicies
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginAddCalloutPolicies func(ctx context.Context, resourceGroupName string, clusterName string, calloutPolicies armkusto.CalloutPoliciesList, options *armkusto.ClustersClientBeginAddCalloutPoliciesOptions) (resp azfake.PollerResponder[armkusto.ClustersClientAddCalloutPoliciesResponse], errResp azfake.ErrorResponder)
 
 	// BeginAddLanguageExtensions is the fake for method ClustersClient.BeginAddLanguageExtensions
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginAddLanguageExtensions func(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd armkusto.LanguageExtensionsList, options *armkusto.ClustersClientBeginAddLanguageExtensionsOptions) (resp azfake.PollerResponder[armkusto.ClustersClientAddLanguageExtensionsResponse], errResp azfake.ErrorResponder)
 
 	// CheckNameAvailability is the fake for method ClustersClient.CheckNameAvailability
@@ -42,7 +42,7 @@ type ClustersServer struct {
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, options *armkusto.ClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armkusto.ClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginDetachFollowerDatabases is the fake for method ClustersClient.BeginDetachFollowerDatabases
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDetachFollowerDatabases func(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove armkusto.FollowerDatabaseDefinition, options *armkusto.ClustersClientBeginDetachFollowerDatabasesOptions) (resp azfake.PollerResponder[armkusto.ClustersClientDetachFollowerDatabasesResponse], errResp azfake.ErrorResponder)
 
 	// BeginDiagnoseVirtualNetwork is the fake for method ClustersClient.BeginDiagnoseVirtualNetwork
@@ -90,23 +90,23 @@ type ClustersServer struct {
 	NewListSKUsByResourcePager func(resourceGroupName string, clusterName string, options *armkusto.ClustersClientListSKUsByResourceOptions) (resp azfake.PagerResponder[armkusto.ClustersClientListSKUsByResourceResponse])
 
 	// BeginMigrate is the fake for method ClustersClient.BeginMigrate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginMigrate func(ctx context.Context, resourceGroupName string, clusterName string, clusterMigrateRequest armkusto.ClusterMigrateRequest, options *armkusto.ClustersClientBeginMigrateOptions) (resp azfake.PollerResponder[armkusto.ClustersClientMigrateResponse], errResp azfake.ErrorResponder)
 
 	// BeginRemoveCalloutPolicy is the fake for method ClustersClient.BeginRemoveCalloutPolicy
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRemoveCalloutPolicy func(ctx context.Context, resourceGroupName string, clusterName string, calloutPolicy armkusto.CalloutPolicyToRemove, options *armkusto.ClustersClientBeginRemoveCalloutPolicyOptions) (resp azfake.PollerResponder[armkusto.ClustersClientRemoveCalloutPolicyResponse], errResp azfake.ErrorResponder)
 
 	// BeginRemoveLanguageExtensions is the fake for method ClustersClient.BeginRemoveLanguageExtensions
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRemoveLanguageExtensions func(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove armkusto.LanguageExtensionsList, options *armkusto.ClustersClientBeginRemoveLanguageExtensionsOptions) (resp azfake.PollerResponder[armkusto.ClustersClientRemoveLanguageExtensionsResponse], errResp azfake.ErrorResponder)
 
 	// BeginStart is the fake for method ClustersClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, options *armkusto.ClustersClientBeginStartOptions) (resp azfake.PollerResponder[armkusto.ClustersClientStartResponse], errResp azfake.ErrorResponder)
 
 	// BeginStop is the fake for method ClustersClient.BeginStop
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStop func(ctx context.Context, resourceGroupName string, clusterName string, options *armkusto.ClustersClientBeginStopOptions) (resp azfake.PollerResponder[armkusto.ClustersClientStopResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method ClustersClient.BeginUpdate
@@ -179,65 +179,84 @@ func (c *ClustersServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ClustersClient.BeginAddCalloutPolicies":
-		resp, err = c.dispatchBeginAddCalloutPolicies(req)
-	case "ClustersClient.BeginAddLanguageExtensions":
-		resp, err = c.dispatchBeginAddLanguageExtensions(req)
-	case "ClustersClient.CheckNameAvailability":
-		resp, err = c.dispatchCheckNameAvailability(req)
-	case "ClustersClient.BeginCreateOrUpdate":
-		resp, err = c.dispatchBeginCreateOrUpdate(req)
-	case "ClustersClient.BeginDelete":
-		resp, err = c.dispatchBeginDelete(req)
-	case "ClustersClient.BeginDetachFollowerDatabases":
-		resp, err = c.dispatchBeginDetachFollowerDatabases(req)
-	case "ClustersClient.BeginDiagnoseVirtualNetwork":
-		resp, err = c.dispatchBeginDiagnoseVirtualNetwork(req)
-	case "ClustersClient.Get":
-		resp, err = c.dispatchGet(req)
-	case "ClustersClient.NewListPager":
-		resp, err = c.dispatchNewListPager(req)
-	case "ClustersClient.NewListByResourceGroupPager":
-		resp, err = c.dispatchNewListByResourceGroupPager(req)
-	case "ClustersClient.NewListCalloutPoliciesPager":
-		resp, err = c.dispatchNewListCalloutPoliciesPager(req)
-	case "ClustersClient.NewListFollowerDatabasesPager":
-		resp, err = c.dispatchNewListFollowerDatabasesPager(req)
-	case "ClustersClient.NewListFollowerDatabasesGetPager":
-		resp, err = c.dispatchNewListFollowerDatabasesGetPager(req)
-	case "ClustersClient.NewListLanguageExtensionsPager":
-		resp, err = c.dispatchNewListLanguageExtensionsPager(req)
-	case "ClustersClient.NewListOutboundNetworkDependenciesEndpointsPager":
-		resp, err = c.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
-	case "ClustersClient.NewListSKUsPager":
-		resp, err = c.dispatchNewListSKUsPager(req)
-	case "ClustersClient.NewListSKUsByResourcePager":
-		resp, err = c.dispatchNewListSKUsByResourcePager(req)
-	case "ClustersClient.BeginMigrate":
-		resp, err = c.dispatchBeginMigrate(req)
-	case "ClustersClient.BeginRemoveCalloutPolicy":
-		resp, err = c.dispatchBeginRemoveCalloutPolicy(req)
-	case "ClustersClient.BeginRemoveLanguageExtensions":
-		resp, err = c.dispatchBeginRemoveLanguageExtensions(req)
-	case "ClustersClient.BeginStart":
-		resp, err = c.dispatchBeginStart(req)
-	case "ClustersClient.BeginStop":
-		resp, err = c.dispatchBeginStop(req)
-	case "ClustersClient.BeginUpdate":
-		resp, err = c.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if clustersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = clustersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ClustersClient.BeginAddCalloutPolicies":
+				res.resp, res.err = c.dispatchBeginAddCalloutPolicies(req)
+			case "ClustersClient.BeginAddLanguageExtensions":
+				res.resp, res.err = c.dispatchBeginAddLanguageExtensions(req)
+			case "ClustersClient.CheckNameAvailability":
+				res.resp, res.err = c.dispatchCheckNameAvailability(req)
+			case "ClustersClient.BeginCreateOrUpdate":
+				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "ClustersClient.BeginDelete":
+				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ClustersClient.BeginDetachFollowerDatabases":
+				res.resp, res.err = c.dispatchBeginDetachFollowerDatabases(req)
+			case "ClustersClient.BeginDiagnoseVirtualNetwork":
+				res.resp, res.err = c.dispatchBeginDiagnoseVirtualNetwork(req)
+			case "ClustersClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ClustersClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
+			case "ClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ClustersClient.NewListCalloutPoliciesPager":
+				res.resp, res.err = c.dispatchNewListCalloutPoliciesPager(req)
+			case "ClustersClient.NewListFollowerDatabasesPager":
+				res.resp, res.err = c.dispatchNewListFollowerDatabasesPager(req)
+			case "ClustersClient.NewListFollowerDatabasesGetPager":
+				res.resp, res.err = c.dispatchNewListFollowerDatabasesGetPager(req)
+			case "ClustersClient.NewListLanguageExtensionsPager":
+				res.resp, res.err = c.dispatchNewListLanguageExtensionsPager(req)
+			case "ClustersClient.NewListOutboundNetworkDependenciesEndpointsPager":
+				res.resp, res.err = c.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
+			case "ClustersClient.NewListSKUsPager":
+				res.resp, res.err = c.dispatchNewListSKUsPager(req)
+			case "ClustersClient.NewListSKUsByResourcePager":
+				res.resp, res.err = c.dispatchNewListSKUsByResourcePager(req)
+			case "ClustersClient.BeginMigrate":
+				res.resp, res.err = c.dispatchBeginMigrate(req)
+			case "ClustersClient.BeginRemoveCalloutPolicy":
+				res.resp, res.err = c.dispatchBeginRemoveCalloutPolicy(req)
+			case "ClustersClient.BeginRemoveLanguageExtensions":
+				res.resp, res.err = c.dispatchBeginRemoveLanguageExtensions(req)
+			case "ClustersClient.BeginStart":
+				res.resp, res.err = c.dispatchBeginStart(req)
+			case "ClustersClient.BeginStop":
+				res.resp, res.err = c.dispatchBeginStop(req)
+			case "ClustersClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *ClustersServerTransport) dispatchBeginAddCalloutPolicies(req *http.Request) (*http.Response, error) {
@@ -249,7 +268,7 @@ func (c *ClustersServerTransport) dispatchBeginAddCalloutPolicies(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addCalloutPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.CalloutPoliciesList](req)
@@ -277,9 +296,9 @@ func (c *ClustersServerTransport) dispatchBeginAddCalloutPolicies(req *http.Requ
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginAddCalloutPolicies.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginAddCalloutPolicies) {
 		c.beginAddCalloutPolicies.remove(req)
@@ -297,7 +316,7 @@ func (c *ClustersServerTransport) dispatchBeginAddLanguageExtensions(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addLanguageExtensions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.LanguageExtensionsList](req)
@@ -325,9 +344,9 @@ func (c *ClustersServerTransport) dispatchBeginAddLanguageExtensions(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginAddLanguageExtensions.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginAddLanguageExtensions) {
 		c.beginAddLanguageExtensions.remove(req)
@@ -343,7 +362,7 @@ func (c *ClustersServerTransport) dispatchCheckNameAvailability(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armkusto.ClusterCheckNameRequest](req)
@@ -378,7 +397,7 @@ func (c *ClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.Cluster](req)
@@ -435,7 +454,7 @@ func (c *ClustersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -479,7 +498,7 @@ func (c *ClustersServerTransport) dispatchBeginDetachFollowerDatabases(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detachFollowerDatabases`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.FollowerDatabaseDefinition](req)
@@ -507,9 +526,9 @@ func (c *ClustersServerTransport) dispatchBeginDetachFollowerDatabases(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDetachFollowerDatabases.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDetachFollowerDatabases) {
 		c.beginDetachFollowerDatabases.remove(req)
@@ -527,7 +546,7 @@ func (c *ClustersServerTransport) dispatchBeginDiagnoseVirtualNetwork(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnoseVirtualNetwork`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -569,7 +588,7 @@ func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -604,7 +623,7 @@ func (c *ClustersServerTransport) dispatchNewListPager(req *http.Request) (*http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := c.srv.NewListPager(nil)
@@ -634,7 +653,7 @@ func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -668,7 +687,7 @@ func (c *ClustersServerTransport) dispatchNewListCalloutPoliciesPager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listCalloutPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -706,7 +725,7 @@ func (c *ClustersServerTransport) dispatchNewListFollowerDatabasesPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFollowerDatabases`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -744,7 +763,7 @@ func (c *ClustersServerTransport) dispatchNewListFollowerDatabasesGetPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFollowerDatabases`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -782,7 +801,7 @@ func (c *ClustersServerTransport) dispatchNewListLanguageExtensionsPager(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listLanguageExtensions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -820,7 +839,7 @@ func (c *ClustersServerTransport) dispatchNewListOutboundNetworkDependenciesEndp
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -861,7 +880,7 @@ func (c *ClustersServerTransport) dispatchNewListSKUsPager(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := c.srv.NewListSKUsPager(nil)
@@ -891,7 +910,7 @@ func (c *ClustersServerTransport) dispatchNewListSKUsByResourcePager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -929,7 +948,7 @@ func (c *ClustersServerTransport) dispatchBeginMigrate(req *http.Request) (*http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.ClusterMigrateRequest](req)
@@ -957,9 +976,9 @@ func (c *ClustersServerTransport) dispatchBeginMigrate(req *http.Request) (*http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginMigrate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginMigrate) {
 		c.beginMigrate.remove(req)
@@ -977,7 +996,7 @@ func (c *ClustersServerTransport) dispatchBeginRemoveCalloutPolicy(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeCalloutPolicy`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.CalloutPolicyToRemove](req)
@@ -1005,9 +1024,9 @@ func (c *ClustersServerTransport) dispatchBeginRemoveCalloutPolicy(req *http.Req
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginRemoveCalloutPolicy.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRemoveCalloutPolicy) {
 		c.beginRemoveCalloutPolicy.remove(req)
@@ -1025,7 +1044,7 @@ func (c *ClustersServerTransport) dispatchBeginRemoveLanguageExtensions(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeLanguageExtensions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.LanguageExtensionsList](req)
@@ -1053,9 +1072,9 @@ func (c *ClustersServerTransport) dispatchBeginRemoveLanguageExtensions(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginRemoveLanguageExtensions.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRemoveLanguageExtensions) {
 		c.beginRemoveLanguageExtensions.remove(req)
@@ -1073,7 +1092,7 @@ func (c *ClustersServerTransport) dispatchBeginStart(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -1097,9 +1116,9 @@ func (c *ClustersServerTransport) dispatchBeginStart(req *http.Request) (*http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginStart) {
 		c.beginStart.remove(req)
@@ -1117,7 +1136,7 @@ func (c *ClustersServerTransport) dispatchBeginStop(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -1141,9 +1160,9 @@ func (c *ClustersServerTransport) dispatchBeginStop(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginStop.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginStop) {
 		c.beginStop.remove(req)
@@ -1161,7 +1180,7 @@ func (c *ClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.ClusterUpdate](req)
@@ -1205,4 +1224,10 @@ func (c *ClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ClustersServerTransport
+var clustersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

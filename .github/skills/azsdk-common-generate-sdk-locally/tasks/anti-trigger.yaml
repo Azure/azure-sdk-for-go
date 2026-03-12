@@ -1,5 +1,5 @@
 id: sdk-local-negative-001
-name: Should Not Trigger - Pipeline Generation
+name: Anti-Trigger - Pipeline Generation
 description: |
   Test that the skill does NOT activate when user wants pipeline-based
   SDK generation rather than local generation.

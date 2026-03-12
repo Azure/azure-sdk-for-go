@@ -10,5 +10,4 @@ require:
 license-header: MICROSOFT_MIT_NO_VERSION
 module-version: 1.0.1
 tag: package-2024-04
-generate-samples: true
 ```

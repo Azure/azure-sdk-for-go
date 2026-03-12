@@ -102,6 +102,37 @@ func (s *ServiceRecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require.Equal(shareClient.URL(), correctURL)
 }
 
+func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential_DelegatedUserTenantId() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
+	opts := service.GetUserDelegationCredentialOptions{
+		DelegatedUserTenantId: to.Ptr(dummyTenantID),
+	}
+
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, &opts)
+	if err != nil {
+		testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	}
+}
+
 func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 

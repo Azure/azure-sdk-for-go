@@ -1442,6 +1442,46 @@ func (s *UnrecordedTestSuite) TestQueueUserDelegationSAS_WithSduoid() {
 	_require.Contains(enc, "sduoid=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 }
 
+func (s *UnrecordedTestSuite) TestUserDelegationSASWithDelegatedUserTenantId() {
+	_require := require.New(s.T())
+
+	testName := s.T().Name()
+	now := time.Now().UTC().Add(-time.Minute)
+	expiry := now.Add(30 * time.Minute)
+	serviceCode := "q"
+	version := sas.Version
+	oid := "00000000-0000-0000-0000-000000000000"
+	tid := "11111111-1111-1111-1111-111111111111"
+	skdutid := "22222222-2222-2222-2222-222222222222"
+	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
+
+	udk := exported.UserDelegationKey{
+		SignedStart:            &now,
+		SignedExpiry:           &expiry,
+		SignedService:          &serviceCode,
+		SignedVersion:          &version,
+		SignedOID:              &oid,
+		SignedTID:              &tid,
+		SignedDelegatedUserTid: &skdutid,
+		Value:                  val,
+	}
+	udc := exported.NewUserDelegationCredential("testaccount", udk)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	sv := sas.QueueSignatureValues{
+		Protocol:                    sas.ProtocolHTTPS,
+		StartTime:                   now,
+		ExpiryTime:                  expiry,
+		Permissions:                 (&sas.QueuePermissions{Read: true, Add: true}).String(),
+		QueueName:                   queueName,
+		// SignedDelegatedUserObjectID: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", // Optional
+	}
+	qp, err := sv.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	enc := qp.Encode()
+	_require.Contains(enc, "skdutid="+skdutid)
+}
+
 func (s *UnrecordedTestSuite) TestServiceSASEnqueueMessage() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

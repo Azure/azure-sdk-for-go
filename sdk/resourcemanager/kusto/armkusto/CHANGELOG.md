@@ -1,5 +1,42 @@
 # Release History
 
+## 3.0.0 (2026-03-12)
+### Breaking Changes
+
+- Operation `*OperationsResultsLocationClient.Get` has been changed to LRO, use `*OperationsResultsLocationClient.BeginGet` instead.
+
+### Features Added
+
+- New field `SystemData` in struct `AttachedDatabaseConfiguration`
+- New field `NextLink` in struct `AttachedDatabaseConfigurationListResult`
+- New field `NextLink` in struct `ClusterListResult`
+- New field `SystemData` in struct `ClusterPrincipalAssignment`
+- New field `NextLink` in struct `ClusterPrincipalAssignmentListResult`
+- New field `SystemData` in struct `ClusterUpdate`
+- New field `SystemData` in struct `CosmosDbDataConnection`
+- New field `SystemData` in struct `DataConnection`
+- New field `NextLink` in struct `DataConnectionListResult`
+- New field `SystemData` in struct `Database`
+- New field `SystemData` in struct `DatabasePrincipalAssignment`
+- New field `NextLink` in struct `DatabasePrincipalAssignmentListResult`
+- New field `NextLink` in struct `DatabasePrincipalListResult`
+- New field `SystemData` in struct `EventGridDataConnection`
+- New field `SystemData` in struct `EventHubDataConnection`
+- New field `NextLink` in struct `FollowerDatabaseListResult`
+- New field `SystemData` in struct `IotHubDataConnection`
+- New field `NextLink` in struct `LanguageExtensionsList`
+- New field `NextLink` in struct `ListResourceSKUsResult`
+- New field `NextLink` in struct `ManagedPrivateEndpointListResult`
+- New field `SystemData` in struct `OutboundNetworkDependenciesEndpoint`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `NextLink` in struct `PrivateLinkResourceListResult`
+- New field `SystemData` in struct `ReadOnlyFollowingDatabase`
+- New field `SystemData` in struct `ReadWriteDatabase`
+- New field `NextLink` in struct `SKUDescriptionList`
+- New field `SystemData` in struct `SandboxCustomImage`
+- New field `NextLink` in struct `ScriptListResult`
+
+
 ## 2.3.0 (2025-01-24)
 ### Features Added
 

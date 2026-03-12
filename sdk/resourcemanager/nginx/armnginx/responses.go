@@ -59,7 +59,7 @@ type ConfigurationsClientAnalysisResponse struct {
 // ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.BeginCreateOrUpdate.
 type ConfigurationsClientCreateOrUpdateResponse struct {
 	// Nginx Configuration Response
-	ConfigurationResponse
+	Configuration
 }
 
 // ConfigurationsClientDeleteResponse contains the response from method ConfigurationsClient.BeginDelete.
@@ -70,7 +70,7 @@ type ConfigurationsClientDeleteResponse struct {
 // ConfigurationsClientGetResponse contains the response from method ConfigurationsClient.Get.
 type ConfigurationsClientGetResponse struct {
 	// Nginx Configuration Response
-	ConfigurationResponse
+	Configuration
 }
 
 // ConfigurationsClientListResponse contains the response from method ConfigurationsClient.NewListPager.

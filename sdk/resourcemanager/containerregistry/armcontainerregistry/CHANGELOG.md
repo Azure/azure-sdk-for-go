@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.2 (2026-02-23)
+## 3.0.0-beta.2 (2026-03-12)
 ### Breaking Changes
 
 - Enum `Architecture` has been removed

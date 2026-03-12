@@ -8,14 +8,13 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PartnerTransfersClient contains the methods for the PartnerTransfers group.
@@ -26,7 +25,7 @@ type PartnerTransfersClient struct {
 
 // NewPartnerTransfersClient creates a new instance of PartnerTransfersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPartnerTransfersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PartnerTransfersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +70,7 @@ func (client *PartnerTransfersClient) Cancel(ctx context.Context, billingAccount
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *PartnerTransfersClient) cancelCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, transferName string, options *PartnerTransfersClientCancelOptions) (*policy.Request, error) {
+func (client *PartnerTransfersClient) cancelCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, transferName string, _ *PartnerTransfersClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/transfers/{transferName}/cancel"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -142,7 +141,7 @@ func (client *PartnerTransfersClient) Get(ctx context.Context, billingAccountNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *PartnerTransfersClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, transferName string, options *PartnerTransfersClientGetOptions) (*policy.Request, error) {
+func (client *PartnerTransfersClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, transferName string, _ *PartnerTransfersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/transfers/{transferName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -216,7 +215,7 @@ func (client *PartnerTransfersClient) Initiate(ctx context.Context, billingAccou
 }
 
 // initiateCreateRequest creates the Initiate request.
-func (client *PartnerTransfersClient) initiateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, transferName string, parameters PartnerInitiateTransferRequest, options *PartnerTransfersClientInitiateOptions) (*policy.Request, error) {
+func (client *PartnerTransfersClient) initiateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, transferName string, parameters PartnerInitiateTransferRequest, _ *PartnerTransfersClientInitiateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/transfers/{transferName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -290,7 +289,7 @@ func (client *PartnerTransfersClient) NewListPager(billingAccountName string, bi
 }
 
 // listCreateRequest creates the List request.
-func (client *PartnerTransfersClient) listCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *PartnerTransfersClientListOptions) (*policy.Request, error) {
+func (client *PartnerTransfersClient) listCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, _ *PartnerTransfersClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/transfers"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

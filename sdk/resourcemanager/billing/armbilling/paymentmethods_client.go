@@ -8,14 +8,13 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PaymentMethodsClient contains the methods for the PaymentMethods group.
@@ -26,7 +25,7 @@ type PaymentMethodsClient struct {
 
 // NewPaymentMethodsClient creates a new instance of PaymentMethodsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPaymentMethodsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PaymentMethodsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +66,7 @@ func (client *PaymentMethodsClient) DeleteByUser(ctx context.Context, paymentMet
 }
 
 // deleteByUserCreateRequest creates the DeleteByUser request.
-func (client *PaymentMethodsClient) deleteByUserCreateRequest(ctx context.Context, paymentMethodName string, options *PaymentMethodsClientDeleteByUserOptions) (*policy.Request, error) {
+func (client *PaymentMethodsClient) deleteByUserCreateRequest(ctx context.Context, paymentMethodName string, _ *PaymentMethodsClientDeleteByUserOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/paymentMethods/{paymentMethodName}"
 	if paymentMethodName == "" {
 		return nil, errors.New("parameter paymentMethodName cannot be empty")
@@ -116,7 +115,7 @@ func (client *PaymentMethodsClient) GetByBillingAccount(ctx context.Context, bil
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
-func (client *PaymentMethodsClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, paymentMethodName string, options *PaymentMethodsClientGetByBillingAccountOptions) (*policy.Request, error) {
+func (client *PaymentMethodsClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, paymentMethodName string, _ *PaymentMethodsClientGetByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/paymentMethods/{paymentMethodName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -179,7 +178,7 @@ func (client *PaymentMethodsClient) GetByBillingProfile(ctx context.Context, bil
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
-func (client *PaymentMethodsClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, paymentMethodName string, options *PaymentMethodsClientGetByBillingProfileOptions) (*policy.Request, error) {
+func (client *PaymentMethodsClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, paymentMethodName string, _ *PaymentMethodsClientGetByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/paymentMethodLinks/{paymentMethodName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -243,7 +242,7 @@ func (client *PaymentMethodsClient) GetByUser(ctx context.Context, paymentMethod
 }
 
 // getByUserCreateRequest creates the GetByUser request.
-func (client *PaymentMethodsClient) getByUserCreateRequest(ctx context.Context, paymentMethodName string, options *PaymentMethodsClientGetByUserOptions) (*policy.Request, error) {
+func (client *PaymentMethodsClient) getByUserCreateRequest(ctx context.Context, paymentMethodName string, _ *PaymentMethodsClientGetByUserOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/paymentMethods/{paymentMethodName}"
 	if paymentMethodName == "" {
 		return nil, errors.New("parameter paymentMethodName cannot be empty")
@@ -301,7 +300,7 @@ func (client *PaymentMethodsClient) NewListByBillingAccountPager(billingAccountN
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *PaymentMethodsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *PaymentMethodsClientListByBillingAccountOptions) (*policy.Request, error) {
+func (client *PaymentMethodsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, _ *PaymentMethodsClientListByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/paymentMethods"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -359,7 +358,7 @@ func (client *PaymentMethodsClient) NewListByBillingProfilePager(billingAccountN
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *PaymentMethodsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *PaymentMethodsClientListByBillingProfileOptions) (*policy.Request, error) {
+func (client *PaymentMethodsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *PaymentMethodsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/paymentMethodLinks"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -418,7 +417,7 @@ func (client *PaymentMethodsClient) NewListByUserPager(options *PaymentMethodsCl
 }
 
 // listByUserCreateRequest creates the ListByUser request.
-func (client *PaymentMethodsClient) listByUserCreateRequest(ctx context.Context, options *PaymentMethodsClientListByUserOptions) (*policy.Request, error) {
+func (client *PaymentMethodsClient) listByUserCreateRequest(ctx context.Context, _ *PaymentMethodsClientListByUserOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/paymentMethods"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

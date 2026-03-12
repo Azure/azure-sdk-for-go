@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // CustomersClient contains the methods for the Customers group.
@@ -27,7 +26,7 @@ type CustomersClient struct {
 
 // NewCustomersClient creates a new instance of CustomersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCustomersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +70,7 @@ func (client *CustomersClient) Get(ctx context.Context, billingAccountName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *CustomersClientGetOptions) (*policy.Request, error) {
+func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, _ *CustomersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -137,7 +136,7 @@ func (client *CustomersClient) GetByBillingAccount(ctx context.Context, billingA
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
-func (client *CustomersClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *CustomersClientGetByBillingAccountOptions) (*policy.Request, error) {
+func (client *CustomersClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, _ *CustomersClientGetByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

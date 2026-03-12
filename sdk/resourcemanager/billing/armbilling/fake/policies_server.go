@@ -9,14 +9,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // PoliciesServer is a fake server for instances of the armbilling.PoliciesClient type.
@@ -89,37 +88,56 @@ func (p *PoliciesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PoliciesClient.BeginCreateOrUpdateByBillingAccount":
-		resp, err = p.dispatchBeginCreateOrUpdateByBillingAccount(req)
-	case "PoliciesClient.BeginCreateOrUpdateByBillingProfile":
-		resp, err = p.dispatchBeginCreateOrUpdateByBillingProfile(req)
-	case "PoliciesClient.BeginCreateOrUpdateByCustomer":
-		resp, err = p.dispatchBeginCreateOrUpdateByCustomer(req)
-	case "PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount":
-		resp, err = p.dispatchBeginCreateOrUpdateByCustomerAtBillingAccount(req)
-	case "PoliciesClient.GetByBillingAccount":
-		resp, err = p.dispatchGetByBillingAccount(req)
-	case "PoliciesClient.GetByBillingProfile":
-		resp, err = p.dispatchGetByBillingProfile(req)
-	case "PoliciesClient.GetByCustomer":
-		resp, err = p.dispatchGetByCustomer(req)
-	case "PoliciesClient.GetByCustomerAtBillingAccount":
-		resp, err = p.dispatchGetByCustomerAtBillingAccount(req)
-	case "PoliciesClient.GetBySubscription":
-		resp, err = p.dispatchGetBySubscription(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PoliciesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if policiesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = policiesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PoliciesClient.BeginCreateOrUpdateByBillingAccount":
+				res.resp, res.err = p.dispatchBeginCreateOrUpdateByBillingAccount(req)
+			case "PoliciesClient.BeginCreateOrUpdateByBillingProfile":
+				res.resp, res.err = p.dispatchBeginCreateOrUpdateByBillingProfile(req)
+			case "PoliciesClient.BeginCreateOrUpdateByCustomer":
+				res.resp, res.err = p.dispatchBeginCreateOrUpdateByCustomer(req)
+			case "PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount":
+				res.resp, res.err = p.dispatchBeginCreateOrUpdateByCustomerAtBillingAccount(req)
+			case "PoliciesClient.GetByBillingAccount":
+				res.resp, res.err = p.dispatchGetByBillingAccount(req)
+			case "PoliciesClient.GetByBillingProfile":
+				res.resp, res.err = p.dispatchGetByBillingProfile(req)
+			case "PoliciesClient.GetByCustomer":
+				res.resp, res.err = p.dispatchGetByCustomer(req)
+			case "PoliciesClient.GetByCustomerAtBillingAccount":
+				res.resp, res.err = p.dispatchGetByCustomerAtBillingAccount(req)
+			case "PoliciesClient.GetBySubscription":
+				res.resp, res.err = p.dispatchGetBySubscription(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByBillingAccount(req *http.Request) (*http.Response, error) {
@@ -131,7 +149,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByBillingAccount(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.AccountPolicy](req)
@@ -175,7 +193,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByBillingProfile(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.ProfilePolicy](req)
@@ -223,7 +241,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByCustomer(req *htt
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.CustomerPolicy](req)
@@ -275,7 +293,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByCustomerAtBilling
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.CustomerPolicy](req)
@@ -321,7 +339,7 @@ func (p *PoliciesServerTransport) dispatchGetByBillingAccount(req *http.Request)
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -350,7 +368,7 @@ func (p *PoliciesServerTransport) dispatchGetByBillingProfile(req *http.Request)
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -383,7 +401,7 @@ func (p *PoliciesServerTransport) dispatchGetByCustomer(req *http.Request) (*htt
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -430,7 +448,7 @@ func (p *PoliciesServerTransport) dispatchGetByCustomerAtBillingAccount(req *htt
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -463,7 +481,7 @@ func (p *PoliciesServerTransport) dispatchGetBySubscription(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Billing/policies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := p.srv.GetBySubscription(req.Context(), nil)
@@ -479,4 +497,10 @@ func (p *PoliciesServerTransport) dispatchGetBySubscription(req *http.Request) (
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PoliciesServerTransport
+var policiesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

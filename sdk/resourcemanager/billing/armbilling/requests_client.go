@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // RequestsClient contains the methods for the BillingRequests group.
@@ -27,7 +26,7 @@ type RequestsClient struct {
 
 // NewRequestsClient creates a new instance of RequestsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RequestsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -92,7 +91,7 @@ func (client *RequestsClient) createOrUpdate(ctx context.Context, billingRequest
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RequestsClient) createOrUpdateCreateRequest(ctx context.Context, billingRequestName string, parameters Request, options *RequestsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RequestsClient) createOrUpdateCreateRequest(ctx context.Context, billingRequestName string, parameters Request, _ *RequestsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingRequests/{billingRequestName}"
 	if billingRequestName == "" {
 		return nil, errors.New("parameter billingRequestName cannot be empty")
@@ -141,7 +140,7 @@ func (client *RequestsClient) Get(ctx context.Context, billingRequestName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *RequestsClient) getCreateRequest(ctx context.Context, billingRequestName string, options *RequestsClientGetOptions) (*policy.Request, error) {
+func (client *RequestsClient) getCreateRequest(ctx context.Context, billingRequestName string, _ *RequestsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingRequests/{billingRequestName}"
 	if billingRequestName == "" {
 		return nil, errors.New("parameter billingRequestName cannot be empty")

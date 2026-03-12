@@ -9,15 +9,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // PartnerTransfersServer is a fake server for instances of the armbilling.PartnerTransfersClient type.
@@ -64,27 +63,46 @@ func (p *PartnerTransfersServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PartnerTransfersClient.Cancel":
-		resp, err = p.dispatchCancel(req)
-	case "PartnerTransfersClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "PartnerTransfersClient.Initiate":
-		resp, err = p.dispatchInitiate(req)
-	case "PartnerTransfersClient.NewListPager":
-		resp, err = p.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PartnerTransfersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if partnerTransfersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = partnerTransfersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PartnerTransfersClient.Cancel":
+				res.resp, res.err = p.dispatchCancel(req)
+			case "PartnerTransfersClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PartnerTransfersClient.Initiate":
+				res.resp, res.err = p.dispatchInitiate(req)
+			case "PartnerTransfersClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PartnerTransfersServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
@@ -94,7 +112,7 @@ func (p *PartnerTransfersServerTransport) dispatchCancel(req *http.Request) (*ht
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -135,7 +153,7 @@ func (p *PartnerTransfersServerTransport) dispatchGet(req *http.Request) (*http.
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -176,7 +194,7 @@ func (p *PartnerTransfersServerTransport) dispatchInitiate(req *http.Request) (*
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbilling.PartnerInitiateTransferRequest](req)
@@ -223,7 +241,7 @@ func (p *PartnerTransfersServerTransport) dispatchNewListPager(req *http.Request
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transfers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -257,4 +275,10 @@ func (p *PartnerTransfersServerTransport) dispatchNewListPager(req *http.Request
 		p.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PartnerTransfersServerTransport
+var partnerTransfersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

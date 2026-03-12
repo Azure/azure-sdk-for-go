@@ -9,16 +9,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
 )
 
 // SavingsPlanOrdersServer is a fake server for instances of the armbilling.SavingsPlanOrdersClient type.
@@ -57,23 +56,42 @@ func (s *SavingsPlanOrdersServerTransport) Do(req *http.Request) (*http.Response
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SavingsPlanOrdersClient.GetByBillingAccount":
-		resp, err = s.dispatchGetByBillingAccount(req)
-	case "SavingsPlanOrdersClient.NewListByBillingAccountPager":
-		resp, err = s.dispatchNewListByBillingAccountPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SavingsPlanOrdersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if savingsPlanOrdersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = savingsPlanOrdersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SavingsPlanOrdersClient.GetByBillingAccount":
+				res.resp, res.err = s.dispatchGetByBillingAccount(req)
+			case "SavingsPlanOrdersClient.NewListByBillingAccountPager":
+				res.resp, res.err = s.dispatchNewListByBillingAccountPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SavingsPlanOrdersServerTransport) dispatchGetByBillingAccount(req *http.Request) (*http.Response, error) {
@@ -83,7 +101,7 @@ func (s *SavingsPlanOrdersServerTransport) dispatchGetByBillingAccount(req *http
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -130,7 +148,7 @@ func (s *SavingsPlanOrdersServerTransport) dispatchNewListByBillingAccountPager(
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlanOrders`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -189,4 +207,10 @@ func (s *SavingsPlanOrdersServerTransport) dispatchNewListByBillingAccountPager(
 		s.newListByBillingAccountPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SavingsPlanOrdersServerTransport
+var savingsPlanOrdersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

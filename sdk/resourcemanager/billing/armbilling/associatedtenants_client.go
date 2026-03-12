@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // AssociatedTenantsClient contains the methods for the AssociatedTenants group.
@@ -27,7 +26,7 @@ type AssociatedTenantsClient struct {
 
 // NewAssociatedTenantsClient creates a new instance of AssociatedTenantsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssociatedTenantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AssociatedTenantsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -92,7 +91,7 @@ func (client *AssociatedTenantsClient) createOrUpdate(ctx context.Context, billi
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssociatedTenantsClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, parameters AssociatedTenant, options *AssociatedTenantsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AssociatedTenantsClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, parameters AssociatedTenant, _ *AssociatedTenantsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/associatedTenants/{associatedTenantName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -168,7 +167,7 @@ func (client *AssociatedTenantsClient) deleteOperation(ctx context.Context, bill
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssociatedTenantsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, options *AssociatedTenantsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AssociatedTenantsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, _ *AssociatedTenantsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/associatedTenants/{associatedTenantName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -219,7 +218,7 @@ func (client *AssociatedTenantsClient) Get(ctx context.Context, billingAccountNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssociatedTenantsClient) getCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, options *AssociatedTenantsClientGetOptions) (*policy.Request, error) {
+func (client *AssociatedTenantsClient) getCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, _ *AssociatedTenantsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/associatedTenants/{associatedTenantName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

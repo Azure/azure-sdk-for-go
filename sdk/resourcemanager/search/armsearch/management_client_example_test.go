@@ -25,7 +25,7 @@ func ExampleManagementClient_UsageBySubscriptionSKU() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagementClient().UsageBySubscriptionSKU(ctx, "westus", "free", &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	res, err := clientFactory.NewManagementClient().UsageBySubscriptionSKU(ctx, "westus", "free", &armsearch.ManagementClientUsageBySubscriptionSKUOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

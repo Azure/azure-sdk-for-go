@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-03-09)
+## 2.0.0-beta.1 (2026-03-09)
 ### Breaking Changes
 
 - Function `*AdminKeysClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *AdminKeysClientGetOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *AdminKeysClientGetOptions)`

@@ -6,5 +6,5 @@ package armsearch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.0.0-beta.1"
 )

@@ -1,5 +1,12 @@
 # Release History
 
+## 6.0.0-beta.2 (2026-03-11)
+### Breaking Changes
+
+- Field `XMSRequestID` of struct `BackupsLongTermRetentionClientStartResponse` has been removed
+- Field `XMSRequestID` of struct `ServersClientMigrateNetworkModeResponse` has been removed
+
+
 ## 6.0.0-beta.1 (2026-02-27)
 ### Breaking Changes
 

@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -118,7 +118,7 @@ func (c *CloudHsmClusterRestoreStatusServerTransport) dispatchGet(req *http.Requ
 	if val := server.GetResponse(respr).Location; val != nil {
 		resp.Header.Set("Location", *val)
 	}
-	if val := server.GetResponse(respr).XMSRequestID; val != nil {
+	if val := server.GetResponse(respr).RequestID; val != nil {
 		resp.Header.Set("x-ms-request-id", *val)
 	}
 	return resp, nil

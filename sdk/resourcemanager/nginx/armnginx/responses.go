@@ -59,7 +59,7 @@ type ConfigurationsClientAnalysisResponse struct {
 // ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.BeginCreateOrUpdate.
 type ConfigurationsClientCreateOrUpdateResponse struct {
 	// Nginx Configuration Response
-	ConfigurationResponse
+	Configuration
 }
 
 // ConfigurationsClientDeleteResponse contains the response from method ConfigurationsClient.BeginDelete.
@@ -70,7 +70,7 @@ type ConfigurationsClientDeleteResponse struct {
 // ConfigurationsClientGetResponse contains the response from method ConfigurationsClient.Get.
 type ConfigurationsClientGetResponse struct {
 	// Nginx Configuration Response
-	ConfigurationResponse
+	Configuration
 }
 
 // ConfigurationsClientListResponse contains the response from method ConfigurationsClient.NewListPager.
@@ -83,6 +83,12 @@ type ConfigurationsClientListResponse struct {
 type DefaultWafPolicyClientListResponse struct {
 	// Nginx Deployment Default Waf Policy List Response
 	DeploymentDefaultWafPolicyListResponse
+}
+
+// DeploymentWafPoliciesClientAnalysisResponse contains the response from method DeploymentWafPoliciesClient.Analysis.
+type DeploymentWafPoliciesClientAnalysisResponse struct {
+	// Nginx Deployment Waf Policy Analysis Response
+	DeploymentWafPolicyAnalysisResponse
 }
 
 // DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.BeginCreateOrUpdate.

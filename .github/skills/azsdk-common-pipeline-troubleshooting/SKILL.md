@@ -8,7 +8,7 @@ description: >-
   Diagnose and resolve failures in Azure SDK CI pipelines and SDK generation pipelines.
   USE FOR: "pipeline failed", "build failure", "CI check failing", "SDK generation error", "reproduce pipeline locally", "debug SDK pipeline".
   DO NOT USE FOR: TypeSpec authoring, release plans, APIView feedback (use azsdk-common-apiview-feedback-resolution), package publishing.
-  INVOKES: azsdk_analyze_pipeline, azsdk_verify_setup, azsdk_package_build_code, azsdk_package_run_check.
+  INVOKES: azsdk_analyze_pipeline, azsdk_verify_setup, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_pack.
   FOR SINGLE OPERATIONS: Use azsdk_analyze_pipeline directly for quick failure analysis.
 compatibility: >-
   Requires: azure-sdk-mcp server, Azure DevOps pipeline build ID.
@@ -29,6 +29,7 @@ Requires `azure-sdk-mcp` MCP server for pipeline analysis and local reproduction
 | `azsdk_verify_setup`       | Verify local environment  |
 | `azsdk_package_build_code` | Reproduce build locally   |
 | `azsdk_package_run_check`  | Run validation checks     |
+| `azsdk_package_pack`       | Create SDK artifact packages |
 
 ## Steps
 

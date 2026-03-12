@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/healthcareapis/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/healthcareapis/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/8b08a24f9e01e8be43696578d48ad4fd376fe2db/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/HealthcareApis/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/8b08a24f9e01e8be43696578d48ad4fd376fe2db/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/HealthcareApis/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 2.1.0
-tag: package-2024-03-31
+module-version: 2.2.0-beta.1
+tag: package-preview-2025-04-01
 ```

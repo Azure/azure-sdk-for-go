@@ -27,7 +27,7 @@ type ServicesClient struct {
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServicesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 // CheckNameAvailability - Check if a service instance name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - checkNameAvailabilityInputs - Set the name parameter in the CheckNameAvailabilityParameters structure to the name of the
 //     service instance to check.
 //   - options - ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
@@ -71,7 +71,7 @@ func (client *ServicesClient) CheckNameAvailability(ctx context.Context, checkNa
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityInputs CheckNameAvailabilityParameters, options *ServicesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityInputs CheckNameAvailabilityParameters, _ *ServicesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +82,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityInputs); err != nil {
@@ -103,7 +103,7 @@ func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // BeginCreateOrUpdate - Create or update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - serviceDescription - The service instance metadata.
@@ -129,7 +129,7 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, serviceDescription ServicesDescription, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginCreateOrUpdate"
@@ -152,7 +152,7 @@ func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, serviceDescription ServicesDescription, options *ServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, serviceDescription ServicesDescription, _ *ServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -171,7 +171,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceDescription); err != nil {
@@ -183,7 +183,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - options - ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
@@ -207,7 +207,7 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginDelete"
@@ -230,7 +230,7 @@ func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ServicesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -249,7 +249,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,7 +258,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
@@ -285,7 +285,7 @@ func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ServicesClientGetOptions) (*policy.Request, error) {
+func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -304,7 +304,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // NewListPager - Get all the service instances in a subscription.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - options - ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListResponse]{
@@ -347,7 +347,7 @@ func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *
 }
 
 // listCreateRequest creates the List request.
-func (client *ServicesClient) listCreateRequest(ctx context.Context, options *ServicesClientListOptions) (*policy.Request, error) {
+func (client *ServicesClient) listCreateRequest(ctx context.Context, _ *ServicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -358,7 +358,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, options *Se
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,7 +375,7 @@ func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesC
 
 // NewListByResourceGroupPager - Get all the service instances in a resource group.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.NewListByResourceGroupPager
 //     method.
@@ -403,7 +403,7 @@ func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName stri
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServicesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ServicesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -418,7 +418,7 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -436,7 +436,7 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 // BeginUpdate - Update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - servicePatchDescription - The service instance metadata and security metadata.
@@ -461,7 +461,7 @@ func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *ServicesClient) update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *ServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginUpdate"
@@ -484,7 +484,7 @@ func (client *ServicesClient) update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *ServicesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, _ *ServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -503,7 +503,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, servicePatchDescription); err != nil {

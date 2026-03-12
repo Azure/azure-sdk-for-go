@@ -27,7 +27,7 @@ type DicomServicesClient struct {
 // NewDicomServicesClient creates a new instance of DicomServicesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDicomServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DicomServicesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDicomServicesClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates or updates a DICOM Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - dicomServiceName - The name of DICOM Service resource.
@@ -70,7 +70,7 @@ func (client *DicomServicesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Creates or updates a DICOM Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *DicomServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DicomServicesClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *DicomServicesClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, _ *DicomServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,7 +116,7 @@ func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, dicomservice); err != nil {
@@ -128,7 +128,7 @@ func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes a DICOM Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - dicomServiceName - The name of DICOM Service resource.
 //   - workspaceName - The name of workspace resource.
@@ -154,7 +154,7 @@ func (client *DicomServicesClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes a DICOM Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *DicomServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DicomServicesClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *DicomServicesClient) deleteOperation(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, _ *DicomServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +200,7 @@ func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets the properties of the specified DICOM Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - dicomServiceName - The name of DICOM Service resource.
@@ -237,7 +237,7 @@ func (client *DicomServicesClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, options *DicomServicesClientGetOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, _ *DicomServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,7 +260,7 @@ func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *DicomServicesClient) getHandleResponse(resp *http.Response) (Dicom
 
 // NewListByWorkspacePager - Lists all DICOM Services for the given workspace
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - options - DicomServicesClientListByWorkspaceOptions contains the optional parameters for the DicomServicesClient.NewListByWorkspacePager
@@ -306,7 +306,7 @@ func (client *DicomServicesClient) NewListByWorkspacePager(resourceGroupName str
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *DicomServicesClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *DicomServicesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -325,7 +325,7 @@ func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *DicomServicesClient) listByWorkspaceHandleResponse(resp *http.Resp
 // BeginUpdate - Patch DICOM Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - dicomServiceName - The name of DICOM Service resource.
 //   - workspaceName - The name of workspace resource.
@@ -370,7 +370,7 @@ func (client *DicomServicesClient) BeginUpdate(ctx context.Context, resourceGrou
 // Update - Patch DICOM Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *DicomServicesClient) update(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DicomServicesClient.BeginUpdate"
@@ -393,7 +393,7 @@ func (client *DicomServicesClient) update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, _ *DicomServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -416,7 +416,7 @@ func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, dicomservicePatchResource); err != nil {

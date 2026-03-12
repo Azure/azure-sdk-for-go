@@ -1075,8 +1075,17 @@ type StorageConfiguration struct {
 	// The filesystem name of connected storage account.
 	FileSystemName *string
 
+	// The configuration for indexing the connected storage.
+	StorageIndexingConfiguration *StorageIndexingConfiguration
+
 	// The resource id of connected storage account.
 	StorageResourceID *string
+}
+
+// StorageIndexingConfiguration - The configuration for indexing the connected storage.
+type StorageIndexingConfiguration struct {
+	// The name of the queue that contains storage cloud events.
+	StorageEventQueueName *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

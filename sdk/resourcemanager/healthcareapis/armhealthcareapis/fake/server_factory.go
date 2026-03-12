@@ -16,19 +16,44 @@ import (
 
 // ServerFactory is a fake server for instances of the armhealthcareapis.ClientFactory type.
 type ServerFactory struct {
-	DicomServicesServer                       DicomServicesServer
-	FhirDestinationsServer                    FhirDestinationsServer
-	FhirServicesServer                        FhirServicesServer
-	IotConnectorFhirDestinationServer         IotConnectorFhirDestinationServer
-	IotConnectorsServer                       IotConnectorsServer
-	OperationResultsServer                    OperationResultsServer
-	OperationsServer                          OperationsServer
-	PrivateEndpointConnectionsServer          PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer                PrivateLinkResourcesServer
-	ServicesServer                            ServicesServer
+	// DicomServicesServer contains the fakes for client DicomServicesClient
+	DicomServicesServer DicomServicesServer
+
+	// FhirDestinationsServer contains the fakes for client FhirDestinationsClient
+	FhirDestinationsServer FhirDestinationsServer
+
+	// FhirServicesServer contains the fakes for client FhirServicesClient
+	FhirServicesServer FhirServicesServer
+
+	// IotConnectorFhirDestinationServer contains the fakes for client IotConnectorFhirDestinationClient
+	IotConnectorFhirDestinationServer IotConnectorFhirDestinationServer
+
+	// IotConnectorsServer contains the fakes for client IotConnectorsClient
+	IotConnectorsServer IotConnectorsServer
+
+	// OperationResultsServer contains the fakes for client OperationResultsClient
+	OperationResultsServer OperationResultsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// ServicesServer contains the fakes for client ServicesClient
+	ServicesServer ServicesServer
+
+	// WorkspacePrivateEndpointConnectionsServer contains the fakes for client WorkspacePrivateEndpointConnectionsClient
 	WorkspacePrivateEndpointConnectionsServer WorkspacePrivateEndpointConnectionsServer
-	WorkspacePrivateLinkResourcesServer       WorkspacePrivateLinkResourcesServer
-	WorkspacesServer                          WorkspacesServer
+
+	// WorkspacePrivateLinkResourcesServer contains the fakes for client WorkspacePrivateLinkResourcesClient
+	WorkspacePrivateLinkResourcesServer WorkspacePrivateLinkResourcesServer
+
+	// WorkspacesServer contains the fakes for client WorkspacesClient
+	WorkspacesServer WorkspacesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

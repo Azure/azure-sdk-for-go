@@ -27,7 +27,7 @@ type IotConnectorsClient struct {
 // NewIotConnectorsClient creates a new instance of IotConnectorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotConnectorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewIotConnectorsClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates or updates an IoT Connector resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -70,7 +70,7 @@ func (client *IotConnectorsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Creates or updates an IoT Connector resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *IotConnectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnector IotConnector, options *IotConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorsClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *IotConnectorsClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IotConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnector IotConnector, options *IotConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IotConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnector IotConnector, _ *IotConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,7 +116,7 @@ func (client *IotConnectorsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotConnector); err != nil {
@@ -128,7 +128,7 @@ func (client *IotConnectorsClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - iotConnectorName - The name of IoT Connector resource.
 //   - workspaceName - The name of workspace resource.
@@ -154,7 +154,7 @@ func (client *IotConnectorsClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *IotConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *IotConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorsClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *IotConnectorsClient) deleteOperation(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IotConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *IotConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *IotConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, _ *IotConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +200,7 @@ func (client *IotConnectorsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *IotConnectorsClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets the properties of the specified IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -237,7 +237,7 @@ func (client *IotConnectorsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, options *IotConnectorsClientGetOptions) (*policy.Request, error) {
+func (client *IotConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, _ *IotConnectorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,7 +260,7 @@ func (client *IotConnectorsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *IotConnectorsClient) getHandleResponse(resp *http.Response) (IotCo
 
 // NewListByWorkspacePager - Lists all IoT Connectors for the given workspace
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - options - IotConnectorsClientListByWorkspaceOptions contains the optional parameters for the IotConnectorsClient.NewListByWorkspacePager
@@ -306,7 +306,7 @@ func (client *IotConnectorsClient) NewListByWorkspacePager(resourceGroupName str
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *IotConnectorsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *IotConnectorsClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *IotConnectorsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *IotConnectorsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -325,7 +325,7 @@ func (client *IotConnectorsClient) listByWorkspaceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *IotConnectorsClient) listByWorkspaceHandleResponse(resp *http.Resp
 // BeginUpdate - Patch an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - iotConnectorName - The name of IoT Connector resource.
 //   - workspaceName - The name of workspace resource.
@@ -370,7 +370,7 @@ func (client *IotConnectorsClient) BeginUpdate(ctx context.Context, resourceGrou
 // Update - Patch an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *IotConnectorsClient) update(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorsClient.BeginUpdate"
@@ -393,7 +393,7 @@ func (client *IotConnectorsClient) update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IotConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *IotConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, _ *IotConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -416,7 +416,7 @@ func (client *IotConnectorsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotConnectorPatchResource); err != nil {

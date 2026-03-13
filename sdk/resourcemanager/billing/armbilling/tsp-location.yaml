@@ -1,0 +1,4 @@
+directory: specification/billing/Billing.Management
+commit: db2f827e134b9c42ac9658fde9a29dd19b798d0f
+repo: i-specs
+additionalDirectories: 

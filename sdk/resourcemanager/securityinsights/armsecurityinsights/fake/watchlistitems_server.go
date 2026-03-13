@@ -63,27 +63,46 @@ func (w *WatchlistItemsServerTransport) Do(req *http.Request) (*http.Response, e
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return w.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "WatchlistItemsClient.CreateOrUpdate":
-		resp, err = w.dispatchCreateOrUpdate(req)
-	case "WatchlistItemsClient.Delete":
-		resp, err = w.dispatchDelete(req)
-	case "WatchlistItemsClient.Get":
-		resp, err = w.dispatchGet(req)
-	case "WatchlistItemsClient.NewListPager":
-		resp, err = w.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (w *WatchlistItemsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if watchlistItemsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = watchlistItemsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "WatchlistItemsClient.CreateOrUpdate":
+				res.resp, res.err = w.dispatchCreateOrUpdate(req)
+			case "WatchlistItemsClient.Delete":
+				res.resp, res.err = w.dispatchDelete(req)
+			case "WatchlistItemsClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WatchlistItemsClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (w *WatchlistItemsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -93,7 +112,7 @@ func (w *WatchlistItemsServerTransport) dispatchCreateOrUpdate(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchlistItems/(?P<watchlistItemId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.WatchlistItem](req)
@@ -138,7 +157,7 @@ func (w *WatchlistItemsServerTransport) dispatchDelete(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchlistItems/(?P<watchlistItemId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -179,7 +198,7 @@ func (w *WatchlistItemsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchlistItems/(?P<watchlistItemId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -222,7 +241,7 @@ func (w *WatchlistItemsServerTransport) dispatchNewListPager(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchlistItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -234,15 +253,15 @@ func (w *WatchlistItemsServerTransport) dispatchNewListPager(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
+		watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
+		if err != nil {
+			return nil, err
+		}
 		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
 		if err != nil {
 			return nil, err
 		}
 		skipTokenParam := getOptional(skipTokenUnescaped)
-		watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
-		if err != nil {
-			return nil, err
-		}
 		var options *armsecurityinsights.WatchlistItemsClientListOptions
 		if skipTokenParam != nil {
 			options = &armsecurityinsights.WatchlistItemsClientListOptions{
@@ -268,4 +287,10 @@ func (w *WatchlistItemsServerTransport) dispatchNewListPager(req *http.Request) 
 		w.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to WatchlistItemsServerTransport
+var watchlistItemsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -46,21 +46,40 @@ func (e *EntitiesGetTimelineServerTransport) Do(req *http.Request) (*http.Respon
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EntitiesGetTimelineClient.List":
-		resp, err = e.dispatchList(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EntitiesGetTimelineServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if entitiesGetTimelineServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = entitiesGetTimelineServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EntitiesGetTimelineClient.List":
+				res.resp, res.err = e.dispatchList(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EntitiesGetTimelineServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
@@ -70,7 +89,7 @@ func (e *EntitiesGetTimelineServerTransport) dispatchList(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities/(?P<entityId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getTimeline`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.EntityTimelineParameters](req)
@@ -102,4 +121,10 @@ func (e *EntitiesGetTimelineServerTransport) dispatchList(req *http.Request) (*h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EntitiesGetTimelineServerTransport
+var entitiesGetTimelineServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -45,7 +45,7 @@ func NewRansomwareReportsClient(subscriptionID string, credential azcore.TokenCr
 // ARP snapshots or another snapshot of your volume to restore data",
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-01
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -77,7 +77,7 @@ func (client *RansomwareReportsClient) BeginClearSuspects(ctx context.Context, r
 // ARP snapshots or another snapshot of your volume to restore data",
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-01
+// Generated from API version 2025-12-15-preview
 func (client *RansomwareReportsClient) clearSuspects(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, ransomwareReportName string, body RansomwareSuspectsClearRequest, options *RansomwareReportsClientBeginClearSuspectsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RansomwareReportsClient.BeginClearSuspects"
@@ -131,7 +131,7 @@ func (client *RansomwareReportsClient) clearSuspectsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -147,7 +147,7 @@ func (client *RansomwareReportsClient) clearSuspectsCreateRequest(ctx context.Co
 // ARP snapshots or another snapshot of your volume to restore data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-01
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -208,7 +208,7 @@ func (client *RansomwareReportsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -230,7 +230,7 @@ func (client *RansomwareReportsClient) getHandleResponse(resp *http.Response) (R
 // ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one of these
 // ARP snapshots or another snapshot of your volume to restore data"
 //
-// Generated from API version 2025-12-01
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -288,7 +288,7 @@ func (client *RansomwareReportsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

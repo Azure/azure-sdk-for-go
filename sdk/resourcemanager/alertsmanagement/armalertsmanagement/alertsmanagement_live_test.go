@@ -73,13 +73,12 @@ func (testsuite *AlertsManagementTestSuite) TestOperations() {
 	operationsClient, err := armalertsmanagement.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	operationsClientNewListPager := operationsClient.NewListPager(nil)
-	for operationsClientNewListPager.More() {
+	if operationsClientNewListPager.More() {
 		_, err := operationsClientNewListPager.NextPage(testsuite.ctx)
 		if isInvalidResourceType(err, "operations") {
 			testsuite.T().Skipf("skipping operations live test due to API-version mismatch: %v", err)
 		}
 		testsuite.Require().NoError(err)
-		break
 	}
 }
 
@@ -108,10 +107,9 @@ func (testsuite *AlertsManagementTestSuite) TestAlerts() {
 		TimeRange:           nil,
 		CustomTimeRange:     nil,
 	})
-	for alertsClientNewGetAllPager.More() {
+	if alertsClientNewGetAllPager.More() {
 		_, err := alertsClientNewGetAllPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-		break
 	}
 
 	// From step Alerts_GetSummary

@@ -1,5 +1,42 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-03-12)
+### Breaking Changes
+
+- Function `*DicomServicesClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, options *DicomServicesClientBeginDeleteOptions)`
+- Function `*DicomServicesClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions)`
+- Function `*FhirServicesClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, options *FhirServicesClientBeginDeleteOptions)`
+- Function `*FhirServicesClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions)`
+- Function `*IotConnectorsClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *IotConnectorsClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, options *IotConnectorsClientBeginDeleteOptions)`
+- Function `*IotConnectorsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions)`
+- Type of `DicomService.Identity` has been changed from `*ServiceManagedIdentityIdentity` to `*ManagedServiceIdentity`
+- Type of `FhirService.Identity` has been changed from `*ServiceManagedIdentityIdentity` to `*ManagedServiceIdentity`
+- Type of `IotConnector.Identity` has been changed from `*ServiceManagedIdentityIdentity` to `*ManagedServiceIdentity`
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorDetailsInternal` has been removed
+- Struct `IotDestinationProperties` has been removed
+- Struct `LocationBasedResource` has been removed
+- Struct `PrivateEndpointConnectionListResult` has been removed
+- Struct `PrivateLinkResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceCore` has been removed
+- Struct `ResourceTags` has been removed
+- Struct `ServiceManagedIdentity` has been removed
+- Struct `ServicesResource` has been removed
+- Struct `TaggedResource` has been removed
+
+### Features Added
+
+- New value `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned` added to enum type `ManagedServiceIdentityType`
+- New struct `ManagedServiceIdentity`
+- New struct `StorageIndexingConfiguration`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResultDescription`
+- New field `NextLink` in struct `PrivateLinkResourceListResultDescription`
+- New field `StorageIndexingConfiguration` in struct `StorageConfiguration`
+
+
 ## 2.1.0 (2024-04-26)
 ### Features Added
 

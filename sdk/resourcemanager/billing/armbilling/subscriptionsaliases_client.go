@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // SubscriptionsAliasesClient contains the methods for the BillingSubscriptionsAliases group.
@@ -27,7 +26,7 @@ type SubscriptionsAliasesClient struct {
 
 // NewSubscriptionsAliasesClient creates a new instance of SubscriptionsAliasesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSubscriptionsAliasesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionsAliasesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -94,7 +93,7 @@ func (client *SubscriptionsAliasesClient) createOrUpdate(ctx context.Context, bi
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SubscriptionsAliasesClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, aliasName string, parameters SubscriptionAlias, options *SubscriptionsAliasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SubscriptionsAliasesClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, aliasName string, parameters SubscriptionAlias, _ *SubscriptionsAliasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptionAliases/{aliasName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -149,7 +148,7 @@ func (client *SubscriptionsAliasesClient) Get(ctx context.Context, billingAccoun
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubscriptionsAliasesClient) getCreateRequest(ctx context.Context, billingAccountName string, aliasName string, options *SubscriptionsAliasesClientGetOptions) (*policy.Request, error) {
+func (client *SubscriptionsAliasesClient) getCreateRequest(ctx context.Context, billingAccountName string, aliasName string, _ *SubscriptionsAliasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptionAliases/{aliasName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

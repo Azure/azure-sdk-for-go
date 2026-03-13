@@ -9,15 +9,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // PermissionsServer is a fake server for instances of the armbilling.PermissionsClient type.
@@ -112,45 +111,64 @@ func (p *PermissionsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PermissionsClient.CheckAccessByBillingAccount":
-		resp, err = p.dispatchCheckAccessByBillingAccount(req)
-	case "PermissionsClient.CheckAccessByBillingProfile":
-		resp, err = p.dispatchCheckAccessByBillingProfile(req)
-	case "PermissionsClient.CheckAccessByCustomer":
-		resp, err = p.dispatchCheckAccessByCustomer(req)
-	case "PermissionsClient.CheckAccessByDepartment":
-		resp, err = p.dispatchCheckAccessByDepartment(req)
-	case "PermissionsClient.CheckAccessByEnrollmentAccount":
-		resp, err = p.dispatchCheckAccessByEnrollmentAccount(req)
-	case "PermissionsClient.CheckAccessByInvoiceSection":
-		resp, err = p.dispatchCheckAccessByInvoiceSection(req)
-	case "PermissionsClient.NewListByBillingAccountPager":
-		resp, err = p.dispatchNewListByBillingAccountPager(req)
-	case "PermissionsClient.NewListByBillingProfilePager":
-		resp, err = p.dispatchNewListByBillingProfilePager(req)
-	case "PermissionsClient.NewListByCustomerPager":
-		resp, err = p.dispatchNewListByCustomerPager(req)
-	case "PermissionsClient.NewListByCustomerAtBillingAccountPager":
-		resp, err = p.dispatchNewListByCustomerAtBillingAccountPager(req)
-	case "PermissionsClient.NewListByDepartmentPager":
-		resp, err = p.dispatchNewListByDepartmentPager(req)
-	case "PermissionsClient.NewListByEnrollmentAccountPager":
-		resp, err = p.dispatchNewListByEnrollmentAccountPager(req)
-	case "PermissionsClient.NewListByInvoiceSectionPager":
-		resp, err = p.dispatchNewListByInvoiceSectionPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PermissionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if permissionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = permissionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PermissionsClient.CheckAccessByBillingAccount":
+				res.resp, res.err = p.dispatchCheckAccessByBillingAccount(req)
+			case "PermissionsClient.CheckAccessByBillingProfile":
+				res.resp, res.err = p.dispatchCheckAccessByBillingProfile(req)
+			case "PermissionsClient.CheckAccessByCustomer":
+				res.resp, res.err = p.dispatchCheckAccessByCustomer(req)
+			case "PermissionsClient.CheckAccessByDepartment":
+				res.resp, res.err = p.dispatchCheckAccessByDepartment(req)
+			case "PermissionsClient.CheckAccessByEnrollmentAccount":
+				res.resp, res.err = p.dispatchCheckAccessByEnrollmentAccount(req)
+			case "PermissionsClient.CheckAccessByInvoiceSection":
+				res.resp, res.err = p.dispatchCheckAccessByInvoiceSection(req)
+			case "PermissionsClient.NewListByBillingAccountPager":
+				res.resp, res.err = p.dispatchNewListByBillingAccountPager(req)
+			case "PermissionsClient.NewListByBillingProfilePager":
+				res.resp, res.err = p.dispatchNewListByBillingProfilePager(req)
+			case "PermissionsClient.NewListByCustomerPager":
+				res.resp, res.err = p.dispatchNewListByCustomerPager(req)
+			case "PermissionsClient.NewListByCustomerAtBillingAccountPager":
+				res.resp, res.err = p.dispatchNewListByCustomerAtBillingAccountPager(req)
+			case "PermissionsClient.NewListByDepartmentPager":
+				res.resp, res.err = p.dispatchNewListByDepartmentPager(req)
+			case "PermissionsClient.NewListByEnrollmentAccountPager":
+				res.resp, res.err = p.dispatchNewListByEnrollmentAccountPager(req)
+			case "PermissionsClient.NewListByInvoiceSectionPager":
+				res.resp, res.err = p.dispatchNewListByInvoiceSectionPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PermissionsServerTransport) dispatchCheckAccessByBillingAccount(req *http.Request) (*http.Response, error) {
@@ -160,7 +178,7 @@ func (p *PermissionsServerTransport) dispatchCheckAccessByBillingAccount(req *ht
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
@@ -193,7 +211,7 @@ func (p *PermissionsServerTransport) dispatchCheckAccessByBillingProfile(req *ht
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
@@ -230,7 +248,7 @@ func (p *PermissionsServerTransport) dispatchCheckAccessByCustomer(req *http.Req
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
@@ -271,7 +289,7 @@ func (p *PermissionsServerTransport) dispatchCheckAccessByDepartment(req *http.R
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
@@ -308,7 +326,7 @@ func (p *PermissionsServerTransport) dispatchCheckAccessByEnrollmentAccount(req 
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
@@ -345,7 +363,7 @@ func (p *PermissionsServerTransport) dispatchCheckAccessByInvoiceSection(req *ht
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
@@ -388,7 +406,7 @@ func (p *PermissionsServerTransport) dispatchNewListByBillingAccountPager(req *h
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -425,7 +443,7 @@ func (p *PermissionsServerTransport) dispatchNewListByBillingProfilePager(req *h
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -466,7 +484,7 @@ func (p *PermissionsServerTransport) dispatchNewListByCustomerPager(req *http.Re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -511,7 +529,7 @@ func (p *PermissionsServerTransport) dispatchNewListByCustomerAtBillingAccountPa
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -552,7 +570,7 @@ func (p *PermissionsServerTransport) dispatchNewListByDepartmentPager(req *http.
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -593,7 +611,7 @@ func (p *PermissionsServerTransport) dispatchNewListByEnrollmentAccountPager(req
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -634,7 +652,7 @@ func (p *PermissionsServerTransport) dispatchNewListByInvoiceSectionPager(req *h
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -668,4 +686,10 @@ func (p *PermissionsServerTransport) dispatchNewListByInvoiceSectionPager(req *h
 		p.newListByInvoiceSectionPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PermissionsServerTransport
+var permissionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

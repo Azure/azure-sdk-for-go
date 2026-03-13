@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // InvoiceSectionsClient contains the methods for the InvoiceSections group.
@@ -27,7 +26,7 @@ type InvoiceSectionsClient struct {
 
 // NewInvoiceSectionsClient creates a new instance of InvoiceSectionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInvoiceSectionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*InvoiceSectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -95,7 +94,7 @@ func (client *InvoiceSectionsClient) createOrUpdate(ctx context.Context, billing
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *InvoiceSectionsClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InvoiceSection, options *InvoiceSectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *InvoiceSectionsClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InvoiceSection, _ *InvoiceSectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -178,7 +177,7 @@ func (client *InvoiceSectionsClient) deleteOperation(ctx context.Context, billin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *InvoiceSectionsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *InvoiceSectionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *InvoiceSectionsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, _ *InvoiceSectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -235,7 +234,7 @@ func (client *InvoiceSectionsClient) Get(ctx context.Context, billingAccountName
 }
 
 // getCreateRequest creates the Get request.
-func (client *InvoiceSectionsClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *InvoiceSectionsClientGetOptions) (*policy.Request, error) {
+func (client *InvoiceSectionsClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, _ *InvoiceSectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -385,7 +384,7 @@ func (client *InvoiceSectionsClient) ValidateDeleteEligibility(ctx context.Conte
 }
 
 // validateDeleteEligibilityCreateRequest creates the ValidateDeleteEligibility request.
-func (client *InvoiceSectionsClient) validateDeleteEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *InvoiceSectionsClientValidateDeleteEligibilityOptions) (*policy.Request, error) {
+func (client *InvoiceSectionsClient) validateDeleteEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, _ *InvoiceSectionsClientValidateDeleteEligibilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/validateDeleteEligibility"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

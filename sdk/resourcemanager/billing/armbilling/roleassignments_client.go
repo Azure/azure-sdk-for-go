@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // RoleAssignmentsClient contains the methods for the BillingRoleAssignments group.
@@ -27,7 +26,7 @@ type RoleAssignmentsClient struct {
 
 // NewRoleAssignmentsClient creates a new instance of RoleAssignmentsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoleAssignmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -93,7 +92,7 @@ func (client *RoleAssignmentsClient) createByBillingAccount(ctx context.Context,
 }
 
 // createByBillingAccountCreateRequest creates the CreateByBillingAccount request.
-func (client *RoleAssignmentsClient) createByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters RoleAssignmentProperties, _ *RoleAssignmentsClientBeginCreateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/createBillingRoleAssignment"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -168,7 +167,7 @@ func (client *RoleAssignmentsClient) createByBillingProfile(ctx context.Context,
 }
 
 // createByBillingProfileCreateRequest creates the CreateByBillingProfile request.
-func (client *RoleAssignmentsClient) createByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingProfileOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters RoleAssignmentProperties, _ *RoleAssignmentsClientBeginCreateByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/createBillingRoleAssignment"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -248,7 +247,7 @@ func (client *RoleAssignmentsClient) createByCustomer(ctx context.Context, billi
 }
 
 // createByCustomerCreateRequest creates the CreateByCustomer request.
-func (client *RoleAssignmentsClient) createByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByCustomerOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters RoleAssignmentProperties, _ *RoleAssignmentsClientBeginCreateByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/createBillingRoleAssignment"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -332,7 +331,7 @@ func (client *RoleAssignmentsClient) createByInvoiceSection(ctx context.Context,
 }
 
 // createByInvoiceSectionCreateRequest creates the CreateByInvoiceSection request.
-func (client *RoleAssignmentsClient) createByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByInvoiceSectionOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters RoleAssignmentProperties, _ *RoleAssignmentsClientBeginCreateByInvoiceSectionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/createBillingRoleAssignment"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -414,7 +413,7 @@ func (client *RoleAssignmentsClient) createOrUpdateByBillingAccount(ctx context.
 }
 
 // createOrUpdateByBillingAccountCreateRequest creates the CreateOrUpdateByBillingAccount request.
-func (client *RoleAssignmentsClient) createOrUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createOrUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, _ *RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -493,7 +492,7 @@ func (client *RoleAssignmentsClient) createOrUpdateByDepartment(ctx context.Cont
 }
 
 // createOrUpdateByDepartmentCreateRequest creates the CreateOrUpdateByDepartment request.
-func (client *RoleAssignmentsClient) createOrUpdateByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createOrUpdateByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, parameters RoleAssignment, _ *RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -576,7 +575,7 @@ func (client *RoleAssignmentsClient) createOrUpdateByEnrollmentAccount(ctx conte
 }
 
 // createOrUpdateByEnrollmentAccountCreateRequest creates the CreateOrUpdateByEnrollmentAccount request.
-func (client *RoleAssignmentsClient) createOrUpdateByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createOrUpdateByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, _ *RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -635,7 +634,7 @@ func (client *RoleAssignmentsClient) DeleteByBillingAccount(ctx context.Context,
 }
 
 // deleteByBillingAccountCreateRequest creates the DeleteByBillingAccount request.
-func (client *RoleAssignmentsClient) deleteByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByBillingAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientDeleteByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -688,7 +687,7 @@ func (client *RoleAssignmentsClient) DeleteByBillingProfile(ctx context.Context,
 }
 
 // deleteByBillingProfileCreateRequest creates the DeleteByBillingProfile request.
-func (client *RoleAssignmentsClient) deleteByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByBillingProfileOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientDeleteByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -746,7 +745,7 @@ func (client *RoleAssignmentsClient) DeleteByCustomer(ctx context.Context, billi
 }
 
 // deleteByCustomerCreateRequest creates the DeleteByCustomer request.
-func (client *RoleAssignmentsClient) deleteByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByCustomerOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientDeleteByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -807,7 +806,7 @@ func (client *RoleAssignmentsClient) DeleteByDepartment(ctx context.Context, bil
 }
 
 // deleteByDepartmentCreateRequest creates the DeleteByDepartment request.
-func (client *RoleAssignmentsClient) deleteByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByDepartmentOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientDeleteByDepartmentOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -864,7 +863,7 @@ func (client *RoleAssignmentsClient) DeleteByEnrollmentAccount(ctx context.Conte
 }
 
 // deleteByEnrollmentAccountCreateRequest creates the DeleteByEnrollmentAccount request.
-func (client *RoleAssignmentsClient) deleteByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByEnrollmentAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientDeleteByEnrollmentAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -922,7 +921,7 @@ func (client *RoleAssignmentsClient) DeleteByInvoiceSection(ctx context.Context,
 }
 
 // deleteByInvoiceSectionCreateRequest creates the DeleteByInvoiceSection request.
-func (client *RoleAssignmentsClient) deleteByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByInvoiceSectionOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientDeleteByInvoiceSectionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -984,7 +983,7 @@ func (client *RoleAssignmentsClient) GetByBillingAccount(ctx context.Context, bi
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
-func (client *RoleAssignmentsClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByBillingAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientGetByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1047,7 +1046,7 @@ func (client *RoleAssignmentsClient) GetByBillingProfile(ctx context.Context, bi
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
-func (client *RoleAssignmentsClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByBillingProfileOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientGetByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1115,7 +1114,7 @@ func (client *RoleAssignmentsClient) GetByCustomer(ctx context.Context, billingA
 }
 
 // getByCustomerCreateRequest creates the GetByCustomer request.
-func (client *RoleAssignmentsClient) getByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByCustomerOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientGetByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1186,7 +1185,7 @@ func (client *RoleAssignmentsClient) GetByDepartment(ctx context.Context, billin
 }
 
 // getByDepartmentCreateRequest creates the GetByDepartment request.
-func (client *RoleAssignmentsClient) getByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByDepartmentOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientGetByDepartmentOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1253,7 +1252,7 @@ func (client *RoleAssignmentsClient) GetByEnrollmentAccount(ctx context.Context,
 }
 
 // getByEnrollmentAccountCreateRequest creates the GetByEnrollmentAccount request.
-func (client *RoleAssignmentsClient) getByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByEnrollmentAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientGetByEnrollmentAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1321,7 +1320,7 @@ func (client *RoleAssignmentsClient) GetByInvoiceSection(ctx context.Context, bi
 }
 
 // getByInvoiceSectionCreateRequest creates the GetByInvoiceSection request.
-func (client *RoleAssignmentsClient) getByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByInvoiceSectionOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, billingRoleAssignmentName string, _ *RoleAssignmentsClientGetByInvoiceSectionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingRoleAssignments/{billingRoleAssignmentName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1605,7 +1604,7 @@ func (client *RoleAssignmentsClient) NewListByDepartmentPager(billingAccountName
 }
 
 // listByDepartmentCreateRequest creates the ListByDepartment request.
-func (client *RoleAssignmentsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, options *RoleAssignmentsClientListByDepartmentOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, _ *RoleAssignmentsClientListByDepartmentOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1667,7 +1666,7 @@ func (client *RoleAssignmentsClient) NewListByEnrollmentAccountPager(billingAcco
 }
 
 // listByEnrollmentAccountCreateRequest creates the ListByEnrollmentAccount request.
-func (client *RoleAssignmentsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, options *RoleAssignmentsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, _ *RoleAssignmentsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

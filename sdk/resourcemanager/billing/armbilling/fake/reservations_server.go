@@ -9,16 +9,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
 )
 
 // ReservationsServer is a fake server for instances of the armbilling.ReservationsClient type.
@@ -75,29 +74,48 @@ func (r *ReservationsServerTransport) Do(req *http.Request) (*http.Response, err
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ReservationsClient.GetByReservationOrder":
-		resp, err = r.dispatchGetByReservationOrder(req)
-	case "ReservationsClient.NewListByBillingAccountPager":
-		resp, err = r.dispatchNewListByBillingAccountPager(req)
-	case "ReservationsClient.NewListByBillingProfilePager":
-		resp, err = r.dispatchNewListByBillingProfilePager(req)
-	case "ReservationsClient.NewListByReservationOrderPager":
-		resp, err = r.dispatchNewListByReservationOrderPager(req)
-	case "ReservationsClient.BeginUpdateByBillingAccount":
-		resp, err = r.dispatchBeginUpdateByBillingAccount(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *ReservationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if reservationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = reservationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ReservationsClient.GetByReservationOrder":
+				res.resp, res.err = r.dispatchGetByReservationOrder(req)
+			case "ReservationsClient.NewListByBillingAccountPager":
+				res.resp, res.err = r.dispatchNewListByBillingAccountPager(req)
+			case "ReservationsClient.NewListByBillingProfilePager":
+				res.resp, res.err = r.dispatchNewListByBillingProfilePager(req)
+			case "ReservationsClient.NewListByReservationOrderPager":
+				res.resp, res.err = r.dispatchNewListByReservationOrderPager(req)
+			case "ReservationsClient.BeginUpdateByBillingAccount":
+				res.resp, res.err = r.dispatchBeginUpdateByBillingAccount(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *ReservationsServerTransport) dispatchGetByReservationOrder(req *http.Request) (*http.Response, error) {
@@ -107,7 +125,7 @@ func (r *ReservationsServerTransport) dispatchGetByReservationOrder(req *http.Re
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -158,7 +176,7 @@ func (r *ReservationsServerTransport) dispatchNewListByBillingAccountPager(req *
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -255,7 +273,7 @@ func (r *ReservationsServerTransport) dispatchNewListByBillingProfilePager(req *
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -356,7 +374,7 @@ func (r *ReservationsServerTransport) dispatchNewListByReservationOrderPager(req
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -397,7 +415,7 @@ func (r *ReservationsServerTransport) dispatchBeginUpdateByBillingAccount(req *h
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.Patch](req)
@@ -438,4 +456,10 @@ func (r *ReservationsServerTransport) dispatchBeginUpdateByBillingAccount(req *h
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ReservationsServerTransport
+var reservationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

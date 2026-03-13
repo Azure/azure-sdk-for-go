@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // PropertyClient contains the methods for the BillingProperty group.
@@ -29,7 +28,7 @@ type PropertyClient struct {
 // NewPropertyClient creates a new instance of PropertyClient with the specified values.
 //   - subscriptionID - The ID that uniquely identifies a billing subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPropertyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PropertyClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -133,7 +132,7 @@ func (client *PropertyClient) Update(ctx context.Context, parameters Property, o
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PropertyClient) updateCreateRequest(ctx context.Context, parameters Property, options *PropertyClientUpdateOptions) (*policy.Request, error) {
+func (client *PropertyClient) updateCreateRequest(ctx context.Context, parameters Property, _ *PropertyClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingProperty/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

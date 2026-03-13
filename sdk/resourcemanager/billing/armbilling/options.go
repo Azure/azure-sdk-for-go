@@ -10,20 +10,20 @@ import "time"
 // AccountsClientBeginAddPaymentTermsOptions contains the optional parameters for the AccountsClient.BeginAddPaymentTerms
 // method.
 type AccountsClientBeginAddPaymentTermsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AccountsClientBeginCancelPaymentTermsOptions contains the optional parameters for the AccountsClient.BeginCancelPaymentTerms
 // method.
 type AccountsClientBeginCancelPaymentTermsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
 type AccountsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -117,14 +117,14 @@ type AgreementsClientListByBillingAccountOptions struct {
 // AssociatedTenantsClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociatedTenantsClient.BeginCreateOrUpdate
 // method.
 type AssociatedTenantsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AssociatedTenantsClientBeginDeleteOptions contains the optional parameters for the AssociatedTenantsClient.BeginDelete
 // method.
 type AssociatedTenantsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -331,13 +331,13 @@ type EnrollmentAccountsClientListByDepartmentOptions struct {
 // InvoiceSectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the InvoiceSectionsClient.BeginCreateOrUpdate
 // method.
 type InvoiceSectionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // InvoiceSectionsClientBeginDeleteOptions contains the optional parameters for the InvoiceSectionsClient.BeginDelete method.
 type InvoiceSectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -382,7 +382,7 @@ type InvoiceSectionsClientValidateDeleteEligibilityOptions struct {
 
 // InvoicesClientBeginAmendOptions contains the optional parameters for the InvoicesClient.BeginAmend method.
 type InvoicesClientBeginAmendOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -393,7 +393,7 @@ type InvoicesClientBeginDownloadByBillingAccountOptions struct {
 	// a tax receipt.
 	DocumentName *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -404,28 +404,28 @@ type InvoicesClientBeginDownloadByBillingSubscriptionOptions struct {
 	// a tax receipt.
 	DocumentName *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // InvoicesClientBeginDownloadDocumentsByBillingAccountOptions contains the optional parameters for the InvoicesClient.BeginDownloadDocumentsByBillingAccount
 // method.
 type InvoicesClientBeginDownloadDocumentsByBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.BeginDownloadDocumentsByBillingSubscription
 // method.
 type InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // InvoicesClientBeginDownloadSummaryByBillingAccountOptions contains the optional parameters for the InvoicesClient.BeginDownloadSummaryByBillingAccount
 // method.
 type InvoicesClientBeginDownloadSummaryByBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -684,28 +684,28 @@ type PermissionsClientListByInvoiceSectionOptions struct {
 // PoliciesClientBeginCreateOrUpdateByBillingAccountOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByBillingAccount
 // method.
 type PoliciesClientBeginCreateOrUpdateByBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PoliciesClientBeginCreateOrUpdateByBillingProfileOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByBillingProfile
 // method.
 type PoliciesClientBeginCreateOrUpdateByBillingProfileOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount
 // method.
 type PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PoliciesClientBeginCreateOrUpdateByCustomerOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByCustomer
 // method.
 type PoliciesClientBeginCreateOrUpdateByCustomerOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -737,7 +737,7 @@ type PoliciesClientGetBySubscriptionOptions struct {
 
 // ProductsClientBeginMoveOptions contains the optional parameters for the ProductsClient.BeginMove method.
 type ProductsClientBeginMoveOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -858,13 +858,13 @@ type ProductsClientValidateMoveEligibilityOptions struct {
 
 // ProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.BeginCreateOrUpdate method.
 type ProfilesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProfilesClientBeginDeleteOptions contains the optional parameters for the ProfilesClient.BeginDelete method.
 type ProfilesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -949,7 +949,7 @@ type RecipientTransfersClientValidateOptions struct {
 
 // RequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the RequestsClient.BeginCreateOrUpdate method.
 type RequestsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1104,7 +1104,7 @@ type ReservationOrdersClientListByBillingAccountOptions struct {
 // ReservationsClientBeginUpdateByBillingAccountOptions contains the optional parameters for the ReservationsClient.BeginUpdateByBillingAccount
 // method.
 type ReservationsClientBeginUpdateByBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1168,49 +1168,49 @@ type ReservationsClientListByReservationOrderOptions struct {
 // RoleAssignmentsClientBeginCreateByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByBillingAccount
 // method.
 type RoleAssignmentsClientBeginCreateByBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoleAssignmentsClientBeginCreateByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByBillingProfile
 // method.
 type RoleAssignmentsClientBeginCreateByBillingProfileOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoleAssignmentsClientBeginCreateByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByCustomer
 // method.
 type RoleAssignmentsClientBeginCreateByCustomerOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoleAssignmentsClientBeginCreateByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByInvoiceSection
 // method.
 type RoleAssignmentsClientBeginCreateByInvoiceSectionOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount
 // method.
 type RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByDepartment
 // method.
 type RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount
 // method.
 type RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1223,7 +1223,7 @@ type RoleAssignmentsClientBeginResolveByBillingAccountOptions struct {
 	// Resolves the scope display name for each of the role assignments.
 	ResolveScopeDisplayNames *bool
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1236,7 +1236,7 @@ type RoleAssignmentsClientBeginResolveByBillingProfileOptions struct {
 	// Resolves the scope display name for each of the role assignments.
 	ResolveScopeDisplayNames *bool
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1249,7 +1249,7 @@ type RoleAssignmentsClientBeginResolveByCustomerOptions struct {
 	// Resolves the scope display name for each of the role assignments.
 	ResolveScopeDisplayNames *bool
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1262,7 +1262,7 @@ type RoleAssignmentsClientBeginResolveByInvoiceSectionOptions struct {
 	// Resolves the scope display name for each of the role assignments.
 	ResolveScopeDisplayNames *bool
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1504,7 +1504,7 @@ type SavingsPlanOrdersClientListByBillingAccountOptions struct {
 // SavingsPlansClientBeginUpdateByBillingAccountOptions contains the optional parameters for the SavingsPlansClient.BeginUpdateByBillingAccount
 // method.
 type SavingsPlansClientBeginUpdateByBillingAccountOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1552,7 +1552,7 @@ type SavingsPlansClientValidateUpdateByBillingAccountOptions struct {
 // SubscriptionsAliasesClientBeginCreateOrUpdateOptions contains the optional parameters for the SubscriptionsAliasesClient.BeginCreateOrUpdate
 // method.
 type SubscriptionsAliasesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1591,37 +1591,37 @@ type SubscriptionsAliasesClientListByBillingAccountOptions struct {
 
 // SubscriptionsClientBeginCancelOptions contains the optional parameters for the SubscriptionsClient.BeginCancel method.
 type SubscriptionsClientBeginCancelOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SubscriptionsClientBeginDeleteOptions contains the optional parameters for the SubscriptionsClient.BeginDelete method.
 type SubscriptionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SubscriptionsClientBeginMergeOptions contains the optional parameters for the SubscriptionsClient.BeginMerge method.
 type SubscriptionsClientBeginMergeOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SubscriptionsClientBeginMoveOptions contains the optional parameters for the SubscriptionsClient.BeginMove method.
 type SubscriptionsClientBeginMoveOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SubscriptionsClientBeginSplitOptions contains the optional parameters for the SubscriptionsClient.BeginSplit method.
 type SubscriptionsClientBeginSplitOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SubscriptionsClientBeginUpdateOptions contains the optional parameters for the SubscriptionsClient.BeginUpdate method.
 type SubscriptionsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1834,7 +1834,7 @@ type SubscriptionsClientValidateMoveEligibilityOptions struct {
 // TransactionsClientBeginTransactionsDownloadByInvoiceOptions contains the optional parameters for the TransactionsClient.BeginTransactionsDownloadByInvoice
 // method.
 type TransactionsClientBeginTransactionsDownloadByInvoiceOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

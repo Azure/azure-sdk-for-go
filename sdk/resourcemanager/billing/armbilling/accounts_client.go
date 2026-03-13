@@ -8,16 +8,15 @@ package armbilling
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccountsClient contains the methods for the BillingAccounts group.
@@ -28,7 +27,7 @@ type AccountsClient struct {
 
 // NewAccountsClient creates a new instance of AccountsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccountsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -98,7 +97,7 @@ func (client *AccountsClient) addPaymentTerms(ctx context.Context, billingAccoun
 }
 
 // addPaymentTermsCreateRequest creates the AddPaymentTerms request.
-func (client *AccountsClient) addPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, options *AccountsClientBeginAddPaymentTermsOptions) (*policy.Request, error) {
+func (client *AccountsClient) addPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, _ *AccountsClientBeginAddPaymentTermsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/addPaymentTerms"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -172,7 +171,7 @@ func (client *AccountsClient) cancelPaymentTerms(ctx context.Context, billingAcc
 }
 
 // cancelPaymentTermsCreateRequest creates the CancelPaymentTerms request.
-func (client *AccountsClient) cancelPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters time.Time, options *AccountsClientBeginCancelPaymentTermsOptions) (*policy.Request, error) {
+func (client *AccountsClient) cancelPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters time.Time, _ *AccountsClientBeginCancelPaymentTermsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/cancelPaymentTerms"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -223,7 +222,7 @@ func (client *AccountsClient) ConfirmTransition(ctx context.Context, billingAcco
 }
 
 // confirmTransitionCreateRequest creates the ConfirmTransition request.
-func (client *AccountsClient) confirmTransitionCreateRequest(ctx context.Context, billingAccountName string, options *AccountsClientConfirmTransitionOptions) (*policy.Request, error) {
+func (client *AccountsClient) confirmTransitionCreateRequest(ctx context.Context, billingAccountName string, _ *AccountsClientConfirmTransitionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/confirmTransition"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -278,7 +277,7 @@ func (client *AccountsClient) Get(ctx context.Context, billingAccountName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccountsClient) getCreateRequest(ctx context.Context, billingAccountName string, options *AccountsClientGetOptions) (*policy.Request, error) {
+func (client *AccountsClient) getCreateRequest(ctx context.Context, billingAccountName string, _ *AccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -510,7 +509,7 @@ func (client *AccountsClient) update(ctx context.Context, billingAccountName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPatch, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -562,7 +561,7 @@ func (client *AccountsClient) ValidatePaymentTerms(ctx context.Context, billingA
 }
 
 // validatePaymentTermsCreateRequest creates the ValidatePaymentTerms request.
-func (client *AccountsClient) validatePaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, options *AccountsClientValidatePaymentTermsOptions) (*policy.Request, error) {
+func (client *AccountsClient) validatePaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, _ *AccountsClientValidatePaymentTermsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/validatePaymentTerms"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

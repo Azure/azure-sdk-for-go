@@ -8,16 +8,15 @@ package armbilling
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TransactionsClient contains the methods for the Transactions group.
@@ -28,7 +27,7 @@ type TransactionsClient struct {
 
 // NewTransactionsClient creates a new instance of TransactionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTransactionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TransactionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -513,7 +512,7 @@ func (client *TransactionsClient) transactionsDownloadByInvoice(ctx context.Cont
 }
 
 // transactionsDownloadByInvoiceCreateRequest creates the TransactionsDownloadByInvoice request.
-func (client *TransactionsClient) transactionsDownloadByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*policy.Request, error) {
+func (client *TransactionsClient) transactionsDownloadByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *TransactionsClientBeginTransactionsDownloadByInvoiceOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactionsDownload"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // SubscriptionsClient contains the methods for the BillingSubscriptions group.
@@ -27,7 +26,7 @@ type SubscriptionsClient struct {
 
 // NewSubscriptionsClient creates a new instance of SubscriptionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSubscriptionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -94,7 +93,7 @@ func (client *SubscriptionsClient) cancel(ctx context.Context, billingAccountNam
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *SubscriptionsClient) cancelCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters CancelSubscriptionRequest, options *SubscriptionsClientBeginCancelOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) cancelCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters CancelSubscriptionRequest, _ *SubscriptionsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/cancel"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -172,7 +171,7 @@ func (client *SubscriptionsClient) deleteOperation(ctx context.Context, billingA
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubscriptionsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *SubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, _ *SubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -900,7 +899,7 @@ func (client *SubscriptionsClient) merge(ctx context.Context, billingAccountName
 }
 
 // mergeCreateRequest creates the Merge request.
-func (client *SubscriptionsClient) mergeCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionMergeRequest, options *SubscriptionsClientBeginMergeOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) mergeCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionMergeRequest, _ *SubscriptionsClientBeginMergeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/merge"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -980,7 +979,7 @@ func (client *SubscriptionsClient) move(ctx context.Context, billingAccountName 
 }
 
 // moveCreateRequest creates the Move request.
-func (client *SubscriptionsClient) moveCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, options *SubscriptionsClientBeginMoveOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) moveCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, _ *SubscriptionsClientBeginMoveOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/move"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1059,7 +1058,7 @@ func (client *SubscriptionsClient) split(ctx context.Context, billingAccountName
 }
 
 // splitCreateRequest creates the Split request.
-func (client *SubscriptionsClient) splitCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionSplitRequest, options *SubscriptionsClientBeginSplitOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) splitCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionSplitRequest, _ *SubscriptionsClientBeginSplitOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/split"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1136,7 +1135,7 @@ func (client *SubscriptionsClient) update(ctx context.Context, billingAccountNam
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SubscriptionsClient) updateCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionPatch, options *SubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) updateCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionPatch, _ *SubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -1193,7 +1192,7 @@ func (client *SubscriptionsClient) ValidateMoveEligibility(ctx context.Context, 
 }
 
 // validateMoveEligibilityCreateRequest creates the ValidateMoveEligibility request.
-func (client *SubscriptionsClient) validateMoveEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, options *SubscriptionsClientValidateMoveEligibilityOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) validateMoveEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, _ *SubscriptionsClientValidateMoveEligibilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/validateMoveEligibility"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

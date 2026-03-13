@@ -1,5 +1,21 @@
 # Release History
 
+## 8.3.0-beta.2 (2026-03-09)
+### Breaking Changes
+
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Field `AgentPool` of struct `AgentPoolsClientUpgradeNodeImageVersionResponse` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `AgentPool`
+- New field `SystemData` in struct `AgentPoolUpgradeProfile`
+- New field `SystemData` in struct `Machine`
+- New field `SystemData` in struct `ManagedClusterUpgradeProfile`
+- New field `NextLink` in struct `OperationListResult`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+
+
 ## 8.3.0-beta.1 (2025-12-26)
 ### Features Added
 

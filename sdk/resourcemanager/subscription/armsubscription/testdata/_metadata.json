@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Subscription": "2025-11-01-preview"
+  },
+  "emitterVersion": "0.10.2"
+}

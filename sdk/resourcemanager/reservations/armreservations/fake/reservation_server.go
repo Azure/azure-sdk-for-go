@@ -100,39 +100,58 @@ func (r *ReservationServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ReservationClient.Archive":
-		resp, err = r.dispatchArchive(req)
-	case "ReservationClient.BeginAvailableScopes":
-		resp, err = r.dispatchBeginAvailableScopes(req)
-	case "ReservationClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "ReservationClient.NewListPager":
-		resp, err = r.dispatchNewListPager(req)
-	case "ReservationClient.NewListAllPager":
-		resp, err = r.dispatchNewListAllPager(req)
-	case "ReservationClient.NewListRevisionsPager":
-		resp, err = r.dispatchNewListRevisionsPager(req)
-	case "ReservationClient.BeginMerge":
-		resp, err = r.dispatchBeginMerge(req)
-	case "ReservationClient.BeginSplit":
-		resp, err = r.dispatchBeginSplit(req)
-	case "ReservationClient.Unarchive":
-		resp, err = r.dispatchUnarchive(req)
-	case "ReservationClient.BeginUpdate":
-		resp, err = r.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *ReservationServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if reservationServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = reservationServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ReservationClient.Archive":
+				res.resp, res.err = r.dispatchArchive(req)
+			case "ReservationClient.BeginAvailableScopes":
+				res.resp, res.err = r.dispatchBeginAvailableScopes(req)
+			case "ReservationClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "ReservationClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
+			case "ReservationClient.NewListAllPager":
+				res.resp, res.err = r.dispatchNewListAllPager(req)
+			case "ReservationClient.NewListRevisionsPager":
+				res.resp, res.err = r.dispatchNewListRevisionsPager(req)
+			case "ReservationClient.BeginMerge":
+				res.resp, res.err = r.dispatchBeginMerge(req)
+			case "ReservationClient.BeginSplit":
+				res.resp, res.err = r.dispatchBeginSplit(req)
+			case "ReservationClient.Unarchive":
+				res.resp, res.err = r.dispatchUnarchive(req)
+			case "ReservationClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *ReservationServerTransport) dispatchArchive(req *http.Request) (*http.Response, error) {
@@ -142,7 +161,7 @@ func (r *ReservationServerTransport) dispatchArchive(req *http.Request) (*http.R
 	const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archive`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	reservationOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationOrderId")])
@@ -177,7 +196,7 @@ func (r *ReservationServerTransport) dispatchBeginAvailableScopes(req *http.Requ
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableScopes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.AvailableScopeRequest](req)
@@ -223,7 +242,7 @@ func (r *ReservationServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -270,7 +289,7 @@ func (r *ReservationServerTransport) dispatchNewListPager(req *http.Request) (*h
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		reservationOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationOrderId")])
@@ -394,7 +413,7 @@ func (r *ReservationServerTransport) dispatchNewListRevisionsPager(req *http.Req
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revisions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		reservationOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationOrderId")])
@@ -435,7 +454,7 @@ func (r *ReservationServerTransport) dispatchBeginMerge(req *http.Request) (*htt
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/merge`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.MergeRequest](req)
@@ -479,7 +498,7 @@ func (r *ReservationServerTransport) dispatchBeginSplit(req *http.Request) (*htt
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/split`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.SplitRequest](req)
@@ -521,7 +540,7 @@ func (r *ReservationServerTransport) dispatchUnarchive(req *http.Request) (*http
 	const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/unarchive`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	reservationOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationOrderId")])
@@ -556,7 +575,7 @@ func (r *ReservationServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.Patch](req)
@@ -593,4 +612,10 @@ func (r *ReservationServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ReservationServerTransport
+var reservationServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -13,8 +13,7 @@ import (
 // ClientFactory is a client factory used to create any client in this module.
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
-	credential azcore.TokenCredential
-	options    *arm.ClientOptions
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -22,72 +21,81 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		credential: credential,
-		options:    options.Clone(),
+		internal: internal,
 	}, nil
 }
 
 // NewAzureReservationAPIClient creates a new instance of AzureReservationAPIClient.
 func (c *ClientFactory) NewAzureReservationAPIClient() *AzureReservationAPIClient {
-	subClient, _ := NewAzureReservationAPIClient(c.credential, c.options)
-	return subClient
+	return &AzureReservationAPIClient{
+		internal: c.internal,
+	}
 }
 
 // NewCalculateExchangeClient creates a new instance of CalculateExchangeClient.
 func (c *ClientFactory) NewCalculateExchangeClient() *CalculateExchangeClient {
-	subClient, _ := NewCalculateExchangeClient(c.credential, c.options)
-	return subClient
+	return &CalculateExchangeClient{
+		internal: c.internal,
+	}
 }
 
 // NewCalculateRefundClient creates a new instance of CalculateRefundClient.
 func (c *ClientFactory) NewCalculateRefundClient() *CalculateRefundClient {
-	subClient, _ := NewCalculateRefundClient(c.credential, c.options)
-	return subClient
+	return &CalculateRefundClient{
+		internal: c.internal,
+	}
 }
 
 // NewExchangeClient creates a new instance of ExchangeClient.
 func (c *ClientFactory) NewExchangeClient() *ExchangeClient {
-	subClient, _ := NewExchangeClient(c.credential, c.options)
-	return subClient
+	return &ExchangeClient{
+		internal: c.internal,
+	}
 }
 
 // NewOperationClient creates a new instance of OperationClient.
 func (c *ClientFactory) NewOperationClient() *OperationClient {
-	subClient, _ := NewOperationClient(c.credential, c.options)
-	return subClient
+	return &OperationClient{
+		internal: c.internal,
+	}
 }
 
 // NewQuotaClient creates a new instance of QuotaClient.
 func (c *ClientFactory) NewQuotaClient() *QuotaClient {
-	subClient, _ := NewQuotaClient(c.credential, c.options)
-	return subClient
+	return &QuotaClient{
+		internal: c.internal,
+	}
 }
 
 // NewQuotaRequestStatusClient creates a new instance of QuotaRequestStatusClient.
 func (c *ClientFactory) NewQuotaRequestStatusClient() *QuotaRequestStatusClient {
-	subClient, _ := NewQuotaRequestStatusClient(c.credential, c.options)
-	return subClient
+	return &QuotaRequestStatusClient{
+		internal: c.internal,
+	}
 }
 
 // NewReservationClient creates a new instance of ReservationClient.
 func (c *ClientFactory) NewReservationClient() *ReservationClient {
-	subClient, _ := NewReservationClient(c.credential, c.options)
-	return subClient
+	return &ReservationClient{
+		internal: c.internal,
+	}
 }
 
 // NewReservationOrderClient creates a new instance of ReservationOrderClient.
 func (c *ClientFactory) NewReservationOrderClient() *ReservationOrderClient {
-	subClient, _ := NewReservationOrderClient(c.credential, c.options)
-	return subClient
+	return &ReservationOrderClient{
+		internal: c.internal,
+	}
 }
 
 // NewReturnClient creates a new instance of ReturnClient.
 func (c *ClientFactory) NewReturnClient() *ReturnClient {
-	subClient, _ := NewReturnClient(c.credential, c.options)
-	return subClient
+	return &ReturnClient{
+		internal: c.internal,
+	}
 }

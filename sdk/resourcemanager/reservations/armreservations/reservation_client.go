@@ -26,7 +26,7 @@ type ReservationClient struct {
 
 // NewReservationClient creates a new instance of ReservationClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReservationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *ReservationClient) Archive(ctx context.Context, reservationOrderID
 }
 
 // archiveCreateRequest creates the Archive request.
-func (client *ReservationClient) archiveCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientArchiveOptions) (*policy.Request, error) {
+func (client *ReservationClient) archiveCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, _ *ReservationClientArchiveOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/archive"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -140,7 +140,7 @@ func (client *ReservationClient) availableScopes(ctx context.Context, reservatio
 }
 
 // availableScopesCreateRequest creates the AvailableScopes request.
-func (client *ReservationClient) availableScopesCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*policy.Request, error) {
+func (client *ReservationClient) availableScopesCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, _ *ReservationClientBeginAvailableScopesOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/availableScopes"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -209,10 +209,10 @@ func (client *ReservationClient) getCreateRequest(ctx context.Context, reservati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,7 +256,7 @@ func (client *ReservationClient) NewListPager(reservationOrderID string, options
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationClient) listCreateRequest(ctx context.Context, reservationOrderID string, options *ReservationClientListOptions) (*policy.Request, error) {
+func (client *ReservationClient) listCreateRequest(ctx context.Context, reservationOrderID string, _ *ReservationClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -318,18 +318,18 @@ func (client *ReservationClient) listAllCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	if options != nil && options.RefreshSummary != nil {
-		reqQP.Set("refreshSummary", *options.RefreshSummary)
-	}
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", strconv.FormatFloat(float64(*options.Skiptoken), 'f', -1, 32))
+	}
+	reqQP.Set("api-version", "2022-11-01")
+	if options != nil && options.RefreshSummary != nil {
+		reqQP.Set("refreshSummary", *options.RefreshSummary)
 	}
 	if options != nil && options.SelectedState != nil {
 		reqQP.Set("selectedState", *options.SelectedState)
@@ -382,7 +382,7 @@ func (client *ReservationClient) NewListRevisionsPager(reservationOrderID string
 }
 
 // listRevisionsCreateRequest creates the ListRevisions request.
-func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientListRevisionsOptions) (*policy.Request, error) {
+func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, _ *ReservationClientListRevisionsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/revisions"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -464,7 +464,7 @@ func (client *ReservationClient) merge(ctx context.Context, reservationOrderID s
 }
 
 // mergeCreateRequest creates the Merge request.
-func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*policy.Request, error) {
+func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reservationOrderID string, body MergeRequest, _ *ReservationClientBeginMergeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/merge"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -535,7 +535,7 @@ func (client *ReservationClient) split(ctx context.Context, reservationOrderID s
 }
 
 // splitCreateRequest creates the Split request.
-func (client *ReservationClient) splitCreateRequest(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*policy.Request, error) {
+func (client *ReservationClient) splitCreateRequest(ctx context.Context, reservationOrderID string, body SplitRequest, _ *ReservationClientBeginSplitOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/split"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -584,7 +584,7 @@ func (client *ReservationClient) Unarchive(ctx context.Context, reservationOrder
 }
 
 // unarchiveCreateRequest creates the Unarchive request.
-func (client *ReservationClient) unarchiveCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientUnarchiveOptions) (*policy.Request, error) {
+func (client *ReservationClient) unarchiveCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, _ *ReservationClientUnarchiveOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/unarchive"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -657,7 +657,7 @@ func (client *ReservationClient) update(ctx context.Context, reservationOrderID 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReservationClient) updateCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReservationClient) updateCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, _ *ReservationClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")

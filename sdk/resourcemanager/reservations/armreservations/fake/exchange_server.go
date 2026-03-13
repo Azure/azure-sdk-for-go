@@ -48,21 +48,40 @@ func (e *ExchangeServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ExchangeClient.BeginPost":
-		resp, err = e.dispatchBeginPost(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *ExchangeServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if exchangeServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = exchangeServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ExchangeClient.BeginPost":
+				res.resp, res.err = e.dispatchBeginPost(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *ExchangeServerTransport) dispatchBeginPost(req *http.Request) (*http.Response, error) {
@@ -97,4 +116,10 @@ func (e *ExchangeServerTransport) dispatchBeginPost(req *http.Request) (*http.Re
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ExchangeServerTransport
+var exchangeServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

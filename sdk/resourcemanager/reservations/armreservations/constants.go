@@ -5,11 +5,6 @@
 
 package armreservations
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
-	moduleVersion = "v3.1.0"
-)
-
 // AppliedScopeType - Type of the Applied Scope.
 type AppliedScopeType string
 
@@ -518,7 +513,8 @@ func PossibleReservationTermValues() []ReservationTerm {
 	}
 }
 
-// ReservedResourceType - The type of the resource that is being reserved.
+// ReservedResourceType - The type of the resource that is being reserved. In addition to below types we have also added the
+// following: OpenAIPTU, MDC, Sentinel.
 type ReservedResourceType string
 
 const (

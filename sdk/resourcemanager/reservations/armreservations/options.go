@@ -41,7 +41,7 @@ type AzureReservationAPIClientGetCatalogOptions struct {
 
 // CalculateExchangeClientBeginPostOptions contains the optional parameters for the CalculateExchangeClient.BeginPost method.
 type CalculateExchangeClientBeginPostOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -52,7 +52,7 @@ type CalculateRefundClientPostOptions struct {
 
 // ExchangeClientBeginPostOptions contains the optional parameters for the ExchangeClient.BeginPost method.
 type ExchangeClientBeginPostOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -63,13 +63,13 @@ type OperationClientListOptions struct {
 
 // QuotaClientBeginCreateOrUpdateOptions contains the optional parameters for the QuotaClient.BeginCreateOrUpdate method.
 type QuotaClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // QuotaClientBeginUpdateOptions contains the optional parameters for the QuotaClient.BeginUpdate method.
 type QuotaClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -111,25 +111,25 @@ type ReservationClientArchiveOptions struct {
 // ReservationClientBeginAvailableScopesOptions contains the optional parameters for the ReservationClient.BeginAvailableScopes
 // method.
 type ReservationClientBeginAvailableScopesOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ReservationClientBeginMergeOptions contains the optional parameters for the ReservationClient.BeginMerge method.
 type ReservationClientBeginMergeOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ReservationClientBeginSplitOptions contains the optional parameters for the ReservationClient.BeginSplit method.
 type ReservationClientBeginSplitOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ReservationClientBeginUpdateOptions contains the optional parameters for the ReservationClient.BeginUpdate method.
 type ReservationClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -183,7 +183,7 @@ type ReservationClientUnarchiveOptions struct {
 // ReservationOrderClientBeginPurchaseOptions contains the optional parameters for the ReservationOrderClient.BeginPurchase
 // method.
 type ReservationOrderClientBeginPurchaseOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -211,6 +211,6 @@ type ReservationOrderClientListOptions struct {
 
 // ReturnClientBeginPostOptions contains the optional parameters for the ReturnClient.BeginPost method.
 type ReturnClientBeginPostOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

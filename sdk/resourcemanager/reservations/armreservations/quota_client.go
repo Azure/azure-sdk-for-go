@@ -25,7 +25,7 @@ type QuotaClient struct {
 
 // NewQuotaClient creates a new instance of QuotaClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -101,7 +101,7 @@ func (client *QuotaClient) createOrUpdate(ctx context.Context, subscriptionID st
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *QuotaClient) createOrUpdateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *QuotaClient) createOrUpdateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, _ *QuotaClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -167,7 +167,7 @@ func (client *QuotaClient) Get(ctx context.Context, subscriptionID string, provi
 }
 
 // getCreateRequest creates the Get request.
-func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, options *QuotaClientGetOptions) (*policy.Request, error) {
+func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, _ *QuotaClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -240,7 +240,7 @@ func (client *QuotaClient) NewListPager(subscriptionID string, providerID string
 }
 
 // listCreateRequest creates the List request.
-func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, options *QuotaClientListOptions) (*policy.Request, error) {
+func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, _ *QuotaClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -338,7 +338,7 @@ func (client *QuotaClient) update(ctx context.Context, subscriptionID string, pr
 }
 
 // updateCreateRequest creates the Update request.
-func (client *QuotaClient) updateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *QuotaClient) updateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, _ *QuotaClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")

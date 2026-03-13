@@ -3,7 +3,7 @@ name: azsdk-common-sdk-release
 license: MIT
 metadata:
   version: "1.0.0"
-description: "Check release readiness and trigger the release pipeline for Azure SDK packages. **UTILITY SKILL**. USE FOR: \"release SDK\", \"trigger release\", \"check release readiness\", \"release pipeline\", \"publish package\", \"ship SDK\". INVOKES: azsdk_release_sdk."
+description: "Check release readiness and trigger the release pipeline for Azure SDK packages. **UTILITY SKILL**. USE FOR: \"release SDK\", \"trigger release\", \"check release readiness\", \"release pipeline\", \"publish package\", \"ship SDK\". DO NOT USE FOR: SDK development, code generation, pipeline debugging, release plan creation. INVOKES: azsdk_release_sdk."
 compatibility:
   requires: "azure-sdk-mcp server, SDK package merged on release branch"
   supports: ".NET, Java, JavaScript, Python, Go"
@@ -31,8 +31,5 @@ compatibility:
 
 ## Troubleshooting
 
-If readiness check fails, review each failing prerequisite individually before re-triggering.
-
-## MCP Prerequisites
-
-Requires `azure-sdk-mcp` server. No CLI fallback — prompt user to configure MCP if unavailable.
+- If readiness check fails, review each failing prerequisite individually before re-triggering.
+- Requires `azure-sdk-mcp` server. No CLI fallback — prompt user to configure MCP if unavailable.

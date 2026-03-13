@@ -3,26 +3,22 @@ name: azsdk-common-pipeline-troubleshooting
 license: MIT
 metadata:
   version: "1.0.0"
-description: "Diagnose and resolve failures in Azure SDK CI and generation pipelines. **UTILITY SKILL**. USE FOR: \"pipeline failed\", \"build failure\", \"CI check failing\", \"SDK generation error\", \"reproduce pipeline locally\", \"debug SDK pipeline\". INVOKES: azsdk_analyze_pipeline, azsdk_verify_setup, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_pack."
+description: "Diagnose and resolve failures in Azure SDK CI and generation pipelines. **UTILITY SKILL**. USE FOR: \"pipeline failed\", \"build failure\", \"CI check failing\", \"SDK generation error\", \"reproduce pipeline locally\", \"debug SDK pipeline\". DO NOT USE FOR: local build issues without pipeline context, API design review, SDK publishing. INVOKES: azsdk_analyze_pipeline, azsdk_verify_setup, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_pack."
 compatibility:
   requires: "azure-sdk-mcp server, Azure DevOps pipeline build ID"
 ---
 
 # Pipeline Troubleshooting
 
-## MCP Prerequisites
-
-Requires `azure-sdk-mcp` server for pipeline analysis and local reproduction.
-
 ## MCP Tools
 
-| Tool                       | Purpose                      |
-| -------------------------- | ---------------------------- |
-| `azsdk_analyze_pipeline`   | Analyze pipeline failures    |
-| `azsdk_verify_setup`       | Verify local environment     |
-| `azsdk_package_build_code` | Reproduce build locally      |
-| `azsdk_package_run_check`  | Run validation checks        |
-| `azsdk_package_pack`       | Create SDK artifact packages |
+| Tool                       | Purpose                  |
+| -------------------------- | ------------------------ |
+| `azsdk_analyze_pipeline`   | Analyze pipeline failure |
+| `azsdk_verify_setup`       | Verify local environment |
+| `azsdk_package_build_code` | Reproduce build locally  |
+| `azsdk_package_run_check`  | Run validation checks    |
+| `azsdk_package_pack`       | Create SDK packages      |
 
 ## Steps
 
@@ -39,8 +35,4 @@ Requires `azure-sdk-mcp` server for pipeline analysis and local reproduction.
 
 ## Troubleshooting
 
-If `azsdk_analyze_pipeline` returns no data, verify the build ID and MCP connection.
-
-## CLI Fallback
-
-Without MCP: view pipeline logs in Azure DevOps browser UI, download and inspect failure stages manually.
+If `azsdk_analyze_pipeline` returns no data, verify the build ID and MCP connection. Without MCP, view pipeline logs in Azure DevOps UI directly.

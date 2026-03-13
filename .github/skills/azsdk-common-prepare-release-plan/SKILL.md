@@ -3,7 +3,7 @@ name: azsdk-common-prepare-release-plan
 license: MIT
 metadata:
   version: "1.0.0"
-description: "Create and manage release plan work items for Azure SDK releases across languages. **UTILITY SKILL**. USE FOR: \"create release plan\", \"update release plan\", \"link SDK PR to plan\", \"namespace approval\", \"check release plan status\". INVOKES: azsdk_create_release_plan, azsdk_get_release_plan, azsdk_update_sdk_details_in_release_plan, azsdk_link_sdk_pull_request_to_release_plan, azsdk_link_namespace_approval_issue."
+description: "Create and manage release plan work items for Azure SDK releases across languages. **UTILITY SKILL**. USE FOR: \"create release plan\", \"update release plan\", \"link SDK PR to plan\", \"namespace approval\", \"check release plan status\". DO NOT USE FOR: SDK code generation, pipeline troubleshooting, API review feedback. INVOKES: azsdk_create_release_plan, azsdk_get_release_plan, azsdk_update_sdk_details_in_release_plan, azsdk_link_sdk_pull_request_to_release_plan, azsdk_link_namespace_approval_issue."
 compatibility:
   requires: "azure-sdk-mcp server, API spec PR in Azure/azure-rest-api-specs"
 ---
@@ -14,14 +14,11 @@ compatibility:
 
 ## MCP Tools
 
-| Tool                                          | Purpose              |
-| --------------------------------------------- | -------------------- |
-| `azsdk_create_release_plan`                   | Create release plan  |
-| `azsdk_get_release_plan`                      | Get plan details     |
-| `azsdk_get_release_plan_for_spec_pr`          | Find plan by PR      |
-| `azsdk_update_sdk_details_in_release_plan`    | Update SDK info      |
-| `azsdk_link_sdk_pull_request_to_release_plan` | Link SDK PR          |
-| `azsdk_link_namespace_approval_issue`         | Link namespace issue |
+- `azsdk_create_release_plan` — Create release plan
+- `azsdk_get_release_plan` / `azsdk_get_release_plan_for_spec_pr` — Get plan details
+- `azsdk_update_sdk_details_in_release_plan` — Update SDK info
+- `azsdk_link_sdk_pull_request_to_release_plan` — Link SDK PR
+- `azsdk_link_namespace_approval_issue` — Link namespace issue
 
 ## Steps
 
@@ -33,6 +30,12 @@ compatibility:
 6. **Namespace** — For mgmt plane first releases, link approval issue.
 7. **Link PRs** — Link SDK PRs to plan.
 
-## MCP Prerequisites
+## Examples
 
-Requires `azure-sdk-mcp` server. No CLI fallback available.
+- "Create a release plan for my new API spec PR"
+- "Link my SDK pull request to an existing release plan"
+
+## Troubleshooting
+
+- Requires `azure-sdk-mcp` server. No CLI fallback available.
+- If plan creation fails, verify the spec PR URL and Service Tree IDs.

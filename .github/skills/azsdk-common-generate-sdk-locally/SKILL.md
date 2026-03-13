@@ -3,7 +3,7 @@ name: azsdk-common-generate-sdk-locally
 license: MIT
 metadata:
   version: "1.0.0"
-description: "**UTILITY SKILL** Generate, build, and test Azure SDKs locally from TypeSpec. USE FOR: \"generate SDK locally\", \"build SDK\", \"run SDK tests\", \"update changelog\". INVOKES: azsdk_verify_setup, azsdk_package_generate_code, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_run_tests, azsdk_package_update_metadata, azsdk_package_update_changelog_content, azsdk_package_update_version."
+description: "Generate, build, and test Azure SDKs locally from TypeSpec. **UTILITY SKILL**. USE FOR: \"generate SDK locally\", \"build SDK\", \"run SDK tests\", \"update changelog\". INVOKES: azsdk_verify_setup, azsdk_package_generate_code, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_run_tests, azsdk_package_update_metadata, azsdk_package_update_changelog_content, azsdk_package_update_version."
 compatibility:
   requires: "azure-sdk-mcp server, local azure-sdk-for-{language} clone, language build tools"
 ---

@@ -3,7 +3,7 @@ name: azsdk-common-prepare-release-plan
 license: MIT
 metadata:
   version: "1.0.0"
-description: "**UTILITY SKILL** Create and manage release plan work items for Azure SDK releases across languages. USE FOR: \"create release plan\", \"update release plan\", \"link SDK PR to plan\", \"namespace approval\", \"check release plan status\". INVOKES: azsdk_create_release_plan, azsdk_get_release_plan, azsdk_update_sdk_details_in_release_plan, azsdk_link_sdk_pull_request_to_release_plan, azsdk_link_namespace_approval_issue."
+description: "Create and manage release plan work items for Azure SDK releases across languages. **UTILITY SKILL**. USE FOR: \"create release plan\", \"update release plan\", \"link SDK PR to plan\", \"namespace approval\", \"check release plan status\". INVOKES: azsdk_create_release_plan, azsdk_get_release_plan, azsdk_update_sdk_details_in_release_plan, azsdk_link_sdk_pull_request_to_release_plan, azsdk_link_namespace_approval_issue."
 compatibility:
   requires: "azure-sdk-mcp server, API spec PR in Azure/azure-rest-api-specs"
 ---

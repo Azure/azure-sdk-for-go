@@ -3,7 +3,7 @@ name: azsdk-common-pipeline-troubleshooting
 license: MIT
 metadata:
   version: "1.0.0"
-description: "**UTILITY SKILL** Diagnose and resolve failures in Azure SDK CI and generation pipelines. USE FOR: \"pipeline failed\", \"build failure\", \"CI check failing\", \"SDK generation error\", \"reproduce pipeline locally\", \"debug SDK pipeline\". INVOKES: azsdk_analyze_pipeline, azsdk_verify_setup, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_pack."
+description: "Diagnose and resolve failures in Azure SDK CI and generation pipelines. **UTILITY SKILL**. USE FOR: \"pipeline failed\", \"build failure\", \"CI check failing\", \"SDK generation error\", \"reproduce pipeline locally\", \"debug SDK pipeline\". INVOKES: azsdk_analyze_pipeline, azsdk_verify_setup, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_pack."
 compatibility:
   requires: "azure-sdk-mcp server, Azure DevOps pipeline build ID"
 ---
@@ -31,6 +31,15 @@ Requires `azure-sdk-mcp` server for pipeline analysis and local reproduction.
 3. **Reproduce** — Run `azsdk_verify_setup`, then `azsdk_package_build_code` or `azsdk_package_run_check`.
 4. **Fix** — Apply direct edits for code or TypeSpec changes.
 5. **Verify** — Confirm fix locally, push changes, monitor pipeline re-run.
+
+## Examples
+
+- "My pipeline build 12345 failed, help me debug it"
+- "Reproduce CI failure locally for azure-sdk-for-python"
+
+## Troubleshooting
+
+If `azsdk_analyze_pipeline` returns no data, verify the build ID and MCP connection.
 
 ## CLI Fallback
 

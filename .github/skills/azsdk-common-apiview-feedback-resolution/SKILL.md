@@ -3,7 +3,7 @@ name: azsdk-common-apiview-feedback-resolution
 license: MIT
 metadata:
   version: "1.0.0"
-description: "**UTILITY SKILL** Retrieve and resolve feedback from APIView reviews on Azure SDK packages. USE FOR: \"APIView comments\", \"resolve API review feedback\", \"rename type per reviewer\", \"SDK API surface changes\", \"regenerate SDK after review\". INVOKES: azsdk_apiview_get_comments, azsdk_typespec_delegate_apiview_feedback, azsdk_run_typespec_validation, azsdk_package_generate_code."
+description: "Retrieve and resolve feedback from APIView reviews on Azure SDK packages. **UTILITY SKILL**. USE FOR: \"APIView comments\", \"resolve API review feedback\", \"rename type per reviewer\", \"SDK API surface changes\", \"regenerate SDK after review\". INVOKES: azsdk_apiview_get_comments, azsdk_typespec_delegate_apiview_feedback, azsdk_run_typespec_validation, azsdk_package_generate_code."
 compatibility:
   requires: "azure-sdk-mcp server, SDK pull request with APIView review link"
 ---

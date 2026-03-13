@@ -27,7 +27,7 @@ type SandboxCustomImagesClient struct {
 // NewSandboxCustomImagesClient creates a new instance of SandboxCustomImagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSandboxCustomImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SandboxCustomImagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *SandboxCustomImagesClient) CheckNameAvailability(ctx context.Conte
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *SandboxCustomImagesClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName SandboxCustomImagesCheckNameRequest, options *SandboxCustomImagesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *SandboxCustomImagesClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName SandboxCustomImagesCheckNameRequest, _ *SandboxCustomImagesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImagesCheckNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -162,7 +162,7 @@ func (client *SandboxCustomImagesClient) createOrUpdate(ctx context.Context, res
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SandboxCustomImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SandboxCustomImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, _ *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,7 +246,7 @@ func (client *SandboxCustomImagesClient) deleteOperation(ctx context.Context, re
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SandboxCustomImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SandboxCustomImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, _ *SandboxCustomImagesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -306,7 +306,7 @@ func (client *SandboxCustomImagesClient) Get(ctx context.Context, resourceGroupN
 }
 
 // getCreateRequest creates the Get request.
-func (client *SandboxCustomImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientGetOptions) (*policy.Request, error) {
+func (client *SandboxCustomImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, _ *SandboxCustomImagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -376,7 +376,7 @@ func (client *SandboxCustomImagesClient) NewListByClusterPager(resourceGroupName
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *SandboxCustomImagesClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *SandboxCustomImagesClientListByClusterOptions) (*policy.Request, error) {
+func (client *SandboxCustomImagesClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *SandboxCustomImagesClientListByClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -463,7 +463,7 @@ func (client *SandboxCustomImagesClient) update(ctx context.Context, resourceGro
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SandboxCustomImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *SandboxCustomImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, _ *SandboxCustomImagesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

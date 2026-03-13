@@ -27,7 +27,7 @@ type DatabaseClient struct {
 // NewDatabaseClient creates a new instance of DatabaseClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *DatabaseClient) InviteFollower(ctx context.Context, resourceGroupN
 }
 
 // inviteFollowerCreateRequest creates the InviteFollower request.
-func (client *DatabaseClient) inviteFollowerCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseInviteFollowerRequest, options *DatabaseClientInviteFollowerOptions) (*policy.Request, error) {
+func (client *DatabaseClient) inviteFollowerCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseInviteFollowerRequest, _ *DatabaseClientInviteFollowerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/inviteFollower"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

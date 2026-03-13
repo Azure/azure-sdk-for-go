@@ -28,7 +28,7 @@ type DatabasesClient struct {
 // NewDatabasesClient creates a new instance of DatabasesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -73,7 +73,7 @@ func (client *DatabasesClient) AddPrincipals(ctx context.Context, resourceGroupN
 }
 
 // addPrincipalsCreateRequest creates the AddPrincipals request.
-func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToAdd DatabasePrincipalListRequest, options *DatabasesClientAddPrincipalsOptions) (*policy.Request, error) {
+func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToAdd DatabasePrincipalListRequest, _ *DatabasesClientAddPrincipalsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/addPrincipals"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -146,7 +146,7 @@ func (client *DatabasesClient) CheckNameAvailability(ctx context.Context, resour
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName CheckNameRequest, options *DatabasesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName CheckNameRequest, _ *DatabasesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -322,7 +322,7 @@ func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGrou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -382,7 +382,7 @@ func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientGetOptions) (*policy.Request, error) {
+func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -524,7 +524,7 @@ func (client *DatabasesClient) NewListPrincipalsPager(resourceGroupName string, 
 }
 
 // listPrincipalsCreateRequest creates the ListPrincipals request.
-func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientListPrincipalsOptions) (*policy.Request, error) {
+func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasesClientListPrincipalsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/listPrincipals"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -595,7 +595,7 @@ func (client *DatabasesClient) RemovePrincipals(ctx context.Context, resourceGro
 }
 
 // removePrincipalsCreateRequest creates the RemovePrincipals request.
-func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToRemove DatabasePrincipalListRequest, options *DatabasesClientRemovePrincipalsOptions) (*policy.Request, error) {
+func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToRemove DatabasePrincipalListRequest, _ *DatabasesClientRemovePrincipalsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/removePrincipals"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -27,7 +27,7 @@ type DatabasePrincipalAssignmentsClient struct {
 // NewDatabasePrincipalAssignmentsClient creates a new instance of DatabasePrincipalAssignmentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabasePrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasePrincipalAssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -73,7 +73,7 @@ func (client *DatabasePrincipalAssignmentsClient) CheckNameAvailability(ctx cont
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, options *DatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, _ *DatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkPrincipalAssignmentNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -168,7 +168,7 @@ func (client *DatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Con
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, parameters DatabasePrincipalAssignment, options *DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, parameters DatabasePrincipalAssignment, _ *DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -257,7 +257,7 @@ func (client *DatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Co
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, options *DatabasePrincipalAssignmentsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *DatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, _ *DatabasePrincipalAssignmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -323,7 +323,7 @@ func (client *DatabasePrincipalAssignmentsClient) Get(ctx context.Context, resou
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, options *DatabasePrincipalAssignmentsClientGetOptions) (*policy.Request, error) {
+func (client *DatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, _ *DatabasePrincipalAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -398,7 +398,7 @@ func (client *DatabasePrincipalAssignmentsClient) NewListPager(resourceGroupName
 }
 
 // listCreateRequest creates the List request.
-func (client *DatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasePrincipalAssignmentsClientListOptions) (*policy.Request, error) {
+func (client *DatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasePrincipalAssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

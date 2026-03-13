@@ -5,11 +5,6 @@
 
 package armkusto
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
-	moduleVersion = "v2.3.0"
-)
-
 // AzureSKUName - SKU name.
 type AzureSKUName string
 

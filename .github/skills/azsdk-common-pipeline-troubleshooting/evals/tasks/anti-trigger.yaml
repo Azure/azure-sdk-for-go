@@ -1,6 +1,8 @@
+id: anti-trigger
 name: anti-trigger
 description: Should not trigger on unrelated prompts
-prompt: "How do I write a TypeSpec definition for a new Azure service?"
+inputs:
+  prompt: "How do I write a TypeSpec definition for a new Azure service?"
 expected:
   skill_activated: false
 graders:

@@ -1,6 +1,8 @@
+id: anti-trigger
 name: anti-trigger
 description: Should not trigger on unrelated prompts
-prompt: "How do I configure logging in my Azure Function?"
+inputs:
+  prompt: "How do I configure logging in my Azure Function?"
 expected:
   skill_activated: false
 graders:

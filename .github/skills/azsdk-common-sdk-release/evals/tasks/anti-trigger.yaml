@@ -1,6 +1,8 @@
+id: anti-trigger
 name: anti-trigger
 description: Should not trigger on unrelated prompts
-prompt: "How do I write unit tests for my Azure SDK client?"
+inputs:
+  prompt: "How do I write unit tests for my Azure SDK client?"
 expected:
   skill_activated: false
 graders:

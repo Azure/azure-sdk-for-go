@@ -21,7 +21,7 @@ graders:
   - type: text
     name: no_fatal_errors
     config:
-      not_regex_match:
+      regex_not_match:
         - (?i)fatal error
         - (?i)unhandled exception
         - '(?i)panic:'

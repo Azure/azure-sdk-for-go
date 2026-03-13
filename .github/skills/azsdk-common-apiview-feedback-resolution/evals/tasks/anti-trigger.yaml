@@ -1,6 +1,8 @@
+id: anti-trigger
 name: anti-trigger
 description: Should not trigger on unrelated prompts
-prompt: "How do I set up a new Azure Storage account?"
+inputs:
+  prompt: "How do I set up a new Azure Storage account?"
 expected:
   skill_activated: false
 graders:

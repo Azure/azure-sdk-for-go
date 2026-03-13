@@ -3,14 +3,9 @@ name: azsdk-common-generate-sdk-locally
 license: MIT
 metadata:
   version: "1.0.0"
-description: >-
-  **UTILITY SKILL**
-  Generate, build, and test Azure SDKs locally from TypeSpec.
-  USE FOR: "generate SDK locally", "build SDK", "run SDK tests", "update changelog".
-  DO NOT USE FOR: pipeline generation (use azsdk_run_generate_sdk), release plans (use prepare-release-plan).
-  INVOKES: azsdk_verify_setup, azsdk_package_generate_code, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_run_tests, azsdk_package_update_metadata, azsdk_package_update_changelog_content, azsdk_package_update_version.
-compatibility: >-
-  Requires: azure-sdk-mcp server, local azure-sdk-for-{language} clone, language build tools (.NET SDK, JDK, Python, Node.js, or Go).
+description: "**UTILITY SKILL** Generate, build, and test Azure SDKs locally from TypeSpec. USE FOR: \"generate SDK locally\", \"build SDK\", \"run SDK tests\", \"update changelog\". INVOKES: azsdk_verify_setup, azsdk_package_generate_code, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_run_tests, azsdk_package_update_metadata, azsdk_package_update_changelog_content, azsdk_package_update_version."
+compatibility:
+  requires: "azure-sdk-mcp server, local azure-sdk-for-{language} clone, language build tools"
 ---
 
 # Generate SDK Locally
@@ -32,21 +27,18 @@ Requires `azure-sdk-mcp` server. Run `azsdk_verify_setup` to confirm.
 
 1. **Select Language** — .NET, Java, JavaScript, Python, or Go.
 2. **Verify** — Run `azsdk_verify_setup` to confirm environment.
-3. **Generate** — Run `azsdk_package_generate_code` with config path.
-    - **Spec repo** (azure-rest-api-specs): use the path to `tspconfig.yaml`, either local path or HTTPS URL. Example paths:
-       - `/home/usr/azure-rest-api-specs/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml`
-       - `https://github.com/Azure/azure-rest-api-specs/blob/4af373fc5826cf5a2365a20dde01c4b2efde48f0/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml`       
-    - **SDK repo** (azure-sdk-for-{language}): use the path to `tsp-location.yaml`. For example, `/home/usr/azure-sdk-for-net/sdk/contoso/Azure.ResourceManager.Contoso/tsp-location.yaml`. 
-4. **Build** — Run `azsdk_package_build_code`. On failure, use `typespec-customization`.
+3. **Generate** — Run `azsdk_package_generate_code` with the path to `tspconfig.yaml` (spec repo) or `tsp-location.yaml` (SDK repo). Accepts local paths or HTTPS URLs.
+4. **Build** — Run `azsdk_package_build_code`. On failure, use typespec-customization.
 5. **Validate** — Run `azsdk_package_run_check` and `azsdk_package_run_tests`.
 6. **Metadata** — Update metadata, changelog, and version.
-7. **Next Steps** — If SDK generation succeeds for all languages, suggest pushing API spec and SDK changes to create PRs for review and release.
-8. **CLI Fallback** — If MCP unavailable, use `tsp-client` directly then language build tools manually:
-   - **Spec repo** (azure-rest-api-specs): run `npx tsp-client init --update-if-exists`
-   - **SDK repo** (azure-sdk-for-{language}): run `npx tsp-client update`
+7. **Next Steps** — Push API spec and SDK changes to create PRs.
 
-## Related Skills
+[SDK repos](references/sdk-repos.md)
 
-- `azsdk-common-prepare-release-plan` — Create release plan after SDK generation
-- `azsdk-common-sdk-release` — Trigger release pipeline for ready packages
-- `azsdk-common-pipeline-troubleshooting` — Debug CI pipeline failures
+## CLI Fallback
+
+Without MCP, use `npx tsp-client` directly:
+- Spec repo: `npx tsp-client init --update-if-exists`
+- SDK repo: `npx tsp-client update`
+
+Then use language build tools manually.

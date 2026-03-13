@@ -26,6 +26,14 @@ func TestCache(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, tokens)
 
+	tokens, err = ParseSyncToken(SyncToken("=;sn=1"))
+	require.Error(t, err)
+	require.Nil(t, tokens)
+
+	tokens, err = ParseSyncToken(SyncToken("id=val1;version=1"))
+	require.Error(t, err)
+	require.Nil(t, tokens)
+
 	tokens, err = ParseSyncToken(SyncToken(";sn=1"))
 	require.Error(t, err)
 	require.Nil(t, tokens)

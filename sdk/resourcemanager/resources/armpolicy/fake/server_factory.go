@@ -37,11 +37,8 @@ type ServerFactory struct {
 	// SetDefinitionsServer contains the fakes for client SetDefinitionsClient
 	SetDefinitionsServer SetDefinitionsServer
 
-	// VariableValuesServer contains the fakes for client VariableValuesClient
-	VariableValuesServer VariableValuesServer
-
-	// VariablesServer contains the fakes for client VariablesClient
-	VariablesServer VariablesServer
+	// TokensServer contains the fakes for client TokensClient
+	TokensServer TokensServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -65,8 +62,7 @@ type ServerFactoryTransport struct {
 	trExemptionsServer            *ExemptionsServerTransport
 	trSetDefinitionVersionsServer *SetDefinitionVersionsServerTransport
 	trSetDefinitionsServer        *SetDefinitionsServerTransport
-	trVariableValuesServer        *VariableValuesServerTransport
-	trVariablesServer             *VariablesServerTransport
+	trTokensServer                *TokensServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -111,14 +107,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSetDefinitionsServerTransport(&s.srv.SetDefinitionsServer)
 		})
 		resp, err = s.trSetDefinitionsServer.Do(req)
-	case "VariableValuesClient":
-		initServer(s, &s.trVariableValuesServer, func() *VariableValuesServerTransport {
-			return NewVariableValuesServerTransport(&s.srv.VariableValuesServer)
-		})
-		resp, err = s.trVariableValuesServer.Do(req)
-	case "VariablesClient":
-		initServer(s, &s.trVariablesServer, func() *VariablesServerTransport { return NewVariablesServerTransport(&s.srv.VariablesServer) })
-		resp, err = s.trVariablesServer.Do(req)
+	case "TokensClient":
+		initServer(s, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
+		resp, err = s.trTokensServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

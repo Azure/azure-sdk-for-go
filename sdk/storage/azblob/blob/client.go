@@ -346,6 +346,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	computeReadLength := true
 	count := o.Range.Count
 
+	// TODO : SDK should ideally start with an initial download instead of get properties to optimize for small blobs.
 	state := layoutState{
 		client: b,
 		opts:   o.getBlobLayoutOptions(),
@@ -353,37 +354,39 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 	useLayout := o.EnableLayoutAwareRouting
 	var l layout
-
-	if count == CountToEnd { // If size not specified, calculate it
-		// If we don't have the length at all, get it
-		var length int64
-		// Try layout-aware routing first if enabled, otherwise use GetProperties
-		if o.EnableLayoutAwareRouting {
-			var err error
-			l, _, err = getLayout(state)
-			sc := bloberror.GetStatusCode(err)
-			if err != nil {
-				if sc == 400 || sc >= 500 { // fall back to old behavior if service doesn't support layout or layout wasn't fetched
-					useLayout = false
-				} else { // fail the operation
-					return 0, err
-				}
-			} else {
-				length = l.contentLength
-			}
-		}
-
-		if !useLayout {
-			gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
-			if err != nil {
+	// If we don't have the length at all, get it
+	var length int64
+	var initialIfMatch *azcore.ETag
+	// Try layout-aware routing first if enabled, otherwise use GetProperties
+	if o.EnableLayoutAwareRouting {
+		var err error
+		l, _, err = getLayout(state)
+		sc := bloberror.GetStatusCode(err)
+		if err != nil {
+			if sc == 400 || sc >= 500 { // fall back to old behavior if service doesn't support layout or layout wasn't fetched
+				useLayout = false
+			} else { // fail the operation
 				return 0, err
 			}
-			length = *gr.ContentLength
+		} else {
+			length = l.contentLength
+			initialIfMatch = l.eTag
 		}
-		if len(l.layoutRanges) == 0 { // fall back to old behavior if layout doesn't exist
-			useLayout = false
-		}
+	}
 
+	if !useLayout {
+		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
+		if err != nil {
+			return 0, err
+		}
+		length = *gr.ContentLength
+		initialIfMatch = gr.ETag
+	}
+	if len(l.layoutRanges) == 0 { // fall back to old behavior if layout doesn't exist
+		useLayout = false
+	}
+
+	if count == CountToEnd { // If size not specified, calculate it
 		count = length - o.Range.Offset
 		dataDownloaded = count
 		computeReadLength = false
@@ -400,7 +403,20 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, nil
 	}
 
-	// If we didn't already fetch properties earlier,
+	// If unspecified by the user, eTag lock on the initial call to ensure consistency of the blob through the download.
+	if o.AccessConditions == nil {
+		o.AccessConditions = &AccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: initialIfMatch,
+			},
+		}
+	} else if o.AccessConditions.ModifiedAccessConditions == nil {
+		o.AccessConditions.ModifiedAccessConditions = &ModifiedAccessConditions{
+			IfMatch: initialIfMatch,
+		}
+	} else if o.AccessConditions.ModifiedAccessConditions.IfMatch == nil {
+		o.AccessConditions.ModifiedAccessConditions.IfMatch = initialIfMatch
+	}
 
 	// Prepare and do parallel download.
 	progress := int64(0)
@@ -425,8 +441,6 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 				Count:  count,
 			}, nil)
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
-			// If the download returns a layout hint and the customer wants to use layout aware routing, refresh the layout for future downloads to use
-
 			if err != nil {
 				return err
 			}

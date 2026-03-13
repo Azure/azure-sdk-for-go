@@ -13,8 +13,8 @@ graders:
   name: no_fatal_errors
   config:
     must_not_match:
-    - (?i)fatal error
-    - (?i)unhandled exception
-    - '(?i)panic:'
+    - (?i)error occurred
+    - (?i)failed
+    - (?i)re-run the tool
 tasks:
 - tasks/*.yaml

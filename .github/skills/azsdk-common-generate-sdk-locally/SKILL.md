@@ -33,6 +33,10 @@ Requires `azure-sdk-mcp` server. Run `azsdk_verify_setup` to confirm.
 1. **Select Language** — .NET, Java, JavaScript, Python, or Go.
 2. **Verify** — Run `azsdk_verify_setup` to confirm environment.
 3. **Generate** — Run `azsdk_package_generate_code` with config path.
+    - **Spec repo** (azure-rest-api-specs): use the path to `tspconfig.yaml`, either local path or HTTPS URL. Example paths:
+       - `/home/usr/azure-rest-api-specs/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml`
+       - `https://github.com/Azure/azure-rest-api-specs/blob/4af373fc5826cf5a2365a20dde01c4b2efde48f0/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml`       
+    - **SDK repo** (azure-sdk-for-{language}): use the path to `tsp-location.yaml`. For example, `/home/usr/azure-sdk-for-net/sdk/contoso/Azure.ResourceManager.Contoso/tsp-location.yaml`. 
 4. **Build** — Run `azsdk_package_build_code`. On failure, use `typespec-customization`.
 5. **Validate** — Run `azsdk_package_run_check` and `azsdk_package_run_tests`.
 6. **Metadata** — Update metadata, changelog, and version.

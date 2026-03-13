@@ -42,6 +42,9 @@ type AcceptOwnershipStatusResponse struct {
 	// READ-ONLY; UPN of the billing owner
 	BillingOwner *string
 
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *Provisioning
+
 	// READ-ONLY; Newly created subscription Id.
 	SubscriptionID *string
 }
@@ -89,9 +92,6 @@ type AliasResponseProperties struct {
 	// The Management Group Id.
 	ManagementGroupID *string
 
-	// The provisioning state of the resource.
-	ProvisioningState *ProvisioningState
-
 	// Reseller Id
 	ResellerID *string
 
@@ -109,6 +109,9 @@ type AliasResponseProperties struct {
 
 	// READ-ONLY; Url to accept ownership of the subscription.
 	AcceptOwnershipURL *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Newly created subscription Id.
 	SubscriptionID *string
@@ -147,32 +150,50 @@ type CanceledSubscriptionID struct {
 	SubscriptionID *string
 }
 
+// CreationResult - The created subscription object.
+type CreationResult struct {
+	// The link to the new subscription. Use this link to check the status of subscription creation operation.
+	SubscriptionLink *string
+}
+
 // EnabledSubscriptionID - The ID of the subscriptions that is being enabled
 type EnabledSubscriptionID struct {
 	// READ-ONLY; The ID of the subscriptions that is being enabled
 	SubscriptionID *string
 }
 
-// ErrorResponse - Describes the format of Error response.
-type ErrorResponse struct {
-	// Error code
-	Code *string
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
 
-	// Error message indicating why the operation failed.
-	Message *string
+	// READ-ONLY; The additional info type.
+	Type *string
 }
 
-// ErrorResponseBody - Error response indicates that the service is not able to process the incoming request. The reason is
-// provided in the error message.
-type ErrorResponseBody struct {
-	// Error code
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
 	Code *string
 
-	// The details of the error.
-	Error *ErrorResponse
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
 
-	// Error message indicating why the operation failed.
+	// READ-ONLY; The error message.
 	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // GetTenantPolicyListResponse - Tenant policy information list.
@@ -202,97 +223,59 @@ type GetTenantPolicyResponse struct {
 	Type *string
 }
 
-// ListResult - Subscription list operation response.
-type ListResult struct {
-	// The URL to get the next set of results.
-	NextLink *string
-
-	// An array of subscriptions.
-	Value []*Subscription
-}
-
-// Location information.
-type Location struct {
-	// READ-ONLY; The display name of the location.
-	DisplayName *string
-
-	// READ-ONLY; The fully qualified ID of the location. For example, /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
-	ID *string
-
-	// READ-ONLY; The latitude of the location.
-	Latitude *string
-
-	// READ-ONLY; The longitude of the location.
-	Longitude *string
-
-	// READ-ONLY; The location name.
-	Name *string
-
-	// READ-ONLY; The subscription ID.
-	SubscriptionID *string
-}
-
-// LocationListResult - Location list operation response.
-type LocationListResult struct {
-	// An array of locations.
-	Value []*Location
-}
-
 // Name - The new name of the subscription.
 type Name struct {
 	// New subscription name
 	SubscriptionName *string
 }
 
-// Operation - REST API operation
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// The object that represents the operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-	// Indicates whether the operation is a data action
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool
 
-	// Operation name: {provider}/{resource}/{operation}
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
-// OperationDisplay - The object that represents the operation.
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// Localized friendly description for the operation
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// Operation type: Read, write, delete, etc.
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// Service provider: Microsoft.Subscription
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// Resource on which the operation is performed: Profile, endpoint, etc.
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
-// OperationListResult - Result of the request to list operations. It contains a list of operations and a URL link to get
-// the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
-	// URL to get the next set of operation list results if there are any.
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string
 
-	// List of operations.
+	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation
-}
-
-// Policies - Subscription policies.
-type Policies struct {
-	// READ-ONLY; The subscription location placement ID. The ID indicates which regions are visible for a subscription. For example,
-	// a subscription with a location placement Id of Public_2014-09-01 has access to Azure
-	// public regions.
-	LocationPlacementID *string
-
-	// READ-ONLY; The subscription quota ID.
-	QuotaID *string
-
-	// READ-ONLY; The subscription spending limit.
-	SpendingLimit *SpendingLimit
 }
 
 // PutAliasRequest - The parameters required to create a new subscription.
@@ -366,28 +349,6 @@ type ServiceTenantResponse struct {
 	TenantName *string
 }
 
-// Subscription information.
-type Subscription struct {
-	// The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct
-	// and Management. For example, 'Legacy, RoleBased'.
-	AuthorizationSource *string
-
-	// The subscription policies.
-	SubscriptionPolicies *Policies
-
-	// READ-ONLY; The subscription display name.
-	DisplayName *string
-
-	// READ-ONLY; The fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
-	ID *string
-
-	// READ-ONLY; The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
-	State *SubscriptionState
-
-	// READ-ONLY; The subscription ID.
-	SubscriptionID *string
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -409,22 +370,80 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// TenantIDDescription - Tenant Id information.
-type TenantIDDescription struct {
-	// READ-ONLY; The fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
-	ID *string
-
-	// READ-ONLY; The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
-	TenantID *string
-}
-
-// TenantListResult - Tenant Ids information.
-type TenantListResult struct {
-	// REQUIRED; The URL to use for getting the next set of results.
+// TargetDirectoryListResult - Subscription Response to list out Changed Target Directory.
+type TargetDirectoryListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// An array of tenants.
-	Value []*TenantIDDescription
+	// READ-ONLY; The list of subscription response to changed target directory.
+	Value []*TargetDirectoryResult
+}
+
+// TargetDirectoryRequest - Subscription Request for Changed Target Directory.
+type TargetDirectoryRequest struct {
+	// Target Directory request properties.
+	Properties *TargetDirectoryRequestProperties
+}
+
+// TargetDirectoryRequestProperties - Properties of subscription Request for Changed Target Directory.
+type TargetDirectoryRequestProperties struct {
+	// The destination OwnerId, can be object id or email address
+	DestinationOwnerID *string
+
+	// The destination Tenant id where subscription needs to be accepted
+	DestinationTenantID *string
+}
+
+// TargetDirectoryResult - Subscription Response for Changed Target Directory.
+type TargetDirectoryResult struct {
+	// Subscription Changed Target Directory response properties.
+	Properties *TargetDirectoryResultProperties
+
+	// READ-ONLY; Fully qualified ID for the Subscription Changed Directory resource.
+	ID *string
+
+	// READ-ONLY; Subscription Name.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type, Microsoft.Subscription/changeTenantRequest.
+	Type *string
+}
+
+// TargetDirectoryResultProperties - Properties of subscription Response for Changed Target Directory.
+type TargetDirectoryResultProperties struct {
+	// READ-ONLY; The UTC date and time when the transfer request was accepted
+	AcceptedDate *time.Time
+
+	// READ-ONLY; The UTC date and time when the transfer request was created
+	CreatedDate *time.Time
+
+	// READ-ONLY; Destination Owner Id where Subscription will be accepted.
+	DestinationOwnerID *string
+
+	// READ-ONLY; Destination Tenant Id where Subscription will be accepted.
+	DestinationTenantID *string
+
+	// READ-ONLY; Subscription Initiate Request Expiry time
+	ExpiresOn *time.Time
+
+	// READ-ONLY; The email address of the user who initiated the transfer request. If the request was generated by a Service
+	// Principal, this field may be null.
+	SourceOwnerEmail *string
+
+	// READ-ONLY; The object id of the user who initiated the transfer request.
+	SourceOwnerID *string
+
+	// READ-ONLY; The id of the tenant where the subscription originally resided.
+	SourceTenantID *string
+
+	// READ-ONLY; Status of the subscription transfer operation.
+	Status *ChangeDirectoryOperationStatus
+
+	// READ-ONLY; The id of the subscription being transferred.
+	SubscriptionID *string
 }
 
 // TenantPolicy - Tenant policy.

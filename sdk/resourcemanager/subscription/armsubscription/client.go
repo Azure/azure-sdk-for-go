@@ -25,7 +25,7 @@ type Client struct {
 
 // NewClient creates a new instance of Client with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 // BeginAcceptOwnership - Accept subscription ownership.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - options - ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
 func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*runtime.Poller[ClientAcceptOwnershipResponse], error) {
@@ -63,7 +63,7 @@ func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID s
 // AcceptOwnership - Accept subscription ownership.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 func (client *Client) acceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginAcceptOwnership"
@@ -86,7 +86,7 @@ func (client *Client) acceptOwnership(ctx context.Context, subscriptionID string
 }
 
 // acceptOwnershipCreateRequest creates the AcceptOwnership request.
-func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*policy.Request, error) {
+func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, _ *ClientBeginAcceptOwnershipOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnership"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -97,7 +97,7 @@ func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscrip
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -109,7 +109,7 @@ func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscrip
 // AcceptOwnershipStatus - Accept subscription ownership status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - options - ClientAcceptOwnershipStatusOptions contains the optional parameters for the Client.AcceptOwnershipStatus method.
 func (client *Client) AcceptOwnershipStatus(ctx context.Context, subscriptionID string, options *ClientAcceptOwnershipStatusOptions) (ClientAcceptOwnershipStatusResponse, error) {
@@ -135,7 +135,7 @@ func (client *Client) AcceptOwnershipStatus(ctx context.Context, subscriptionID 
 }
 
 // acceptOwnershipStatusCreateRequest creates the AcceptOwnershipStatus request.
-func (client *Client) acceptOwnershipStatusCreateRequest(ctx context.Context, subscriptionID string, options *ClientAcceptOwnershipStatusOptions) (*policy.Request, error) {
+func (client *Client) acceptOwnershipStatusCreateRequest(ctx context.Context, subscriptionID string, _ *ClientAcceptOwnershipStatusOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnershipStatus"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -146,7 +146,7 @@ func (client *Client) acceptOwnershipStatusCreateRequest(ctx context.Context, su
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -164,7 +164,7 @@ func (client *Client) acceptOwnershipStatusHandleResponse(resp *http.Response) (
 // Cancel - The operation to cancel a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - options - ClientCancelOptions contains the optional parameters for the Client.Cancel method.
 func (client *Client) Cancel(ctx context.Context, subscriptionID string, options *ClientCancelOptions) (ClientCancelResponse, error) {
@@ -190,7 +190,7 @@ func (client *Client) Cancel(ctx context.Context, subscriptionID string, options
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *Client) cancelCreateRequest(ctx context.Context, subscriptionID string, options *ClientCancelOptions) (*policy.Request, error) {
+func (client *Client) cancelCreateRequest(ctx context.Context, subscriptionID string, _ *ClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/cancel"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -201,7 +201,7 @@ func (client *Client) cancelCreateRequest(ctx context.Context, subscriptionID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +219,7 @@ func (client *Client) cancelHandleResponse(resp *http.Response) (ClientCancelRes
 // Enable - The operation to enable a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - options - ClientEnableOptions contains the optional parameters for the Client.Enable method.
 func (client *Client) Enable(ctx context.Context, subscriptionID string, options *ClientEnableOptions) (ClientEnableResponse, error) {
@@ -245,7 +245,7 @@ func (client *Client) Enable(ctx context.Context, subscriptionID string, options
 }
 
 // enableCreateRequest creates the Enable request.
-func (client *Client) enableCreateRequest(ctx context.Context, subscriptionID string, options *ClientEnableOptions) (*policy.Request, error) {
+func (client *Client) enableCreateRequest(ctx context.Context, subscriptionID string, _ *ClientEnableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/enable"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -256,7 +256,7 @@ func (client *Client) enableCreateRequest(ctx context.Context, subscriptionID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,7 +274,7 @@ func (client *Client) enableHandleResponse(resp *http.Response) (ClientEnableRes
 // Rename - The operation to rename a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - body - Subscription Name
 //   - options - ClientRenameOptions contains the optional parameters for the Client.Rename method.
@@ -301,7 +301,7 @@ func (client *Client) Rename(ctx context.Context, subscriptionID string, body Na
 }
 
 // renameCreateRequest creates the Rename request.
-func (client *Client) renameCreateRequest(ctx context.Context, subscriptionID string, body Name, options *ClientRenameOptions) (*policy.Request, error) {
+func (client *Client) renameCreateRequest(ctx context.Context, subscriptionID string, body Name, _ *ClientRenameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/rename"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -312,7 +312,7 @@ func (client *Client) renameCreateRequest(ctx context.Context, subscriptionID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

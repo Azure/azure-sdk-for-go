@@ -13,8 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/087b93bee041c4e1fdc0296b8a96c933689f7a1e/specification/subscription/resource-manager/Microsoft.Subscription/Subscription/preview/2025-11-01-preview/examples/getBillingAccountPolicy.json
-func ExampleBillingAccountClient_GetPolicy() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/087b93bee041c4e1fdc0296b8a96c933689f7a1e/specification/subscription/resource-manager/Microsoft.Subscription/Subscription/preview/2025-11-01-preview/examples/getSubscriptionOperation.json
+func ExampleOperationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -24,24 +24,14 @@ func ExampleBillingAccountClient_GetPolicy() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBillingAccountClient().GetPolicy(ctx, "testBillingAccountId", nil)
+	res, err := clientFactory.NewOperationClient().Get(ctx, "e4b8d068-f574-462a-a76f-6fa0afc613c9", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.BillingAccountPoliciesResponse = armsubscription.BillingAccountPoliciesResponse{
-	// 	Name: to.Ptr("testBillingAccountId"),
-	// 	Type: to.Ptr("Microsoft.Subscription/policies"),
-	// 	ID: to.Ptr("/providers/Microsoft.Subscription/Policies/policyForBillingAccount"),
-	// 	Properties: &armsubscription.BillingAccountPoliciesResponseProperties{
-	// 		AllowTransfers: to.Ptr(true),
-	// 		ServiceTenants: []*armsubscription.ServiceTenantResponse{
-	// 			{
-	// 				TenantID: to.Ptr("b8ed2088-c458-4e77-bd61-9e048d96a1c0"),
-	// 				TenantName: to.Ptr("testServiceTenant"),
-	// 		}},
-	// 	},
+	// res.CreationResult = armsubscription.CreationResult{
+	// 	SubscriptionLink: to.Ptr("/subscriptions/4df8d5c2-1b7e-4dd5-bc61-640704bde633"),
 	// }
 }

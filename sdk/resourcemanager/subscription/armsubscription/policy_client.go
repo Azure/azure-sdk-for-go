@@ -22,7 +22,7 @@ type PolicyClient struct {
 
 // NewPolicyClient creates a new instance of PolicyClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,7 +37,7 @@ func NewPolicyClient(credential azcore.TokenCredential, options *arm.ClientOptio
 // AddUpdatePolicyForTenant - Create or Update Subscription tenant policy for user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientAddUpdatePolicyForTenantOptions contains the optional parameters for the PolicyClient.AddUpdatePolicyForTenant
 //     method.
 func (client *PolicyClient) AddUpdatePolicyForTenant(ctx context.Context, body PutTenantPolicyRequestProperties, options *PolicyClientAddUpdatePolicyForTenantOptions) (PolicyClientAddUpdatePolicyForTenantResponse, error) {
@@ -63,14 +63,14 @@ func (client *PolicyClient) AddUpdatePolicyForTenant(ctx context.Context, body P
 }
 
 // addUpdatePolicyForTenantCreateRequest creates the AddUpdatePolicyForTenant request.
-func (client *PolicyClient) addUpdatePolicyForTenantCreateRequest(ctx context.Context, body PutTenantPolicyRequestProperties, options *PolicyClientAddUpdatePolicyForTenantOptions) (*policy.Request, error) {
+func (client *PolicyClient) addUpdatePolicyForTenantCreateRequest(ctx context.Context, body PutTenantPolicyRequestProperties, _ *PolicyClientAddUpdatePolicyForTenantOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/policies/default"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -91,7 +91,7 @@ func (client *PolicyClient) addUpdatePolicyForTenantHandleResponse(resp *http.Re
 // GetPolicyForTenant - Get the subscription tenant policy for the user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientGetPolicyForTenantOptions contains the optional parameters for the PolicyClient.GetPolicyForTenant
 //     method.
 func (client *PolicyClient) GetPolicyForTenant(ctx context.Context, options *PolicyClientGetPolicyForTenantOptions) (PolicyClientGetPolicyForTenantResponse, error) {
@@ -117,14 +117,14 @@ func (client *PolicyClient) GetPolicyForTenant(ctx context.Context, options *Pol
 }
 
 // getPolicyForTenantCreateRequest creates the GetPolicyForTenant request.
-func (client *PolicyClient) getPolicyForTenantCreateRequest(ctx context.Context, options *PolicyClientGetPolicyForTenantOptions) (*policy.Request, error) {
+func (client *PolicyClient) getPolicyForTenantCreateRequest(ctx context.Context, _ *PolicyClientGetPolicyForTenantOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/policies/default"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,7 +141,7 @@ func (client *PolicyClient) getPolicyForTenantHandleResponse(resp *http.Response
 
 // NewListPolicyForTenantPager - Get the subscription tenant policy for the user's tenant.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientListPolicyForTenantOptions contains the optional parameters for the PolicyClient.NewListPolicyForTenantPager
 //     method.
 func (client *PolicyClient) NewListPolicyForTenantPager(options *PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse] {
@@ -168,14 +168,14 @@ func (client *PolicyClient) NewListPolicyForTenantPager(options *PolicyClientLis
 }
 
 // listPolicyForTenantCreateRequest creates the ListPolicyForTenant request.
-func (client *PolicyClient) listPolicyForTenantCreateRequest(ctx context.Context, options *PolicyClientListPolicyForTenantOptions) (*policy.Request, error) {
+func (client *PolicyClient) listPolicyForTenantCreateRequest(ctx context.Context, _ *PolicyClientListPolicyForTenantOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Subscription/policies"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -5,11 +5,6 @@
 
 package armsubscription
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
-	moduleVersion = "v1.2.0"
-)
-
 // AcceptOwnership - The accept ownership state of the resource.
 type AcceptOwnership string
 
@@ -25,6 +20,44 @@ func PossibleAcceptOwnershipValues() []AcceptOwnership {
 		AcceptOwnershipCompleted,
 		AcceptOwnershipExpired,
 		AcceptOwnershipPending,
+	}
+}
+
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
+
+// ChangeDirectoryOperationStatus - Status of the subscription transfer operation.
+type ChangeDirectoryOperationStatus string
+
+const (
+	// ChangeDirectoryOperationStatusCompleted - The subscription transfer has been completed and is now owned by the destination
+	// tenant.
+	ChangeDirectoryOperationStatusCompleted ChangeDirectoryOperationStatus = "Completed"
+	// ChangeDirectoryOperationStatusInProgress - The subscription transfer request has been accepted by the destination tenant
+	// and the transfer is in progress.
+	ChangeDirectoryOperationStatusInProgress ChangeDirectoryOperationStatus = "InProgress"
+	// ChangeDirectoryOperationStatusInitialized - The subscription transfer request has been created and is waiting for acceptance
+	// by the destination tenant.
+	ChangeDirectoryOperationStatusInitialized ChangeDirectoryOperationStatus = "Initialized"
+)
+
+// PossibleChangeDirectoryOperationStatusValues returns the possible values for the ChangeDirectoryOperationStatus const type.
+func PossibleChangeDirectoryOperationStatusValues() []ChangeDirectoryOperationStatus {
+	return []ChangeDirectoryOperationStatus{
+		ChangeDirectoryOperationStatusCompleted,
+		ChangeDirectoryOperationStatusInProgress,
+		ChangeDirectoryOperationStatusInitialized,
 	}
 }
 
@@ -48,6 +81,43 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
+	}
+}
+
+// Provisioning - The provisioning state of the resource.
+type Provisioning string
+
+const (
+	ProvisioningAccepted  Provisioning = "Accepted"
+	ProvisioningPending   Provisioning = "Pending"
+	ProvisioningSucceeded Provisioning = "Succeeded"
+)
+
+// PossibleProvisioningValues returns the possible values for the Provisioning const type.
+func PossibleProvisioningValues() []Provisioning {
+	return []Provisioning{
+		ProvisioningAccepted,
+		ProvisioningPending,
+		ProvisioningSucceeded,
+	}
+}
+
 // ProvisioningState - The provisioning state of the resource.
 type ProvisioningState string
 
@@ -63,46 +133,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateAccepted,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
-	}
-}
-
-// SpendingLimit - The subscription spending limit.
-type SpendingLimit string
-
-const (
-	SpendingLimitCurrentPeriodOff SpendingLimit = "CurrentPeriodOff"
-	SpendingLimitOff              SpendingLimit = "Off"
-	SpendingLimitOn               SpendingLimit = "On"
-)
-
-// PossibleSpendingLimitValues returns the possible values for the SpendingLimit const type.
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return []SpendingLimit{
-		SpendingLimitCurrentPeriodOff,
-		SpendingLimitOff,
-		SpendingLimitOn,
-	}
-}
-
-// SubscriptionState - The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
-type SubscriptionState string
-
-const (
-	SubscriptionStateDeleted  SubscriptionState = "Deleted"
-	SubscriptionStateDisabled SubscriptionState = "Disabled"
-	SubscriptionStateEnabled  SubscriptionState = "Enabled"
-	SubscriptionStatePastDue  SubscriptionState = "PastDue"
-	SubscriptionStateWarned   SubscriptionState = "Warned"
-)
-
-// PossibleSubscriptionStateValues returns the possible values for the SubscriptionState const type.
-func PossibleSubscriptionStateValues() []SubscriptionState {
-	return []SubscriptionState{
-		SubscriptionStateDeleted,
-		SubscriptionStateDisabled,
-		SubscriptionStateEnabled,
-		SubscriptionStatePastDue,
-		SubscriptionStateWarned,
 	}
 }
 

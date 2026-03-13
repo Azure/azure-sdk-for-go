@@ -25,7 +25,7 @@ type BillingAccountClient struct {
 
 // NewBillingAccountClient creates a new instance of BillingAccountClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBillingAccountClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BillingAccountClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewBillingAccountClient(credential azcore.TokenCredential, options *arm.Cli
 // GetPolicy - Get Billing Account Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2025-11-01-preview
 //   - billingAccountID - Billing Account Id.
 //   - options - BillingAccountClientGetPolicyOptions contains the optional parameters for the BillingAccountClient.GetPolicy
 //     method.
@@ -67,7 +67,7 @@ func (client *BillingAccountClient) GetPolicy(ctx context.Context, billingAccoun
 }
 
 // getPolicyCreateRequest creates the GetPolicy request.
-func (client *BillingAccountClient) getPolicyCreateRequest(ctx context.Context, billingAccountID string, options *BillingAccountClientGetPolicyOptions) (*policy.Request, error) {
+func (client *BillingAccountClient) getPolicyCreateRequest(ctx context.Context, billingAccountID string, _ *BillingAccountClientGetPolicyOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Subscription/policies/default"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -78,7 +78,7 @@ func (client *BillingAccountClient) getPolicyCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

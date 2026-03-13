@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListBackends.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementListBackends.json
 func ExampleBackendClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleBackendClient_NewListByServicePager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.BackendCollection = armapimanagement.BackendCollection{
-		// 	Count: to.Ptr[int64](2),
+		// 	Count: to.Ptr[int64](4),
 		// 	Value: []*armapimanagement.BackendContract{
 		// 		{
 		// 			Name: to.Ptr("proxybackend"),
@@ -101,12 +101,71 @@ func ExampleBackendClient_NewListByServicePager() {
 		// 							URL: to.Ptr("fabric:/mytestapp/mytestservice"),
 		// 							Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
 		// 						},
-		// 				}},
-		// 			}
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("sfbackend"),
+		// 						Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sustainable-backend-europe-north"),
+		// 						Properties: &armapimanagement.BackendContractProperties{
+		// 							Description: to.Ptr("description5308"),
+		// 							AzureRegion: to.Ptr("northeurope"),
+		// 							Credentials: &armapimanagement.BackendCredentialsContract{
+		// 								Authorization: &armapimanagement.BackendAuthorizationHeaderCredentials{
+		// 									Parameter: to.Ptr("opensesma"),
+		// 									Scheme: to.Ptr("Basic"),
+		// 								},
+		// 								Header: map[string][]*string{
+		// 									"x-my-1": []*string{
+		// 										to.Ptr("val1"),
+		// 										to.Ptr("val2")},
+		// 									},
+		// 									Query: map[string][]*string{
+		// 										"sv": []*string{
+		// 											to.Ptr("xx"),
+		// 											to.Ptr("bb"),
+		// 											to.Ptr("cc")},
+		// 										},
+		// 									},
+		// 									Proxy: &armapimanagement.BackendProxyContract{
+		// 										Password: to.Ptr("<password>"),
+		// 										URL: to.Ptr("http://192.168.1.1:8080"),
+		// 										Username: to.Ptr("Contoso\\admin"),
+		// 									},
+		// 									TLS: &armapimanagement.BackendTLSProperties{
+		// 										ValidateCertificateChain: to.Ptr(false),
+		// 										ValidateCertificateName: to.Ptr(false),
+		// 									},
+		// 									URL: to.Ptr("https://backendname2644/"),
+		// 									Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+		// 								},
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("sfbackend"),
+		// 								Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/carbon-efficent-load-balancer"),
+		// 								Properties: &armapimanagement.BackendContractProperties{
+		// 									Type: to.Ptr(armapimanagement.BackendTypePool),
+		// 									Pool: &armapimanagement.BackendBaseParametersPool{
+		// 										Services: []*armapimanagement.BackendPoolItem{
+		// 											{
+		// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sustainable-backend-europe-north"),
+		// 												PreferredCarbonEmission: to.Ptr(armapimanagement.CarbonEmissionCategoryMedium),
+		// 												Priority: to.Ptr[int32](1),
+		// 												Weight: to.Ptr[int32](1),
+		// 											},
+		// 											{
+		// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
+		// 												Priority: to.Ptr[int32](1),
+		// 												Weight: to.Ptr[int32](1),
+		// 										}},
+		// 									},
+		// 								},
+		// 						}},
+		// 					}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementHeadBackend.json
 func ExampleBackendClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +182,7 @@ func ExampleBackendClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementGetBackend.json
 func ExampleBackendClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +225,107 @@ func ExampleBackendClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateBackendProxyBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagamentCreateBackendWithCustomAssignedCertificate_Thumbprints.json
+func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendCustomAssignedCertificateThumbprint() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "cabackend", armapimanagement.BackendContract{
+		Properties: &armapimanagement.BackendContractProperties{
+			Description: to.Ptr("Custom Assigned certificate Example"),
+			TLS: &armapimanagement.BackendTLSProperties{
+				ServerCertificateThumbprints: []*string{
+					to.Ptr("1365083bae61ee876fc26850b825d05d3eb2e503")},
+				ValidateCertificateChain: to.Ptr(true),
+				ValidateCertificateName:  to.Ptr(true),
+			},
+			URL:      to.Ptr("https://self-signed.badssl.com/"),
+			Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+		},
+	}, &armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackendContract = armapimanagement.BackendContract{
+	// 	Name: to.Ptr("cabackend"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/cabackend"),
+	// 	Properties: &armapimanagement.BackendContractProperties{
+	// 		Description: to.Ptr("Custom Assigned certificate Example"),
+	// 		TLS: &armapimanagement.BackendTLSProperties{
+	// 			ServerCertificateThumbprints: []*string{
+	// 				to.Ptr("1365083bae61ee876fc26850b825d05d3eb2e503")},
+	// 				ValidateCertificateChain: to.Ptr(true),
+	// 				ValidateCertificateName: to.Ptr(true),
+	// 			},
+	// 			URL: to.Ptr("https://self-signed.badssl.com/"),
+	// 			Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendWithCustomAssignedCertificate_X509Names.json
+func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendCustomAssignedCertificateX509Names() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "cabackend", armapimanagement.BackendContract{
+		Properties: &armapimanagement.BackendContractProperties{
+			Description: to.Ptr("Custom Assigned certificate Example"),
+			TLS: &armapimanagement.BackendTLSProperties{
+				ServerX509Names: []*armapimanagement.X509CertificateName{
+					{
+						Name: to.Ptr("*.badssl.com"),
+					}},
+				ValidateCertificateChain: to.Ptr(true),
+				ValidateCertificateName:  to.Ptr(true),
+			},
+			URL:      to.Ptr("https://self-signed.badssl.com/"),
+			Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+		},
+	}, &armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackendContract = armapimanagement.BackendContract{
+	// 	Name: to.Ptr("cabackend"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/cabackend"),
+	// 	Properties: &armapimanagement.BackendContractProperties{
+	// 		Description: to.Ptr("Custom Assigned certificate Example"),
+	// 		TLS: &armapimanagement.BackendTLSProperties{
+	// 			ServerX509Names: []*armapimanagement.X509CertificateName{
+	// 				{
+	// 					Name: to.Ptr("*.badssl.com"),
+	// 			}},
+	// 			ValidateCertificateChain: to.Ptr(true),
+	// 			ValidateCertificateName: to.Ptr(true),
+	// 		},
+	// 		URL: to.Ptr("https://self-signed.badssl.com/"),
+	// 		Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendProxyBackend.json
 func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendProxyBackend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +413,7 @@ func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendProxyBackend(
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateBackendServiceFabric.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendServiceFabric.json
 func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendServiceFabric() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +475,277 @@ func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendServiceFabric
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendWithAzureRegion.json
+func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendWithAzureRegion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "azurebackend", armapimanagement.BackendContract{
+		Properties: &armapimanagement.BackendContractProperties{
+			AzureRegion: to.Ptr("northeurope"),
+			URL:         to.Ptr("https://backendname2644/"),
+			Protocol:    to.Ptr(armapimanagement.BackendProtocolHTTP),
+		},
+	}, &armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackendContract = armapimanagement.BackendContract{
+	// 	Name: to.Ptr("azurebackend"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/azurebackend"),
+	// 	Properties: &armapimanagement.BackendContractProperties{
+	// 		AzureRegion: to.Ptr("northeurope"),
+	// 		URL: to.Ptr("https://backendname2644/"),
+	// 		Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendWithCarbonAwareLoadBalancer.json
+func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendWithCarbonAwareLoadBalancer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "carbonawareloadbalancerbackend", armapimanagement.BackendContract{
+		Properties: &armapimanagement.BackendContractProperties{
+			Type: to.Ptr(armapimanagement.BackendTypePool),
+			Pool: &armapimanagement.BackendBaseParametersPool{
+				Services: []*armapimanagement.BackendPoolItem{
+					{
+						ID:                      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sustainable-backend-europe-north"),
+						PreferredCarbonEmission: to.Ptr(armapimanagement.CarbonEmissionCategoryMedium),
+						Priority:                to.Ptr[int32](1),
+						Weight:                  to.Ptr[int32](1),
+					},
+					{
+						ID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
+						Priority: to.Ptr[int32](1),
+						Weight:   to.Ptr[int32](1),
+					}},
+			},
+		},
+	}, &armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackendContract = armapimanagement.BackendContract{
+	// 	Name: to.Ptr("carbonawareloadbalancerbackend"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/carbonawareloadbalancerbackend"),
+	// 	Properties: &armapimanagement.BackendContractProperties{
+	// 		Type: to.Ptr(armapimanagement.BackendTypePool),
+	// 		Pool: &armapimanagement.BackendBaseParametersPool{
+	// 			Services: []*armapimanagement.BackendPoolItem{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sustainable-backend-europe-north"),
+	// 					PreferredCarbonEmission: to.Ptr(armapimanagement.CarbonEmissionCategoryMedium),
+	// 					Priority: to.Ptr[int32](1),
+	// 					Weight: to.Ptr[int32](1),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
+	// 					Priority: to.Ptr[int32](1),
+	// 					Weight: to.Ptr[int32](1),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendWithPriorityBasedLoadBalancer.json
+func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendWithPriorityBasedLoadBalancer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "priority-based-load-balancer", armapimanagement.BackendContract{
+		Properties: &armapimanagement.BackendContractProperties{
+			Type: to.Ptr(armapimanagement.BackendTypePool),
+			Pool: &armapimanagement.BackendBaseParametersPool{
+				Services: []*armapimanagement.BackendPoolItem{
+					{
+						ID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-1"),
+						Priority: to.Ptr[int32](1),
+					},
+					{
+						ID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-2"),
+						Priority: to.Ptr[int32](1),
+					},
+					{
+						ID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-3"),
+						Priority: to.Ptr[int32](2),
+					},
+					{
+						ID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-4"),
+						Priority: to.Ptr[int32](2),
+					}},
+			},
+		},
+	}, &armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackendContract = armapimanagement.BackendContract{
+	// 	Name: to.Ptr("priority-based-load-balancer"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/priority-based-load-balancer"),
+	// 	Properties: &armapimanagement.BackendContractProperties{
+	// 		Type: to.Ptr(armapimanagement.BackendTypePool),
+	// 		Pool: &armapimanagement.BackendBaseParametersPool{
+	// 			Services: []*armapimanagement.BackendPoolItem{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-1"),
+	// 					Priority: to.Ptr[int32](1),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-2"),
+	// 					Priority: to.Ptr[int32](1),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-3"),
+	// 					Priority: to.Ptr[int32](2),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-4"),
+	// 					Priority: to.Ptr[int32](2),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendWithSimpleLoadBalancer.json
+func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendWithSimpleLoadBalancer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "simple-load-balancer", armapimanagement.BackendContract{
+		Properties: &armapimanagement.BackendContractProperties{
+			Type: to.Ptr(armapimanagement.BackendTypePool),
+			Pool: &armapimanagement.BackendBaseParametersPool{
+				Services: []*armapimanagement.BackendPoolItem{
+					{
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-1"),
+					},
+					{
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-2"),
+					}},
+			},
+		},
+	}, &armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackendContract = armapimanagement.BackendContract{
+	// 	Name: to.Ptr("simple-load-balancer"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/simple-load-balancer"),
+	// 	Properties: &armapimanagement.BackendContractProperties{
+	// 		Type: to.Ptr(armapimanagement.BackendTypePool),
+	// 		Pool: &armapimanagement.BackendBaseParametersPool{
+	// 			Services: []*armapimanagement.BackendPoolItem{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-1"),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-2"),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateBackendWithWeightedLoadBalancer.json
+func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendWithWeightedLoadBalancer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "weighted-load-balancer", armapimanagement.BackendContract{
+		Properties: &armapimanagement.BackendContractProperties{
+			Type: to.Ptr(armapimanagement.BackendTypePool),
+			Pool: &armapimanagement.BackendBaseParametersPool{
+				Services: []*armapimanagement.BackendPoolItem{
+					{
+						ID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-1"),
+						Weight: to.Ptr[int32](75),
+					},
+					{
+						ID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-2"),
+						Weight: to.Ptr[int32](25),
+					}},
+			},
+		},
+	}, &armapimanagement.BackendClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackendContract = armapimanagement.BackendContract{
+	// 	Name: to.Ptr("weighted-load-balancer"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/weighted-load-balancer"),
+	// 	Properties: &armapimanagement.BackendContractProperties{
+	// 		Type: to.Ptr(armapimanagement.BackendTypePool),
+	// 		Pool: &armapimanagement.BackendBaseParametersPool{
+	// 			Services: []*armapimanagement.BackendPoolItem{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-1"),
+	// 					Weight: to.Ptr[int32](75),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/backend-2"),
+	// 					Weight: to.Ptr[int32](25),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementUpdateBackend.json
 func ExampleBackendClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,6 +777,7 @@ func ExampleBackendClient_Update() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
 	// 	Properties: &armapimanagement.BackendContractProperties{
 	// 		Description: to.Ptr("description5308"),
+	// 		AzureRegion: to.Ptr("northeurope"),
 	// 		Credentials: &armapimanagement.BackendCredentialsContract{
 	// 			Authorization: &armapimanagement.BackendAuthorizationHeaderCredentials{
 	// 				Parameter: to.Ptr("opensesma"),
@@ -380,7 +810,7 @@ func ExampleBackendClient_Update() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementDeleteBackend.json
 func ExampleBackendClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +827,7 @@ func ExampleBackendClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementBackendReconnect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementBackendReconnect.json
 func ExampleBackendClient_Reconnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

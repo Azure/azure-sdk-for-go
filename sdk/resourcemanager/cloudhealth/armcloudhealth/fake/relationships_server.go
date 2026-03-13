@@ -21,13 +21,13 @@ import (
 
 // RelationshipsServer is a fake server for instances of the armcloudhealth.RelationshipsClient type.
 type RelationshipsServer struct {
-	// CreateOrUpdate is the fake for method RelationshipsClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method RelationshipsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource armcloudhealth.Relationship, options *armcloudhealth.RelationshipsClientCreateOrUpdateOptions) (resp azfake.Responder[armcloudhealth.RelationshipsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource armcloudhealth.Relationship, options *armcloudhealth.RelationshipsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcloudhealth.RelationshipsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method RelationshipsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, options *armcloudhealth.RelationshipsClientDeleteOptions) (resp azfake.Responder[armcloudhealth.RelationshipsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method RelationshipsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, options *armcloudhealth.RelationshipsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcloudhealth.RelationshipsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RelationshipsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,6 +44,8 @@ type RelationshipsServer struct {
 func NewRelationshipsServerTransport(srv *RelationshipsServer) *RelationshipsServerTransport {
 	return &RelationshipsServerTransport{
 		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armcloudhealth.RelationshipsClientCreateOrUpdateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armcloudhealth.RelationshipsClientDeleteResponse]](),
 		newListByHealthModelPager: newTracker[azfake.PagerResponder[armcloudhealth.RelationshipsClientListByHealthModelResponse]](),
 	}
 }
@@ -52,6 +54,8 @@ func NewRelationshipsServerTransport(srv *RelationshipsServer) *RelationshipsSer
 // Don't use this type directly, use NewRelationshipsServerTransport instead.
 type RelationshipsServerTransport struct {
 	srv                       *RelationshipsServer
+	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armcloudhealth.RelationshipsClientCreateOrUpdateResponse]]
+	beginDelete               *tracker[azfake.PollerResponder[armcloudhealth.RelationshipsClientDeleteResponse]]
 	newListByHealthModelPager *tracker[azfake.PagerResponder[armcloudhealth.RelationshipsClientListByHealthModelResponse]]
 }
 
@@ -78,10 +82,10 @@ func (r *RelationshipsServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
-			case "RelationshipsClient.CreateOrUpdate":
-				res.resp, res.err = r.dispatchCreateOrUpdate(req)
-			case "RelationshipsClient.Delete":
-				res.resp, res.err = r.dispatchDelete(req)
+			case "RelationshipsClient.BeginCreateOrUpdate":
+				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
+			case "RelationshipsClient.BeginDelete":
+				res.resp, res.err = r.dispatchBeginDelete(req)
 			case "RelationshipsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RelationshipsClient.NewListByHealthModelPager":
@@ -105,81 +109,103 @@ func (r *RelationshipsServerTransport) dispatchToMethodFake(req *http.Request, m
 	}
 }
 
-func (r *RelationshipsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (r *RelationshipsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships/(?P<relationshipName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := r.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships/(?P<relationshipName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcloudhealth.Relationship](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		relationshipNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relationshipName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, relationshipNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		r.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.Relationship](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		r.beginCreateOrUpdate.remove(req)
 	}
-	relationshipNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relationshipName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, relationshipNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Relationship, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (r *RelationshipsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if r.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (r *RelationshipsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships/(?P<relationshipName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := r.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships/(?P<relationshipName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		relationshipNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relationshipName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, healthModelNameParam, relationshipNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		r.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	relationshipNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relationshipName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		r.beginDelete.remove(req)
 	}
-	respr, errRespr := r.srv.Delete(req.Context(), resourceGroupNameParam, healthModelNameParam, relationshipNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

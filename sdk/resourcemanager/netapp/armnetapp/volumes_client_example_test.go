@@ -279,7 +279,7 @@ func ExampleVolumesClient_Get_volumesExtralargeVolumeGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -292,7 +292,7 @@ func ExampleVolumesClient_Get_volumesExtralargeVolumeGet() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientGetResponse{
 	// 	Volume: &armnetapp.Volume{
-	// 		ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 	// 		Name: to.Ptr("account1/pool1/volume1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 	// 		Location: to.Ptr("eastus"),
@@ -364,7 +364,7 @@ func ExampleVolumesClient_NewListPager_volumesExtralargeVolumeList() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -383,7 +383,7 @@ func ExampleVolumesClient_NewListPager_volumesExtralargeVolumeList() {
 		// 	VolumeList: armnetapp.VolumeList{
 		// 		Value: []*armnetapp.Volume{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 		// 				Name: to.Ptr("account1/pool1/volume1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 		// 				Location: to.Ptr("eastus"),

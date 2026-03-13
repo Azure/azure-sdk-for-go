@@ -1923,7 +1923,7 @@ func (c CacheProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "encryption", c.Encryption)
 	populate(objectMap, "encryptionKeySource", c.EncryptionKeySource)
 	populate(objectMap, "exportPolicy", c.ExportPolicy)
-	populate(objectMap, "filepath", c.Filepath)
+	populate(objectMap, "filePath", c.FilePath)
 	populate(objectMap, "globalFileLocking", c.GlobalFileLocking)
 	populate(objectMap, "kerberos", c.Kerberos)
 	populate(objectMap, "keyVaultPrivateEndpointResourceId", c.KeyVaultPrivateEndpointResourceID)
@@ -1973,8 +1973,8 @@ func (c *CacheProperties) UnmarshalJSON(data []byte) error {
 		case "exportPolicy":
 			err = unpopulate(val, "ExportPolicy", &c.ExportPolicy)
 			delete(rawMsg, key)
-		case "filepath":
-			err = unpopulate(val, "Filepath", &c.Filepath)
+		case "filePath":
+			err = unpopulate(val, "FilePath", &c.FilePath)
 			delete(rawMsg, key)
 		case "globalFileLocking":
 			err = unpopulate(val, "GlobalFileLocking", &c.GlobalFileLocking)

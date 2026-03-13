@@ -80,8 +80,6 @@ func PossibleActualRansomwareProtectionStateValues() []ActualRansomwareProtectio
 type ApplicationType string
 
 const (
-	// ApplicationTypeCUSTOM - Custom application type allows min 2 and max 12 data volumes in a volume group.
-	ApplicationTypeCUSTOM  ApplicationType = "CUSTOM"
 	ApplicationTypeORACLE  ApplicationType = "ORACLE"
 	ApplicationTypeSAPHANA ApplicationType = "SAP-HANA"
 )
@@ -89,7 +87,6 @@ const (
 // PossibleApplicationTypeValues returns the possible values for the ApplicationType const type.
 func PossibleApplicationTypeValues() []ApplicationType {
 	return []ApplicationType{
-		ApplicationTypeCUSTOM,
 		ApplicationTypeORACLE,
 		ApplicationTypeSAPHANA,
 	}

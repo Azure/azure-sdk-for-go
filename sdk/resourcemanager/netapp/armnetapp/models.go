@@ -873,7 +873,7 @@ type CacheProperties struct {
 	EncryptionKeySource *EncryptionKeySource
 
 	// REQUIRED; The file path of the Cache.
-	Filepath *string
+	FilePath *string
 
 	// REQUIRED; Origin cluster information
 	OriginClusterInformation *OriginClusterInformation

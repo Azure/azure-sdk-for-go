@@ -1,13 +1,12 @@
 # Release History
 
-## 10.0.0-beta.1 (2026-03-10)
+## 10.0.0-beta.1 (2026-03-13)
 ### Breaking Changes
 
 - Type of `AccountPatch.Properties` has been changed from `*AccountProperties` to `*AccountPropertiesPatch`
 
 ### Features Added
 
-- New value `ApplicationTypeCUSTOM` added to enum type `ApplicationType`
 - New enum type `BreakthroughMode` with values `BreakthroughModeDisabled`, `BreakthroughModeEnabled`
 - New enum type `BucketPatchPermissions` with values `BucketPatchPermissionsReadOnly`, `BucketPatchPermissionsReadWrite`
 - New enum type `BucketPermissions` with values `BucketPermissionsReadOnly`, `BucketPermissionsReadWrite`

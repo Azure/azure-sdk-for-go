@@ -26,7 +26,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewCachesClient().BeginCreateOrUpdate(ctx, "myRG", "account1", "pool1", "cache1", armnetapp.Cache{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetapp.CacheProperties{
-			Filepath:                to.Ptr("cache-west-us2-01"),
+			FilePath:                to.Ptr("cache-west-us2-01"),
 			Size:                    to.Ptr[int64](107374182400),
 			Ldap:                    to.Ptr(armnetapp.LdapStateEnabled),
 			LdapServerType:          to.Ptr(armnetapp.LdapServerTypeOpenLDAP),
@@ -61,7 +61,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.CacheProperties{
-	// 			Filepath: to.Ptr("cache-west-us2-01"),
+	// 			FilePath: to.Ptr("cache-west-us2-01"),
 	// 			Size: to.Ptr[int64](214748364800),
 	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
@@ -133,7 +133,7 @@ func ExampleCachesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.CacheProperties{
-	// 			Filepath: to.Ptr("cache-west-us2-01"),
+	// 			FilePath: to.Ptr("cache-west-us2-01"),
 	// 			Size: to.Ptr[int64](107374182400),
 	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
@@ -190,7 +190,7 @@ func ExampleCachesClient_NewListByCapacityPoolsPager() {
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armnetapp.CacheProperties{
-		// 					Filepath: to.Ptr("cache-west-us2-01"),
+		// 					FilePath: to.Ptr("cache-west-us2-01"),
 		// 					Size: to.Ptr[int64](107374182400),
 		// 					ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 		// 					CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
@@ -240,7 +240,7 @@ func ExampleCachesClient_ListPeeringPassphrases() {
 	// res = armnetapp.CachesClientListPeeringPassphrasesResponse{
 	// 	PeeringPassphrases: &armnetapp.PeeringPassphrases{
 	// 		ClusterPeeringCommand: to.Ptr("cluster peer create -ipspace replication -encryption-protocol-proposed tls-psk -passphrase passphraseString -peer-addrs 192.0.2.10,192.0.2.11,192.0.2.12,192.0.2.13,192.0.2.14,192.0.2.15"),
-	// 		ClusterPeeringPassphrase: to.Ptr("f@&@B^#r!"),
+	// 		ClusterPeeringPassphrase: to.Ptr("<redacted>"),
 	// 		VserverPeeringCommand: to.Ptr("vserver peer accept -vserver {onPremiseSVMName} -peer-vserver {anfSVMName}"),
 	// 	},
 	// }
@@ -333,7 +333,7 @@ func ExampleCachesClient_BeginUpdate() {
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.CacheProperties{
-	// 			Filepath: to.Ptr("cache-west-us2-01"),
+	// 			FilePath: to.Ptr("cache-west-us2-01"),
 	// 			Size: to.Ptr[int64](107374182400),
 	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),

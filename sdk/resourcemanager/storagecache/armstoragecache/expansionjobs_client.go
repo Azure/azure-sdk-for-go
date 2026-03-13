@@ -17,69 +17,69 @@ import (
 	"strings"
 )
 
-// ImportJobsClient contains the methods for the ImportJobs group.
-// Don't use this type directly, use NewImportJobsClient() instead.
-type ImportJobsClient struct {
+// ExpansionJobsClient contains the methods for the ExpansionJobs group.
+// Don't use this type directly, use NewExpansionJobsClient() instead.
+type ExpansionJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewImportJobsClient creates a new instance of ImportJobsClient with the specified values.
+// NewExpansionJobsClient creates a new instance of ExpansionJobsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewImportJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImportJobsClient, error) {
+func NewExpansionJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpansionJobsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ImportJobsClient{
+	client := &ExpansionJobsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update an import job.
+// BeginCreateOrUpdate - Create or update an expansion job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - importJob - Object containing the user-selectable properties of the import job. If read-only properties are included, they
-//     must match the existing values of those properties.
-//   - options - ImportJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the ImportJobsClient.BeginCreateOrUpdate
+//   - expansionJobName - Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - expansionJob - Object containing the user-selectable properties of the expansion job. If read-only properties are included,
+//     they must match the existing values of those properties.
+//   - options - ExpansionJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpansionJobsClient.BeginCreateOrUpdate
 //     method.
-func (client *ImportJobsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJob, options *ImportJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ImportJobsClientCreateOrUpdateResponse], error) {
+func (client *ExpansionJobsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJob, options *ExpansionJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExpansionJobsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, amlFilesystemName, importJobName, importJob, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ImportJobsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpansionJobsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ImportJobsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpansionJobsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create or update an import job.
+// CreateOrUpdate - Create or update an expansion job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-01-01
-func (client *ImportJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJob, options *ImportJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *ExpansionJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJob, options *ExpansionJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ImportJobsClient.BeginCreateOrUpdate"
+	const operationName = "ExpansionJobsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, amlFilesystemName, importJobName, importJob, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,8 +95,8 @@ func (client *ImportJobsClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ImportJobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJob, _ *ImportJobsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}"
+func (client *ExpansionJobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJob, _ *ExpansionJobsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -109,10 +109,10 @@ func (client *ImportJobsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter amlFilesystemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	if importJobName == "" {
-		return nil, errors.New("parameter importJobName cannot be empty")
+	if expansionJobName == "" {
+		return nil, errors.New("parameter expansionJobName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{importJobName}", url.PathEscape(importJobName))
+	urlPath = strings.ReplaceAll(urlPath, "{expansionJobName}", url.PathEscape(expansionJobName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -121,49 +121,50 @@ func (client *ImportJobsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, importJob); err != nil {
+	if err := runtime.MarshalAsJSON(req, expansionJob); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// BeginDelete - Schedules an import job for deletion.
+// BeginDelete - Schedules an expansion job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - options - ImportJobsClientBeginDeleteOptions contains the optional parameters for the ImportJobsClient.BeginDelete method.
-func (client *ImportJobsClient) BeginDelete(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, options *ImportJobsClientBeginDeleteOptions) (*runtime.Poller[ImportJobsClientDeleteResponse], error) {
+//   - expansionJobName - Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - options - ExpansionJobsClientBeginDeleteOptions contains the optional parameters for the ExpansionJobsClient.BeginDelete
+//     method.
+func (client *ExpansionJobsClient) BeginDelete(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *ExpansionJobsClientBeginDeleteOptions) (*runtime.Poller[ExpansionJobsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, amlFilesystemName, importJobName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, amlFilesystemName, expansionJobName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ImportJobsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpansionJobsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ImportJobsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpansionJobsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Schedules an import job for deletion.
+// Delete - Schedules an expansion job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-01-01
-func (client *ImportJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, options *ImportJobsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpansionJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *ExpansionJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ImportJobsClient.BeginDelete"
+	const operationName = "ExpansionJobsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, amlFilesystemName, importJobName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, amlFilesystemName, expansionJobName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -179,8 +180,8 @@ func (client *ImportJobsClient) deleteOperation(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ImportJobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, _ *ImportJobsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}"
+func (client *ExpansionJobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, _ *ExpansionJobsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -193,10 +194,10 @@ func (client *ImportJobsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if importJobName == "" {
-		return nil, errors.New("parameter importJobName cannot be empty")
+	if expansionJobName == "" {
+		return nil, errors.New("parameter expansionJobName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{importJobName}", url.PathEscape(importJobName))
+	urlPath = strings.ReplaceAll(urlPath, "{expansionJobName}", url.PathEscape(expansionJobName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -208,39 +209,39 @@ func (client *ImportJobsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// Get - Returns an import job.
+// Get - Returns an expansion job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - options - ImportJobsClientGetOptions contains the optional parameters for the ImportJobsClient.Get method.
-func (client *ImportJobsClient) Get(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, options *ImportJobsClientGetOptions) (ImportJobsClientGetResponse, error) {
+//   - expansionJobName - Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - options - ExpansionJobsClientGetOptions contains the optional parameters for the ExpansionJobsClient.Get method.
+func (client *ExpansionJobsClient) Get(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *ExpansionJobsClientGetOptions) (ExpansionJobsClientGetResponse, error) {
 	var err error
-	const operationName = "ImportJobsClient.Get"
+	const operationName = "ExpansionJobsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, amlFilesystemName, importJobName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, amlFilesystemName, expansionJobName, options)
 	if err != nil {
-		return ImportJobsClientGetResponse{}, err
+		return ExpansionJobsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ImportJobsClientGetResponse{}, err
+		return ExpansionJobsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ImportJobsClientGetResponse{}, err
+		return ExpansionJobsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ImportJobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, _ *ImportJobsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}"
+func (client *ExpansionJobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, _ *ExpansionJobsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -253,10 +254,10 @@ func (client *ImportJobsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if importJobName == "" {
-		return nil, errors.New("parameter importJobName cannot be empty")
+	if expansionJobName == "" {
+		return nil, errors.New("parameter expansionJobName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{importJobName}", url.PathEscape(importJobName))
+	urlPath = strings.ReplaceAll(urlPath, "{expansionJobName}", url.PathEscape(expansionJobName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -269,28 +270,28 @@ func (client *ImportJobsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *ImportJobsClient) getHandleResponse(resp *http.Response) (ImportJobsClientGetResponse, error) {
-	result := ImportJobsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ImportJob); err != nil {
-		return ImportJobsClientGetResponse{}, err
+func (client *ExpansionJobsClient) getHandleResponse(resp *http.Response) (ExpansionJobsClientGetResponse, error) {
+	result := ExpansionJobsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExpansionJob); err != nil {
+		return ExpansionJobsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByAmlFilesystemPager - Returns all import jobs the user has access to under an AML File System.
+// NewListByAmlFilesystemPager - Returns all the expansion jobs the user has access to under an AML File System.
 //
 // Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - options - ImportJobsClientListByAmlFilesystemOptions contains the optional parameters for the ImportJobsClient.NewListByAmlFilesystemPager
+//   - options - ExpansionJobsClientListByAmlFilesystemOptions contains the optional parameters for the ExpansionJobsClient.NewListByAmlFilesystemPager
 //     method.
-func (client *ImportJobsClient) NewListByAmlFilesystemPager(resourceGroupName string, amlFilesystemName string, options *ImportJobsClientListByAmlFilesystemOptions) *runtime.Pager[ImportJobsClientListByAmlFilesystemResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ImportJobsClientListByAmlFilesystemResponse]{
-		More: func(page ImportJobsClientListByAmlFilesystemResponse) bool {
+func (client *ExpansionJobsClient) NewListByAmlFilesystemPager(resourceGroupName string, amlFilesystemName string, options *ExpansionJobsClientListByAmlFilesystemOptions) *runtime.Pager[ExpansionJobsClientListByAmlFilesystemResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ExpansionJobsClientListByAmlFilesystemResponse]{
+		More: func(page ExpansionJobsClientListByAmlFilesystemResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ImportJobsClientListByAmlFilesystemResponse) (ImportJobsClientListByAmlFilesystemResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImportJobsClient.NewListByAmlFilesystemPager")
+		Fetcher: func(ctx context.Context, page *ExpansionJobsClientListByAmlFilesystemResponse) (ExpansionJobsClientListByAmlFilesystemResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpansionJobsClient.NewListByAmlFilesystemPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -299,7 +300,7 @@ func (client *ImportJobsClient) NewListByAmlFilesystemPager(resourceGroupName st
 				return client.listByAmlFilesystemCreateRequest(ctx, resourceGroupName, amlFilesystemName, options)
 			}, nil)
 			if err != nil {
-				return ImportJobsClientListByAmlFilesystemResponse{}, err
+				return ExpansionJobsClientListByAmlFilesystemResponse{}, err
 			}
 			return client.listByAmlFilesystemHandleResponse(resp)
 		},
@@ -308,8 +309,8 @@ func (client *ImportJobsClient) NewListByAmlFilesystemPager(resourceGroupName st
 }
 
 // listByAmlFilesystemCreateRequest creates the ListByAmlFilesystem request.
-func (client *ImportJobsClient) listByAmlFilesystemCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, _ *ImportJobsClientListByAmlFilesystemOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs"
+func (client *ExpansionJobsClient) listByAmlFilesystemCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, _ *ExpansionJobsClientListByAmlFilesystemOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -334,53 +335,54 @@ func (client *ImportJobsClient) listByAmlFilesystemCreateRequest(ctx context.Con
 }
 
 // listByAmlFilesystemHandleResponse handles the ListByAmlFilesystem response.
-func (client *ImportJobsClient) listByAmlFilesystemHandleResponse(resp *http.Response) (ImportJobsClientListByAmlFilesystemResponse, error) {
-	result := ImportJobsClientListByAmlFilesystemResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ImportJobsListResult); err != nil {
-		return ImportJobsClientListByAmlFilesystemResponse{}, err
+func (client *ExpansionJobsClient) listByAmlFilesystemHandleResponse(resp *http.Response) (ExpansionJobsClientListByAmlFilesystemResponse, error) {
+	result := ExpansionJobsClientListByAmlFilesystemResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExpansionJobsListResult); err != nil {
+		return ExpansionJobsClientListByAmlFilesystemResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Update an import job instance.
+// BeginUpdate - Update an expansion job instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - importJob - Object containing the user-selectable properties of the import job. If read-only properties are included, they
-//     must match the existing values of those properties.
-//   - options - ImportJobsClientBeginUpdateOptions contains the optional parameters for the ImportJobsClient.BeginUpdate method.
-func (client *ImportJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJobUpdate, options *ImportJobsClientBeginUpdateOptions) (*runtime.Poller[ImportJobsClientUpdateResponse], error) {
+//   - expansionJobName - Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - expansionJob - Object containing the user-selectable properties of the expansion job. If read-only properties are included,
+//     they must match the existing values of those properties.
+//   - options - ExpansionJobsClientBeginUpdateOptions contains the optional parameters for the ExpansionJobsClient.BeginUpdate
+//     method.
+func (client *ExpansionJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, options *ExpansionJobsClientBeginUpdateOptions) (*runtime.Poller[ExpansionJobsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, importJobName, importJob, options)
+		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ImportJobsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpansionJobsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ImportJobsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpansionJobsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Update an import job instance.
+// Update - Update an expansion job instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-01-01
-func (client *ImportJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJobUpdate, options *ImportJobsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ExpansionJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, options *ExpansionJobsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ImportJobsClient.BeginUpdate"
+	const operationName = "ExpansionJobsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, importJobName, importJob, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
 	if err != nil {
 		return nil, err
 	}
@@ -396,8 +398,8 @@ func (client *ImportJobsClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ImportJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJobUpdate, _ *ImportJobsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}"
+func (client *ExpansionJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, _ *ExpansionJobsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -410,10 +412,10 @@ func (client *ImportJobsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter amlFilesystemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	if importJobName == "" {
-		return nil, errors.New("parameter importJobName cannot be empty")
+	if expansionJobName == "" {
+		return nil, errors.New("parameter expansionJobName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{importJobName}", url.PathEscape(importJobName))
+	urlPath = strings.ReplaceAll(urlPath, "{expansionJobName}", url.PathEscape(expansionJobName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -422,7 +424,7 @@ func (client *ImportJobsClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, importJob); err != nil {
+	if err := runtime.MarshalAsJSON(req, expansionJob); err != nil {
 		return nil, err
 	}
 	return req, nil

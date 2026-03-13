@@ -210,6 +210,36 @@ type CachesClientUpgradeFirmwareResponse struct {
 	// placeholder for future response values
 }
 
+// ExpansionJobsClientCreateOrUpdateResponse contains the response from method ExpansionJobsClient.BeginCreateOrUpdate.
+type ExpansionJobsClientCreateOrUpdateResponse struct {
+	// An expansion job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	ExpansionJob
+}
+
+// ExpansionJobsClientDeleteResponse contains the response from method ExpansionJobsClient.BeginDelete.
+type ExpansionJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExpansionJobsClientGetResponse contains the response from method ExpansionJobsClient.Get.
+type ExpansionJobsClientGetResponse struct {
+	// An expansion job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	ExpansionJob
+}
+
+// ExpansionJobsClientListByAmlFilesystemResponse contains the response from method ExpansionJobsClient.NewListByAmlFilesystemPager.
+type ExpansionJobsClientListByAmlFilesystemResponse struct {
+	// Result of the request to list expansion jobs. It contains a list of expansion jobs and a URL link to get the next set of
+	// results.
+	ExpansionJobsListResult
+}
+
+// ExpansionJobsClientUpdateResponse contains the response from method ExpansionJobsClient.BeginUpdate.
+type ExpansionJobsClientUpdateResponse struct {
+	// An expansion job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	ExpansionJob
+}
+
 // ImportJobsClientCreateOrUpdateResponse contains the response from method ImportJobsClient.BeginCreateOrUpdate.
 type ImportJobsClientCreateOrUpdateResponse struct {
 	// An import job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md

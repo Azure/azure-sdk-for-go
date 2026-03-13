@@ -8,13 +8,22 @@ config:
   trials_per_task: 1
   timeout_seconds: 600
   parallel: false
+metrics:
+  - name: task_completion
+    weight: 0.7
+    threshold: 0.8
+    description: Did the skill complete trigger and anti-trigger checks?
+  - name: efficiency
+    weight: 0.3
+    threshold: 0.7
+    description: Did the skill stay within behavior limits?
 graders:
-- type: regex
-  name: no_fatal_errors
-  config:
-    must_not_match:
-    - (?i)error occurred
-    - (?i)failed
-    - (?i)re-run the tool
+  - type: text
+    name: no_fatal_errors
+    config:
+      not_regex_match:
+        - (?i)error occurred
+        - (?i)failed
+        - (?i)re-run the tool
 tasks:
   - "tasks/*.yaml"

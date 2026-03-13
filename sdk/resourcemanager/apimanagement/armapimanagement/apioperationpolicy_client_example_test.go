@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApiOperationPolicies.json
@@ -105,8 +105,8 @@ func ExampleAPIOperationPolicyClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewAPIOperationPolicyClient().CreateOrUpdate(ctx, "rg1", "apimService1", "5600b57e7e8880006a040001", "5600b57e7e8880006a080001", armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
 		Properties: &armapimanagement.PolicyContractProperties{
-			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
-			Value:  to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
+			Format:	to.Ptr(armapimanagement.PolicyContentFormatXML),
+			Value:	to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
 		},
 	}, &armapimanagement.APIOperationPolicyClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	if err != nil {

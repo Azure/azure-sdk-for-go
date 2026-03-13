@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,14 +20,14 @@ import (
 type ApimportalrevisionsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	portalRevisionId  string
-	serviceName       string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	portalRevisionId	string
+	serviceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimportalrevisionsTestSuite) SetupSuite() {
@@ -64,17 +64,17 @@ func (testsuite *ApimportalrevisionsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -91,8 +91,8 @@ func (testsuite *ApimportalrevisionsTestSuite) TestPortalrevision() {
 	testsuite.Require().NoError(err)
 	portalRevisionClientCreateOrUpdateResponsePoller, err := portalRevisionClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.portalRevisionId, armapimanagement.PortalRevisionContract{
 		Properties: &armapimanagement.PortalRevisionContractProperties{
-			Description: to.Ptr("portal revision 1"),
-			IsCurrent:   to.Ptr(true),
+			Description:	to.Ptr("portal revision 1"),
+			IsCurrent:	to.Ptr(true),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -107,8 +107,8 @@ func (testsuite *ApimportalrevisionsTestSuite) TestPortalrevision() {
 	// From step PortalRevision_ListByService
 	fmt.Println("Call operation: PortalRevision_ListByService")
 	portalRevisionClientNewListByServicePager := portalRevisionClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.PortalRevisionClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for portalRevisionClientNewListByServicePager.More() {
 		_, err := portalRevisionClientNewListByServicePager.NextPage(testsuite.ctx)

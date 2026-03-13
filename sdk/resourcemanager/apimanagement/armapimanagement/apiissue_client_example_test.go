@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApiIssues.json
@@ -29,9 +29,9 @@ func ExampleAPIIssueClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAPIIssueClient().NewListByServicePager("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", &armapimanagement.APIIssueClientListByServiceOptions{Filter: nil,
-		ExpandCommentsAttachments: nil,
-		Top:                       nil,
-		Skip:                      nil,
+		ExpandCommentsAttachments:	nil,
+		Top:				nil,
+		Skip:				nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -126,11 +126,11 @@ func ExampleAPIIssueClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewAPIIssueClient().CreateOrUpdate(ctx, "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "57d2ef278aa04f0ad01d6cdc", armapimanagement.IssueContract{
 		Properties: &armapimanagement.IssueContractProperties{
-			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t }()),
-			State:       to.Ptr(armapimanagement.StateOpen),
-			Description: to.Ptr("New API issue description"),
-			Title:       to.Ptr("New API issue"),
-			UserID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
+			CreatedDate:	to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t }()),
+			State:		to.Ptr(armapimanagement.StateOpen),
+			Description:	to.Ptr("New API issue description"),
+			Title:		to.Ptr("New API issue"),
+			UserID:		to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
 		},
 	}, &armapimanagement.APIIssueClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceNotifications.json
@@ -26,7 +26,7 @@ func ExampleWorkspaceNotificationClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspaceNotificationClient().NewListByServicePager("rg1", "apimService1", "wks1", &armapimanagement.WorkspaceNotificationClientListByServiceOptions{Top: nil,
-		Skip: nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)

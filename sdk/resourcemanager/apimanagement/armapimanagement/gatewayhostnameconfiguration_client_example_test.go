@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListGatewayHostnameConfigurations.json
@@ -27,8 +27,8 @@ func ExampleGatewayHostnameConfigurationClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewGatewayHostnameConfigurationClient().NewListByServicePager("rg1", "apimService1", "gw1", &armapimanagement.GatewayHostnameConfigurationClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -126,12 +126,12 @@ func ExampleGatewayHostnameConfigurationClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewGatewayHostnameConfigurationClient().CreateOrUpdate(ctx, "rg1", "apimService1", "gw1", "default", armapimanagement.GatewayHostnameConfigurationContract{
 		Properties: &armapimanagement.GatewayHostnameConfigurationContractProperties{
-			CertificateID:              to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
-			Hostname:                   to.Ptr("*"),
-			HTTP2Enabled:               to.Ptr(true),
-			NegotiateClientCertificate: to.Ptr(false),
-			Tls10Enabled:               to.Ptr(false),
-			Tls11Enabled:               to.Ptr(false),
+			CertificateID:			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+			Hostname:			to.Ptr("*"),
+			HTTP2Enabled:			to.Ptr(true),
+			NegotiateClientCertificate:	to.Ptr(false),
+			Tls10Enabled:			to.Ptr(false),
+			Tls11Enabled:			to.Ptr(false),
 		},
 	}, &armapimanagement.GatewayHostnameConfigurationClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {

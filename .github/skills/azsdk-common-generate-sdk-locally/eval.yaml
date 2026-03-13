@@ -17,4 +17,4 @@ graders:
     - (?i)failed
     - (?i)re-run the tool
 tasks:
-- tasks/*.yaml
+  - "tasks/*.yaml"

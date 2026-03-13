@@ -11,4 +11,5 @@ graders:
     - (?i)fatal error
     - (?i)unhandled exception
     - '(?i)panic:'
-tasks: tasks/*.yaml
+tasks:
+  - "tasks/*.yaml"

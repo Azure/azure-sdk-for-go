@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.1 (2026-03-12)
+### Other Changes
+* This module is now DEPRECATED. The Neon Postgres service is being retired on 13/03/2026. This package will no longer be maintained after 13/03/2026. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 ## 1.0.0 (2025-04-07)
 ### Features Added
 

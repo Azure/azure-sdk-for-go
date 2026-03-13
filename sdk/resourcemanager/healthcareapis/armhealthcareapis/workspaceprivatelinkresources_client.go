@@ -27,7 +27,7 @@ type WorkspacePrivateLinkResourcesClient struct {
 // NewWorkspacePrivateLinkResourcesClient creates a new instance of WorkspacePrivateLinkResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspacePrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspacePrivateLinkResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewWorkspacePrivateLinkResourcesClient(subscriptionID string, credential az
 // Get - Gets a private link resource that need to be created for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - groupName - The name of the private link resource group.
@@ -72,7 +72,7 @@ func (client *WorkspacePrivateLinkResourcesClient) Get(ctx context.Context, reso
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspacePrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, groupName string, options *WorkspacePrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
+func (client *WorkspacePrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, groupName string, _ *WorkspacePrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *WorkspacePrivateLinkResourcesClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *WorkspacePrivateLinkResourcesClient) getHandleResponse(resp *http.
 
 // NewListByWorkspacePager - Gets the private link resources that need to be created for a workspace.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - options - WorkspacePrivateLinkResourcesClientListByWorkspaceOptions contains the optional parameters for the WorkspacePrivateLinkResourcesClient.NewListByWorkspacePager
@@ -142,7 +142,7 @@ func (client *WorkspacePrivateLinkResourcesClient) NewListByWorkspacePager(resou
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *WorkspacePrivateLinkResourcesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacePrivateLinkResourcesClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *WorkspacePrivateLinkResourcesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacePrivateLinkResourcesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -161,7 +161,7 @@ func (client *WorkspacePrivateLinkResourcesClient) listByWorkspaceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

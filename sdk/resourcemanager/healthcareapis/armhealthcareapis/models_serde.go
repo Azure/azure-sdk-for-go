@@ -2883,6 +2883,7 @@ func (s *SmartIdentityProviderConfiguration) UnmarshalJSON(data []byte) error {
 func (s StorageConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "fileSystemName", s.FileSystemName)
+	populate(objectMap, "storageIndexingConfiguration", s.StorageIndexingConfiguration)
 	populate(objectMap, "storageResourceId", s.StorageResourceID)
 	return json.Marshal(objectMap)
 }
@@ -2899,8 +2900,38 @@ func (s *StorageConfiguration) UnmarshalJSON(data []byte) error {
 		case "fileSystemName":
 			err = unpopulate(val, "FileSystemName", &s.FileSystemName)
 			delete(rawMsg, key)
+		case "storageIndexingConfiguration":
+			err = unpopulate(val, "StorageIndexingConfiguration", &s.StorageIndexingConfiguration)
+			delete(rawMsg, key)
 		case "storageResourceId":
 			err = unpopulate(val, "StorageResourceID", &s.StorageResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageIndexingConfiguration.
+func (s StorageIndexingConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "storageEventQueueName", s.StorageEventQueueName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageIndexingConfiguration.
+func (s *StorageIndexingConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "storageEventQueueName":
+			err = unpopulate(val, "StorageEventQueueName", &s.StorageEventQueueName)
 			delete(rawMsg, key)
 		}
 		if err != nil {

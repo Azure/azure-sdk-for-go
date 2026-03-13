@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0 (2026-03-12)
+## 4.0.0 (2026-03-13)
 ### Breaking Changes
 
 - Function `*CertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, body Certificate, options *CertificatesClientBeginCreateOrUpdateOptions)`

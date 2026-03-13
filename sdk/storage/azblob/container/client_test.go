@@ -857,7 +857,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsHierarchyStartFrom()
 
 	// Start listing from the second blob.
 	startFrom := secondBlobName
-	pager := containerClient.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{
+	pager := containerClient.NewListBlobsHierarchyPager("", &container.ListBlobsHierarchyOptions{
 		StartFrom: &startFrom,
 	})
 

@@ -81,6 +81,14 @@ func (c *ClientFactory) NewCachesClient() *CachesClient {
 	}
 }
 
+// NewExpansionJobsClient creates a new instance of ExpansionJobsClient.
+func (c *ClientFactory) NewExpansionJobsClient() *ExpansionJobsClient {
+	return &ExpansionJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewImportJobsClient creates a new instance of ImportJobsClient.
 func (c *ClientFactory) NewImportJobsClient() *ImportJobsClient {
 	return &ImportJobsClient{

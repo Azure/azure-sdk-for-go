@@ -7,11 +7,11 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/WafPolicy_Create.json
+// Generated from example definition: 2025-11-01/WafPolicy_Create.json
 func ExampleWafPolicyClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleWafPolicyClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/WafPolicy_Delete.json
+// Generated from example definition: 2025-11-01/WafPolicy_Delete.json
 func ExampleWafPolicyClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleWafPolicyClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/WafPolicy_Get.json
+// Generated from example definition: 2025-11-01/WafPolicy_Get.json
 func ExampleWafPolicyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleWafPolicyClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/WafPolicy_List.json
+// Generated from example definition: 2025-11-01/WafPolicy_List.json
 func ExampleWafPolicyClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleWafPolicyClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armnginx.WafPolicyClientListResponse{
 		// 	DeploymentWafPolicyListResponse: armnginx.DeploymentWafPolicyListResponse{
-		// 		NextLink: to.Ptr("https://management.azure.com/.../wafPolicies?api-version=2025-03-01-preview&$skiptoken=..."),
+		// 		NextLink: to.Ptr("https://management.azure.com/.../wafPolicies?api-version=2025-11-01&$skiptoken=..."),
 		// 		Value: []*armnginx.DeploymentWafPolicyMetadata{
 		// 			{
 		// 				Name: to.Ptr("wafPolicy1"),

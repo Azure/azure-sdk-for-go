@@ -292,6 +292,32 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 	})
 }
 
+// NewCheckSettingsPager creates a pager that uses HEAD requests to efficiently check for changes
+// in configuration settings that match the specified setting selector.
+func (c *Client) NewCheckSettingsPager(selector SettingSelector, options *CheckSettingsOptions) *runtime.Pager[CheckSettingsPageResponse] {
+	if options == nil {
+		options = &CheckSettingsOptions{}
+	}
+	pagerInternal := c.appConfigClient.NewCheckKeyValuesPagerWithMatchConditions(options.MatchConditions, selector.toGeneratedCheckKeyValues())
+	return runtime.NewPager(runtime.PagingHandler[CheckSettingsPageResponse]{
+		More: func(CheckSettingsPageResponse) bool {
+			return pagerInternal.More()
+		},
+		Fetcher: func(ctx context.Context, cur *CheckSettingsPageResponse) (CheckSettingsPageResponse, error) {
+			page, err := pagerInternal.NextPage(ctx)
+			if err != nil {
+				return CheckSettingsPageResponse{}, err
+			}
+
+			return CheckSettingsPageResponse{
+				ETag:      (*azcore.ETag)(page.ETag),
+				SyncToken: SyncToken(*page.SyncToken),
+			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
 // NewListSnapshotsPager - Gets a list of key-value snapshots.
 //
 //   - options - NewListSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot

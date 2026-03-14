@@ -3,7 +3,7 @@ name: azsdk-common-pipeline-troubleshooting
 license: MIT
 metadata:
   version: "1.0.0"
-description: "Diagnose and resolve failures in Azure SDK CI and generation pipelines. **UTILITY SKILL**. USE FOR: \"pipeline failed\", \"build failure\", \"CI check failing\", \"SDK generation error\", \"reproduce pipeline locally\", \"debug SDK pipeline\". DO NOT USE FOR: local build issues without pipeline context, API design review, SDK publishing. INVOKES: azsdk_analyze_pipeline, azsdk_verify_setup, azsdk_package_build_code, azsdk_package_run_check, azsdk_package_pack."
+description: "Diagnose and resolve failures in Azure SDK CI and generation pipelines. **UTILITY SKILL**. USE FOR: \"pipeline failed\", \"build failure\", \"CI check failing\", \"SDK generation error\", \"reproduce pipeline locally\", \"debug SDK pipeline\". DO NOT USE FOR: local build issues without pipeline context, API design review, SDK publishing. INVOKES: azure-sdk-mcp:azsdk_analyze_pipeline, azure-sdk-mcp:azsdk_package_build_code, azure-sdk-mcp:azsdk_package_run_check."
 compatibility:
   requires: "azure-sdk-mcp server, Azure DevOps pipeline build ID"
 ---
@@ -14,27 +14,27 @@ compatibility:
 
 | Tool                       | Purpose                  |
 | -------------------------- | ------------------------ |
-| `azsdk_analyze_pipeline`   | Analyze pipeline failure |
-| `azsdk_verify_setup`       | Verify local environment |
-| `azsdk_package_build_code` | Reproduce build locally  |
-| `azsdk_package_run_check`  | Run validation checks    |
-| `azsdk_package_pack`       | Create SDK packages      |
+| `azure-sdk-mcp:azsdk_analyze_pipeline`   | Analyze pipeline failure |
+| `azure-sdk-mcp:azsdk_verify_setup`       | Verify local environment |
+| `azure-sdk-mcp:azsdk_package_build_code` | Reproduce build locally  |
+| `azure-sdk-mcp:azsdk_package_run_check`  | Run validation checks    |
+| `azure-sdk-mcp:azsdk_package_pack`       | Create SDK packages      |
 
 **Prerequisites:** azure-sdk-mcp server required. Without MCP, view pipeline logs in Azure DevOps UI.
 
 ## Steps
 
-1. **Identify** — Get build ID, run `azsdk_analyze_pipeline`. Categorize failure type.
+1. **Identify** — Get build ID, run `azure-sdk-mcp:azsdk_analyze_pipeline`. Categorize failure.
 2. **Analyze** — See [failure patterns](references/failure-patterns.md) for common causes.
-3. **Reproduce** — Run `azsdk_verify_setup`, then `azsdk_package_build_code` or `azsdk_package_run_check`.
-4. **Fix** — Apply direct edits for code or TypeSpec changes.
-5. **Verify** — Confirm fix locally, push changes, monitor pipeline re-run.
+3. **Reproduce** — Verify setup, then run `azure-sdk-mcp:azsdk_package_build_code` or `azure-sdk-mcp:azsdk_package_run_check`.
+4. **Fix** — Apply fixes for code or TypeSpec issues.
+5. **Verify** — Confirm fix locally, push, monitor re-run.
 
 ## Examples
 
-- "My pipeline build 12345 failed, help me debug it"
-- "Reproduce CI failure locally for azure-sdk-for-python"
+- "My pipeline build 12345 failed, help debug it"
+- "Reproduce CI failure locally"
 
 ## Troubleshooting
 
-If `azsdk_analyze_pipeline` returns no data, verify the build ID and MCP connection. Without MCP, view pipeline logs in Azure DevOps UI directly.
+If `azure-sdk-mcp:azsdk_analyze_pipeline` returns no data, verify build ID and MCP connection. Without MCP, check pipeline logs in Azure DevOps UI.

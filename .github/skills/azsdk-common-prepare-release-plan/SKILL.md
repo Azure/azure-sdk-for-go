@@ -14,11 +14,14 @@ compatibility:
 
 ## MCP Tools
 
-- `azsdk_create_release_plan` — Create release plan
-- `azsdk_get_release_plan` / `azsdk_get_release_plan_for_spec_pr` — Get plan details
-- `azsdk_update_sdk_details_in_release_plan` — Update SDK info
-- `azsdk_link_sdk_pull_request_to_release_plan` — Link SDK PR
-- `azsdk_link_namespace_approval_issue` — Link namespace issue
+| Tool | Purpose |
+|------|---------|
+| `azsdk_create_release_plan` | Create plan |
+| `azsdk_get_release_plan` | Get details |
+| `azsdk_get_release_plan_for_spec_pr` | Find by spec PR |
+| `azsdk_update_sdk_details_in_release_plan` | Update SDK info |
+| `azsdk_link_sdk_pull_request_to_release_plan` | Link SDK PR |
+| `azsdk_link_namespace_approval_issue` | Link namespace |
 
 ## Steps
 
@@ -32,10 +35,10 @@ compatibility:
 
 ## Examples
 
-- "Create a release plan for my new API spec PR"
-- "Link my SDK pull request to an existing release plan"
+- "Create a release plan for my spec PR"
+- "Link my SDK PR to release plan"
 
 ## Troubleshooting
 
-- Requires `azure-sdk-mcp` server. No CLI fallback available.
-- If plan creation fails, verify the spec PR URL and Service Tree IDs.
+- Requires `azure-sdk-mcp` server; no CLI fallback.
+- If creation fails, verify spec PR URL and Service Tree IDs.

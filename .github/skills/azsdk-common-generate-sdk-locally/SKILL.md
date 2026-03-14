@@ -12,10 +12,14 @@ compatibility:
 
 ## MCP Tools
 
-- `azsdk_package_generate_code` — Generate SDK from TypeSpec
-- `azsdk_package_build_code` — Build package
-- `azsdk_package_run_check` — Validate package
-- `azsdk_package_run_tests` — Run tests
+| Tool | Purpose |
+|------|---------|
+| `azsdk_package_generate_code` | Generate SDK from TypeSpec |
+| `azsdk_package_build_code` | Build package |
+| `azsdk_package_run_check` | Validate package |
+| `azsdk_package_run_tests` | Run tests |
+
+**Prerequisites:** azure-sdk-mcp server must be running. Without MCP, use `npx tsp-client` CLI.
 
 ## Steps
 

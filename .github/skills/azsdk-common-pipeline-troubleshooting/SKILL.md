@@ -20,6 +20,8 @@ compatibility:
 | `azsdk_package_run_check`  | Run validation checks    |
 | `azsdk_package_pack`       | Create SDK packages      |
 
+**Prerequisites:** azure-sdk-mcp server required. Without MCP, view pipeline logs in Azure DevOps UI.
+
 ## Steps
 
 1. **Identify** — Get build ID, run `azsdk_analyze_pipeline`. Categorize failure type.

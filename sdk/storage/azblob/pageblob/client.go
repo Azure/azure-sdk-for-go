@@ -204,7 +204,7 @@ func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceO
 
 	resp, err := pb.generated().UploadPagesFromURL(ctx, source, shared.RangeToString(sourceOffset, count), 0,
 		shared.RangeToString(destOffset, count), uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions,
-		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
+		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, nil)
 
 	return resp, err
 }
@@ -457,4 +457,10 @@ func (pb *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.Dow
 // The file would be truncated if the size doesn't match.
 func (pb *Client) DownloadFile(ctx context.Context, file *os.File, o *blob.DownloadFileOptions) (int64, error) {
 	return pb.BlobClient().DownloadFile(ctx, file, o)
+}
+
+// GetLayoutPager returns the blob's layout.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (pb *Client) GetLayoutPager(options *blob.GetLayoutOptions) *runtime.Pager[blob.GetLayoutResponse] {
+	return pb.BlobClient().GetLayoutPager(options)
 }

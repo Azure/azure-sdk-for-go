@@ -1097,6 +1097,9 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		}
 		result.Date = &date
 	}
+	if val := resp.Header.Get("x-ms-download-hint"); val != "" {
+		result.DownloadHint = &val
+	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
@@ -1419,6 +1422,33 @@ func (client *BlobClient) GetLayoutHandleResponse(resp *http.Response) (BlobClie
 			return BlobClientGetLayoutResponse{}, err
 		}
 		result.BlobCommittedBlockCount = &blobCommittedBlockCount
+	}
+	if val := resp.Header.Get("x-ms-blob-content-encoding"); val != "" {
+		result.BlobContentEncoding = &val
+	}
+	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
+		blobContentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return BlobClientGetLayoutResponse{}, err
+		}
+		result.BlobContentLength = &blobContentLength
+	}
+	if val := resp.Header.Get("x-ms-blob-content-md5"); val != "" {
+		blobContentMD5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return BlobClientGetLayoutResponse{}, err
+		}
+		result.BlobContentMD5 = blobContentMD5
+	}
+	if val := resp.Header.Get("x-ms-blob-content-type"); val != "" {
+		result.BlobContentType = &val
+	}
+	if val := resp.Header.Get("x-ms-blob-creation-time"); val != "" {
+		blobCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientGetLayoutResponse{}, err
+		}
+		result.BlobCreationTime = &blobCreationTime
 	}
 	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
 		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)

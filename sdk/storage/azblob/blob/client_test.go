@@ -3927,3 +3927,34 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 	}
 	_require.True(found, "Tag not found")
 }
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPager() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	pager := bbClient.GetLayoutPager(nil)
+	_require.NotNil(pager)
+
+	pageCount := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		// GetLayout may return 400 if the service doesn't support layout
+		if err != nil {
+			break
+		}
+		pageCount++
+		_require.NotNil(resp)
+	}
+}

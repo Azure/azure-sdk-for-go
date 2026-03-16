@@ -415,6 +415,9 @@ type BlobClientDownloadResponse struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
+	// DownloadHint contains the information returned from the x-ms-download-hint header response.
+	DownloadHint *string
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
@@ -533,6 +536,21 @@ type BlobClientGetLayoutResponse struct {
 
 	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
 	BlobCommittedBlockCount *int32
+
+	// BlobContentEncoding contains the information returned from the x-ms-blob-content-encoding header response.
+	BlobContentEncoding *string
+
+	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
+	BlobContentLength *int64
+
+	// BlobContentMD5 contains the information returned from the x-ms-blob-content-md5 header response.
+	BlobContentMD5 []byte
+
+	// BlobContentType contains the information returned from the x-ms-blob-content-type header response.
+	BlobContentType *string
+
+	// BlobCreationTime contains the information returned from the x-ms-blob-creation-time header response.
+	BlobCreationTime *time.Time
 
 	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
 	BlobSequenceNumber *int64

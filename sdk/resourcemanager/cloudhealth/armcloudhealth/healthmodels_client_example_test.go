@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Create.json
+// Generated from example definition: 2026-01-01-preview/HealthModels_Create.json
 func ExampleHealthModelsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,13 +24,7 @@ func ExampleHealthModelsClient_BeginCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewHealthModelsClient().BeginCreate(ctx, "rgopenapi", "model1", armcloudhealth.HealthModel{
-		Properties: &armcloudhealth.HealthModelProperties{
-			Discovery: &armcloudhealth.ModelDiscoverySettings{
-				Scope:                 to.Ptr("/providers/Microsoft.Management/serviceGroups/myServiceGroup"),
-				Identity:              to.Ptr("SystemAssigned"),
-				AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
-			},
-		},
+		Properties: &armcloudhealth.HealthModelProperties{},
 		Identity: &armcloudhealth.ManagedServiceIdentity{
 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
 			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
@@ -55,13 +49,7 @@ func ExampleHealthModelsClient_BeginCreate() {
 	// res = armcloudhealth.HealthModelsClientCreateResponse{
 	// 	HealthModel: &armcloudhealth.HealthModel{
 	// 		Properties: &armcloudhealth.HealthModelProperties{
-	// 			DataplaneEndpoint: to.Ptr("https://model1-23dfkljdf.eastus2.healthmodels.azure.com"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			Discovery: &armcloudhealth.ModelDiscoverySettings{
-	// 				Scope: to.Ptr("/providers/Microsoft.Management/serviceGroups/myServiceGroup"),
-	// 				Identity: to.Ptr("SystemAssigned"),
-	// 				AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
-	// 			},
 	// 		},
 	// 		Identity: &armcloudhealth.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a1"),
@@ -93,7 +81,7 @@ func ExampleHealthModelsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Delete.json
+// Generated from example definition: 2026-01-01-preview/HealthModels_Delete.json
 func ExampleHealthModelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +102,7 @@ func ExampleHealthModelsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Get.json
+// Generated from example definition: 2026-01-01-preview/HealthModels_Get.json
 func ExampleHealthModelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,12 +123,7 @@ func ExampleHealthModelsClient_Get() {
 	// res = armcloudhealth.HealthModelsClientGetResponse{
 	// 	HealthModel: &armcloudhealth.HealthModel{
 	// 		Properties: &armcloudhealth.HealthModelProperties{
-	// 			DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			Discovery: &armcloudhealth.ModelDiscoverySettings{
-	// 				Scope: to.Ptr("/providers/Microsoft.Management/serviceGroups/myServiceGroup"),
-	// 				AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
-	// 			},
 	// 		},
 	// 		Identity: &armcloudhealth.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a1"),
@@ -172,7 +155,7 @@ func ExampleHealthModelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_ListByResourceGroup.json
+// Generated from example definition: 2026-01-01-preview/HealthModels_ListByResourceGroup.json
 func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +182,6 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 		// 		Value: []*armcloudhealth.HealthModel{
 		// 			{
 		// 				Properties: &armcloudhealth.HealthModelProperties{
-		// 					DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 		// 				},
 		// 				Identity: &armcloudhealth.ManagedServiceIdentity{
@@ -236,7 +218,7 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_ListBySubscription.json
+// Generated from example definition: 2026-01-01-preview/HealthModels_ListBySubscription.json
 func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +245,6 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 		// 		Value: []*armcloudhealth.HealthModel{
 		// 			{
 		// 				Properties: &armcloudhealth.HealthModelProperties{
-		// 					DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 		// 				},
 		// 				Identity: &armcloudhealth.ManagedServiceIdentity{
@@ -300,7 +281,7 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Update.json
+// Generated from example definition: 2026-01-01-preview/HealthModels_Update.json
 func ExampleHealthModelsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +316,6 @@ func ExampleHealthModelsClient_BeginUpdate() {
 	// res = armcloudhealth.HealthModelsClientUpdateResponse{
 	// 	HealthModel: &armcloudhealth.HealthModel{
 	// 		Properties: &armcloudhealth.HealthModelProperties{
-	// 			DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 		},
 	// 		Identity: &armcloudhealth.ManagedServiceIdentity{

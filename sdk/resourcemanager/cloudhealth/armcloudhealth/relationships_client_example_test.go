@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Relationships_CreateOrUpdate.json
-func ExampleRelationshipsClient_CreateOrUpdate() {
+// Generated from example definition: 2026-01-01-preview/Relationships_CreateOrUpdate.json
+func ExampleRelationshipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,18 +23,22 @@ func ExampleRelationshipsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRelationshipsClient().CreateOrUpdate(ctx, "rgopenapi", "model1", "rel1", armcloudhealth.Relationship{
+	poller, err := clientFactory.NewRelationshipsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "model1", "rel1", armcloudhealth.Relationship{
 		Properties: &armcloudhealth.RelationshipProperties{
 			DisplayName:      to.Ptr("My relationship"),
 			ParentEntityName: to.Ptr("Entity1"),
 			ChildEntityName:  to.Ptr("Entity2"),
-			Labels: map[string]*string{
+			Tags: map[string]*string{
 				"key9681": to.Ptr("ixfvzsfnpvkkbrce"),
 			},
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -46,7 +50,7 @@ func ExampleRelationshipsClient_CreateOrUpdate() {
 	// 			DisplayName: to.Ptr("My relationship"),
 	// 			ParentEntityName: to.Ptr("Entity1"),
 	// 			ChildEntityName: to.Ptr("Entity2"),
-	// 			Labels: map[string]*string{
+	// 			Tags: map[string]*string{
 	// 				"key9681": to.Ptr("ixfvzsfnpvkkbrce"),
 	// 			},
 	// 		},
@@ -65,8 +69,8 @@ func ExampleRelationshipsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Relationships_Delete.json
-func ExampleRelationshipsClient_Delete() {
+// Generated from example definition: 2026-01-01-preview/Relationships_Delete.json
+func ExampleRelationshipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -76,18 +80,17 @@ func ExampleRelationshipsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRelationshipsClient().Delete(ctx, "rgopenapi", "model1", "rel1", nil)
+	poller, err := clientFactory.NewRelationshipsClient().BeginDelete(ctx, "rgopenapi", "model1", "rel1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcloudhealth.RelationshipsClientDeleteResponse{
-	// }
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Relationships_Get.json
+// Generated from example definition: 2026-01-01-preview/Relationships_Get.json
 func ExampleRelationshipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +115,7 @@ func ExampleRelationshipsClient_Get() {
 	// 			DisplayName: to.Ptr("My relationship"),
 	// 			ParentEntityName: to.Ptr("Entity1"),
 	// 			ChildEntityName: to.Ptr("Entity2"),
-	// 			Labels: map[string]*string{
+	// 			Tags: map[string]*string{
 	// 				"key9681": to.Ptr("foo"),
 	// 			},
 	// 			DiscoveredBy: to.Ptr("discoveryRule1"),
@@ -132,7 +135,7 @@ func ExampleRelationshipsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Relationships_ListByHealthModel.json
+// Generated from example definition: 2026-01-01-preview/Relationships_ListByHealthModel.json
 func ExampleRelationshipsClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +166,7 @@ func ExampleRelationshipsClient_NewListByHealthModelPager() {
 		// 					DisplayName: to.Ptr("My relationship"),
 		// 					ParentEntityName: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
 		// 					ChildEntityName: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 					Labels: map[string]*string{
+		// 					Tags: map[string]*string{
 		// 						"key9681": to.Ptr("sdfsdfsdfsdfsd"),
 		// 					},
 		// 					DiscoveredBy: to.Ptr("discoveryRule1"),

@@ -1,5 +1,27 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-03-16)
+### Breaking Changes
+
+- Function `*MonitoredSubscriptionsClient.BeginCreateorUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions)`
+- Function `*MonitoredSubscriptionsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions)`
+- Function `*MonitorsClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginCreateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResource, options *MonitorsClientBeginCreateOptions)`
+- Function `*MonitorsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResourceUpdateParameters, options *MonitorsClientBeginUpdateOptions)`
+- Function `*OpenAIClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, integrationName string, options *OpenAIClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, integrationName string, body OpenAIIntegrationRPModel, options *OpenAIClientCreateOrUpdateOptions)`
+- Function `*TagRulesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body MonitoringTagRules, options *TagRulesClientCreateOrUpdateOptions)`
+- Field `Body` of struct `MonitoredSubscriptionsClientBeginCreateorUpdateOptions` has been removed
+- Field `Body` of struct `MonitoredSubscriptionsClientBeginUpdateOptions` has been removed
+- Field `Body` of struct `MonitorsClientBeginCreateOptions` has been removed
+- Field `Body` of struct `MonitorsClientBeginUpdateOptions` has been removed
+- Field `Body` of struct `OpenAIClientCreateOrUpdateOptions` has been removed
+- Field `Body` of struct `TagRulesClientCreateOrUpdateOptions` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `MonitoredSubscriptionProperties`
+- New field `SystemData` in struct `OpenAIIntegrationRPModel`
+
+
 ## 2.0.0 (2025-11-20)
 ### Breaking Changes
 

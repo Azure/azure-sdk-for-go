@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-02-06/blob.json"
+input-file: "https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/65612ca94f0068a2e680482ddf3db7b5775ab6af/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-10-06/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -297,6 +297,15 @@ directive:
     return $.
       replace(/getPageRanges(Diff)?CreateRequest/g, function(_, s) { if (s === undefined) { s = '' }; return `GetPageRanges${s}CreateRequest` }).
       replace(/getPageRanges(Diff)?HandleResponse/g, function(_, s) { if (s === undefined) { s = '' }; return `GetPageRanges${s}HandleResponse` });
+
+- from: zz_blob_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/getLayoutCreateRequest/g, function(_, s) { if (s === undefined) { s = '' }; return `GetLayoutCreateRequest` }).
+      replace(/getLayoutHandleResponse/g, function(_, s) { if (s === undefined) { s = '' }; return `GetLayoutHandleResponse` });
+      
+      
 ```
 
 ### Clean up some const type names so they don't stutter

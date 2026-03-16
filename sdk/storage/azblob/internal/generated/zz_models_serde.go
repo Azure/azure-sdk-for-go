@@ -101,6 +101,36 @@ func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlobLayoutEndpoints.
+func (b BlobLayoutEndpoints) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias BlobLayoutEndpoints
+	aux := &struct {
+		*alias
+		Endpoint *[]*BlobLayoutEndpointsEndpointItem `xml:"Endpoint"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.Endpoint != nil {
+		aux.Endpoint = &b.Endpoint
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlobLayoutRanges.
+func (b BlobLayoutRanges) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias BlobLayoutRanges
+	aux := &struct {
+		*alias
+		Range *[]*BlobLayoutRangesRangeItem `xml:"Range"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.Range != nil {
+		aux.Range = &b.Range
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type BlobProperties.
 func (b BlobProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias BlobProperties

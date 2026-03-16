@@ -88,6 +88,9 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
+	// EnableLayoutAwareRouting indicates that downloads should attempt to be routed to the ideal endpoint for that block.
+	EnableLayoutAwareRouting bool
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -134,8 +137,22 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 	}
 }
 
+func (o *downloadOptions) getBlobLayoutOptions() *GetLayoutOptions {
+	if o == nil {
+		return nil
+	}
+	return &GetLayoutOptions{
+		Range:            o.Range,
+		AccessConditions: o.AccessConditions,
+		CPKInfo:          o.CPKInfo,
+	}
+}
+
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
+	// EnableLayoutAwareRouting (private-preview) indicates that downloads should attempt to be routed to the ideal endpoint for that block.
+	EnableLayoutAwareRouting bool
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -163,6 +180,9 @@ type DownloadBufferOptions struct {
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
+	// EnableLayoutAwareRouting (private-preview) indicates that downloads should attempt to be routed to the ideal endpoint for that block.
+	EnableLayoutAwareRouting bool
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -587,3 +607,26 @@ type GetAccountInfoOptions struct {
 func (o *GetAccountInfoOptions) format() *generated.BlobClientGetAccountInfoOptions {
 	return nil
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetLayoutOptions contains the optional parameters for the Client.GetLayout method
+type GetLayoutOptions struct {
+	Marker           *string
+	MaxResults       *int32
+	Range            HTTPRange
+	AccessConditions *AccessConditions
+	CPKInfo          *CPKInfo
+}
+
+func (o *GetLayoutOptions) format() (*generated.BlobClientGetLayoutOptions,
+	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil, nil
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return nil, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------

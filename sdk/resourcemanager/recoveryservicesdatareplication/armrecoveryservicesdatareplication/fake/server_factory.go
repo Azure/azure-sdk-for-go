@@ -118,80 +118,80 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "CheckNameAvailabilityClient":
-		initServer(s, &s.trCheckNameAvailabilityServer, func() *CheckNameAvailabilityServerTransport {
+		initServer(&s.trMu, &s.trCheckNameAvailabilityServer, func() *CheckNameAvailabilityServerTransport {
 			return NewCheckNameAvailabilityServerTransport(&s.srv.CheckNameAvailabilityServer)
 		})
 		resp, err = s.trCheckNameAvailabilityServer.Do(req)
 	case "DeploymentPreflightClient":
-		initServer(s, &s.trDeploymentPreflightServer, func() *DeploymentPreflightServerTransport {
+		initServer(&s.trMu, &s.trDeploymentPreflightServer, func() *DeploymentPreflightServerTransport {
 			return NewDeploymentPreflightServerTransport(&s.srv.DeploymentPreflightServer)
 		})
 		resp, err = s.trDeploymentPreflightServer.Do(req)
 	case "EmailConfigurationClient":
-		initServer(s, &s.trEmailConfigurationServer, func() *EmailConfigurationServerTransport {
+		initServer(&s.trMu, &s.trEmailConfigurationServer, func() *EmailConfigurationServerTransport {
 			return NewEmailConfigurationServerTransport(&s.srv.EmailConfigurationServer)
 		})
 		resp, err = s.trEmailConfigurationServer.Do(req)
 	case "EventClient":
-		initServer(s, &s.trEventServer, func() *EventServerTransport { return NewEventServerTransport(&s.srv.EventServer) })
+		initServer(&s.trMu, &s.trEventServer, func() *EventServerTransport { return NewEventServerTransport(&s.srv.EventServer) })
 		resp, err = s.trEventServer.Do(req)
 	case "FabricAgentClient":
-		initServer(s, &s.trFabricAgentServer, func() *FabricAgentServerTransport { return NewFabricAgentServerTransport(&s.srv.FabricAgentServer) })
+		initServer(&s.trMu, &s.trFabricAgentServer, func() *FabricAgentServerTransport { return NewFabricAgentServerTransport(&s.srv.FabricAgentServer) })
 		resp, err = s.trFabricAgentServer.Do(req)
 	case "FabricClient":
-		initServer(s, &s.trFabricServer, func() *FabricServerTransport { return NewFabricServerTransport(&s.srv.FabricServer) })
+		initServer(&s.trMu, &s.trFabricServer, func() *FabricServerTransport { return NewFabricServerTransport(&s.srv.FabricServer) })
 		resp, err = s.trFabricServer.Do(req)
 	case "JobClient":
-		initServer(s, &s.trJobServer, func() *JobServerTransport { return NewJobServerTransport(&s.srv.JobServer) })
+		initServer(&s.trMu, &s.trJobServer, func() *JobServerTransport { return NewJobServerTransport(&s.srv.JobServer) })
 		resp, err = s.trJobServer.Do(req)
 	case "LocationBasedOperationResultsClient":
-		initServer(s, &s.trLocationBasedOperationResultsServer, func() *LocationBasedOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trLocationBasedOperationResultsServer, func() *LocationBasedOperationResultsServerTransport {
 			return NewLocationBasedOperationResultsServerTransport(&s.srv.LocationBasedOperationResultsServer)
 		})
 		resp, err = s.trLocationBasedOperationResultsServer.Do(req)
 	case "OperationResultsClient":
-		initServer(s, &s.trOperationResultsServer, func() *OperationResultsServerTransport {
+		initServer(&s.trMu, &s.trOperationResultsServer, func() *OperationResultsServerTransport {
 			return NewOperationResultsServerTransport(&s.srv.OperationResultsServer)
 		})
 		resp, err = s.trOperationResultsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PolicyClient":
-		initServer(s, &s.trPolicyServer, func() *PolicyServerTransport { return NewPolicyServerTransport(&s.srv.PolicyServer) })
+		initServer(&s.trMu, &s.trPolicyServer, func() *PolicyServerTransport { return NewPolicyServerTransport(&s.srv.PolicyServer) })
 		resp, err = s.trPolicyServer.Do(req)
 	case "PrivateEndpointConnectionProxiesClient":
-		initServer(s, &s.trPrivateEndpointConnectionProxiesServer, func() *PrivateEndpointConnectionProxiesServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionProxiesServer, func() *PrivateEndpointConnectionProxiesServerTransport {
 			return NewPrivateEndpointConnectionProxiesServerTransport(&s.srv.PrivateEndpointConnectionProxiesServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionProxiesServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "PrivateLinkResourcesClient":
-		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+		initServer(&s.trMu, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "ProtectedItemClient":
-		initServer(s, &s.trProtectedItemServer, func() *ProtectedItemServerTransport {
+		initServer(&s.trMu, &s.trProtectedItemServer, func() *ProtectedItemServerTransport {
 			return NewProtectedItemServerTransport(&s.srv.ProtectedItemServer)
 		})
 		resp, err = s.trProtectedItemServer.Do(req)
 	case "RecoveryPointClient":
-		initServer(s, &s.trRecoveryPointServer, func() *RecoveryPointServerTransport {
+		initServer(&s.trMu, &s.trRecoveryPointServer, func() *RecoveryPointServerTransport {
 			return NewRecoveryPointServerTransport(&s.srv.RecoveryPointServer)
 		})
 		resp, err = s.trRecoveryPointServer.Do(req)
 	case "ReplicationExtensionClient":
-		initServer(s, &s.trReplicationExtensionServer, func() *ReplicationExtensionServerTransport {
+		initServer(&s.trMu, &s.trReplicationExtensionServer, func() *ReplicationExtensionServerTransport {
 			return NewReplicationExtensionServerTransport(&s.srv.ReplicationExtensionServer)
 		})
 		resp, err = s.trReplicationExtensionServer.Do(req)
 	case "VaultClient":
-		initServer(s, &s.trVaultServer, func() *VaultServerTransport { return NewVaultServerTransport(&s.srv.VaultServer) })
+		initServer(&s.trMu, &s.trVaultServer, func() *VaultServerTransport { return NewVaultServerTransport(&s.srv.VaultServer) })
 		resp, err = s.trVaultServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -202,12 +202,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

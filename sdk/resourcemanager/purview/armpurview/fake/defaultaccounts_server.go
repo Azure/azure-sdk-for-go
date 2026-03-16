@@ -8,13 +8,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
+	"net/http"
+	"net/url"
 )
 
 // DefaultAccountsServer is a fake server for instances of the armpurview.DefaultAccountsClient type.

@@ -6,11 +6,10 @@ package armpurview_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
+	"log"
 )
 
 // Generated from example definition: 2024-04-01-preview/IngestionPrivateEndpointConnections_List.json

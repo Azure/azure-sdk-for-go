@@ -6,11 +6,10 @@ package armfrontdoor_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 	"log"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
 )
 
 // Generated from example definition: 2025-10-01/NetworkExperimentGetLatencyScorecard.json

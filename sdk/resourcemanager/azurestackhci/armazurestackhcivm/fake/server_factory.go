@@ -94,60 +94,60 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AttestationStatusesClient":
-		initServer(s, &s.trAttestationStatusesServer, func() *AttestationStatusesServerTransport {
+		initServer(&s.trMu, &s.trAttestationStatusesServer, func() *AttestationStatusesServerTransport {
 			return NewAttestationStatusesServerTransport(&s.srv.AttestationStatusesServer)
 		})
 		resp, err = s.trAttestationStatusesServer.Do(req)
 	case "GalleryImagesClient":
-		initServer(s, &s.trGalleryImagesServer, func() *GalleryImagesServerTransport {
+		initServer(&s.trMu, &s.trGalleryImagesServer, func() *GalleryImagesServerTransport {
 			return NewGalleryImagesServerTransport(&s.srv.GalleryImagesServer)
 		})
 		resp, err = s.trGalleryImagesServer.Do(req)
 	case "GuestAgentsClient":
-		initServer(s, &s.trGuestAgentsServer, func() *GuestAgentsServerTransport { return NewGuestAgentsServerTransport(&s.srv.GuestAgentsServer) })
+		initServer(&s.trMu, &s.trGuestAgentsServer, func() *GuestAgentsServerTransport { return NewGuestAgentsServerTransport(&s.srv.GuestAgentsServer) })
 		resp, err = s.trGuestAgentsServer.Do(req)
 	case "HybridIdentityMetadataClient":
-		initServer(s, &s.trHybridIdentityMetadataServer, func() *HybridIdentityMetadataServerTransport {
+		initServer(&s.trMu, &s.trHybridIdentityMetadataServer, func() *HybridIdentityMetadataServerTransport {
 			return NewHybridIdentityMetadataServerTransport(&s.srv.HybridIdentityMetadataServer)
 		})
 		resp, err = s.trHybridIdentityMetadataServer.Do(req)
 	case "LogicalNetworksClient":
-		initServer(s, &s.trLogicalNetworksServer, func() *LogicalNetworksServerTransport {
+		initServer(&s.trMu, &s.trLogicalNetworksServer, func() *LogicalNetworksServerTransport {
 			return NewLogicalNetworksServerTransport(&s.srv.LogicalNetworksServer)
 		})
 		resp, err = s.trLogicalNetworksServer.Do(req)
 	case "MarketplaceGalleryImagesClient":
-		initServer(s, &s.trMarketplaceGalleryImagesServer, func() *MarketplaceGalleryImagesServerTransport {
+		initServer(&s.trMu, &s.trMarketplaceGalleryImagesServer, func() *MarketplaceGalleryImagesServerTransport {
 			return NewMarketplaceGalleryImagesServerTransport(&s.srv.MarketplaceGalleryImagesServer)
 		})
 		resp, err = s.trMarketplaceGalleryImagesServer.Do(req)
 	case "NetworkInterfacesClient":
-		initServer(s, &s.trNetworkInterfacesServer, func() *NetworkInterfacesServerTransport {
+		initServer(&s.trMu, &s.trNetworkInterfacesServer, func() *NetworkInterfacesServerTransport {
 			return NewNetworkInterfacesServerTransport(&s.srv.NetworkInterfacesServer)
 		})
 		resp, err = s.trNetworkInterfacesServer.Do(req)
 	case "NetworkSecurityGroupsClient":
-		initServer(s, &s.trNetworkSecurityGroupsServer, func() *NetworkSecurityGroupsServerTransport {
+		initServer(&s.trMu, &s.trNetworkSecurityGroupsServer, func() *NetworkSecurityGroupsServerTransport {
 			return NewNetworkSecurityGroupsServerTransport(&s.srv.NetworkSecurityGroupsServer)
 		})
 		resp, err = s.trNetworkSecurityGroupsServer.Do(req)
 	case "SecurityRulesClient":
-		initServer(s, &s.trSecurityRulesServer, func() *SecurityRulesServerTransport {
+		initServer(&s.trMu, &s.trSecurityRulesServer, func() *SecurityRulesServerTransport {
 			return NewSecurityRulesServerTransport(&s.srv.SecurityRulesServer)
 		})
 		resp, err = s.trSecurityRulesServer.Do(req)
 	case "StorageContainersClient":
-		initServer(s, &s.trStorageContainersServer, func() *StorageContainersServerTransport {
+		initServer(&s.trMu, &s.trStorageContainersServer, func() *StorageContainersServerTransport {
 			return NewStorageContainersServerTransport(&s.srv.StorageContainersServer)
 		})
 		resp, err = s.trStorageContainersServer.Do(req)
 	case "VirtualHardDisksClient":
-		initServer(s, &s.trVirtualHardDisksServer, func() *VirtualHardDisksServerTransport {
+		initServer(&s.trMu, &s.trVirtualHardDisksServer, func() *VirtualHardDisksServerTransport {
 			return NewVirtualHardDisksServerTransport(&s.srv.VirtualHardDisksServer)
 		})
 		resp, err = s.trVirtualHardDisksServer.Do(req)
 	case "VirtualMachineInstancesClient":
-		initServer(s, &s.trVirtualMachineInstancesServer, func() *VirtualMachineInstancesServerTransport {
+		initServer(&s.trMu, &s.trVirtualMachineInstancesServer, func() *VirtualMachineInstancesServerTransport {
 			return NewVirtualMachineInstancesServerTransport(&s.srv.VirtualMachineInstancesServer)
 		})
 		resp, err = s.trVirtualMachineInstancesServer.Do(req)
@@ -160,12 +160,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -8,15 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
 	"net/http"
 	"net/url"
 	"reflect"
 	"regexp"
-
-	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2"
 )
 
 // PrivateStoreCollectionServer is a fake server for instances of the armmarketplace.PrivateStoreCollectionClient type.
@@ -347,9 +346,8 @@ func (p *PrivateStoreCollectionServerTransport) dispatchPost(req *http.Request) 
 	}
 	var options *armmarketplace.PrivateStoreCollectionClientPostOptions
 	if !reflect.ValueOf(body).IsZero() {
-		op := armmarketplace.Operation(body)
 		options = &armmarketplace.PrivateStoreCollectionClientPostOptions{
-			Payload: &op,
+			Payload: &body,
 		}
 	}
 	respr, errRespr := p.srv.Post(req.Context(), privateStoreIDParam, collectionIDParam, options)

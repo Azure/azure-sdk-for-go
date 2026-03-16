@@ -101,3 +101,87 @@ func (a *AzureAppConfigurationClient) getKeyValuesHandleResponseWithLinkHeader(r
 	}
 	return result, err
 }
+
+// CheckKeyValuesPagerResponse is a custom response type for paginated HEAD requests.
+// It wraps the generated CheckKeyValuesResponse and adds NextLink for pagination support.
+type CheckKeyValuesPagerResponse struct {
+	AzureAppConfigurationClientCheckKeyValuesResponse
+
+	// NextLink contains the URL for the next page, parsed from the Link header response.
+	NextLink *string
+}
+
+// NewCheckKeyValuesPagerWithMatchConditions uses HEAD requests (CheckKeyValues) for bandwidth optimization.
+// Returns only ETag and SyncToken headers without response body, useful for detecting changes during watch/refresh.
+func (client *AzureAppConfigurationClient) NewCheckKeyValuesPagerWithMatchConditions(matchConditions []azcore.MatchConditions, options *AzureAppConfigurationClientCheckKeyValuesOptions) *runtime.Pager[CheckKeyValuesPagerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CheckKeyValuesPagerResponse]{
+		More: func(page CheckKeyValuesPagerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *CheckKeyValuesPagerResponse) (CheckKeyValuesPagerResponse, error) {
+			curCondition := azcore.MatchConditions{}
+			if len(matchConditions) > 0 {
+				curCondition = matchConditions[0]
+				matchConditions = matchConditions[1:]
+			}
+			options.IfMatch = (*string)(curCondition.IfMatch)
+			options.IfNoneMatch = (*string)(curCondition.IfNoneMatch)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.checkKeyValuesCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.checkNextPageCreateRequestWithMatchConditions(ctx, encodedNextLink, curCondition)
+				},
+				StatusCodes: []int{http.StatusNotModified},
+			})
+			if err != nil {
+				return CheckKeyValuesPagerResponse{}, err
+			}
+			return client.checkKeyValuesHandleResponseWithLinkHeader(resp)
+		},
+	})
+}
+
+// adds match conditions to the HEAD request for the next page
+func (a *AzureAppConfigurationClient) checkNextPageCreateRequestWithMatchConditions(ctx context.Context, nextLink string, matchConditions azcore.MatchConditions) (*policy.Request, error) {
+	urlPath := nextLink
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(a.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	if matchConditions.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*(*string)(matchConditions.IfMatch)}
+	}
+	if matchConditions.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*(*string)(matchConditions.IfNoneMatch)}
+	}
+	return req, nil
+}
+
+// parses the nextLink URL from the Link response header for HEAD requests
+func (a *AzureAppConfigurationClient) checkKeyValuesHandleResponseWithLinkHeader(resp *http.Response) (CheckKeyValuesPagerResponse, error) {
+	genResult, err := a.checkKeyValuesHandleResponse(resp)
+	if err != nil {
+		return CheckKeyValuesPagerResponse{}, err
+	}
+
+	result := CheckKeyValuesPagerResponse{
+		AzureAppConfigurationClientCheckKeyValuesResponse: genResult,
+	}
+
+	link := resp.Header.Get("Link")
+	if link == "" {
+		return result, nil
+	}
+
+	// the link header format is <nextLinkURL>; rel="next"
+	// extract the values between < and >
+	if endIndex := strings.Index(link, ">"); endIndex > 0 {
+		result.NextLink = to.Ptr(link[1:endIndex])
+	}
+	return result, nil
+}

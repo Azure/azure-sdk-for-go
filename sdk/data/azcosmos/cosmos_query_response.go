@@ -36,6 +36,7 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
 	if queryMetrics != "" {
 		response.QueryMetrics = &queryMetrics
+		recordQueryMetricsFromResponse(resp)
 	}
 	queryIndexUtilization := resp.Header.Get(cosmosHeaderIndexUtilization)
 	if queryIndexUtilization != "" {
@@ -135,6 +136,8 @@ type queryDatabasesServiceResponse struct {
 type ReadManyItemsResponse struct {
 	// The total cost of the operation in RUs
 	RequestCharge float32
+	// Diagnostics contains request diagnostics for the operation.
+	Diagnostics Diagnostics
 	// List of items.
 	Items [][]byte
 }

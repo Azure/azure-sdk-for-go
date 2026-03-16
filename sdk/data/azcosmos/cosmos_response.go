@@ -21,6 +21,8 @@ type Response struct {
 	ActivityID string
 	// ETag contains the value from the ETag header.
 	ETag azcore.ETag
+	// Diagnostics contains request diagnostics for the operation.
+	Diagnostics Diagnostics
 }
 
 func newResponse(resp *http.Response) Response {
@@ -29,6 +31,7 @@ func newResponse(resp *http.Response) Response {
 	response.RequestCharge = response.readRequestCharge()
 	response.ActivityID = resp.Header.Get(cosmosHeaderActivityId)
 	response.ETag = azcore.ETag(resp.Header.Get(cosmosHeaderEtag))
+	response.Diagnostics = diagnosticsFromResponse(resp)
 	return response
 }
 

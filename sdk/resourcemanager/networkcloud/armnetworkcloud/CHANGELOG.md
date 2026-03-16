@@ -1,5 +1,17 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-03-16)
+### Breaking Changes
+
+- Type of `ExtendedLocation.Type` has been changed from `*string` to `*ExtendedLocationType`
+- `HugepagesSizeOneG`, `HugepagesSizeTwoM` from enum `HugepagesSize` has been removed
+
+### Features Added
+
+- New value `HugepagesSize1G`, `HugepagesSize2M` added to enum type `HugepagesSize`
+- New enum type `ExtendedLocationType` with values `ExtendedLocationTypeCustomLocation`, `ExtendedLocationTypeEdgeZone`
+
+
 ## 1.4.0 (2025-12-26)
 ### Features Added
 

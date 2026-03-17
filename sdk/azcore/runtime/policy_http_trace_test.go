@@ -6,6 +6,7 @@ package runtime
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -110,10 +111,8 @@ func TestHTTPTracePolicy(t *testing.T) {
 	})
 	_, err = pl.Do(req)
 	require.Error(t, err)
-	var urlErr *url.Error
-	require.False(t, errors.As(err, &urlErr))
 	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
-	require.EqualValues(t, urlErrText, spanStatusStr)
+	require.EqualValues(t, fmt.Sprintf("%s \"%s\": %s", http.MethodGet, srv.URL(), urlErrText), spanStatusStr)
 }
 
 func TestStartSpan(t *testing.T) {

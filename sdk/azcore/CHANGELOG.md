@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Redact query parameters when logging errors.
+
 ### Other Changes
 
 ## 1.21.0 (2026-01-12)

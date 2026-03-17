@@ -181,8 +181,7 @@ func getSanitizedURLString(s string, u *url.URL, allowedQueryParams map[string]s
 // not nil, then these are also written into the Buffer.
 func (p *logPolicy) writeRequestWithResponse(b *bytes.Buffer, req *policy.Request, resp *http.Response, err error) {
 	// Write the request into the buffer.
-	sanitizedURL := getSanitizedURL(*req.Raw().URL, p.allowedQP)
-	fmt.Fprint(b, "   "+req.Raw().Method+" "+sanitizedURL+"\n")
+	fmt.Fprint(b, "   "+req.Raw().Method+" "+getSanitizedURL(*req.Raw().URL, p.allowedQP)+"\n")
 	p.writeHeader(b, req.Raw().Header)
 	if resp != nil {
 		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")

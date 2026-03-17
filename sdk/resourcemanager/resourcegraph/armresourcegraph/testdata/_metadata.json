@@ -1,0 +1,7 @@
+{
+  "apiVersions": {
+    "ResourceChanges": "2020-09-01-preview",
+    "ResourceHistory": "2021-06-01-preview"
+  },
+  "emitterVersion": "0.10.2"
+}

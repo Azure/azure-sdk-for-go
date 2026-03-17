@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-15-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 	OperationListResult: armcomputeschedule.OperationListResult{
 		// 		Value: []*armcomputeschedule.Operation{
 		// 			{
-		// 				Name: to.Ptr("tew"),
+		// 				Name: to.Ptr("scszsmtabzvyxwjba"),
 		// 				IsDataAction: to.Ptr(true),
 		// 				Display: &armcomputeschedule.OperationDisplay{
-		// 					Provider: to.Ptr("kphlo"),
-		// 					Resource: to.Ptr("vjhxmakxdtbnqhyjhclbargzt"),
-		// 					Operation: to.Ptr("mmfsfkofhhfvgeryxbpdu"),
-		// 					Description: to.Ptr("trdrldwroctmfwumqodfdxiuts"),
+		// 					Provider: to.Ptr("dwxcligchbmhyw"),
+		// 					Resource: to.Ptr("gskkwfsqgegsygllopceobwnbjtvd"),
+		// 					Operation: to.Ptr("dregpddqjpw"),
+		// 					Description: to.Ptr("sr"),
 		// 				},
 		// 				Origin: to.Ptr(armcomputeschedule.OriginUser),
 		// 				ActionType: to.Ptr(armcomputeschedule.ActionTypeInternal),
@@ -55,7 +55,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

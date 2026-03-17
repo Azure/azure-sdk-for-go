@@ -13,24 +13,24 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_AttachResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().AttachResources(ctx, "rgcomputeschedule", "myScheduledAction", armcomputeschedule.ResourceAttachRequest{
+	res, err := clientFactory.NewScheduledActionsClient().AttachResources(ctx, "rgcomputeschedule", "scheduled-action-01", armcomputeschedule.ResourceAttachRequest{
 		Resources: []*armcomputeschedule.ScheduledActionResource{
 			{
 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 				NotificationSettings: []*armcomputeschedule.NotificationProperties{
 					{
-						Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+						Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 						Type:        to.Ptr(armcomputeschedule.NotificationTypeEmail),
 						Language:    to.Ptr(armcomputeschedule.LanguageEnUs),
 						Disabled:    to.Ptr(true),
@@ -47,19 +47,19 @@ func ExampleScheduledActionsClient_AttachResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientAttachResourcesResponse{
 	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
 	// 				Error: &armcomputeschedule.Error{
-	// 					Code: to.Ptr("baxjmkbhoatqcj"),
-	// 					Message: to.Ptr("chapcwfkqymeof"),
-	// 					Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 					Code: to.Ptr("ewhmaevjwwzq"),
+	// 					Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 					Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 					Details: []*armcomputeschedule.Error{
 	// 					},
 	// 					Innererror: &armcomputeschedule.InnerError{
-	// 						Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 						Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 					},
 	// 				},
 	// 			},
@@ -68,20 +68,20 @@ func ExampleScheduledActionsClient_AttachResources() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_CancelNextOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().CancelNextOccurrence(ctx, "rgcomputeschedule", "myScheduledAction", armcomputeschedule.CancelOccurrenceRequest{
+	res, err := clientFactory.NewScheduledActionsClient().CancelNextOccurrence(ctx, "rgcomputeschedule", "scheduled-action-01", armcomputeschedule.CancelOccurrenceRequest{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 		},
 	}, nil)
 	if err != nil {
@@ -92,19 +92,19 @@ func ExampleScheduledActionsClient_CancelNextOccurrence() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientCancelNextOccurrenceResponse{
 	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
 	// 				Error: &armcomputeschedule.Error{
-	// 					Code: to.Ptr("baxjmkbhoatqcj"),
-	// 					Message: to.Ptr("chapcwfkqymeof"),
-	// 					Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 					Code: to.Ptr("ewhmaevjwwzq"),
+	// 					Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 					Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 					Details: []*armcomputeschedule.Error{
 	// 					},
 	// 					Innererror: &armcomputeschedule.InnerError{
-	// 						Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 						Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 					},
 	// 				},
 	// 			},
@@ -113,26 +113,26 @@ func ExampleScheduledActionsClient_CancelNextOccurrence() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginCreateOrUpdate(ctx, "rgcomputeschedule", "myScheduledAction", armcomputeschedule.ScheduledAction{
+	poller, err := clientFactory.NewScheduledActionsClient().BeginCreateOrUpdate(ctx, "rgcomputeschedule", "scheduled-action-01", armcomputeschedule.ScheduledAction{
 		Properties: &armcomputeschedule.ScheduledActionProperties{
 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 			ActionType:   to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t }()),
+			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t }()),
+			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t }()),
 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t }()),
-				TimeZone:      to.Ptr("g"),
+				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t }()),
+				TimeZone:      to.Ptr("ywgarwvwqegtdsdvv"),
 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 					to.Ptr(armcomputeschedule.WeekDayMonday),
 				},
@@ -140,20 +140,21 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 					to.Ptr(armcomputeschedule.MonthJanuary),
 				},
 				RequestedDaysOfTheMonth: []*int32{
-					to.Ptr[int32](15),
+					to.Ptr[int32](18),
 				},
 				ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 					OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-						RetryCount:           to.Ptr[int32](17),
-						RetryWindowInMinutes: to.Ptr[int32](29),
+						RetryCount:           to.Ptr[int32](19),
+						RetryWindowInMinutes: to.Ptr[int32](3),
+						OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 					},
 				},
 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 			},
 			NotificationSettings: []*armcomputeschedule.NotificationProperties{
 				{
-					Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+					Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 					Type:        to.Ptr(armcomputeschedule.NotificationTypeEmail),
 					Language:    to.Ptr(armcomputeschedule.LanguageEnUs),
 					Disabled:    to.Ptr(true),
@@ -162,9 +163,9 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 			Disabled: to.Ptr(true),
 		},
 		Tags: map[string]*string{
-			"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
+			"key1458": to.Ptr("ahuv"),
 		},
-		Location: to.Ptr("vmuhgdgipeypkcv"),
+		Location: to.Ptr("hwhsvnvuwsjwu"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -181,11 +182,11 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armcomputeschedule.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
+	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
 	// 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
-	// 				TimeZone: to.Ptr("g"),
+	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+	// 				TimeZone: to.Ptr("ywgarwvwqegtdsdvv"),
 	// 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 	// 					to.Ptr(armcomputeschedule.WeekDayMonday),
 	// 				},
@@ -193,20 +194,21 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 					to.Ptr(armcomputeschedule.MonthJanuary),
 	// 				},
 	// 				RequestedDaysOfTheMonth: []*int32{
-	// 					to.Ptr[int32](15),
+	// 					to.Ptr[int32](18),
 	// 				},
 	// 				ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 	// 					OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 			},
 	// 			NotificationSettings: []*armcomputeschedule.NotificationProperties{
 	// 				{
-	// 					Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+	// 					Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 	// 					Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 	// 					Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 	// 					Disabled: to.Ptr(true),
@@ -216,36 +218,36 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
+	// 			"key1458": to.Ptr("ahuv"),
 	// 		},
-	// 		Location: to.Ptr("vmuhgdgipeypkcv"),
+	// 		Location: to.Ptr("hwhsvnvuwsjwu"),
 	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-	// 		Name: to.Ptr("a"),
-	// 		Type: to.Ptr("obafnwpw"),
+	// 		Name: to.Ptr("myScheduledAction"),
+	// 		Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 	// 		SystemData: &armcomputeschedule.SystemData{
-	// 			CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+	// 			CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_Delete_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginDelete(ctx, "rgcomputeschedule", "myScheduledAction", nil)
+	poller, err := clientFactory.NewScheduledActionsClient().BeginDelete(ctx, "rgcomputeschedule", "scheduled-action-01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -255,20 +257,20 @@ func ExampleScheduledActionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_DetachResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().DetachResources(ctx, "rgcomputeschedule", "myScheduledAction", armcomputeschedule.ResourceDetachRequest{
+	res, err := clientFactory.NewScheduledActionsClient().DetachResources(ctx, "rgcomputeschedule", "scheduled-action-01", armcomputeschedule.ResourceDetachRequest{
 		Resources: []*string{
-			to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 		},
 	}, nil)
 	if err != nil {
@@ -279,19 +281,19 @@ func ExampleScheduledActionsClient_DetachResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientDetachResourcesResponse{
 	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
 	// 				Error: &armcomputeschedule.Error{
-	// 					Code: to.Ptr("baxjmkbhoatqcj"),
-	// 					Message: to.Ptr("chapcwfkqymeof"),
-	// 					Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 					Code: to.Ptr("ewhmaevjwwzq"),
+	// 					Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 					Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 					Details: []*armcomputeschedule.Error{
 	// 					},
 	// 					Innererror: &armcomputeschedule.InnerError{
-	// 						Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 						Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 					},
 	// 				},
 	// 			},
@@ -300,18 +302,18 @@ func ExampleScheduledActionsClient_DetachResources() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_Disable_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_Disable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().Disable(ctx, "rgcomputeschedule", "myScheduledAction", nil)
+	res, err := clientFactory.NewScheduledActionsClient().Disable(ctx, "rgcomputeschedule", "scheduled-action-01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -322,18 +324,18 @@ func ExampleScheduledActionsClient_Disable() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_Enable_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_Enable_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_Enable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().Enable(ctx, "rgcomputeschedule", "myScheduledAction", nil)
+	res, err := clientFactory.NewScheduledActionsClient().Enable(ctx, "rgcomputeschedule", "scheduled-action-01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -344,18 +346,18 @@ func ExampleScheduledActionsClient_Enable() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_Get_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().Get(ctx, "rgcomputeschedule", "myScheduledAction", nil)
+	res, err := clientFactory.NewScheduledActionsClient().Get(ctx, "rgcomputeschedule", "scheduled-action-01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -367,11 +369,11 @@ func ExampleScheduledActionsClient_Get() {
 	// 		Properties: &armcomputeschedule.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
+	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
 	// 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
-	// 				TimeZone: to.Ptr("g"),
+	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+	// 				TimeZone: to.Ptr("ywgarwvwqegtdsdvv"),
 	// 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 	// 					to.Ptr(armcomputeschedule.WeekDayMonday),
 	// 				},
@@ -379,20 +381,21 @@ func ExampleScheduledActionsClient_Get() {
 	// 					to.Ptr(armcomputeschedule.MonthJanuary),
 	// 				},
 	// 				RequestedDaysOfTheMonth: []*int32{
-	// 					to.Ptr[int32](15),
+	// 					to.Ptr[int32](18),
 	// 				},
 	// 				ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 	// 					OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 			},
 	// 			NotificationSettings: []*armcomputeschedule.NotificationProperties{
 	// 				{
-	// 					Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+	// 					Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 	// 					Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 	// 					Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 	// 					Disabled: to.Ptr(true),
@@ -402,32 +405,32 @@ func ExampleScheduledActionsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
+	// 			"key1458": to.Ptr("ahuv"),
 	// 		},
-	// 		Location: to.Ptr("vmuhgdgipeypkcv"),
+	// 		Location: to.Ptr("hwhsvnvuwsjwu"),
 	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-	// 		Name: to.Ptr("a"),
-	// 		Type: to.Ptr("obafnwpw"),
+	// 		Name: to.Ptr("myScheduledAction"),
+	// 		Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 	// 		SystemData: &armcomputeschedule.SystemData{
-	// 			CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+	// 			CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsListByResourceGroupMaximumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -449,11 +452,11 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsL
 		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
-		// 						TimeZone: to.Ptr("g"),
+		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+		// 						TimeZone: to.Ptr("ywgarwvwqegtdsdvv"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
 		// 						},
@@ -461,20 +464,21 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsL
 		// 							to.Ptr(armcomputeschedule.MonthJanuary),
 		// 						},
 		// 						RequestedDaysOfTheMonth: []*int32{
-		// 							to.Ptr[int32](15),
+		// 							to.Ptr[int32](18),
 		// 						},
 		// 						ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 		// 							OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 		// 							RetryPolicy: &armcomputeschedule.RetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
-		// 								RetryWindowInMinutes: to.Ptr[int32](29),
+		// 								RetryCount: to.Ptr[int32](19),
+		// 								RetryWindowInMinutes: to.Ptr[int32](3),
+		// 								OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 		// 							},
 		// 						},
 		// 						DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 		// 					},
 		// 					NotificationSettings: []*armcomputeschedule.NotificationProperties{
 		// 						{
-		// 							Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+		// 							Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 		// 							Disabled: to.Ptr(true),
@@ -484,19 +488,19 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsL
 		// 					ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
+		// 					"key1458": to.Ptr("ahuv"),
 		// 				},
-		// 				Location: to.Ptr("vmuhgdgipeypkcv"),
+		// 				Location: to.Ptr("hwhsvnvuwsjwu"),
 		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("a"),
-		// 				Type: to.Ptr("obafnwpw"),
+		// 				Name: to.Ptr("myScheduledAction"),
+		// 				Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 		// 				SystemData: &armcomputeschedule.SystemData{
-		// 					CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+		// 					CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -506,100 +510,14 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsL
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsListByResourceGroupMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewScheduledActionsClient().NewListByResourceGroupPager("rgcomputeschedule", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcomputeschedule.ScheduledActionsClientListByResourceGroupResponse{
-		// 	ScheduledActionListResult: armcomputeschedule.ScheduledActionListResult{
-		// 		Value: []*armcomputeschedule.ScheduledAction{
-		// 			{
-		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
-		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
-		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
-		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
-		// 						TimeZone: to.Ptr("g"),
-		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
-		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
-		// 						},
-		// 						RequestedMonths: []*armcomputeschedule.Month{
-		// 							to.Ptr(armcomputeschedule.MonthJanuary),
-		// 						},
-		// 						RequestedDaysOfTheMonth: []*int32{
-		// 							to.Ptr[int32](15),
-		// 						},
-		// 						ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armcomputeschedule.RetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
-		// 								RetryWindowInMinutes: to.Ptr[int32](29),
-		// 							},
-		// 						},
-		// 						DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-		// 					},
-		// 					NotificationSettings: []*armcomputeschedule.NotificationProperties{
-		// 						{
-		// 							Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
-		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
-		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
-		// 							Disabled: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
-		// 				},
-		// 				Location: to.Ptr("vmuhgdgipeypkcv"),
-		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("a"),
-		// 				Type: to.Ptr("obafnwpw"),
-		// 				SystemData: &armcomputeschedule.SystemData{
-		// 					CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
-		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
-		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsListBySubscriptionMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -621,11 +539,11 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsLi
 		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
-		// 						TimeZone: to.Ptr("g"),
+		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+		// 						TimeZone: to.Ptr("ywgarwvwqegtdsdvv"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
 		// 						},
@@ -633,20 +551,21 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsLi
 		// 							to.Ptr(armcomputeschedule.MonthJanuary),
 		// 						},
 		// 						RequestedDaysOfTheMonth: []*int32{
-		// 							to.Ptr[int32](15),
+		// 							to.Ptr[int32](18),
 		// 						},
 		// 						ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 		// 							OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 		// 							RetryPolicy: &armcomputeschedule.RetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
-		// 								RetryWindowInMinutes: to.Ptr[int32](29),
+		// 								RetryCount: to.Ptr[int32](19),
+		// 								RetryWindowInMinutes: to.Ptr[int32](3),
+		// 								OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 		// 							},
 		// 						},
 		// 						DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 		// 					},
 		// 					NotificationSettings: []*armcomputeschedule.NotificationProperties{
 		// 						{
-		// 							Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+		// 							Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 		// 							Disabled: to.Ptr(true),
@@ -656,19 +575,19 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsLi
 		// 					ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
+		// 					"key1458": to.Ptr("ahuv"),
 		// 				},
-		// 				Location: to.Ptr("vmuhgdgipeypkcv"),
+		// 				Location: to.Ptr("hwhsvnvuwsjwu"),
 		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("a"),
-		// 				Type: to.Ptr("obafnwpw"),
+		// 				Name: to.Ptr("myScheduledAction"),
+		// 				Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 		// 				SystemData: &armcomputeschedule.SystemData{
-		// 					CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+		// 					CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -678,104 +597,18 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsLi
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_ListBySubscription_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsListBySubscriptionMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewScheduledActionsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcomputeschedule.ScheduledActionsClientListBySubscriptionResponse{
-		// 	ScheduledActionListResult: armcomputeschedule.ScheduledActionListResult{
-		// 		Value: []*armcomputeschedule.ScheduledAction{
-		// 			{
-		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
-		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
-		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
-		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
-		// 						TimeZone: to.Ptr("g"),
-		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
-		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
-		// 						},
-		// 						RequestedMonths: []*armcomputeschedule.Month{
-		// 							to.Ptr(armcomputeschedule.MonthJanuary),
-		// 						},
-		// 						RequestedDaysOfTheMonth: []*int32{
-		// 							to.Ptr[int32](15),
-		// 						},
-		// 						ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armcomputeschedule.RetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
-		// 								RetryWindowInMinutes: to.Ptr[int32](29),
-		// 							},
-		// 						},
-		// 						DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-		// 					},
-		// 					NotificationSettings: []*armcomputeschedule.NotificationProperties{
-		// 						{
-		// 							Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
-		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
-		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
-		// 							Disabled: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
-		// 				},
-		// 				Location: to.Ptr("vmuhgdgipeypkcv"),
-		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("a"),
-		// 				Type: to.Ptr("obafnwpw"),
-		// 				SystemData: &armcomputeschedule.SystemData{
-		// 					CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
-		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
-		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_NewListResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewScheduledActionsClient().NewListResourcesPager("rgcomputeschedule", "myScheduledAction", nil)
+	pager := clientFactory.NewScheduledActionsClient().NewListResourcesPager("rgcomputeschedule", "scheduled-action-01", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -790,44 +623,44 @@ func ExampleScheduledActionsClient_NewListResourcesPager() {
 		// 	ResourceListResponse: armcomputeschedule.ResourceListResponse{
 		// 		Value: []*armcomputeschedule.ScheduledActionResource{
 		// 			{
+		// 				Name: to.Ptr("tmzhfhljlmghong"),
+		// 				ID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+		// 				Type: to.Ptr("iefpgdglauqr"),
 		// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 		// 				NotificationSettings: []*armcomputeschedule.NotificationProperties{
 		// 					{
-		// 						Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+		// 						Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 		// 						Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 		// 						Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 		// 						Disabled: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
-		// 				Name: to.Ptr("dkmlhpipnlqh"),
-		// 				Type: to.Ptr("xgq"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/awac"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_PatchResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().PatchResources(ctx, "rgcomputeschedule", "myScheduledAction", armcomputeschedule.ResourcePatchRequest{
+	res, err := clientFactory.NewScheduledActionsClient().PatchResources(ctx, "rgcomputeschedule", "scheduled-action-01", armcomputeschedule.ResourcePatchRequest{
 		Resources: []*armcomputeschedule.ScheduledActionResource{
 			{
 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 				NotificationSettings: []*armcomputeschedule.NotificationProperties{
 					{
-						Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+						Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 						Type:        to.Ptr(armcomputeschedule.NotificationTypeEmail),
 						Language:    to.Ptr(armcomputeschedule.LanguageEnUs),
 						Disabled:    to.Ptr(true),
@@ -844,19 +677,19 @@ func ExampleScheduledActionsClient_PatchResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientPatchResourcesResponse{
 	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
 	// 				Error: &armcomputeschedule.Error{
-	// 					Code: to.Ptr("baxjmkbhoatqcj"),
-	// 					Message: to.Ptr("chapcwfkqymeof"),
-	// 					Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 					Code: to.Ptr("ewhmaevjwwzq"),
+	// 					Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 					Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 					Details: []*armcomputeschedule.Error{
 	// 					},
 	// 					Innererror: &armcomputeschedule.InnerError{
-	// 						Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 						Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 					},
 	// 				},
 	// 			},
@@ -865,18 +698,18 @@ func ExampleScheduledActionsClient_PatchResources() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_TriggerManualOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().TriggerManualOccurrence(ctx, "rgcomputeschedule", "myScheduledAction", nil)
+	res, err := clientFactory.NewScheduledActionsClient().TriggerManualOccurrence(ctx, "rgcomputeschedule", "scheduled-action-01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -886,21 +719,21 @@ func ExampleScheduledActionsClient_TriggerManualOccurrence() {
 	// res = armcomputeschedule.ScheduledActionsClientTriggerManualOccurrenceResponse{
 	// 	Occurrence: &armcomputeschedule.Occurrence{
 	// 		Properties: &armcomputeschedule.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.243Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:47.285Z"); return t}()),
 	// 			ResultSummary: &armcomputeschedule.OccurrenceResultSummary{
-	// 				Total: to.Ptr[int32](25),
+	// 				Total: to.Ptr[int32](3),
 	// 				Statuses: []*armcomputeschedule.ResourceResultSummary{
 	// 					{
-	// 						Code: to.Ptr("ubmwzgcwfopegjtkqyrkedgish"),
-	// 						Count: to.Ptr[int32](4),
+	// 						Code: to.Ptr("hsqffeqm"),
+	// 						Count: to.Ptr[int32](2),
 	// 						ErrorDetails: &armcomputeschedule.Error{
-	// 							Code: to.Ptr("baxjmkbhoatqcj"),
-	// 							Message: to.Ptr("chapcwfkqymeof"),
-	// 							Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 							Code: to.Ptr("ewhmaevjwwzq"),
+	// 							Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 							Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 							Details: []*armcomputeschedule.Error{
 	// 							},
 	// 							Innererror: &armcomputeschedule.InnerError{
-	// 								Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 								Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 							},
 	// 						},
 	// 					},
@@ -909,40 +742,43 @@ func ExampleScheduledActionsClient_TriggerManualOccurrence() {
 	// 			ProvisioningState: to.Ptr(armcomputeschedule.OccurrenceStateCreated),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-	// 		Name: to.Ptr("edirlrdovp"),
-	// 		Type: to.Ptr("hvnnadgtjavnsbilpaipgrtdjy"),
+	// 		Name: to.Ptr("myScheduledAction"),
+	// 		Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 	// 		SystemData: &armcomputeschedule.SystemData{
-	// 			CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+	// 			CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_Update_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().Update(ctx, "rgcomputeschedule", "myScheduledAction", armcomputeschedule.ScheduledActionUpdate{
+	res, err := clientFactory.NewScheduledActionsClient().Update(ctx, "rgcomputeschedule", "scheduled-action-01", armcomputeschedule.ScheduledActionUpdate{
+		Tags: map[string]*string{
+			"key100": to.Ptr("nxa"),
+		},
 		Properties: &armcomputeschedule.ScheduledActionUpdateProperties{
 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 			ActionType:   to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:58.149Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:58.149Z"); return t }()),
+			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.818Z"); return t }()),
+			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.818Z"); return t }()),
 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t }()),
-				TimeZone:      to.Ptr("bni"),
+				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t }()),
+				TimeZone:      to.Ptr("gythvwybzwqubqtmatezbxj"),
 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 					to.Ptr(armcomputeschedule.WeekDayMonday),
 				},
@@ -950,29 +786,27 @@ func ExampleScheduledActionsClient_Update() {
 					to.Ptr(armcomputeschedule.MonthJanuary),
 				},
 				RequestedDaysOfTheMonth: []*int32{
-					to.Ptr[int32](15),
+					to.Ptr[int32](18),
 				},
 				ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 					OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-						RetryCount:           to.Ptr[int32](17),
-						RetryWindowInMinutes: to.Ptr[int32](29),
+						RetryCount:           to.Ptr[int32](19),
+						RetryWindowInMinutes: to.Ptr[int32](3),
+						OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 					},
 				},
 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 			},
 			NotificationSettings: []*armcomputeschedule.NotificationProperties{
 				{
-					Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+					Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 					Type:        to.Ptr(armcomputeschedule.NotificationTypeEmail),
 					Language:    to.Ptr(armcomputeschedule.LanguageEnUs),
 					Disabled:    to.Ptr(true),
 				},
 			},
 			Disabled: to.Ptr(true),
-		},
-		Tags: map[string]*string{
-			"key9989": to.Ptr("tryjidk"),
 		},
 	}, nil)
 	if err != nil {
@@ -986,11 +820,11 @@ func ExampleScheduledActionsClient_Update() {
 	// 		Properties: &armcomputeschedule.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
+	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
 	// 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
-	// 				TimeZone: to.Ptr("bni"),
+	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+	// 				TimeZone: to.Ptr("gythvwybzwqubqtmatezbxj"),
 	// 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 	// 					to.Ptr(armcomputeschedule.WeekDayMonday),
 	// 				},
@@ -998,20 +832,21 @@ func ExampleScheduledActionsClient_Update() {
 	// 					to.Ptr(armcomputeschedule.MonthJanuary),
 	// 				},
 	// 				RequestedDaysOfTheMonth: []*int32{
-	// 					to.Ptr[int32](15),
+	// 					to.Ptr[int32](18),
 	// 				},
 	// 				ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 	// 					OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 			},
 	// 			NotificationSettings: []*armcomputeschedule.NotificationProperties{
 	// 				{
-	// 					Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+	// 					Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 	// 					Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 	// 					Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 	// 					Disabled: to.Ptr(true),
@@ -1021,40 +856,40 @@ func ExampleScheduledActionsClient_Update() {
 	// 			ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2102": to.Ptr("obwsqwdydpkscnzceopxgkrhrxtdhv"),
+	// 			"key1458": to.Ptr("ahuv"),
 	// 		},
-	// 		Location: to.Ptr("vmuhgdgipeypkcv"),
+	// 		Location: to.Ptr("hwhsvnvuwsjwu"),
 	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-	// 		Name: to.Ptr("a"),
-	// 		Type: to.Ptr("obafnwpw"),
+	// 		Name: to.Ptr("myScheduledAction"),
+	// 		Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 	// 		SystemData: &armcomputeschedule.SystemData{
-	// 			CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+	// 			CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesCancelOperations_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActionsVirtualMachinesCancelOperationsMaximumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesCancelOperations_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesCancelOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "nivsvluajruxhmsfgmxjnl", armcomputeschedule.CancelOperationsContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "msbzqfwhqmtrxafwwh", armcomputeschedule.CancelOperationsContent{
 		OperationIDs: []*string{
-			to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+			to.Ptr("xgnpiititgkgsewft"),
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("xqlibhgsczjzsbjvc"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1067,25 +902,35 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("ead40c08-1b98-40cf-848d-fe373146b724"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
@@ -1094,153 +939,35 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesCancelOperations_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActionsVirtualMachinesCancelOperationsMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteCreate_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "fhdunfivmjiltaiakwhhwdgemfcld", armcomputeschedule.CancelOperationsContent{
-		OperationIDs: []*string{
-			to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesCancelOperationsResponse{
-	// 	CancelOperationsResponse: &armcomputeschedule.CancelOperationsResponse{
-	// 		Results: []*armcomputeschedule.ResourceOperation{
-	// 			{
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteCreate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActionsVirtualMachinesExecuteCreateMaximumSetGenGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("0505D8E4-D41A-48FB-9CA5-4AF8D93BE75F", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "oslhbouzgevzpeydssyelhw", armcomputeschedule.ExecuteCreateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "tcvpodlxbyg", armcomputeschedule.ExecuteCreateContent{
 		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionPayload{
-			BaseProfile: map[string]any{
-				"hardwareProfile": map[string]any{
-					"name": "F1",
-				},
-				"provisioningState": 0,
-				"storageProfile": map[string]any{
-					"osDisk": map[string]any{
-						"osType": 0,
-					},
-				},
-				"vmExtensions": []any{
-					map[string]any{
-						"autoUpgradeMinorVersion": true,
-						"protectedSettings":       "SomeDecryptedSecretValue",
-						"provisioningState":       0,
-						"enableAutomaticUpgrade":  true,
-						"publisher":               "Microsoft.Azure.Monitor",
-						"type":                    "AzureMonitorLinuxAgent",
-						"typeHandlerVersion":      "1.0",
-					},
-					map[string]any{
-						"name": "myExtensionName",
-					},
-				},
-				"resourcegroupName": "RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B",
-				"computeApiVersion": "2024-07-01",
-			},
+			BaseProfile: map[string]any{},
 			ResourceOverrides: []map[string]any{
-				{
-					"name":     "myFleet_523",
-					"location": "LocalDev",
-					"properties": map[string]any{
-						"hardwareProfile": map[string]any{
-							"vmSize": "Standard_F1s",
-						},
-						"provisioningState": 0,
-						"osProfile": map[string]any{
-							"computerName":  "myFleet000000",
-							"adminUsername": "adminUser",
-							"windowsConfiguration": map[string]any{
-								"additionalUnattendContent": []any{
-									map[string]any{
-										"passName": "someValue",
-										"content":  "",
-									},
-									map[string]any{
-										"passName": "someOtherValue",
-										"content":  "SomeDecryptedSecretValue",
-									},
-								},
-							},
-							"adminPassword": "SomeDecryptedSecretValue",
-						},
-						"priority": 0,
-					},
-					"zones": []any{
-						"1",
-					},
-				},
-				{
-					"name":     "myFleet_524",
-					"location": "LocalDev",
-					"properties": map[string]any{
-						"hardwareProfile": map[string]any{
-							"vmSize": "Standard_G1s",
-						},
-						"provisioningState": 0,
-						"osProfile": map[string]any{
-							"computerName":  "myFleet000000",
-							"adminUsername": "adminUser",
-							"windowsConfiguration": map[string]any{
-								"additionalUnattendContent": []any{
-									map[string]any{
-										"passName": "someValue",
-										"content":  "",
-									},
-									map[string]any{
-										"passName": "someOtherValue",
-										"content":  "SomeDecryptedSecretValue",
-									},
-								},
-							},
-							"adminPassword": "SomeDecryptedSecretValue",
-						},
-						"priority": 0,
-					},
-					"zones": []any{
-						"2",
-					},
-				},
+				{},
 			},
-			ResourceCount:  to.Ptr[int32](2),
-			ResourcePrefix: to.Ptr("TL1"),
+			ResourceCount:  to.Ptr[int32](19),
+			ResourcePrefix: to.Ptr("ilgcqhoqrpwfkprxok"),
 		},
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
+			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](5),
-				RetryWindowInMinutes: to.Ptr[int32](40),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
-		Correlationid: to.Ptr("dfe927c5-16a6-40b7-a0f7-8524975ed642"),
+		Correlationid: to.Ptr("pkm"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1250,156 +977,104 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateResponse{
 	// 	CreateResourceOperationResponse: &armcomputeschedule.CreateResourceOperationResponse{
-	// 		Type: to.Ptr("virtualmachines"),
-	// 		Location: to.Ptr("eastus"),
+	// 		Description: to.Ptr("jen"),
+	// 		Type: to.Ptr("bepzxphnuwvbndhimjgjjxopkv"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL13"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("5cc987d0-4a3a-4b01-b31a-c99219ece5e2"),
+	// 					OperationID: to.Ptr("2810e58e-388f-4b28-9b0a-9a7f7152471b"),
 	// 					ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL13"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Create")),
-	// 					SubscriptionID: to.Ptr("1d04e8f1-ee04-4056-b0b2-718f5bb45b04"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-23T22:51:50.1355051+00:00"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					TimeZone: to.Ptr("UTC"),
-	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](3),
-	// 						RetryWindowInMinutes: to.Ptr[int32](10),
+	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
+	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
+	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL14"),
-	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("5cc987d0-4a3a-4b01-b31a-c99219ece5e2"),
-	// 					ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL14"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Create")),
-	// 					SubscriptionID: to.Ptr("1d04e8f1-ee04-4056-b0b2-718f5bb45b04"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-23T22:51:50.1355051+00:00"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					TimeZone: to.Ptr("UTC"),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](3),
-	// 						RetryWindowInMinutes: to.Ptr[int32](10),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		Description: to.Ptr("Create Resource response"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteCreate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActionsVirtualMachinesExecuteCreateMinimumSetGenGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteCreateFlex_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteCreateFlex() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("0505D8E4-D41A-48FB-9CA5-4AF8D93BE75F", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "useast", armcomputeschedule.ExecuteCreateContent{
-		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionPayload{
-			BaseProfile: map[string]any{
-				"hardwareProfile": map[string]any{
-					"name": "F1",
-				},
-				"provisioningState": 0,
-				"storageProfile": map[string]any{
-					"osDisk": map[string]any{
-						"osType": 0,
-					},
-				},
-				"vmExtensions": []any{
-					map[string]any{
-						"autoUpgradeMinorVersion": true,
-						"protectedSettings":       "SomeDecryptedSecretValue",
-						"provisioningState":       0,
-						"enableAutomaticUpgrade":  true,
-						"publisher":               "Microsoft.Azure.Monitor",
-						"type":                    "AzureMonitorLinuxAgent",
-						"typeHandlerVersion":      "1.0",
-					},
-					map[string]any{
-						"name": "myExtensionName",
-					},
-				},
-				"resourcegroupName": "RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B",
-				"computeApiVersion": "2024-07-01",
-			},
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreateFlex(ctx, "bnadpwmpjyfduxue", armcomputeschedule.ExecuteCreateFlexRequest{
+		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionFlexPayload{
+			BaseProfile: map[string]any{},
 			ResourceOverrides: []map[string]any{
-				{
-					"name":     "myFleet_523",
-					"location": "LocalDev",
-					"properties": map[string]any{
-						"hardwareProfile": map[string]any{
-							"vmSize": "Standard_F1s",
-						},
-						"provisioningState": 0,
-						"osProfile": map[string]any{
-							"computerName":  "myFleet000000",
-							"adminUsername": "adminUser",
-							"windowsConfiguration": map[string]any{
-								"additionalUnattendContent": []any{
-									map[string]any{
-										"passName": "someValue",
-										"content":  "",
-									},
-									map[string]any{
-										"passName": "someOtherValue",
-										"content":  "SomeDecryptedSecretValue",
-									},
-								},
-							},
-							"adminPassword": "SomeDecryptedSecretValue",
-						},
-						"priority": 0,
+				{},
+			},
+			ResourceCount:  to.Ptr[int32](24),
+			ResourcePrefix: to.Ptr("irskthgchddyuddpqaxlw"),
+			FlexProperties: &armcomputeschedule.FlexProperties{
+				VMSizeProfiles: []*armcomputeschedule.VMSizeProfile{
+					{
+						Name: to.Ptr("bmzylbvz"),
+						Rank: to.Ptr[int32](24),
 					},
-					"zones": []any{
-						"1",
+					{
+						Name: to.Ptr("bmzylbvz"),
+						Rank: to.Ptr[int32](24),
 					},
 				},
-				{
-					"name":     "myFleet_524",
-					"location": "LocalDev",
-					"properties": map[string]any{
-						"hardwareProfile": map[string]any{
-							"vmSize": "Standard_G1s",
+				OSType: to.Ptr(armcomputeschedule.OsTypeWindows),
+				PriorityProfile: &armcomputeschedule.PriorityProfile{
+					Type:               to.Ptr(armcomputeschedule.PriorityTypeRegular),
+					AllocationStrategy: to.Ptr(armcomputeschedule.AllocationStrategyLowestPrice),
+				},
+				ZoneAllocationPolicy: &armcomputeschedule.ZoneAllocationPolicy{
+					DistributionStrategy: to.Ptr(armcomputeschedule.DistributionStrategyBestEffortSingleZone),
+					ZonePreferences: []*armcomputeschedule.ZonePreference{
+						{
+							Zone: to.Ptr("kmcvkimwmqwrhfznrqs"),
+							Rank: to.Ptr[int32](21),
 						},
-						"provisioningState": 0,
-						"osProfile": map[string]any{
-							"computerName":  "myFleet000000",
-							"adminUsername": "adminUser",
-							"windowsConfiguration": map[string]any{
-								"additionalUnattendContent": []any{
-									map[string]any{
-										"passName": "someValue",
-										"content":  "",
-									},
-									map[string]any{
-										"passName": "someOtherValue",
-										"content":  "SomeDecryptedSecretValue",
-									},
-								},
-							},
-							"adminPassword": "SomeDecryptedSecretValue",
-						},
-						"priority": 0,
-					},
-					"zones": []any{
-						"2",
 					},
 				},
 			},
-			ResourceCount: to.Ptr[int32](2),
 		},
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
+		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
+			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
+			RetryPolicy: &armcomputeschedule.RetryPolicy{
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+			},
+		},
+		Correlationid: to.Ptr("dnncbbqrhnrwcfqrathnexdpcryo"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1407,76 +1082,77 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateResponse{
-	// 	CreateResourceOperationResponse: &armcomputeschedule.CreateResourceOperationResponse{
-	// 		Type: to.Ptr("virtualmachines"),
-	// 		Location: to.Ptr("eastus"),
+	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{
+	// 	CreateFlexResourceOperationResponse: &armcomputeschedule.CreateFlexResourceOperationResponse{
+	// 		Description: to.Ptr("ucdsygxzmassqmhessbwyiuwiq"),
+	// 		Type: to.Ptr("ooiwvuoi"),
+	// 		Location: to.Ptr("zmpdjv"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL13"),
+	// 				ResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("5cc987d0-4a3a-4b01-b31a-c99219ece5e2"),
-	// 					ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL13"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Create")),
-	// 					SubscriptionID: to.Ptr("1d04e8f1-ee04-4056-b0b2-718f5bb45b04"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-23T22:51:50.1355051+00:00"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					TimeZone: to.Ptr("UTC"),
-	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](3),
-	// 						RetryWindowInMinutes: to.Ptr[int32](10),
+	// 					OperationID: to.Ptr("9b51e9d1-7f85-4c2b-a1c6-8dfd6916fee4"),
+	// 					ResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
+	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
+	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
+	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL14"),
-	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("5cc987d0-4a3a-4b01-b31a-c99219ece5e2"),
-	// 					ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B/providers/Microsoft.Compute/virtualMachines/TL14"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Create")),
-	// 					SubscriptionID: to.Ptr("1d04e8f1-ee04-4056-b0b2-718f5bb45b04"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-23T22:51:50.1355051+00:00"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					TimeZone: to.Ptr("UTC"),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](3),
-	// 						RetryWindowInMinutes: to.Ptr[int32](10),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		Description: to.Ptr("Create Resource response"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledActionsVirtualMachinesExecuteDeallocateMaximumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "ykcaptgboliddcfyaiuimj", armcomputeschedule.ExecuteDeallocateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "tobscvse", armcomputeschedule.ExecuteDeallocateContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](17),
-				RetryWindowInMinutes: to.Ptr[int32](29),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+				to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 			},
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("ruwskrvse"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1486,31 +1162,41 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledAct
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse{
 	// 	DeallocateResourceOperationResponse: &armcomputeschedule.DeallocateResourceOperationResponse{
-	// 		Description: to.Ptr("pmx"),
-	// 		Type: to.Ptr("tftzqijknwbvxytjmfzszl"),
-	// 		Location: to.Ptr("cofallzfmrhbhhiodklevxvow"),
+	// 		Description: to.Ptr("kfsvvmqmuawwbauljkfwvkg"),
+	// 		Type: to.Ptr("uocvfgbwp"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("cbe5f14f-9550-419d-ac45-736919c6208c"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
@@ -1519,67 +1205,33 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledAct
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledActionsVirtualMachinesExecuteDeallocateMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteDelete_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "qqfrkswrovcice", armcomputeschedule.ExecuteDeallocateContent{
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-			},
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse{
-	// 	DeallocateResourceOperationResponse: &armcomputeschedule.DeallocateResourceOperationResponse{
-	// 		Description: to.Ptr("pmx"),
-	// 		Type: to.Ptr("tftzqijknwbvxytjmfzszl"),
-	// 		Location: to.Ptr("cofallzfmrhbhhiodklevxvow"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDelete_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete_scheduledActionsVirtualMachinesExecuteDeleteMaximumSetGenGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("0505D8E4-D41A-48FB-9CA5-4AF8D93BE75F", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "east", armcomputeschedule.ExecuteDeleteContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "swchjs", armcomputeschedule.ExecuteDeleteContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
+			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](2),
-				RetryWindowInMinutes: to.Ptr[int32](4),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+				to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 			},
 		},
-		Correlationid: to.Ptr("dfe927c5-16a6-40b7-a0f7-8524975ed642"),
-		ForceDeletion: to.Ptr(false),
+		Correlationid: to.Ptr("upxtzubhqqzhk"),
+		ForceDeletion: to.Ptr(true),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1589,161 +1241,75 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete_scheduledActions
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeleteResponse{
 	// 	DeleteResourceOperationResponse: &armcomputeschedule.DeleteResourceOperationResponse{
-	// 		Type: to.Ptr("virtualmachines"),
-	// 		Location: to.Ptr("eastus"),
+	// 		Description: to.Ptr("mvfsekcubcptb"),
+	// 		Type: to.Ptr("ncppybbwqiczo"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
-	// 				ErrorCode: to.Ptr("ynukyltendgmn"),
-	// 				ErrorDetails: to.Ptr("tifeuh"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("0505H8E4-D41A-48FB-9CA5-4AF8D93BE75F"),
+	// 					OperationID: to.Ptr("2ec2be7b-47dd-41ab-8987-5df71c3158be"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Delete")),
-	// 					SubscriptionID: to.Ptr("YourSubscriptionId"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					Timezone: to.Ptr("nwugsooykqggcokphgdj"),
-	// 					TimeZone: to.Ptr("qkxnxnumvfqmsmpyccv"),
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
-	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](25),
-	// 						RetryWindowInMinutes: to.Ptr[int32](4),
+	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
+	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
+	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr(""),
-	// 				ErrorDetails: to.Ptr(""),
-	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("Create Resource request"),
-	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Delete")),
-	// 					SubscriptionID: to.Ptr("YourSubscriptionId"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					Timezone: to.Ptr("nwugsooykqggcokphgdj"),
-	// 					TimeZone: to.Ptr("qkxnxnumvfqmsmpyccv"),
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](4),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		Description: to.Ptr("Delete Resource response"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDelete_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete_scheduledActionsVirtualMachinesExecuteDeleteMinimumSetGenGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("0505D8E4-D41A-48FB-9CA5-4AF8D93BE75F", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "east", armcomputeschedule.ExecuteDeleteContent{
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeleteResponse{
-	// 	DeleteResourceOperationResponse: &armcomputeschedule.DeleteResourceOperationResponse{
-	// 		Type: to.Ptr("virtualMachines"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Results: []*armcomputeschedule.ResourceOperation{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
-	// 				ErrorCode: to.Ptr("ynukyltendgmn"),
-	// 				ErrorDetails: to.Ptr("tifeuh"),
-	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("0505H8E4-D41A-48FB-9CA5-4AF8D93BE75F"),
-	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Delete")),
-	// 					SubscriptionID: to.Ptr("YourSubscriptionId"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					Timezone: to.Ptr("nwugsooykqggcokphgdj"),
-	// 					TimeZone: to.Ptr("qkxnxnumvfqmsmpyccv"),
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
-	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](25),
-	// 						RetryWindowInMinutes: to.Ptr[int32](4),
-	// 					},
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr(""),
-	// 				ErrorDetails: to.Ptr(""),
-	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("Create Resource request"),
-	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("Delete")),
-	// 					SubscriptionID: to.Ptr("YourSubscriptionId"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
-	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armcomputeschedule.OperationStatePendingScheduling),
-	// 					Timezone: to.Ptr("nwugsooykqggcokphgdj"),
-	// 					TimeZone: to.Ptr("qkxnxnumvfqmsmpyccv"),
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:03.591Z"); return t}()),
-	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](4),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		Description: to.Ptr("Delete Resource response"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActionsVirtualMachinesExecuteHibernateMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "gztd", armcomputeschedule.ExecuteHibernateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "zydcprtgybcyilgugfwtfp", armcomputeschedule.ExecuteHibernateContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](17),
-				RetryWindowInMinutes: to.Ptr[int32](29),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+				to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 			},
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("miqcvaudnngdedocspkthnoo"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1753,31 +1319,41 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteHibernateResponse{
 	// 	HibernateResourceOperationResponse: &armcomputeschedule.HibernateResourceOperationResponse{
-	// 		Description: to.Ptr("zemtxsyjt"),
-	// 		Type: to.Ptr("w"),
-	// 		Location: to.Ptr("jwwrzblfudvislgynhjwwvpfrta"),
+	// 		Description: to.Ptr("zaclotxbojh"),
+	// 		Type: to.Ptr("bchmqcvq"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("81d2d5ea-84f8-4d92-b962-502d536245f4"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
@@ -1786,66 +1362,32 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActionsVirtualMachinesExecuteHibernateMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteStart_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "xtmm", armcomputeschedule.ExecuteHibernateContent{
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-			},
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteHibernateResponse{
-	// 	HibernateResourceOperationResponse: &armcomputeschedule.HibernateResourceOperationResponse{
-	// 		Description: to.Ptr("zemtxsyjt"),
-	// 		Type: to.Ptr("w"),
-	// 		Location: to.Ptr("jwwrzblfudvislgynhjwwvpfrta"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteStart_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsVirtualMachinesExecuteStartMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "qk", armcomputeschedule.ExecuteStartContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "vpcshwavxibrshqepqktfyu", armcomputeschedule.ExecuteStartContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](17),
-				RetryWindowInMinutes: to.Ptr[int32](29),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+				to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 			},
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("fmjvelcuicsoqykbyercnrkda"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1855,31 +1397,41 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsV
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteStartResponse{
 	// 	StartResourceOperationResponse: &armcomputeschedule.StartResourceOperationResponse{
-	// 		Description: to.Ptr("tlphodyrecv"),
-	// 		Type: to.Ptr("qpmru"),
-	// 		Location: to.Ptr("ktsumrgdaifwbpkxurfdfa"),
+	// 		Description: to.Ptr("yeujzzppceepmcpsnaes"),
+	// 		Type: to.Ptr("mi"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("583666a5-81ec-48a3-9fc5-5fb3c0d9b345"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
@@ -1888,55 +1440,20 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsV
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteStart_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsVirtualMachinesExecuteStartMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledActionsVirtualMachinesGetOperationErrorsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "fbdewllahrteoavajbomjc", armcomputeschedule.ExecuteStartContent{
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-			},
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteStartResponse{
-	// 	StartResourceOperationResponse: &armcomputeschedule.StartResourceOperationResponse{
-	// 		Description: to.Ptr("tlphodyrecv"),
-	// 		Type: to.Ptr("qpmru"),
-	// 		Location: to.Ptr("ktsumrgdaifwbpkxurfdfa"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledActionsVirtualMachinesGetOperationErrorsMaximumSetGenGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("0505D8E4-D41A-48FB-9CA5-4AF8D93BE75F", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "ennweqswbghorrgzbet", armcomputeschedule.GetOperationErrorsContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "hvevnodfnj", armcomputeschedule.GetOperationErrorsContent{
 		OperationIDs: []*string{
-			to.Ptr("ksufjznokhsbowdupyt"),
+			to.Ptr("enrmeatzaw"),
 		},
 	}, nil)
 	if err != nil {
@@ -1949,42 +1466,42 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledAc
 	// 	GetOperationErrorsResponse: &armcomputeschedule.GetOperationErrorsResponse{
 	// 		Results: []*armcomputeschedule.OperationErrorsResult{
 	// 			{
-	// 				OperationID: to.Ptr("emftjglfbsxaboxqzxlpbjian"),
-	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:04.130Z"); return t}()),
-	// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:04.130Z"); return t}()),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:04.130Z"); return t}()),
+	// 				OperationID: to.Ptr("8f88ead2-fba8-4df2-8eaf-c7cf68a15574"),
+	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
+	// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
 	// 				OperationErrors: []*armcomputeschedule.OperationErrorDetails{
 	// 					{
-	// 						ErrorCode: to.Ptr("awrovoihpnqsotznapyrrb"),
-	// 						ErrorDetails: to.Ptr("af"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:04.131Z"); return t}()),
-	// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-15T19:47:04.131Z"); return t}()),
-	// 						AzureOperationName: to.Ptr("ipsoybbslitmwsfkygfjhb"),
-	// 						CrpOperationID: to.Ptr("cqkmbfb"),
+	// 						ErrorCode: to.Ptr("rmiwowlfunasblw"),
+	// 						ErrorDetails: to.Ptr("wrdkxgtifbigjepn"),
+	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
+	// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
+	// 						AzureOperationName: to.Ptr("vvwstzqqrrnjabceixqbgz"),
+	// 						CrpOperationID: to.Ptr("rhzoqu"),
 	// 					},
 	// 				},
-	// 				RequestErrorCode: to.Ptr("vzixjphgeygyhzpbbkgzcjol"),
-	// 				RequestErrorDetails: to.Ptr("ficjafazcvbmlbnqhffwtevkla"),
+	// 				RequestErrorCode: to.Ptr("xmtcllofojxscyriajhw"),
+	// 				RequestErrorDetails: to.Ptr("rws"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledActionsVirtualMachinesGetOperationErrorsMinimumSetGenGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledActionsVirtualMachinesGetOperationErrorsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("0505D8E4-D41A-48FB-9CA5-4AF8D93BE75F", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "gcdqwzmxtcn", armcomputeschedule.GetOperationErrorsContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "vkkri", armcomputeschedule.GetOperationErrorsContent{
 		OperationIDs: []*string{
-			to.Ptr("ksufjznokhsbowdupyt"),
+			to.Ptr("enrmeatzaw"),
 		},
 	}, nil)
 	if err != nil {
@@ -2003,22 +1520,22 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledAc
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledActionsVirtualMachinesGetOperationStatusMaximumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "ntfcikxsmthfkdhdcjpevmydzu", armcomputeschedule.GetOperationStatusContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "gcbtdawfspg", armcomputeschedule.GetOperationStatusContent{
 		OperationIDs: []*string{
-			to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+			to.Ptr("ehesndkmbcncsvkqvxwkbmidmaxhx"),
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("hzpmcjplnbokebrbxrtuvxpp"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -2031,25 +1548,35 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledAc
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("ce3eeb40-0ed2-4d74-9fd9-25d660f3bd0a"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
@@ -2058,69 +1585,39 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledAc
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationStatus_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledActionsVirtualMachinesGetOperationStatusMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "ykvvjfoopmkwznctgaiblzvea", armcomputeschedule.GetOperationStatusContent{
-		OperationIDs: []*string{
-			to.Ptr("duhqnwosjzexcfwfhryvy"),
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationStatusResponse{
-	// 	GetOperationStatusResponse: &armcomputeschedule.GetOperationStatusResponse{
-	// 		Results: []*armcomputeschedule.ResourceOperation{
-	// 			{
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActionsVirtualMachinesSubmitDeallocateMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "ycipx", armcomputeschedule.SubmitDeallocateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "wtkfymadciksjsvamowmbiqdltdzw", armcomputeschedule.SubmitDeallocateContent{
 		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
-			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
+			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			Timezone:     to.Ptr("ehbjytlhnykfkjxujca"),
+			TimeZone:     to.Ptr("feiohhavpmmjrf"),
 			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 		},
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](17),
-				RetryWindowInMinutes: to.Ptr[int32](29),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+				to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 			},
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("rsi"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -2130,31 +1627,41 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse{
 	// 	DeallocateResourceOperationResponse: &armcomputeschedule.DeallocateResourceOperationResponse{
-	// 		Description: to.Ptr("pmx"),
-	// 		Type: to.Ptr("tftzqijknwbvxytjmfzszl"),
-	// 		Location: to.Ptr("cofallzfmrhbhhiodklevxvow"),
+	// 		Description: to.Ptr("kfsvvmqmuawwbauljkfwvkg"),
+	// 		Type: to.Ptr("uocvfgbwp"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("2985c2c5-0ecb-493b-8f56-2d87972cdc78"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
@@ -2163,76 +1670,39 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActionsVirtualMachinesSubmitDeallocateMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesSubmitHibernate_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "zrcmkxsbuxsxxulky", armcomputeschedule.SubmitDeallocateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "aoewv", armcomputeschedule.SubmitHibernateContent{
 		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
-			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-		},
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-			},
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse{
-	// 	DeallocateResourceOperationResponse: &armcomputeschedule.DeallocateResourceOperationResponse{
-	// 		Description: to.Ptr("pmx"),
-	// 		Type: to.Ptr("tftzqijknwbvxytjmfzszl"),
-	// 		Location: to.Ptr("cofallzfmrhbhhiodklevxvow"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitHibernate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActionsVirtualMachinesSubmitHibernateMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "rhadyapnyvmobwg", armcomputeschedule.SubmitHibernateContent{
-		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
-			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
+			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			Timezone:     to.Ptr("ehbjytlhnykfkjxujca"),
+			TimeZone:     to.Ptr("feiohhavpmmjrf"),
 			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 		},
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](17),
-				RetryWindowInMinutes: to.Ptr[int32](29),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+				to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 			},
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("lgpkqjojane"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -2242,31 +1712,41 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitHibernateResponse{
 	// 	HibernateResourceOperationResponse: &armcomputeschedule.HibernateResourceOperationResponse{
-	// 		Description: to.Ptr("zemtxsyjt"),
-	// 		Type: to.Ptr("w"),
-	// 		Location: to.Ptr("jwwrzblfudvislgynhjwwvpfrta"),
+	// 		Description: to.Ptr("zaclotxbojh"),
+	// 		Type: to.Ptr("bchmqcvq"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("b2f10cd2-caf5-496f-a6f6-24ae326b3272"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
@@ -2275,76 +1755,39 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitHibernate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActionsVirtualMachinesSubmitHibernateMinimumSet() {
+// Generated from example definition: 2026-03-01-preview/ScheduledActions_VirtualMachinesSubmitStart_MaximumSet_Gen.json
+func ExampleScheduledActionsClient_VirtualMachinesSubmitStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "zuevcqpgdohzbjodhachtr", armcomputeschedule.SubmitHibernateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "cabm", armcomputeschedule.SubmitStartContent{
 		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
-			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-		},
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-			},
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitHibernateResponse{
-	// 	HibernateResourceOperationResponse: &armcomputeschedule.HibernateResourceOperationResponse{
-	// 		Description: to.Ptr("zemtxsyjt"),
-	// 		Type: to.Ptr("w"),
-	// 		Location: to.Ptr("jwwrzblfudvislgynhjwwvpfrta"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitStart_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVirtualMachinesSubmitStartMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "pxtvvk", armcomputeschedule.SubmitStartContent{
-		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
-			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
+			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			Timezone:     to.Ptr("ehbjytlhnykfkjxujca"),
+			TimeZone:     to.Ptr("feiohhavpmmjrf"),
 			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 		},
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](17),
-				RetryWindowInMinutes: to.Ptr[int32](29),
+				RetryCount:           to.Ptr[int32](19),
+				RetryWindowInMinutes: to.Ptr[int32](3),
+				OnFailureAction:      to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+				to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 			},
 		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+		Correlationid: to.Ptr("ttlsvgmsykwowrajtmnztcm"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -2354,75 +1797,45 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitStartResponse{
 	// 	StartResourceOperationResponse: &armcomputeschedule.StartResourceOperationResponse{
-	// 		Description: to.Ptr("tlphodyrecv"),
-	// 		Type: to.Ptr("qpmru"),
-	// 		Location: to.Ptr("ktsumrgdaifwbpkxurfdfa"),
+	// 		Description: to.Ptr("yeujzzppceepmcpsnaes"),
+	// 		Type: to.Ptr("mi"),
+	// 		Location: to.Ptr("ry"),
 	// 		Results: []*armcomputeschedule.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ErrorCode: to.Ptr("fbjbxpbevwhljwbaiazzccepylkq"),
-	// 				ErrorDetails: to.Ptr("aszvazbvkfy"),
+	// 				ErrorCode: to.Ptr("suqicgugecqutzbemqi"),
+	// 				ErrorDetails: to.Ptr("yjbzcdred"),
 	// 				Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
+	// 					OperationID: to.Ptr("94d30308-21ef-46de-aaaa-25ee4f42a4da"),
 	// 					ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("x"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 					TimeZone: to.Ptr("gw"),
+	// 					Timezone: to.Ptr("vxqpeqdmiigotmwulqb"),
+	// 					TimeZone: to.Ptr("tfz"),
 	// 					ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("afhxlwuztofiozdrf"),
-	// 						ErrorDetails: to.Ptr("anjvzqsbvwhspqajnnl"),
+	// 						ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 						ErrorDetails: to.Ptr("hujzdkgepimuxal"),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.772Z"); return t}()),
+	// 					FallbackOperationInfo: &armcomputeschedule.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 						Status: to.Ptr("zxfnpjauqqsz"),
+	// 						Error: &armcomputeschedule.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("igjijhhicqwfzafxp"),
+	// 							ErrorDetails: to.Ptr("hujzdkgepimuxal"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
+	// 						RetryCount: to.Ptr[int32](19),
+	// 						RetryWindowInMinutes: to.Ptr[int32](3),
+	// 						OnFailureAction: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitStart_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVirtualMachinesSubmitStartMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "ufrcsuw", armcomputeschedule.SubmitStartContent{
-		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
-			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-		},
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-			},
-		},
-		Correlationid: to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitStartResponse{
-	// 	StartResourceOperationResponse: &armcomputeschedule.StartResourceOperationResponse{
-	// 		Description: to.Ptr("tlphodyrecv"),
-	// 		Type: to.Ptr("qpmru"),
-	// 		Location: to.Ptr("ktsumrgdaifwbpkxurfdfa"),
 	// 	},
 	// }
 }

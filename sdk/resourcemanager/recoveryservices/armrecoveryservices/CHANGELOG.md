@@ -3,8 +3,6 @@
 ## 3.0.0-beta.1 (2026-03-16)
 ### Breaking Changes
 
-- Function `*VaultExtendedInfoClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, vaultName string, resourceResourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoClientCreateOrUpdateOptions)`
-- Function `*VaultExtendedInfoClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, vaultName string, resourceResourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoClientUpdateOptions)`
 - Struct `ErrorDetail` has been removed
 - Struct `ErrorResponse` has been removed
 - Struct `PatchTrackedResource` has been removed

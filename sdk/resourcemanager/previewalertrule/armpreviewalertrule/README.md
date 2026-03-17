@@ -1,6 +1,6 @@
-# Azure Previewalertrule Module for Go
+# Azure Preview Alert Rule Module for Go
 
-The `armpreviewalertrule` module provides operations for working with Azure Previewalertrule.
+The `armpreviewalertrule` module provides operations for working with Azure Preview Alert Rule.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/previewalertrule/armpreviewalertrule)
 
@@ -15,7 +15,7 @@ The `armpreviewalertrule` module provides operations for working with Azure Prev
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Previewalertrule module:
+Install the Azure Preview Alert Rule module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/previewalertrule/armpreviewalertrule
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/previewalertrule/ar
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Previewalertrule.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Preview Alert Rule.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Previewalertrule module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Preview Alert Rule module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armpreviewalertrule.NewClientFactory(cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Previewalertrule` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Preview Alert Rule` label.
 
 # Contributing
 

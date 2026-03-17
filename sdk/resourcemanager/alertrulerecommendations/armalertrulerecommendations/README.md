@@ -1,6 +1,6 @@
-# Azure Alertrulerecommendations Module for Go
+# Azure Alert Rule Recommendations Module for Go
 
-The `armalertrulerecommendations` module provides operations for working with Azure Alertrulerecommendations.
+The `armalertrulerecommendations` module provides operations for working with Azure Alert Rule Recommendations.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/alertrulerecommendations/armalertrulerecommendations)
 
@@ -15,7 +15,7 @@ The `armalertrulerecommendations` module provides operations for working with Az
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Alertrulerecommendations module:
+Install the Azure Alert Rule Recommendations module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertrulerecommendations/armalertrulerecommendations
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertrulerecommenda
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Alertrulerecommendations.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Alert Rule Recommendations.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Alertrulerecommendations module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Alert Rule Recommendations module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armalertrulerecommendations.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Alertrulerecommendations` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Alert Rule Recommendations` label.
 
 # Contributing
 

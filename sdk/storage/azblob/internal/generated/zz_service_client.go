@@ -78,7 +78,7 @@ func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, where
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -147,7 +147,7 @@ func (client *ServiceClient) getAccountInfoCreateRequest(ctx context.Context, op
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -227,7 +227,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -290,7 +290,7 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -362,7 +362,7 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
 		return nil, err
 	}
@@ -429,7 +429,7 @@ func (client *ServiceClient) ListContainersSegmentCreateRequest(ctx context.Cont
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -493,7 +493,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
 		return nil, err
 	}
@@ -561,7 +561,7 @@ func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if err := req.SetBody(body, multipartContentType); err != nil {
 		return nil, err
 	}

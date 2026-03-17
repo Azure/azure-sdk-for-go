@@ -80,7 +80,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2025-11-05"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{client.version}`, `[]string{ServiceVersion}`);
 ```
 
 ### Fix CRC Response Header in PutBlob response

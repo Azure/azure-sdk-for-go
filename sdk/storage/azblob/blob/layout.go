@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 type layoutRange struct {
@@ -22,17 +23,14 @@ type layout struct {
 	eTag          *azcore.ETag
 }
 
-// layoutState is the state needed to getLayout the layout
+// layoutState is the state needed to refresh the layout
 type layoutState struct {
-	client *Client
-	opts   *GetLayoutOptions
-	ctx    context.Context
+	ctx context.Context
 }
 
-func getLayout(state layoutState) (layout, time.Time, error) {
+func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layout, time.Time, error) {
 	layoutRanges := make([]layoutRange, 0)
 
-	pager := state.client.GetLayoutPager(state.opts)
 	var contentLength int64
 	var eTag *azcore.ETag
 	for pager.More() {
@@ -41,7 +39,9 @@ func getLayout(state layoutState) (layout, time.Time, error) {
 			return layout{}, time.Time{}, err
 		}
 		contentLength = *resp.ContentLength
-		eTag = resp.ETag
+		if eTag == nil {
+			eTag = resp.ETag
+		}
 		if len(resp.BlobLayout.Endpoints.Endpoint) == 0 {
 			// No layout means we can download the whole blob from the primary endpoint.
 			return layout{contentLength: contentLength, eTag: eTag}, time.Time{}, nil
@@ -60,8 +60,8 @@ func getLayout(state layoutState) (layout, time.Time, error) {
 		}
 	}
 
-	// Expire the cache after 9 minutes so that we getLayout the layout at 4 minutes by default.
-	// The default getLayout time of temporal resource is 5 minutes.
+	// Expire the cache after 9 minutes so that we refresh the layout at 4 minutes by default.
+	// The default refresh time of temporal resource is 5 minutes.
 	return layout{layoutRanges: layoutRanges, contentLength: contentLength, eTag: eTag}, time.Now().Add(9 * time.Minute), nil
 }
 

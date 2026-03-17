@@ -4,8 +4,14 @@
 package blob
 
 import (
+	"context"
+	"errors"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/stretchr/testify/require"
 )
 
@@ -99,4 +105,175 @@ func TestGetIdealEndpoint_SameEndpointDifferentRanges(t *testing.T) {
 	require.Equal(t, "endpointA", getIdealEndpoint(25, l))
 	require.Equal(t, "endpointB", getIdealEndpoint(75, l))
 	require.Equal(t, "endpointA", getIdealEndpoint(125, l))
+}
+
+func TestGetLayout_SinglePageWithLayout(t *testing.T) {
+	ctx := context.Background()
+	contentLength := int64(1000)
+	etag := azcore.ETag("test-etag")
+
+	responses := []GetLayoutResponse{
+		{
+			BlobLayout: generated.BlobLayout{
+				Endpoints: &generated.BlobLayoutEndpoints{
+					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{
+						{Index: to.Ptr(int32(0)), Value: to.Ptr("endpoint1")},
+						{Index: to.Ptr(int32(1)), Value: to.Ptr("endpoint2")},
+					},
+				},
+				Ranges: &generated.BlobLayoutRanges{
+					Range: []*generated.BlobLayoutRangesRangeItem{
+						{Start: to.Ptr(int64(0)), End: to.Ptr(int64(499)), EndpointIndex: to.Ptr(int32(0))},
+						{Start: to.Ptr(int64(500)), End: to.Ptr(int64(999)), EndpointIndex: to.Ptr(int32(1))},
+					},
+				},
+			},
+			ContentLength: &contentLength,
+			ETag:          &etag,
+		},
+	}
+
+	pager := createMockPager(responses, nil)
+	state := layoutState{ctx: ctx}
+
+	result, expiry, err := getLayout(state, pager)
+
+	require.NoError(t, err)
+	require.Len(t, result.layoutRanges, 2)
+	require.Equal(t, int64(1000), result.contentLength)
+	require.NotNil(t, result.eTag)
+	require.Equal(t, etag, *result.eTag)
+	require.False(t, expiry.IsZero())
+
+	// Verify ranges
+	require.Equal(t, int64(0), result.layoutRanges[0].start)
+	require.Equal(t, int64(499), result.layoutRanges[0].end)
+	require.Equal(t, "endpoint1", result.layoutRanges[0].endpoint)
+	require.Equal(t, int64(500), result.layoutRanges[1].start)
+	require.Equal(t, int64(999), result.layoutRanges[1].end)
+	require.Equal(t, "endpoint2", result.layoutRanges[1].endpoint)
+}
+
+func TestGetLayout_SinglePageNoLayout(t *testing.T) {
+	ctx := context.Background()
+	contentLength := int64(500)
+	etag := azcore.ETag("no-layout-etag")
+
+	responses := []GetLayoutResponse{
+		{
+			BlobLayout: generated.BlobLayout{
+				Endpoints: &generated.BlobLayoutEndpoints{
+					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{},
+				},
+			},
+			ContentLength: &contentLength,
+			ETag:          &etag,
+		},
+	}
+
+	pager := createMockPager(responses, nil)
+	state := layoutState{ctx: ctx}
+
+	result, expiry, err := getLayout(state, pager)
+
+	require.NoError(t, err)
+	require.Len(t, result.layoutRanges, 0)
+	require.Equal(t, int64(500), result.contentLength)
+	require.NotNil(t, result.eTag)
+	require.Equal(t, etag, *result.eTag)
+	require.True(t, expiry.IsZero())
+}
+
+func TestGetLayout_MultiplePages(t *testing.T) {
+	ctx := context.Background()
+	contentLength := int64(3000)
+	etag := azcore.ETag("multi-page-etag")
+
+	responses := []GetLayoutResponse{
+		{
+			BlobLayout: generated.BlobLayout{
+				NextMarker: to.Ptr("marker1"),
+				Endpoints: &generated.BlobLayoutEndpoints{
+					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{
+						{Index: to.Ptr(int32(0)), Value: to.Ptr("endpoint1")},
+					},
+				},
+				Ranges: &generated.BlobLayoutRanges{
+					Range: []*generated.BlobLayoutRangesRangeItem{
+						{Start: to.Ptr(int64(0)), End: to.Ptr(int64(999)), EndpointIndex: to.Ptr(int32(0))},
+					},
+				},
+			},
+			ContentLength: &contentLength,
+			ETag:          &etag,
+		},
+		{
+			BlobLayout: generated.BlobLayout{
+				Endpoints: &generated.BlobLayoutEndpoints{
+					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{
+						{Index: to.Ptr(int32(0)), Value: to.Ptr("endpoint2")},
+					},
+				},
+				Ranges: &generated.BlobLayoutRanges{
+					Range: []*generated.BlobLayoutRangesRangeItem{
+						{Start: to.Ptr(int64(1000)), End: to.Ptr(int64(1999)), EndpointIndex: to.Ptr(int32(0))},
+						{Start: to.Ptr(int64(2000)), End: to.Ptr(int64(2999)), EndpointIndex: to.Ptr(int32(0))},
+					},
+				},
+			},
+			ContentLength: &contentLength,
+			ETag:          &etag,
+		},
+	}
+
+	pager := createMockPager(responses, nil)
+	state := layoutState{ctx: ctx}
+
+	result, expiry, err := getLayout(state, pager)
+
+	require.NoError(t, err)
+	require.Len(t, result.layoutRanges, 3)
+	require.Equal(t, int64(3000), result.contentLength)
+	require.False(t, expiry.IsZero())
+
+	// Verify all ranges from both pages
+	require.Equal(t, "endpoint1", result.layoutRanges[0].endpoint)
+	require.Equal(t, "endpoint2", result.layoutRanges[1].endpoint)
+	require.Equal(t, "endpoint2", result.layoutRanges[2].endpoint)
+}
+
+func TestGetLayout_Error(t *testing.T) {
+	ctx := context.Background()
+	testErr := errors.New("pager error")
+
+	pager := createMockPager(nil, testErr)
+	state := layoutState{ctx: ctx}
+
+	result, expiry, err := getLayout(state, pager)
+
+	require.Error(t, err)
+	require.Equal(t, testErr, err)
+	require.Empty(t, result.layoutRanges)
+	require.True(t, expiry.IsZero())
+}
+
+// createMockPager creates a mock pager for testing getLayout function
+func createMockPager(responses []GetLayoutResponse, err error) *runtime.Pager[GetLayoutResponse] {
+	index := 0
+	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
+		More: func(resp GetLayoutResponse) bool {
+			return resp.BlobLayout.NextMarker != nil && *resp.BlobLayout.NextMarker != ""
+		},
+		Fetcher: func(ctx context.Context, current *GetLayoutResponse) (GetLayoutResponse, error) {
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			if index >= len(responses) {
+				return GetLayoutResponse{}, errors.New("no more pages")
+			}
+			resp := responses[index]
+			index++
+			return resp, nil
+		},
+	})
 }

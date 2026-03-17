@@ -348,9 +348,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 
 	// TODO : SDK should ideally start with an initial download instead of get properties to optimize for small blobs.
 	state := layoutState{
-		client: b,
-		opts:   o.getBlobLayoutOptions(),
-		ctx:    ctx,
+		ctx: ctx,
 	}
 	useLayout := o.EnableLayoutAwareRouting
 	var l layout
@@ -360,7 +358,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	// Try layout-aware routing first if enabled, otherwise use GetProperties
 	if o.EnableLayoutAwareRouting {
 		var err error
-		l, _, err = getLayout(state)
+		l, _, err = getLayout(state, b.GetLayoutPager(o.getBlobLayoutOptions()))
 		sc := bloberror.GetStatusCode(err)
 		if err != nil {
 			if sc == 400 || sc >= 500 { // fall back to old behavior if service doesn't support layout or layout wasn't fetched

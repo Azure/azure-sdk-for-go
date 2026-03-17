@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsAbortOperation.json
+// Generated from example definition: 2026-01-01/AgentPoolsAbortOperation.json
 func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,29 +33,8 @@ func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCompleteUpgrade.json
-func ExampleAgentPoolsClient_BeginCompleteUpgrade() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCompleteUpgrade(ctx, "rg1", "clustername1", "agentpool1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-10-02-preview/AgentPoolsAssociate_CRG.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityReservationGroup() {
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_CRG.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -68,7 +46,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	}
 	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
 			Count:                      to.Ptr[int32](3),
 			OrchestratorVersion:        to.Ptr(""),
 			OSType:                     to.Ptr(armcontainerservice.OSTypeLinux),
@@ -89,9 +67,9 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+	// 			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
 	// 			MaxPods: to.Ptr[int32](110),
@@ -104,7 +82,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_CustomNodeConfig.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_CustomNodeConfig.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfigAndLinuxOSConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +139,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -176,7 +154,6 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// 				FailSwapOn: to.Ptr(false),
 	// 				ImageGcHighThreshold: to.Ptr[int32](90),
 	// 				ImageGcLowThreshold: to.Ptr[int32](70),
-	// 				SeccompDefault: to.Ptr(armcontainerservice.SeccompDefaultUnconfined),
 	// 				TopologyManagerPolicy: to.Ptr("best-effort"),
 	// 			},
 	// 			LinuxOSConfig: &armcontainerservice.LinuxOSConfig{
@@ -200,7 +177,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_DedicatedHostGroup.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_DedicatedHostGroup.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +191,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
-			HostGroupID:         to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
+			HostGroupID:         to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
 			OrchestratorVersion: to.Ptr(""),
 			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
 			VMSize:              to.Ptr("Standard_DS2_v2"),
@@ -234,11 +211,10 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
-	// 			CurrentOrchestratorVersion: to.Ptr("1.19.6"),
-	// 			HostGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
+	// 			HostGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
 	// 			MaxPods: to.Ptr[int32](110),
 	// 			OrchestratorVersion: to.Ptr("1.19.6"),
 	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
@@ -249,7 +225,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_EnableEncryptionAtHost.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_EnableEncryptionAtHost.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAtHostEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +259,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.13"),
@@ -298,7 +274,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_EnableFIPS.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_EnableFIPS.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +308,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.19.6"),
@@ -347,7 +323,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_EnableUltraSSD.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_EnableUltraSSD.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +357,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.13"),
@@ -396,7 +372,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Ephemeral.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_Ephemeral.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,7 +407,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSD
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -447,7 +423,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSD
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_GPUMIG.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_GPUMIG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,7 +481,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -544,7 +520,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_MessageOfTheDay.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_MessageOfTheDay.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfTheDay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -580,7 +556,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfThe
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -597,7 +573,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfThe
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_OSSKU.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_OSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -655,7 +631,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -694,7 +670,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_PPG.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_PPG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +686,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 			Count:                     to.Ptr[int32](3),
 			OrchestratorVersion:       to.Ptr(""),
 			OSType:                    to.Ptr(armcontainerservice.OSTypeLinux),
-			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
+			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
 			VMSize:                    to.Ptr("Standard_DS2_v2"),
 		},
 	}, nil)
@@ -728,7 +704,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -736,14 +712,14 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	// 			OrchestratorVersion: to.Ptr("1.9.6"),
 	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
+	// 			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
 	// 			VMSize: to.Ptr("Standard_DS2_v2"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Snapshot.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_Snapshot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPoolSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -780,7 +756,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CreationData: &armcontainerservice.CreationData{
@@ -798,7 +774,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Spot.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_Spot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -842,7 +818,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -868,7 +844,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_TypeVirtualMachines.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_TypeVirtualMachines.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -923,7 +899,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -970,95 +946,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
-func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolTypeWithAutoscalingEnabled() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
-		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
-			NodeLabels: map[string]*string{
-				"key1": to.Ptr("val1"),
-			},
-			NodeTaints: []*string{
-				to.Ptr("Key1=Value1:NoSchedule"),
-			},
-			OrchestratorVersion: to.Ptr("1.29.0"),
-			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
-			Tags: map[string]*string{
-				"name1": to.Ptr("val1"),
-			},
-			VirtualMachinesProfile: &armcontainerservice.VirtualMachinesProfile{
-				Scale: &armcontainerservice.ScaleProfile{
-					Autoscale: &armcontainerservice.AutoScaleProfile{
-						MaxCount: to.Ptr[int32](5),
-						MinCount: to.Ptr[int32](1),
-						Size:     to.Ptr("Standard_D2_v2"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
-	// 		Name: to.Ptr("agentpool1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
-	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
-	// 			CurrentOrchestratorVersion: to.Ptr("1.29.0"),
-	// 			MaxPods: to.Ptr[int32](110),
-	// 			NodeImageVersion: to.Ptr("AKSUbuntu-1804gen2containerd-2021.09.11"),
-	// 			NodeLabels: map[string]*string{
-	// 				"key1": to.Ptr("val1"),
-	// 			},
-	// 			NodeTaints: []*string{
-	// 				to.Ptr("Key1=Value1:NoSchedule"),
-	// 			},
-	// 			OrchestratorVersion: to.Ptr("1.29.0"),
-	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Tags: map[string]*string{
-	// 				"name1": to.Ptr("val1"),
-	// 			},
-	// 			VirtualMachineNodesStatus: []*armcontainerservice.VirtualMachineNodes{
-	// 				{
-	// 					Count: to.Ptr[int32](1),
-	// 					Size: to.Ptr("Standard_D2_v2"),
-	// 				},
-	// 			},
-	// 			VirtualMachinesProfile: &armcontainerservice.VirtualMachinesProfile{
-	// 				Scale: &armcontainerservice.ScaleProfile{
-	// 					Autoscale: &armcontainerservice.AutoScaleProfile{
-	// 						MaxCount: to.Ptr[int32](5),
-	// 						MinCount: to.Ptr[int32](1),
-	// 						Size: to.Ptr("Standard_D2_v2"),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Update.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1103,9 +991,10 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
+	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
 	// 			MaxPods: to.Ptr[int32](110),
 	// 			Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
 	// 			NodeImageVersion: to.Ptr("AKSUbuntu:1604:2020.03.11"),
@@ -1129,7 +1018,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_WasmWasi.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_WasmWasi.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndTheWasiRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1165,7 +1054,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -1182,7 +1071,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_WindowsDisableOutboundNAT.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_WindowsDisableOutboundNAT.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisablingOutboundNat() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1219,7 +1108,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisab
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("wnp2"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.23.8"),
@@ -1237,7 +1126,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisab
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_WindowsOSSKU.json
+// Generated from example definition: 2026-01-01/AgentPoolsCreate_WindowsOSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1271,7 +1160,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("wnp2"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.23.3"),
@@ -1286,7 +1175,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPools_Start.json
+// Generated from example definition: 2026-01-01/AgentPools_Start.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1318,7 +1207,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](50),
 	// 			EnableAutoScaling: to.Ptr(true),
@@ -1333,7 +1222,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPools_Stop.json
+// Generated from example definition: 2026-01-01/AgentPools_Stop.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1365,7 +1254,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](0),
 	// 			EnableAutoScaling: to.Ptr(false),
@@ -1378,7 +1267,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPools_Update.json
+// Generated from example definition: 2026-01-01/AgentPools_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1419,7 +1308,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -1441,8 +1330,8 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsDelete.json
-func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
+// Generated from example definition: 2026-01-01/AgentPoolsDelete.json
+func ExampleAgentPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1462,28 +1351,7 @@ func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
-func ExampleAgentPoolsClient_BeginDelete_deleteAgentPoolByIgnoringPodDisruptionBudget() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservice.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-10-02-preview/AgentPoolsDeleteMachines.json
+// Generated from example definition: 2026-01-01/AgentPoolsDeleteMachines.json
 func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1509,7 +1377,7 @@ func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsGet.json
+// Generated from example definition: 2026-01-01/AgentPoolsGet.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1530,7 +1398,7 @@ func ExampleAgentPoolsClient_Get() {
 	// res = armcontainerservice.AgentPoolsClientGetResponse{
 	// 	AgentPool: &armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -1549,7 +1417,7 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsGetAgentPoolAvailableVersions.json
+// Generated from example definition: 2026-01-01/AgentPoolsGetAgentPoolAvailableVersions.json
 func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1571,7 +1439,7 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	// 	AgentPoolAvailableVersions: &armcontainerservice.AgentPoolAvailableVersions{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/availableAgentpoolVersions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/availableagentpoolversions"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/availableagentpoolversions"),
 	// 		Properties: &armcontainerservice.AgentPoolAvailableVersionsProperties{
 	// 			AgentPoolVersions: []*armcontainerservice.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem{
 	// 				{
@@ -1591,7 +1459,7 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsGetUpgradeProfile.json
+// Generated from example definition: 2026-01-01/AgentPoolsGetUpgradeProfile.json
 func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1613,7 +1481,7 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	// 	AgentPoolUpgradeProfile: &armcontainerservice.AgentPoolUpgradeProfile{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools/upgradeProfiles"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/upgradeprofiles/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/upgradeprofiles/default"),
 	// 		Properties: &armcontainerservice.AgentPoolUpgradeProfileProperties{
 	// 			KubernetesVersion: to.Ptr("1.12.8"),
 	// 			LatestNodeImageVersion: to.Ptr("AKSUbuntu:1604:2020.03.11"),
@@ -1628,7 +1496,7 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsList.json
+// Generated from example definition: 2026-01-01/AgentPoolsList.json
 func ExampleAgentPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1655,7 +1523,7 @@ func ExampleAgentPoolsClient_NewListPager() {
 		// 		Value: []*armcontainerservice.AgentPool{
 		// 			{
 		// 				Name: to.Ptr("agentpool1"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 		// 				Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 		// 					Count: to.Ptr[int32](3),
 		// 					CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -1674,7 +1542,7 @@ func ExampleAgentPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsUpgradeNodeImageVersion.json
+// Generated from example definition: 2026-01-01/AgentPoolsUpgradeNodeImageVersion.json
 func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

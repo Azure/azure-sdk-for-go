@@ -1,5 +1,29 @@
 # Release History
 
+## 9.0.0 (2026-03-17)
+### Breaking Changes
+
+- Field `AgentPool` of struct `AgentPoolsClientUpgradeNodeImageVersionResponse` has been removed
+
+### Features Added
+
+- New enum type `AccelerationMode` with values `AccelerationModeBpfVeth`, `AccelerationModeNone`
+- New enum type `ProxyRedirectionMechanism` with values `ProxyRedirectionMechanismCNIChaining`, `ProxyRedirectionMechanismInitContainers`
+- New enum type `TransitEncryptionType` with values `TransitEncryptionTypeNone`, `TransitEncryptionTypeWireGuard`
+- New struct `AdvancedNetworkingPerformance`
+- New struct `AdvancedNetworkingSecurityTransitEncryption`
+- New field `Performance` in struct `AdvancedNetworking`
+- New field `TransitEncryption` in struct `AdvancedNetworkingSecurity`
+- New field `SystemData` in struct `AgentPool`
+- New field `SystemData` in struct `AgentPoolUpgradeProfile`
+- New field `ProxyRedirectionMechanism` in struct `IstioComponents`
+- New field `SystemData` in struct `Machine`
+- New field `Enabled` in struct `ManagedClusterHTTPProxyConfig`
+- New field `SystemData` in struct `ManagedClusterUpgradeProfile`
+- New field `NextLink` in struct `OperationListResult`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+
+
 ## 8.3.0-beta.2 (2026-03-09)
 ### Breaking Changes
 

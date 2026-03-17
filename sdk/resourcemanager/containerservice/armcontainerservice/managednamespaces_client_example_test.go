@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedNamespacesCreate_Update.json
+// Generated from example definition: 2026-01-01/ManagedNamespacesCreate_Update.json
 func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,6 +24,7 @@ func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewManagedNamespacesClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "namespace1", armcontainerservice.ManagedNamespace{
+		Location: to.Ptr("eastus2"),
 		Properties: &armcontainerservice.NamespaceProperties{
 			AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
 			Annotations: map[string]*string{
@@ -63,7 +63,7 @@ func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	// 	ManagedNamespace: &armcontainerservice.ManagedNamespace{
 	// 		Name: to.Ptr("namespace1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/managedNamespaces"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Properties: &armcontainerservice.NamespaceProperties{
 	// 			AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
@@ -93,7 +93,7 @@ func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedNamespacesDelete.json
+// Generated from example definition: 2026-01-01/ManagedNamespacesDelete.json
 func ExampleManagedNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleManagedNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedNamespacesGet.json
+// Generated from example definition: 2026-01-01/ManagedNamespacesGet.json
 func ExampleManagedNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleManagedNamespacesClient_Get() {
 	// 	ManagedNamespace: &armcontainerservice.ManagedNamespace{
 	// 		Name: to.Ptr("namespace1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/managedNamespaces"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Properties: &armcontainerservice.NamespaceProperties{
 	// 			AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
@@ -166,7 +166,7 @@ func ExampleManagedNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedNamespacesList.json
+// Generated from example definition: 2026-01-01/ManagedNamespacesList.json
 func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 		// 			{
 		// 				Name: to.Ptr("namespace1"),
 		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters/managedNamespaces"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
 		// 				Location: to.Ptr("eastus2"),
 		// 				Properties: &armcontainerservice.NamespaceProperties{
 		// 					AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
@@ -227,7 +227,7 @@ func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedNamespacesListCredentialResult.json
+// Generated from example definition: 2026-01-01/ManagedNamespacesListCredentialResult.json
 func ExampleManagedNamespacesClient_ListCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleManagedNamespacesClient_ListCredential() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedNamespacesUpdateTags.json
+// Generated from example definition: 2026-01-01/ManagedNamespacesUpdateTags.json
 func ExampleManagedNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

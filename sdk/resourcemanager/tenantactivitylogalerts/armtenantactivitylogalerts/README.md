@@ -1,6 +1,6 @@
-# Azure Tenantactivitylogalerts Module for Go
+# Azure Tenant Activity Log Alerts Module for Go
 
-The `armtenantactivitylogalerts` module provides operations for working with Azure Tenantactivitylogalerts.
+The `armtenantactivitylogalerts` module provides operations for working with Azure Tenant Activity Log Alerts.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/tenantactivitylogalerts/armtenantactivitylogalerts)
 
@@ -15,7 +15,7 @@ The `armtenantactivitylogalerts` module provides operations for working with Azu
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Tenantactivitylogalerts module:
+Install the Azure Tenant Activity Log Alerts module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/tenantactivitylogalerts/armtenantactivitylogalerts
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/tenantactivitylogal
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Tenantactivitylogalerts.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Tenant Activity Log Alerts.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Tenantactivitylogalerts module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Tenant Activity Log Alerts module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armtenantactivitylogalerts.NewClientFactory(cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Tenantactivitylogalerts` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Tenant Activity Log Alerts` label.
 
 # Contributing
 

@@ -1,5 +1,7 @@
 # Azure Neon Postgres Module for Go
 
+> **DEPRECATED**: The Neon Postgres service is being retired on 13/03/2026. This package will no longer be maintained after that date. Refer to our [deprecation policy](https://aka.ms/azsdk/support-policies) for more details.
+
 The `armneonpostgres` module provides operations for working with Azure Neon Postgres.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/neonpostgres/armneonpostgres)

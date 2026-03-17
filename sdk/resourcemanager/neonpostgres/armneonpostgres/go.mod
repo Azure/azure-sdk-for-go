@@ -1,3 +1,4 @@
+// Deprecated: Please note, this package has been deprecated and will no longer be maintained after 13/03/2026. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres
 
 go 1.24.0

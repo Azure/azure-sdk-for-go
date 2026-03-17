@@ -52,6 +52,18 @@ type ErrorDetails struct {
 	AdditionalProperties map[string]any
 }
 
+// ErrorFieldContract - Error Field contract.
+type ErrorFieldContract struct {
+	// Property level error code.
+	Code *string
+
+	// Human-readable representation of property-level error.
+	Message *string
+
+	// Property name.
+	Target *string
+}
+
 // ErrorResponse - An error response from the API.
 type ErrorResponse struct {
 	// REQUIRED; Error information.
@@ -139,6 +151,98 @@ func (f *FacetResult) GetFacet() *Facet {
 		Expression: f.Expression,
 		ResultType: f.ResultType,
 	}
+}
+
+// GraphQueryError - Error message body that will indicate why the operation failed.
+type GraphQueryError struct {
+	// The error object.
+	Error *GraphQueryErrorError
+}
+
+// GraphQueryErrorError - The error object.
+type GraphQueryErrorError struct {
+	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
+	Code *string
+
+	// The list of invalid fields send in request, in case of validation error.
+	Details []*ErrorFieldContract
+
+	// Human-readable representation of the error.
+	Message *string
+}
+
+// GraphQueryListResult - Graph query list result.
+type GraphQueryListResult struct {
+	// URL to fetch the next set of queries.
+	NextLink *string
+
+	// READ-ONLY; An array of graph queries.
+	Value []*GraphQueryResource
+}
+
+// GraphQueryProperties - Properties that contain a graph query.
+type GraphQueryProperties struct {
+	// REQUIRED; KQL query that will be graph.
+	Query *string
+
+	// The description of a graph query.
+	Description *string
+
+	// READ-ONLY; Enum indicating a type of graph query.
+	ResultKind *ResultKind
+
+	// READ-ONLY; Date and time in UTC of the last modification that was made to this graph query definition.
+	TimeModified *time.Time
+}
+
+// GraphQueryPropertiesUpdateParameters - Properties that contain a workbook for PATCH operation.
+type GraphQueryPropertiesUpdateParameters struct {
+	// The description of a graph query.
+	Description *string
+
+	// KQL query that will be graph.
+	Query *string
+}
+
+// GraphQueryResource - Graph Query entity definition.
+type GraphQueryResource struct {
+	// This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without
+	// checking conflict.
+	Etag *string
+
+	// The location of the resource
+	Location *string
+
+	// Metadata describing a graph query for an Azure resource.
+	Properties *GraphQueryProperties
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name. This is GUID value. The display name should be assigned within properties field.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
+// GraphQueryUpdateParameters - The parameters that can be provided when updating workbook properties properties.
+type GraphQueryUpdateParameters struct {
+	// This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without
+	// checking conflict.
+	Etag *string
+
+	// Metadata describing a graph query for an Azure resource.
+	Properties *GraphQueryPropertiesUpdateParameters
+
+	// Resource tags
+	Tags map[string]*string
 }
 
 // Operation - Resource Graph REST API operation definition.
@@ -240,6 +344,171 @@ type QueryResponse struct {
 	SkipToken *string
 }
 
+// Resource - An azure resource object
+type Resource struct {
+	// This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without
+	// checking conflict.
+	Etag *string
+
+	// The location of the resource
+	Location *string
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name. This is GUID value. The display name should be assigned within properties field.
+	Name *string
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
+// ResourceChangeData - Data on a specific change, represented by a pair of before and after resource snapshots.
+type ResourceChangeData struct {
+	// REQUIRED; The snapshot after the change.
+	AfterSnapshot *ResourceChangeDataAfterSnapshot
+
+	// REQUIRED; The snapshot before the change.
+	BeforeSnapshot *ResourceChangeDataBeforeSnapshot
+
+	// REQUIRED; The change ID. Valid and unique within the specified resource only.
+	ChangeID *string
+
+	// The change type for snapshot. PropertyChanges will be provided in case of Update change type
+	ChangeType *ChangeType
+
+	// An array of resource property change
+	PropertyChanges []*ResourcePropertyChange
+
+	// The resource for a change.
+	ResourceID *string
+}
+
+// ResourceChangeDataAfterSnapshot - The snapshot after the change.
+type ResourceChangeDataAfterSnapshot struct {
+	// REQUIRED; The time when the snapshot was created. The snapshot timestamp provides an approximation as to when a modification
+	// to a resource was detected. There can be a difference between the actual modification
+	// time and the detection time. This is due to differences in how operations that modify a resource are processed, versus
+	// how operation that record resource snapshots are processed.
+	Timestamp *time.Time
+
+	// The resource snapshot content (in resourceChangeDetails response only).
+	Content any
+
+	// The ID of the snapshot.
+	SnapshotID *string
+}
+
+// ResourceChangeDataBeforeSnapshot - The snapshot before the change.
+type ResourceChangeDataBeforeSnapshot struct {
+	// REQUIRED; The time when the snapshot was created. The snapshot timestamp provides an approximation as to when a modification
+	// to a resource was detected. There can be a difference between the actual modification
+	// time and the detection time. This is due to differences in how operations that modify a resource are processed, versus
+	// how operation that record resource snapshots are processed.
+	Timestamp *time.Time
+
+	// The resource snapshot content (in resourceChangeDetails response only).
+	Content any
+
+	// The ID of the snapshot.
+	SnapshotID *string
+}
+
+// ResourceChangeDetailsRequestParameters - The parameters for a specific change details request.
+type ResourceChangeDetailsRequestParameters struct {
+	// REQUIRED; Specifies the list of change IDs for a change details request.
+	ChangeIDs []*string
+
+	// REQUIRED; Specifies the list of resources for a change details request.
+	ResourceIDs []*string
+}
+
+// ResourceChangeList - A list of changes associated with a resource over a specific time interval.
+type ResourceChangeList struct {
+	// The pageable value returned by the operation, i.e. a list of changes to the resource.
+	// * The list is ordered from the most recent changes to the least recent changes.
+	// * This list will be empty if there were no changes during the requested interval.
+	// * The Before snapshot timestamp value of the oldest change can be outside of the specified time interval.
+	Changes []*ResourceChangeData
+
+	// Skip token that encodes the skip information while executing the current request
+	SkipToken any
+}
+
+// ResourceChangesRequestParameters - The parameters for a specific changes request.
+type ResourceChangesRequestParameters struct {
+	// REQUIRED; Specifies the date and time interval for a changes request.
+	Interval *ResourceChangesRequestParametersInterval
+
+	// The flag if set to true will fetch property changes
+	FetchPropertyChanges *bool
+
+	// The flag if set to true will fetch change snapshots
+	FetchSnapshots *bool
+
+	// Specifies the list of resources for a changes request.
+	ResourceIDs []*string
+
+	// Acts as the continuation token for paged responses.
+	SkipToken *string
+
+	// The subscription id of resources to query the changes from.
+	SubscriptionID *string
+
+	// The table name to query resources from.
+	Table *string
+
+	// The maximum number of changes the client can accept in a paged response.
+	Top *int32
+}
+
+// ResourceChangesRequestParametersInterval - Specifies the date and time interval for a changes request.
+type ResourceChangesRequestParametersInterval struct {
+	// REQUIRED; A datetime indicating the exclusive/open end of the time interval, i.e. [start,end). Specifying an end that occurs
+	// chronologically before start will result in an error.
+	End *time.Time
+
+	// REQUIRED; A datetime indicating the inclusive/closed start of the time interval, i.e. [start, end). Specifying a start
+	// that occurs chronologically after end will result in an error.
+	Start *time.Time
+}
+
+// ResourcePropertyChange - The resource property change
+type ResourcePropertyChange struct {
+	// REQUIRED; The change category.
+	ChangeCategory *ChangeCategory
+
+	// REQUIRED; The property change Type
+	PropertyChangeType *PropertyChangeType
+
+	// REQUIRED; The property name
+	PropertyName *string
+
+	// The property value in after snapshot
+	AfterValue *string
+
+	// The property value in before snapshot
+	BeforeValue *string
+}
+
+// ResourceSnapshotData - Data on a specific resource snapshot.
+type ResourceSnapshotData struct {
+	// REQUIRED; The time when the snapshot was created. The snapshot timestamp provides an approximation as to when a modification
+	// to a resource was detected. There can be a difference between the actual modification
+	// time and the detection time. This is due to differences in how operations that modify a resource are processed, versus
+	// how operation that record resource snapshots are processed.
+	Timestamp *time.Time
+
+	// The resource snapshot content (in resourceChangeDetails response only).
+	Content any
+
+	// The ID of the snapshot.
+	SnapshotID *string
+}
+
 // ResourcesHistoryRequest - Describes a history request to be executed.
 type ResourcesHistoryRequest struct {
 	// Azure management groups against which to execute the query. Example: [ 'mg1', 'mg2' ]
@@ -272,6 +541,27 @@ type ResourcesHistoryRequestOptions struct {
 
 	// The maximum number of rows that the query should return. Overrides the page size when $skipToken property is present.
 	Top *int32
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // Table - Query output in tabular format.

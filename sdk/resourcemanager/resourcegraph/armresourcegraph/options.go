@@ -5,6 +5,16 @@
 
 package armresourcegraph
 
+// ClientResourceChangeDetailsOptions contains the optional parameters for the Client.ResourceChangeDetails method.
+type ClientResourceChangeDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientResourceChangesOptions contains the optional parameters for the Client.ResourceChanges method.
+type ClientResourceChangesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientResourcesHistoryOptions contains the optional parameters for the Client.ResourcesHistory method.
 type ClientResourcesHistoryOptions struct {
 	// placeholder for future optional parameters
@@ -12,6 +22,37 @@ type ClientResourcesHistoryOptions struct {
 
 // ClientResourcesOptions contains the optional parameters for the Client.Resources method.
 type ClientResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphQueryClientCreateOrUpdateOptions contains the optional parameters for the GraphQueryClient.CreateOrUpdate method.
+type GraphQueryClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphQueryClientDeleteOptions contains the optional parameters for the GraphQueryClient.Delete method.
+type GraphQueryClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphQueryClientGetOptions contains the optional parameters for the GraphQueryClient.Get method.
+type GraphQueryClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphQueryClientListBySubscriptionOptions contains the optional parameters for the GraphQueryClient.NewListBySubscriptionPager
+// method.
+type GraphQueryClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphQueryClientListOptions contains the optional parameters for the GraphQueryClient.NewListPager method.
+type GraphQueryClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GraphQueryClientUpdateOptions contains the optional parameters for the GraphQueryClient.Update method.
+type GraphQueryClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

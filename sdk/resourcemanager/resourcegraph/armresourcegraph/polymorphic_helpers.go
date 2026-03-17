@@ -8,7 +8,7 @@ package armresourcegraph
 import "encoding/json"
 
 func unmarshalFacetClassification(rawMsg json.RawMessage) (FacetClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -31,7 +31,7 @@ func unmarshalFacetClassification(rawMsg json.RawMessage) (FacetClassification, 
 }
 
 func unmarshalFacetClassificationArray(rawMsg json.RawMessage) ([]FacetClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

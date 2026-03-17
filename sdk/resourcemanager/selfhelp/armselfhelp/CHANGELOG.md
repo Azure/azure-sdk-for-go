@@ -1,11 +1,5 @@
 # Release History
 
-## 2.0.0-beta.6 (2026-03-16)
-### Other Changes
-
-- Migrated to TypeSpec-based SDK generation.
-
-
 ## 2.0.0-beta.5 (2024-05-31)
 ### Breaking Changes
 

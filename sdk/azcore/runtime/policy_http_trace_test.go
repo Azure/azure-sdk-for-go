@@ -102,17 +102,18 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.EqualValues(t, "use of closed network connection", spanStatusStr)
 
 	const urlErrText = "the endpoint is invalid"
-	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())
+	endpointWithQP := srv.URL() + "?foo=redactme&visibleqp=bar"
+	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, endpointWithQP)
 	require.NoError(t, err)
 	srv.AppendError(&url.Error{
 		Op:  http.MethodGet,
-		URL: srv.URL(),
+		URL: endpointWithQP,
 		Err: errors.New(urlErrText),
 	})
 	_, err = pl.Do(req)
 	require.Error(t, err)
 	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
-	require.EqualValues(t, fmt.Sprintf("%s \"%s\": %s", http.MethodGet, srv.URL(), urlErrText), spanStatusStr)
+	require.EqualValues(t, fmt.Sprintf("%s \"%s\": %s", http.MethodGet, srv.URL()+"?foo=REDACTED&visibleqp=bar", urlErrText), spanStatusStr)
 }
 
 func TestStartSpan(t *testing.T) {

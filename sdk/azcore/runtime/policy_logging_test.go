@@ -344,11 +344,10 @@ func TestSanitizeURLInError(t *testing.T) {
 	resp, err := pl.Do(req)
 	require.Error(t, err)
 	require.Nil(t, resp)
-	if logReq, ok := rawlog[log.EventRequest]; ok {
-		// Request ==> OUTGOING REQUEST (Try=1)
-		// 	GET http://127.0.0.1:50057
-		// 	Authorization: REDACTED
-		// 	Header: [one]
+	if logReq, ok := rawlog[log.EventResponse]; ok {
+		if !strings.Contains(logReq, "bogus error for") {
+			t.Fatal("missing expected error message")
+		}
 		if strings.Contains(logReq, "redact_me") {
 			t.Fatal("query param wasn't redacted")
 		}

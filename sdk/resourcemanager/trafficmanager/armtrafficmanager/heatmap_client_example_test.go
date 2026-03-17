@@ -6,7 +6,6 @@ package armtrafficmanager_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager/v2"
 	"log"
@@ -23,7 +22,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHeatMapClient().Get(ctx, "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", to.Ptr("default"), nil)
+	res, err := clientFactory.NewHeatMapClient().Get(ctx, "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,7 +98,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHeatMapClient().Get(ctx, "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", to.Ptr("default"), &armtrafficmanager.HeatMapClientGetOptions{
+	res, err := clientFactory.NewHeatMapClient().Get(ctx, "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", &armtrafficmanager.HeatMapClientGetOptions{
 		BotRight: []float64{
 			-50.001,
 			80,
@@ -184,7 +183,7 @@ func ExampleHeatMapClient_Get_heatMapGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHeatMapClient().Get(ctx, "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", to.Ptr("default"), nil)
+	res, err := clientFactory.NewHeatMapClient().Get(ctx, "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

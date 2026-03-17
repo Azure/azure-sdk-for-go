@@ -50,7 +50,7 @@ func (testsuite *FileTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TTestFileTestSuite(t *testing.T) {
+func TestFileTestSuite(t *testing.T) {
 	suite.Run(t, new(FileTestSuite))
 }
 
@@ -65,7 +65,7 @@ func (testsuite *FileTestSuite) Prepare() {
 		Location: to.Ptr(testsuite.location),
 		Properties: &armstorage.AccountPropertiesCreateParameters{
 			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
+			AllowSharedKeyAccess:         to.Ptr(false),
 			DefaultToOAuthAuthentication: to.Ptr(false),
 			Encryption: &armstorage.Encryption{
 				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),

@@ -57,7 +57,7 @@ func (testsuite *StorageTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TTestStorageTestSuite(t *testing.T) {
+func TestStorageTestSuite(t *testing.T) {
 	suite.Run(t, new(StorageTestSuite))
 }
 
@@ -80,7 +80,7 @@ func (testsuite *StorageTestSuite) Prepare() {
 		Location: to.Ptr(testsuite.location),
 		Properties: &armstorage.AccountPropertiesCreateParameters{
 			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
+			AllowSharedKeyAccess:         to.Ptr(false),
 			DefaultToOAuthAuthentication: to.Ptr(false),
 			Encryption: &armstorage.Encryption{
 				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -168,12 +168,13 @@ func (testsuite *StorageTestSuite) TestStorageAccounts() {
 	fmt.Println("Call operation: StorageAccounts_RevokeUserDelegationKeys")
 	_, err = accountsClient.RevokeUserDelegationKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
 	testsuite.Require().NoError(err)
+	sasExpiry := time.Date(2099, time.May, 24, 11, 32, 48, 845719700, time.UTC)
 
 	// From step StorageAccounts_ListServiceSAS
 	fmt.Println("Call operation: StorageAccounts_ListServiceSAS")
 	_, err = accountsClient.ListServiceSAS(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armstorage.ServiceSasParameters{
 		CanonicalizedResource:  to.Ptr("/blob/" + testsuite.accountName + "/music"),
-		SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-24T11:32:48.8457197Z"); return t }()),
+		SharedAccessExpiryTime: to.Ptr(sasExpiry),
 		Permissions:            to.Ptr(armstorage.PermissionsL),
 		Resource:               to.Ptr(armstorage.SignedResourceC),
 	}, nil)
@@ -195,7 +196,7 @@ func (testsuite *StorageTestSuite) TestStorageAccounts() {
 	fmt.Println("Call operation: StorageAccounts_ListAccountSAS")
 	_, err = accountsClient.ListAccountSAS(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armstorage.AccountSasParameters{
 		KeyToSign:              to.Ptr("key1"),
-		SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-24T11:42:03.1567373Z"); return t }()),
+		SharedAccessExpiryTime: to.Ptr(sasExpiry.Add(10 * time.Minute)),
 		Permissions:            to.Ptr(armstorage.PermissionsR),
 		Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
 		ResourceTypes:          to.Ptr(armstorage.SignedResourceTypesS),

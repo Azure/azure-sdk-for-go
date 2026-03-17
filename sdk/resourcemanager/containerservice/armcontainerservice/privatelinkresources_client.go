@@ -7,14 +7,13 @@ package armcontainerservice
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
@@ -45,7 +44,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List
@@ -92,7 +91,7 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

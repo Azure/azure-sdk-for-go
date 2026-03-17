@@ -6,5 +6,5 @@ package armselfhelp
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
-	moduleVersion = "v2.0.0-beta.6"
+	moduleVersion = "v2.0.0-beta.5"
 )

@@ -6,5 +6,5 @@ package armstoragemover
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover"
-	moduleVersion = "v2.3.0"
+	moduleVersion = "v2.4.0"
 )

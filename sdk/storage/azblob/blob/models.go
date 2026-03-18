@@ -625,8 +625,14 @@ func (o *GetLayoutOptions) format() (*generated.BlobClientGetLayoutOptions,
 		return nil, nil, nil, nil
 	}
 
+	options := &generated.BlobClientGetLayoutOptions{
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Range:      exported.FormatHTTPRange(o.Range),
+	}
+
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
+	return options, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

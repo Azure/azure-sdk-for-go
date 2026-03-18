@@ -22,6 +22,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -52,6 +53,8 @@ func Test(t *testing.T) {
 		suite.Run(t, &BlobRecordedTestsSuite{})
 	}
 }
+
+var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func (s *BlobRecordedTestsSuite) SetupSuite() {
 	s.proxy = testcommon.SetupSuite(&s.Suite)
@@ -3928,7 +3931,7 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 	_require.True(found, "Tag not found")
 }
 
-func (s *BlobRecordedTestsSuite) TestGetLayoutPager() {
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerSinglePage() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3947,6 +3950,175 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPager() {
 	pager := bbClient.GetLayoutPager(nil)
 	_require.NotNil(pager)
 
+	// Only one page will be returned, but we want to make sure that the pager is functional and returns the correct response
+	_require.True(pager.More())
+	resp, err := pager.NextPage(context.Background())
+	_require.NoError(err)
+	_require.Equal(len(testcommon.BlockBlobDefaultData), int(*resp.BlobContentLength))
+	_require.Equal(1, len(resp.Ranges.Range))
+	_require.Equal(1, len(resp.Endpoints.Endpoint))
+
+	// Validate the ranges returned cover the entire blob
+	_require.Equal(int64(0), *resp.Ranges.Range[0].Start)
+	_require.Equal(int64(len(testcommon.BlockBlobDefaultData)-1), *resp.Ranges.Range[0].End)
+
+	// Validate the endpoint returned
+	_require.Equal(*resp.Endpoints.Endpoint[0].Index, *resp.Ranges.Range[0].EndpointIndex)
+	_require.NotNil(*resp.Endpoints.Endpoint[0].Value)
+
+	// No more pages will be returned
+	_require.False(pager.More())
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
+	}
+	expiry := time.Now().Add(time.Hour)
+	sasUrl, err := svcClient.GetSASURL(resources, permissions, expiry, nil)
+	_require.NoError(err)
+
+	svcClient, err = testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	pager := bbClient.GetLayoutPager(nil)
+	_require.NotNil(pager)
+
+	// Only one page will be returned, but we want to make sure that the pager is functional and returns the correct response
+	_require.True(pager.More())
+	resp, err := pager.NextPage(context.Background())
+	_require.NoError(err)
+	_require.Equal(len(testcommon.BlockBlobDefaultData), int(*resp.BlobContentLength))
+	_require.Equal(1, len(resp.Ranges.Range))
+	_require.Equal(1, len(resp.Endpoints.Endpoint))
+
+	// Validate the ranges returned cover the entire blob
+	_require.Equal(int64(0), *resp.Ranges.Range[0].Start)
+	_require.Equal(int64(len(testcommon.BlockBlobDefaultData)-1), *resp.Ranges.Range[0].End)
+
+	// Validate the endpoint returned
+	_require.Equal(*resp.Endpoints.Endpoint[0].Index, *resp.Ranges.Range[0].EndpointIndex)
+	_require.NotNil(*resp.Endpoints.Endpoint[0].Value)
+
+	// No more pages will be returned
+	_require.False(pager.More())
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithRange() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	// Request layout for a specific range (first 10 bytes)
+	rangeStart := int64(0)
+	rangeEnd := int64(9)
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		Range: blob.HTTPRange{
+			Offset: rangeStart,
+			Count:  rangeEnd - rangeStart + 1,
+		},
+	})
+	_require.NotNil(pager)
+
+	_require.True(pager.More())
+	resp, err := pager.NextPage(context.Background())
+	_require.NoError(err)
+
+	// Validate that the response covers the requested range
+	_require.NotNil(resp.Ranges)
+	_require.GreaterOrEqual(len(resp.Ranges.Range), 1)
+
+	// The returned range should be within or equal to the requested range
+	_require.GreaterOrEqual(*resp.Ranges.Range[0].Start, rangeStart)
+	_require.LessOrEqual(*resp.Ranges.Range[0].End, rangeEnd)
+
+	// Validate endpoint is returned
+	_require.NotNil(resp.Endpoints)
+	_require.GreaterOrEqual(len(resp.Endpoints.Endpoint), 1)
+
+	_require.False(pager.More())
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobSize := 100 * 1024 * 1024 // 100 MiB
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+	_require.NoError(err)
+	// Create some data to test the upload stream
+	blobContentReader, _ := testcommon.GenerateData(blobSize)
+
+	// Perform UploadStream
+	_, err = bbClient.UploadStream(context.Background(), blobContentReader,
+		&blockblob.UploadStreamOptions{
+			BlockSize:   int64(4 * 1024 * 1024), // 4 MiB block size to ensure multiple pages
+			Concurrency: 3,
+			Metadata:    testcommon.BasicMetadata,
+			Tags:        testcommon.BasicBlobTagsMap,
+			HTTPHeaders: &testcommon.BasicHeaders,
+		})
+
+	// Assert that upload was successful
+	_require.NoError(err)
+	_require.NoError(err)
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(5))}) // 4 MiB block size to ensure multiple pages
+	_require.NotNil(pager)
+
 	pageCount := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -3956,5 +4128,490 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPager() {
 		}
 		pageCount++
 		_require.NotNil(resp)
+	}
+
+	_require.True(pageCount > 1, "Expected multiple pages but got only %d", pageCount)
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithMarker() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create a larger blob to ensure multiple pages
+	blobSize := 100 * 1024 * 1024 // 100 MiB
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+	blobContentReader, _ := testcommon.GenerateData(blobSize)
+
+	_, err = bbClient.UploadStream(context.Background(), blobContentReader,
+		&blockblob.UploadStreamOptions{BlockSize: 4 * 1024 * 1024}) // 4 MiB blocks
+	_require.NoError(err)
+
+	// First, get the first page and capture the marker
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(1))})
+	_require.NotNil(pager)
+
+	var marker *string
+	if pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		marker = resp.NextMarker
+	}
+
+	// Create a new pager starting from the captured marker
+	pagerWithMarker := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		Marker: marker,
+	})
+	_require.NotNil(pagerWithMarker)
+
+	// Verify we can continue pagination from the marker
+	_require.True(pagerWithMarker.More())
+	resp, err := pagerWithMarker.NextPage(context.Background())
+	_require.NoError(err)
+	_require.NotNil(resp)
+	_require.NotNil(resp.Ranges)
+	_require.GreaterOrEqual(len(resp.Ranges.Range), 1)
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	eTag := azcore.ETag("garbage")
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: &eTag,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.Error(err)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+		break
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	eTag := azcore.ETag("garbage")
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: &eTag,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.Error(err)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+		break
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	cResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	cResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.Error(err)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+		break
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	cResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	cResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.Error(err)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+		break
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	blobLeaseClient, err := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	acquireResp, err := blobLeaseClient.AcquireLease(context.Background(), 60, nil)
+	_require.NoError(err)
+	_require.NotNil(acquireResp.LeaseID)
+	defer func() {
+		_, err := blobLeaseClient.ReleaseLease(context.Background(), nil)
+		_require.NoError(err)
+	}()
+
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			LeaseAccessConditions: &blob.LeaseAccessConditions{
+				LeaseID: acquireResp.LeaseID,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	blobLeaseClient, err := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	_, err = blobLeaseClient.AcquireLease(context.Background(), 60, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := blobLeaseClient.ReleaseLease(context.Background(), nil)
+		_require.NoError(err)
+	}()
+
+	badLeaseID := proposedLeaseIDs[1]
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		AccessConditions: &blob.AccessConditions{
+			LeaseAccessConditions: &blob.LeaseAccessConditions{
+				LeaseID: badLeaseID,
+			},
+		},
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.Error(err)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.LeaseIDMismatchWithBlobOperation)
+		break
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	// Upload blob with CPK
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+
+	// GetLayoutPager with correct CPK should succeed
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	})
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err = pager.NextPage(context.Background())
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	// Upload blob with CPK
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+
+	// GetLayoutPager without CPK should fail (blob was uploaded with CPK)
+	pager := bbClient.GetLayoutPager(nil)
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.Error(err)
+		testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobUsesCustomerSpecifiedEncryption)
+		break
+	}
+}
+
+func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKScope() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	// Upload blob with CPK
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		CPKScopeInfo: to.Ptr(testcommon.GetCPKScopeInfo(s.T())),
+	})
+	_require.NoError(err)
+
+	pager := bbClient.GetLayoutPager(nil)
+	_require.NotNil(pager)
+
+	for pager.More() {
+		_, err = pager.NextPage(context.Background())
+		_require.NoError(err)
 	}
 }

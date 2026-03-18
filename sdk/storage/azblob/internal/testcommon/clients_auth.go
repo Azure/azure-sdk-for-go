@@ -8,6 +8,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -94,9 +96,19 @@ var SpecialCharBlobTagsMap = map[string]string{
 func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
 
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-	opts.Transport = transport
+	// To enable Fiddler for live debugging, uncomment the block below.
+	// NOTE: This bypasses test recording - only use for live debugging!
+	proxyURL, _ := url.Parse("http://127.0.0.1:8888")
+	opts.Transport = &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyURL(proxyURL),
+		},
+	}
+	return
+
+	//transport, err := recording.NewRecordingHTTPClient(t, nil)
+	//require.NoError(t, err)
+	//opts.Transport = transport
 }
 
 func GetClient(t *testing.T, accountType TestAccountType, options *azblob.ClientOptions) (*azblob.Client, error) {

@@ -547,7 +547,7 @@ func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLay
 			if page == nil {
 				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
 			} else {
-				options.Marker = page.NextMarker
+				opts.Marker = page.NextMarker
 				// Use the ETag to ensure consistency across all pages
 				mac := modifiedAccessConditions
 				if mac == nil {

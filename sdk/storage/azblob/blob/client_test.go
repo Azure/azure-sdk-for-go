@@ -4122,12 +4122,9 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	pageCount := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		// GetLayout may return 400 if the service doesn't support layout
-		if err != nil {
-			break
-		}
-		pageCount++
+		_require.NoError(err)
 		_require.NotNil(resp)
+		pageCount++
 	}
 
 	_require.True(pageCount > 1, "Expected multiple pages but got only %d", pageCount)
@@ -4157,19 +4154,28 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 	_require.NoError(err)
 
 	// First, get the first page and capture the marker
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(1))})
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(5))})
 	_require.NotNil(pager)
 
 	var marker *string
+	var eTag *azcore.ETag
 	if pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
+		_require.NotNil(resp)
 		marker = resp.NextMarker
+		eTag = resp.ETag
 	}
 
 	// Create a new pager starting from the captured marker
 	pagerWithMarker := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
-		Marker: marker,
+		Marker:     marker,
+		MaxResults: to.Ptr(int32(5)),
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: eTag,
+			},
+		},
 	})
 	_require.NotNil(pagerWithMarker)
 

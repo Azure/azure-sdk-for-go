@@ -370,17 +370,29 @@ func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string,
 	} else {
 		if isCurrentPreview {
 			if strings.Contains(previousVersion, "beta") {
-				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
-				if err != nil {
-					return nil, "", err
-				}
-				if newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1)); err != nil {
-					return nil, "", err
-				}
-				if changelog.HasBreakingChanges() {
+				if changelog.HasBreakingChanges() && (version.Minor() != 0 || version.Patch() != 0) {
+					// Breaking change on an existing major beta (e.g. 1.2.0-beta.1) requires major bump
+					newVersion = version.IncMajor()
+					if newVersion, err = newVersion.SetPrerelease("beta.1"); err != nil {
+						return nil, "", err
+					}
 					prl = utils.BetaBreakingChangeLabel
 				} else {
-					prl = utils.BetaLabel
+					// Either (1) no breaking change on any beta, or
+					// (2) breaking change on a new major beta (minor==0, patch==0, e.g. 2.0.0-beta.1)
+					// In both cases, just increment beta number
+					betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
+					if err != nil {
+						return nil, "", err
+					}
+					if newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1)); err != nil {
+						return nil, "", err
+					}
+					if changelog.HasBreakingChanges() {
+						prl = utils.BetaBreakingChangeLabel
+					} else {
+						prl = utils.BetaLabel
+					}
 				}
 			} else {
 				if changelog.HasBreakingChanges() {

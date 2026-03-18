@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.8 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed wrong version calculation logic for previous version with breaking changes.
+
 ## 0.4.7 (2026-03-03)
 
 ### Bugs Fixed

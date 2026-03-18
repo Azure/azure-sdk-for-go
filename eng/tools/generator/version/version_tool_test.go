@@ -120,7 +120,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	// breaking with beta
 	newVersion, prl, err = CalculateNewVersion(breakingChange, "1.2.0-beta.1", true)
 	assert.NoError(t, err)
-	assert.Equal(t, newVersion.String(), "1.2.0-beta.2")
+	assert.Equal(t, newVersion.String(), "2.0.0-beta.1")
 	assert.Equal(t, utils.BetaBreakingChangeLabel, prl)
 
 	// additive with stable
@@ -130,8 +130,28 @@ func TestCalculateNewVersion(t *testing.T) {
 	// additive with beta
 	newVersion, prl, err = CalculateNewVersion(additiveChange, "1.2.0-beta.1", true)
 	assert.NoError(t, err)
-	assert.Equal(t, newVersion.String(), "1.2.0-beta.2")
+	assert.Equal(t, "1.2.0-beta.2", newVersion.String())
 	assert.Equal(t, utils.BetaLabel, prl)
+
+	// previous 2.0.0-beta.1 (new major beta: minor=0, patch=0)
+	// breaking with beta - should NOT bump major since 2.0.0 hasn't been released yet
+	newVersion, prl, err = CalculateNewVersion(breakingChange, "2.0.0-beta.1", true)
+	assert.NoError(t, err)
+	assert.Equal(t, "2.0.0-beta.2", newVersion.String())
+	assert.Equal(t, utils.BetaBreakingChangeLabel, prl)
+
+	// fix with beta - should increment beta number
+	newVersion, prl, err = CalculateNewVersion(fixChange, "2.0.0-beta.1", true)
+	assert.NoError(t, err)
+	assert.Equal(t, "2.0.0-beta.2", newVersion.String())
+	assert.Equal(t, utils.BetaLabel, prl)
+
+	// previous 2.0.0 (stable release exists, then generate preview with breaking change)
+	// breaking with beta - should bump major since 2.0.0 was already released
+	newVersion, prl, err = CalculateNewVersion(breakingChange, "2.0.0", true)
+	assert.NoError(t, err)
+	assert.Equal(t, "3.0.0-beta.1", newVersion.String())
+	assert.Equal(t, utils.BetaBreakingChangeLabel, prl)
 }
 
 func TestContainsPreviewAPIVersion(t *testing.T) {

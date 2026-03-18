@@ -379,8 +379,8 @@ func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string,
 					prl = utils.BetaBreakingChangeLabel
 				} else {
 					// Either (1) no breaking change on any beta, or
-				// (2) breaking change on a new major beta (minor==0, patch==0, e.g. 2.0.0-beta.1)
-				// In both cases, just increment beta number
+					// (2) breaking change on a new major beta (minor==0, patch==0, e.g. 2.0.0-beta.1)
+					// In both cases, just increment beta number
 					betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
 					if err != nil {
 						return nil, "", err

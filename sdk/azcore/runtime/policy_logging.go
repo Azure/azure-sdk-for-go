@@ -161,12 +161,14 @@ func getSanitizedURL(u url.URL, allowedQueryParams map[string]struct{}) string {
 // getSanitizedURLString returns s with the query params of u redacted.
 // if s doesn't contain u, then s is returned unchanged.
 func getSanitizedURLString(s string, u *url.URL, allowedQueryParams map[string]struct{}) string {
+	if u.RawQuery == "" {
+		// the URL doesn't have any query params, so nothing to redact
+		return s
+	}
+
 	urlIndex := strings.Index(strings.ToLower(s), strings.ToLower(u.String()))
 	if urlIndex < 0 {
 		// the URL isn't in the string, so nothing to redact
-		return s
-	} else if u.RawQuery == "" {
-		// the URL doesn't have any query params, so nothing to redact
 		return s
 	}
 

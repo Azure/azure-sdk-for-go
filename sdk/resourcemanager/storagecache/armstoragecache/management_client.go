@@ -27,7 +27,7 @@ type ManagementClient struct {
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // CheckAmlFSSubnets - Check that subnets will be valid for AML file system create calls.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - options - ManagementClientCheckAmlFSSubnetsOptions contains the optional parameters for the ManagementClient.CheckAmlFSSubnets
 //     method.
 func (client *ManagementClient) CheckAmlFSSubnets(ctx context.Context, options *ManagementClientCheckAmlFSSubnetsOptions) (ManagementClientCheckAmlFSSubnetsResponse, error) {
@@ -79,7 +79,7 @@ func (client *ManagementClient) checkAmlFSSubnetsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.AmlFilesystemSubnetInfo != nil {
@@ -94,7 +94,7 @@ func (client *ManagementClient) checkAmlFSSubnetsCreateRequest(ctx context.Conte
 // GetRequiredAmlFSSubnetsSize - Get the number of available IP addresses needed for the AML file system information provided.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - options - ManagementClientGetRequiredAmlFSSubnetsSizeOptions contains the optional parameters for the ManagementClient.GetRequiredAmlFSSubnetsSize
 //     method.
 func (client *ManagementClient) GetRequiredAmlFSSubnetsSize(ctx context.Context, options *ManagementClientGetRequiredAmlFSSubnetsSizeOptions) (ManagementClientGetRequiredAmlFSSubnetsSizeResponse, error) {
@@ -131,7 +131,7 @@ func (client *ManagementClient) getRequiredAmlFSSubnetsSizeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequiredAMLFilesystemSubnetsSizeInfo != nil {

@@ -27,7 +27,7 @@ type SKUsClient struct {
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListPager - Get the list of StorageCache.Cache SKUs available to this subscription.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
@@ -79,7 +79,7 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, _ *SKUsClientLi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

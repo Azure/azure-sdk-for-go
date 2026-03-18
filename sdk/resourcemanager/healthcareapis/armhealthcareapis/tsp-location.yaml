@@ -1,0 +1,4 @@
+directory: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/HealthcareApis
+commit: 55c1dcd4925b87228e8ab54fd6ab1fdb1d34e5f5
+repo: i-specs
+additionalDirectories: 

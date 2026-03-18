@@ -27,7 +27,7 @@ type ImportJobsClient struct {
 // NewImportJobsClient creates a new instance of ImportJobsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImportJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImportJobsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewImportJobsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create or update an import job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -72,7 +72,7 @@ func (client *ImportJobsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create or update an import job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *ImportJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJob, options *ImportJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ImportJobsClient.BeginCreateOrUpdate"
@@ -118,7 +118,7 @@ func (client *ImportJobsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, importJob); err != nil {
@@ -130,7 +130,7 @@ func (client *ImportJobsClient) createOrUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Schedules an import job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -156,7 +156,7 @@ func (client *ImportJobsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Schedules an import job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *ImportJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, options *ImportJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ImportJobsClient.BeginDelete"
@@ -202,7 +202,7 @@ func (client *ImportJobsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *ImportJobsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Returns an import job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -262,7 +262,7 @@ func (client *ImportJobsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +279,7 @@ func (client *ImportJobsClient) getHandleResponse(resp *http.Response) (ImportJo
 
 // NewListByAmlFilesystemPager - Returns all import jobs the user has access to under an AML File System.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - options - ImportJobsClientListByAmlFilesystemOptions contains the optional parameters for the ImportJobsClient.NewListByAmlFilesystemPager
@@ -327,7 +327,7 @@ func (client *ImportJobsClient) listByAmlFilesystemCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,7 +345,7 @@ func (client *ImportJobsClient) listByAmlFilesystemHandleResponse(resp *http.Res
 // BeginUpdate - Update an import job instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - importJobName - Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -373,7 +373,7 @@ func (client *ImportJobsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - Update an import job instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *ImportJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, importJobName string, importJob ImportJobUpdate, options *ImportJobsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ImportJobsClient.BeginUpdate"
@@ -419,7 +419,7 @@ func (client *ImportJobsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, importJob); err != nil {

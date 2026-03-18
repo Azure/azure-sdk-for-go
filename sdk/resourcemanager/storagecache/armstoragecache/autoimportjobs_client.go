@@ -27,7 +27,7 @@ type AutoImportJobsClient struct {
 // NewAutoImportJobsClient creates a new instance of AutoImportJobsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutoImportJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutoImportJobsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAutoImportJobsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Create or update an auto import job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - autoImportJobName - Name for the auto import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -72,7 +72,7 @@ func (client *AutoImportJobsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create or update an auto import job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *AutoImportJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJob, options *AutoImportJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutoImportJobsClient.BeginCreateOrUpdate"
@@ -118,7 +118,7 @@ func (client *AutoImportJobsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, autoImportJob); err != nil {
@@ -130,7 +130,7 @@ func (client *AutoImportJobsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Schedules an auto import job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - autoImportJobName - Name for the auto import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -157,7 +157,7 @@ func (client *AutoImportJobsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Schedules an auto import job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *AutoImportJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, options *AutoImportJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutoImportJobsClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *AutoImportJobsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *AutoImportJobsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Returns an auto import job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - autoImportJobName - Name for the auto import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -263,7 +263,7 @@ func (client *AutoImportJobsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *AutoImportJobsClient) getHandleResponse(resp *http.Response) (Auto
 
 // NewListByAmlFilesystemPager - Returns all the auto import jobs the user has access to under an AML File System.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - options - AutoImportJobsClientListByAmlFilesystemOptions contains the optional parameters for the AutoImportJobsClient.NewListByAmlFilesystemPager
@@ -328,7 +328,7 @@ func (client *AutoImportJobsClient) listByAmlFilesystemCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -346,7 +346,7 @@ func (client *AutoImportJobsClient) listByAmlFilesystemHandleResponse(resp *http
 // BeginUpdate - Update an auto import job instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - autoImportJobName - Name for the auto import job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
@@ -375,7 +375,7 @@ func (client *AutoImportJobsClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Update an auto import job instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *AutoImportJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, autoImportJobName string, autoImportJob AutoImportJobUpdate, options *AutoImportJobsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutoImportJobsClient.BeginUpdate"
@@ -421,7 +421,7 @@ func (client *AutoImportJobsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, autoImportJob); err != nil {

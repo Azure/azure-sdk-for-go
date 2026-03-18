@@ -6,8 +6,8 @@ package version
 import (
 	"fmt"
 	"go/ast"
+	"go/format"
 	"go/parser"
-	"go/printer"
 	"go/token"
 	"io/fs"
 	"log"
@@ -276,7 +276,7 @@ func replaceImport(sourceFile string, baseModule string, majorVersion int64) err
 		}
 		defer w.Close()
 
-		return printer.Fprint(w, fset, f)
+		return format.Node(w, fset, f)
 	}
 
 	return nil

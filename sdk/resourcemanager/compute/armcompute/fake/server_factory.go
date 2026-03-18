@@ -88,6 +88,12 @@ type ServerFactory struct {
 	// GalleryInVMAccessControlProfilesServer contains the fakes for client GalleryInVMAccessControlProfilesClient
 	GalleryInVMAccessControlProfilesServer GalleryInVMAccessControlProfilesServer
 
+	// GalleryScriptVersionsServer contains the fakes for client GalleryScriptVersionsClient
+	GalleryScriptVersionsServer GalleryScriptVersionsServer
+
+	// GalleryScriptsServer contains the fakes for client GalleryScriptsClient
+	GalleryScriptsServer GalleryScriptsServer
+
 	// GallerySharingProfileServer contains the fakes for client GallerySharingProfileClient
 	GallerySharingProfileServer GallerySharingProfileServer
 
@@ -211,6 +217,8 @@ type ServerFactoryTransport struct {
 	trGalleryImagesServer                           *GalleryImagesServerTransport
 	trGalleryInVMAccessControlProfileVersionsServer *GalleryInVMAccessControlProfileVersionsServerTransport
 	trGalleryInVMAccessControlProfilesServer        *GalleryInVMAccessControlProfilesServerTransport
+	trGalleryScriptVersionsServer                   *GalleryScriptVersionsServerTransport
+	trGalleryScriptsServer                          *GalleryScriptsServerTransport
 	trGallerySharingProfileServer                   *GallerySharingProfileServerTransport
 	trImagesServer                                  *ImagesServerTransport
 	trLogAnalyticsServer                            *LogAnalyticsServerTransport
@@ -368,6 +376,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGalleryInVMAccessControlProfilesServerTransport(&s.srv.GalleryInVMAccessControlProfilesServer)
 		})
 		resp, err = s.trGalleryInVMAccessControlProfilesServer.Do(req)
+	case "GalleryScriptVersionsClient":
+		initServer(s, &s.trGalleryScriptVersionsServer, func() *GalleryScriptVersionsServerTransport {
+			return NewGalleryScriptVersionsServerTransport(&s.srv.GalleryScriptVersionsServer)
+		})
+		resp, err = s.trGalleryScriptVersionsServer.Do(req)
+	case "GalleryScriptsClient":
+		initServer(s, &s.trGalleryScriptsServer, func() *GalleryScriptsServerTransport {
+			return NewGalleryScriptsServerTransport(&s.srv.GalleryScriptsServer)
+		})
+		resp, err = s.trGalleryScriptsServer.Do(req)
 	case "GallerySharingProfileClient":
 		initServer(s, &s.trGallerySharingProfileServer, func() *GallerySharingProfileServerTransport {
 			return NewGallerySharingProfileServerTransport(&s.srv.GallerySharingProfileServer)

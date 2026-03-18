@@ -131,19 +131,6 @@ func TestAzureDeveloperCLICredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestAzureDeveloperCLICredential_GetTokenInvalidToken(t *testing.T) {
-	options := AzureDeveloperCLICredentialOptions{}
-	options.exec = mockAzdFailure
-	cred, err := NewAzureDeveloperCLICredential(&options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-}
-
 func TestAzureDeveloperCLICredential_TenantID(t *testing.T) {
 	expected := "expected-tenant-id"
 	called := false

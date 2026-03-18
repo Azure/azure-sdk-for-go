@@ -1,5 +1,111 @@
 # Release History
 
+## 6.0.0 (2026-02-27)
+### Breaking Changes
+
+- Certificate registration functionality (`CertificateOrdersClient`, `CertificateOrdersDiagnosticsClient`, `CertificateRegistrationProviderClient` and related types) has been moved to the `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/certificateregistration/armcertificateregistration` module. Please migrate to use that module for certificate order operations.
+- Domain registration functionality (`DomainsClient`, `TopLevelDomainsClient`, `DomainRegistrationProviderClient` and related types) has been moved to the `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainregistration/armdomainregistration` module. Please migrate to use that module for domain registration operations.
+- Function `*RecommendationsClient.DisableAllForHostingEnvironment` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsClientDisableAllForHostingEnvironmentOptions)` to `(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, environmentName string, options *RecommendationsClientDisableAllForHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.ResetAllFiltersForHostingEnvironment` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsClientResetAllFiltersForHostingEnvironmentOptions)` to `(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, environmentName string, options *RecommendationsClientResetAllFiltersForHostingEnvironmentOptions)`
+- Type of `MSDeploy.Properties` has been changed from `*MSDeployCore` to `*MSDeployProperties`
+- Field `Interface` of struct `EnvironmentsClientDeletePrivateEndpointConnectionResponse` has been removed
+- Field `Interface` of struct `StaticSitesClientDeletePrivateEndpointConnectionResponse` has been removed
+- Field `Interface` of struct `WebAppsClientDeletePrivateEndpointConnectionResponse` has been removed
+- Field `Interface` of struct `WebAppsClientDeletePrivateEndpointConnectionSlotResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartNetworkTraceResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartNetworkTraceSlotResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartWebSiteNetworkTraceOperationResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `SiteUpdateStrategyType` with values `SiteUpdateStrategyTypeRecreate`, `SiteUpdateStrategyTypeRollingUpdate`
+- New struct `FunctionsSiteUpdateStrategy`
+- New struct `MSDeployProperties`
+- New struct `SystemData`
+- New field `SystemData` in struct `APIKVReference`
+- New field `SystemData` in struct `AddressResponse`
+- New field `SystemData` in struct `AnalysisDefinition`
+- New field `SystemData` in struct `AppCertificate`
+- New field `SystemData` in struct `AseV3NetworkingConfiguration`
+- New field `SystemData` in struct `BackupItem`
+- New field `SystemData` in struct `ContinuousWebJob`
+- New field `SystemData` in struct `CsmDeploymentStatus`
+- New field `SystemData` in struct `CsmPublishingCredentialsPoliciesEntity`
+- New field `SystemData` in struct `CustomDNSSuffixConfiguration`
+- New field `SystemData` in struct `DatabaseConnection`
+- New field `SystemData` in struct `DeletedSite`
+- New field `SystemData` in struct `Deployment`
+- New field `SystemData` in struct `DetectorDefinitionResource`
+- New field `SystemData` in struct `DetectorResponse`
+- New field `SystemData` in struct `DiagnosticCategory`
+- New field `SystemData` in struct `EnvironmentResource`
+- New field `SiteUpdateStrategy` in struct `FunctionAppConfig`
+- New field `SystemData` in struct `FunctionEnvelope`
+- New field `SystemData` in struct `HostNameBinding`
+- New field `SystemData` in struct `HybridConnection`
+- New field `SystemData` in struct `HybridConnectionLimits`
+- New field `SystemData` in struct `Identifier`
+- New field `SystemData` in struct `KubeEnvironment`
+- New field `SystemData` in struct `MSDeployStatus`
+- New field `SystemData` in struct `MigrateMySQLStatus`
+- New field `SystemData` in struct `NetworkFeatures`
+- New field `SystemData` in struct `Plan`
+- New field `SystemData` in struct `PremierAddOn`
+- New field `SystemData` in struct `PrivateAccess`
+- New field `SystemData` in struct `ProcessInfo`
+- New field `SystemData` in struct `ProcessModuleInfo`
+- New field `SystemData` in struct `PublicCertificate`
+- New field `SystemData` in struct `RecommendationRule`
+- New field `SystemData` in struct `RelayServiceConnectionEntity`
+- New field `SystemData` in struct `RemotePrivateEndpointConnectionARMResource`
+- New field `SystemData` in struct `RequestHistory`
+- New field `SystemData` in struct `ResourceHealthMetadata`
+- New field `SystemData` in struct `Site`
+- New field `SystemData` in struct `SiteAuthSettingsV2`
+- New field `SystemData` in struct `SiteConfigResource`
+- New field `SystemData` in struct `SiteContainer`
+- New field `SystemData` in struct `SiteExtensionInfo`
+- New field `SystemData` in struct `SiteLogsConfig`
+- New field `SystemData` in struct `SiteSourceControl`
+- New field `SystemData` in struct `SlotConfigNamesResource`
+- New field `SystemData` in struct `SourceControl`
+- New field `SystemData` in struct `StaticSiteARMResource`
+- New field `SystemData` in struct `StaticSiteBasicAuthPropertiesARMResource`
+- New field `SystemData` in struct `StaticSiteBuildARMResource`
+- New field `SystemData` in struct `StaticSiteCustomDomainOverviewARMResource`
+- New field `SystemData` in struct `StaticSiteLinkedBackendARMResource`
+- New field `SystemData` in struct `StaticSiteUserProvidedFunctionAppARMResource`
+- New field `SystemData` in struct `SwiftVirtualNetwork`
+- New field `SystemData` in struct `TriggeredJobHistory`
+- New field `SystemData` in struct `TriggeredWebJob`
+- New field `SystemData` in struct `User`
+- New field `SystemData` in struct `VnetGateway`
+- New field `SystemData` in struct `VnetInfoResource`
+- New field `SystemData` in struct `VnetRoute`
+- New field `ContentType` in struct `WebAppsClientGetContainerLogsZipResponse`
+- New field `ContentType` in struct `WebAppsClientGetContainerLogsZipSlotResponse`
+- New field `ContentType` in struct `WebAppsClientGetInstanceProcessDumpResponse`
+- New field `ContentType` in struct `WebAppsClientGetInstanceProcessDumpSlotResponse`
+- New field `ContentType` in struct `WebAppsClientGetProcessDumpResponse`
+- New field `ContentType` in struct `WebAppsClientGetProcessDumpSlotResponse`
+- New field `ContentType` in struct `WebAppsClientGetWebSiteContainerLogsResponse`
+- New field `ContentType` in struct `WebAppsClientGetWebSiteContainerLogsSlotResponse`
+- New field `ContentType` in struct `WebAppsClientListPublishingProfileXMLWithSecretsResponse`
+- New field `ContentType` in struct `WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse`
+- New field `SystemData` in struct `WebJob`
+- New field `SystemData` in struct `WebSiteInstanceStatus`
+- New field `SystemData` in struct `WorkerPoolResource`
+- New field `SystemData` in struct `WorkflowEnvelope`
+- New field `SystemData` in struct `WorkflowRun`
+- New field `SystemData` in struct `WorkflowRunAction`
+- New field `SystemData` in struct `WorkflowRunActionRepetitionDefinition`
+- New field `SystemData` in struct `WorkflowTrigger`
+- New field `SystemData` in struct `WorkflowTriggerHistory`
+- New field `SystemData` in struct `WorkflowVersion`
+
+
 ## 5.1.0 (2025-11-26)
 ### Features Added
 

@@ -180,30 +180,10 @@ type ManagedClustersClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// ManagedClustersClientBeginStartFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStartFaultSimulation
-// method.
-type ManagedClustersClientBeginStartFaultSimulationOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ManagedClustersClientBeginStopFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStopFaultSimulation
-// method.
-type ManagedClustersClientBeginStopFaultSimulationOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // ManagedClustersClientBeginUpdateOptions contains the optional parameters for the ManagedClustersClient.BeginUpdate method.
 type ManagedClustersClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
-}
-
-// ManagedClustersClientGetFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.GetFaultSimulation
-// method.
-type ManagedClustersClientGetFaultSimulationOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ManagedClustersClientGetOptions contains the optional parameters for the ManagedClustersClient.Get method.
@@ -220,12 +200,6 @@ type ManagedClustersClientListByResourceGroupOptions struct {
 // ManagedClustersClientListBySubscriptionOptions contains the optional parameters for the ManagedClustersClient.NewListBySubscriptionPager
 // method.
 type ManagedClustersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedClustersClientListFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.NewListFaultSimulationPager
-// method.
-type ManagedClustersClientListFaultSimulationOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -295,22 +269,8 @@ type NodeTypesClientBeginRestartOptions struct {
 	ResumeToken string
 }
 
-// NodeTypesClientBeginStartFaultSimulationOptions contains the optional parameters for the NodeTypesClient.BeginStartFaultSimulation
-// method.
-type NodeTypesClientBeginStartFaultSimulationOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // NodeTypesClientBeginStartOptions contains the optional parameters for the NodeTypesClient.BeginStart method.
 type NodeTypesClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// NodeTypesClientBeginStopFaultSimulationOptions contains the optional parameters for the NodeTypesClient.BeginStopFaultSimulation
-// method.
-type NodeTypesClientBeginStopFaultSimulationOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -321,11 +281,6 @@ type NodeTypesClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
-// NodeTypesClientGetFaultSimulationOptions contains the optional parameters for the NodeTypesClient.GetFaultSimulation method.
-type NodeTypesClientGetFaultSimulationOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NodeTypesClientGetOptions contains the optional parameters for the NodeTypesClient.Get method.
 type NodeTypesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -334,12 +289,6 @@ type NodeTypesClientGetOptions struct {
 // NodeTypesClientListByManagedClustersOptions contains the optional parameters for the NodeTypesClient.NewListByManagedClustersPager
 // method.
 type NodeTypesClientListByManagedClustersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NodeTypesClientListFaultSimulationOptions contains the optional parameters for the NodeTypesClient.NewListFaultSimulationPager
-// method.
-type NodeTypesClientListFaultSimulationOptions struct {
 	// placeholder for future optional parameters
 }
 

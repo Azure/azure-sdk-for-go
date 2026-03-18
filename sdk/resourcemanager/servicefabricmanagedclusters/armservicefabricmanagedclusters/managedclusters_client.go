@@ -42,7 +42,7 @@ func NewManagedClustersClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Create or update a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - parameters - The cluster resource.
@@ -68,7 +68,7 @@ func (client *ManagedClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create or update a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedCluster, options *ManagedClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedClustersClient.BeginCreateOrUpdate"
@@ -110,7 +110,7 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedClustersClientBeginDeleteOptions contains the optional parameters for the ManagedClustersClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *ManagedClustersClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedClustersClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -199,7 +199,7 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedClustersClientGetOptions contains the optional parameters for the ManagedClustersClient.Get method.
@@ -245,7 +245,7 @@ func (client *ManagedClustersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,80 +260,10 @@ func (client *ManagedClustersClient) getHandleResponse(resp *http.Response) (Man
 	return result, nil
 }
 
-// GetFaultSimulation - Gets a fault simulation by the simulationId.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - parameters - parameter with fault simulation id.
-//   - options - ManagedClustersClientGetFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.GetFaultSimulation
-//     method.
-func (client *ManagedClustersClient) GetFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientGetFaultSimulationOptions) (ManagedClustersClientGetFaultSimulationResponse, error) {
-	var err error
-	const operationName = "ManagedClustersClient.GetFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ManagedClustersClientGetFaultSimulationResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ManagedClustersClientGetFaultSimulationResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetFaultSimulationResponse{}, err
-	}
-	resp, err := client.getFaultSimulationHandleResponse(httpResp)
-	return resp, err
-}
-
-// getFaultSimulationCreateRequest creates the GetFaultSimulation request.
-func (client *ManagedClustersClient) getFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, _ *ManagedClustersClientGetFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/getFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// getFaultSimulationHandleResponse handles the GetFaultSimulation response.
-func (client *ManagedClustersClient) getFaultSimulationHandleResponse(resp *http.Response) (ManagedClustersClientGetFaultSimulationResponse, error) {
-	result := ManagedClustersClientGetFaultSimulationResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FaultSimulation); err != nil {
-		return ManagedClustersClientGetFaultSimulationResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Gets all Service Fabric cluster resources created or in the process of being created in the
 // resource group.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.NewListByResourceGroupPager
 //     method.
@@ -376,7 +306,7 @@ func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -394,7 +324,7 @@ func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *htt
 // NewListBySubscriptionPager - Gets all Service Fabric cluster resources created or in the process of being created in the
 // subscription.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 //   - options - ManagedClustersClientListBySubscriptionOptions contains the optional parameters for the ManagedClustersClient.NewListBySubscriptionPager
 //     method.
 func (client *ManagedClustersClient) NewListBySubscriptionPager(options *ManagedClustersClientListBySubscriptionOptions) *runtime.Pager[ManagedClustersClientListBySubscriptionResponse] {
@@ -432,7 +362,7 @@ func (client *ManagedClustersClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -447,235 +377,10 @@ func (client *ManagedClustersClient) listBySubscriptionHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListFaultSimulationPager - Gets the list of recent fault simulations for the cluster.
-//
-// Generated from API version 2025-10-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - options - ManagedClustersClientListFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.NewListFaultSimulationPager
-//     method.
-func (client *ManagedClustersClient) NewListFaultSimulationPager(resourceGroupName string, clusterName string, options *ManagedClustersClientListFaultSimulationOptions) *runtime.Pager[ManagedClustersClientListFaultSimulationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListFaultSimulationResponse]{
-		More: func(page ManagedClustersClientListFaultSimulationResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ManagedClustersClientListFaultSimulationResponse) (ManagedClustersClientListFaultSimulationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListFaultSimulationPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, options)
-			}, nil)
-			if err != nil {
-				return ManagedClustersClientListFaultSimulationResponse{}, err
-			}
-			return client.listFaultSimulationHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listFaultSimulationCreateRequest creates the ListFaultSimulation request.
-func (client *ManagedClustersClient) listFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ManagedClustersClientListFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/listFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listFaultSimulationHandleResponse handles the ListFaultSimulation response.
-func (client *ManagedClustersClient) listFaultSimulationHandleResponse(resp *http.Response) (ManagedClustersClientListFaultSimulationResponse, error) {
-	result := ManagedClustersClientListFaultSimulationResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FaultSimulationListResult); err != nil {
-		return ManagedClustersClientListFaultSimulationResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginStartFaultSimulation - Starts a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - parameters - parameters describing the fault simulation.
-//   - options - ManagedClustersClientBeginStartFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStartFaultSimulation
-//     method.
-func (client *ManagedClustersClient) BeginStartFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, options *ManagedClustersClientBeginStartFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStartFaultSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.startFaultSimulation(ctx, resourceGroupName, clusterName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStartFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStartFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StartFaultSimulation - Starts a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
-func (client *ManagedClustersClient) startFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, options *ManagedClustersClientBeginStartFaultSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginStartFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// startFaultSimulationCreateRequest creates the StartFaultSimulation request.
-func (client *ManagedClustersClient) startFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, _ *ManagedClustersClientBeginStartFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/startFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStopFaultSimulation - Stops a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - parameters - parameter with fault simulation id.
-//   - options - ManagedClustersClientBeginStopFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStopFaultSimulation
-//     method.
-func (client *ManagedClustersClient) BeginStopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientBeginStopFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStopFaultSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopFaultSimulation(ctx, resourceGroupName, clusterName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStopFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStopFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StopFaultSimulation - Stops a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
-func (client *ManagedClustersClient) stopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientBeginStopFaultSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginStopFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// stopFaultSimulationCreateRequest creates the StopFaultSimulation request.
-func (client *ManagedClustersClient) stopFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, _ *ManagedClustersClientBeginStopFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/stopFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // BeginUpdate - Update the tags of of a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - parameters - The managed cluster resource updated tags.
@@ -701,7 +406,7 @@ func (client *ManagedClustersClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - Update the tags of of a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01-preview
+// Generated from API version 2026-02-01
 func (client *ManagedClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedClustersClient.BeginUpdate"
@@ -743,7 +448,7 @@ func (client *ManagedClustersClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/ElasticBackupPolicies_CreateOrUpdate.json
+// Generated from example definition: 2025-12-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
 func ExampleElasticBackupPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleElasticBackupPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticBackupPolicies_Delete.json
+// Generated from example definition: 2025-12-15-preview/ElasticBackupPolicies_Delete.json
 func ExampleElasticBackupPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleElasticBackupPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticBackupPolicies_Get.json
+// Generated from example definition: 2025-12-15-preview/ElasticBackupPolicies_Get.json
 func ExampleElasticBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleElasticBackupPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticBackupPolicies_List.json
+// Generated from example definition: 2025-12-15-preview/ElasticBackupPolicies_List.json
 func ExampleElasticBackupPoliciesClient_NewListByElasticAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleElasticBackupPoliciesClient_NewListByElasticAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticBackupPolicies_Update.json
+// Generated from example definition: 2025-12-15-preview/ElasticBackupPolicies_Update.json
 func ExampleElasticBackupPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

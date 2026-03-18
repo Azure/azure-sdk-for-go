@@ -1,11 +1,30 @@
 # Release History
 
-## 0.4.4 (Unreleased)
+## 0.4.7 (2026-03-03)
+
+### Bugs Fixed
+
+- Fixed `GenerateChangelog` to bypass errors when the module doesn't contain any exports instead of failing.
+
+## 0.4.6 (2026-02-26)
+
+### Other Changes
+
+- Refined dependency upgrade logic to use `go get` instead of `go get -u` to prevent unintended upgrades of other dependencies.
+
+## 0.4.5 (2026-02-02)
+
+### Bugs Fixed
+
+- Fixed `FindSDKRoot` to support git worktree workspaces where `.git` is a file instead of a directory.
+
+## 0.4.4 (2026-01-28)
 
 ### Bugs Fixed
 
 - Fixed `version` command to skip CHANGELOG.md update when the file doesn't exist and `--sdkversion` is specified.
 - Updated `version` command to only update the version in the latest CHANGELOG.md entry (not regenerate changelog content) when `--sdkversion` is specified.
+- Use `format.Node` instead of `printer.Fprint` to keep the format aligned with gofmt.
 
 ## 0.4.3 (2025-12-17)
 

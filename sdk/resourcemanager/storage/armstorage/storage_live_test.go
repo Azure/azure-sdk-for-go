@@ -39,7 +39,7 @@ func (testsuite *StorageTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.accountName = "accountnam"
+	testsuite.accountName = "accountnam1"
 	testsuite.encryptionScopeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "encryption", 16, false)
 	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

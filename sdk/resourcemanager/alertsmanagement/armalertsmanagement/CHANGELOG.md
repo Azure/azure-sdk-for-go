@@ -3,17 +3,12 @@
 ## 0.11.0 (2026-03-13)
 ### Breaking Changes
 
-- The following resource clients and their associated types have been split into dedicated packages. Please migrate to the new packages:
-  - **Alert Processing Rules** → [`armalertprocessingrules`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertprocessingrules/armalertprocessingrules)
-    - Includes `AlertProcessingRulesClient` and related types (`AlertProcessingRule`, `Condition`, `Schedule`, `DailyRecurrence`, `MonthlyRecurrence`, `WeeklyRecurrence`, `Action`, `AddActionGroups`, `RemoveAllActionGroups`, `PatchObject`, etc.) and enums (`DaysOfWeek`, `Field`, `Operator`, `RecurrenceType`, `ActionTypeAddActionGroups`, `ActionTypeRemoveAllActionGroups`)
-  - **Tenant Activity Log Alerts** → [`armtenantactivitylogalerts`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/tenantactivitylogalerts/armtenantactivitylogalerts)
-    - Includes `TenantActivityLogAlertsClient` and related types (`TenantActivityLogAlertResource`, `AlertRuleAllOfCondition`, `AlertRuleAnyOfOrLeafCondition`, `AlertRuleLeafCondition`, `AlertRuleProperties`, `ActionGroup`, `ActionList`, `TenantAlertRulePatchObject`, etc.)
-  - **Alert Rule Recommendations** → [`armalertrulerecommendations`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertrulerecommendations/armalertrulerecommendations)
-    - Includes `AlertRuleRecommendationsClient` and related types (`AlertRuleRecommendationResource`, `AlertRuleRecommendationProperties`, `AlertRuleRecommendationsListResponse`, `RuleArmTemplate`)
-  - **Prometheus Rule Groups** → [`armprometheusrulegroups`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/prometheusrulegroups/armprometheusrulegroups)
-    - Includes `PrometheusRuleGroupsClient` and related types (`PrometheusRuleGroupResource`, `PrometheusRule`, `PrometheusRuleGroupAction`, `PrometheusRuleResolveConfiguration`, `PrometheusRuleGroupResourcePatch`, etc.)
-  - **Preview Alert Rule** → [`armpreviewalertrule`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/previewalertrule/armpreviewalertrule)
-- `SmartGroupsClient` and all related types (`SmartGroup`, `SmartGroupsList`, `SmartGroupProperties`, `SmartGroupAggregatedProperty`, `SmartGroupModification`, `SmartGroupModificationItem`, `SmartGroupModificationProperties`) and enums (`SmartGroupModificationEvent`, `SmartGroupsSortByFields`, `State`) have been removed
+- The following resource clients and their associated types/enums have been split into dedicated packages. Please migrate to the new packages:
+  - `AlertProcessingRulesClient` → [`armalertprocessingrules.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertprocessingrules/armalertprocessingrules)
+  - `TenantActivityLogAlertsClient` → [`armtenantactivitylogalerts.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/tenantactivitylogalerts/armtenantactivitylogalerts)
+  - `AlertRuleRecommendationsClient` → [`armalertrulerecommendations.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertrulerecommendations/armalertrulerecommendations)
+  - `PrometheusRuleGroupsClient` → [`armprometheusrulegroups.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/prometheusrulegroups/armprometheusrulegroups)
+- `SmartGroupsClient` and all related types/enums have been removed
 - `AlertModificationEventActionRuleSuppressed`, `AlertModificationEventActionRuleTriggered`, `AlertModificationEventActionsFailed` from enum `AlertModificationEvent` have been removed
 - Function `NewAlertsClient` parameter(s) have been changed from `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)` to `(scope string, credential azcore.TokenCredential, options *arm.ClientOptions)`
 - Function `NewClientFactory` parameter(s) have been changed from `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)` to `(scope string, credential azcore.TokenCredential, options *arm.ClientOptions)`

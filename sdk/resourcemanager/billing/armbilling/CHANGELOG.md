@@ -1,5 +1,27 @@
 # Release History
 
+## 2.0.0 (2026-03-12)
+### Breaking Changes
+
+- Operation `*RecipientTransfersClient.Validate` has supported pagination, use `*RecipientTransfersClient.NewValidatePager` instead.
+- Struct `EnrollmentDetails` has been removed
+- Struct `EnterpriseAgreementPolicies` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExternalReference` has been removed
+- Struct `IndirectRelationshipInfo` has been removed
+- Struct `MoveProductErrorDetails` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `ProxyResourceWithTags` has been removed
+- Struct `RefundDetailsSummary` has been removed
+- Struct `RefundTransactionDetails` has been removed
+- Struct `RegistrationNumber` has been removed
+- Struct `Resource` has been removed
+- Struct `SubscriptionEnrollmentDetails` has been removed
+- Struct `TransferItemQueryParameter` has been removed
+
+
 ## 1.0.0 (2024-09-09)
 ### Breaking Changes
 

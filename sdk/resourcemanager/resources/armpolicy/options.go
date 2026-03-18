@@ -27,9 +27,7 @@ type AssignmentsClientDeleteOptions struct {
 
 // AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
 type AssignmentsClientGetByIDOptions struct {
-	// Comma-separated list of additional properties to be included in the response. Supported values are 'LatestDefinitionVersion,
-	// EffectiveDefinitionVersion'.
-	Expand *string
+	// placeholder for future optional parameters
 }
 
 // AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
@@ -591,91 +589,13 @@ type SetDefinitionsClientListOptions struct {
 	Top *int32
 }
 
-// VariableValuesClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the VariableValuesClient.CreateOrUpdateAtManagementGroup
+// TokensClientAcquireAtManagementGroupOptions contains the optional parameters for the TokensClient.AcquireAtManagementGroup
 // method.
-type VariableValuesClientCreateOrUpdateAtManagementGroupOptions struct {
+type TokensClientAcquireAtManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VariableValuesClientCreateOrUpdateOptions contains the optional parameters for the VariableValuesClient.CreateOrUpdate
-// method.
-type VariableValuesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientDeleteAtManagementGroupOptions contains the optional parameters for the VariableValuesClient.DeleteAtManagementGroup
-// method.
-type VariableValuesClientDeleteAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientDeleteOptions contains the optional parameters for the VariableValuesClient.Delete method.
-type VariableValuesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientGetAtManagementGroupOptions contains the optional parameters for the VariableValuesClient.GetAtManagementGroup
-// method.
-type VariableValuesClientGetAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientGetOptions contains the optional parameters for the VariableValuesClient.Get method.
-type VariableValuesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientListForManagementGroupOptions contains the optional parameters for the VariableValuesClient.NewListForManagementGroupPager
-// method.
-type VariableValuesClientListForManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientListOptions contains the optional parameters for the VariableValuesClient.NewListPager method.
-type VariableValuesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the VariablesClient.CreateOrUpdateAtManagementGroup
-// method.
-type VariablesClientCreateOrUpdateAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientCreateOrUpdateOptions contains the optional parameters for the VariablesClient.CreateOrUpdate method.
-type VariablesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientDeleteAtManagementGroupOptions contains the optional parameters for the VariablesClient.DeleteAtManagementGroup
-// method.
-type VariablesClientDeleteAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientDeleteOptions contains the optional parameters for the VariablesClient.Delete method.
-type VariablesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientGetAtManagementGroupOptions contains the optional parameters for the VariablesClient.GetAtManagementGroup
-// method.
-type VariablesClientGetAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientGetOptions contains the optional parameters for the VariablesClient.Get method.
-type VariablesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientListForManagementGroupOptions contains the optional parameters for the VariablesClient.NewListForManagementGroupPager
-// method.
-type VariablesClientListForManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientListOptions contains the optional parameters for the VariablesClient.NewListPager method.
-type VariablesClientListOptions struct {
+// TokensClientAcquireOptions contains the optional parameters for the TokensClient.Acquire method.
+type TokensClientAcquireOptions struct {
 	// placeholder for future optional parameters
 }

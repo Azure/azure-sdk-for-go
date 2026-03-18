@@ -6,10 +6,11 @@ package armkeyvault_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
-	"log"
 )
 
 // Generated from example definition: 2026-02-01/checkVaultNameAvailability.json
@@ -517,8 +518,7 @@ func ExampleVaultsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVaultsClient().NewListPager(to.Ptr("resourceType eq 'Microsoft.KeyVault/vaults'"), to.Ptr("2015-11-01"), &armkeyvault.VaultsClientListOptions{
-		Top: to.Ptr[int32](1)})
+	pager := clientFactory.NewVaultsClient().NewListPager(&armkeyvault.VaultsClientListOptions{Top: to.Ptr[int32](1)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

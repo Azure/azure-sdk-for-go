@@ -1,5 +1,36 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-03-18)
+### Breaking Changes
+
+- Type of `DicomService.Identity` has been changed from `*ServiceManagedIdentityIdentity` to `*ManagedServiceIdentity`
+- Type of `FhirService.Identity` has been changed from `*ServiceManagedIdentityIdentity` to `*ManagedServiceIdentity`
+- Type of `IotConnector.Identity` has been changed from `*ServiceManagedIdentityIdentity` to `*ManagedServiceIdentity`
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorDetailsInternal` has been removed
+- Struct `IotDestinationProperties` has been removed
+- Struct `LocationBasedResource` has been removed
+- Struct `PrivateEndpointConnectionListResult` has been removed
+- Struct `PrivateLinkResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceCore` has been removed
+- Struct `ResourceTags` has been removed
+- Struct `ServiceManagedIdentity` has been removed
+- Struct `ServicesResource` has been removed
+- Struct `TaggedResource` has been removed
+
+### Features Added
+
+- New enum type `ArmManagedServiceIdentityType` with values `ArmManagedServiceIdentityTypeNone`, `ArmManagedServiceIdentityTypeSystemAssigned`, `ArmManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ArmManagedServiceIdentityTypeUserAssigned`
+- New struct `ManagedServiceIdentity`
+- New struct `StorageIndexingConfiguration`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResultDescription`
+- New field `NextLink` in struct `PrivateLinkResourceListResultDescription`
+- New field `StorageIndexingConfiguration` in struct `StorageConfiguration`
+
+
 ## 2.1.0 (2024-04-26)
 ### Features Added
 

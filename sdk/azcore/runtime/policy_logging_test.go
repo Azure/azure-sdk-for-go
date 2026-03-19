@@ -7,8 +7,10 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -304,4 +306,55 @@ func TestWriteRespBodyReadError(t *testing.T) {
 	resp.Body = exported.NopCloser(&readSeekerFailer{failRead: true})
 	require.Error(t, writeRespBody(resp, &buf))
 	require.Contains(t, buf.String(), "Failed to read response body: read failed")
+}
+
+func TestSanitizeURLInError(t *testing.T) {
+	rawlog := map[log.Event]string{}
+	log.SetListener(func(cls log.Event, s string) {
+		rawlog[cls] = s
+	})
+	srv, close := mock.NewServer()
+	defer close()
+
+	const (
+		allowedQP  = "allowed-qp"
+		redactedQP = "redacted-qp"
+	)
+
+	pl := NewPipeline("", "", PipelineOptions{}, &policy.ClientOptions{
+		Logging: policy.LogOptions{
+			AllowedQueryParams: []string{allowedQP},
+		},
+		Retry: policy.RetryOptions{
+			RetryDelay: 1,
+		},
+		Transport: srv,
+	})
+
+	qp := url.Values{}
+	qp.Set(allowedQP, "allow_me")
+	qp.Set(redactedQP, "redact_me")
+
+	srvURLWithQP := srv.URL() + "?" + qp.Encode()
+
+	srv.SetError(fmt.Errorf("bogus error for %s test endpoint", srvURLWithQP))
+
+	req, err := NewRequest(context.Background(), http.MethodGet, srvURLWithQP)
+	require.NoError(t, err)
+	resp, err := pl.Do(req)
+	require.Error(t, err)
+	require.Nil(t, resp)
+	if logReq, ok := rawlog[log.EventResponse]; ok {
+		if !strings.Contains(logReq, "bogus error for") {
+			t.Fatal("missing expected error message")
+		}
+		if strings.Contains(logReq, "redact_me") {
+			t.Fatal("query param wasn't redacted")
+		}
+		if !strings.Contains(logReq, "allow_me") {
+			t.Fatal("missing expected query param")
+		}
+	} else {
+		t.Fatal("missing LogRequest")
+	}
 }

@@ -25,9 +25,9 @@ type AFDOriginGroupsClient struct {
 }
 
 // NewAFDOriginGroupsClient creates a new instance of AFDOriginGroupsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAFDOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDOriginGroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,10 +43,9 @@ func NewAFDOriginGroupsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreate - Creates a new origin group within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - originGroupName - Name of the origin group which is unique within the endpoint.
 //   - originGroup - Origin group properties
 //   - options - AFDOriginGroupsClientBeginCreateOptions contains the optional parameters for the AFDOriginGroupsClient.BeginCreate
@@ -72,7 +71,7 @@ func (client *AFDOriginGroupsClient) BeginCreate(ctx context.Context, resourceGr
 // Create - Creates a new origin group within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *AFDOriginGroupsClient) create(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDOriginGroupsClient.BeginCreate"
@@ -95,7 +94,7 @@ func (client *AFDOriginGroupsClient) create(ctx context.Context, resourceGroupNa
 }
 
 // createCreateRequest creates the Create request.
-func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, _ *AFDOriginGroupsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,7 +117,7 @@ func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originGroup); err != nil {
@@ -130,10 +129,9 @@ func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, re
 // BeginDelete - Deletes an existing origin group within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - originGroupName - Name of the origin group which is unique within the profile.
 //   - options - AFDOriginGroupsClientBeginDeleteOptions contains the optional parameters for the AFDOriginGroupsClient.BeginDelete
 //     method.
@@ -158,7 +156,7 @@ func (client *AFDOriginGroupsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Deletes an existing origin group within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *AFDOriginGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDOriginGroupsClient.BeginDelete"
@@ -181,7 +179,7 @@ func (client *AFDOriginGroupsClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, _ *AFDOriginGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -204,7 +202,7 @@ func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,10 +211,9 @@ func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Gets an existing origin group within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - originGroupName - Name of the origin group which is unique within the endpoint.
 //   - options - AFDOriginGroupsClientGetOptions contains the optional parameters for the AFDOriginGroupsClient.Get method.
 func (client *AFDOriginGroupsClient) Get(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientGetOptions) (AFDOriginGroupsClientGetResponse, error) {
@@ -242,7 +239,7 @@ func (client *AFDOriginGroupsClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientGetOptions) (*policy.Request, error) {
+func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, _ *AFDOriginGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -265,7 +262,7 @@ func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,10 +279,9 @@ func (client *AFDOriginGroupsClient) getHandleResponse(resp *http.Response) (AFD
 
 // NewListByProfilePager - Lists all of the existing origin groups within a profile.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - options - AFDOriginGroupsClientListByProfileOptions contains the optional parameters for the AFDOriginGroupsClient.NewListByProfilePager
 //     method.
 func (client *AFDOriginGroupsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *AFDOriginGroupsClientListByProfileOptions) *runtime.Pager[AFDOriginGroupsClientListByProfileResponse] {
@@ -312,7 +308,7 @@ func (client *AFDOriginGroupsClient) NewListByProfilePager(resourceGroupName str
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDOriginGroupsClientListByProfileOptions) (*policy.Request, error) {
+func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *AFDOriginGroupsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -331,7 +327,7 @@ func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -348,10 +344,9 @@ func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Resp
 
 // NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - originGroupName - Name of the origin group which is unique within the endpoint.
 //   - options - AFDOriginGroupsClientListResourceUsageOptions contains the optional parameters for the AFDOriginGroupsClient.NewListResourceUsagePager
 //     method.
@@ -379,7 +374,7 @@ func (client *AFDOriginGroupsClient) NewListResourceUsagePager(resourceGroupName
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientListResourceUsageOptions) (*policy.Request, error) {
+func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, _ *AFDOriginGroupsClientListResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -402,7 +397,7 @@ func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -420,10 +415,9 @@ func (client *AFDOriginGroupsClient) listResourceUsageHandleResponse(resp *http.
 // BeginUpdate - Updates an existing origin group within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - originGroupName - Name of the origin group which is unique within the profile.
 //   - originGroupUpdateProperties - Origin group properties
 //   - options - AFDOriginGroupsClientBeginUpdateOptions contains the optional parameters for the AFDOriginGroupsClient.BeginUpdate
@@ -449,7 +443,7 @@ func (client *AFDOriginGroupsClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - Updates an existing origin group within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *AFDOriginGroupsClient) update(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDOriginGroupsClient.BeginUpdate"
@@ -472,7 +466,7 @@ func (client *AFDOriginGroupsClient) update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AFDOriginGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AFDOriginGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, _ *AFDOriginGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -495,7 +489,7 @@ func (client *AFDOriginGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originGroupUpdateProperties); err != nil {

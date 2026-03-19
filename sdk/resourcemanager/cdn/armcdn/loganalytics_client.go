@@ -27,9 +27,9 @@ type LogAnalyticsClient struct {
 }
 
 // NewLogAnalyticsClient creates a new instance of LogAnalyticsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,8 +45,8 @@ func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredent
 // GetLogAnalyticsLocations - Get all available location names for AFD log analytics report.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group. which is unique within the resource group.
 //   - options - LogAnalyticsClientGetLogAnalyticsLocationsOptions contains the optional parameters for the LogAnalyticsClient.GetLogAnalyticsLocations
@@ -74,7 +74,7 @@ func (client *LogAnalyticsClient) GetLogAnalyticsLocations(ctx context.Context, 
 }
 
 // getLogAnalyticsLocationsCreateRequest creates the GetLogAnalyticsLocations request.
-func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsClientGetLogAnalyticsLocationsOptions) (*policy.Request, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *LogAnalyticsClientGetLogAnalyticsLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -93,7 +93,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,8 +111,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *h
 // GetLogAnalyticsMetrics - Get log report for AFD profile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group. which is unique within the resource group.
 //   - options - LogAnalyticsClientGetLogAnalyticsMetricsOptions contains the optional parameters for the LogAnalyticsClient.GetLogAnalyticsMetrics
@@ -159,7 +159,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	if options != nil && options.Continents != nil {
 		for _, qv := range options.Continents {
 			reqQP.Add("continents", qv)
@@ -204,8 +204,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *htt
 // GetLogAnalyticsRankings - Get log analytics ranking report for AFD profile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group. which is unique within the resource group.
 //   - options - LogAnalyticsClientGetLogAnalyticsRankingsOptions contains the optional parameters for the LogAnalyticsClient.GetLogAnalyticsRankings
@@ -252,7 +252,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	if options != nil && options.CustomDomains != nil {
 		for _, qv := range options.CustomDomains {
 			reqQP.Add("customDomains", qv)
@@ -284,8 +284,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *ht
 // GetLogAnalyticsResources - Get all endpoints and custom domains available for AFD log report
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group. which is unique within the resource group.
 //   - options - LogAnalyticsClientGetLogAnalyticsResourcesOptions contains the optional parameters for the LogAnalyticsClient.GetLogAnalyticsResources
@@ -313,7 +313,7 @@ func (client *LogAnalyticsClient) GetLogAnalyticsResources(ctx context.Context, 
 }
 
 // getLogAnalyticsResourcesCreateRequest creates the GetLogAnalyticsResources request.
-func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsClientGetLogAnalyticsResourcesOptions) (*policy.Request, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *LogAnalyticsClientGetLogAnalyticsResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -332,7 +332,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -350,8 +350,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *h
 // GetWafLogAnalyticsMetrics - Get Waf related log analytics report for AFD profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group. which is unique within the resource group.
 //   - options - LogAnalyticsClientGetWafLogAnalyticsMetricsOptions contains the optional parameters for the LogAnalyticsClient.GetWafLogAnalyticsMetrics
@@ -403,7 +403,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
 	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
 	reqQP.Set("granularity", string(granularity))
@@ -437,8 +437,8 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *
 // GetWafLogAnalyticsRankings - Get WAF log analytics charts for AFD profile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group. which is unique within the resource group.
 //   - options - LogAnalyticsClientGetWafLogAnalyticsRankingsOptions contains the optional parameters for the LogAnalyticsClient.GetWafLogAnalyticsRankings
@@ -490,7 +490,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
 	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))

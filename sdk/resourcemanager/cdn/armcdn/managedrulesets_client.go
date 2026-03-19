@@ -25,9 +25,9 @@ type ManagedRuleSetsClient struct {
 }
 
 // NewManagedRuleSetsClient creates a new instance of ManagedRuleSetsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedRuleSetsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListPager - Lists all available managed rule sets.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 //   - options - ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.NewListPager
 //     method.
 func (client *ManagedRuleSetsClient) NewListPager(options *ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse] {
@@ -69,7 +69,7 @@ func (client *ManagedRuleSetsClient) NewListPager(options *ManagedRuleSetsClient
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, options *ManagedRuleSetsClientListOptions) (*policy.Request, error) {
+func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, _ *ManagedRuleSetsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -80,7 +80,7 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

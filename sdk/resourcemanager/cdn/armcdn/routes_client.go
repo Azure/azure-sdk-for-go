@@ -25,9 +25,9 @@ type RoutesClient struct {
 }
 
 // NewRoutesClient creates a new instance of RoutesClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoutesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,10 +44,9 @@ func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, o
 // and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - routeName - Name of the routing rule.
 //   - route - Route properties
@@ -74,7 +73,7 @@ func (client *RoutesClient) BeginCreate(ctx context.Context, resourceGroupName s
 // AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *RoutesClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutesClient.BeginCreate"
@@ -97,7 +96,7 @@ func (client *RoutesClient) create(ctx context.Context, resourceGroupName string
 }
 
 // createCreateRequest creates the Create request.
-func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (*policy.Request, error) {
+func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, _ *RoutesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -124,7 +123,7 @@ func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, route); err != nil {
@@ -137,10 +136,9 @@ func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGro
 // profile, and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - routeName - Name of the routing rule.
 //   - options - RoutesClientBeginDeleteOptions contains the optional parameters for the RoutesClient.BeginDelete method.
@@ -166,7 +164,7 @@ func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName s
 // and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutesClient.BeginDelete"
@@ -189,7 +187,7 @@ func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, _ *RoutesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -216,7 +214,7 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -226,10 +224,9 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 // AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - routeName - Name of the routing rule.
 //   - options - RoutesClientGetOptions contains the optional parameters for the RoutesClient.Get method.
@@ -256,7 +253,7 @@ func (client *RoutesClient) Get(ctx context.Context, resourceGroupName string, p
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientGetOptions) (*policy.Request, error) {
+func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, _ *RoutesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -283,7 +280,7 @@ func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -300,10 +297,9 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 
 // NewListByEndpointPager - Lists all of the existing origins within a profile.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - RoutesClientListByEndpointOptions contains the optional parameters for the RoutesClient.NewListByEndpointPager
 //     method.
@@ -331,7 +327,7 @@ func (client *RoutesClient) NewListByEndpointPager(resourceGroupName string, pro
 }
 
 // listByEndpointCreateRequest creates the ListByEndpoint request.
-func (client *RoutesClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *RoutesClientListByEndpointOptions) (*policy.Request, error) {
+func (client *RoutesClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *RoutesClientListByEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -354,7 +350,7 @@ func (client *RoutesClient) listByEndpointCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -373,10 +369,9 @@ func (client *RoutesClient) listByEndpointHandleResponse(resp *http.Response) (R
 // profile, and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - routeName - Name of the routing rule.
 //   - routeUpdateProperties - Route update properties
@@ -403,7 +398,7 @@ func (client *RoutesClient) BeginUpdate(ctx context.Context, resourceGroupName s
 // and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *RoutesClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutesClient.BeginUpdate"
@@ -426,7 +421,7 @@ func (client *RoutesClient) update(ctx context.Context, resourceGroupName string
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RoutesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *RoutesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, _ *RoutesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -453,7 +448,7 @@ func (client *RoutesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routeUpdateProperties); err != nil {

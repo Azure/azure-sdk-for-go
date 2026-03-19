@@ -25,9 +25,9 @@ type ManagementClient struct {
 }
 
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,8 +44,8 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // unique, such as a afdx endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - checkEndpointNameAvailabilityInput - Input to check.
 //   - options - ManagementClientCheckEndpointNameAvailabilityOptions contains the optional parameters for the ManagementClient.CheckEndpointNameAvailability
 //     method.
@@ -72,7 +72,7 @@ func (client *ManagementClient) CheckEndpointNameAvailability(ctx context.Contex
 }
 
 // checkEndpointNameAvailabilityCreateRequest creates the CheckEndpointNameAvailability request.
-func (client *ManagementClient) checkEndpointNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, options *ManagementClientCheckEndpointNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ManagementClient) checkEndpointNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, _ *ManagementClientCheckEndpointNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/checkEndpointNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -87,7 +87,7 @@ func (client *ManagementClient) checkEndpointNameAvailabilityCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkEndpointNameAvailabilityInput); err != nil {
@@ -109,7 +109,7 @@ func (client *ManagementClient) checkEndpointNameAvailabilityHandleResponse(resp
 // unique, such as a CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 //   - checkNameAvailabilityInput - Input to check.
 //   - options - ManagementClientCheckNameAvailabilityOptions contains the optional parameters for the ManagementClient.CheckNameAvailability
 //     method.
@@ -136,14 +136,14 @@ func (client *ManagementClient) CheckNameAvailability(ctx context.Context, check
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ManagementClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *ManagementClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ManagementClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, _ *ManagementClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Cdn/checkNameAvailability"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityInput); err != nil {
@@ -165,7 +165,7 @@ func (client *ManagementClient) checkNameAvailabilityHandleResponse(resp *http.R
 // is globally unique, such as a CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 //   - checkNameAvailabilityInput - Input to check.
 //   - options - ManagementClientCheckNameAvailabilityWithSubscriptionOptions contains the optional parameters for the ManagementClient.CheckNameAvailabilityWithSubscription
 //     method.
@@ -192,7 +192,7 @@ func (client *ManagementClient) CheckNameAvailabilityWithSubscription(ctx contex
 }
 
 // checkNameAvailabilityWithSubscriptionCreateRequest creates the CheckNameAvailabilityWithSubscription request.
-func (client *ManagementClient) checkNameAvailabilityWithSubscriptionCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *ManagementClientCheckNameAvailabilityWithSubscriptionOptions) (*policy.Request, error) {
+func (client *ManagementClient) checkNameAvailabilityWithSubscriptionCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, _ *ManagementClientCheckNameAvailabilityWithSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -203,7 +203,7 @@ func (client *ManagementClient) checkNameAvailabilityWithSubscriptionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityInput); err != nil {
@@ -226,7 +226,7 @@ func (client *ManagementClient) checkNameAvailabilityWithSubscriptionHandleRespo
 // endpoint. This path is relative to the origin path specified in the endpoint configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 //   - validateProbeInput - Input to check.
 //   - options - ManagementClientValidateProbeOptions contains the optional parameters for the ManagementClient.ValidateProbe
 //     method.
@@ -253,7 +253,7 @@ func (client *ManagementClient) ValidateProbe(ctx context.Context, validateProbe
 }
 
 // validateProbeCreateRequest creates the ValidateProbe request.
-func (client *ManagementClient) validateProbeCreateRequest(ctx context.Context, validateProbeInput ValidateProbeInput, options *ManagementClientValidateProbeOptions) (*policy.Request, error) {
+func (client *ManagementClient) validateProbeCreateRequest(ctx context.Context, validateProbeInput ValidateProbeInput, _ *ManagementClientValidateProbeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -264,7 +264,7 @@ func (client *ManagementClient) validateProbeCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, validateProbeInput); err != nil {

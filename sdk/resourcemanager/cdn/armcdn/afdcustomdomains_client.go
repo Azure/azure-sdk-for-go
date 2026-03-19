@@ -25,9 +25,9 @@ type AFDCustomDomainsClient struct {
 }
 
 // NewAFDCustomDomainsClient creates a new instance of AFDCustomDomainsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAFDCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDCustomDomainsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,10 +43,9 @@ func NewAFDCustomDomainsClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreate - Creates a new domain within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - customDomainName - Name of the domain under the profile which is unique globally
 //   - customDomain - Domain properties
 //   - options - AFDCustomDomainsClientBeginCreateOptions contains the optional parameters for the AFDCustomDomainsClient.BeginCreate
@@ -72,7 +71,7 @@ func (client *AFDCustomDomainsClient) BeginCreate(ctx context.Context, resourceG
 // Create - Creates a new domain within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *AFDCustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginCreate"
@@ -95,7 +94,7 @@ func (client *AFDCustomDomainsClient) create(ctx context.Context, resourceGroupN
 }
 
 // createCreateRequest creates the Create request.
-func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, _ *AFDCustomDomainsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,7 +117,7 @@ func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomain); err != nil {
@@ -131,10 +130,9 @@ func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, r
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - customDomainName - Name of the domain under the profile which is unique globally.
 //   - options - AFDCustomDomainsClientBeginDeleteOptions contains the optional parameters for the AFDCustomDomainsClient.BeginDelete
 //     method.
@@ -160,7 +158,7 @@ func (client *AFDCustomDomainsClient) BeginDelete(ctx context.Context, resourceG
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *AFDCustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginDelete"
@@ -183,7 +181,7 @@ func (client *AFDCustomDomainsClient) deleteOperation(ctx context.Context, resou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, _ *AFDCustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -206,7 +204,7 @@ func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -216,10 +214,9 @@ func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, r
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - customDomainName - Name of the domain under the profile which is unique globally.
 //   - options - AFDCustomDomainsClientGetOptions contains the optional parameters for the AFDCustomDomainsClient.Get method.
 func (client *AFDCustomDomainsClient) Get(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientGetOptions) (AFDCustomDomainsClientGetResponse, error) {
@@ -245,7 +242,7 @@ func (client *AFDCustomDomainsClient) Get(ctx context.Context, resourceGroupName
 }
 
 // getCreateRequest creates the Get request.
-func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientGetOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, _ *AFDCustomDomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -268,7 +265,7 @@ func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,10 +282,9 @@ func (client *AFDCustomDomainsClient) getHandleResponse(resp *http.Response) (AF
 
 // NewListByProfilePager - Lists existing AzureFrontDoor domains.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - options - AFDCustomDomainsClientListByProfileOptions contains the optional parameters for the AFDCustomDomainsClient.NewListByProfilePager
 //     method.
 func (client *AFDCustomDomainsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *AFDCustomDomainsClientListByProfileOptions) *runtime.Pager[AFDCustomDomainsClientListByProfileResponse] {
@@ -315,7 +311,7 @@ func (client *AFDCustomDomainsClient) NewListByProfilePager(resourceGroupName st
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDCustomDomainsClientListByProfileOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *AFDCustomDomainsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -334,7 +330,7 @@ func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -352,10 +348,9 @@ func (client *AFDCustomDomainsClient) listByProfileHandleResponse(resp *http.Res
 // BeginRefreshValidationToken - Updates the domain validation token.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - customDomainName - Name of the domain under the profile which is unique globally.
 //   - options - AFDCustomDomainsClientBeginRefreshValidationTokenOptions contains the optional parameters for the AFDCustomDomainsClient.BeginRefreshValidationToken
 //     method.
@@ -380,7 +375,7 @@ func (client *AFDCustomDomainsClient) BeginRefreshValidationToken(ctx context.Co
 // RefreshValidationToken - Updates the domain validation token.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *AFDCustomDomainsClient) refreshValidationToken(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginRefreshValidationToken"
@@ -403,7 +398,7 @@ func (client *AFDCustomDomainsClient) refreshValidationToken(ctx context.Context
 }
 
 // refreshValidationTokenCreateRequest creates the RefreshValidationToken request.
-func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, _ *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}/refreshValidationToken"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -426,7 +421,7 @@ func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -435,10 +430,9 @@ func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx co
 // BeginUpdate - Updates an existing domain within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - customDomainName - Name of the domain under the profile which is unique globally
 //   - customDomainUpdateProperties - Domain properties
 //   - options - AFDCustomDomainsClientBeginUpdateOptions contains the optional parameters for the AFDCustomDomainsClient.BeginUpdate
@@ -464,7 +458,7 @@ func (client *AFDCustomDomainsClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates an existing domain within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *AFDCustomDomainsClient) update(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginUpdate"
@@ -487,7 +481,7 @@ func (client *AFDCustomDomainsClient) update(ctx context.Context, resourceGroupN
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AFDCustomDomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, _ *AFDCustomDomainsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -510,7 +504,7 @@ func (client *AFDCustomDomainsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomainUpdateProperties); err != nil {

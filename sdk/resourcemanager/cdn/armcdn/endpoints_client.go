@@ -25,9 +25,9 @@ type EndpointsClient struct {
 }
 
 // NewEndpointsClient creates a new instance of EndpointsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,8 +44,8 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 // and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - endpoint - Endpoint properties
@@ -71,7 +71,7 @@ func (client *EndpointsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *EndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginCreate"
@@ -94,7 +94,7 @@ func (client *EndpointsClient) create(ctx context.Context, resourceGroupName str
 }
 
 // createCreateRequest creates the Create request.
-func (client *EndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *EndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, _ *EndpointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -117,7 +117,7 @@ func (client *EndpointsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpoint); err != nil {
@@ -130,8 +130,8 @@ func (client *EndpointsClient) createCreateRequest(ctx context.Context, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - EndpointsClientBeginDeleteOptions contains the optional parameters for the EndpointsClient.BeginDelete method.
@@ -156,7 +156,7 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginDelete"
@@ -179,7 +179,7 @@ func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGrou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -202,7 +202,7 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,8 +212,8 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 // profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
@@ -240,7 +240,7 @@ func (client *EndpointsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientGetOptions) (*policy.Request, error) {
+func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -263,7 +263,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,8 +280,8 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 
 // NewListByProfilePager - Lists existing CDN endpoints.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - options - EndpointsClientListByProfileOptions contains the optional parameters for the EndpointsClient.NewListByProfilePager
 //     method.
@@ -309,7 +309,7 @@ func (client *EndpointsClient) NewListByProfilePager(resourceGroupName string, p
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *EndpointsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *EndpointsClientListByProfileOptions) (*policy.Request, error) {
+func (client *EndpointsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *EndpointsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -328,7 +328,7 @@ func (client *EndpointsClient) listByProfileCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,8 +345,8 @@ func (client *EndpointsClient) listByProfileHandleResponse(resp *http.Response) 
 
 // NewListResourceUsagePager - Checks the quota and usage of geo filters and custom domains under the given endpoint.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - EndpointsClientListResourceUsageOptions contains the optional parameters for the EndpointsClient.NewListResourceUsagePager
@@ -375,7 +375,7 @@ func (client *EndpointsClient) NewListResourceUsagePager(resourceGroupName strin
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *EndpointsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientListResourceUsageOptions) (*policy.Request, error) {
+func (client *EndpointsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientListResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/checkResourceUsage"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -398,7 +398,7 @@ func (client *EndpointsClient) listResourceUsageCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -416,8 +416,8 @@ func (client *EndpointsClient) listResourceUsageHandleResponse(resp *http.Respon
 // BeginLoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - contentFilePaths - The path to the content to be loaded. Path should be a full URL, e.g. ‘/pictures/city.png' which loads
@@ -444,7 +444,7 @@ func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGro
 // LoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *EndpointsClient) loadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginLoadContent"
@@ -467,7 +467,7 @@ func (client *EndpointsClient) loadContent(ctx context.Context, resourceGroupNam
 }
 
 // loadContentCreateRequest creates the LoadContent request.
-func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*policy.Request, error) {
+func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, _ *EndpointsClientBeginLoadContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -490,7 +490,7 @@ func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
@@ -502,8 +502,8 @@ func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, res
 // BeginPurgeContent - Removes a content from CDN.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - contentFilePaths - The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png' which removes
@@ -531,7 +531,7 @@ func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGr
 // PurgeContent - Removes a content from CDN.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginPurgeContent"
@@ -554,7 +554,7 @@ func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupNa
 }
 
 // purgeContentCreateRequest creates the PurgeContent request.
-func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
+func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, _ *EndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -577,7 +577,7 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
@@ -589,8 +589,8 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 // BeginStart - Starts an existing CDN endpoint that is on a stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - EndpointsClientBeginStartOptions contains the optional parameters for the EndpointsClient.BeginStart method.
@@ -614,7 +614,7 @@ func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName
 // Start - Starts an existing CDN endpoint that is on a stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *EndpointsClient) start(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginStart"
@@ -637,7 +637,7 @@ func (client *EndpointsClient) start(ctx context.Context, resourceGroupName stri
 }
 
 // startCreateRequest creates the Start request.
-func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*policy.Request, error) {
+func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -660,7 +660,7 @@ func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -669,8 +669,8 @@ func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceG
 // BeginStop - Stops an existing running CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - EndpointsClientBeginStopOptions contains the optional parameters for the EndpointsClient.BeginStop method.
@@ -694,7 +694,7 @@ func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName 
 // Stop - Stops an existing running CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *EndpointsClient) stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginStop"
@@ -717,7 +717,7 @@ func (client *EndpointsClient) stop(ctx context.Context, resourceGroupName strin
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*policy.Request, error) {
+func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *EndpointsClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -740,7 +740,7 @@ func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -752,8 +752,8 @@ func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGr
 // use the Update Custom Domain operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - endpointUpdateProperties - Endpoint update properties
@@ -781,7 +781,7 @@ func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // use the Update Custom Domain operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginUpdate"
@@ -804,7 +804,7 @@ func (client *EndpointsClient) update(ctx context.Context, resourceGroupName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, _ *EndpointsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -827,7 +827,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpointUpdateProperties); err != nil {
@@ -839,8 +839,8 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - customDomainProperties - Custom domain to be validated.
@@ -869,7 +869,7 @@ func (client *EndpointsClient) ValidateCustomDomain(ctx context.Context, resourc
 }
 
 // validateCustomDomainCreateRequest creates the ValidateCustomDomain request.
-func (client *EndpointsClient) validateCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput, options *EndpointsClientValidateCustomDomainOptions) (*policy.Request, error) {
+func (client *EndpointsClient) validateCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput, _ *EndpointsClientValidateCustomDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/validateCustomDomain"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -892,7 +892,7 @@ func (client *EndpointsClient) validateCustomDomainCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomainProperties); err != nil {

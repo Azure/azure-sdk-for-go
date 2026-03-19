@@ -25,9 +25,9 @@ type CustomDomainsClient struct {
 }
 
 // NewCustomDomainsClient creates a new instance of CustomDomainsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomDomainsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,8 +43,8 @@ func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreate - Creates a new custom domain within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - customDomainName - Name of the custom domain within an endpoint.
@@ -71,7 +71,7 @@ func (client *CustomDomainsClient) BeginCreate(ctx context.Context, resourceGrou
 // Create - Creates a new custom domain within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomDomainsClient.BeginCreate"
@@ -94,7 +94,7 @@ func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName
 }
 
 // createCreateRequest creates the Create request.
-func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, _ *CustomDomainsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -121,7 +121,7 @@ func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomainProperties); err != nil {
@@ -133,8 +133,8 @@ func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, reso
 // BeginDelete - Deletes an existing custom domain within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - customDomainName - Name of the custom domain within an endpoint.
@@ -160,7 +160,7 @@ func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes an existing custom domain within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomDomainsClient.BeginDelete"
@@ -183,7 +183,7 @@ func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, _ *CustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -210,7 +210,7 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,8 +219,8 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 // BeginDisableCustomHTTPS - Disable https delivery of the custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - customDomainName - Name of the custom domain within an endpoint.
@@ -246,7 +246,7 @@ func (client *CustomDomainsClient) BeginDisableCustomHTTPS(ctx context.Context, 
 // DisableCustomHTTPS - Disable https delivery of the custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *CustomDomainsClient) disableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDisableCustomHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomDomainsClient.BeginDisableCustomHTTPS"
@@ -269,7 +269,7 @@ func (client *CustomDomainsClient) disableCustomHTTPS(ctx context.Context, resou
 }
 
 // disableCustomHTTPSCreateRequest creates the DisableCustomHTTPS request.
-func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDisableCustomHTTPSOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, _ *CustomDomainsClientBeginDisableCustomHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -296,7 +296,7 @@ func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,8 +305,8 @@ func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.C
 // BeginEnableCustomHTTPS - Enable https delivery of the custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - customDomainName - Name of the custom domain within an endpoint.
@@ -332,7 +332,7 @@ func (client *CustomDomainsClient) BeginEnableCustomHTTPS(ctx context.Context, r
 // EnableCustomHTTPS - Enable https delivery of the custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *CustomDomainsClient) enableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginEnableCustomHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomDomainsClient.BeginEnableCustomHTTPS"
@@ -382,7 +382,7 @@ func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CustomDomainHTTPSParameters != nil {
@@ -397,8 +397,8 @@ func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Co
 // Get - Gets an existing custom domain within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - customDomainName - Name of the custom domain within an endpoint.
@@ -426,7 +426,7 @@ func (client *CustomDomainsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientGetOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, _ *CustomDomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -453,7 +453,7 @@ func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -470,8 +470,8 @@ func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (Custo
 
 // NewListByEndpointPager - Lists all of the existing custom domains within an endpoint.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - CustomDomainsClientListByEndpointOptions contains the optional parameters for the CustomDomainsClient.NewListByEndpointPager
@@ -500,7 +500,7 @@ func (client *CustomDomainsClient) NewListByEndpointPager(resourceGroupName stri
 }
 
 // listByEndpointCreateRequest creates the ListByEndpoint request.
-func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *CustomDomainsClientListByEndpointOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *CustomDomainsClientListByEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -523,7 +523,7 @@ func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

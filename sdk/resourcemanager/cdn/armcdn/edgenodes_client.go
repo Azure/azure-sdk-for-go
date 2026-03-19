@@ -22,7 +22,7 @@ type EdgeNodesClient struct {
 
 // NewEdgeNodesClient creates a new instance of EdgeNodesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeNodesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -36,7 +36,7 @@ func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // NewListPager - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 //   - options - EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.NewListPager method.
 func (client *EdgeNodesClient) NewListPager(options *EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EdgeNodesClientListResponse]{
@@ -62,14 +62,14 @@ func (client *EdgeNodesClient) NewListPager(options *EdgeNodesClientListOptions)
 }
 
 // listCreateRequest creates the List request.
-func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, options *EdgeNodesClientListOptions) (*policy.Request, error) {
+func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, _ *EdgeNodesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Cdn/edgenodes"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -25,9 +25,9 @@ type OriginGroupsClient struct {
 }
 
 // NewOriginGroupsClient creates a new instance of OriginGroupsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OriginGroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,8 +43,8 @@ func NewOriginGroupsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Creates a new origin group within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - originGroupName - Name of the origin group which is unique within the endpoint.
@@ -71,7 +71,7 @@ func (client *OriginGroupsClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Creates a new origin group within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *OriginGroupsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroup OriginGroup, options *OriginGroupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginGroupsClient.BeginCreate"
@@ -94,7 +94,7 @@ func (client *OriginGroupsClient) create(ctx context.Context, resourceGroupName 
 }
 
 // createCreateRequest creates the Create request.
-func (client *OriginGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroup OriginGroup, options *OriginGroupsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *OriginGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroup OriginGroup, _ *OriginGroupsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -121,7 +121,7 @@ func (client *OriginGroupsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originGroup); err != nil {
@@ -133,8 +133,8 @@ func (client *OriginGroupsClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Deletes an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - originGroupName - Name of the origin group which is unique within the endpoint.
@@ -160,7 +160,7 @@ func (client *OriginGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *OriginGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *OriginGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginGroupsClient.BeginDelete"
@@ -183,7 +183,7 @@ func (client *OriginGroupsClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OriginGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *OriginGroupsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *OriginGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, _ *OriginGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -210,7 +210,7 @@ func (client *OriginGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,8 +219,8 @@ func (client *OriginGroupsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - originGroupName - Name of the origin group which is unique within the endpoint.
@@ -248,7 +248,7 @@ func (client *OriginGroupsClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // getCreateRequest creates the Get request.
-func (client *OriginGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *OriginGroupsClientGetOptions) (*policy.Request, error) {
+func (client *OriginGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, _ *OriginGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -275,7 +275,7 @@ func (client *OriginGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,8 +292,8 @@ func (client *OriginGroupsClient) getHandleResponse(resp *http.Response) (Origin
 
 // NewListByEndpointPager - Lists all of the existing origin groups within an endpoint.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - options - OriginGroupsClientListByEndpointOptions contains the optional parameters for the OriginGroupsClient.NewListByEndpointPager
@@ -322,7 +322,7 @@ func (client *OriginGroupsClient) NewListByEndpointPager(resourceGroupName strin
 }
 
 // listByEndpointCreateRequest creates the ListByEndpoint request.
-func (client *OriginGroupsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *OriginGroupsClientListByEndpointOptions) (*policy.Request, error) {
+func (client *OriginGroupsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, _ *OriginGroupsClientListByEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -345,7 +345,7 @@ func (client *OriginGroupsClient) listByEndpointCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -363,8 +363,8 @@ func (client *OriginGroupsClient) listByEndpointHandleResponse(resp *http.Respon
 // BeginUpdate - Updates an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the CDN profile which is unique within the resource group.
 //   - endpointName - Name of the endpoint under the profile which is unique globally.
 //   - originGroupName - Name of the origin group which is unique within the endpoint.
@@ -391,7 +391,7 @@ func (client *OriginGroupsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Updates an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *OriginGroupsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties OriginGroupUpdateParameters, options *OriginGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginGroupsClient.BeginUpdate"
@@ -414,7 +414,7 @@ func (client *OriginGroupsClient) update(ctx context.Context, resourceGroupName 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *OriginGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties OriginGroupUpdateParameters, options *OriginGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *OriginGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties OriginGroupUpdateParameters, _ *OriginGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -441,7 +441,7 @@ func (client *OriginGroupsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originGroupUpdateProperties); err != nil {

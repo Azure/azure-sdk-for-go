@@ -25,9 +25,9 @@ type SecretsClient struct {
 }
 
 // NewSecretsClient creates a new instance of SecretsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecretsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,10 +43,9 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreate - Creates a new Secret within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - secretName - Name of the Secret under the profile.
 //   - secret - The Secret properties.
 //   - options - SecretsClientBeginCreateOptions contains the optional parameters for the SecretsClient.BeginCreate method.
@@ -71,7 +70,7 @@ func (client *SecretsClient) BeginCreate(ctx context.Context, resourceGroupName 
 // Create - Creates a new Secret within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *SecretsClient) create(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecretsClient.BeginCreate"
@@ -94,7 +93,7 @@ func (client *SecretsClient) create(ctx context.Context, resourceGroupName strin
 }
 
 // createCreateRequest creates the Create request.
-func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, options *SecretsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, secret Secret, _ *SecretsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -117,7 +116,7 @@ func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, secret); err != nil {
@@ -129,10 +128,9 @@ func (client *SecretsClient) createCreateRequest(ctx context.Context, resourceGr
 // BeginDelete - Deletes an existing Secret within profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - secretName - Name of the Secret under the profile.
 //   - options - SecretsClientBeginDeleteOptions contains the optional parameters for the SecretsClient.BeginDelete method.
 func (client *SecretsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientBeginDeleteOptions) (*runtime.Poller[SecretsClientDeleteResponse], error) {
@@ -156,7 +154,7 @@ func (client *SecretsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Deletes an existing Secret within profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *SecretsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecretsClient.BeginDelete"
@@ -179,7 +177,7 @@ func (client *SecretsClient) deleteOperation(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, _ *SecretsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -202,7 +200,7 @@ func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,10 +209,9 @@ func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Gets an existing Secret within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - secretName - Name of the Secret under the profile.
 //   - options - SecretsClientGetOptions contains the optional parameters for the SecretsClient.Get method.
 func (client *SecretsClient) Get(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientGetOptions) (SecretsClientGetResponse, error) {
@@ -240,7 +237,7 @@ func (client *SecretsClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, options *SecretsClientGetOptions) (*policy.Request, error) {
+func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, secretName string, _ *SecretsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -263,7 +260,7 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,10 +277,9 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 
 // NewListByProfilePager - Lists existing AzureFrontDoor secrets.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - options - SecretsClientListByProfileOptions contains the optional parameters for the SecretsClient.NewListByProfilePager
 //     method.
 func (client *SecretsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *SecretsClientListByProfileOptions) *runtime.Pager[SecretsClientListByProfileResponse] {
@@ -310,7 +306,7 @@ func (client *SecretsClient) NewListByProfilePager(resourceGroupName string, pro
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *SecretsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *SecretsClientListByProfileOptions) (*policy.Request, error) {
+func (client *SecretsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *SecretsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -329,7 +325,7 @@ func (client *SecretsClient) listByProfileCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

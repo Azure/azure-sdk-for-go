@@ -25,9 +25,9 @@ type RuleSetsClient struct {
 }
 
 // NewRuleSetsClient creates a new instance of RuleSetsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RuleSetsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,10 +43,9 @@ func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential,
 // Create - Creates a new rule set within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - ruleSetName - Name of the rule set under the profile which is unique globally
 //   - options - RuleSetsClientCreateOptions contains the optional parameters for the RuleSetsClient.Create method.
 func (client *RuleSetsClient) Create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientCreateOptions) (RuleSetsClientCreateResponse, error) {
@@ -72,7 +71,7 @@ func (client *RuleSetsClient) Create(ctx context.Context, resourceGroupName stri
 }
 
 // createCreateRequest creates the Create request.
-func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientCreateOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, _ *RuleSetsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -95,7 +94,7 @@ func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,10 +113,9 @@ func (client *RuleSetsClient) createHandleResponse(resp *http.Response) (RuleSet
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - ruleSetName - Name of the rule set under the profile which is unique globally.
 //   - options - RuleSetsClientBeginDeleteOptions contains the optional parameters for the RuleSetsClient.BeginDelete method.
 func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*runtime.Poller[RuleSetsClientDeleteResponse], error) {
@@ -142,7 +140,7 @@ func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RuleSetsClient.BeginDelete"
@@ -165,7 +163,7 @@ func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, _ *RuleSetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -188,7 +186,7 @@ func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,10 +196,9 @@ func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - ruleSetName - Name of the rule set under the profile which is unique globally.
 //   - options - RuleSetsClientGetOptions contains the optional parameters for the RuleSetsClient.Get method.
 func (client *RuleSetsClient) Get(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientGetOptions) (RuleSetsClientGetResponse, error) {
@@ -227,7 +224,7 @@ func (client *RuleSetsClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientGetOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, _ *RuleSetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -250,7 +247,7 @@ func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,10 +264,9 @@ func (client *RuleSetsClient) getHandleResponse(resp *http.Response) (RuleSetsCl
 
 // NewListByProfilePager - Lists existing AzureFrontDoor rule sets within a profile.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - options - RuleSetsClientListByProfileOptions contains the optional parameters for the RuleSetsClient.NewListByProfilePager
 //     method.
 func (client *RuleSetsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *RuleSetsClientListByProfileOptions) *runtime.Pager[RuleSetsClientListByProfileResponse] {
@@ -297,7 +293,7 @@ func (client *RuleSetsClient) NewListByProfilePager(resourceGroupName string, pr
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *RuleSetsClientListByProfileOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *RuleSetsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -316,7 +312,7 @@ func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -333,10 +329,9 @@ func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (
 
 // NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
-//     group.
+// Generated from API version 2025-04-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - ruleSetName - Name of the rule set under the profile which is unique globally.
 //   - options - RuleSetsClientListResourceUsageOptions contains the optional parameters for the RuleSetsClient.NewListResourceUsagePager
 //     method.
@@ -364,7 +359,7 @@ func (client *RuleSetsClient) NewListResourceUsagePager(resourceGroupName string
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientListResourceUsageOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, _ *RuleSetsClientListResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -387,7 +382,7 @@ func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

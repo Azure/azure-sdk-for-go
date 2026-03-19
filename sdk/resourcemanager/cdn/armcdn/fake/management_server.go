@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -58,27 +58,46 @@ func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return m.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ManagementClient.CheckEndpointNameAvailability":
-		resp, err = m.dispatchCheckEndpointNameAvailability(req)
-	case "ManagementClient.CheckNameAvailability":
-		resp, err = m.dispatchCheckNameAvailability(req)
-	case "ManagementClient.CheckNameAvailabilityWithSubscription":
-		resp, err = m.dispatchCheckNameAvailabilityWithSubscription(req)
-	case "ManagementClient.ValidateProbe":
-		resp, err = m.dispatchValidateProbe(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if managementServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = managementServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ManagementClient.CheckEndpointNameAvailability":
+				res.resp, res.err = m.dispatchCheckEndpointNameAvailability(req)
+			case "ManagementClient.CheckNameAvailability":
+				res.resp, res.err = m.dispatchCheckNameAvailability(req)
+			case "ManagementClient.CheckNameAvailabilityWithSubscription":
+				res.resp, res.err = m.dispatchCheckNameAvailabilityWithSubscription(req)
+			case "ManagementClient.ValidateProbe":
+				res.resp, res.err = m.dispatchValidateProbe(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (m *ManagementServerTransport) dispatchCheckEndpointNameAvailability(req *http.Request) (*http.Response, error) {
@@ -88,7 +107,7 @@ func (m *ManagementServerTransport) dispatchCheckEndpointNameAvailability(req *h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/checkEndpointNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armcdn.CheckEndpointNameAvailabilityInput](req)
@@ -144,7 +163,7 @@ func (m *ManagementServerTransport) dispatchCheckNameAvailabilityWithSubscriptio
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armcdn.CheckNameAvailabilityInput](req)
@@ -173,7 +192,7 @@ func (m *ManagementServerTransport) dispatchValidateProbe(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/validateProbe`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armcdn.ValidateProbeInput](req)
@@ -193,4 +212,10 @@ func (m *ManagementServerTransport) dispatchValidateProbe(req *http.Request) (*h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ManagementServerTransport
+var managementServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

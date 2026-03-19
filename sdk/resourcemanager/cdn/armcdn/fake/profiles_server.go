@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,6 +24,14 @@ type ProfilesServer struct {
 	// BeginCanMigrate is the fake for method ProfilesClient.BeginCanMigrate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCanMigrate func(ctx context.Context, resourceGroupName string, canMigrateParameters armcdn.CanMigrateParameters, options *armcdn.ProfilesClientBeginCanMigrateOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientCanMigrateResponse], errResp azfake.ErrorResponder)
+
+	// BeginCdnCanMigrateToAfd is the fake for method ProfilesClient.BeginCdnCanMigrateToAfd
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCdnCanMigrateToAfd func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientBeginCdnCanMigrateToAfdOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientCdnCanMigrateToAfdResponse], errResp azfake.ErrorResponder)
+
+	// BeginCdnMigrateToAfd is the fake for method ProfilesClient.BeginCdnMigrateToAfd
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCdnMigrateToAfd func(ctx context.Context, resourceGroupName string, profileName string, migrationParameters armcdn.MigrationToAfdParameters, options *armcdn.ProfilesClientBeginCdnMigrateToAfdOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientCdnMigrateToAfdResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreate is the fake for method ProfilesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
@@ -61,8 +69,12 @@ type ProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginMigrate func(ctx context.Context, resourceGroupName string, migrationParameters armcdn.MigrationParameters, options *armcdn.ProfilesClientBeginMigrateOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientMigrateResponse], errResp azfake.ErrorResponder)
 
+	// BeginMigrationAbort is the fake for method ProfilesClient.BeginMigrationAbort
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginMigrationAbort func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientBeginMigrationAbortOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientMigrationAbortResponse], errResp azfake.ErrorResponder)
+
 	// BeginMigrationCommit is the fake for method ProfilesClient.BeginMigrationCommit
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginMigrationCommit func(ctx context.Context, resourceGroupName string, profileName string, options *armcdn.ProfilesClientBeginMigrationCommitOptions) (resp azfake.PollerResponder[armcdn.ProfilesClientMigrationCommitResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method ProfilesClient.BeginUpdate
@@ -77,12 +89,15 @@ func NewProfilesServerTransport(srv *ProfilesServer) *ProfilesServerTransport {
 	return &ProfilesServerTransport{
 		srv:                         srv,
 		beginCanMigrate:             newTracker[azfake.PollerResponder[armcdn.ProfilesClientCanMigrateResponse]](),
+		beginCdnCanMigrateToAfd:     newTracker[azfake.PollerResponder[armcdn.ProfilesClientCdnCanMigrateToAfdResponse]](),
+		beginCdnMigrateToAfd:        newTracker[azfake.PollerResponder[armcdn.ProfilesClientCdnMigrateToAfdResponse]](),
 		beginCreate:                 newTracker[azfake.PollerResponder[armcdn.ProfilesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcdn.ProfilesClientDeleteResponse]](),
 		newListPager:                newTracker[azfake.PagerResponder[armcdn.ProfilesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse]](),
 		newListResourceUsagePager:   newTracker[azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse]](),
 		beginMigrate:                newTracker[azfake.PollerResponder[armcdn.ProfilesClientMigrateResponse]](),
+		beginMigrationAbort:         newTracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationAbortResponse]](),
 		beginMigrationCommit:        newTracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationCommitResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armcdn.ProfilesClientUpdateResponse]](),
 	}
@@ -93,12 +108,15 @@ func NewProfilesServerTransport(srv *ProfilesServer) *ProfilesServerTransport {
 type ProfilesServerTransport struct {
 	srv                         *ProfilesServer
 	beginCanMigrate             *tracker[azfake.PollerResponder[armcdn.ProfilesClientCanMigrateResponse]]
+	beginCdnCanMigrateToAfd     *tracker[azfake.PollerResponder[armcdn.ProfilesClientCdnCanMigrateToAfdResponse]]
+	beginCdnMigrateToAfd        *tracker[azfake.PollerResponder[armcdn.ProfilesClientCdnMigrateToAfdResponse]]
 	beginCreate                 *tracker[azfake.PollerResponder[armcdn.ProfilesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcdn.ProfilesClientDeleteResponse]]
 	newListPager                *tracker[azfake.PagerResponder[armcdn.ProfilesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcdn.ProfilesClientListByResourceGroupResponse]]
 	newListResourceUsagePager   *tracker[azfake.PagerResponder[armcdn.ProfilesClientListResourceUsageResponse]]
 	beginMigrate                *tracker[azfake.PollerResponder[armcdn.ProfilesClientMigrateResponse]]
+	beginMigrationAbort         *tracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationAbortResponse]]
 	beginMigrationCommit        *tracker[azfake.PollerResponder[armcdn.ProfilesClientMigrationCommitResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armcdn.ProfilesClientUpdateResponse]]
 }
@@ -111,43 +129,68 @@ func (p *ProfilesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ProfilesClient.BeginCanMigrate":
-		resp, err = p.dispatchBeginCanMigrate(req)
-	case "ProfilesClient.BeginCreate":
-		resp, err = p.dispatchBeginCreate(req)
-	case "ProfilesClient.BeginDelete":
-		resp, err = p.dispatchBeginDelete(req)
-	case "ProfilesClient.GenerateSsoURI":
-		resp, err = p.dispatchGenerateSsoURI(req)
-	case "ProfilesClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "ProfilesClient.NewListPager":
-		resp, err = p.dispatchNewListPager(req)
-	case "ProfilesClient.NewListByResourceGroupPager":
-		resp, err = p.dispatchNewListByResourceGroupPager(req)
-	case "ProfilesClient.NewListResourceUsagePager":
-		resp, err = p.dispatchNewListResourceUsagePager(req)
-	case "ProfilesClient.ListSupportedOptimizationTypes":
-		resp, err = p.dispatchListSupportedOptimizationTypes(req)
-	case "ProfilesClient.BeginMigrate":
-		resp, err = p.dispatchBeginMigrate(req)
-	case "ProfilesClient.BeginMigrationCommit":
-		resp, err = p.dispatchBeginMigrationCommit(req)
-	case "ProfilesClient.BeginUpdate":
-		resp, err = p.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *ProfilesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if profilesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = profilesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ProfilesClient.BeginCanMigrate":
+				res.resp, res.err = p.dispatchBeginCanMigrate(req)
+			case "ProfilesClient.BeginCdnCanMigrateToAfd":
+				res.resp, res.err = p.dispatchBeginCdnCanMigrateToAfd(req)
+			case "ProfilesClient.BeginCdnMigrateToAfd":
+				res.resp, res.err = p.dispatchBeginCdnMigrateToAfd(req)
+			case "ProfilesClient.BeginCreate":
+				res.resp, res.err = p.dispatchBeginCreate(req)
+			case "ProfilesClient.BeginDelete":
+				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ProfilesClient.GenerateSsoURI":
+				res.resp, res.err = p.dispatchGenerateSsoURI(req)
+			case "ProfilesClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "ProfilesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			case "ProfilesClient.NewListByResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
+			case "ProfilesClient.NewListResourceUsagePager":
+				res.resp, res.err = p.dispatchNewListResourceUsagePager(req)
+			case "ProfilesClient.ListSupportedOptimizationTypes":
+				res.resp, res.err = p.dispatchListSupportedOptimizationTypes(req)
+			case "ProfilesClient.BeginMigrate":
+				res.resp, res.err = p.dispatchBeginMigrate(req)
+			case "ProfilesClient.BeginMigrationAbort":
+				res.resp, res.err = p.dispatchBeginMigrationAbort(req)
+			case "ProfilesClient.BeginMigrationCommit":
+				res.resp, res.err = p.dispatchBeginMigrationCommit(req)
+			case "ProfilesClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *ProfilesServerTransport) dispatchBeginCanMigrate(req *http.Request) (*http.Response, error) {
@@ -159,7 +202,7 @@ func (p *ProfilesServerTransport) dispatchBeginCanMigrate(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/canMigrate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcdn.CanMigrateParameters](req)
@@ -194,6 +237,98 @@ func (p *ProfilesServerTransport) dispatchBeginCanMigrate(req *http.Request) (*h
 	return resp, nil
 }
 
+func (p *ProfilesServerTransport) dispatchBeginCdnCanMigrateToAfd(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCdnCanMigrateToAfd == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCdnCanMigrateToAfd not implemented")}
+	}
+	beginCdnCanMigrateToAfd := p.beginCdnCanMigrateToAfd.get(req)
+	if beginCdnCanMigrateToAfd == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cdnCanMigrateToAfd`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCdnCanMigrateToAfd(req.Context(), resourceGroupNameParam, profileNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCdnCanMigrateToAfd = &respr
+		p.beginCdnCanMigrateToAfd.add(req, beginCdnCanMigrateToAfd)
+	}
+
+	resp, err := server.PollerResponderNext(beginCdnCanMigrateToAfd, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginCdnCanMigrateToAfd.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCdnCanMigrateToAfd) {
+		p.beginCdnCanMigrateToAfd.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *ProfilesServerTransport) dispatchBeginCdnMigrateToAfd(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCdnMigrateToAfd == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCdnMigrateToAfd not implemented")}
+	}
+	beginCdnMigrateToAfd := p.beginCdnMigrateToAfd.get(req)
+	if beginCdnMigrateToAfd == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cdnMigrateToAfd`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.MigrationToAfdParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCdnMigrateToAfd(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCdnMigrateToAfd = &respr
+		p.beginCdnMigrateToAfd.add(req, beginCdnMigrateToAfd)
+	}
+
+	resp, err := server.PollerResponderNext(beginCdnMigrateToAfd, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginCdnMigrateToAfd.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCdnMigrateToAfd) {
+		p.beginCdnMigrateToAfd.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (p *ProfilesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
@@ -203,7 +338,7 @@ func (p *ProfilesServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcdn.Profile](req)
@@ -251,7 +386,7 @@ func (p *ProfilesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -293,7 +428,7 @@ func (p *ProfilesServerTransport) dispatchGenerateSsoURI(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateSsoUri`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -326,7 +461,7 @@ func (p *ProfilesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -361,7 +496,7 @@ func (p *ProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListPager(nil)
@@ -394,7 +529,7 @@ func (p *ProfilesServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -431,7 +566,7 @@ func (p *ProfilesServerTransport) dispatchNewListResourceUsagePager(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkResourceUsage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -470,7 +605,7 @@ func (p *ProfilesServerTransport) dispatchListSupportedOptimizationTypes(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSupportedOptimizationTypes`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -505,7 +640,7 @@ func (p *ProfilesServerTransport) dispatchBeginMigrate(req *http.Request) (*http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/migrate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcdn.MigrationParameters](req)
@@ -540,6 +675,50 @@ func (p *ProfilesServerTransport) dispatchBeginMigrate(req *http.Request) (*http
 	return resp, nil
 }
 
+func (p *ProfilesServerTransport) dispatchBeginMigrationAbort(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginMigrationAbort == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrationAbort not implemented")}
+	}
+	beginMigrationAbort := p.beginMigrationAbort.get(req)
+	if beginMigrationAbort == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrationAbort`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginMigrationAbort(req.Context(), resourceGroupNameParam, profileNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrationAbort = &respr
+		p.beginMigrationAbort.add(req, beginMigrationAbort)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrationAbort, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginMigrationAbort.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrationAbort) {
+		p.beginMigrationAbort.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (p *ProfilesServerTransport) dispatchBeginMigrationCommit(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginMigrationCommit == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginMigrationCommit not implemented")}
@@ -549,7 +728,7 @@ func (p *ProfilesServerTransport) dispatchBeginMigrationCommit(req *http.Request
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrationCommit`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -573,9 +752,9 @@ func (p *ProfilesServerTransport) dispatchBeginMigrationCommit(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginMigrationCommit.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginMigrationCommit) {
 		p.beginMigrationCommit.remove(req)
@@ -593,7 +772,7 @@ func (p *ProfilesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcdn.ProfileUpdateParameters](req)
@@ -630,4 +809,10 @@ func (p *ProfilesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ProfilesServerTransport
+var profilesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

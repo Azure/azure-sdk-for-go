@@ -25,9 +25,9 @@ type ResourceUsageClient struct {
 }
 
 // NewResourceUsageClient creates a new instance of ResourceUsageClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceUsageClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListPager - Check the quota and actual usage of the CDN profiles under the given subscription.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-04-15
 //   - options - ResourceUsageClientListOptions contains the optional parameters for the ResourceUsageClient.NewListPager method.
 func (client *ResourceUsageClient) NewListPager(options *ResourceUsageClientListOptions) *runtime.Pager[ResourceUsageClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceUsageClientListResponse]{
@@ -68,7 +68,7 @@ func (client *ResourceUsageClient) NewListPager(options *ResourceUsageClientList
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, options *ResourceUsageClientListOptions) (*policy.Request, error) {
+func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, _ *ResourceUsageClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +79,7 @@ func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

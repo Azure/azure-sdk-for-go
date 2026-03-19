@@ -16,27 +16,70 @@ import (
 
 // ServerFactory is a fake server for instances of the armcdn.ClientFactory type.
 type ServerFactory struct {
+	// AFDCustomDomainsServer contains the fakes for client AFDCustomDomainsClient
 	AFDCustomDomainsServer AFDCustomDomainsServer
-	AFDEndpointsServer     AFDEndpointsServer
-	AFDOriginGroupsServer  AFDOriginGroupsServer
-	AFDOriginsServer       AFDOriginsServer
-	AFDProfilesServer      AFDProfilesServer
-	CustomDomainsServer    CustomDomainsServer
-	EdgeNodesServer        EdgeNodesServer
-	EndpointsServer        EndpointsServer
-	LogAnalyticsServer     LogAnalyticsServer
-	ManagedRuleSetsServer  ManagedRuleSetsServer
-	ManagementServer       ManagementServer
-	OperationsServer       OperationsServer
-	OriginGroupsServer     OriginGroupsServer
-	OriginsServer          OriginsServer
-	PoliciesServer         PoliciesServer
-	ProfilesServer         ProfilesServer
-	ResourceUsageServer    ResourceUsageServer
-	RoutesServer           RoutesServer
-	RuleSetsServer         RuleSetsServer
-	RulesServer            RulesServer
-	SecretsServer          SecretsServer
+
+	// AFDEndpointsServer contains the fakes for client AFDEndpointsClient
+	AFDEndpointsServer AFDEndpointsServer
+
+	// AFDOriginGroupsServer contains the fakes for client AFDOriginGroupsClient
+	AFDOriginGroupsServer AFDOriginGroupsServer
+
+	// AFDOriginsServer contains the fakes for client AFDOriginsClient
+	AFDOriginsServer AFDOriginsServer
+
+	// AFDProfilesServer contains the fakes for client AFDProfilesClient
+	AFDProfilesServer AFDProfilesServer
+
+	// CustomDomainsServer contains the fakes for client CustomDomainsClient
+	CustomDomainsServer CustomDomainsServer
+
+	// EdgeNodesServer contains the fakes for client EdgeNodesClient
+	EdgeNodesServer EdgeNodesServer
+
+	// EndpointsServer contains the fakes for client EndpointsClient
+	EndpointsServer EndpointsServer
+
+	// LogAnalyticsServer contains the fakes for client LogAnalyticsClient
+	LogAnalyticsServer LogAnalyticsServer
+
+	// ManagedRuleSetsServer contains the fakes for client ManagedRuleSetsClient
+	ManagedRuleSetsServer ManagedRuleSetsServer
+
+	// ManagementServer contains the fakes for client ManagementClient
+	ManagementServer ManagementServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// OriginGroupsServer contains the fakes for client OriginGroupsClient
+	OriginGroupsServer OriginGroupsServer
+
+	// OriginsServer contains the fakes for client OriginsClient
+	OriginsServer OriginsServer
+
+	// PoliciesServer contains the fakes for client PoliciesClient
+	PoliciesServer PoliciesServer
+
+	// ProfilesServer contains the fakes for client ProfilesClient
+	ProfilesServer ProfilesServer
+
+	// ResourceUsageServer contains the fakes for client ResourceUsageClient
+	ResourceUsageServer ResourceUsageServer
+
+	// RoutesServer contains the fakes for client RoutesClient
+	RoutesServer RoutesServer
+
+	// RuleSetsServer contains the fakes for client RuleSetsClient
+	RuleSetsServer RuleSetsServer
+
+	// RulesServer contains the fakes for client RulesClient
+	RulesServer RulesServer
+
+	// SecretsServer contains the fakes for client SecretsClient
+	SecretsServer SecretsServer
+
+	// SecurityPoliciesServer contains the fakes for client SecurityPoliciesClient
 	SecurityPoliciesServer SecurityPoliciesServer
 }
 

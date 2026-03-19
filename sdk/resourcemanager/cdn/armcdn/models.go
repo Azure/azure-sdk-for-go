@@ -13,17 +13,27 @@ type AFDDomain struct {
 	// The JSON object that contains the properties of the domain to create.
 	Properties *AFDDomainProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// AFDDomainHTTPSCustomizedCipherSuiteSet - Customized cipher suite set object that will be used for Https when cipherSuiteSetType
+// is Customized.
+type AFDDomainHTTPSCustomizedCipherSuiteSet struct {
+	// Cipher suites for TLS 1.2. Required at least one in minimumTlsVersion TLS 1.2.
+	CipherSuiteSetForTls12 []*AfdCustomizedCipherSuiteForTls12
+
+	// Cipher suites for TLS 1.3. Required at least one in minimumTlsVersion TLS 1.2, TLS 1.3.
+	CipherSuiteSetForTls13 []*AfdCustomizedCipherSuiteForTls13
 }
 
 // AFDDomainHTTPSParameters - The JSON object that contains the properties to secure a domain.
@@ -31,7 +41,13 @@ type AFDDomainHTTPSParameters struct {
 	// REQUIRED; Defines the source of the SSL certificate.
 	CertificateType *AfdCertificateType
 
-	// TLS protocol version that will be used for Https
+	// cipher suite set type that will be used for Https
+	CipherSuiteSetType *AfdCipherSuiteSetType
+
+	// Customized cipher suites object that will be used for Https when cipherSuiteSetType is Customized.
+	CustomizedCipherSuiteSet *AFDDomainHTTPSCustomizedCipherSuiteSet
+
+	// TLS protocol version that will be used for Https when cipherSuiteSetType is Customized.
 	MinimumTLSVersion *AfdMinimumTLSVersion
 
 	// Resource reference to the secret. ie. subs/rg/profile/secret
@@ -111,7 +127,7 @@ type AFDDomainUpdatePropertiesParameters struct {
 // such as origin, protocol, content caching and delivery behavior. The AzureFrontDoor
 // endpoint uses the URL format .azureedge.net.
 type AFDEndpoint struct {
-	// REQUIRED; Resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The JSON object that contains the properties required to create an endpoint.
@@ -120,16 +136,16 @@ type AFDEndpoint struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -189,16 +205,16 @@ type AFDOrigin struct {
 	// The JSON object that contains the properties of the origin.
 	Properties *AFDOriginProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -208,16 +224,16 @@ type AFDOriginGroup struct {
 	// The JSON object that contains the properties of the origin group.
 	Properties *AFDOriginGroupProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -485,10 +501,17 @@ type CacheExpirationActionParameters struct {
 	CacheType *CacheType
 
 	// REQUIRED
-	TypeName *CacheExpirationActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
 
 	// The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
 	CacheDuration *string
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type CacheExpirationActionParameters.
+func (c *CacheExpirationActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: c.TypeName,
+	}
 }
 
 // CacheKeyQueryStringActionParameters - Defines the parameters for the cache-key query string action.
@@ -497,10 +520,17 @@ type CacheKeyQueryStringActionParameters struct {
 	QueryStringBehavior *QueryStringBehavior
 
 	// REQUIRED
-	TypeName *CacheKeyQueryStringActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
 
 	// query parameters to include or exclude (comma separated).
 	QueryParameters *string
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type CacheKeyQueryStringActionParameters.
+func (c *CacheKeyQueryStringActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: c.TypeName,
+	}
 }
 
 // CanMigrateParameters - Request body for CanMigrate operation.
@@ -536,7 +566,25 @@ type CertificateSourceParameters struct {
 	CertificateType *CertificateType
 
 	// REQUIRED
-	TypeName *CdnCertificateSourceParametersTypeName
+	TypeName *CertificateSourceParametersType
+}
+
+// GetCertificateSourceParametersBase implements the CertificateSourceParametersBaseClassification interface for type CertificateSourceParameters.
+func (c *CertificateSourceParameters) GetCertificateSourceParametersBase() *CertificateSourceParametersBase {
+	return &CertificateSourceParametersBase{
+		TypeName: c.TypeName,
+	}
+}
+
+// CertificateSourceParametersBase - Defines the parameters for certificate source
+type CertificateSourceParametersBase struct {
+	// REQUIRED
+	TypeName *CertificateSourceParametersType
+}
+
+// GetCertificateSourceParametersBase implements the CertificateSourceParametersBaseClassification interface for type CertificateSourceParametersBase.
+func (c *CertificateSourceParametersBase) GetCertificateSourceParametersBase() *CertificateSourceParametersBase {
+	return c
 }
 
 // CheckEndpointNameAvailabilityInput - Input of CheckNameAvailability API.
@@ -609,7 +657,7 @@ type ClientPortMatchConditionParameters struct {
 	Operator *ClientPortOperator
 
 	// REQUIRED
-	TypeName *ClientPortMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -619,6 +667,13 @@ type ClientPortMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type ClientPortMatchConditionParameters.
+func (c *ClientPortMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: c.TypeName,
+	}
 }
 
 type Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems struct {
@@ -669,7 +724,7 @@ type CookiesMatchConditionParameters struct {
 	Operator *CookiesOperator
 
 	// REQUIRED
-	TypeName *CookiesMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -684,22 +739,29 @@ type CookiesMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type CookiesMatchConditionParameters.
+func (c *CookiesMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: c.TypeName,
+	}
+}
+
 // CustomDomain - Friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
 // e.g. www.contoso.com.
 type CustomDomain struct {
 	// The JSON object that contains the properties of the custom domain to create.
 	Properties *CustomDomainProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -930,7 +992,7 @@ type DeepCreatedOriginProperties struct {
 // DeliveryRule - A rule that specifies a set of actions and conditions
 type DeliveryRule struct {
 	// REQUIRED; A list of actions that are executed when all the conditions of a rule are satisfied.
-	Actions []DeliveryRuleActionAutoGeneratedClassification
+	Actions []DeliveryRuleActionClassification
 
 	// REQUIRED; The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser
 	// order will be applied before a rule with a greater order. Rule with order 0 is a special
@@ -944,29 +1006,38 @@ type DeliveryRule struct {
 	Name *string
 }
 
-// DeliveryRuleActionAutoGenerated - An action for the delivery rule.
-type DeliveryRuleActionAutoGenerated struct {
+// DeliveryRuleAction - An action for the delivery rule.
+type DeliveryRuleAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleActionAutoGenerated.
-func (d *DeliveryRuleActionAutoGenerated) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type DeliveryRuleAction.
+func (d *DeliveryRuleAction) GetDeliveryRuleAction() *DeliveryRuleAction { return d }
+
+// DeliveryRuleActionParameters - Defines the parameters for delivery rule actions
+type DeliveryRuleActionParameters struct {
+	// REQUIRED
+	TypeName *DeliveryRuleActionParametersType
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type DeliveryRuleActionParameters.
+func (d *DeliveryRuleActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
 	return d
 }
 
 // DeliveryRuleCacheExpirationAction - Defines the cache expiration action for the delivery rule.
 type DeliveryRuleCacheExpirationAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *CacheExpirationActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleCacheExpirationAction.
-func (d *DeliveryRuleCacheExpirationAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type DeliveryRuleCacheExpirationAction.
+func (d *DeliveryRuleCacheExpirationAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: d.Name,
 	}
 }
@@ -974,15 +1045,15 @@ func (d *DeliveryRuleCacheExpirationAction) GetDeliveryRuleActionAutoGenerated()
 // DeliveryRuleCacheKeyQueryStringAction - Defines the cache-key query string action for the delivery rule.
 type DeliveryRuleCacheKeyQueryStringAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *CacheKeyQueryStringActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleCacheKeyQueryStringAction.
-func (d *DeliveryRuleCacheKeyQueryStringAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type DeliveryRuleCacheKeyQueryStringAction.
+func (d *DeliveryRuleCacheKeyQueryStringAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: d.Name,
 	}
 }
@@ -1011,6 +1082,17 @@ type DeliveryRuleCondition struct {
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleCondition.
 func (d *DeliveryRuleCondition) GetDeliveryRuleCondition() *DeliveryRuleCondition { return d }
+
+// DeliveryRuleConditionParameters - Defines the parameters for delivery rule match conditions
+type DeliveryRuleConditionParameters struct {
+	// REQUIRED
+	TypeName *DeliveryRuleConditionParametersType
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type DeliveryRuleConditionParameters.
+func (d *DeliveryRuleConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return d
+}
 
 // DeliveryRuleCookiesCondition - Defines the Cookies condition for the delivery rule.
 type DeliveryRuleCookiesCondition struct {
@@ -1143,15 +1225,15 @@ func (d *DeliveryRuleRequestBodyCondition) GetDeliveryRuleCondition() *DeliveryR
 // DeliveryRuleRequestHeaderAction - Defines the request header action for the delivery rule.
 type DeliveryRuleRequestHeaderAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *HeaderActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleRequestHeaderAction.
-func (d *DeliveryRuleRequestHeaderAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type DeliveryRuleRequestHeaderAction.
+func (d *DeliveryRuleRequestHeaderAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: d.Name,
 	}
 }
@@ -1223,15 +1305,15 @@ func (d *DeliveryRuleRequestURICondition) GetDeliveryRuleCondition() *DeliveryRu
 // DeliveryRuleResponseHeaderAction - Defines the response header action for the delivery rule.
 type DeliveryRuleResponseHeaderAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *HeaderActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleResponseHeaderAction.
-func (d *DeliveryRuleResponseHeaderAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type DeliveryRuleResponseHeaderAction.
+func (d *DeliveryRuleResponseHeaderAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: d.Name,
 	}
 }
@@ -1240,15 +1322,15 @@ func (d *DeliveryRuleResponseHeaderAction) GetDeliveryRuleActionAutoGenerated() 
 // applicable to Frontdoor Standard/Premium Profiles.
 type DeliveryRuleRouteConfigurationOverrideAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *RouteConfigurationOverrideActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleRouteConfigurationOverrideAction.
-func (d *DeliveryRuleRouteConfigurationOverrideAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type DeliveryRuleRouteConfigurationOverrideAction.
+func (d *DeliveryRuleRouteConfigurationOverrideAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: d.Name,
 	}
 }
@@ -1375,16 +1457,16 @@ type EdgeNode struct {
 	// The JSON object that contains the properties required to create an edgenode.
 	Properties *EdgeNodeProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1408,7 +1490,7 @@ type EdgenodeResult struct {
 // content caching and delivery behavior. The CDN endpoint uses the URL format
 // .azureedge.net.
 type Endpoint struct {
-	// REQUIRED; Resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The JSON object that contains the properties required to create an endpoint.
@@ -1417,16 +1499,16 @@ type Endpoint struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1628,7 +1710,7 @@ type HTTPVersionMatchConditionParameters struct {
 	Operator *HTTPVersionOperator
 
 	// REQUIRED
-	TypeName *HTTPVersionMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -1640,6 +1722,13 @@ type HTTPVersionMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type HTTPVersionMatchConditionParameters.
+func (h *HTTPVersionMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: h.TypeName,
+	}
+}
+
 // HeaderActionParameters - Defines the parameters for the request header action.
 type HeaderActionParameters struct {
 	// REQUIRED; Action to perform
@@ -1649,10 +1738,17 @@ type HeaderActionParameters struct {
 	HeaderName *string
 
 	// REQUIRED
-	TypeName *HeaderActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
 
 	// Value for the specified action
 	Value *string
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type HeaderActionParameters.
+func (h *HeaderActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: h.TypeName,
+	}
 }
 
 // HealthProbeParameters - The JSON object that contains the properties to send health probes to origin.
@@ -1676,7 +1772,7 @@ type HostNameMatchConditionParameters struct {
 	Operator *HostNameOperator
 
 	// REQUIRED
-	TypeName *HostNameMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -1686,6 +1782,13 @@ type HostNameMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type HostNameMatchConditionParameters.
+func (h *HostNameMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: h.TypeName,
+	}
 }
 
 // IPAddressGroup - CDN Ip address group
@@ -1706,16 +1809,23 @@ type IsDeviceMatchConditionParameters struct {
 	Operator *IsDeviceOperator
 
 	// REQUIRED
-	TypeName *IsDeviceMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*IsDeviceMatchConditionParametersMatchValuesItem
+	MatchValues []*IsDeviceMatchValue
 
 	// Describes if this is negate condition or not
 	NegateCondition *bool
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type IsDeviceMatchConditionParameters.
+func (i *IsDeviceMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: i.TypeName,
+	}
 }
 
 // KeyVaultCertificateSourceParameters - Describes the parameters for using a user's KeyVault certificate for securing custom
@@ -1734,7 +1844,7 @@ type KeyVaultCertificateSourceParameters struct {
 	SubscriptionID *string
 
 	// REQUIRED
-	TypeName *KeyVaultCertificateSourceParametersTypeName
+	TypeName *CertificateSourceParametersType
 
 	// REQUIRED; Describes the action that shall be taken when the certificate is updated in Key Vault.
 	UpdateRule *UpdateRule
@@ -1744,6 +1854,13 @@ type KeyVaultCertificateSourceParameters struct {
 
 	// The version(GUID) of Key Vault Secret in Key Vault.
 	SecretVersion *string
+}
+
+// GetCertificateSourceParametersBase implements the CertificateSourceParametersBaseClassification interface for type KeyVaultCertificateSourceParameters.
+func (k *KeyVaultCertificateSourceParameters) GetCertificateSourceParametersBase() *CertificateSourceParametersBase {
+	return &CertificateSourceParametersBase{
+		TypeName: k.TypeName,
+	}
 }
 
 // KeyVaultSigningKeyParameters - Describes the parameters for using a user's KeyVault for URL Signing Key.
@@ -1761,7 +1878,7 @@ type KeyVaultSigningKeyParameters struct {
 	SubscriptionID *string
 
 	// REQUIRED
-	TypeName *KeyVaultSigningKeyParametersTypeName
+	TypeName *KeyVaultSigningKeyParametersType
 
 	// REQUIRED; The name of the user's Key Vault containing the secret
 	VaultName *string
@@ -1914,16 +2031,16 @@ type ManagedRuleSetDefinition struct {
 	// The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
 	SKU *SKU
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2076,6 +2193,16 @@ type MigrateResultProperties struct {
 	MigratedProfileResourceID *ResourceReference
 }
 
+// MigrationEndpointMapping - CDN Endpoint Mapping.
+type MigrationEndpointMapping struct {
+	// Name of the classic CDN profile endpoint.
+	MigratedFrom *string
+
+	// Name of the newly created migrated Azure Frontdoor Standard/Premium profile endpoint. This name will replace the name of
+	// the classic CDN endpoint resource.
+	MigratedTo *string
+}
+
 // MigrationErrorType - Error response indicates CDN service is not able to process the incoming request. The reason is provided
 // in the error message.
 type MigrationErrorType struct {
@@ -2105,6 +2232,15 @@ type MigrationParameters struct {
 
 	// Waf mapping for the migrated profile
 	MigrationWebApplicationFirewallMappings []*MigrationWebApplicationFirewallMapping
+}
+
+// MigrationToAfdParameters - Request body for Migrate operation.
+type MigrationToAfdParameters struct {
+	// REQUIRED; Sku for the migration
+	SKU *SKU
+
+	// A name map between classic CDN endpoints and AFD Premium/Standard endpoints.
+	MigrationEndpointMappings []*MigrationEndpointMapping
 }
 
 // MigrationWebApplicationFirewallMapping - Web Application Firewall Mapping
@@ -2172,16 +2308,16 @@ type Origin struct {
 	// The JSON object that contains the properties of the origin.
 	Properties *OriginProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2191,16 +2327,16 @@ type OriginGroup struct {
 	// The JSON object that contains the properties of the origin group.
 	Properties *OriginGroupProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2226,15 +2362,15 @@ type OriginGroupOverride struct {
 // OriginGroupOverrideAction - Defines the origin group override action for the delivery rule.
 type OriginGroupOverrideAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *OriginGroupOverrideActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type OriginGroupOverrideAction.
-func (o *OriginGroupOverrideAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type OriginGroupOverrideAction.
+func (o *OriginGroupOverrideAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: o.Name,
 	}
 }
@@ -2245,7 +2381,14 @@ type OriginGroupOverrideActionParameters struct {
 	OriginGroup *ResourceReference
 
 	// REQUIRED
-	TypeName *OriginGroupOverrideActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type OriginGroupOverrideActionParameters.
+func (o *OriginGroupOverrideActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: o.TypeName,
+	}
 }
 
 // OriginGroupProperties - The JSON object that contains the properties of the origin group.
@@ -2423,7 +2566,7 @@ type PostArgsMatchConditionParameters struct {
 	Operator *PostArgsOperator
 
 	// REQUIRED
-	TypeName *PostArgsMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -2438,9 +2581,16 @@ type PostArgsMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type PostArgsMatchConditionParameters.
+func (p *PostArgsMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: p.TypeName,
+	}
+}
+
 // Profile - A profile is a logical grouping of endpoints that share the same settings.
 type Profile struct {
-	// REQUIRED; Resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// REQUIRED; The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature list and rate) of the
@@ -2456,19 +2606,19 @@ type Profile struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD profile.
 	Kind *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2576,7 +2726,7 @@ type QueryStringMatchConditionParameters struct {
 	Operator *QueryStringOperator
 
 	// REQUIRED
-	TypeName *QueryStringMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -2586,6 +2736,13 @@ type QueryStringMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type QueryStringMatchConditionParameters.
+func (q *QueryStringMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: q.TypeName,
+	}
 }
 
 // RankingsResponse - Rankings Response
@@ -2647,7 +2804,7 @@ type RemoteAddressMatchConditionParameters struct {
 	Operator *RemoteAddressOperator
 
 	// REQUIRED
-	TypeName *RemoteAddressMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// Match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the
 	// variable with the given operator this match condition is considered a match.
@@ -2660,13 +2817,20 @@ type RemoteAddressMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type RemoteAddressMatchConditionParameters.
+func (r *RemoteAddressMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: r.TypeName,
+	}
+}
+
 // RequestBodyMatchConditionParameters - Defines the parameters for RequestBody match conditions
 type RequestBodyMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestBodyOperator
 
 	// REQUIRED
-	TypeName *RequestBodyMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -2678,13 +2842,20 @@ type RequestBodyMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type RequestBodyMatchConditionParameters.
+func (r *RequestBodyMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: r.TypeName,
+	}
+}
+
 // RequestHeaderMatchConditionParameters - Defines the parameters for RequestHeader match conditions
 type RequestHeaderMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestHeaderOperator
 
 	// REQUIRED
-	TypeName *RequestHeaderMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -2699,22 +2870,36 @@ type RequestHeaderMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type RequestHeaderMatchConditionParameters.
+func (r *RequestHeaderMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: r.TypeName,
+	}
+}
+
 // RequestMethodMatchConditionParameters - Defines the parameters for RequestMethod match conditions
 type RequestMethodMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestMethodOperator
 
 	// REQUIRED
-	TypeName *RequestMethodMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*RequestMethodMatchConditionParametersMatchValuesItem
+	MatchValues []*RequestMethodMatchValue
 
 	// Describes if this is negate condition or not
 	NegateCondition *bool
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type RequestMethodMatchConditionParameters.
+func (r *RequestMethodMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: r.TypeName,
+	}
 }
 
 // RequestSchemeMatchConditionParameters - Defines the parameters for RequestScheme match conditions
@@ -2723,10 +2908,10 @@ type RequestSchemeMatchConditionParameters struct {
 	Operator *RequestSchemeMatchConditionParametersOperator
 
 	// REQUIRED
-	TypeName *RequestSchemeMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*RequestSchemeMatchConditionParametersMatchValuesItem
+	MatchValues []*RequestSchemeMatchValue
 
 	// Describes if this is negate condition or not
 	NegateCondition *bool
@@ -2735,13 +2920,20 @@ type RequestSchemeMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type RequestSchemeMatchConditionParameters.
+func (r *RequestSchemeMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: r.TypeName,
+	}
+}
+
 // RequestURIMatchConditionParameters - Defines the parameters for RequestUri match conditions
 type RequestURIMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestURIOperator
 
 	// REQUIRED
-	TypeName *RequestURIMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -2751,6 +2943,13 @@ type RequestURIMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type RequestURIMatchConditionParameters.
+func (r *RequestURIMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: r.TypeName,
+	}
 }
 
 // ResourceReference - Reference to another resource.
@@ -2828,29 +3027,36 @@ type Route struct {
 	// The JSON object that contains the properties of the Routes to create.
 	Properties *RouteProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RouteConfigurationOverrideActionParameters - Defines the parameters for the route configuration override action.
 type RouteConfigurationOverrideActionParameters struct {
 	// REQUIRED
-	TypeName *RouteConfigurationOverrideActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
 
 	// The caching configuration associated with this rule. To disable caching, do not provide a cacheConfiguration object.
 	CacheConfiguration *CacheConfiguration
 
 	// A reference to the origin group override configuration. Leave empty to use the default origin group on route.
 	OriginGroupOverride *OriginGroupOverride
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type RouteConfigurationOverrideActionParameters.
+func (r *RouteConfigurationOverrideActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: r.TypeName,
+	}
 }
 
 // RouteListResult - Result of the request to list routes. It contains a list of route objects and a URL link to get the next
@@ -2960,16 +3166,16 @@ type Rule struct {
 	// The JSON object that contains the properties of the Rules to create.
 	Properties *RuleProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2986,7 +3192,7 @@ type RuleListResult struct {
 // RuleProperties - The JSON object that contains the properties of the Rules to create.
 type RuleProperties struct {
 	// A list of actions that are executed when all the conditions of a rule are satisfied.
-	Actions []DeliveryRuleActionAutoGeneratedClassification
+	Actions []DeliveryRuleActionClassification
 
 	// A list of conditions that must be matched for the actions to be executed
 	Conditions []DeliveryRuleConditionClassification
@@ -3015,16 +3221,16 @@ type RuleSet struct {
 	// The JSON object that contains the properties of the Rule Set to create.
 	Properties *RuleSetProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3059,7 +3265,7 @@ type RuleUpdateParameters struct {
 // RuleUpdatePropertiesParameters - The JSON object that contains the properties of the rule to update.
 type RuleUpdatePropertiesParameters struct {
 	// A list of actions that are executed when all the conditions of a rule are satisfied.
-	Actions []DeliveryRuleActionAutoGeneratedClassification
+	Actions []DeliveryRuleActionClassification
 
 	// A list of conditions that must be matched for the actions to be executed
 	Conditions []DeliveryRuleConditionClassification
@@ -3101,7 +3307,7 @@ type SSLProtocolMatchConditionParameters struct {
 	Operator *SSLProtocolOperator
 
 	// REQUIRED
-	TypeName *SSLProtocolMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*SSLProtocol
@@ -3113,21 +3319,28 @@ type SSLProtocolMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type SSLProtocolMatchConditionParameters.
+func (s *SSLProtocolMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: s.TypeName,
+	}
+}
+
 // Secret - Friendly Secret name mapping to the any Secret or secret related information.
 type Secret struct {
 	// The JSON object that contains the properties of the Secret to create.
 	Properties *SecretProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3170,16 +3383,16 @@ type SecurityPolicy struct {
 	// The json object that contains properties required to create a security policy
 	Properties *SecurityPolicyProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3267,7 +3480,7 @@ type ServerPortMatchConditionParameters struct {
 	Operator *ServerPortOperator
 
 	// REQUIRED
-	TypeName *ServerPortMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -3277,6 +3490,13 @@ type ServerPortMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type ServerPortMatchConditionParameters.
+func (s *ServerPortMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: s.TypeName,
+	}
 }
 
 // ServiceSpecification - One property of operation, include log specifications.
@@ -3313,7 +3533,7 @@ type SocketAddrMatchConditionParameters struct {
 	Operator *SocketAddrOperator
 
 	// REQUIRED
-	TypeName *SocketAddrMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -3323,6 +3543,13 @@ type SocketAddrMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type SocketAddrMatchConditionParameters.
+func (s *SocketAddrMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: s.TypeName,
+	}
 }
 
 // SsoURI - The URI required to login to the supplemental portal from the Azure portal.
@@ -3337,25 +3564,25 @@ type SupportedOptimizationTypesListResult struct {
 	SupportedOptimizationTypes []*OptimizationType
 }
 
-// SystemData - Read only system data
+// SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-	// The timestamp of resource creation (UTC)
+	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-	// An identifier for the identity that created the resource
+	// The identity that created the resource.
 	CreatedBy *string
 
-	// The type of identity that created the resource
-	CreatedByType *IdentityType
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
 
-	// An identifier for the identity that last modified the resource
+	// The identity that last modified the resource.
 	LastModifiedBy *string
 
-	// The type of identity that last modified the resource
-	LastModifiedByType *IdentityType
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // URLFileExtensionMatchConditionParameters - Defines the parameters for UrlFileExtension match conditions
@@ -3364,7 +3591,7 @@ type URLFileExtensionMatchConditionParameters struct {
 	Operator *URLFileExtensionOperator
 
 	// REQUIRED
-	TypeName *URLFileExtensionMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -3374,6 +3601,13 @@ type URLFileExtensionMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type URLFileExtensionMatchConditionParameters.
+func (u *URLFileExtensionMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: u.TypeName,
+	}
 }
 
 // URLFileNameMatchConditionParameters - Defines the parameters for UrlFilename match conditions
@@ -3382,7 +3616,7 @@ type URLFileNameMatchConditionParameters struct {
 	Operator *URLFileNameOperator
 
 	// REQUIRED
-	TypeName *URLFileNameMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -3392,6 +3626,13 @@ type URLFileNameMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
+}
+
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type URLFileNameMatchConditionParameters.
+func (u *URLFileNameMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: u.TypeName,
+	}
 }
 
 // URLPathMatchConditionParameters - Defines the parameters for UrlPath match conditions
@@ -3400,7 +3641,7 @@ type URLPathMatchConditionParameters struct {
 	Operator *URLPathOperator
 
 	// REQUIRED
-	TypeName *URLPathMatchConditionParametersTypeName
+	TypeName *DeliveryRuleConditionParametersType
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string
@@ -3412,18 +3653,25 @@ type URLPathMatchConditionParameters struct {
 	Transforms []*Transform
 }
 
+// GetDeliveryRuleConditionParameters implements the DeliveryRuleConditionParametersClassification interface for type URLPathMatchConditionParameters.
+func (u *URLPathMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
+	return &DeliveryRuleConditionParameters{
+		TypeName: u.TypeName,
+	}
+}
+
 // URLRedirectAction - Defines the url redirect action for the delivery rule.
 type URLRedirectAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *URLRedirectActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type URLRedirectAction.
-func (u *URLRedirectAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type URLRedirectAction.
+func (u *URLRedirectAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: u.Name,
 	}
 }
@@ -3434,7 +3682,7 @@ type URLRedirectActionParameters struct {
 	RedirectType *RedirectType
 
 	// REQUIRED
-	TypeName *URLRedirectActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
 
 	// Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
 	CustomFragment *string
@@ -3455,18 +3703,25 @@ type URLRedirectActionParameters struct {
 	DestinationProtocol *DestinationProtocol
 }
 
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type URLRedirectActionParameters.
+func (u *URLRedirectActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: u.TypeName,
+	}
+}
+
 // URLRewriteAction - Defines the url rewrite action for the delivery rule.
 type URLRewriteAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *URLRewriteActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type URLRewriteAction.
-func (u *URLRewriteAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type URLRewriteAction.
+func (u *URLRewriteAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: u.Name,
 	}
 }
@@ -3481,24 +3736,31 @@ type URLRewriteActionParameters struct {
 	SourcePattern *string
 
 	// REQUIRED
-	TypeName *URLRewriteActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
 
 	// Whether to preserve unmatched path. Default value is true.
 	PreserveUnmatchedPath *bool
 }
 
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type URLRewriteActionParameters.
+func (u *URLRewriteActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: u.TypeName,
+	}
+}
+
 // URLSigningAction - Defines the url signing action for the delivery rule.
 type URLSigningAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction
+	Name *DeliveryRuleActionName
 
 	// REQUIRED; Defines the parameters for the action.
 	Parameters *URLSigningActionParameters
 }
 
-// GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type URLSigningAction.
-func (u *URLSigningAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated {
-	return &DeliveryRuleActionAutoGenerated{
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type URLSigningAction.
+func (u *URLSigningAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
 		Name: u.Name,
 	}
 }
@@ -3506,13 +3768,20 @@ func (u *URLSigningAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleAct
 // URLSigningActionParameters - Defines the parameters for the Url Signing action.
 type URLSigningActionParameters struct {
 	// REQUIRED
-	TypeName *URLSigningActionParametersTypeName
+	TypeName *DeliveryRuleActionParametersType
 
 	// Algorithm to use for URL signing
 	Algorithm *Algorithm
 
 	// Defines which query string parameters in the url to be considered for expires, key id etc.
 	ParameterNameOverride []*URLSigningParamIdentifier
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type URLSigningActionParameters.
+func (u *URLSigningActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: u.TypeName,
+	}
 }
 
 // URLSigningKey - Url signing key
@@ -3535,11 +3804,11 @@ type URLSigningKeyParameters struct {
 	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 	SecretSource *ResourceReference
 
+	// REQUIRED; Version of the secret to be used
+	SecretVersion *string
+
 	// REQUIRED; The type of the secret resource.
 	Type *SecretType
-
-	// Version of the secret to be used
-	SecretVersion *string
 }
 
 // GetSecretParameters implements the SecretParametersClassification interface for type URLSigningKeyParameters.
@@ -3720,7 +3989,7 @@ type WafRankingsResponseDataItem struct {
 
 // WebApplicationFirewallPolicy - Defines web application firewall policy for Azure CDN.
 type WebApplicationFirewallPolicy struct {
-	// REQUIRED; Resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// REQUIRED; The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
@@ -3735,16 +4004,16 @@ type WebApplicationFirewallPolicy struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Read only system data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 

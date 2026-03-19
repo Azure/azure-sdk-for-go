@@ -12,34 +12,31 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice/v2"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // OperationResultsServer is a fake server for instances of the armbotservice.OperationResultsClient type.
 type OperationResultsServer struct {
-	// BeginGet is the fake for method OperationResultsClient.BeginGet
+	// Get is the fake for method OperationResultsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGet func(ctx context.Context, operationResultID string, options *armbotservice.OperationResultsClientBeginGetOptions) (resp azfake.PollerResponder[armbotservice.OperationResultsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, operationResultID string, options *armbotservice.OperationResultsClientGetOptions) (resp azfake.Responder[armbotservice.OperationResultsClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOperationResultsServerTransport creates a new instance of OperationResultsServerTransport with the provided implementation.
 // The returned OperationResultsServerTransport instance is connected to an instance of armbotservice.OperationResultsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOperationResultsServerTransport(srv *OperationResultsServer) *OperationResultsServerTransport {
-	return &OperationResultsServerTransport{
-		srv:      srv,
-		beginGet: newTracker[azfake.PollerResponder[armbotservice.OperationResultsClientGetResponse]](),
-	}
+	return &OperationResultsServerTransport{srv: srv}
 }
 
 // OperationResultsServerTransport connects instances of armbotservice.OperationResultsClient to instances of OperationResultsServer.
 // Don't use this type directly, use NewOperationResultsServerTransport instead.
 type OperationResultsServerTransport struct {
-	srv      *OperationResultsServer
-	beginGet *tracker[azfake.PollerResponder[armbotservice.OperationResultsClientGetResponse]]
+	srv *OperationResultsServer
 }
 
 // Do implements the policy.Transporter interface for OperationResultsServerTransport.
@@ -50,59 +47,79 @@ func (o *OperationResultsServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return o.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "OperationResultsClient.BeginGet":
-		resp, err = o.dispatchBeginGet(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (o *OperationResultsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if operationResultsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = operationResultsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "OperationResultsClient.Get":
+				res.resp, res.err = o.dispatchGet(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
+}
 
+func (o *OperationResultsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if o.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BotService/operationresults/(?P<operationResultId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	operationResultIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationResultId")])
 	if err != nil {
 		return nil, err
 	}
-
+	respr, errRespr := o.srv.Get(req.Context(), operationResultIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationResultsDescription, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).Location; val != nil {
+		resp.Header.Set("Location", *val)
+	}
+	if val := server.GetResponse(respr).RetryAfter; val != nil {
+		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
+	}
 	return resp, nil
 }
 
-func (o *OperationResultsServerTransport) dispatchBeginGet(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginGet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGet not implemented")}
-	}
-	beginGet := o.beginGet.get(req)
-	if beginGet == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BotService/operationresults/(?P<operationResultId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		operationResultIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationResultId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginGet(req.Context(), operationResultIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGet = &respr
-		o.beginGet.add(req, beginGet)
-	}
-
-	resp, err := server.PollerResponderNext(beginGet, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginGet.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGet) {
-		o.beginGet.remove(req)
-	}
-
-	return resp, nil
+// set this to conditionally intercept incoming requests to OperationResultsServerTransport
+var operationResultsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

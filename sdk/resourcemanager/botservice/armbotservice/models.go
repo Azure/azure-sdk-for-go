@@ -77,7 +77,7 @@ type AlexaChannelProperties struct {
 
 // Bot resource definition
 type Bot struct {
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -95,13 +95,16 @@ type Bot struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string
 
-	// READ-ONLY; Specifies the resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Specifies the name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Specifies the type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 
 	// READ-ONLY; Entity zones
@@ -110,7 +113,7 @@ type Bot struct {
 
 // BotChannel - Bot channel resource definition
 type BotChannel struct {
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -128,13 +131,16 @@ type BotChannel struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string
 
-	// READ-ONLY; Specifies the resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Specifies the name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Specifies the type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 
 	// READ-ONLY; Entity zones
@@ -242,6 +248,9 @@ type BotProperties struct {
 	// READ-ONLY; Token used to migrate non Azure bot to azure subscription
 	MigrationToken *string
 
+	// READ-ONLY; List of Network Security Perimeter configurations for the bot
+	NetworkSecurityPerimeterConfigurations []*NetworkSecurityPerimeterConfiguration
+
 	// READ-ONLY; List of Private Endpoint Connections configured for the bot
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
@@ -251,11 +260,11 @@ type BotProperties struct {
 
 // BotResponseList - The list of bot service operation response.
 type BotResponseList struct {
-	// The link used to get the next page of bot service resources.
-	NextLink *string
-
-	// READ-ONLY; Gets the list of bot service results and their properties.
+	// READ-ONLY; The Bot items on this page
 	Value []*Bot
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // Channel definition
@@ -278,11 +287,11 @@ func (c *Channel) GetChannel() *Channel { return c }
 
 // ChannelResponseList - The list of bot service channel operation response.
 type ChannelResponseList struct {
-	// The link used to get the next page of bot service channel resources.
-	NextLink *string
-
-	// READ-ONLY; Gets the list of bot service channel results and their properties.
+	// READ-ONLY; The BotChannel items on this page
 	Value []*BotChannel
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ChannelSettings - Channel settings definition
@@ -341,15 +350,9 @@ type CheckNameAvailabilityResponseBody struct {
 	Valid *bool
 }
 
-// ConnectionItemName - The display name of a connection Item Setting registered with the Bot
-type ConnectionItemName struct {
-	// READ-ONLY; Connection Item name that has been added in the API
-	Name *string
-}
-
 // ConnectionSetting - Bot channel resource definition
 type ConnectionSetting struct {
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -367,13 +370,16 @@ type ConnectionSetting struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string
 
-	// READ-ONLY; Specifies the resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Specifies the name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Specifies the type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 
 	// READ-ONLY; Entity zones
@@ -397,6 +403,12 @@ type ConnectionSettingProperties struct {
 	// Client Secret associated with the Connection Setting
 	ClientSecret *string
 
+	// Id of the Connection Setting.
+	ID *string
+
+	// Name of the Connection Setting.
+	Name *string
+
 	// Service Provider Parameters associated with the Connection Setting
 	Parameters []*ConnectionSettingParameter
 
@@ -418,11 +430,11 @@ type ConnectionSettingProperties struct {
 
 // ConnectionSettingResponseList - The list of bot service connection settings response.
 type ConnectionSettingResponseList struct {
-	// The link used to get the next page of bot service connection setting resources.
-	NextLink *string
-
-	// READ-ONLY; Gets the list of bot service connection settings and their properties.
+	// READ-ONLY; The ConnectionSetting items on this page
 	Value []*ConnectionSetting
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // CreateEmailSignInURLResponse - The ARM create email sign in url operation response.
@@ -650,6 +662,15 @@ type Error struct {
 	Error *ErrorBody
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
 // ErrorBody - Bot Service error body.
 type ErrorBody struct {
 	// REQUIRED; error code
@@ -657,6 +678,31 @@ type ErrorBody struct {
 
 	// REQUIRED; error message
 	Message *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // FacebookChannel - Facebook channel definition
@@ -847,7 +893,7 @@ type ListChannelWithKeysResponse struct {
 	// Entity tag of the resource
 	EntityTag *string
 
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -874,13 +920,16 @@ type ListChannelWithKeysResponse struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string
 
-	// READ-ONLY; Specifies the resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Specifies the name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Specifies the type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 
 	// READ-ONLY; Entity zones
@@ -961,6 +1010,100 @@ type MsTeamsChannelProperties struct {
 	IncomingCallRoute *string
 }
 
+// NetworkSecurityPerimeter - Information about Network Security Perimeter
+type NetworkSecurityPerimeter struct {
+	// Location of the Network Security Perimeter
+	Location *string
+
+	// Guid of the Network Security Perimeter
+	PerimeterGUID *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+}
+
+// NetworkSecurityPerimeterConfiguration - Network Security Perimeter configuration
+type NetworkSecurityPerimeterConfiguration struct {
+	// Properties of the Network Security Perimeter configuration
+	Properties *NetworkSecurityPerimeterConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkSecurityPerimeterConfigurationList - Result of the List NetworkSecurityPerimeterConfiguration operation.
+type NetworkSecurityPerimeterConfigurationList struct {
+	// READ-ONLY; The NetworkSecurityPerimeterConfiguration items on this page
+	Value []*NetworkSecurityPerimeterConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NetworkSecurityPerimeterConfigurationProperties - Properties of Network Security Perimeter configuration
+type NetworkSecurityPerimeterConfigurationProperties struct {
+	// List of Provisioning Issues if any
+	ProvisioningIssues []*ProvisioningIssue
+	ProvisioningState  *ProvisioningState
+
+	// READ-ONLY; Information about Network Security Perimeter
+	NetworkSecurityPerimeter *NetworkSecurityPerimeter
+
+	// READ-ONLY; Information about profile
+	Profile *Profile
+
+	// READ-ONLY; Information about resource association
+	ResourceAssociation *ResourceAssociation
+}
+
+// NspAccessRule - Information of Access Rule in a profile
+type NspAccessRule struct {
+	// Name of the access rule
+	Name *string
+
+	// READ-ONLY; Properties of Access Rule
+	Properties *NspAccessRuleProperties
+}
+
+// NspAccessRuleProperties - Properties of Access Rule
+type NspAccessRuleProperties struct {
+	// Address prefixes in the CIDR format for inbound rules
+	AddressPrefixes []*string
+
+	// Direction of Access Rule
+	Direction *NspAccessRuleDirection
+
+	// Subscriptions for inbound rules
+	Subscriptions []*NspAccessRulePropertiesSubscriptionsItem
+
+	// READ-ONLY; Email addresses for outbound rules
+	EmailAddresses []*string
+
+	// READ-ONLY; FQDN for outbound rules
+	FullyQualifiedDomainNames []*string
+
+	// READ-ONLY; NetworkSecurityPerimeters for inbound rules
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeter
+
+	// READ-ONLY; Phone numbers for outbound rules
+	PhoneNumbers []*string
+}
+
+// NspAccessRulePropertiesSubscriptionsItem - Subscription for inbound rule
+type NspAccessRulePropertiesSubscriptionsItem struct {
+	// Fully qualified identifier of subscription
+	ID *string
+}
+
 // Omnichannel channel definition
 type Omnichannel struct {
 	// REQUIRED; The channel name
@@ -1018,11 +1161,11 @@ type OperationEntity struct {
 
 // OperationEntityListResult - The list of bot service operation response.
 type OperationEntityListResult struct {
+	// REQUIRED; The list of operations.
+	Value []*OperationEntity
+
 	// The link used to get the next page of operations.
 	NextLink *string
-
-	// The list of operations.
-	Value []*OperationEntity
 }
 
 // OperationResultsDescription - The properties indicating the operation result of an operation on a service.
@@ -1082,12 +1225,18 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
+	// The link used to get the next page of private endpoint connections.
+	NextLink *string
+
 	// Array of private endpoint connections
 	Value []*PrivateEndpointConnection
 }
@@ -1165,6 +1314,67 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// Profile - Information about profile
+type Profile struct {
+	// List of Access Rules
+	AccessRules []*NspAccessRule
+
+	// Current access rules version
+	AccessRulesVersion *int64
+
+	// Current diagnostic settings version
+	DiagnosticSettingsVersion *int64
+
+	// Name of the profile
+	Name *string
+
+	// READ-ONLY; List of log categories
+	EnabledLogCategories []*string
+}
+
+// ProvisioningIssue - Describes Provisioning issue for given Network Security Perimeter configuration
+type ProvisioningIssue struct {
+	// Name of the issue
+	Name *string
+
+	// READ-ONLY; Properties of Provisioning Issue
+	Properties *ProvisioningIssueProperties
+}
+
+// ProvisioningIssueProperties - Properties of Provisioning Issue
+type ProvisioningIssueProperties struct {
+	// Description of the issue
+	Description *string
+
+	// Type of Issue
+	IssueType *string
+
+	// Provisioning state of Network Security Perimeter configuration propagation
+	Severity *Severity
+
+	// Access rules that can be added to the same profile to remediate the issue.
+	SuggestedAccessRules []*NspAccessRule
+
+	// READ-ONLY; ARM IDs of resources that can be associated to the same perimeter to remediate the issue.
+	SuggestedResourceIDs []*string
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // QnAMakerEndpointKeysRequestBody - The request body for a request to Bot Service Management to list QnA Maker endpoint keys.
 type QnAMakerEndpointKeysRequestBody struct {
 	// Subscription key which provides access to this API.
@@ -1189,34 +1399,28 @@ type QnAMakerEndpointKeysResponse struct {
 	SecondaryEndpointKey *string
 }
 
-// Resource - Azure resource
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// Entity Tag
-	Etag *string
-
-	// Required. Gets or sets the Kind of the resource.
-	Kind *Kind
-
-	// Specifies the location of the resource.
-	Location *string
-
-	// Gets or sets the SKU of the resource.
-	SKU *SKU
-
-	// Contains resource tags defined as key/value pairs.
-	Tags map[string]*string
-
-	// READ-ONLY; Specifies the resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Specifies the name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Specifies the type of the resource.
-	Type *string
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
-	// READ-ONLY; Entity zones
-	Zones []*string
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ResourceAssociation - Information about resource association
+type ResourceAssociation struct {
+	// Access Mode of the resource association
+	AccessMode *AccessMode
+
+	// Name of the resource association
+	Name *string
 }
 
 // SKU - The SKU of the cognitive services account.
@@ -1563,6 +1767,27 @@ type SmsChannelProperties struct {
 
 	// Whether this channel is validated for the bot
 	IsValidated *bool
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // TelegramChannel - Telegram channel definition

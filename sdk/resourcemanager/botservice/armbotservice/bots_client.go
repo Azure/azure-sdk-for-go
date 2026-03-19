@@ -25,9 +25,9 @@ type BotsClient struct {
 }
 
 // NewBotsClient creates a new instance of BotsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BotsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,8 +43,8 @@ func NewBotsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // Create - Creates a Bot Service. Bot Service is a resource group wide resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
-//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+// Generated from API version 2023-09-15-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - parameters - The parameters to provide for the created bot.
 //   - options - BotsClientCreateOptions contains the optional parameters for the BotsClient.Create method.
@@ -71,8 +71,12 @@ func (client *BotsClient) Create(ctx context.Context, resourceGroupName string, 
 }
 
 // createCreateRequest creates the Create request.
-func (client *BotsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters Bot, options *BotsClientCreateOptions) (*policy.Request, error) {
+func (client *BotsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters Bot, _ *BotsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -81,16 +85,12 @@ func (client *BotsClient) createCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -111,8 +111,8 @@ func (client *BotsClient) createHandleResponse(resp *http.Response) (BotsClientC
 // Delete - Deletes a Bot Service from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
-//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+// Generated from API version 2023-09-15-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - options - BotsClientDeleteOptions contains the optional parameters for the BotsClient.Delete method.
 func (client *BotsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *BotsClientDeleteOptions) (BotsClientDeleteResponse, error) {
@@ -137,8 +137,12 @@ func (client *BotsClient) Delete(ctx context.Context, resourceGroupName string, 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *BotsClientDeleteOptions) (*policy.Request, error) {
+func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *BotsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -147,16 +151,12 @@ func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -165,8 +165,8 @@ func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 // Get - Returns a BotService specified by the parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
-//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+// Generated from API version 2023-09-15-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - options - BotsClientGetOptions contains the optional parameters for the BotsClient.Get method.
 func (client *BotsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *BotsClientGetOptions) (BotsClientGetResponse, error) {
@@ -192,8 +192,12 @@ func (client *BotsClient) Get(ctx context.Context, resourceGroupName string, res
 }
 
 // getCreateRequest creates the Get request.
-func (client *BotsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *BotsClientGetOptions) (*policy.Request, error) {
+func (client *BotsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *BotsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -202,16 +206,12 @@ func (client *BotsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,8 +229,8 @@ func (client *BotsClient) getHandleResponse(resp *http.Response) (BotsClientGetR
 // GetCheckNameAvailability - Check whether a bot name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
-//   - parameters - The request body parameters to provide for the check name availability request
+// Generated from API version 2023-09-15-preview
+//   - parameters - The request body
 //   - options - BotsClientGetCheckNameAvailabilityOptions contains the optional parameters for the BotsClient.GetCheckNameAvailability
 //     method.
 func (client *BotsClient) GetCheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityRequestBody, options *BotsClientGetCheckNameAvailabilityOptions) (BotsClientGetCheckNameAvailabilityResponse, error) {
@@ -256,14 +256,14 @@ func (client *BotsClient) GetCheckNameAvailability(ctx context.Context, paramete
 }
 
 // getCheckNameAvailabilityCreateRequest creates the GetCheckNameAvailability request.
-func (client *BotsClient) getCheckNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityRequestBody, options *BotsClientGetCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *BotsClient) getCheckNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityRequestBody, _ *BotsClientGetCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BotService/checkNameAvailability"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -283,7 +283,7 @@ func (client *BotsClient) getCheckNameAvailabilityHandleResponse(resp *http.Resp
 
 // NewListPager - Returns all the resources of a particular type belonging to a subscription.
 //
-// Generated from API version 2022-09-15
+// Generated from API version 2023-09-15-preview
 //   - options - BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
 func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BotsClientListResponse]{
@@ -309,7 +309,7 @@ func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.
 }
 
 // listCreateRequest creates the List request.
-func (client *BotsClient) listCreateRequest(ctx context.Context, options *BotsClientListOptions) (*policy.Request, error) {
+func (client *BotsClient) listCreateRequest(ctx context.Context, _ *BotsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -320,7 +320,7 @@ func (client *BotsClient) listCreateRequest(ctx context.Context, options *BotsCl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,8 +337,8 @@ func (client *BotsClient) listHandleResponse(resp *http.Response) (BotsClientLis
 
 // NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
 //
-// Generated from API version 2022-09-15
-//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+// Generated from API version 2023-09-15-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.NewListByResourceGroupPager
 //     method.
 func (client *BotsClient) NewListByResourceGroupPager(resourceGroupName string, options *BotsClientListByResourceGroupOptions) *runtime.Pager[BotsClientListByResourceGroupResponse] {
@@ -365,22 +365,22 @@ func (client *BotsClient) NewListByResourceGroupPager(resourceGroupName string, 
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *BotsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *BotsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *BotsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *BotsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -398,8 +398,8 @@ func (client *BotsClient) listByResourceGroupHandleResponse(resp *http.Response)
 // Update - Updates a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
-//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+// Generated from API version 2023-09-15-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - parameters - The parameters to provide for the created bot.
 //   - options - BotsClientUpdateOptions contains the optional parameters for the BotsClient.Update method.
@@ -426,8 +426,12 @@ func (client *BotsClient) Update(ctx context.Context, resourceGroupName string, 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters Bot, options *BotsClientUpdateOptions) (*policy.Request, error) {
+func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters Bot, _ *BotsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -436,16 +440,12 @@ func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

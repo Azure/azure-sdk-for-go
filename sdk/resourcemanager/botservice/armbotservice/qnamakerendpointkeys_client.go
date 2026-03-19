@@ -25,9 +25,9 @@ type QnAMakerEndpointKeysClient struct {
 }
 
 // NewQnAMakerEndpointKeysClient creates a new instance of QnAMakerEndpointKeysClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQnAMakerEndpointKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QnAMakerEndpointKeysClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,8 +43,8 @@ func NewQnAMakerEndpointKeysClient(subscriptionID string, credential azcore.Toke
 // Get - Lists the QnA Maker endpoint keys
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
-//   - parameters - The request body parameters to provide for the check name availability request
+// Generated from API version 2023-09-15-preview
+//   - parameters - The request body
 //   - options - QnAMakerEndpointKeysClientGetOptions contains the optional parameters for the QnAMakerEndpointKeysClient.Get
 //     method.
 func (client *QnAMakerEndpointKeysClient) Get(ctx context.Context, parameters QnAMakerEndpointKeysRequestBody, options *QnAMakerEndpointKeysClientGetOptions) (QnAMakerEndpointKeysClientGetResponse, error) {
@@ -70,7 +70,7 @@ func (client *QnAMakerEndpointKeysClient) Get(ctx context.Context, parameters Qn
 }
 
 // getCreateRequest creates the Get request.
-func (client *QnAMakerEndpointKeysClient) getCreateRequest(ctx context.Context, parameters QnAMakerEndpointKeysRequestBody, options *QnAMakerEndpointKeysClientGetOptions) (*policy.Request, error) {
+func (client *QnAMakerEndpointKeysClient) getCreateRequest(ctx context.Context, parameters QnAMakerEndpointKeysRequestBody, _ *QnAMakerEndpointKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/listQnAMakerEndpointKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +81,7 @@ func (client *QnAMakerEndpointKeysClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

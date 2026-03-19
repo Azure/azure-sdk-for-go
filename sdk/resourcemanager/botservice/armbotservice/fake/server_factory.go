@@ -16,17 +16,41 @@ import (
 
 // ServerFactory is a fake server for instances of the armbotservice.ClientFactory type.
 type ServerFactory struct {
-	BotConnectionServer              BotConnectionServer
-	BotsServer                       BotsServer
-	ChannelsServer                   ChannelsServer
-	DirectLineServer                 DirectLineServer
-	EmailServer                      EmailServer
-	HostSettingsServer               HostSettingsServer
-	OperationResultsServer           OperationResultsServer
-	OperationsServer                 OperationsServer
+	// BotConnectionServer contains the fakes for client BotConnectionClient
+	BotConnectionServer BotConnectionServer
+
+	// BotsServer contains the fakes for client BotsClient
+	BotsServer BotsServer
+
+	// ChannelsServer contains the fakes for client ChannelsClient
+	ChannelsServer ChannelsServer
+
+	// DirectLineServer contains the fakes for client DirectLineClient
+	DirectLineServer DirectLineServer
+
+	// EmailServer contains the fakes for client EmailClient
+	EmailServer EmailServer
+
+	// HostSettingsServer contains the fakes for client HostSettingsClient
+	HostSettingsServer HostSettingsServer
+
+	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+
+	// OperationResultsServer contains the fakes for client OperationResultsClient
+	OperationResultsServer OperationResultsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	QnAMakerEndpointKeysServer       QnAMakerEndpointKeysServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// QnAMakerEndpointKeysServer contains the fakes for client QnAMakerEndpointKeysClient
+	QnAMakerEndpointKeysServer QnAMakerEndpointKeysServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -41,19 +65,20 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armbotservice.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trBotConnectionServer              *BotConnectionServerTransport
-	trBotsServer                       *BotsServerTransport
-	trChannelsServer                   *ChannelsServerTransport
-	trDirectLineServer                 *DirectLineServerTransport
-	trEmailServer                      *EmailServerTransport
-	trHostSettingsServer               *HostSettingsServerTransport
-	trOperationResultsServer           *OperationResultsServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
-	trQnAMakerEndpointKeysServer       *QnAMakerEndpointKeysServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trBotConnectionServer                          *BotConnectionServerTransport
+	trBotsServer                                   *BotsServerTransport
+	trChannelsServer                               *ChannelsServerTransport
+	trDirectLineServer                             *DirectLineServerTransport
+	trEmailServer                                  *EmailServerTransport
+	trHostSettingsServer                           *HostSettingsServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trOperationResultsServer                       *OperationResultsServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trQnAMakerEndpointKeysServer                   *QnAMakerEndpointKeysServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -89,6 +114,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "HostSettingsClient":
 		initServer(s, &s.trHostSettingsServer, func() *HostSettingsServerTransport { return NewHostSettingsServerTransport(&s.srv.HostSettingsServer) })
 		resp, err = s.trHostSettingsServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationResultsClient":
 		initServer(s, &s.trOperationResultsServer, func() *OperationResultsServerTransport {
 			return NewOperationResultsServerTransport(&s.srv.OperationResultsServer)

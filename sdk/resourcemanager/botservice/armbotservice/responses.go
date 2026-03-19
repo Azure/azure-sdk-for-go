@@ -140,10 +140,34 @@ type HostSettingsClientGetResponse struct {
 	HostSettingsResponse
 }
 
-// OperationResultsClientGetResponse contains the response from method OperationResultsClient.BeginGet.
+// NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
+type NetworkSecurityPerimeterConfigurationsClientGetResponse struct {
+	// Network Security Perimeter configuration
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListPager.
+type NetworkSecurityPerimeterConfigurationsClientListResponse struct {
+	// Result of the List NetworkSecurityPerimeterConfiguration operation.
+	NetworkSecurityPerimeterConfigurationList
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile.
+type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
+	// Network Security Perimeter configuration
+	NetworkSecurityPerimeterConfiguration
+}
+
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
 type OperationResultsClientGetResponse struct {
 	// The properties indicating the operation result of an operation on a service.
 	OperationResultsDescription
+
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

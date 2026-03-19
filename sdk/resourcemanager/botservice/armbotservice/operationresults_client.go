@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -25,9 +26,9 @@ type OperationResultsClient struct {
 }
 
 // NewOperationResultsClient creates a new instance of OperationResultsClient with the specified values.
-//   - subscriptionID - Azure Subscription ID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,57 +41,36 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginGet - Get the operation result for a long running operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-09-15
-//   - operationResultID - The ID of the operation result to get.
-//   - options - OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet
-//     method.
-func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*runtime.Poller[OperationResultsClientGetResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.get(ctx, operationResultID, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OperationResultsClientGetResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OperationResultsClientGetResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
 // Get - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
-func (client *OperationResultsClient) get(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*http.Response, error) {
+// Generated from API version 2023-09-15-preview
+//   - operationResultID - The ID of the operation result to get.
+//   - options - OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
+func (client *OperationResultsClient) Get(ctx context.Context, operationResultID string, options *OperationResultsClientGetOptions) (OperationResultsClientGetResponse, error) {
 	var err error
-	const operationName = "OperationResultsClient.BeginGet"
+	const operationName = "OperationResultsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, operationResultID, options)
 	if err != nil {
-		return nil, err
+		return OperationResultsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return OperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return OperationResultsClientGetResponse{}, err
 	}
-	return httpResp, nil
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationResultsClient) getCreateRequest(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*policy.Request, error) {
+func (client *OperationResultsClient) getCreateRequest(ctx context.Context, operationResultID string, _ *OperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/operationresults/{operationResultId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -105,8 +85,28 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, oper
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *OperationResultsClient) getHandleResponse(resp *http.Response) (OperationResultsClientGetResponse, error) {
+	result := OperationResultsClientGetResponse{}
+	if val := resp.Header.Get("Location"); val != "" {
+		result.Location = &val
+	}
+	if val := resp.Header.Get("Retry-After"); val != "" {
+		retryAfter32, err := strconv.ParseInt(val, 10, 32)
+		retryAfter := int32(retryAfter32)
+		if err != nil {
+			return OperationResultsClientGetResponse{}, err
+		}
+		result.RetryAfter = &retryAfter
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResultsDescription); err != nil {
+		return OperationResultsClientGetResponse{}, err
+	}
+	return result, nil
 }

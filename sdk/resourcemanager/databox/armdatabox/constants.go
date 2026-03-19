@@ -5,11 +5,7 @@
 
 package armdatabox
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
-	moduleVersion = "v2.2.0"
-)
-
+// AccessProtocol - Access protocols supported on the device.
 type AccessProtocol string
 
 const (
@@ -159,6 +155,27 @@ func PossibleCopyStatusValues() []CopyStatus {
 	}
 }
 
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// CustomerResolutionCode - Resolution code provided by customer.
 type CustomerResolutionCode string
 
 const (
@@ -185,7 +202,7 @@ func PossibleCustomerResolutionCodeValues() []CustomerResolutionCode {
 	}
 }
 
-// DataAccountType - Type of the account.
+// DataAccountType - Account Type of the data to be transferred.
 type DataAccountType string
 
 const (
@@ -501,9 +518,9 @@ func PossibleLogCollectionLevelValues() []LogCollectionLevel {
 type ModelName string
 
 const (
-	// ModelNameAzureDataBox120 - Data Box V2 with 125TB usable capacity.
+	// ModelNameAzureDataBox120 - Data Box V2 with 120TB usable capacity.
 	ModelNameAzureDataBox120 ModelName = "AzureDataBox120"
-	// ModelNameAzureDataBox525 - Data Box V2 with 500TB usable capacity.
+	// ModelNameAzureDataBox525 - Data Box V2 with 525TB usable capacity.
 	ModelNameAzureDataBox525 ModelName = "AzureDataBox525"
 	// ModelNameDataBox - Data Box.
 	ModelNameDataBox ModelName = "DataBox"
@@ -683,6 +700,7 @@ func PossibleSKUDisabledReasonValues() []SKUDisabledReason {
 	}
 }
 
+// SKUName - SKU names.
 type SKUName string
 
 const (

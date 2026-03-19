@@ -121,7 +121,7 @@ func (a *AccountCredentialDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AdditionalErrorInfo.
 func (a AdditionalErrorInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateAny(objectMap, "info", a.Info)
+	populate(objectMap, "info", a.Info)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
@@ -1839,6 +1839,7 @@ func (d DeviceErasureDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deviceErasureStatus", d.DeviceErasureStatus)
 	populate(objectMap, "erasureOrDestructionCertificateSasKey", d.ErasureOrDestructionCertificateSasKey)
+	populate(objectMap, "secureErasureCertificateSasKey", d.SecureErasureCertificateSasKey)
 	return json.Marshal(objectMap)
 }
 
@@ -1856,6 +1857,9 @@ func (d *DeviceErasureDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "erasureOrDestructionCertificateSasKey":
 			err = unpopulate(val, "ErasureOrDestructionCertificateSasKey", &d.ErasureOrDestructionCertificateSasKey)
+			delete(rawMsg, key)
+		case "secureErasureCertificateSasKey":
+			err = unpopulate(val, "SecureErasureCertificateSasKey", &d.SecureErasureCertificateSasKey)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4033,10 +4037,10 @@ func (r *RegionConfigurationResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "identity", r.Identity)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "sku", r.SKU)
-	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "systemData", r.SystemData)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -4049,17 +4053,17 @@ func (r *Resource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "identity":
-			err = unpopulate(val, "Identity", &r.Identity)
+		case "id":
+			err = unpopulate(val, "ID", &r.ID)
 			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, "Location", &r.Location)
+		case "name":
+			err = unpopulate(val, "Name", &r.Name)
 			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, "SKU", &r.SKU)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &r.SystemData)
 			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, "Tags", &r.Tags)
+		case "type":
+			err = unpopulate(val, "Type", &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4860,6 +4864,53 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
+func (t TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TrackedResource.
+func (t *TrackedResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &t.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &t.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &t.Name)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &t.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &t.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &t.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil

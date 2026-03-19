@@ -25,9 +25,9 @@ type ManagementClient struct {
 }
 
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
-//   - subscriptionID - The Subscription Id
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,19 +43,19 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // Mitigate - Request to mitigate for a given job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01
+// Generated from API version 2025-07-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters
 //     in length and use any alphanumeric and underscore only
-//   - resourceGroupName - The Resource Group Name
 //   - mitigateJobRequest - Mitigation Request
 //   - options - ManagementClientMitigateOptions contains the optional parameters for the ManagementClient.Mitigate method.
-func (client *ManagementClient) Mitigate(ctx context.Context, jobName string, resourceGroupName string, mitigateJobRequest MitigateJobRequest, options *ManagementClientMitigateOptions) (ManagementClientMitigateResponse, error) {
+func (client *ManagementClient) Mitigate(ctx context.Context, resourceGroupName string, jobName string, mitigateJobRequest MitigateJobRequest, options *ManagementClientMitigateOptions) (ManagementClientMitigateResponse, error) {
 	var err error
 	const operationName = "ManagementClient.Mitigate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.mitigateCreateRequest(ctx, jobName, resourceGroupName, mitigateJobRequest, options)
+	req, err := client.mitigateCreateRequest(ctx, resourceGroupName, jobName, mitigateJobRequest, options)
 	if err != nil {
 		return ManagementClientMitigateResponse{}, err
 	}
@@ -71,12 +71,8 @@ func (client *ManagementClient) Mitigate(ctx context.Context, jobName string, re
 }
 
 // mitigateCreateRequest creates the Mitigate request.
-func (client *ManagementClient) mitigateCreateRequest(ctx context.Context, jobName string, resourceGroupName string, mitigateJobRequest MitigateJobRequest, _ *ManagementClientMitigateOptions) (*policy.Request, error) {
+func (client *ManagementClient) mitigateCreateRequest(ctx context.Context, resourceGroupName string, jobName string, mitigateJobRequest MitigateJobRequest, _ *ManagementClientMitigateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/mitigate"
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -85,12 +81,16 @@ func (client *ManagementClient) mitigateCreateRequest(ctx context.Context, jobNa
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, mitigateJobRequest); err != nil {

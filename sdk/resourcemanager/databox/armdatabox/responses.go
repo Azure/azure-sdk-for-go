@@ -69,7 +69,7 @@ type ManagementClientMitigateResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// Operation Collection.
+	// The paginated list of connected cluster API operations.
 	OperationList
 }
 

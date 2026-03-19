@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Data Box module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v3
 ```
 
 ## Authorization

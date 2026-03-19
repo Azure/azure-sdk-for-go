@@ -8,7 +8,7 @@ package armdatabox
 import "time"
 
 type APIError struct {
-	// REQUIRED
+	// REQUIRED; The error detail.
 	Error *ErrorDetail
 }
 
@@ -52,7 +52,7 @@ type AccountCredentialDetails struct {
 // AdditionalErrorInfo - This class represents additional info which Resource Providers pass when an error occurs.
 type AdditionalErrorInfo struct {
 	// Additional information of the type of error.
-	Info any
+	Info map[string]any
 
 	// Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
 	Type *string
@@ -125,11 +125,11 @@ type AvailableSKURequest struct {
 
 // AvailableSKUsResult - The available skus operation response.
 type AvailableSKUsResult struct {
-	// Link for the next set of skus.
-	NextLink *string
-
-	// READ-ONLY; List of available skus.
+	// READ-ONLY; [Placeholder] Description for page model
 	Value []*SKUInformation
+
+	// [Placeholder] Description for nextLink property
+	NextLink *string
 }
 
 // AzureFileFilterDetails - Filter details to transfer Azure files
@@ -881,10 +881,10 @@ type DcAccessSecurityCode struct {
 }
 
 type Details struct {
-	// REQUIRED
+	// REQUIRED; Error code.
 	Code *string
 
-	// REQUIRED
+	// REQUIRED; Error message.
 	Message *string
 }
 
@@ -911,13 +911,17 @@ type DeviceCapabilityResponse struct {
 	DeviceCapabilityDetails []*DeviceCapabilityDetails
 }
 
-// DeviceErasureDetails - Device erasure details with erasure completion status and erasureordestructionlog sas key
+// DeviceErasureDetails - Device erasure details with erasure completion status, secure erasure sas key and erasureordestructionlog
+// sas key
 type DeviceErasureDetails struct {
 	// READ-ONLY; Holds the device erasure completion status
 	DeviceErasureStatus *StageStatus
 
 	// READ-ONLY; Shared access key to download cleanup or destruction certificate for device
 	ErasureOrDestructionCertificateSasKey *string
+
+	// READ-ONLY; Shared access key to download secure erasure certificate for the device
+	SecureErasureCertificateSasKey *string
 }
 
 // DiskCopyLogDetails - Copy Log Details for a disk
@@ -1237,13 +1241,17 @@ type EncryptionPreferences struct {
 }
 
 type ErrorDetail struct {
-	// REQUIRED
+	// REQUIRED; Error code.
 	Code *string
 
-	// REQUIRED
+	// REQUIRED; Error message.
 	Message *string
+
+	// Error target.
 	Details []*Details
-	Target  *string
+
+	// Additional error info.
+	Target *string
 }
 
 // ExportDiskDetails - Export disk details
@@ -1724,9 +1732,7 @@ type JobProperties struct {
 
 // JobResource - Job Resource.
 type JobResource struct {
-	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East
-	// US, Southeast Asia, etc.). The region of a resource cannot be changed once it is
-	// created, but if an identical region is specified on update the request will succeed.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// REQUIRED; Properties of a job.
@@ -1738,30 +1744,29 @@ type JobResource struct {
 	// Msi identity of the resource
 	Identity *ResourceIdentity
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
-	// resource groups).
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Id of the object.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Name of the object.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Type of the object.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // JobResourceList - Job Resource Collection
 type JobResourceList struct {
-	// Link for the next set of job resources.
-	NextLink *string
-
-	// List of job resources.
+	// REQUIRED; The JobResource items on this page
 	Value []*JobResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // JobResourceUpdateParameter - The JobResourceUpdateParameter.
@@ -1934,12 +1939,12 @@ type OperationDisplay struct {
 	Resource *string
 }
 
-// OperationList - Operation Collection.
+// OperationList - The paginated list of connected cluster API operations.
 type OperationList struct {
-	// Link for the next set of operations.
+	// The link to fetch the next page of connected cluster API operations.
 	NextLink *string
 
-	// READ-ONLY; List of operations.
+	// READ-ONLY; The list of connected cluster API operations.
 	Value []*Operation
 }
 
@@ -2068,22 +2073,19 @@ type RegionConfigurationResponse struct {
 	TransportAvailabilityResponse *TransportAvailabilityResponse
 }
 
-// Resource - Model of the Resource.
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East
-	// US, Southeast Asia, etc.). The region of a resource cannot be changed once it is
-	// created, but if an identical region is specified on update the request will succeed.
-	Location *string
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
 
-	// REQUIRED; The sku type.
-	SKU *SKU
+	// READ-ONLY; The name of the resource
+	Name *string
 
-	// Msi identity of the resource
-	Identity *ResourceIdentity
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
-	// resource groups).
-	Tags map[string]*string
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ResourceIdentity - Msi identity details of the resource
@@ -2434,25 +2436,47 @@ func (s *SubscriptionIsAllowedToCreateJobValidationResponseProperties) GetValida
 	}
 }
 
-// SystemData - Provides details about resource creation and update time
+// SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-	// READ-ONLY; The timestamp of resource creation (UTC)
+	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-	// READ-ONLY; A string identifier for the identity that created the resource
+	// The identity that created the resource.
 	CreatedBy *string
 
-	// READ-ONLY; The type of identity that created the resource: user, application, managedIdentity
-	CreatedByType *string
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
 
-	// READ-ONLY; The timestamp of resource last modification (UTC)
+	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
 
-	// READ-ONLY; A string identifier for the identity that last modified the resource
+	// The identity that last modified the resource.
 	LastModifiedBy *string
 
-	// READ-ONLY; The type of identity that last modified the resource: user, application, managedIdentity
-	LastModifiedByType *string
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // TransferAllDetails - Details to transfer all data.
@@ -2553,11 +2577,11 @@ type UnencryptedCredentials struct {
 
 // UnencryptedCredentialsList - List of unencrypted credentials for accessing device.
 type UnencryptedCredentialsList struct {
-	// Link for the next set of unencrypted credentials.
-	NextLink *string
-
-	// List of unencrypted credentials.
+	// REQUIRED; The UnencryptedCredentials items on this page
 	Value []*UnencryptedCredentials
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // UpdateJobDetails - Job details for update.
@@ -2587,12 +2611,12 @@ type UpdateJobProperties struct {
 	Details *UpdateJobDetails
 }
 
-// UserAssignedIdentity - Class defining User assigned identity details.
+// UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
-	// READ-ONLY; The client id of user assigned identity.
+	// READ-ONLY; The client ID of the assigned identity.
 	ClientID *string
 
-	// READ-ONLY; The principal id of user assigned identity.
+	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
 

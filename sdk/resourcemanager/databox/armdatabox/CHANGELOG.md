@@ -1,5 +1,23 @@
 # Release History
 
+## 3.0.0 (2026-03-19)
+### Breaking Changes
+
+- Function `*JobsClient.MarkDevicesShipped` parameter(s) have been changed from `(ctx context.Context, jobName string, resourceGroupName string, markDevicesShippedRequest MarkDevicesShippedRequest, options *JobsClientMarkDevicesShippedOptions)` to `(ctx context.Context, resourceGroupName string, jobName string, markDevicesShippedRequest MarkDevicesShippedRequest, options *JobsClientMarkDevicesShippedOptions)`
+- Function `*ManagementClient.Mitigate` parameter(s) have been changed from `(ctx context.Context, jobName string, resourceGroupName string, mitigateJobRequest MitigateJobRequest, options *ManagementClientMitigateOptions)` to `(ctx context.Context, resourceGroupName string, jobName string, mitigateJobRequest MitigateJobRequest, options *ManagementClientMitigateOptions)`
+- Type of `AdditionalErrorInfo.Info` has been changed from `any` to `map[string]any`
+- Type of `SystemData.CreatedByType` has been changed from `*string` to `*CreatedByType`
+- Type of `SystemData.LastModifiedByType` has been changed from `*string` to `*CreatedByType`
+- Field `Identity`, `Location`, `SKU`, `Tags` of struct `Resource` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New struct `TrackedResource`
+- New field `SecureErasureCertificateSasKey` in struct `DeviceErasureDetails`
+- New field `ID`, `Name`, `SystemData`, `Type` in struct `Resource`
+
+
 ## 2.2.0 (2025-03-27)
 ### Features Added
 

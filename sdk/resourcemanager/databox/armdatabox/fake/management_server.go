@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,7 +22,7 @@ import (
 type ManagementServer struct {
 	// Mitigate is the fake for method ManagementClient.Mitigate
 	// HTTP status codes to indicate success: http.StatusNoContent
-	Mitigate func(ctx context.Context, jobName string, resourceGroupName string, mitigateJobRequest armdatabox.MitigateJobRequest, options *armdatabox.ManagementClientMitigateOptions) (resp azfake.Responder[armdatabox.ManagementClientMitigateResponse], errResp azfake.ErrorResponder)
+	Mitigate func(ctx context.Context, resourceGroupName string, jobName string, mitigateJobRequest armdatabox.MitigateJobRequest, options *armdatabox.ManagementClientMitigateOptions) (resp azfake.Responder[armdatabox.ManagementClientMitigateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagementServerTransport creates a new instance of ManagementServerTransport with the provided implementation.
@@ -89,14 +89,10 @@ func (m *ManagementServerTransport) dispatchMitigate(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBox/jobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/mitigate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdatabox.MitigateJobRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +100,11 @@ func (m *ManagementServerTransport) dispatchMitigate(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Mitigate(req.Context(), jobNameParam, resourceGroupNameParam, body, nil)
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Mitigate(req.Context(), resourceGroupNameParam, jobNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

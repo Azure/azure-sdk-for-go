@@ -7,7 +7,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v3"
 )
 
 func unmarshalValidationRequestClassification(rawMsg json.RawMessage) (armdatabox.ValidationRequestClassification, error) {

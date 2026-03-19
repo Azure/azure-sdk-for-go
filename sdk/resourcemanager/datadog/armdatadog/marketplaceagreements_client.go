@@ -27,7 +27,7 @@ type MarketplaceAgreementsClient struct {
 // NewMarketplaceAgreementsClient creates a new instance of MarketplaceAgreementsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MarketplaceAgreementsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 // CreateOrUpdate - Create Datadog marketplace agreement in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-10-20
 //   - options - MarketplaceAgreementsClientCreateOrUpdateOptions contains the optional parameters for the MarketplaceAgreementsClient.CreateOrUpdate
 //     method.
 func (client *MarketplaceAgreementsClient) CreateOrUpdate(ctx context.Context, options *MarketplaceAgreementsClientCreateOrUpdateOptions) (MarketplaceAgreementsClientCreateOrUpdateResponse, error) {
@@ -80,7 +80,7 @@ func (client *MarketplaceAgreementsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-10-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -103,7 +103,7 @@ func (client *MarketplaceAgreementsClient) createOrUpdateHandleResponse(resp *ht
 
 // NewListPager - List Datadog marketplace agreements in the subscription.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-10-20
 //   - options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.NewListPager
 //     method.
 func (client *MarketplaceAgreementsClient) NewListPager(options *MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse] {
@@ -130,7 +130,7 @@ func (client *MarketplaceAgreementsClient) NewListPager(options *MarketplaceAgre
 }
 
 // listCreateRequest creates the List request.
-func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context, options *MarketplaceAgreementsClientListOptions) (*policy.Request, error) {
+func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context, _ *MarketplaceAgreementsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,7 +141,7 @@ func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-10-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

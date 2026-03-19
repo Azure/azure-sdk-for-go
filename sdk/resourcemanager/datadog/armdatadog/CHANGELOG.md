@@ -1,5 +1,20 @@
 # Release History
 
+## 1.4.0 (2026-03-19)
+### Features Added
+
+- New function `NewBillingInfoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BillingInfoClient, error)`
+- New function `*BillingInfoClient.Get(ctx context.Context, resourceGroupName string, monitorName string, options *BillingInfoClientGetOptions) (BillingInfoClientGetResponse, error)`
+- New function `*ClientFactory.NewBillingInfoClient() *BillingInfoClient`
+- New struct `BillingInfoResponse`
+- New struct `MarketplaceSaaSInfo`
+- New struct `PartnerBillingEntity`
+- New field `NextLink` in struct `CreateResourceSupportedResponseList`
+- New field `Location` in struct `LinkedResource`
+- New field `NextLink` in struct `MonitoredSubscriptionPropertiesList`
+- New field `CustomMetrics` in struct `MonitoringTagRulesProperties`
+
+
 ## 1.3.0 (2023-11-24)
 ### Features Added
 

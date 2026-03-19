@@ -5,6 +5,12 @@
 
 package armdatadog
 
+// BillingInfoClientGetResponse contains the response from method BillingInfoClient.Get.
+type BillingInfoClientGetResponse struct {
+	// Marketplace Subscription and Organization details to which resource gets billed into.
+	BillingInfoResponse
+}
+
 // CreationSupportedClientGetResponse contains the response from method CreationSupportedClient.Get.
 type CreationSupportedClientGetResponse struct {
 	// Datadog resource can be created or not.

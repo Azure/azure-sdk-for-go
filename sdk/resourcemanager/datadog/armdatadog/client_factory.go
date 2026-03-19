@@ -14,8 +14,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -24,54 +23,75 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
+}
+
+// NewBillingInfoClient creates a new instance of BillingInfoClient.
+func (c *ClientFactory) NewBillingInfoClient() *BillingInfoClient {
+	return &BillingInfoClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewCreationSupportedClient creates a new instance of CreationSupportedClient.
 func (c *ClientFactory) NewCreationSupportedClient() *CreationSupportedClient {
-	subClient, _ := NewCreationSupportedClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &CreationSupportedClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMarketplaceAgreementsClient creates a new instance of MarketplaceAgreementsClient.
 func (c *ClientFactory) NewMarketplaceAgreementsClient() *MarketplaceAgreementsClient {
-	subClient, _ := NewMarketplaceAgreementsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MarketplaceAgreementsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMonitoredSubscriptionsClient creates a new instance of MonitoredSubscriptionsClient.
 func (c *ClientFactory) NewMonitoredSubscriptionsClient() *MonitoredSubscriptionsClient {
-	subClient, _ := NewMonitoredSubscriptionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MonitoredSubscriptionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMonitorsClient creates a new instance of MonitorsClient.
 func (c *ClientFactory) NewMonitorsClient() *MonitorsClient {
-	subClient, _ := NewMonitorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MonitorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewSingleSignOnConfigurationsClient creates a new instance of SingleSignOnConfigurationsClient.
 func (c *ClientFactory) NewSingleSignOnConfigurationsClient() *SingleSignOnConfigurationsClient {
-	subClient, _ := NewSingleSignOnConfigurationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &SingleSignOnConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewTagRulesClient creates a new instance of TagRulesClient.
 func (c *ClientFactory) NewTagRulesClient() *TagRulesClient {
-	subClient, _ := NewTagRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &TagRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

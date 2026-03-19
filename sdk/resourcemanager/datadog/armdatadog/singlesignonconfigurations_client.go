@@ -27,7 +27,7 @@ type SingleSignOnConfigurationsClient struct {
 // NewSingleSignOnConfigurationsClient creates a new instance of SingleSignOnConfigurationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSingleSignOnConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SingleSignOnConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSingleSignOnConfigurationsClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Configures single-sign-on for this resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-10-20
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - Configuration name
@@ -70,7 +70,7 @@ func (client *SingleSignOnConfigurationsClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Configures single-sign-on for this resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-10-20
 func (client *SingleSignOnConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SingleSignOnConfigurationsClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *SingleSignOnConfigurationsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-10-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -131,7 +131,7 @@ func (client *SingleSignOnConfigurationsClient) createOrUpdateCreateRequest(ctx 
 // Get - Gets the datadog single sign-on resource for the given Monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-10-20
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - Configuration name
@@ -160,7 +160,7 @@ func (client *SingleSignOnConfigurationsClient) Get(ctx context.Context, resourc
 }
 
 // getCreateRequest creates the Get request.
-func (client *SingleSignOnConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsClientGetOptions) (*policy.Request, error) {
+func (client *SingleSignOnConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, _ *SingleSignOnConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -183,7 +183,7 @@ func (client *SingleSignOnConfigurationsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-10-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *SingleSignOnConfigurationsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List the single sign-on configurations for a given monitor resource.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-10-20
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - SingleSignOnConfigurationsClientListOptions contains the optional parameters for the SingleSignOnConfigurationsClient.NewListPager
@@ -229,7 +229,7 @@ func (client *SingleSignOnConfigurationsClient) NewListPager(resourceGroupName s
 }
 
 // listCreateRequest creates the List request.
-func (client *SingleSignOnConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *SingleSignOnConfigurationsClientListOptions) (*policy.Request, error) {
+func (client *SingleSignOnConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *SingleSignOnConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -248,7 +248,7 @@ func (client *SingleSignOnConfigurationsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-10-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

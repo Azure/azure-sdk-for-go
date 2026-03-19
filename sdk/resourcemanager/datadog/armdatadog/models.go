@@ -83,6 +83,15 @@ type AgreementResourceListResponse struct {
 	Value []*AgreementResource
 }
 
+// BillingInfoResponse - Marketplace Subscription and Organization details to which resource gets billed into.
+type BillingInfoResponse struct {
+	// Marketplace Subscription details
+	MarketplaceSaasInfo *MarketplaceSaaSInfo
+
+	// Partner Billing Entity details: Organization Info
+	PartnerBillingEntity *PartnerBillingEntity
+}
+
 // CreateResourceSupportedProperties - Datadog resource can be created or not properties.
 type CreateResourceSupportedProperties struct {
 	// READ-ONLY; Indicates if selected subscription supports Datadog resource creation, if not it is already being monitored
@@ -100,7 +109,9 @@ type CreateResourceSupportedResponse struct {
 }
 
 type CreateResourceSupportedResponseList struct {
-	Value []*CreateResourceSupportedResponse
+	// Link to the next set of results, if any.
+	NextLink *string
+	Value    []*CreateResourceSupportedResponse
 }
 
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
@@ -170,6 +181,9 @@ type InstallMethod struct {
 type LinkedResource struct {
 	// The ARM id of the linked resource.
 	ID *string
+
+	// The location of the linked resource.
+	Location *string
 }
 
 // LinkedResourceListResponse - Response of a list operation.
@@ -202,6 +216,24 @@ type LogRules struct {
 type LogsAgent struct {
 	// The transport.
 	Transport *string
+}
+
+// MarketplaceSaaSInfo - Marketplace SAAS Info of the resource.
+type MarketplaceSaaSInfo struct {
+	// The Azure Subscription ID to which the Marketplace Subscription belongs and gets billed into.
+	BilledAzureSubscriptionID *string
+
+	// Marketplace Subscription Details: SAAS Name
+	MarketplaceName *string
+
+	// Marketplace Subscription Details: SaaS Subscription Status
+	MarketplaceStatus *string
+
+	// Marketplace Subscription Id. This is a GUID-formatted string.
+	MarketplaceSubscriptionID *string
+
+	// Flag specifying if the Marketplace status is subscribed or not.
+	Subscribed *bool
 }
 
 // MetricRules - Set of rules for sending metrics for the Monitor resource.
@@ -350,7 +382,9 @@ type MonitoredSubscriptionProperties struct {
 }
 
 type MonitoredSubscriptionPropertiesList struct {
-	Value []*MonitoredSubscriptionProperties
+	// Link to the next set of results, if any.
+	NextLink *string
+	Value    []*MonitoredSubscriptionProperties
 }
 
 // MonitoringTagRules - Capture logs and metrics of Azure resources based on ARM tags.
@@ -384,6 +418,9 @@ type MonitoringTagRulesListResponse struct {
 type MonitoringTagRulesProperties struct {
 	// Configuration to enable/disable auto-muting flag
 	Automuting *bool
+
+	// Configuration to enable/disable custom metrics. If enabled, custom metrics from app insights will be sent.
+	CustomMetrics *bool
 
 	// Set of rules for sending logs for the Monitor resource.
 	LogRules *LogRules
@@ -464,8 +501,20 @@ type OrganizationProperties struct {
 	RedirectURI *string
 }
 
+// PartnerBillingEntity - Partner Billing details associated with the resource.
+type PartnerBillingEntity struct {
+	// The Datadog Organization Id.
+	ID *string
+
+	// The Datadog Organization Name.
+	Name *string
+
+	// Link to the datadog organization page
+	PartnerEntityURI *string
+}
+
 type ResourceSKU struct {
-	// REQUIRED; Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
+	// REQUIRED; Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'Linked'.
 	Name *string
 }
 

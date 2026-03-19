@@ -5,6 +5,11 @@
 
 package armdatadog
 
+// BillingInfoClientGetOptions contains the optional parameters for the BillingInfoClient.Get method.
+type BillingInfoClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CreationSupportedClientGetOptions contains the optional parameters for the CreationSupportedClient.Get method.
 type CreationSupportedClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -32,14 +37,14 @@ type MarketplaceAgreementsClientListOptions struct {
 type MonitoredSubscriptionsClientBeginCreateorUpdateOptions struct {
 	Body *MonitoredSubscriptionProperties
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // MonitoredSubscriptionsClientBeginDeleteOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginDelete
 // method.
 type MonitoredSubscriptionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -48,7 +53,7 @@ type MonitoredSubscriptionsClientBeginDeleteOptions struct {
 type MonitoredSubscriptionsClientBeginUpdateOptions struct {
 	Body *MonitoredSubscriptionProperties
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -67,13 +72,13 @@ type MonitoredSubscriptionsClientListOptions struct {
 type MonitorsClientBeginCreateOptions struct {
 	Body *MonitorResource
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
 type MonitorsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -81,7 +86,7 @@ type MonitorsClientBeginDeleteOptions struct {
 type MonitorsClientBeginUpdateOptions struct {
 	Body *MonitorResourceUpdateParameters
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -149,7 +154,7 @@ type OperationsClientListOptions struct {
 type SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions struct {
 	Body *SingleSignOnResource
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

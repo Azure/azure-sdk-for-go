@@ -16,13 +16,29 @@ import (
 
 // ServerFactory is a fake server for instances of the armdatadog.ClientFactory type.
 type ServerFactory struct {
-	CreationSupportedServer          CreationSupportedServer
-	MarketplaceAgreementsServer      MarketplaceAgreementsServer
-	MonitoredSubscriptionsServer     MonitoredSubscriptionsServer
-	MonitorsServer                   MonitorsServer
-	OperationsServer                 OperationsServer
+	// BillingInfoServer contains the fakes for client BillingInfoClient
+	BillingInfoServer BillingInfoServer
+
+	// CreationSupportedServer contains the fakes for client CreationSupportedClient
+	CreationSupportedServer CreationSupportedServer
+
+	// MarketplaceAgreementsServer contains the fakes for client MarketplaceAgreementsClient
+	MarketplaceAgreementsServer MarketplaceAgreementsServer
+
+	// MonitoredSubscriptionsServer contains the fakes for client MonitoredSubscriptionsClient
+	MonitoredSubscriptionsServer MonitoredSubscriptionsServer
+
+	// MonitorsServer contains the fakes for client MonitorsClient
+	MonitorsServer MonitorsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// SingleSignOnConfigurationsServer contains the fakes for client SingleSignOnConfigurationsClient
 	SingleSignOnConfigurationsServer SingleSignOnConfigurationsServer
-	TagRulesServer                   TagRulesServer
+
+	// TagRulesServer contains the fakes for client TagRulesClient
+	TagRulesServer TagRulesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -39,6 +55,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                *ServerFactory
 	trMu                               sync.Mutex
+	trBillingInfoServer                *BillingInfoServerTransport
 	trCreationSupportedServer          *CreationSupportedServerTransport
 	trMarketplaceAgreementsServer      *MarketplaceAgreementsServerTransport
 	trMonitoredSubscriptionsServer     *MonitoredSubscriptionsServerTransport
@@ -61,6 +78,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "BillingInfoClient":
+		initServer(s, &s.trBillingInfoServer, func() *BillingInfoServerTransport { return NewBillingInfoServerTransport(&s.srv.BillingInfoServer) })
+		resp, err = s.trBillingInfoServer.Do(req)
 	case "CreationSupportedClient":
 		initServer(s, &s.trCreationSupportedServer, func() *CreationSupportedServerTransport {
 			return NewCreationSupportedServerTransport(&s.srv.CreationSupportedServer)

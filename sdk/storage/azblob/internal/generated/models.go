@@ -12,13 +12,13 @@ import (
 
 // AccessPolicy - Represents an access policy.
 type AccessPolicy struct {
-	// REQUIRED; The date-time the policy expires.
+	// The date-time the policy expires.
 	Expiry *time.Time `xml:"Expiry"`
 
-	// REQUIRED; The permissions for acl the policy.
+	// The permissions for acl the policy.
 	Permission *string `xml:"Permission"`
 
-	// REQUIRED; The date-time the policy is active.
+	// The date-time the policy is active.
 	Start *time.Time `xml:"Start"`
 }
 
@@ -580,7 +580,7 @@ type QueryFormat struct {
 	JSONTextConfiguration *JSONTextConfiguration `xml:"JsonTextConfiguration"`
 
 	// The Parquet configuration.
-	ParquetTextConfiguration *ParquetConfiguration `xml:"ParquetConfiguration"`
+	ParquetTextConfiguration *ParquetConfiguration `xml:"ParquetTextConfiguration"`
 }
 
 // QueryRequest - Groups the set of query request settings.
@@ -618,11 +618,11 @@ type RetentionPolicy struct {
 
 // SignedIdentifier - The signed identifier.
 type SignedIdentifier struct {
-	// REQUIRED; The access policy for the signed identifier.
-	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
-
 	// REQUIRED; The unique ID for the signed identifier.
 	ID *string `xml:"Id"`
+
+	// The access policy for the signed identifier.
+	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
 }
 
 // SignedIdentifiers - Represents an array of signed identifiers

@@ -424,8 +424,7 @@ func (client *BlobClient) CopyFromURL(ctx context.Context, copySource string, op
 
 // copyFromURLCreateRequest creates the CopyFromURL request.
 func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySource string, options *BlobClientCopyFromURLOptions) (*policy.Request, error) {
-	urlPath := "?comp=copy"
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.url)
 	if err != nil {
 		return nil, err
 	}
@@ -1265,7 +1264,6 @@ func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (Blo
 
 // GetProperties - The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties
 // for the blob. It does not return the content of the blob.
-// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-04-06
 //   - options - BlobClientGetPropertiesOptions contains the optional parameters for the BlobClient.GetProperties method.
@@ -1340,7 +1338,7 @@ func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, option
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (BlobClientGetPropertiesResponse, error) {
-	result := BlobClientGetPropertiesResponse{}
+	result := BlobClientGetPropertiesResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}

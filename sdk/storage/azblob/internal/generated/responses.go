@@ -735,6 +735,9 @@ type BlobClientGetPropertiesResponse struct {
 	// An opaque, globally-unique, server-generated string identifier for the request.
 	RequestID *string
 
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+
 	// The number of tags associated with the blob
 	TagCount *int64
 
@@ -1335,6 +1338,9 @@ type BlockBlobClientUploadResponse struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
 	ClientRequestID *string
 
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1777,7 +1783,7 @@ type ContainerClientSubmitBatchResponse struct {
 
 	// Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed;
 	// boundary=batch_<GUID>
-	MultipartContentType *string
+	ContentType *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
 	RequestID *string

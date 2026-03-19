@@ -1575,7 +1575,7 @@ func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, con
 func (client *ContainerClient) submitBatchHandleResponse(resp *http.Response) (ContainerClientSubmitBatchResponse, error) {
 	result := ContainerClientSubmitBatchResponse{Body: resp.Body}
 	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.MultipartContentType = &val
+		result.ContentType = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val

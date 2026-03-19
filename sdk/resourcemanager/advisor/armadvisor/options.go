@@ -5,6 +5,35 @@
 
 package armadvisor
 
+// AssessmentTypesClientListOptions contains the optional parameters for the AssessmentTypesClient.NewListPager method.
+type AssessmentTypesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssessmentsClientDeleteOptions contains the optional parameters for the AssessmentsClient.Delete method.
+type AssessmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssessmentsClientGetOptions contains the optional parameters for the AssessmentsClient.Get method.
+type AssessmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.NewListPager method.
+type AssessmentsClientListOptions struct {
+	// The page-continuation token to use with a paged version of this API.
+	Skiptoken *string
+
+	// Limit the result to the specified number of rows.
+	Top *string
+}
+
+// AssessmentsClientPutOptions contains the optional parameters for the AssessmentsClient.Put method.
+type AssessmentsClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConfigurationsClientCreateInResourceGroupOptions contains the optional parameters for the ConfigurationsClient.CreateInResourceGroup
 // method.
 type ConfigurationsClientCreateInResourceGroupOptions struct {
@@ -26,6 +55,11 @@ type ConfigurationsClientListByResourceGroupOptions struct {
 // ConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationsClient.NewListBySubscriptionPager
 // method.
 type ConfigurationsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientPredictOptions contains the optional parameters for the ManagementClient.Predict method.
+type ManagementClientPredictOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -61,6 +95,23 @@ type RecommendationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RecommendationsClientListByTenantOptions contains the optional parameters for the RecommendationsClient.NewListByTenantPager
+// method.
+type RecommendationsClientListByTenantOptions struct {
+	// The filter to apply to the recommendations.
+	// Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', 'Category'] with operators
+	// ['eq', 'and', 'or'].
+	// Example:
+	// - $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
+	Filter *string
+
+	// The page-continuation token to use with a paged version of this API.
+	SkipToken *string
+
+	// The number of recommendations per page if a paged version of this API is being used.
+	Top *int32
+}
+
 // RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager method.
 type RecommendationsClientListOptions struct {
 	// The filter to apply to the recommendations.
@@ -75,6 +126,41 @@ type RecommendationsClientListOptions struct {
 
 	// The number of recommendations per page if a paged version of this API is being used.
 	Top *int32
+}
+
+// RecommendationsClientPatchOptions contains the optional parameters for the RecommendationsClient.Patch method.
+type RecommendationsClientPatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResiliencyReviewsClientGetOptions contains the optional parameters for the ResiliencyReviewsClient.Get method.
+type ResiliencyReviewsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResiliencyReviewsClientListOptions contains the optional parameters for the ResiliencyReviewsClient.NewListPager method.
+type ResiliencyReviewsClientListOptions struct {
+	// The filter to apply.
+	// Filter can be applied to properties ['reviewStatus', 'reviewId'] with operators ['eq', 'and', 'or'].
+	// Example:
+	// - $filter=reviewStatus eq 'New'
+	Filter *string
+
+	// The number of items to skip before starting to collect the result set.
+	Skip *int32
+
+	// The number of items to be included in the result.
+	Top *int32
+}
+
+// ScoresClientGetOptions contains the optional parameters for the ScoresClient.Get method.
+type ScoresClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScoresClientListOptions contains the optional parameters for the ScoresClient.List method.
+type ScoresClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SuppressionsClientCreateOptions contains the optional parameters for the SuppressionsClient.Create method.
@@ -99,4 +185,52 @@ type SuppressionsClientListOptions struct {
 
 	// The number of suppressions per page if a paged version of this API is being used.
 	Top *int32
+}
+
+// TriageRecommendationsClientApproveTriageRecommendationOptions contains the optional parameters for the TriageRecommendationsClient.ApproveTriageRecommendation
+// method.
+type TriageRecommendationsClientApproveTriageRecommendationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TriageRecommendationsClientGetOptions contains the optional parameters for the TriageRecommendationsClient.Get method.
+type TriageRecommendationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TriageRecommendationsClientListOptions contains the optional parameters for the TriageRecommendationsClient.NewListPager
+// method.
+type TriageRecommendationsClientListOptions struct {
+	// The number of items to skip before starting to collect the result set.
+	Skip *int32
+
+	// The number of items to be included in the result.
+	Top *int32
+}
+
+// TriageRecommendationsClientRejectTriageRecommendationOptions contains the optional parameters for the TriageRecommendationsClient.RejectTriageRecommendation
+// method.
+type TriageRecommendationsClientRejectTriageRecommendationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TriageRecommendationsClientResetTriageRecommendationOptions contains the optional parameters for the TriageRecommendationsClient.ResetTriageRecommendation
+// method.
+type TriageRecommendationsClientResetTriageRecommendationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TriageResourcesClientGetOptions contains the optional parameters for the TriageResourcesClient.Get method.
+type TriageResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TriageResourcesClientListOptions contains the optional parameters for the TriageResourcesClient.NewListPager method.
+type TriageResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkloadsClientListOptions contains the optional parameters for the WorkloadsClient.NewListPager method.
+type WorkloadsClientListOptions struct {
+	// placeholder for future optional parameters
 }

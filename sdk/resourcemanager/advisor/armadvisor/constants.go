@@ -5,10 +5,23 @@
 
 package armadvisor
 
+// Aggregated - The aggregation level of the score.
+type Aggregated string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor"
-	moduleVersion = "v1.2.0"
+	AggregatedDay   Aggregated = "day"
+	AggregatedMonth Aggregated = "month"
+	AggregatedWeek  Aggregated = "week"
 )
+
+// PossibleAggregatedValues returns the possible values for the Aggregated const type.
+func PossibleAggregatedValues() []Aggregated {
+	return []Aggregated{
+		AggregatedDay,
+		AggregatedMonth,
+		AggregatedWeek,
+	}
+}
 
 // CPUThreshold - Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid
 // values: 5 (default), 10, 15 or 20.
@@ -65,6 +78,56 @@ func PossibleConfigurationNameValues() []ConfigurationName {
 	}
 }
 
+// Control - Control type for recommendation.
+type Control string
+
+const (
+	ControlBusinessContinuity          Control = "BusinessContinuity"
+	ControlDisasterRecovery            Control = "DisasterRecovery"
+	ControlHighAvailability            Control = "HighAvailability"
+	ControlMonitoringAndAlerting       Control = "MonitoringAndAlerting"
+	ControlOther                       Control = "Other"
+	ControlPersonalized                Control = "Personalized"
+	ControlPrioritizedRecommendations  Control = "PrioritizedRecommendations"
+	ControlScalability                 Control = "Scalability"
+	ControlServiceUpgradeAndRetirement Control = "ServiceUpgradeAndRetirement"
+)
+
+// PossibleControlValues returns the possible values for the Control const type.
+func PossibleControlValues() []Control {
+	return []Control{
+		ControlBusinessContinuity,
+		ControlDisasterRecovery,
+		ControlHighAvailability,
+		ControlMonitoringAndAlerting,
+		ControlOther,
+		ControlPersonalized,
+		ControlPrioritizedRecommendations,
+		ControlScalability,
+		ControlServiceUpgradeAndRetirement,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
 // DigestConfigState - State of digest configuration.
 type DigestConfigState string
 
@@ -78,6 +141,31 @@ func PossibleDigestConfigStateValues() []DigestConfigState {
 	return []DigestConfigState{
 		DigestConfigStateActive,
 		DigestConfigStateDisabled,
+	}
+}
+
+// Duration - Minimum duration for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid values: 7 (default),
+// 14, 21, 30, 60 or 90.
+type Duration string
+
+const (
+	DurationFourteen  Duration = "14"
+	DurationNinety    Duration = "90"
+	DurationSeven     Duration = "7"
+	DurationSixty     Duration = "60"
+	DurationThirty    Duration = "30"
+	DurationTwentyOne Duration = "21"
+)
+
+// PossibleDurationValues returns the possible values for the Duration const type.
+func PossibleDurationValues() []Duration {
+	return []Duration{
+		DurationFourteen,
+		DurationNinety,
+		DurationSeven,
+		DurationSixty,
+		DurationThirty,
+		DurationTwentyOne,
 	}
 }
 
@@ -96,6 +184,150 @@ func PossibleImpactValues() []Impact {
 		ImpactHigh,
 		ImpactLow,
 		ImpactMedium,
+	}
+}
+
+// PredictionType - Type of the prediction.
+type PredictionType string
+
+const (
+	PredictionTypePredictiveRightsizing PredictionType = "PredictiveRightsizing"
+)
+
+// PossiblePredictionTypeValues returns the possible values for the PredictionType const type.
+func PossiblePredictionTypeValues() []PredictionType {
+	return []PredictionType{
+		PredictionTypePredictiveRightsizing,
+	}
+}
+
+// Priority - The Priority of the Recommendation.
+type Priority string
+
+const (
+	PriorityCritical      Priority = "Critical"
+	PriorityHigh          Priority = "High"
+	PriorityInformational Priority = "Informational"
+	PriorityLow           Priority = "Low"
+	PriorityMedium        Priority = "Medium"
+)
+
+// PossiblePriorityValues returns the possible values for the Priority const type.
+func PossiblePriorityValues() []Priority {
+	return []Priority{
+		PriorityCritical,
+		PriorityHigh,
+		PriorityInformational,
+		PriorityLow,
+		PriorityMedium,
+	}
+}
+
+// PriorityName - Recommendation priority name enum.
+type PriorityName string
+
+const (
+	// PriorityNameHigh - High
+	PriorityNameHigh PriorityName = "High"
+	// PriorityNameLow - Low
+	PriorityNameLow PriorityName = "Low"
+	// PriorityNameMedium - Medium
+	PriorityNameMedium PriorityName = "Medium"
+)
+
+// PossiblePriorityNameValues returns the possible values for the PriorityName const type.
+func PossiblePriorityNameValues() []PriorityName {
+	return []PriorityName{
+		PriorityNameHigh,
+		PriorityNameLow,
+		PriorityNameMedium,
+	}
+}
+
+// Reason - The reason the state of the Recommendation was changed.
+type Reason string
+
+const (
+	ReasonAlternativeSolution Reason = "AlternativeSolution"
+	ReasonExcessiveInvestment Reason = "ExcessiveInvestment"
+	ReasonIncompatible        Reason = "Incompatible"
+	ReasonRiskAccepted        Reason = "RiskAccepted"
+	ReasonTooComplex          Reason = "TooComplex"
+	ReasonUnclear             Reason = "Unclear"
+)
+
+// PossibleReasonValues returns the possible values for the Reason const type.
+func PossibleReasonValues() []Reason {
+	return []Reason{
+		ReasonAlternativeSolution,
+		ReasonExcessiveInvestment,
+		ReasonIncompatible,
+		ReasonRiskAccepted,
+		ReasonTooComplex,
+		ReasonUnclear,
+	}
+}
+
+// ReasonForRejectionName - Reason for rejecting recommendation name enum.
+type ReasonForRejectionName string
+
+const (
+	// ReasonForRejectionNameNotARisk - Not A Risk
+	ReasonForRejectionNameNotARisk ReasonForRejectionName = "NotARisk"
+	// ReasonForRejectionNameRiskAccepted - Risk Accepted
+	ReasonForRejectionNameRiskAccepted ReasonForRejectionName = "RiskAccepted"
+)
+
+// PossibleReasonForRejectionNameValues returns the possible values for the ReasonForRejectionName const type.
+func PossibleReasonForRejectionNameValues() []ReasonForRejectionName {
+	return []ReasonForRejectionName{
+		ReasonForRejectionNameNotARisk,
+		ReasonForRejectionNameRiskAccepted,
+	}
+}
+
+// RecommendationStatusName - Recommendation status name enum.
+type RecommendationStatusName string
+
+const (
+	// RecommendationStatusNameApproved - Approved
+	RecommendationStatusNameApproved RecommendationStatusName = "Approved"
+	// RecommendationStatusNamePending - Pending
+	RecommendationStatusNamePending RecommendationStatusName = "Pending"
+	// RecommendationStatusNameRejected - Rejected
+	RecommendationStatusNameRejected RecommendationStatusName = "Rejected"
+)
+
+// PossibleRecommendationStatusNameValues returns the possible values for the RecommendationStatusName const type.
+func PossibleRecommendationStatusNameValues() []RecommendationStatusName {
+	return []RecommendationStatusName{
+		RecommendationStatusNameApproved,
+		RecommendationStatusNamePending,
+		RecommendationStatusNameRejected,
+	}
+}
+
+// ReviewStatus - Review status string, returns the Reviews by the given status (e.g. 'New', 'Triaged', 'Completed').
+type ReviewStatus string
+
+const (
+	// ReviewStatusCompleted - Completed
+	ReviewStatusCompleted ReviewStatus = "Completed"
+	// ReviewStatusInProgress - In Progress
+	ReviewStatusInProgress ReviewStatus = "InProgress"
+	// ReviewStatusNew - New
+	ReviewStatusNew ReviewStatus = "New"
+	// ReviewStatusTriaged - Triaged
+	ReviewStatusTriaged ReviewStatus = "Triaged"
+)
+
+// PossibleReviewStatusValues returns the possible values for the ReviewStatus const type.
+func PossibleReviewStatusValues() []ReviewStatus {
+	return []ReviewStatus{
+		ReviewStatusCompleted,
+		ReviewStatusInProgress,
+		ReviewStatusNew,
+		ReviewStatusTriaged,
 	}
 }
 
@@ -127,5 +359,31 @@ const (
 func PossibleScenarioValues() []Scenario {
 	return []Scenario{
 		ScenarioAlerts,
+	}
+}
+
+// State - The state of the Recommendation
+type State string
+
+const (
+	StateApproved   State = "Approved"
+	StateCompleted  State = "Completed"
+	StateDismissed  State = "Dismissed"
+	StateInProgress State = "InProgress"
+	StatePending    State = "Pending"
+	StatePostponed  State = "Postponed"
+	StateRejected   State = "Rejected"
+)
+
+// PossibleStateValues returns the possible values for the State const type.
+func PossibleStateValues() []State {
+	return []State{
+		StateApproved,
+		StateCompleted,
+		StateDismissed,
+		StateInProgress,
+		StatePending,
+		StatePostponed,
+		StateRejected,
 	}
 }

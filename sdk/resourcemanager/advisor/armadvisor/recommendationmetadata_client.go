@@ -25,7 +25,7 @@ type RecommendationMetadataClient struct {
 
 // NewRecommendationMetadataClient creates a new instance of RecommendationMetadataClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRecommendationMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationMetadataClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,10 +37,10 @@ func NewRecommendationMetadataClient(credential azcore.TokenCredential, options 
 	return client, nil
 }
 
-// Get - Gets the metadata entity.
+// Get - Get a MetadataEntity
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - name - Name of metadata entity.
 //   - options - RecommendationMetadataClientGetOptions contains the optional parameters for the RecommendationMetadataClient.Get
 //     method.
@@ -67,7 +67,7 @@ func (client *RecommendationMetadataClient) Get(ctx context.Context, name string
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context, name string, options *RecommendationMetadataClientGetOptions) (*policy.Request, error) {
+func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context, name string, _ *RecommendationMetadataClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Advisor/metadata/{name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -78,7 +78,7 @@ func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -95,7 +95,7 @@ func (client *RecommendationMetadataClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets the list of metadata entities.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - options - RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.NewListPager
 //     method.
 func (client *RecommendationMetadataClient) NewListPager(options *RecommendationMetadataClientListOptions) *runtime.Pager[RecommendationMetadataClientListResponse] {
@@ -122,14 +122,14 @@ func (client *RecommendationMetadataClient) NewListPager(options *Recommendation
 }
 
 // listCreateRequest creates the List request.
-func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Context, options *RecommendationMetadataClientListOptions) (*policy.Request, error) {
+func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Context, _ *RecommendationMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Advisor/metadata"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

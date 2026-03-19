@@ -16,11 +16,44 @@ import (
 
 // ServerFactory is a fake server for instances of the armadvisor.ClientFactory type.
 type ServerFactory struct {
-	ConfigurationsServer         ConfigurationsServer
-	OperationsServer             OperationsServer
+	// AssessmentTypesServer contains the fakes for client AssessmentTypesClient
+	AssessmentTypesServer AssessmentTypesServer
+
+	// AssessmentsServer contains the fakes for client AssessmentsClient
+	AssessmentsServer AssessmentsServer
+
+	// ConfigurationsServer contains the fakes for client ConfigurationsClient
+	ConfigurationsServer ConfigurationsServer
+
+	// ManagementServer contains the fakes for client ManagementClient
+	ManagementServer ManagementServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// RecommendationMetadataServer contains the fakes for client RecommendationMetadataClient
 	RecommendationMetadataServer RecommendationMetadataServer
-	RecommendationsServer        RecommendationsServer
-	SuppressionsServer           SuppressionsServer
+
+	// RecommendationsServer contains the fakes for client RecommendationsClient
+	RecommendationsServer RecommendationsServer
+
+	// ResiliencyReviewsServer contains the fakes for client ResiliencyReviewsClient
+	ResiliencyReviewsServer ResiliencyReviewsServer
+
+	// ScoresServer contains the fakes for client ScoresClient
+	ScoresServer ScoresServer
+
+	// SuppressionsServer contains the fakes for client SuppressionsClient
+	SuppressionsServer SuppressionsServer
+
+	// TriageRecommendationsServer contains the fakes for client TriageRecommendationsClient
+	TriageRecommendationsServer TriageRecommendationsServer
+
+	// TriageResourcesServer contains the fakes for client TriageResourcesClient
+	TriageResourcesServer TriageResourcesServer
+
+	// WorkloadsServer contains the fakes for client WorkloadsClient
+	WorkloadsServer WorkloadsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -37,11 +70,19 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                            *ServerFactory
 	trMu                           sync.Mutex
+	trAssessmentTypesServer        *AssessmentTypesServerTransport
+	trAssessmentsServer            *AssessmentsServerTransport
 	trConfigurationsServer         *ConfigurationsServerTransport
+	trManagementServer             *ManagementServerTransport
 	trOperationsServer             *OperationsServerTransport
 	trRecommendationMetadataServer *RecommendationMetadataServerTransport
 	trRecommendationsServer        *RecommendationsServerTransport
+	trResiliencyReviewsServer      *ResiliencyReviewsServerTransport
+	trScoresServer                 *ScoresServerTransport
 	trSuppressionsServer           *SuppressionsServerTransport
+	trTriageRecommendationsServer  *TriageRecommendationsServerTransport
+	trTriageResourcesServer        *TriageResourcesServerTransport
+	trWorkloadsServer              *WorkloadsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -57,11 +98,22 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AssessmentTypesClient":
+		initServer(s, &s.trAssessmentTypesServer, func() *AssessmentTypesServerTransport {
+			return NewAssessmentTypesServerTransport(&s.srv.AssessmentTypesServer)
+		})
+		resp, err = s.trAssessmentTypesServer.Do(req)
+	case "AssessmentsClient":
+		initServer(s, &s.trAssessmentsServer, func() *AssessmentsServerTransport { return NewAssessmentsServerTransport(&s.srv.AssessmentsServer) })
+		resp, err = s.trAssessmentsServer.Do(req)
 	case "ConfigurationsClient":
 		initServer(s, &s.trConfigurationsServer, func() *ConfigurationsServerTransport {
 			return NewConfigurationsServerTransport(&s.srv.ConfigurationsServer)
 		})
 		resp, err = s.trConfigurationsServer.Do(req)
+	case "ManagementClient":
+		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
+		resp, err = s.trManagementServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -75,9 +127,30 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRecommendationsServerTransport(&s.srv.RecommendationsServer)
 		})
 		resp, err = s.trRecommendationsServer.Do(req)
+	case "ResiliencyReviewsClient":
+		initServer(s, &s.trResiliencyReviewsServer, func() *ResiliencyReviewsServerTransport {
+			return NewResiliencyReviewsServerTransport(&s.srv.ResiliencyReviewsServer)
+		})
+		resp, err = s.trResiliencyReviewsServer.Do(req)
+	case "ScoresClient":
+		initServer(s, &s.trScoresServer, func() *ScoresServerTransport { return NewScoresServerTransport(&s.srv.ScoresServer) })
+		resp, err = s.trScoresServer.Do(req)
 	case "SuppressionsClient":
 		initServer(s, &s.trSuppressionsServer, func() *SuppressionsServerTransport { return NewSuppressionsServerTransport(&s.srv.SuppressionsServer) })
 		resp, err = s.trSuppressionsServer.Do(req)
+	case "TriageRecommendationsClient":
+		initServer(s, &s.trTriageRecommendationsServer, func() *TriageRecommendationsServerTransport {
+			return NewTriageRecommendationsServerTransport(&s.srv.TriageRecommendationsServer)
+		})
+		resp, err = s.trTriageRecommendationsServer.Do(req)
+	case "TriageResourcesClient":
+		initServer(s, &s.trTriageResourcesServer, func() *TriageResourcesServerTransport {
+			return NewTriageResourcesServerTransport(&s.srv.TriageResourcesServer)
+		})
+		resp, err = s.trTriageResourcesServer.Do(req)
+	case "WorkloadsClient":
+		initServer(s, &s.trWorkloadsServer, func() *WorkloadsServerTransport { return NewWorkloadsServerTransport(&s.srv.WorkloadsServer) })
+		resp, err = s.trWorkloadsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

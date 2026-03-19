@@ -25,9 +25,9 @@ type ConfigurationsClient struct {
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
-//   - subscriptionID - The Azure subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // CreateInResourceGroup - Create/Overwrite Azure Advisor configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - configurationName - Advisor configuration name. Value must be 'default'
 //   - resourceGroup - The name of the Azure resource group.
 //   - configContract - The Azure Advisor configuration data structure.
@@ -72,7 +72,7 @@ func (client *ConfigurationsClient) CreateInResourceGroup(ctx context.Context, c
 }
 
 // createInResourceGroupCreateRequest creates the CreateInResourceGroup request.
-func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx context.Context, configurationName ConfigurationName, resourceGroup string, configContract ConfigData, options *ConfigurationsClientCreateInResourceGroupOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx context.Context, configurationName ConfigurationName, resourceGroup string, configContract ConfigData, _ *ConfigurationsClientCreateInResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -91,7 +91,7 @@ func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configContract); err != nil {
@@ -113,7 +113,7 @@ func (client *ConfigurationsClient) createInResourceGroupHandleResponse(resp *ht
 // groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - configurationName - Advisor configuration name. Value must be 'default'
 //   - configContract - The Azure Advisor configuration data structure.
 //   - options - ConfigurationsClientCreateInSubscriptionOptions contains the optional parameters for the ConfigurationsClient.CreateInSubscription
@@ -141,7 +141,7 @@ func (client *ConfigurationsClient) CreateInSubscription(ctx context.Context, co
 }
 
 // createInSubscriptionCreateRequest creates the CreateInSubscription request.
-func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx context.Context, configurationName ConfigurationName, configContract ConfigData, options *ConfigurationsClientCreateInSubscriptionOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx context.Context, configurationName ConfigurationName, configContract ConfigData, _ *ConfigurationsClientCreateInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,7 +156,7 @@ func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configContract); err != nil {
@@ -176,27 +176,26 @@ func (client *ConfigurationsClient) createInSubscriptionHandleResponse(resp *htt
 
 // NewListByResourceGroupPager - Retrieve Azure Advisor configurations.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - resourceGroup - The name of the Azure resource group.
 //   - options - ConfigurationsClientListByResourceGroupOptions contains the optional parameters for the ConfigurationsClient.NewListByResourceGroupPager
 //     method.
 func (client *ConfigurationsClient) NewListByResourceGroupPager(resourceGroup string, options *ConfigurationsClientListByResourceGroupOptions) *runtime.Pager[ConfigurationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListByResourceGroupResponse]{
 		More: func(page ConfigurationsClientListByResourceGroupResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConfigurationsClientListByResourceGroupResponse) (ConfigurationsClientListByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConfigurationsClient.NewListByResourceGroupPager")
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
+			}, nil)
 			if err != nil {
 				return ConfigurationsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ConfigurationsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ConfigurationsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -205,7 +204,7 @@ func (client *ConfigurationsClient) NewListByResourceGroupPager(resourceGroup st
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, options *ConfigurationsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, _ *ConfigurationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -220,7 +219,7 @@ func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,7 +237,7 @@ func (client *ConfigurationsClient) listByResourceGroupHandleResponse(resp *http
 // NewListBySubscriptionPager - Retrieve Azure Advisor configurations and also retrieve configurations of contained resource
 // groups.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - options - ConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationsClient.NewListBySubscriptionPager
 //     method.
 func (client *ConfigurationsClient) NewListBySubscriptionPager(options *ConfigurationsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationsClientListBySubscriptionResponse] {
@@ -265,7 +264,7 @@ func (client *ConfigurationsClient) NewListBySubscriptionPager(options *Configur
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -276,7 +275,7 @@ func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

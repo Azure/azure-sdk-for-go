@@ -302,6 +302,7 @@ func (l LedgerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nodeCount", l.NodeCount)
 	populate(objectMap, "provisioningState", l.ProvisioningState)
 	populate(objectMap, "runningState", l.RunningState)
+	populate(objectMap, "scittConfiguration", l.ScittConfiguration)
 	populate(objectMap, "subjectName", l.SubjectName)
 	populate(objectMap, "workerThreads", l.WorkerThreads)
 	populate(objectMap, "writeLBAddressPrefix", l.WriteLBAddressPrefix)
@@ -361,6 +362,9 @@ func (l *LedgerProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "runningState":
 			err = unpopulate(val, "RunningState", &l.RunningState)
+			delete(rawMsg, key)
+		case "scittConfiguration":
+			err = unpopulate(val, "ScittConfiguration", &l.ScittConfiguration)
 			delete(rawMsg, key)
 		case "subjectName":
 			err = unpopulate(val, "SubjectName", &l.SubjectName)

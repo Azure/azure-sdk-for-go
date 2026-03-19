@@ -5,11 +5,6 @@
 
 package armconfidentialledger
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger"
-	moduleVersion = "v1.3.0-beta.3"
-)
-
 // ApplicationType - Object representing the application type of the Confidential Ledger. Defaults to ConfidentialLedger.
 type ApplicationType string
 

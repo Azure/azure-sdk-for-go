@@ -102,15 +102,11 @@ type LedgerProperties struct {
 	// Array of all AAD based Security Principals.
 	AADBasedSecurityPrincipals []*AADBasedSecurityPrincipal
 
-	// Application type of the Confidential Ledger. Default: "Standard".
-	// Expected values: "Standard", "Premium".
+	// Application type of the Confidential Ledger.
 	ApplicationType *ApplicationType
 
 	// Array of all cert based Security Principals.
 	CertBasedSecurityPrincipals []*CertBasedSecurityPrincipal
-
-	// Enclave platform of the Confidential Ledger.
-	EnclavePlatform *EnclavePlatform
 
 	// CCF Property for the logging level for the untrusted host: Trace, Debug, Info, Fail, Fatal.
 	HostLevel *string
@@ -130,6 +126,9 @@ type LedgerProperties struct {
 	// Object representing RunningState for Ledger.
 	RunningState *RunningState
 
+	// The SCITT Configuration that needs to be set for the Confidential Ledger.
+	ScittConfiguration *string
+
 	// CCF Property for the subject name to include in the node certificate. Default: CN=CCF Node.
 	SubjectName *string
 
@@ -138,6 +137,9 @@ type LedgerProperties struct {
 
 	// Prefix for the write load balancer. Example: write
 	WriteLBAddressPrefix *string
+
+	// READ-ONLY; Enclave platform of the Confidential Ledger.
+	EnclavePlatform *EnclavePlatform
 
 	// READ-ONLY; Endpoint for accessing network identity.
 	IdentityServiceURI *string
@@ -157,11 +159,11 @@ type LedgerProperties struct {
 
 // List - Object that includes an array of Confidential Ledgers and a possible link for next set.
 type List struct {
-	// The URL the client should use to fetch the next page (per server side paging).
-	NextLink *string
-
-	// List of Confidential Ledgers
+	// REQUIRED; The ConfidentialLedger items on this page
 	Value []*ConfidentialLedger
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ManagedCCF - Managed CCF. Contains the properties of Managed CCF Resource.
@@ -205,20 +207,17 @@ type ManagedCCFBackupResponse struct {
 
 // ManagedCCFList - Object that includes an array of Managed CCF and a possible link for next set.
 type ManagedCCFList struct {
-	// The URL the client should use to fetch the next page (per server side paging).
-	NextLink *string
-
-	// List of Managed CCF
+	// REQUIRED; The ManagedCCF items on this page
 	Value []*ManagedCCF
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ManagedCCFProperties - Additional Managed CCF properties.
 type ManagedCCFProperties struct {
 	// Deployment Type of Managed CCF
 	DeploymentType *DeploymentType
-
-	// Enclave platform of Managed CCF.
-	EnclavePlatform *EnclavePlatform
 
 	// List of member identity certificates for Managed CCF
 	MemberIdentityCertificates []*MemberIdentityCertificate
@@ -234,6 +233,9 @@ type ManagedCCFProperties struct {
 
 	// READ-ONLY; Endpoint for calling Managed CCF Service.
 	AppURI *string
+
+	// READ-ONLY; Enclave platform of Managed CCF.
+	EnclavePlatform *EnclavePlatform
 
 	// READ-ONLY; Endpoint for accessing network identity.
 	IdentityServiceURI *string
@@ -301,10 +303,10 @@ type ResourceProviderOperationDisplay struct {
 
 // ResourceProviderOperationList - List containing this Resource Provider's available operations.
 type ResourceProviderOperationList struct {
-	// READ-ONLY; The URI that can be used to request the next page for list of Azure operations.
+	// The URL to get the next set of results, if any.
 	NextLink *string
 
-	// READ-ONLY; Resource provider operations list.
+	// READ-ONLY; The list of operations.
 	Value []*ResourceProviderOperationDefinition
 }
 

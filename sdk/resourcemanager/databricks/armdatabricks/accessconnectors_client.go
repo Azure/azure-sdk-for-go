@@ -25,9 +25,9 @@ type AccessConnectorsClient struct {
 }
 
 // NewAccessConnectorsClient creates a new instance of AccessConnectorsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessConnectorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,13 +40,13 @@ func NewAccessConnectorsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates azure databricks accessConnector.
+// BeginCreateOrUpdate - Creates or updates Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectorName - The name of the azure databricks accessConnector.
-//   - parameters - Parameters supplied to the create or update an azure databricks accessConnector.
+//   - connectorName - The name of the Azure Databricks Access Connector.
+//   - parameters - Parameters supplied to the create or update an Azure Databricks Access Connector.
 //   - options - AccessConnectorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AccessConnectorsClient.BeginCreateOrUpdate
 //     method.
 func (client *AccessConnectorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnector, options *AccessConnectorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AccessConnectorsClientCreateOrUpdateResponse], error) {
@@ -66,10 +66,10 @@ func (client *AccessConnectorsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates azure databricks accessConnector.
+// CreateOrUpdate - Creates or updates Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 func (client *AccessConnectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnector, options *AccessConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessConnectorsClient.BeginCreateOrUpdate"
@@ -92,7 +92,7 @@ func (client *AccessConnectorsClient) createOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AccessConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnector, options *AccessConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AccessConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnector, _ *AccessConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -111,7 +111,7 @@ func (client *AccessConnectorsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -120,12 +120,12 @@ func (client *AccessConnectorsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// BeginDelete - Deletes the azure databricks accessConnector.
+// BeginDelete - Deletes the Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectorName - The name of the azure databricks accessConnector.
+//   - connectorName - The name of the Azure Databricks Access Connector.
 //   - options - AccessConnectorsClientBeginDeleteOptions contains the optional parameters for the AccessConnectorsClient.BeginDelete
 //     method.
 func (client *AccessConnectorsClient) BeginDelete(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientBeginDeleteOptions) (*runtime.Poller[AccessConnectorsClientDeleteResponse], error) {
@@ -145,10 +145,10 @@ func (client *AccessConnectorsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes the azure databricks accessConnector.
+// Delete - Deletes the Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 func (client *AccessConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessConnectorsClient.BeginDelete"
@@ -171,7 +171,7 @@ func (client *AccessConnectorsClient) deleteOperation(ctx context.Context, resou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AccessConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AccessConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, _ *AccessConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -190,18 +190,18 @@ func (client *AccessConnectorsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets an azure databricks accessConnector.
+// Get - Gets an Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectorName - The name of the azure databricks accessConnector.
+//   - connectorName - The name of the Azure Databricks Access Connector.
 //   - options - AccessConnectorsClientGetOptions contains the optional parameters for the AccessConnectorsClient.Get method.
 func (client *AccessConnectorsClient) Get(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientGetOptions) (AccessConnectorsClientGetResponse, error) {
 	var err error
@@ -226,7 +226,7 @@ func (client *AccessConnectorsClient) Get(ctx context.Context, resourceGroupName
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccessConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientGetOptions) (*policy.Request, error) {
+func (client *AccessConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, _ *AccessConnectorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -245,7 +245,7 @@ func (client *AccessConnectorsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,9 +260,9 @@ func (client *AccessConnectorsClient) getHandleResponse(resp *http.Response) (Ac
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Gets all the azure databricks accessConnectors within a resource group.
+// NewListByResourceGroupPager - Gets all the Azure Databricks Access Connectors within a resource group.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AccessConnectorsClientListByResourceGroupOptions contains the optional parameters for the AccessConnectorsClient.NewListByResourceGroupPager
 //     method.
@@ -290,7 +290,7 @@ func (client *AccessConnectorsClient) NewListByResourceGroupPager(resourceGroupN
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AccessConnectorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AccessConnectorsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AccessConnectorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AccessConnectorsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -305,7 +305,7 @@ func (client *AccessConnectorsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,9 +320,9 @@ func (client *AccessConnectorsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Gets all the azure databricks accessConnectors within a subscription.
+// NewListBySubscriptionPager - Gets all the Azure Databricks Access Connectors within a subscription.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 //   - options - AccessConnectorsClientListBySubscriptionOptions contains the optional parameters for the AccessConnectorsClient.NewListBySubscriptionPager
 //     method.
 func (client *AccessConnectorsClient) NewListBySubscriptionPager(options *AccessConnectorsClientListBySubscriptionOptions) *runtime.Pager[AccessConnectorsClientListBySubscriptionResponse] {
@@ -349,7 +349,7 @@ func (client *AccessConnectorsClient) NewListBySubscriptionPager(options *Access
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AccessConnectorsClient) listBySubscriptionCreateRequest(ctx context.Context, options *AccessConnectorsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *AccessConnectorsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *AccessConnectorsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Databricks/accessConnectors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -360,7 +360,7 @@ func (client *AccessConnectorsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,13 +375,13 @@ func (client *AccessConnectorsClient) listBySubscriptionHandleResponse(resp *htt
 	return result, nil
 }
 
-// BeginUpdate - Updates an azure databricks accessConnector.
+// BeginUpdate - Updates an Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectorName - The name of the azure databricks accessConnector.
-//   - parameters - The update to the azure databricks accessConnector.
+//   - connectorName - The name of the Azure Databricks Access Connector.
+//   - parameters - The update to the Azure Databricks Access Connector.
 //   - options - AccessConnectorsClientBeginUpdateOptions contains the optional parameters for the AccessConnectorsClient.BeginUpdate
 //     method.
 func (client *AccessConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*runtime.Poller[AccessConnectorsClientUpdateResponse], error) {
@@ -401,10 +401,10 @@ func (client *AccessConnectorsClient) BeginUpdate(ctx context.Context, resourceG
 	}
 }
 
-// Update - Updates an azure databricks accessConnector.
+// Update - Updates an Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2026-01-01
 func (client *AccessConnectorsClient) update(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessConnectorsClient.BeginUpdate"
@@ -427,7 +427,7 @@ func (client *AccessConnectorsClient) update(ctx context.Context, resourceGroupN
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccessConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AccessConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, _ *AccessConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -446,7 +446,7 @@ func (client *AccessConnectorsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

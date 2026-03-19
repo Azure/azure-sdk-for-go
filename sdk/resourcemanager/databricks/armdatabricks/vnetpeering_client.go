@@ -25,9 +25,9 @@ type VNetPeeringClient struct {
 }
 
 // NewVNetPeeringClient creates a new instance of VNetPeeringClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VNetPeeringClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreateOrUpdate - Creates vNet Peering for workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - peeringName - The name of the workspace vNet peering.
@@ -70,7 +70,7 @@ func (client *VNetPeeringClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Creates vNet Peering for workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 func (client *VNetPeeringClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VNetPeeringClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *VNetPeeringClient) createOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VNetPeeringClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VNetPeeringClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, _ *VNetPeeringClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,7 +116,7 @@ func (client *VNetPeeringClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, virtualNetworkPeeringParameters); err != nil {
@@ -128,7 +128,7 @@ func (client *VNetPeeringClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Deletes the workspace vNetPeering.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - peeringName - The name of the workspace vNet peering.
@@ -153,7 +153,7 @@ func (client *VNetPeeringClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Deletes the workspace vNetPeering.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 func (client *VNetPeeringClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VNetPeeringClient.BeginDelete"
@@ -176,7 +176,7 @@ func (client *VNetPeeringClient) deleteOperation(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VNetPeeringClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *VNetPeeringClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, _ *VNetPeeringClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -199,7 +199,7 @@ func (client *VNetPeeringClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -208,7 +208,7 @@ func (client *VNetPeeringClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Gets the workspace vNet Peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - peeringName - The name of the workspace vNet peering.
@@ -236,7 +236,7 @@ func (client *VNetPeeringClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *VNetPeeringClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientGetOptions) (*policy.Request, error) {
+func (client *VNetPeeringClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, _ *VNetPeeringClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -259,7 +259,7 @@ func (client *VNetPeeringClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *VNetPeeringClient) getHandleResponse(resp *http.Response) (VNetPee
 
 // NewListByWorkspacePager - Lists the workspace vNet Peerings.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - VNetPeeringClientListByWorkspaceOptions contains the optional parameters for the VNetPeeringClient.NewListByWorkspacePager
@@ -305,7 +305,7 @@ func (client *VNetPeeringClient) NewListByWorkspacePager(resourceGroupName strin
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *VNetPeeringClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *VNetPeeringClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *VNetPeeringClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *VNetPeeringClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/virtualNetworkPeerings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -324,7 +324,7 @@ func (client *VNetPeeringClient) listByWorkspaceCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

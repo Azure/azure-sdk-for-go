@@ -5,6 +5,53 @@
 
 package armbillingbenefits
 
+// DiscountClientGetResponse contains the response from method DiscountClient.Get.
+type DiscountClientGetResponse struct {
+	// Resource definition for Discounts.
+	Discount
+}
+
+// DiscountClientUpdateResponse contains the response from method DiscountClient.BeginUpdate.
+type DiscountClientUpdateResponse struct {
+	// Resource definition for Discounts.
+	Discount
+}
+
+// DiscountsClientCancelResponse contains the response from method DiscountsClient.BeginCancel.
+type DiscountsClientCancelResponse struct {
+	// Resource definition for Discounts.
+	Discount
+}
+
+// DiscountsClientCreateResponse contains the response from method DiscountsClient.BeginCreate.
+type DiscountsClientCreateResponse struct {
+	// Resource definition for Discounts.
+	Discount
+}
+
+// DiscountsClientDeleteResponse contains the response from method DiscountsClient.BeginDelete.
+type DiscountsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DiscountsClientResourceGroupListResponse contains the response from method DiscountsClient.NewResourceGroupListPager.
+type DiscountsClientResourceGroupListResponse struct {
+	// Discount list
+	DiscountList
+}
+
+// DiscountsClientScopeListResponse contains the response from method DiscountsClient.NewScopeListPager.
+type DiscountsClientScopeListResponse struct {
+	// Discount list
+	DiscountList
+}
+
+// DiscountsClientSubscriptionListResponse contains the response from method DiscountsClient.NewSubscriptionListPager.
+type DiscountsClientSubscriptionListResponse struct {
+	// Discount list
+	DiscountList
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -44,13 +91,10 @@ type SavingsPlanClientListResponse struct {
 	SavingsPlanModelList
 }
 
-// SavingsPlanClientUpdateResponse contains the response from method SavingsPlanClient.Update.
+// SavingsPlanClientUpdateResponse contains the response from method SavingsPlanClient.BeginUpdate.
 type SavingsPlanClientUpdateResponse struct {
 	// Savings plan
 	SavingsPlanModel
-
-	// Location contains the information returned from the Location header response.
-	Location *string
 }
 
 // SavingsPlanClientValidateUpdateResponse contains the response from method SavingsPlanClient.ValidateUpdate.

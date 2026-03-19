@@ -38,6 +38,12 @@ type BillingPlanInformation struct {
 	Transactions []*PaymentDetail
 }
 
+// CatalogClaimsItem - Catalog claim for a discount.
+type CatalogClaimsItem struct {
+	CatalogClaimsItemType *string
+	Value                 *string
+}
+
 // Commitment towards the benefit.
 type Commitment struct {
 	Amount *float64
@@ -49,12 +55,594 @@ type Commitment struct {
 	Grain *CommitmentGrain
 }
 
+// ConditionsItem - Condition for a discount.
+type ConditionsItem struct {
+	ConditionName *string
+	Type          *string
+
+	// These items are open-ended strings.
+	Value []*string
+}
+
+// CustomPriceProperties - Custom price properties for a given discount.
+type CustomPriceProperties struct {
+	// REQUIRED; The set of BigCat claims. Validation: Required. Must contain AgreementType, NationalCloud, and PricingAudience
+	// claims. Additionally requires AccessPass claim when creating custom price with action ==
+	// consume on the pricing instructions.
+	CatalogClaims []*CatalogClaimsItem
+
+	// REQUIRED; The catalog instance where the priceable node lives. Validation: Required. No defined format, will vary per team.
+	CatalogID *string
+
+	// REQUIRED; The set of market set prices of the priceable node. Validation: Required. Must contain at least one element.
+	MarketSetPrices []*MarketSetPricesItems
+
+	// REQUIRED; The type of the priceable node pricing rule. Validation: Required. Supported values are fixedPriceLock, fixedListPrice,
+	// and priceCeiling.
+	RuleType *DiscountRuleType
+
+	// The billing period of the priceable node. Validation: Optional, Maximum length 128 characters. Only allowed if the availability
+	// derived by market, product, sku, and claims has terms and at least one
+	// of those terms has a billing period. When specified, termUnits must be specified.
+	BillingPeriod *string
+
+	// Must be present if the market, product, sku, and claims, and optional term information resolves to multiple availabilities
+	// that only differ by meter type. Validation: Maximum length 128 characters.
+	MeterType *string
+
+	// The term units for the priceable node. Validation: Optional, Maximum length 128 characters. Must be present if and only
+	// if the availability derived by market, product, sku, and claims has terms.
+	TermUnits *string
+}
+
+// Discount - Resource definition for Discounts.
+type Discount struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *ManagedServiceIdentity
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are
+	// a kind of Microsoft.Web/sites type. If supported, the resource provider must
+	// validate and persist this value.
+	Kind *string
+
+	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
+	// Azure resource. If this is present, complete mode deployment will not
+	// delete the resource if it is removed from the template since it is managed by another resource.
+	ManagedBy *string
+
+	// Plan for the resource.
+	Plan *Plan
+
+	// Discount properties
+	Properties DiscountPropertiesClassification
+
+	// The resource model definition representing SKU
+	SKU *SKU
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; The etag field is not required. If it is provided in the response body, it must also be provided as a header
+	// per the normal etag convention. Entity tags are used for comparing two or more entities
+	// from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
+	// (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DiscountList - Discount list
+type DiscountList struct {
+	// Url to get the next page.
+	NextLink *string
+
+	// List of discounts.
+	Value []*Discount
+}
+
+// DiscountPatchRequest - Discounts patch request
+type DiscountPatchRequest struct {
+	// Discounts patch request properties
+	Properties *DiscountPatchRequestProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// DiscountPatchRequestProperties - Discounts patch request properties
+type DiscountPatchRequestProperties struct {
+	// Display name
+	DisplayName *string
+}
+
+// DiscountProperties - Properties belonging to discounts.
+type DiscountProperties struct {
+	// REQUIRED; This defines whether the entity being created is primary or affiliate. Supported values: primary, affiliate.
+	// Validation: Required, must match one of the 2 values.
+	EntityType *DiscountEntityType
+
+	// REQUIRED; This is the catalog UPN for the product.
+	ProductCode *string
+
+	// REQUIRED; Start date of the discount. Value is the date the discount started or will start in the future.
+	StartAt *time.Time
+
+	// List of applied scopes supported for discounts.
+	AppliedScopeType *DiscountAppliedScopeType
+
+	// This defines a user friendly display name for the discount.
+	DisplayName *string
+
+	// This is the globally unique identifier of the Discount which will not change for the lifetime of the Discount.
+	SystemID *string
+
+	// READ-ONLY; Fully-qualified identifier of the benefit under applicable benefit list.
+	BenefitResourceID *string
+
+	// READ-ONLY; Billing account resource id where the discount metadata is present.
+	BillingAccountResourceID *string
+
+	// READ-ONLY; Billing profile resource id where the discount is scoped to.
+	BillingProfileResourceID *string
+
+	// READ-ONLY; Customer resource id where the discount is scoped to.
+	CustomerResourceID *string
+
+	// READ-ONLY; The state of the resource. Supported values are Pending, Failed, Succeeded, Canceled.
+	ProvisioningState *DiscountProvisioningState
+
+	// READ-ONLY; Represents the current status of the discount.
+	Status *DiscountStatus
+}
+
+// GetDiscountProperties implements the DiscountPropertiesClassification interface for type DiscountProperties.
+func (d *DiscountProperties) GetDiscountProperties() *DiscountProperties { return d }
+
+// DiscountTypeCustomPrice - Discount type properties including product family name, product id, sku, and custom price properties.
+// Allows a single entry in marketSetPrices.
+type DiscountTypeCustomPrice struct {
+	// REQUIRED; The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew. Validation:
+	// Required, one of supported values.
+	ApplyDiscountOn *ApplyDiscountOn
+
+	// REQUIRED; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+	DiscountType *DiscountType
+
+	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
+	Conditions []*ConditionsItem
+
+	// Custom price properties for a given discount.
+	CustomPriceProperties *CustomPriceProperties
+
+	// The discount combination rule when there are multiple applicable custom prices. Validation: Required. Supported values
+	// are Stackable and BestOf.
+	DiscountCombinationRule *DiscountCombinationRule
+
+	// Discount percentage provided for the customer. Validation: Required unless this is a price rule.
+	DiscountPercentage *float64
+
+	// Set only in price guarantee scenario.
+	PriceGuaranteeProperties *PriceGuaranteeProperties
+
+	// Product family for which the discount is given. Validation: Optional
+	ProductFamilyName *string
+
+	// Product ID for which the discount is given. Validation: Optional. No specific format, example: DZH318Z09V6F
+	ProductID *string
+
+	// ResourceSku for the given discount. Validation: Optional.
+	SKUID *string
+}
+
+// GetDiscountTypeCustomPrice implements the DiscountTypeCustomPriceClassification interface for type DiscountTypeCustomPrice.
+func (d *DiscountTypeCustomPrice) GetDiscountTypeCustomPrice() *DiscountTypeCustomPrice { return d }
+
+// GetDiscountTypeProperties implements the DiscountTypePropertiesClassification interface for type DiscountTypeCustomPrice.
+func (d *DiscountTypeCustomPrice) GetDiscountTypeProperties() *DiscountTypeProperties {
+	return &DiscountTypeProperties{
+		ApplyDiscountOn:          d.ApplyDiscountOn,
+		Conditions:               d.Conditions,
+		DiscountCombinationRule:  d.DiscountCombinationRule,
+		DiscountPercentage:       d.DiscountPercentage,
+		DiscountType:             d.DiscountType,
+		PriceGuaranteeProperties: d.PriceGuaranteeProperties,
+	}
+}
+
+// DiscountTypeCustomPriceMultiCurrency - Discount type properties including product family name, product id, sku, and custom
+// price properties. Allows multiple entries in marketSetPrices.
+type DiscountTypeCustomPriceMultiCurrency struct {
+	// REQUIRED; The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew. Validation:
+	// Required, one of supported values.
+	ApplyDiscountOn *ApplyDiscountOn
+
+	// REQUIRED; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+	DiscountType *DiscountType
+
+	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
+	Conditions []*ConditionsItem
+
+	// Custom price properties for a given discount.
+	CustomPriceProperties *CustomPriceProperties
+
+	// The discount combination rule when there are multiple applicable custom prices. Validation: Required. Supported values
+	// are Stackable and BestOf.
+	DiscountCombinationRule *DiscountCombinationRule
+
+	// Discount percentage provided for the customer. Validation: Required unless this is a price rule.
+	DiscountPercentage *float64
+
+	// Set only in price guarantee scenario.
+	PriceGuaranteeProperties *PriceGuaranteeProperties
+
+	// Product family for which the discount is given. Validation: Optional
+	ProductFamilyName *string
+
+	// Product ID for which the discount is given. Validation: Optional. No specific format, example: DZH318Z09V6F
+	ProductID *string
+
+	// ResourceSku for the given discount. Validation: Optional.
+	SKUID *string
+}
+
+// GetDiscountTypeCustomPrice implements the DiscountTypeCustomPriceClassification interface for type DiscountTypeCustomPriceMultiCurrency.
+func (d *DiscountTypeCustomPriceMultiCurrency) GetDiscountTypeCustomPrice() *DiscountTypeCustomPrice {
+	return &DiscountTypeCustomPrice{
+		ApplyDiscountOn:          d.ApplyDiscountOn,
+		Conditions:               d.Conditions,
+		CustomPriceProperties:    d.CustomPriceProperties,
+		DiscountCombinationRule:  d.DiscountCombinationRule,
+		DiscountPercentage:       d.DiscountPercentage,
+		DiscountType:             d.DiscountType,
+		PriceGuaranteeProperties: d.PriceGuaranteeProperties,
+		ProductFamilyName:        d.ProductFamilyName,
+		ProductID:                d.ProductID,
+		SKUID:                    d.SKUID,
+	}
+}
+
+// GetDiscountTypeProperties implements the DiscountTypePropertiesClassification interface for type DiscountTypeCustomPriceMultiCurrency.
+func (d *DiscountTypeCustomPriceMultiCurrency) GetDiscountTypeProperties() *DiscountTypeProperties {
+	return &DiscountTypeProperties{
+		ApplyDiscountOn:          d.ApplyDiscountOn,
+		Conditions:               d.Conditions,
+		DiscountCombinationRule:  d.DiscountCombinationRule,
+		DiscountPercentage:       d.DiscountPercentage,
+		DiscountType:             d.DiscountType,
+		PriceGuaranteeProperties: d.PriceGuaranteeProperties,
+	}
+}
+
+// DiscountTypeProduct - Discount type properties including product family name and product id.
+type DiscountTypeProduct struct {
+	// REQUIRED; The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew. Validation:
+	// Required, one of supported values.
+	ApplyDiscountOn *ApplyDiscountOn
+
+	// REQUIRED; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+	DiscountType *DiscountType
+
+	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
+	Conditions []*ConditionsItem
+
+	// The discount combination rule when there are multiple applicable custom prices. Validation: Required. Supported values
+	// are Stackable and BestOf.
+	DiscountCombinationRule *DiscountCombinationRule
+
+	// Discount percentage provided for the customer. Validation: Required unless this is a price rule.
+	DiscountPercentage *float64
+
+	// Set only in price guarantee scenario.
+	PriceGuaranteeProperties *PriceGuaranteeProperties
+
+	// Product family for which the discount is given. Validation: Optional
+	ProductFamilyName *string
+
+	// Product ID for which the discount is given. Validation: Optional. No specific format, example: DZH318Z09V6F
+	ProductID *string
+}
+
+// GetDiscountTypeProperties implements the DiscountTypePropertiesClassification interface for type DiscountTypeProduct.
+func (d *DiscountTypeProduct) GetDiscountTypeProperties() *DiscountTypeProperties {
+	return &DiscountTypeProperties{
+		ApplyDiscountOn:          d.ApplyDiscountOn,
+		Conditions:               d.Conditions,
+		DiscountCombinationRule:  d.DiscountCombinationRule,
+		DiscountPercentage:       d.DiscountPercentage,
+		DiscountType:             d.DiscountType,
+		PriceGuaranteeProperties: d.PriceGuaranteeProperties,
+	}
+}
+
+// DiscountTypeProductFamily - Discount type properties including product family name
+type DiscountTypeProductFamily struct {
+	// REQUIRED; The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew. Validation:
+	// Required, one of supported values.
+	ApplyDiscountOn *ApplyDiscountOn
+
+	// REQUIRED; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+	DiscountType *DiscountType
+
+	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
+	Conditions []*ConditionsItem
+
+	// The discount combination rule when there are multiple applicable custom prices. Validation: Required. Supported values
+	// are Stackable and BestOf.
+	DiscountCombinationRule *DiscountCombinationRule
+
+	// Discount percentage provided for the customer. Validation: Required unless this is a price rule.
+	DiscountPercentage *float64
+
+	// Set only in price guarantee scenario.
+	PriceGuaranteeProperties *PriceGuaranteeProperties
+
+	// Product family for which the discount is given. Validation: Optional
+	ProductFamilyName *string
+}
+
+// GetDiscountTypeProperties implements the DiscountTypePropertiesClassification interface for type DiscountTypeProductFamily.
+func (d *DiscountTypeProductFamily) GetDiscountTypeProperties() *DiscountTypeProperties {
+	return &DiscountTypeProperties{
+		ApplyDiscountOn:          d.ApplyDiscountOn,
+		Conditions:               d.Conditions,
+		DiscountCombinationRule:  d.DiscountCombinationRule,
+		DiscountPercentage:       d.DiscountPercentage,
+		DiscountType:             d.DiscountType,
+		PriceGuaranteeProperties: d.PriceGuaranteeProperties,
+	}
+}
+
+// DiscountTypeProductSKU - Discount type properties including product family name, product id, and sku id.
+type DiscountTypeProductSKU struct {
+	// REQUIRED; The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew. Validation:
+	// Required, one of supported values.
+	ApplyDiscountOn *ApplyDiscountOn
+
+	// REQUIRED; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+	DiscountType *DiscountType
+
+	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
+	Conditions []*ConditionsItem
+
+	// The discount combination rule when there are multiple applicable custom prices. Validation: Required. Supported values
+	// are Stackable and BestOf.
+	DiscountCombinationRule *DiscountCombinationRule
+
+	// Discount percentage provided for the customer. Validation: Required unless this is a price rule.
+	DiscountPercentage *float64
+
+	// Set only in price guarantee scenario.
+	PriceGuaranteeProperties *PriceGuaranteeProperties
+
+	// Product family for which the discount is given. Validation: Optional
+	ProductFamilyName *string
+
+	// Product ID for which the discount is given. Validation: Optional. No specific format, example: DZH318Z09V6F
+	ProductID *string
+
+	// ResourceSku for the given discount. Validation: Optional.
+	SKUID *string
+}
+
+// GetDiscountTypeProperties implements the DiscountTypePropertiesClassification interface for type DiscountTypeProductSKU.
+func (d *DiscountTypeProductSKU) GetDiscountTypeProperties() *DiscountTypeProperties {
+	return &DiscountTypeProperties{
+		ApplyDiscountOn:          d.ApplyDiscountOn,
+		Conditions:               d.Conditions,
+		DiscountCombinationRule:  d.DiscountCombinationRule,
+		DiscountPercentage:       d.DiscountPercentage,
+		DiscountType:             d.DiscountType,
+		PriceGuaranteeProperties: d.PriceGuaranteeProperties,
+	}
+}
+
+// DiscountTypeProperties - This defines the conditions for a given discount type.
+type DiscountTypeProperties struct {
+	// REQUIRED; The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew. Validation:
+	// Required, one of supported values.
+	ApplyDiscountOn *ApplyDiscountOn
+
+	// REQUIRED; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+	DiscountType *DiscountType
+
+	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
+	Conditions []*ConditionsItem
+
+	// The discount combination rule when there are multiple applicable custom prices. Validation: Required. Supported values
+	// are Stackable and BestOf.
+	DiscountCombinationRule *DiscountCombinationRule
+
+	// Discount percentage provided for the customer. Validation: Required unless this is a price rule.
+	DiscountPercentage *float64
+
+	// Set only in price guarantee scenario.
+	PriceGuaranteeProperties *PriceGuaranteeProperties
+}
+
+// GetDiscountTypeProperties implements the DiscountTypePropertiesClassification interface for type DiscountTypeProperties.
+func (d *DiscountTypeProperties) GetDiscountTypeProperties() *DiscountTypeProperties { return d }
+
+// EntityTypeAffiliateDiscount - Entity type for affiliate discounts
+type EntityTypeAffiliateDiscount struct {
+	// REQUIRED; This defines whether the entity being created is primary or affiliate. Supported values: primary, affiliate.
+	// Validation: Required, must match one of the 2 values.
+	EntityType *DiscountEntityType
+
+	// REQUIRED; This is the catalog UPN for the product.
+	ProductCode *string
+
+	// REQUIRED; Start date of the discount. Value is the date the discount started or will start in the future.
+	StartAt *time.Time
+
+	// List of applied scopes supported for discounts.
+	AppliedScopeType *DiscountAppliedScopeType
+
+	// This defines a user friendly display name for the discount.
+	DisplayName *string
+
+	// This is the globally unique identifier of the Discount which will not change for the lifetime of the Discount.
+	SystemID *string
+
+	// READ-ONLY; Fully-qualified identifier of the benefit under applicable benefit list.
+	BenefitResourceID *string
+
+	// READ-ONLY; Billing account resource id where the discount metadata is present.
+	BillingAccountResourceID *string
+
+	// READ-ONLY; Billing profile resource id where the discount is scoped to.
+	BillingProfileResourceID *string
+
+	// READ-ONLY; Customer resource id where the discount is scoped to.
+	CustomerResourceID *string
+
+	// READ-ONLY; End date of the discount. No duration will be supported. Allowed value is any date greater than or equal to
+	// startDate.
+	EndAt *time.Time
+
+	// READ-ONLY; This will be present in the response if the primary has a resource ID
+	PrimaryResourceID *string
+
+	// READ-ONLY; The state of the resource. Supported values are Pending, Failed, Succeeded, Canceled.
+	ProvisioningState *DiscountProvisioningState
+
+	// READ-ONLY; Represents the current status of the discount.
+	Status *DiscountStatus
+}
+
+// GetDiscountProperties implements the DiscountPropertiesClassification interface for type EntityTypeAffiliateDiscount.
+func (e *EntityTypeAffiliateDiscount) GetDiscountProperties() *DiscountProperties {
+	return &DiscountProperties{
+		AppliedScopeType:         e.AppliedScopeType,
+		BenefitResourceID:        e.BenefitResourceID,
+		BillingAccountResourceID: e.BillingAccountResourceID,
+		BillingProfileResourceID: e.BillingProfileResourceID,
+		CustomerResourceID:       e.CustomerResourceID,
+		DisplayName:              e.DisplayName,
+		EntityType:               e.EntityType,
+		ProductCode:              e.ProductCode,
+		ProvisioningState:        e.ProvisioningState,
+		StartAt:                  e.StartAt,
+		Status:                   e.Status,
+		SystemID:                 e.SystemID,
+	}
+}
+
+// EntityTypePrimaryDiscount - Entity type for primary discounts
+type EntityTypePrimaryDiscount struct {
+	// REQUIRED; End date of the discount. No duration will be supported. Allowed value is any date greater than or equal to startDate.
+	EndAt *time.Time
+
+	// REQUIRED; This defines whether the entity being created is primary or affiliate. Supported values: primary, affiliate.
+	// Validation: Required, must match one of the 2 values.
+	EntityType *DiscountEntityType
+
+	// REQUIRED; This is the catalog UPN for the product.
+	ProductCode *string
+
+	// REQUIRED; Start date of the discount. Value is the date the discount started or will start in the future.
+	StartAt *time.Time
+
+	// List of applied scopes supported for discounts.
+	AppliedScopeType *DiscountAppliedScopeType
+
+	// This defines the conditions for a given discount type.
+	DiscountTypeProperties DiscountTypePropertiesClassification
+
+	// This defines a user friendly display name for the discount.
+	DisplayName *string
+
+	// This is the globally unique identifier of the Discount which will not change for the lifetime of the Discount.
+	SystemID *string
+
+	// READ-ONLY; Fully-qualified identifier of the benefit under applicable benefit list.
+	BenefitResourceID *string
+
+	// READ-ONLY; Billing account resource id where the discount metadata is present.
+	BillingAccountResourceID *string
+
+	// READ-ONLY; Billing profile resource id where the discount is scoped to.
+	BillingProfileResourceID *string
+
+	// READ-ONLY; Customer resource id where the discount is scoped to.
+	CustomerResourceID *string
+
+	// READ-ONLY; The state of the resource. Supported values are Pending, Failed, Succeeded, Canceled.
+	ProvisioningState *DiscountProvisioningState
+
+	// READ-ONLY; Represents the current status of the discount.
+	Status *DiscountStatus
+}
+
+// GetDiscountProperties implements the DiscountPropertiesClassification interface for type EntityTypePrimaryDiscount.
+func (e *EntityTypePrimaryDiscount) GetDiscountProperties() *DiscountProperties {
+	return &DiscountProperties{
+		AppliedScopeType:         e.AppliedScopeType,
+		BenefitResourceID:        e.BenefitResourceID,
+		BillingAccountResourceID: e.BillingAccountResourceID,
+		BillingProfileResourceID: e.BillingProfileResourceID,
+		CustomerResourceID:       e.CustomerResourceID,
+		DisplayName:              e.DisplayName,
+		EntityType:               e.EntityType,
+		ProductCode:              e.ProductCode,
+		ProvisioningState:        e.ProvisioningState,
+		StartAt:                  e.StartAt,
+		Status:                   e.Status,
+		SystemID:                 e.SystemID,
+	}
+}
+
 type ExtendedStatusInfo struct {
 	// The message giving detailed information about the status code.
 	Message *string
 
 	// Status code providing additional information.
 	StatusCode *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
+// MarketSetPricesItems - Items in the MarketSetPrices array.
+type MarketSetPricesItems struct {
+	// REQUIRED; The currency of the locked price value. Validation: Required. Must be a valid ISO 4217 3-letter currency code.
+	Currency *string
+
+	// REQUIRED
+	Markets []*string
+
+	// REQUIRED; The locked price for the priceable node. Validation: Required. Must be greater than or equal to 0. If the case
+	// of billing plans. This represents the price for each cycle charge.
+	Value *float32
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -130,6 +718,25 @@ type PaymentDetail struct {
 	ExtendedStatusInfo *ExtendedStatusInfo
 }
 
+// Plan for the resource.
+type Plan struct {
+	// REQUIRED; A user defined name of the 3rd Party Artifact that is being procured.
+	Name *string
+
+	// REQUIRED; The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact
+	// at the time of Data Market onboarding.
+	Product *string
+
+	// REQUIRED; The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
+	Publisher *string
+
+	// A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
+	PromotionCode *string
+
+	// The version of the desired product/artifact.
+	Version *string
+}
+
 type Price struct {
 	Amount *float64
 
@@ -137,11 +744,21 @@ type Price struct {
 	CurrencyCode *string
 }
 
+// PriceGuaranteeProperties - Set only in price guarantee scenario.
+type PriceGuaranteeProperties struct {
+	// The date on which prices are to be used for guarantee calculation. Validation: expected to be 00 hours, Format: 2024-09-30T00:00:00Z.
+	// Must be in UTC.
+	PriceGuaranteeDate *time.Time
+
+	// Supported values: Protected, Locked
+	PricingPolicy *PricingPolicy
+}
+
 type PurchaseRequest struct {
 	Properties *PurchaseRequestProperties
 
 	// The SKU to be applied for this resource
-	SKU *SKU
+	SKU *ResourceSKU
 }
 
 type PurchaseRequestProperties struct {
@@ -180,7 +797,7 @@ type RenewProperties struct {
 // ReservationOrderAliasRequest - Reservation order alias
 type ReservationOrderAliasRequest struct {
 	// REQUIRED; Reservation order SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// The Azure Region where the reservation benefits are applied to.
 	Location *string
@@ -188,7 +805,7 @@ type ReservationOrderAliasRequest struct {
 	// Reservation order alias request properties
 	Properties *ReservationOrderAliasRequestProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -247,7 +864,7 @@ type ReservationOrderAliasRequestPropertiesReservedResourceProperties struct {
 // ReservationOrderAliasResponse - Reservation order alias
 type ReservationOrderAliasResponse struct {
 	// REQUIRED; Reservation order SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// The Azure Region where the reserved resource lives.
 	Location *string
@@ -255,7 +872,7 @@ type ReservationOrderAliasResponse struct {
 	// Reservation order alias response properties
 	Properties *ReservationOrderAliasResponseProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -317,6 +934,12 @@ type ReservationOrderAliasResponsePropertiesReservedResourceProperties struct {
 	InstanceFlexibility *InstanceFlexibility
 }
 
+// ResourceSKU - The SKU to be applied for this resource
+type ResourceSKU struct {
+	// Name of the SKU to be applied
+	Name *string
+}
+
 // RoleAssignmentEntity - Role assignment entity
 type RoleAssignmentEntity struct {
 	// Role assignment entity id
@@ -341,21 +964,35 @@ type RoleAssignmentEntityProperties struct {
 	Scope *string
 }
 
-// SKU - The SKU to be applied for this resource
+// SKU - The resource model definition representing SKU
 type SKU struct {
-	// Name of the SKU to be applied
+	// REQUIRED; The name of the SKU. E.g. P3. It is typically a letter+number code
 	Name *string
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier
 }
 
 // SavingsPlanModel - Savings plan
 type SavingsPlanModel struct {
 	// REQUIRED; Savings plan SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// Savings plan properties
 	Properties *SavingsPlanModelProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -460,7 +1097,7 @@ type SavingsPlanModelProperties struct {
 // SavingsPlanOrderAliasModel - Savings plan order alias
 type SavingsPlanOrderAliasModel struct {
 	// REQUIRED; Savings plan SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// Resource provider kind
 	Kind *string
@@ -468,7 +1105,7 @@ type SavingsPlanOrderAliasModel struct {
 	// Savings plan order alias properties
 	Properties *SavingsPlanOrderAliasProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -501,6 +1138,9 @@ type SavingsPlanOrderAliasProperties struct {
 	// Display name
 	DisplayName *string
 
+	// Setting this to true will automatically purchase a new benefit on the expiration date time.
+	Renew *bool
+
 	// Represent benefit term in ISO 8601 format.
 	Term *Term
 
@@ -514,12 +1154,12 @@ type SavingsPlanOrderAliasProperties struct {
 // SavingsPlanOrderModel - Savings plan order
 type SavingsPlanOrderModel struct {
 	// REQUIRED; Savings plan SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// Savings plan order properties
 	Properties *SavingsPlanOrderModelProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -687,6 +1327,15 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 // Utilization - Savings plan utilization

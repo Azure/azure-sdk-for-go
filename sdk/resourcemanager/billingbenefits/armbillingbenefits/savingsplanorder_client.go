@@ -25,7 +25,7 @@ type SavingsPlanOrderClient struct {
 
 // NewSavingsPlanOrderClient creates a new instance of SavingsPlanOrderClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSavingsPlanOrderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SavingsPlanOrderClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewSavingsPlanOrderClient(credential azcore.TokenCredential, options *arm.C
 // Elevate - Elevate as owner on savings plan order based on billing permissions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - options - SavingsPlanOrderClientElevateOptions contains the optional parameters for the SavingsPlanOrderClient.Elevate
 //     method.
@@ -67,7 +67,7 @@ func (client *SavingsPlanOrderClient) Elevate(ctx context.Context, savingsPlanOr
 }
 
 // elevateCreateRequest creates the Elevate request.
-func (client *SavingsPlanOrderClient) elevateCreateRequest(ctx context.Context, savingsPlanOrderID string, options *SavingsPlanOrderClientElevateOptions) (*policy.Request, error) {
+func (client *SavingsPlanOrderClient) elevateCreateRequest(ctx context.Context, savingsPlanOrderID string, _ *SavingsPlanOrderClientElevateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/elevate"
 	if savingsPlanOrderID == "" {
 		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
@@ -78,7 +78,7 @@ func (client *SavingsPlanOrderClient) elevateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -96,7 +96,7 @@ func (client *SavingsPlanOrderClient) elevateHandleResponse(resp *http.Response)
 // Get - Get a savings plan order.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - options - SavingsPlanOrderClientGetOptions contains the optional parameters for the SavingsPlanOrderClient.Get method.
 func (client *SavingsPlanOrderClient) Get(ctx context.Context, savingsPlanOrderID string, options *SavingsPlanOrderClientGetOptions) (SavingsPlanOrderClientGetResponse, error) {
@@ -133,10 +133,10 @@ func (client *SavingsPlanOrderClient) getCreateRequest(ctx context.Context, savi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -153,7 +153,7 @@ func (client *SavingsPlanOrderClient) getHandleResponse(resp *http.Response) (Sa
 
 // NewListPager - List all Savings plan orders.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - options - SavingsPlanOrderClientListOptions contains the optional parameters for the SavingsPlanOrderClient.NewListPager
 //     method.
 func (client *SavingsPlanOrderClient) NewListPager(options *SavingsPlanOrderClientListOptions) *runtime.Pager[SavingsPlanOrderClientListResponse] {
@@ -180,14 +180,14 @@ func (client *SavingsPlanOrderClient) NewListPager(options *SavingsPlanOrderClie
 }
 
 // listCreateRequest creates the List request.
-func (client *SavingsPlanOrderClient) listCreateRequest(ctx context.Context, options *SavingsPlanOrderClientListOptions) (*policy.Request, error) {
+func (client *SavingsPlanOrderClient) listCreateRequest(ctx context.Context, _ *SavingsPlanOrderClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

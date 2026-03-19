@@ -5,6 +5,52 @@
 
 package armbillingbenefits
 
+// DiscountClientBeginUpdateOptions contains the optional parameters for the DiscountClient.BeginUpdate method.
+type DiscountClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DiscountClientGetOptions contains the optional parameters for the DiscountClient.Get method.
+type DiscountClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiscountsClientBeginCancelOptions contains the optional parameters for the DiscountsClient.BeginCancel method.
+type DiscountsClientBeginCancelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DiscountsClientBeginCreateOptions contains the optional parameters for the DiscountsClient.BeginCreate method.
+type DiscountsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DiscountsClientBeginDeleteOptions contains the optional parameters for the DiscountsClient.BeginDelete method.
+type DiscountsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DiscountsClientResourceGroupListOptions contains the optional parameters for the DiscountsClient.NewResourceGroupListPager
+// method.
+type DiscountsClientResourceGroupListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiscountsClientScopeListOptions contains the optional parameters for the DiscountsClient.NewScopeListPager method.
+type DiscountsClientScopeListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiscountsClientSubscriptionListOptions contains the optional parameters for the DiscountsClient.NewSubscriptionListPager
+// method.
+type DiscountsClientSubscriptionListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -18,13 +64,19 @@ type RPClientValidatePurchaseOptions struct {
 // ReservationOrderAliasClientBeginCreateOptions contains the optional parameters for the ReservationOrderAliasClient.BeginCreate
 // method.
 type ReservationOrderAliasClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ReservationOrderAliasClientGetOptions contains the optional parameters for the ReservationOrderAliasClient.Get method.
 type ReservationOrderAliasClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SavingsPlanClientBeginUpdateOptions contains the optional parameters for the SavingsPlanClient.BeginUpdate method.
+type SavingsPlanClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SavingsPlanClientGetOptions contains the optional parameters for the SavingsPlanClient.Get method.
@@ -63,11 +115,6 @@ type SavingsPlanClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SavingsPlanClientUpdateOptions contains the optional parameters for the SavingsPlanClient.Update method.
-type SavingsPlanClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // SavingsPlanClientValidateUpdateOptions contains the optional parameters for the SavingsPlanClient.ValidateUpdate method.
 type SavingsPlanClientValidateUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -76,7 +123,7 @@ type SavingsPlanClientValidateUpdateOptions struct {
 // SavingsPlanOrderAliasClientBeginCreateOptions contains the optional parameters for the SavingsPlanOrderAliasClient.BeginCreate
 // method.
 type SavingsPlanOrderAliasClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

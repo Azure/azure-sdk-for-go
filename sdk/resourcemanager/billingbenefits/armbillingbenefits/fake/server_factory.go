@@ -16,12 +16,29 @@ import (
 
 // ServerFactory is a fake server for instances of the armbillingbenefits.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer            OperationsServer
-	RPServer                    RPServer
+	// DiscountServer contains the fakes for client DiscountClient
+	DiscountServer DiscountServer
+
+	// DiscountsServer contains the fakes for client DiscountsClient
+	DiscountsServer DiscountsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// RPServer contains the fakes for client RPClient
+	RPServer RPServer
+
+	// ReservationOrderAliasServer contains the fakes for client ReservationOrderAliasClient
 	ReservationOrderAliasServer ReservationOrderAliasServer
-	SavingsPlanServer           SavingsPlanServer
+
+	// SavingsPlanServer contains the fakes for client SavingsPlanClient
+	SavingsPlanServer SavingsPlanServer
+
+	// SavingsPlanOrderAliasServer contains the fakes for client SavingsPlanOrderAliasClient
 	SavingsPlanOrderAliasServer SavingsPlanOrderAliasServer
-	SavingsPlanOrderServer      SavingsPlanOrderServer
+
+	// SavingsPlanOrderServer contains the fakes for client SavingsPlanOrderClient
+	SavingsPlanOrderServer SavingsPlanOrderServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -38,6 +55,8 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                           *ServerFactory
 	trMu                          sync.Mutex
+	trDiscountServer              *DiscountServerTransport
+	trDiscountsServer             *DiscountsServerTransport
 	trOperationsServer            *OperationsServerTransport
 	trRPServer                    *RPServerTransport
 	trReservationOrderAliasServer *ReservationOrderAliasServerTransport
@@ -59,6 +78,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "DiscountClient":
+		initServer(s, &s.trDiscountServer, func() *DiscountServerTransport { return NewDiscountServerTransport(&s.srv.DiscountServer) })
+		resp, err = s.trDiscountServer.Do(req)
+	case "DiscountsClient":
+		initServer(s, &s.trDiscountsServer, func() *DiscountsServerTransport { return NewDiscountsServerTransport(&s.srv.DiscountsServer) })
+		resp, err = s.trDiscountsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

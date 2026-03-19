@@ -5,11 +5,6 @@
 
 package armbillingbenefits
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits"
-	moduleVersion = "v2.1.0"
-)
-
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -42,6 +37,25 @@ func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	}
 }
 
+// ApplyDiscountOn - The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew.
+// Validation: Required, one of supported values.
+type ApplyDiscountOn string
+
+const (
+	ApplyDiscountOnConsume  ApplyDiscountOn = "Consume"
+	ApplyDiscountOnPurchase ApplyDiscountOn = "Purchase"
+	ApplyDiscountOnRenew    ApplyDiscountOn = "Renew"
+)
+
+// PossibleApplyDiscountOnValues returns the possible values for the ApplyDiscountOn const type.
+func PossibleApplyDiscountOnValues() []ApplyDiscountOn {
+	return []ApplyDiscountOn{
+		ApplyDiscountOnConsume,
+		ApplyDiscountOnPurchase,
+		ApplyDiscountOnRenew,
+	}
+}
+
 // BillingPlan - Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
 type BillingPlan string
 
@@ -60,13 +74,17 @@ func PossibleBillingPlanValues() []BillingPlan {
 type CommitmentGrain string
 
 const (
-	CommitmentGrainHourly CommitmentGrain = "Hourly"
+	CommitmentGrainFullTerm CommitmentGrain = "FullTerm"
+	CommitmentGrainHourly   CommitmentGrain = "Hourly"
+	CommitmentGrainUnknown  CommitmentGrain = "Unknown"
 )
 
 // PossibleCommitmentGrainValues returns the possible values for the CommitmentGrain const type.
 func PossibleCommitmentGrainValues() []CommitmentGrain {
 	return []CommitmentGrain{
+		CommitmentGrainFullTerm,
 		CommitmentGrainHourly,
+		CommitmentGrainUnknown,
 	}
 }
 
@@ -90,6 +108,143 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DiscountAppliedScopeType - List of applied scopes supported for discounts.
+type DiscountAppliedScopeType string
+
+const (
+	DiscountAppliedScopeTypeBillingAccount DiscountAppliedScopeType = "BillingAccount"
+	DiscountAppliedScopeTypeBillingProfile DiscountAppliedScopeType = "BillingProfile"
+	DiscountAppliedScopeTypeCustomer       DiscountAppliedScopeType = "Customer"
+)
+
+// PossibleDiscountAppliedScopeTypeValues returns the possible values for the DiscountAppliedScopeType const type.
+func PossibleDiscountAppliedScopeTypeValues() []DiscountAppliedScopeType {
+	return []DiscountAppliedScopeType{
+		DiscountAppliedScopeTypeBillingAccount,
+		DiscountAppliedScopeTypeBillingProfile,
+		DiscountAppliedScopeTypeCustomer,
+	}
+}
+
+// DiscountCombinationRule - The discount combination rule when there are multiple applicable custom prices. Validation: Required.
+// Supported values are Stackable and BestOf.
+type DiscountCombinationRule string
+
+const (
+	DiscountCombinationRuleBestOf    DiscountCombinationRule = "BestOf"
+	DiscountCombinationRuleStackable DiscountCombinationRule = "Stackable"
+)
+
+// PossibleDiscountCombinationRuleValues returns the possible values for the DiscountCombinationRule const type.
+func PossibleDiscountCombinationRuleValues() []DiscountCombinationRule {
+	return []DiscountCombinationRule{
+		DiscountCombinationRuleBestOf,
+		DiscountCombinationRuleStackable,
+	}
+}
+
+// DiscountEntityType - This defines whether the entity being created is primary or affiliate. Supported values: primary,
+// affiliate. Validation: Required, must match one of the 2 values.
+type DiscountEntityType string
+
+const (
+	DiscountEntityTypeAffiliate DiscountEntityType = "Affiliate"
+	DiscountEntityTypePrimary   DiscountEntityType = "Primary"
+)
+
+// PossibleDiscountEntityTypeValues returns the possible values for the DiscountEntityType const type.
+func PossibleDiscountEntityTypeValues() []DiscountEntityType {
+	return []DiscountEntityType{
+		DiscountEntityTypeAffiliate,
+		DiscountEntityTypePrimary,
+	}
+}
+
+// DiscountProvisioningState - Provisioning states of Discount.
+type DiscountProvisioningState string
+
+const (
+	DiscountProvisioningStateCanceled  DiscountProvisioningState = "Canceled"
+	DiscountProvisioningStateFailed    DiscountProvisioningState = "Failed"
+	DiscountProvisioningStatePending   DiscountProvisioningState = "Pending"
+	DiscountProvisioningStateSucceeded DiscountProvisioningState = "Succeeded"
+	DiscountProvisioningStateUnknown   DiscountProvisioningState = "Unknown"
+)
+
+// PossibleDiscountProvisioningStateValues returns the possible values for the DiscountProvisioningState const type.
+func PossibleDiscountProvisioningStateValues() []DiscountProvisioningState {
+	return []DiscountProvisioningState{
+		DiscountProvisioningStateCanceled,
+		DiscountProvisioningStateFailed,
+		DiscountProvisioningStatePending,
+		DiscountProvisioningStateSucceeded,
+		DiscountProvisioningStateUnknown,
+	}
+}
+
+// DiscountRuleType - The type of the priceable node pricing rule. Validation: Required. Supported values are fixedPriceLock,
+// fixedListPrice, and priceCeiling.
+type DiscountRuleType string
+
+const (
+	DiscountRuleTypeFixedListPrice DiscountRuleType = "FixedListPrice"
+	DiscountRuleTypeFixedPriceLock DiscountRuleType = "FixedPriceLock"
+	DiscountRuleTypePriceCeiling   DiscountRuleType = "PriceCeiling"
+)
+
+// PossibleDiscountRuleTypeValues returns the possible values for the DiscountRuleType const type.
+func PossibleDiscountRuleTypeValues() []DiscountRuleType {
+	return []DiscountRuleType{
+		DiscountRuleTypeFixedListPrice,
+		DiscountRuleTypeFixedPriceLock,
+		DiscountRuleTypePriceCeiling,
+	}
+}
+
+// DiscountStatus - Represents the current status of the discount.
+type DiscountStatus string
+
+const (
+	DiscountStatusActive   DiscountStatus = "Active"
+	DiscountStatusCanceled DiscountStatus = "Canceled"
+	DiscountStatusExpired  DiscountStatus = "Expired"
+	DiscountStatusFailed   DiscountStatus = "Failed"
+	DiscountStatusPending  DiscountStatus = "Pending"
+)
+
+// PossibleDiscountStatusValues returns the possible values for the DiscountStatus const type.
+func PossibleDiscountStatusValues() []DiscountStatus {
+	return []DiscountStatus{
+		DiscountStatusActive,
+		DiscountStatusCanceled,
+		DiscountStatusExpired,
+		DiscountStatusFailed,
+		DiscountStatusPending,
+	}
+}
+
+// DiscountType - Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+type DiscountType string
+
+const (
+	DiscountTypeCustomPrice              DiscountType = "CustomPrice"
+	DiscountTypeCustomPriceMultiCurrency DiscountType = "CustomPriceMultiCurrency"
+	DiscountTypeProduct                  DiscountType = "Product"
+	DiscountTypeProductFamily            DiscountType = "ProductFamily"
+	DiscountTypeSKU                      DiscountType = "Sku"
+)
+
+// PossibleDiscountTypeValues returns the possible values for the DiscountType const type.
+func PossibleDiscountTypeValues() []DiscountType {
+	return []DiscountType{
+		DiscountTypeCustomPrice,
+		DiscountTypeCustomPriceMultiCurrency,
+		DiscountTypeProduct,
+		DiscountTypeProductFamily,
+		DiscountTypeSKU,
+	}
+}
+
 // InstanceFlexibility - Turning this on will apply the reservation discount to other VMs in the same VM size group.
 type InstanceFlexibility string
 
@@ -103,6 +258,26 @@ func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 	return []InstanceFlexibility{
 		InstanceFlexibilityOff,
 		InstanceFlexibilityOn,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 
@@ -142,6 +317,22 @@ func PossiblePaymentStatusValues() []PaymentStatus {
 		PaymentStatusFailed,
 		PaymentStatusScheduled,
 		PaymentStatusSucceeded,
+	}
+}
+
+// PricingPolicy - Supported values: Protected, Locked
+type PricingPolicy string
+
+const (
+	PricingPolicyLocked    PricingPolicy = "Locked"
+	PricingPolicyProtected PricingPolicy = "Protected"
+)
+
+// PossiblePricingPolicyValues returns the possible values for the PricingPolicy const type.
+func PossiblePricingPolicyValues() []PricingPolicy {
+	return []PricingPolicy{
+		PricingPolicyLocked,
+		PricingPolicyProtected,
 	}
 }
 
@@ -234,6 +425,27 @@ func PossibleReservedResourceTypeValues() []ReservedResourceType {
 		ReservedResourceTypeVMwareCloudSimple,
 		ReservedResourceTypeVirtualMachineSoftware,
 		ReservedResourceTypeVirtualMachines,
+	}
+}
+
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
+type SKUTier string
+
+const (
+	SKUTierBasic    SKUTier = "Basic"
+	SKUTierFree     SKUTier = "Free"
+	SKUTierPremium  SKUTier = "Premium"
+	SKUTierStandard SKUTier = "Standard"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierBasic,
+		SKUTierFree,
+		SKUTierPremium,
+		SKUTierStandard,
 	}
 }
 

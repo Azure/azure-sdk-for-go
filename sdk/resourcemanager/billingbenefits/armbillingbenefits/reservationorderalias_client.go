@@ -25,7 +25,7 @@ type ReservationOrderAliasClient struct {
 
 // NewReservationOrderAliasClient creates a new instance of ReservationOrderAliasClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReservationOrderAliasClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationOrderAliasClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewReservationOrderAliasClient(credential azcore.TokenCredential, options *
 // BeginCreate - Create a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - reservationOrderAliasName - Name of the reservation order alias
 //   - body - Request body for creating a reservation order alias
 //   - options - ReservationOrderAliasClientBeginCreateOptions contains the optional parameters for the ReservationOrderAliasClient.BeginCreate
@@ -66,7 +66,7 @@ func (client *ReservationOrderAliasClient) BeginCreate(ctx context.Context, rese
 // Create - Create a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 func (client *ReservationOrderAliasClient) create(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, options *ReservationOrderAliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReservationOrderAliasClient.BeginCreate"
@@ -89,7 +89,7 @@ func (client *ReservationOrderAliasClient) create(ctx context.Context, reservati
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, options *ReservationOrderAliasClientBeginCreateOptions) (*policy.Request, error) {
+func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, _ *ReservationOrderAliasClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/reservationOrderAliases/{reservationOrderAliasName}"
 	if reservationOrderAliasName == "" {
 		return nil, errors.New("parameter reservationOrderAliasName cannot be empty")
@@ -100,7 +100,7 @@ func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -112,7 +112,7 @@ func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Conte
 // Get - Get a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - reservationOrderAliasName - Name of the reservation order alias
 //   - options - ReservationOrderAliasClientGetOptions contains the optional parameters for the ReservationOrderAliasClient.Get
 //     method.
@@ -139,7 +139,7 @@ func (client *ReservationOrderAliasClient) Get(ctx context.Context, reservationO
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReservationOrderAliasClient) getCreateRequest(ctx context.Context, reservationOrderAliasName string, options *ReservationOrderAliasClientGetOptions) (*policy.Request, error) {
+func (client *ReservationOrderAliasClient) getCreateRequest(ctx context.Context, reservationOrderAliasName string, _ *ReservationOrderAliasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/reservationOrderAliases/{reservationOrderAliasName}"
 	if reservationOrderAliasName == "" {
 		return nil, errors.New("parameter reservationOrderAliasName cannot be empty")
@@ -150,7 +150,7 @@ func (client *ReservationOrderAliasClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -26,7 +26,7 @@ type SavingsPlanClient struct {
 
 // NewSavingsPlanClient creates a new instance of SavingsPlanClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSavingsPlanClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SavingsPlanClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,7 +41,7 @@ func NewSavingsPlanClient(credential azcore.TokenCredential, options *arm.Client
 // Get - Get savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - savingsPlanID - ID of the savings plan
 //   - options - SavingsPlanClientGetOptions contains the optional parameters for the SavingsPlanClient.Get method.
@@ -83,10 +83,10 @@ func (client *SavingsPlanClient) getCreateRequest(ctx context.Context, savingsPl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,7 +103,7 @@ func (client *SavingsPlanClient) getHandleResponse(resp *http.Response) (Savings
 
 // NewListPager - List savings plans in an order.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - options - SavingsPlanClientListOptions contains the optional parameters for the SavingsPlanClient.NewListPager method.
 func (client *SavingsPlanClient) NewListPager(savingsPlanOrderID string, options *SavingsPlanClientListOptions) *runtime.Pager[SavingsPlanClientListResponse] {
@@ -130,7 +130,7 @@ func (client *SavingsPlanClient) NewListPager(savingsPlanOrderID string, options
 }
 
 // listCreateRequest creates the List request.
-func (client *SavingsPlanClient) listCreateRequest(ctx context.Context, savingsPlanOrderID string, options *SavingsPlanClientListOptions) (*policy.Request, error) {
+func (client *SavingsPlanClient) listCreateRequest(ctx context.Context, savingsPlanOrderID string, _ *SavingsPlanClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans"
 	if savingsPlanOrderID == "" {
 		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
@@ -141,7 +141,7 @@ func (client *SavingsPlanClient) listCreateRequest(ctx context.Context, savingsP
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,7 +158,7 @@ func (client *SavingsPlanClient) listHandleResponse(resp *http.Response) (Saving
 
 // NewListAllPager - List savings plans.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - options - SavingsPlanClientListAllOptions contains the optional parameters for the SavingsPlanClient.NewListAllPager method.
 func (client *SavingsPlanClient) NewListAllPager(options *SavingsPlanClientListAllOptions) *runtime.Pager[SavingsPlanClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SavingsPlanClientListAllResponse]{
@@ -191,18 +191,18 @@ func (client *SavingsPlanClient) listAllCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	if options != nil && options.RefreshSummary != nil {
-		reqQP.Set("refreshSummary", *options.RefreshSummary)
-	}
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", strconv.FormatFloat(float64(*options.Skiptoken), 'f', -1, 32))
+	}
+	reqQP.Set("api-version", "2024-11-01-preview")
+	if options != nil && options.RefreshSummary != nil {
+		reqQP.Set("refreshSummary", *options.RefreshSummary)
 	}
 	if options != nil && options.SelectedState != nil {
 		reqQP.Set("selectedState", *options.SelectedState)
@@ -224,38 +224,58 @@ func (client *SavingsPlanClient) listAllHandleResponse(resp *http.Response) (Sav
 	return result, nil
 }
 
-// Update - Update savings plan.
+// BeginUpdate - Update savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - savingsPlanID - ID of the savings plan
 //   - body - Request body for patching a savings plan order alias
-//   - options - SavingsPlanClientUpdateOptions contains the optional parameters for the SavingsPlanClient.Update method.
-func (client *SavingsPlanClient) Update(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientUpdateOptions) (SavingsPlanClientUpdateResponse, error) {
+//   - options - SavingsPlanClientBeginUpdateOptions contains the optional parameters for the SavingsPlanClient.BeginUpdate method.
+func (client *SavingsPlanClient) BeginUpdate(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientBeginUpdateOptions) (*runtime.Poller[SavingsPlanClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, savingsPlanOrderID, savingsPlanID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SavingsPlanClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SavingsPlanClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Update savings plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-01-preview
+func (client *SavingsPlanClient) update(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SavingsPlanClient.Update"
+	const operationName = "SavingsPlanClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, body, options)
 	if err != nil {
-		return SavingsPlanClientUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SavingsPlanClientUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return SavingsPlanClientUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientUpdateOptions) (*policy.Request, error) {
+func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, _ *SavingsPlanClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}"
 	if savingsPlanOrderID == "" {
 		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
@@ -270,7 +290,7 @@ func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, saving
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -279,22 +299,10 @@ func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, saving
 	return req, nil
 }
 
-// updateHandleResponse handles the Update response.
-func (client *SavingsPlanClient) updateHandleResponse(resp *http.Response) (SavingsPlanClientUpdateResponse, error) {
-	result := SavingsPlanClientUpdateResponse{}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanModel); err != nil {
-		return SavingsPlanClientUpdateResponse{}, err
-	}
-	return result, nil
-}
-
 // ValidateUpdate - Validate savings plan patch.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - savingsPlanID - ID of the savings plan
 //   - body - Request body for validating a savings plan patch request
@@ -323,7 +331,7 @@ func (client *SavingsPlanClient) ValidateUpdate(ctx context.Context, savingsPlan
 }
 
 // validateUpdateCreateRequest creates the ValidateUpdate request.
-func (client *SavingsPlanClient) validateUpdateCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateValidateRequest, options *SavingsPlanClientValidateUpdateOptions) (*policy.Request, error) {
+func (client *SavingsPlanClient) validateUpdateCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateValidateRequest, _ *SavingsPlanClientValidateUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/validate"
 	if savingsPlanOrderID == "" {
 		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
@@ -338,7 +346,7 @@ func (client *SavingsPlanClient) validateUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

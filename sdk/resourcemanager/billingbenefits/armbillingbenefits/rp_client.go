@@ -22,7 +22,7 @@ type RPClient struct {
 
 // NewRPClient creates a new instance of RPClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRPClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RPClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,7 +37,7 @@ func NewRPClient(credential azcore.TokenCredential, options *arm.ClientOptions) 
 // ValidatePurchase - Validate savings plan purchase.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - body - Request body for validating the purchase of a savings plan
 //   - options - RPClientValidatePurchaseOptions contains the optional parameters for the RPClient.ValidatePurchase method.
 func (client *RPClient) ValidatePurchase(ctx context.Context, body SavingsPlanPurchaseValidateRequest, options *RPClientValidatePurchaseOptions) (RPClientValidatePurchaseResponse, error) {
@@ -63,14 +63,14 @@ func (client *RPClient) ValidatePurchase(ctx context.Context, body SavingsPlanPu
 }
 
 // validatePurchaseCreateRequest creates the ValidatePurchase request.
-func (client *RPClient) validatePurchaseCreateRequest(ctx context.Context, body SavingsPlanPurchaseValidateRequest, options *RPClientValidatePurchaseOptions) (*policy.Request, error) {
+func (client *RPClient) validatePurchaseCreateRequest(ctx context.Context, body SavingsPlanPurchaseValidateRequest, _ *RPClientValidatePurchaseOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/validate"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

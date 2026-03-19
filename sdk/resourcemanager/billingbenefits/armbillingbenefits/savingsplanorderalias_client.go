@@ -25,7 +25,7 @@ type SavingsPlanOrderAliasClient struct {
 
 // NewSavingsPlanOrderAliasClient creates a new instance of SavingsPlanOrderAliasClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSavingsPlanOrderAliasClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SavingsPlanOrderAliasClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewSavingsPlanOrderAliasClient(credential azcore.TokenCredential, options *
 // BeginCreate - Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderAliasName - Name of the savings plan order alias
 //   - body - Request body for creating a savings plan order alias
 //   - options - SavingsPlanOrderAliasClientBeginCreateOptions contains the optional parameters for the SavingsPlanOrderAliasClient.BeginCreate
@@ -66,7 +66,7 @@ func (client *SavingsPlanOrderAliasClient) BeginCreate(ctx context.Context, savi
 // Create - Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 func (client *SavingsPlanOrderAliasClient) create(ctx context.Context, savingsPlanOrderAliasName string, body SavingsPlanOrderAliasModel, options *SavingsPlanOrderAliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SavingsPlanOrderAliasClient.BeginCreate"
@@ -89,7 +89,7 @@ func (client *SavingsPlanOrderAliasClient) create(ctx context.Context, savingsPl
 }
 
 // createCreateRequest creates the Create request.
-func (client *SavingsPlanOrderAliasClient) createCreateRequest(ctx context.Context, savingsPlanOrderAliasName string, body SavingsPlanOrderAliasModel, options *SavingsPlanOrderAliasClientBeginCreateOptions) (*policy.Request, error) {
+func (client *SavingsPlanOrderAliasClient) createCreateRequest(ctx context.Context, savingsPlanOrderAliasName string, body SavingsPlanOrderAliasModel, _ *SavingsPlanOrderAliasClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrderAliases/{savingsPlanOrderAliasName}"
 	if savingsPlanOrderAliasName == "" {
 		return nil, errors.New("parameter savingsPlanOrderAliasName cannot be empty")
@@ -100,7 +100,7 @@ func (client *SavingsPlanOrderAliasClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -112,7 +112,7 @@ func (client *SavingsPlanOrderAliasClient) createCreateRequest(ctx context.Conte
 // Get - Get a savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2024-11-01-preview
 //   - savingsPlanOrderAliasName - Name of the savings plan order alias
 //   - options - SavingsPlanOrderAliasClientGetOptions contains the optional parameters for the SavingsPlanOrderAliasClient.Get
 //     method.
@@ -139,7 +139,7 @@ func (client *SavingsPlanOrderAliasClient) Get(ctx context.Context, savingsPlanO
 }
 
 // getCreateRequest creates the Get request.
-func (client *SavingsPlanOrderAliasClient) getCreateRequest(ctx context.Context, savingsPlanOrderAliasName string, options *SavingsPlanOrderAliasClientGetOptions) (*policy.Request, error) {
+func (client *SavingsPlanOrderAliasClient) getCreateRequest(ctx context.Context, savingsPlanOrderAliasName string, _ *SavingsPlanOrderAliasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrderAliases/{savingsPlanOrderAliasName}"
 	if savingsPlanOrderAliasName == "" {
 		return nil, errors.New("parameter savingsPlanOrderAliasName cannot be empty")
@@ -150,7 +150,7 @@ func (client *SavingsPlanOrderAliasClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

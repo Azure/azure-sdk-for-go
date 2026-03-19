@@ -5,11 +5,6 @@
 
 package armservicebus
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
-	moduleVersion = "v1.2.0"
-)
-
 type AccessRights string
 
 const (
@@ -232,22 +227,6 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 		ProvisioningStateDRAccepted,
 		ProvisioningStateDRFailed,
 		ProvisioningStateDRSucceeded,
-	}
-}
-
-// PublicNetworkAccessFlag - This determines if traffic is allowed over public network. By default it is enabled.
-type PublicNetworkAccessFlag string
-
-const (
-	PublicNetworkAccessFlagDisabled PublicNetworkAccessFlag = "Disabled"
-	PublicNetworkAccessFlagEnabled  PublicNetworkAccessFlag = "Enabled"
-)
-
-// PossiblePublicNetworkAccessFlagValues returns the possible values for the PublicNetworkAccessFlag const type.
-func PossiblePublicNetworkAccessFlagValues() []PublicNetworkAccessFlag {
-	return []PublicNetworkAccessFlag{
-		PublicNetworkAccessFlagDisabled,
-		PublicNetworkAccessFlagEnabled,
 	}
 }
 

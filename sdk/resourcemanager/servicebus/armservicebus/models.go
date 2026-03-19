@@ -49,19 +49,16 @@ type ArmDisasterRecovery struct {
 	// Properties required to the Create Or Update Alias(Disaster Recovery configurations)
 	Properties *ArmDisasterRecoveryProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -155,9 +152,19 @@ type CorrelationFilter struct {
 	To *string
 }
 
+// DictionaryValue - Recognized Dictionary value.
+type DictionaryValue struct {
+	// READ-ONLY; Client Id of user assigned identity
+	ClientID *string
+
+	// READ-ONLY; Principal Id of user assigned identity
+	PrincipalID *string
+}
+
 // Encryption - Properties to configure Encryption
 type Encryption struct {
-	// Enumerates the possible value of keySource for Encryption
+	// CONSTANT; Enumerates the possible value of keySource for Encryption
+	// Field has constant value "Microsoft.KeyVault", any specified value is ignored.
 	KeySource *string
 
 	// Properties of KeyVault
@@ -220,7 +227,7 @@ type Identity struct {
 	Type *ManagedServiceIdentityType
 
 	// Properties for User Assigned Identities
-	UserAssignedIdentities map[string]*UserAssignedIdentity
+	UserAssignedIdentities map[string]*DictionaryValue
 
 	// READ-ONLY; ObjectId from the KeyVault
 	PrincipalID *string
@@ -275,19 +282,16 @@ type MigrationConfigProperties struct {
 	// Properties required to the Create Migration Configuration
 	Properties *MigrationConfigPropertiesProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -333,19 +337,16 @@ type NetworkRuleSet struct {
 	// NetworkRuleSet properties
 	Properties *NetworkRuleSetProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -366,46 +367,28 @@ type NetworkRuleSetProperties struct {
 	// List of IpRules
 	IPRules []*NWRuleSetIPRules
 
-	// This determines if traffic is allowed over public network. By default it is enabled.
-	PublicNetworkAccess *PublicNetworkAccessFlag
-
-	// Value that indicates whether Trusted Service Access is Enabled or not.
-	TrustedServiceAccessEnabled *bool
-
 	// List VirtualNetwork Rules
 	VirtualNetworkRules []*NWRuleSetVirtualNetworkRules
 }
 
-// Operation - A Service Bus REST API operation
+// Operation - A ServiceBus REST API operation
 type Operation struct {
-	// Display of the operation
+	// The object that represents the operation.
 	Display *OperationDisplay
-
-	// Indicates whether the operation is a data action
-	IsDataAction *bool
-
-	// Origin of the operation
-	Origin *string
-
-	// Properties of the operation
-	Properties any
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string
 }
 
-// OperationDisplay - Operation display payload
+// OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
-	// READ-ONLY; Localized friendly description for the operation
-	Description *string
-
-	// READ-ONLY; Localized friendly name for the operation
+	// READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string
 
-	// READ-ONLY; Resource provider of the operation
+	// READ-ONLY; Service provider: Microsoft.ServiceBus
 	Provider *string
 
-	// READ-ONLY; Resource of the operation
+	// READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string
 }
 
@@ -430,19 +413,16 @@ type PrivateEndpointConnection struct {
 	// Properties of the PrivateEndpointConnection.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -502,21 +482,6 @@ type PrivateLinkResourcesListResult struct {
 	Value []*PrivateLinkResource
 }
 
-// ProxyResource - Common fields that are returned in the response for all Azure Resource Manager resources
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string
-}
-
 // RegenerateAccessKeyParameters - Parameters supplied to the Regenerate Authorization Rule operation, specifies which key
 // needs to be reset.
 type RegenerateAccessKeyParameters struct {
@@ -562,19 +527,16 @@ type Rule struct {
 	// Properties of Rule resource
 	Properties *Ruleproperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -608,19 +570,16 @@ type SBAuthorizationRule struct {
 	// AuthorizationRule properties.
 	Properties *SBAuthorizationRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -637,18 +596,6 @@ type SBAuthorizationRuleListResult struct {
 type SBAuthorizationRuleProperties struct {
 	// REQUIRED; The rights associated with the rule.
 	Rights []*AccessRights
-}
-
-// SBClientAffineProperties - Properties specific to client affine subscriptions.
-type SBClientAffineProperties struct {
-	// Indicates the Client ID of the application that created the client-affine subscription.
-	ClientID *string
-
-	// For client-affine subscriptions, this value indicates whether the subscription is durable or not.
-	IsDurable *bool
-
-	// For client-affine subscriptions, this value indicates whether the subscription is shared or not.
-	IsShared *bool
 }
 
 // SBNamespace - Description of a namespace resource.
@@ -692,12 +639,6 @@ type SBNamespaceListResult struct {
 
 // SBNamespaceProperties - Properties of the namespace.
 type SBNamespaceProperties struct {
-	// Alternate name for namespace
-	AlternateName *string
-
-	// This property disables SAS authentication for the Service Bus namespace.
-	DisableLocalAuth *bool
-
 	// Properties of BYOK Encryption description
 	Encryption *Encryption
 
@@ -735,7 +676,7 @@ type SBNamespaceUpdateParameters struct {
 	Location *string
 
 	// Properties of the namespace.
-	Properties *SBNamespaceUpdateProperties
+	Properties *SBNamespaceProperties
 
 	// Properties of SKU
 	SKU *SBSKU
@@ -753,57 +694,21 @@ type SBNamespaceUpdateParameters struct {
 	Type *string
 }
 
-// SBNamespaceUpdateProperties - Properties of the namespace.
-type SBNamespaceUpdateProperties struct {
-	// Alternate name for namespace
-	AlternateName *string
-
-	// This property disables SAS authentication for the Service Bus namespace.
-	DisableLocalAuth *bool
-
-	// Properties of BYOK Encryption description
-	Encryption *Encryption
-
-	// List of private endpoint connections.
-	PrivateEndpointConnections []*PrivateEndpointConnection
-
-	// READ-ONLY; The time the namespace was created
-	CreatedAt *time.Time
-
-	// READ-ONLY; Identifier for Azure Insights metrics
-	MetricID *string
-
-	// READ-ONLY; Provisioning state of the namespace.
-	ProvisioningState *string
-
-	// READ-ONLY; Endpoint you can use to perform Service Bus operations.
-	ServiceBusEndpoint *string
-
-	// READ-ONLY; Status of the namespace.
-	Status *string
-
-	// READ-ONLY; The time the namespace was updated.
-	UpdatedAt *time.Time
-}
-
 // SBQueue - Description of queue Resource.
 type SBQueue struct {
 	// Queue Properties
 	Properties *SBQueueProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -855,10 +760,6 @@ type SBQueueProperties struct {
 	// The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
 	MaxDeliveryCount *int32
 
-	// Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today
-	// and default is 1024.
-	MaxMessageSizeInKilobytes *int64
-
 	// The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
 	MaxSizeInMegabytes *int32
 
@@ -907,19 +808,16 @@ type SBSubscription struct {
 	// Properties of subscriptions resource.
 	Properties *SBSubscriptionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -936,9 +834,6 @@ type SBSubscriptionListResult struct {
 type SBSubscriptionProperties struct {
 	// ISO 8061 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
 	AutoDeleteOnIdle *string
-
-	// Properties specific to client affine subscriptions.
-	ClientAffineProperties *SBClientAffineProperties
 
 	// Value that indicates whether a subscription has dead letter support on filter evaluation exceptions.
 	DeadLetteringOnFilterEvaluationExceptions *bool
@@ -962,9 +857,6 @@ type SBSubscriptionProperties struct {
 
 	// Queue/Topic name to forward the messages
 	ForwardTo *string
-
-	// Value that indicates whether the subscription has an affinity to the client id.
-	IsClientAffine *bool
 
 	// ISO 8061 lock duration timespan for the subscription. The default value is 1 minute.
 	LockDuration *string
@@ -999,19 +891,16 @@ type SBTopic struct {
 	// Properties of topic resource.
 	Properties *SBTopicProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -1046,10 +935,6 @@ type SBTopicProperties struct {
 
 	// Value that indicates whether the topic to be partitioned across multiple message brokers is enabled.
 	EnablePartitioning *bool
-
-	// Maximum size (in KB) of the message payload that can be accepted by the topic. This property is only used in Premium today
-	// and default is 1024.
-	MaxMessageSizeInKilobytes *int64
 
 	// Maximum size of the topic in megabytes, which is the size of the memory allocated for the topic. Default is 1024.
 	MaxSizeInMegabytes *int32
@@ -1149,15 +1034,6 @@ type TrackedResource struct {
 
 	// READ-ONLY; Resource type
 	Type *string
-}
-
-// UserAssignedIdentity - Recognized Dictionary value.
-type UserAssignedIdentity struct {
-	// READ-ONLY; Client Id of user assigned identity
-	ClientID *string
-
-	// READ-ONLY; Principal Id of user assigned identity
-	PrincipalID *string
 }
 
 type UserAssignedIdentityProperties struct {

@@ -16,16 +16,35 @@ import (
 
 // ServerFactory is a fake server for instances of the armservicebus.ClientFactory type.
 type ServerFactory struct {
-	DisasterRecoveryConfigsServer    DisasterRecoveryConfigsServer
-	MigrationConfigsServer           MigrationConfigsServer
-	NamespacesServer                 NamespacesServer
-	OperationsServer                 OperationsServer
+	// DisasterRecoveryConfigsServer contains the fakes for client DisasterRecoveryConfigsClient
+	DisasterRecoveryConfigsServer DisasterRecoveryConfigsServer
+
+	// MigrationConfigsServer contains the fakes for client MigrationConfigsClient
+	MigrationConfigsServer MigrationConfigsServer
+
+	// NamespacesServer contains the fakes for client NamespacesClient
+	NamespacesServer NamespacesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	QueuesServer                     QueuesServer
-	RulesServer                      RulesServer
-	SubscriptionsServer              SubscriptionsServer
-	TopicsServer                     TopicsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// QueuesServer contains the fakes for client QueuesClient
+	QueuesServer QueuesServer
+
+	// RulesServer contains the fakes for client RulesClient
+	RulesServer RulesServer
+
+	// SubscriptionsServer contains the fakes for client SubscriptionsClient
+	SubscriptionsServer SubscriptionsServer
+
+	// TopicsServer contains the fakes for client TopicsClient
+	TopicsServer TopicsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

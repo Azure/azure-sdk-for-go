@@ -1,5 +1,32 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-03-19)
+### Breaking Changes
+
+- Type of `Operation.Display` has been changed from `*OperationDisplayProperties` to `*OperationDisplay`
+- Struct `AzureAsyncOperationResults` has been removed
+- Struct `CreateManagementGroupChildInfo` has been removed
+- Struct `EntityHierarchyItem` has been removed
+- Struct `EntityHierarchyItemProperties` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `OperationDisplayProperties` has been removed
+- Struct `OperationResults` has been removed
+- Field `AzureAsyncOperationResults` of struct `ClientDeleteResponse` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New struct `OperationDisplay`
+- New struct `SystemData`
+- New field `SystemData` in struct `HierarchySettings`
+- New field `SystemData` in struct `ManagementGroup`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+- New field `SystemData` in struct `SubscriptionUnderManagementGroup`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

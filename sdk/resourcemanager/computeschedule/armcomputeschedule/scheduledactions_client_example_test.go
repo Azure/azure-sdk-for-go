@@ -1031,7 +1031,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreateFlex() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreateFlex(ctx, "bnadpwmpjyfduxue", armcomputeschedule.ExecuteCreateFlexRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreateFlex(ctx, "bnadpwmpjyfduxue", armcomputeschedule.ExecuteCreateFlexContent{
 		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionFlexPayload{
 			BaseProfile: map[string]any{},
 			ResourceOverrides: []map[string]any{

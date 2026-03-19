@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (2026-03-17)
+## 1.2.0-beta.2 (2026-03-19)
 ### Features Added
 
 - New value `ResourceOperationTypeCreate`, `ResourceOperationTypeDelete` added to enum type `ResourceOperationType`
@@ -8,9 +8,9 @@
 - New enum type `DistributionStrategy` with values `DistributionStrategyBestEffortBalanced`, `DistributionStrategyBestEffortSingleZone`, `DistributionStrategyPrioritized`, `DistributionStrategyStrictBalanced`
 - New enum type `OsType` with values `OsTypeLinux`, `OsTypeWindows`
 - New enum type `PriorityType` with values `PriorityTypeRegular`, `PriorityTypeSpot`
-- New function `*ScheduledActionsClient.VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error)`
+- New function `*ScheduledActionsClient.VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexContent, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error)`
 - New struct `CreateFlexResourceOperationResponse`
-- New struct `ExecuteCreateFlexRequest`
+- New struct `ExecuteCreateFlexContent`
 - New struct `FallbackOperationInfo`
 - New struct `FlexProperties`
 - New struct `PriorityProfile`

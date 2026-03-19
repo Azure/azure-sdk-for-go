@@ -128,8 +128,8 @@ type ExecuteCreateContent struct {
 	Correlationid *string
 }
 
-// ExecuteCreateFlexRequest - The ExecuteCreateFlexRequest request for executeCreateFlex operations
-type ExecuteCreateFlexRequest struct {
+// ExecuteCreateFlexContent - The ExecuteCreateFlexRequest request for executeCreateFlex operations
+type ExecuteCreateFlexContent struct {
 	// REQUIRED; The execution parameters for the request
 	ExecutionParameters *ExecutionParameters
 

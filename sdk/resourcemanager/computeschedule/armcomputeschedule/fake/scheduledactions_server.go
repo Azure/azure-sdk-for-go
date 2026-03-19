@@ -86,7 +86,7 @@ type ScheduledActionsServer struct {
 
 	// VirtualMachinesExecuteCreateFlex is the fake for method ScheduledActionsClient.VirtualMachinesExecuteCreateFlex
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesExecuteCreateFlex func(ctx context.Context, locationparameter string, body armcomputeschedule.ExecuteCreateFlexRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesExecuteCreateFlex func(ctx context.Context, locationparameter string, body armcomputeschedule.ExecuteCreateFlexContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesExecuteDeallocate is the fake for method ScheduledActionsClient.VirtualMachinesExecuteDeallocate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -840,7 +840,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteCreateFl
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteCreateFlexRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteCreateFlexContent](req)
 	if err != nil {
 		return nil, err
 	}

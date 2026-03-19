@@ -5,10 +5,21 @@
 
 package armdynatrace
 
+// Action - Install/Uninstall action.
+type Action string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace"
-	moduleVersion = "v2.1.0"
+	ActionInstall   Action = "Install"
+	ActionUninstall Action = "Uninstall"
 )
+
+// PossibleActionValues returns the possible values for the Action const type.
+func PossibleActionValues() []Action {
+	return []Action{
+		ActionInstall,
+		ActionUninstall,
+	}
+}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -138,13 +149,50 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 	}
 }
 
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// MarketplaceSaasAutoRenew - Marketplace resource autorenew flag
+type MarketplaceSaasAutoRenew string
+
+const (
+	MarketplaceSaasAutoRenewOff MarketplaceSaasAutoRenew = "Off"
+	MarketplaceSaasAutoRenewOn  MarketplaceSaasAutoRenew = "On"
+)
+
+// PossibleMarketplaceSaasAutoRenewValues returns the possible values for the MarketplaceSaasAutoRenew const type.
+func PossibleMarketplaceSaasAutoRenewValues() []MarketplaceSaasAutoRenew {
+	return []MarketplaceSaasAutoRenew{
+		MarketplaceSaasAutoRenewOff,
+		MarketplaceSaasAutoRenewOn,
+	}
+}
+
 // MarketplaceSubscriptionStatus - Flag specifying the Marketplace Subscription Status of the resource. If payment is not
 // made in time, the resource will go in Suspended state.
 type MarketplaceSubscriptionStatus string
 
 const (
-	MarketplaceSubscriptionStatusActive    MarketplaceSubscriptionStatus = "Active"
-	MarketplaceSubscriptionStatusSuspended MarketplaceSubscriptionStatus = "Suspended"
+	MarketplaceSubscriptionStatusActive       MarketplaceSubscriptionStatus = "Active"
+	MarketplaceSubscriptionStatusSuspended    MarketplaceSubscriptionStatus = "Suspended"
+	MarketplaceSubscriptionStatusUnsubscribed MarketplaceSubscriptionStatus = "Unsubscribed"
 )
 
 // PossibleMarketplaceSubscriptionStatusValues returns the possible values for the MarketplaceSubscriptionStatus const type.
@@ -152,6 +200,7 @@ func PossibleMarketplaceSubscriptionStatusValues() []MarketplaceSubscriptionStat
 	return []MarketplaceSubscriptionStatus{
 		MarketplaceSubscriptionStatusActive,
 		MarketplaceSubscriptionStatusSuspended,
+		MarketplaceSubscriptionStatusUnsubscribed,
 	}
 }
 
@@ -176,6 +225,7 @@ type MonitoringType string
 
 const (
 	MonitoringTypeCLOUDINFRASTRUCTURE MonitoringType = "CLOUD_INFRASTRUCTURE"
+	MonitoringTypeDISCOVERY           MonitoringType = "DISCOVERY"
 	MonitoringTypeFULLSTACK           MonitoringType = "FULL_STACK"
 )
 
@@ -183,6 +233,7 @@ const (
 func PossibleMonitoringTypeValues() []MonitoringType {
 	return []MonitoringType{
 		MonitoringTypeCLOUDINFRASTRUCTURE,
+		MonitoringTypeDISCOVERY,
 		MonitoringTypeFULLSTACK,
 	}
 }
@@ -349,6 +400,48 @@ func PossibleSingleSignOnStatesValues() []SingleSignOnStates {
 		SingleSignOnStatesEnable,
 		SingleSignOnStatesExisting,
 		SingleSignOnStatesInitial,
+	}
+}
+
+// Status - The state of monitoring.
+type Status string
+
+const (
+	StatusActive     Status = "Active"
+	StatusDeleting   Status = "Deleting"
+	StatusFailed     Status = "Failed"
+	StatusInProgress Status = "InProgress"
+)
+
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusActive,
+		StatusDeleting,
+		StatusFailed,
+		StatusInProgress,
+	}
+}
+
+// SubscriptionListOperation - The operation for the patch on the resource.
+type SubscriptionListOperation string
+
+const (
+	SubscriptionListOperationActive         SubscriptionListOperation = "Active"
+	SubscriptionListOperationAddBegin       SubscriptionListOperation = "AddBegin"
+	SubscriptionListOperationAddComplete    SubscriptionListOperation = "AddComplete"
+	SubscriptionListOperationDeleteBegin    SubscriptionListOperation = "DeleteBegin"
+	SubscriptionListOperationDeleteComplete SubscriptionListOperation = "DeleteComplete"
+)
+
+// PossibleSubscriptionListOperationValues returns the possible values for the SubscriptionListOperation const type.
+func PossibleSubscriptionListOperationValues() []SubscriptionListOperation {
+	return []SubscriptionListOperation{
+		SubscriptionListOperationActive,
+		SubscriptionListOperationAddBegin,
+		SubscriptionListOperationAddComplete,
+		SubscriptionListOperationDeleteBegin,
+		SubscriptionListOperationDeleteComplete,
 	}
 }
 

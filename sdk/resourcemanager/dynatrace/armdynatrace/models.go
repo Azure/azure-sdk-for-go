@@ -12,6 +12,9 @@ type AccountInfo struct {
 	// Account Id of the account this environment is linked to
 	AccountID *string
 
+	// Name of the customer account / company
+	CompanyName *string
+
 	// Region in which the account is created
 	RegionID *string
 }
@@ -53,6 +56,31 @@ type AppServiceListResponse struct {
 
 	// The items on this page
 	Value []*AppServiceInfo
+}
+
+// ConnectedResourcesCountResponse - Response for getting Connected resources for a MP SaaS Resource
+type ConnectedResourcesCountResponse struct {
+	// Count of the connected resources
+	ConnectedResourcesCount *int64
+}
+
+// CreateResourceSupportedProperties - Properties related to the support for creating Dynatrace resources.
+type CreateResourceSupportedProperties struct {
+	// READ-ONLY; Indicates if selected subscription supports Dynatrace resource creation, if not it is already being monitored
+	// for the selected organization via multi subscription feature.
+	CreationSupported *bool
+
+	// READ-ONLY; The ARM id of the subscription.
+	Name *string
+}
+
+// CreateResourceSupportedResponse - Dynatrace resource can be created or not.
+type CreateResourceSupportedResponse struct {
+	// The link to the next page of items
+	NextLink *string
+
+	// Represents the properties of the resource.
+	Value []*CreateResourceSupportedProperties
 }
 
 // EnvironmentInfo - Dynatrace Environment Information
@@ -164,6 +192,48 @@ type LogRules struct {
 	SendSubscriptionLogs *SendSubscriptionLogsStatus
 }
 
+// LogStatusRequest - Request for getting log status for given monitored resource Ids
+type LogStatusRequest struct {
+	// List of azure resource Id of monitored resources for which we get the log status
+	MonitoredResourceIDs []*string
+}
+
+// ManageAgentInstallationRequest - Request for performing Dynatrace agent install/uninstall action through the Azure Dynatrace
+// resource on the provided list of agent resources.
+type ManageAgentInstallationRequest struct {
+	// REQUIRED; Install/Uninstall action.
+	Action *Action
+
+	// REQUIRED; The list of resources.
+	ManageAgentInstallationList []*ManageAgentList
+}
+
+// ManageAgentList - Details of resource that has Dynatrace agent installed through the Azure Dynatrace resource.
+type ManageAgentList struct {
+	// The ARM id of the resource to install/uninstall agent.
+	ID *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // MarketplaceSaaSResourceDetailsRequest - Request for getting Marketplace SaaS resource details for a tenant Id
 type MarketplaceSaaSResourceDetailsRequest struct {
 	// REQUIRED; Tenant Id
@@ -175,11 +245,20 @@ type MarketplaceSaaSResourceDetailsResponse struct {
 	// Id of the Marketplace SaaS Resource
 	MarketplaceSaaSResourceID *string
 
+	// Name of the Marketplace SaaS Resource
+	MarketplaceSaaSResourceName *string
+
 	// Marketplace subscription status
 	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus
 
 	// Id of the plan
 	PlanID *string
+}
+
+// MarketplaceSubscriptionIDRequest - Request for getting connected resources count for a Marketplace Subscription Id
+type MarketplaceSubscriptionIDRequest struct {
+	// REQUIRED; Marketplace Subscription Id
+	MarketplaceSubscriptionID *string
 }
 
 // MetricRules - Set of rules for sending metrics for the Monitor resource.
@@ -193,6 +272,12 @@ type MetricRules struct {
 	SendingMetrics *SendingMetricsStatus
 }
 
+// MetricStatusRequest - Request for getting metric status for given monitored resource Ids
+type MetricStatusRequest struct {
+	// List of azure resource Id of monitored resources for which we get the metric status
+	MonitoredResourceIDs []*string
+}
+
 // MetricsStatusResponse - Response of get metrics status operation
 type MetricsStatusResponse struct {
 	// Azure resource IDs
@@ -203,6 +288,9 @@ type MetricsStatusResponse struct {
 type MonitorProperties struct {
 	// Properties of the Dynatrace environment.
 	DynatraceEnvironmentProperties *EnvironmentProperties
+
+	// Marketplace resource autorenew flag
+	MarketplaceSaasAutoRenew *MarketplaceSaasAutoRenew
 
 	// Marketplace subscription status.
 	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus
@@ -240,13 +328,13 @@ type MonitorResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; System metadata for this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -264,8 +352,20 @@ type MonitorResourceListResult struct {
 
 // MonitorResourceUpdate - The updatable properties of the MonitorResource.
 type MonitorResourceUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The set of properties that can be updated in a PATCH request to a monitor resource.
+	Properties *MonitorUpdateProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// MonitorUpdateProperties - The set of properties that can be updated in a PATCH request to a monitor resource.
+type MonitorUpdateProperties struct {
+	// The new Billing plan information.
+	PlanData *PlanData
 }
 
 // MonitoredResource - Details of resource being monitored by Dynatrace monitor resource
@@ -293,6 +393,42 @@ type MonitoredResourceListResponse struct {
 
 	// The items on this page
 	Value []*MonitoredResource
+}
+
+// MonitoredSubscription - The list of subscriptions and it's monitoring status by current Dynatrace monitor.
+type MonitoredSubscription struct {
+	// REQUIRED; The subscriptionId to be monitored.
+	SubscriptionID *string
+
+	// The reason of not monitoring the subscription.
+	Error *string
+
+	// The state of monitoring.
+	Status *Status
+
+	// Properties for the Tag rules resource of a Monitor account.
+	TagRules *MonitoringTagRulesProperties
+}
+
+// MonitoredSubscriptionProperties - The request to update subscriptions needed to be monitored by the Dynatrace monitor resource.
+type MonitoredSubscriptionProperties struct {
+	// The request to update subscriptions needed to be monitored by the Dynatrace monitor resource.
+	Properties *SubscriptionList
+
+	// READ-ONLY; The id of the monitored subscription resource.
+	ID *string
+
+	// READ-ONLY; Name of the monitored subscription resource.
+	Name *string
+
+	// READ-ONLY; The type of the monitored subscription resource.
+	Type *string
+}
+
+type MonitoredSubscriptionPropertiesList struct {
+	// The link to the next page of items
+	NextLink *string
+	Value    []*MonitoredSubscriptionProperties
 }
 
 // MonitoringTagRulesProperties - Properties for the Tag rules resource of a Monitor account.
@@ -418,13 +554,13 @@ type SingleSignOnResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
 	Properties *SingleSignOnProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; System metadata for this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -438,6 +574,18 @@ type SingleSignOnResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// SubscriptionList - The request to update subscriptions needed to be monitored by the Dynatrace monitor resource.
+type SubscriptionList struct {
+	// List of subscriptions and the state of the monitoring.
+	MonitoredSubscriptionList []*MonitoredSubscription
+
+	// The operation for the patch on the resource.
+	Operation *SubscriptionListOperation
+
+	// READ-ONLY; Provisioning State of the resource
+	ProvisioningState *ProvisioningState
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -466,13 +614,13 @@ type TagRule struct {
 	// REQUIRED; The resource-specific properties for this resource.
 	Properties *MonitoringTagRulesProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; System metadata for this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -488,12 +636,18 @@ type TagRuleListResult struct {
 	NextLink *string
 }
 
-// UserAssignedIdentity - A managed identity assigned by the user.
+// UpgradePlanRequest - The billing plan properties for the upgrade plan call.
+type UpgradePlanRequest struct {
+	// The new Billing plan information.
+	PlanData *PlanData
+}
+
+// UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
-	// REQUIRED; The active directory client identifier for this principal.
+	// READ-ONLY; The client ID of the assigned identity.
 	ClientID *string
 
-	// REQUIRED; The active directory identifier for this principal.
+	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
 

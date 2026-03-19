@@ -5,6 +5,46 @@
 
 package armdynatrace
 
+// CreationSupportedClientGetResponse contains the response from method CreationSupportedClient.Get.
+type CreationSupportedClientGetResponse struct {
+	// Dynatrace resource can be created or not.
+	CreateResourceSupportedResponse
+}
+
+// CreationSupportedClientListResponse contains the response from method CreationSupportedClient.List.
+type CreationSupportedClientListResponse struct {
+	// Dynatrace resource can be created or not.
+	CreateResourceSupportedResponse
+}
+
+// MonitoredSubscriptionsClientCreateOrUpdateResponse contains the response from method MonitoredSubscriptionsClient.BeginCreateOrUpdate.
+type MonitoredSubscriptionsClientCreateOrUpdateResponse struct {
+	// The request to update subscriptions needed to be monitored by the Dynatrace monitor resource.
+	MonitoredSubscriptionProperties
+}
+
+// MonitoredSubscriptionsClientDeleteResponse contains the response from method MonitoredSubscriptionsClient.BeginDelete.
+type MonitoredSubscriptionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MonitoredSubscriptionsClientGetResponse contains the response from method MonitoredSubscriptionsClient.Get.
+type MonitoredSubscriptionsClientGetResponse struct {
+	// The request to update subscriptions needed to be monitored by the Dynatrace monitor resource.
+	MonitoredSubscriptionProperties
+}
+
+// MonitoredSubscriptionsClientListResponse contains the response from method MonitoredSubscriptionsClient.NewListPager.
+type MonitoredSubscriptionsClientListResponse struct {
+	MonitoredSubscriptionPropertiesList
+}
+
+// MonitoredSubscriptionsClientUpdateResponse contains the response from method MonitoredSubscriptionsClient.BeginUpdate.
+type MonitoredSubscriptionsClientUpdateResponse struct {
+	// The request to update subscriptions needed to be monitored by the Dynatrace monitor resource.
+	MonitoredSubscriptionProperties
+}
+
 // MonitorsClientCreateOrUpdateResponse contains the response from method MonitorsClient.BeginCreateOrUpdate.
 type MonitorsClientCreateOrUpdateResponse struct {
 	// Dynatrace Monitor Resource
@@ -14,6 +54,12 @@ type MonitorsClientCreateOrUpdateResponse struct {
 // MonitorsClientDeleteResponse contains the response from method MonitorsClient.BeginDelete.
 type MonitorsClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// MonitorsClientGetAllConnectedResourcesCountResponse contains the response from method MonitorsClient.GetAllConnectedResourcesCount.
+type MonitorsClientGetAllConnectedResourcesCountResponse struct {
+	// Response for getting Connected resources for a MP SaaS Resource
+	ConnectedResourcesCountResponse
 }
 
 // MonitorsClientGetMarketplaceSaaSResourceDetailsResponse contains the response from method MonitorsClient.GetMarketplaceSaaSResourceDetails.
@@ -82,10 +128,20 @@ type MonitorsClientListMonitoredResourcesResponse struct {
 	MonitoredResourceListResponse
 }
 
+// MonitorsClientManageAgentInstallationResponse contains the response from method MonitorsClient.ManageAgentInstallation.
+type MonitorsClientManageAgentInstallationResponse struct {
+	// placeholder for future response values
+}
+
 // MonitorsClientUpdateResponse contains the response from method MonitorsClient.Update.
 type MonitorsClientUpdateResponse struct {
 	// Dynatrace Monitor Resource
 	MonitorResource
+}
+
+// MonitorsClientUpgradePlanResponse contains the response from method MonitorsClient.BeginUpgradePlan.
+type MonitorsClientUpgradePlanResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

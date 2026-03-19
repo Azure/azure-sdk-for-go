@@ -16,10 +16,23 @@ import (
 
 // ServerFactory is a fake server for instances of the armdynatrace.ClientFactory type.
 type ServerFactory struct {
-	MonitorsServer     MonitorsServer
-	OperationsServer   OperationsServer
+	// CreationSupportedServer contains the fakes for client CreationSupportedClient
+	CreationSupportedServer CreationSupportedServer
+
+	// MonitoredSubscriptionsServer contains the fakes for client MonitoredSubscriptionsClient
+	MonitoredSubscriptionsServer MonitoredSubscriptionsServer
+
+	// MonitorsServer contains the fakes for client MonitorsClient
+	MonitorsServer MonitorsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// SingleSignOnServer contains the fakes for client SingleSignOnClient
 	SingleSignOnServer SingleSignOnServer
-	TagRulesServer     TagRulesServer
+
+	// TagRulesServer contains the fakes for client TagRulesClient
+	TagRulesServer TagRulesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -34,12 +47,14 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdynatrace.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                  *ServerFactory
-	trMu                 sync.Mutex
-	trMonitorsServer     *MonitorsServerTransport
-	trOperationsServer   *OperationsServerTransport
-	trSingleSignOnServer *SingleSignOnServerTransport
-	trTagRulesServer     *TagRulesServerTransport
+	srv                            *ServerFactory
+	trMu                           sync.Mutex
+	trCreationSupportedServer      *CreationSupportedServerTransport
+	trMonitoredSubscriptionsServer *MonitoredSubscriptionsServerTransport
+	trMonitorsServer               *MonitorsServerTransport
+	trOperationsServer             *OperationsServerTransport
+	trSingleSignOnServer           *SingleSignOnServerTransport
+	trTagRulesServer               *TagRulesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -55,6 +70,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "CreationSupportedClient":
+		initServer(s, &s.trCreationSupportedServer, func() *CreationSupportedServerTransport {
+			return NewCreationSupportedServerTransport(&s.srv.CreationSupportedServer)
+		})
+		resp, err = s.trCreationSupportedServer.Do(req)
+	case "MonitoredSubscriptionsClient":
+		initServer(s, &s.trMonitoredSubscriptionsServer, func() *MonitoredSubscriptionsServerTransport {
+			return NewMonitoredSubscriptionsServerTransport(&s.srv.MonitoredSubscriptionsServer)
+		})
+		resp, err = s.trMonitoredSubscriptionsServer.Do(req)
 	case "MonitorsClient":
 		initServer(s, &s.trMonitorsServer, func() *MonitorsServerTransport { return NewMonitorsServerTransport(&s.srv.MonitorsServer) })
 		resp, err = s.trMonitorsServer.Do(req)

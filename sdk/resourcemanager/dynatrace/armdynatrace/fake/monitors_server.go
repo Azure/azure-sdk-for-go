@@ -34,6 +34,10 @@ type MonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, monitorName string, options *armdynatrace.MonitorsClientGetOptions) (resp azfake.Responder[armdynatrace.MonitorsClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetAllConnectedResourcesCount is the fake for method MonitorsClient.GetAllConnectedResourcesCount
+	// HTTP status codes to indicate success: http.StatusOK
+	GetAllConnectedResourcesCount func(ctx context.Context, request armdynatrace.MarketplaceSubscriptionIDRequest, options *armdynatrace.MonitorsClientGetAllConnectedResourcesCountOptions) (resp azfake.Responder[armdynatrace.MonitorsClientGetAllConnectedResourcesCountResponse], errResp azfake.ErrorResponder)
+
 	// GetMarketplaceSaaSResourceDetails is the fake for method MonitorsClient.GetMarketplaceSaaSResourceDetails
 	// HTTP status codes to indicate success: http.StatusOK
 	GetMarketplaceSaaSResourceDetails func(ctx context.Context, request armdynatrace.MarketplaceSaaSResourceDetailsRequest, options *armdynatrace.MonitorsClientGetMarketplaceSaaSResourceDetailsOptions) (resp azfake.Responder[armdynatrace.MonitorsClientGetMarketplaceSaaSResourceDetailsResponse], errResp azfake.ErrorResponder)
@@ -74,9 +78,17 @@ type MonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListMonitoredResourcesPager func(resourceGroupName string, monitorName string, options *armdynatrace.MonitorsClientListMonitoredResourcesOptions) (resp azfake.PagerResponder[armdynatrace.MonitorsClientListMonitoredResourcesResponse])
 
+	// ManageAgentInstallation is the fake for method MonitorsClient.ManageAgentInstallation
+	// HTTP status codes to indicate success: http.StatusNoContent
+	ManageAgentInstallation func(ctx context.Context, resourceGroupName string, monitorName string, request armdynatrace.ManageAgentInstallationRequest, options *armdynatrace.MonitorsClientManageAgentInstallationOptions) (resp azfake.Responder[armdynatrace.MonitorsClientManageAgentInstallationResponse], errResp azfake.ErrorResponder)
+
 	// Update is the fake for method MonitorsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, monitorName string, resource armdynatrace.MonitorResourceUpdate, options *armdynatrace.MonitorsClientUpdateOptions) (resp azfake.Responder[armdynatrace.MonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpgradePlan is the fake for method MonitorsClient.BeginUpgradePlan
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUpgradePlan func(ctx context.Context, resourceGroupName string, monitorName string, request armdynatrace.UpgradePlanRequest, options *armdynatrace.MonitorsClientBeginUpgradePlanOptions) (resp azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitorsServerTransport creates a new instance of MonitorsServerTransport with the provided implementation.
@@ -93,6 +105,7 @@ func NewMonitorsServerTransport(srv *MonitorsServer) *MonitorsServerTransport {
 		newListHostsPager:                newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListHostsResponse]](),
 		newListLinkableEnvironmentsPager: newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListLinkableEnvironmentsResponse]](),
 		newListMonitoredResourcesPager:   newTracker[azfake.PagerResponder[armdynatrace.MonitorsClientListMonitoredResourcesResponse]](),
+		beginUpgradePlan:                 newTracker[azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse]](),
 	}
 }
 
@@ -108,6 +121,7 @@ type MonitorsServerTransport struct {
 	newListHostsPager                *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListHostsResponse]]
 	newListLinkableEnvironmentsPager *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListLinkableEnvironmentsResponse]]
 	newListMonitoredResourcesPager   *tracker[azfake.PagerResponder[armdynatrace.MonitorsClientListMonitoredResourcesResponse]]
+	beginUpgradePlan                 *tracker[azfake.PollerResponder[armdynatrace.MonitorsClientUpgradePlanResponse]]
 }
 
 // Do implements the policy.Transporter interface for MonitorsServerTransport.
@@ -118,47 +132,72 @@ func (m *MonitorsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return m.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "MonitorsClient.BeginCreateOrUpdate":
-		resp, err = m.dispatchBeginCreateOrUpdate(req)
-	case "MonitorsClient.BeginDelete":
-		resp, err = m.dispatchBeginDelete(req)
-	case "MonitorsClient.Get":
-		resp, err = m.dispatchGet(req)
-	case "MonitorsClient.GetMarketplaceSaaSResourceDetails":
-		resp, err = m.dispatchGetMarketplaceSaaSResourceDetails(req)
-	case "MonitorsClient.GetMetricStatus":
-		resp, err = m.dispatchGetMetricStatus(req)
-	case "MonitorsClient.GetSSODetails":
-		resp, err = m.dispatchGetSSODetails(req)
-	case "MonitorsClient.GetVMHostPayload":
-		resp, err = m.dispatchGetVMHostPayload(req)
-	case "MonitorsClient.NewListAppServicesPager":
-		resp, err = m.dispatchNewListAppServicesPager(req)
-	case "MonitorsClient.NewListByResourceGroupPager":
-		resp, err = m.dispatchNewListByResourceGroupPager(req)
-	case "MonitorsClient.NewListBySubscriptionIDPager":
-		resp, err = m.dispatchNewListBySubscriptionIDPager(req)
-	case "MonitorsClient.NewListHostsPager":
-		resp, err = m.dispatchNewListHostsPager(req)
-	case "MonitorsClient.NewListLinkableEnvironmentsPager":
-		resp, err = m.dispatchNewListLinkableEnvironmentsPager(req)
-	case "MonitorsClient.NewListMonitoredResourcesPager":
-		resp, err = m.dispatchNewListMonitoredResourcesPager(req)
-	case "MonitorsClient.Update":
-		resp, err = m.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (m *MonitorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if monitorsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = monitorsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "MonitorsClient.BeginCreateOrUpdate":
+				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
+			case "MonitorsClient.BeginDelete":
+				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MonitorsClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "MonitorsClient.GetAllConnectedResourcesCount":
+				res.resp, res.err = m.dispatchGetAllConnectedResourcesCount(req)
+			case "MonitorsClient.GetMarketplaceSaaSResourceDetails":
+				res.resp, res.err = m.dispatchGetMarketplaceSaaSResourceDetails(req)
+			case "MonitorsClient.GetMetricStatus":
+				res.resp, res.err = m.dispatchGetMetricStatus(req)
+			case "MonitorsClient.GetSSODetails":
+				res.resp, res.err = m.dispatchGetSSODetails(req)
+			case "MonitorsClient.GetVMHostPayload":
+				res.resp, res.err = m.dispatchGetVMHostPayload(req)
+			case "MonitorsClient.NewListAppServicesPager":
+				res.resp, res.err = m.dispatchNewListAppServicesPager(req)
+			case "MonitorsClient.NewListByResourceGroupPager":
+				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
+			case "MonitorsClient.NewListBySubscriptionIDPager":
+				res.resp, res.err = m.dispatchNewListBySubscriptionIDPager(req)
+			case "MonitorsClient.NewListHostsPager":
+				res.resp, res.err = m.dispatchNewListHostsPager(req)
+			case "MonitorsClient.NewListLinkableEnvironmentsPager":
+				res.resp, res.err = m.dispatchNewListLinkableEnvironmentsPager(req)
+			case "MonitorsClient.NewListMonitoredResourcesPager":
+				res.resp, res.err = m.dispatchNewListMonitoredResourcesPager(req)
+			case "MonitorsClient.ManageAgentInstallation":
+				res.resp, res.err = m.dispatchManageAgentInstallation(req)
+			case "MonitorsClient.Update":
+				res.resp, res.err = m.dispatchUpdate(req)
+			case "MonitorsClient.BeginUpgradePlan":
+				res.resp, res.err = m.dispatchBeginUpgradePlan(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (m *MonitorsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -170,7 +209,7 @@ func (m *MonitorsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdynatrace.MonitorResource](req)
@@ -218,7 +257,7 @@ func (m *MonitorsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -260,7 +299,7 @@ func (m *MonitorsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -286,6 +325,35 @@ func (m *MonitorsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
+func (m *MonitorsServerTransport) dispatchGetAllConnectedResourcesCount(req *http.Request) (*http.Response, error) {
+	if m.srv.GetAllConnectedResourcesCount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAllConnectedResourcesCount not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/getAllConnectedResourcesCount`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdynatrace.MarketplaceSubscriptionIDRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetAllConnectedResourcesCount(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectedResourcesCountResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (m *MonitorsServerTransport) dispatchGetMarketplaceSaaSResourceDetails(req *http.Request) (*http.Response, error) {
 	if m.srv.GetMarketplaceSaaSResourceDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetMarketplaceSaaSResourceDetails not implemented")}
@@ -293,7 +361,7 @@ func (m *MonitorsServerTransport) dispatchGetMarketplaceSaaSResourceDetails(req 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/getMarketplaceSaaSResourceDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdynatrace.MarketplaceSaaSResourceDetailsRequest](req)
@@ -322,8 +390,12 @@ func (m *MonitorsServerTransport) dispatchGetMetricStatus(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getMetricStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdynatrace.MetricStatusRequest](req)
+	if err != nil {
+		return nil, err
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
@@ -333,7 +405,13 @@ func (m *MonitorsServerTransport) dispatchGetMetricStatus(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.GetMetricStatus(req.Context(), resourceGroupNameParam, monitorNameParam, nil)
+	var options *armdynatrace.MonitorsClientGetMetricStatusOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armdynatrace.MonitorsClientGetMetricStatusOptions{
+			Request: &body,
+		}
+	}
+	respr, errRespr := m.srv.GetMetricStatus(req.Context(), resourceGroupNameParam, monitorNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -355,7 +433,7 @@ func (m *MonitorsServerTransport) dispatchGetSSODetails(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSSODetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdynatrace.SSODetailsRequest](req)
@@ -398,7 +476,7 @@ func (m *MonitorsServerTransport) dispatchGetVMHostPayload(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getVMHostPayload`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -433,7 +511,7 @@ func (m *MonitorsServerTransport) dispatchNewListAppServicesPager(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAppServices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -474,7 +552,7 @@ func (m *MonitorsServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -511,7 +589,7 @@ func (m *MonitorsServerTransport) dispatchNewListBySubscriptionIDPager(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := m.srv.NewListBySubscriptionIDPager(nil)
@@ -544,7 +622,7 @@ func (m *MonitorsServerTransport) dispatchNewListHostsPager(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listHosts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -585,7 +663,7 @@ func (m *MonitorsServerTransport) dispatchNewListLinkableEnvironmentsPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listLinkableEnvironments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdynatrace.LinkableEnvironmentRequest](req)
@@ -630,8 +708,12 @@ func (m *MonitorsServerTransport) dispatchNewListMonitoredResourcesPager(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listMonitoredResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdynatrace.LogStatusRequest](req)
+		if err != nil {
+			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
@@ -641,7 +723,13 @@ func (m *MonitorsServerTransport) dispatchNewListMonitoredResourcesPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		resp := m.srv.NewListMonitoredResourcesPager(resourceGroupNameParam, monitorNameParam, nil)
+		var options *armdynatrace.MonitorsClientListMonitoredResourcesOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armdynatrace.MonitorsClientListMonitoredResourcesOptions{
+				Request: &body,
+			}
+		}
+		resp := m.srv.NewListMonitoredResourcesPager(resourceGroupNameParam, monitorNameParam, options)
 		newListMonitoredResourcesPager = &resp
 		m.newListMonitoredResourcesPager.add(req, newListMonitoredResourcesPager)
 		server.PagerResponderInjectNextLinks(newListMonitoredResourcesPager, req, func(page *armdynatrace.MonitorsClientListMonitoredResourcesResponse, createLink func() string) {
@@ -662,6 +750,43 @@ func (m *MonitorsServerTransport) dispatchNewListMonitoredResourcesPager(req *ht
 	return resp, nil
 }
 
+func (m *MonitorsServerTransport) dispatchManageAgentInstallation(req *http.Request) (*http.Response, error) {
+	if m.srv.ManageAgentInstallation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ManageAgentInstallation not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/manageAgentInstallation`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdynatrace.ManageAgentInstallationRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ManageAgentInstallation(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (m *MonitorsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
@@ -669,7 +794,7 @@ func (m *MonitorsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdynatrace.MonitorResourceUpdate](req)
@@ -697,4 +822,58 @@ func (m *MonitorsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	return resp, nil
+}
+
+func (m *MonitorsServerTransport) dispatchBeginUpgradePlan(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpgradePlan == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgradePlan not implemented")}
+	}
+	beginUpgradePlan := m.beginUpgradePlan.get(req)
+	if beginUpgradePlan == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Dynatrace\.Observability/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgradePlan`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdynatrace.UpgradePlanRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpgradePlan(req.Context(), resourceGroupNameParam, monitorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgradePlan = &respr
+		m.beginUpgradePlan.add(req, beginUpgradePlan)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgradePlan, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginUpgradePlan.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgradePlan) {
+		m.beginUpgradePlan.remove(req)
+	}
+
+	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to MonitorsServerTransport
+var monitorsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

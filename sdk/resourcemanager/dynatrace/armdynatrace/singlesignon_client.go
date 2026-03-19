@@ -25,9 +25,9 @@ type SingleSignOnClient struct {
 }
 
 // NewSingleSignOnClient creates a new instance of SingleSignOnClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SingleSignOnClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - Create a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-27
+// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - Single Sign On Configuration Name
@@ -71,7 +71,7 @@ func (client *SingleSignOnClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - Create a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-27
+// Generated from API version 2024-04-24
 func (client *SingleSignOnClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, resource SingleSignOnResource, options *SingleSignOnClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SingleSignOnClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *SingleSignOnClient) createOrUpdate(ctx context.Context, resourceGr
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, resource SingleSignOnResource, options *SingleSignOnClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, resource SingleSignOnResource, _ *SingleSignOnClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-27")
+	reqQP.Set("api-version", "2024-04-24")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -129,7 +129,7 @@ func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Contex
 // Get - Get a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-27
+// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - Single Sign On Configuration Name
@@ -157,7 +157,7 @@ func (client *SingleSignOnClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // getCreateRequest creates the Get request.
-func (client *SingleSignOnClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnClientGetOptions) (*policy.Request, error) {
+func (client *SingleSignOnClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, _ *SingleSignOnClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -180,7 +180,7 @@ func (client *SingleSignOnClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-27")
+	reqQP.Set("api-version", "2024-04-24")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *SingleSignOnClient) getHandleResponse(resp *http.Response) (Single
 
 // NewListPager - List all DynatraceSingleSignOnResource by monitorName
 //
-// Generated from API version 2023-04-27
+// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.NewListPager method.
@@ -225,7 +225,7 @@ func (client *SingleSignOnClient) NewListPager(resourceGroupName string, monitor
 }
 
 // listCreateRequest creates the List request.
-func (client *SingleSignOnClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *SingleSignOnClientListOptions) (*policy.Request, error) {
+func (client *SingleSignOnClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *SingleSignOnClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -244,7 +244,7 @@ func (client *SingleSignOnClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-27")
+	reqQP.Set("api-version", "2024-04-24")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

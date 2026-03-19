@@ -7,25 +7,43 @@ package armedgeorder
 
 import "time"
 
+// AdditionalConfiguration - Additional Configuration details.
+type AdditionalConfiguration struct {
+	// REQUIRED; Hierarchy of the product which uniquely identifies the configuration.
+	HierarchyInformation *HierarchyInformation
+
+	// REQUIRED; Quantity of the product.
+	Quantity *int32
+
+	// List Provisioning Details for Devices in Additional Config.
+	ProvisioningDetails []*ProvisioningDetails
+}
+
 // AddressDetails - Address details for an order item.
 type AddressDetails struct {
-	// REQUIRED; Customer address and contact details. It should be address resource
+	// REQUIRED; Customer address and contact details.
 	ForwardAddress *AddressProperties
 
-	// READ-ONLY; Return shipping address
+	// READ-ONLY; Return shipping address.
 	ReturnAddress *AddressProperties
 }
 
-// AddressProperties - Address Properties
+// AddressProperties - Address Properties.
 type AddressProperties struct {
-	// REQUIRED; Contact details for the address
+	// Type of address based on its usage context.
+	AddressClassification *AddressClassification
+
+	// Contact details for the address.
 	ContactDetails *ContactDetails
 
-	// Shipping details for the address
+	// Shipping details for the address.
 	ShippingAddress *ShippingAddress
 
-	// READ-ONLY; Status of address validation
+	// READ-ONLY; Status of address validation.
 	AddressValidationStatus *AddressValidationStatus
+
+	// READ-ONLY; Provisioning state
+	ProvisioningState *ProvisioningState
 }
 
 // AddressResource - Address Resource.
@@ -39,31 +57,31 @@ type AddressResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Represents resource creation and update time
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// AddressResourceList - Address Resource Collection
+// AddressResourceList - Address Resource Collection.
 type AddressResourceList struct {
-	// Link for the next set of job resources.
-	NextLink *string
-
-	// READ-ONLY; List of address resources.
+	// READ-ONLY; The AddressResource items on this page
 	Value []*AddressResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
-// AddressUpdateParameter - The Address update parameters
+// AddressUpdateParameter - The Address update parameters.
 type AddressUpdateParameter struct {
-	// Properties of a address to be updated.
+	// Properties of an address to be updated.
 	Properties *AddressUpdateProperties
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
@@ -71,18 +89,18 @@ type AddressUpdateParameter struct {
 	Tags map[string]*string
 }
 
-// AddressUpdateProperties - Address Properties
+// AddressUpdateProperties - Address Update Properties.
 type AddressUpdateProperties struct {
-	// Contact details for the address
+	// Contact details for the address.
 	ContactDetails *ContactDetails
 
-	// Shipping details for the address
+	// Shipping details for the address.
 	ShippingAddress *ShippingAddress
 }
 
 // AvailabilityInformation - Availability information of a product system.
 type AvailabilityInformation struct {
-	// READ-ONLY; Current availability stage of the product. Availability stage
+	// READ-ONLY; Current availability stage of the product.
 	AvailabilityStage *AvailabilityStage
 
 	// READ-ONLY; Reason why the product is disabled.
@@ -92,7 +110,7 @@ type AvailabilityInformation struct {
 	DisabledReasonMessage *string
 }
 
-// BasicInformation - Basic information for any product system
+// BasicInformation - Basic information for any product system.
 type BasicInformation struct {
 	// READ-ONLY; Availability information of the product system.
 	AvailabilityInformation *AvailabilityInformation
@@ -106,6 +124,9 @@ type BasicInformation struct {
 	// READ-ONLY; Display Name for the product system.
 	DisplayName *string
 
+	// READ-ONLY; The entity responsible for fulfillment of the item at the given hierarchy level.
+	FulfilledBy *FulfillmentType
+
 	// READ-ONLY; Hierarchy information of a product.
 	HierarchyInformation *HierarchyInformation
 
@@ -113,19 +134,22 @@ type BasicInformation struct {
 	ImageInformation []*ImageInformation
 }
 
-// BillingMeterDetails - Holds billing meter details for each type of billing
+// BillingMeterDetails - Holds billing meter details for each type of billing.
 type BillingMeterDetails struct {
-	// READ-ONLY; Frequency of recurrence
+	// READ-ONLY; Frequency of recurrence.
 	Frequency *string
 
-	// READ-ONLY; Represents MeterDetails
+	// READ-ONLY; Represents MeterDetails.
 	MeterDetails MeterDetailsClassification
 
-	// READ-ONLY; Represents Metering type (eg one-time or recurrent)
+	// READ-ONLY; Represents Metering type (eg one-time or recurrent).
 	MeteringType *MeteringType
 
-	// READ-ONLY; Represents Billing type name
+	// READ-ONLY; Represents Billing type name.
 	Name *string
+
+	// READ-ONLY; Represent Term Type details.
+	TermTypeDetails *TermTypeDetails
 }
 
 // CancellationReason - Reason for cancellation.
@@ -134,7 +158,98 @@ type CancellationReason struct {
 	Reason *string
 }
 
-// CommonProperties - Represents common properties across product hierarchy
+// CategoryInformation - Category related properties of a child configuration.
+type CategoryInformation struct {
+	// Category display name of the child configuration.
+	CategoryDisplayName *string
+
+	// Category name of the child configuration.
+	CategoryName *string
+
+	// Description text for the category.
+	Description *string
+
+	// Links for the category.
+	Links []*Link
+}
+
+// ChildConfiguration - Child configuration object.
+type ChildConfiguration struct {
+	// READ-ONLY; Properties of child configuration.
+	Properties *ChildConfigurationProperties
+}
+
+// ChildConfigurationFilter - Child configuration filter.
+type ChildConfigurationFilter struct {
+	// Filter to fetch all child configurations belonging to the given list of configuration types.
+	ChildConfigurationTypes []*ChildConfigurationType
+
+	// The list of child configuration hierarchy customer wants to filter for the given configuration.
+	HierarchyInformations []*HierarchyInformation
+}
+
+// ChildConfigurationProperties - Properties of child configuration.
+type ChildConfigurationProperties struct {
+	// READ-ONLY; Availability information of the product system.
+	AvailabilityInformation *AvailabilityInformation
+
+	// READ-ONLY; Child configuration type.
+	ChildConfigurationType *ChildConfigurationType
+
+	// READ-ONLY; Different types of child configurations which exist for this configuration, these can be used to populate the
+	// child configuration filter.
+	ChildConfigurationTypes []*ChildConfigurationType
+
+	// READ-ONLY; Cost information for the product system.
+	CostInformation *CostInformation
+
+	// READ-ONLY; Description related to the product system.
+	Description *Description
+
+	// READ-ONLY; Dimensions of the configuration.
+	Dimensions *Dimensions
+
+	// READ-ONLY; Display Name for the product system.
+	DisplayName *string
+
+	// READ-ONLY; List of filters supported for a product.
+	FilterableProperties []*FilterableProperty
+
+	// READ-ONLY; The entity responsible for fulfillment of the item at the given hierarchy level.
+	FulfilledBy *FulfillmentType
+
+	// READ-ONLY; Child configurations present for the configuration after applying child configuration filter, grouped by the
+	// category name of the child configuration.
+	GroupedChildConfigurations []*GroupedChildConfigurations
+
+	// READ-ONLY; Hierarchy information of a product.
+	HierarchyInformation *HierarchyInformation
+
+	// READ-ONLY; Image information for the product system.
+	ImageInformation []*ImageInformation
+
+	// READ-ONLY; Flag to indicate if the child configuration is part of the base configuration, which means the customer need
+	// not pass this configuration in OptInAdditionalConfigurations while placing an order, it
+	// will be shipped by default.
+	IsPartOfBaseConfiguration *bool
+
+	// READ-ONLY; Maximum quantity a customer can order while choosing this configuration.
+	MaximumQuantity *int32
+
+	// READ-ONLY; Minimum quantity a customer can order while choosing this configuration.
+	MinimumQuantity *int32
+
+	// READ-ONLY; Determining nature of provisioning that the configuration supports.
+	ProvisioningSupport *ProvisioningSupport
+
+	// READ-ONLY; Specifications of the configuration.
+	Specifications []*Specification
+
+	// READ-ONLY; The Term Commitment Durations that are supported for a configuration.
+	SupportedTermCommitmentDurations []*string
+}
+
+// CommonProperties - Represents common properties across product hierarchy.
 type CommonProperties struct {
 	// READ-ONLY; Availability information of the product system.
 	AvailabilityInformation *AvailabilityInformation
@@ -148,8 +263,11 @@ type CommonProperties struct {
 	// READ-ONLY; Display Name for the product system.
 	DisplayName *string
 
-	// READ-ONLY; list of filters supported for a product
+	// READ-ONLY; List of filters supported for a product.
 	FilterableProperties []*FilterableProperty
+
+	// READ-ONLY; The entity responsible for fulfillment of the item at the given hierarchy level.
+	FulfilledBy *FulfillmentType
 
 	// READ-ONLY; Hierarchy information of a product.
 	HierarchyInformation *HierarchyInformation
@@ -160,23 +278,53 @@ type CommonProperties struct {
 
 // Configuration object.
 type Configuration struct {
-	// READ-ONLY; Properties of configuration
+	// READ-ONLY; Properties of configuration.
 	Properties *ConfigurationProperties
 }
 
-// ConfigurationFilters - Configuration filters
-type ConfigurationFilters struct {
-	// REQUIRED; Product hierarchy information
+// ConfigurationDeviceDetails - Device details for configuration.
+type ConfigurationDeviceDetails struct {
+	// Display details of the product.
+	DisplayInfo *DisplayInfo
+
+	// READ-ONLY; List of device details.
+	DeviceDetails []*DeviceDetails
+
+	// READ-ONLY; Hierarchy of the product which uniquely identifies the configuration.
 	HierarchyInformation *HierarchyInformation
 
-	// Filters specific to product
+	// READ-ONLY; Identification type of the configuration.
+	IdentificationType *IdentificationType
+
+	// READ-ONLY; Quantity of the product.
+	Quantity *int32
+
+	// READ-ONLY; Term Commitment Information of the Device.
+	TermCommitmentInformation *TermCommitmentInformation
+}
+
+// ConfigurationFilter - Configuration filters.
+type ConfigurationFilter struct {
+	// REQUIRED; Product hierarchy information.
+	HierarchyInformation *HierarchyInformation
+
+	// Filter to fetch specific child configurations that exist in the configuration. This must be passed to either fetch a list
+	// of specific child configurations, or all child configurations of specific
+	// types of child configurations.
+	ChildConfigurationFilter *ChildConfigurationFilter
+
+	// Filters specific to product.
 	FilterableProperty []*FilterableProperty
 }
 
-// ConfigurationProperties - Properties of configuration
+// ConfigurationProperties - Properties of configuration.
 type ConfigurationProperties struct {
 	// READ-ONLY; Availability information of the product system.
 	AvailabilityInformation *AvailabilityInformation
+
+	// READ-ONLY; Different types of child configurations which exist for this configuration, these can be used to populate the
+	// child configuration filter.
+	ChildConfigurationTypes []*ChildConfigurationType
 
 	// READ-ONLY; Cost information for the product system.
 	CostInformation *CostInformation
@@ -184,14 +332,21 @@ type ConfigurationProperties struct {
 	// READ-ONLY; Description related to the product system.
 	Description *Description
 
-	// READ-ONLY; Dimensions of the configuration
+	// READ-ONLY; Dimensions of the configuration.
 	Dimensions *Dimensions
 
 	// READ-ONLY; Display Name for the product system.
 	DisplayName *string
 
-	// READ-ONLY; list of filters supported for a product
+	// READ-ONLY; List of filters supported for a product.
 	FilterableProperties []*FilterableProperty
+
+	// READ-ONLY; The entity responsible for fulfillment of the item at the given hierarchy level.
+	FulfilledBy *FulfillmentType
+
+	// READ-ONLY; Child configurations present for the configuration after applying child configuration filter, grouped by the
+	// category name of the child configuration.
+	GroupedChildConfigurations []*GroupedChildConfigurations
 
 	// READ-ONLY; Hierarchy information of a product.
 	HierarchyInformation *HierarchyInformation
@@ -199,50 +354,56 @@ type ConfigurationProperties struct {
 	// READ-ONLY; Image information for the product system.
 	ImageInformation []*ImageInformation
 
-	// READ-ONLY; Specifications of the configuration
+	// READ-ONLY; Determining nature of provisioning that the configuration supports.
+	ProvisioningSupport *ProvisioningSupport
+
+	// READ-ONLY; Specifications of the configuration.
 	Specifications []*Specification
+
+	// READ-ONLY; The Term Commitment Durations that are supported for a configuration.
+	SupportedTermCommitmentDurations []*string
 }
 
 // Configurations - The list of configurations.
 type Configurations struct {
-	// Link for the next set of configurations.
-	NextLink *string
-
-	// READ-ONLY; List of configurations.
+	// READ-ONLY; The Configuration items on this page
 	Value []*Configuration
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ConfigurationsRequest - Configuration request object.
 type ConfigurationsRequest struct {
-	// REQUIRED; Holds details about product hierarchy information and filterable property.
-	ConfigurationFilters []*ConfigurationFilters
+	// Holds details about product hierarchy information and filterable property.
+	ConfigurationFilter *ConfigurationFilter
 
 	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing
-	// subscription details
+	// subscription details.
 	CustomerSubscriptionDetails *CustomerSubscriptionDetails
 }
 
 // ContactDetails - Contact Details.
 type ContactDetails struct {
-	// REQUIRED; Contact name of the person.
+	// Contact name of the person.
 	ContactName *string
 
-	// REQUIRED; List of Email-ids to be notified about job progress.
+	// List of Email-ids to be notified about job progress.
 	EmailList []*string
-
-	// REQUIRED; Phone number of the contact person.
-	Phone *string
 
 	// Mobile number of the contact person.
 	Mobile *string
+
+	// Phone number of the contact person.
+	Phone *string
 
 	// Phone extension number of the contact person.
 	PhoneExtension *string
 }
 
-// CostInformation - Cost information for the product system
+// CostInformation - Cost information for the product system.
 type CostInformation struct {
-	// READ-ONLY; Default url to display billing information
+	// READ-ONLY; Default url to display billing information.
 	BillingInfoURL *string
 
 	// READ-ONLY; Details on the various billing aspects for the product system.
@@ -250,24 +411,24 @@ type CostInformation struct {
 }
 
 // CustomerSubscriptionDetails - Holds Customer subscription details. Clients can display available products to unregistered
-// customers by explicitly passing subscription details
+// customers by explicitly passing subscription details.
 type CustomerSubscriptionDetails struct {
-	// REQUIRED; Quota ID of a subscription
+	// REQUIRED; Quota ID of a subscription.
 	QuotaID *string
 
-	// Location placement Id of a subscription
+	// Location placement Id of a subscription.
 	LocationPlacementID *string
 
-	// List of registered feature flags for subscription
+	// List of registered feature flags for subscription.
 	RegisteredFeatures []*CustomerSubscriptionRegisteredFeatures
 }
 
-// CustomerSubscriptionRegisteredFeatures - Represents subscription registered features
+// CustomerSubscriptionRegisteredFeatures - Represents subscription registered features.
 type CustomerSubscriptionRegisteredFeatures struct {
-	// Name of subscription registered feature
+	// Name of subscription registered feature.
 	Name *string
 
-	// State of subscription registered feature
+	// State of subscription registered feature.
 	State *string
 }
 
@@ -294,14 +455,32 @@ type Description struct {
 
 // DeviceDetails - Device details.
 type DeviceDetails struct {
-	// READ-ONLY; Management Resource Id
+	// READ-ONLY; Device serial number to be displayed.
+	DisplaySerialNumber *string
+
+	// READ-ONLY; Management Resource Id.
 	ManagementResourceID *string
 
-	// READ-ONLY; Management Resource Tenant ID
+	// READ-ONLY; Management Resource Tenant ID.
 	ManagementResourceTenantID *string
 
-	// READ-ONLY; device serial number
+	// READ-ONLY; Provisioning Details for the device.
+	ProvisioningDetails *ProvisioningDetails
+
+	// READ-ONLY; Determining nature of provisioning that the configuration supports.
+	ProvisioningSupport *ProvisioningSupport
+
+	// READ-ONLY; Device serial number.
 	SerialNumber *string
+}
+
+// DevicePresenceVerificationDetails - Proof of possession details.
+type DevicePresenceVerificationDetails struct {
+	// READ-ONLY; Insights on current status.
+	Message *string
+
+	// READ-ONLY; Proof of possession status.
+	Status *DevicePresenceVerificationStatus
 }
 
 // Dimensions of a configuration.
@@ -328,16 +507,16 @@ type Dimensions struct {
 	Width *float64
 }
 
-// DisplayInfo - Describes product display information
+// DisplayInfo - Describes product display information.
 type DisplayInfo struct {
-	// READ-ONLY; Configuration display name
+	// READ-ONLY; Configuration display name.
 	ConfigurationDisplayName *string
 
-	// READ-ONLY; Product family display name
+	// READ-ONLY; Product family display name.
 	ProductFamilyDisplayName *string
 }
 
-// EncryptionPreferences - Preferences related to the double encryption
+// EncryptionPreferences - Preferences related to the double encryption.
 type EncryptionPreferences struct {
 	// Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled'
 	// policy is configured.
@@ -395,53 +574,65 @@ type ForwardShippingDetails struct {
 	// READ-ONLY; Name of the carrier.
 	CarrierName *string
 
-	// READ-ONLY; TrackingId of the package
+	// READ-ONLY; TrackingId of the package.
 	TrackingID *string
 
 	// READ-ONLY; TrackingUrl of the package.
 	TrackingURL *string
 }
 
-// HierarchyInformation - Holds details about product hierarchy information
+// GroupedChildConfigurations - Grouped child configuration object.
+type GroupedChildConfigurations struct {
+	// READ-ONLY; Category information.
+	CategoryInformation *CategoryInformation
+
+	// READ-ONLY; List of child configurations.
+	ChildConfigurations []*ChildConfiguration
+}
+
+// HierarchyInformation - Holds details about product hierarchy information.
 type HierarchyInformation struct {
-	// Represents configuration name that uniquely identifies configuration
+	// Represents Model Display Name.
+	ConfigurationIDDisplayName *string
+
+	// Represents configuration name that uniquely identifies configuration.
 	ConfigurationName *string
 
-	// Represents product family name that uniquely identifies product family
+	// Represents product family name that uniquely identifies product family.
 	ProductFamilyName *string
 
-	// Represents product line name that uniquely identifies product line
+	// Represents product line name that uniquely identifies product line.
 	ProductLineName *string
 
-	// Represents product name that uniquely identifies product
+	// Represents product name that uniquely identifies product.
 	ProductName *string
 }
 
-// ImageInformation - Image for the product
+// ImageInformation - Image for the product.
 type ImageInformation struct {
-	// READ-ONLY; Type of the image
+	// READ-ONLY; Type of the image.
 	ImageType *ImageType
 
-	// READ-ONLY; Url of the image
+	// READ-ONLY; Url of the image.
 	ImageURL *string
 }
 
-// Link - Returns link related to the product
+// Link - Returns link related to the product.
 type Link struct {
-	// READ-ONLY; Type of link
+	// READ-ONLY; Type of link.
 	LinkType *LinkType
 
-	// READ-ONLY; Url of the link
+	// READ-ONLY; Url of the link.
 	LinkURL *string
 }
 
-// ManagementResourcePreferences - Management resource preference to link device
+// ManagementResourcePreferences - Management resource preference to link device.
 type ManagementResourcePreferences struct {
-	// Customer preferred Management resource ARM ID
+	// Customer preferred Management resource ARM ID.
 	PreferredManagementResourceID *string
 }
 
-// MeterDetails - Holds details about billing type and its meter guids
+// MeterDetails - Holds details about billing type and its meter guids.
 type MeterDetails struct {
 	// REQUIRED; Represents billing type.
 	BillingType *BillingType
@@ -449,7 +640,7 @@ type MeterDetails struct {
 	// READ-ONLY; Charging type.
 	ChargingType *ChargingType
 
-	// READ-ONLY; Billing unit applicable for Pav2 billing
+	// READ-ONLY; Billing unit applicable for Pav2 billing.
 	Multiplier *float64
 }
 
@@ -514,19 +705,25 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// OrderItemDetails - Order item details
+// OrderItemDetails - Order item details.
 type OrderItemDetails struct {
 	// REQUIRED; Order item type.
 	OrderItemType *OrderItemType
 
-	// REQUIRED; Unique identifier for configuration.
+	// REQUIRED; Represents product details.
 	ProductDetails *ProductDetails
 
-	// Additional notification email list
+	// Additional notification email list.
 	NotificationEmailList []*string
 
-	// Customer notification Preferences
+	// Defines the mode of the Order item.
+	OrderItemMode *OrderMode
+
+	// Customer notification Preferences.
 	Preferences *Preferences
+
+	// Site Related Details.
+	SiteDetails *SiteDetails
 
 	// READ-ONLY; Cancellation reason.
 	CancellationReason *string
@@ -534,7 +731,7 @@ type OrderItemDetails struct {
 	// READ-ONLY; Describes whether the order item is cancellable or not.
 	CancellationStatus *OrderItemCancellationEnum
 
-	// READ-ONLY; Current Order item Status
+	// READ-ONLY; Current Order item Status.
 	CurrentStage *StageDetails
 
 	// READ-ONLY; Describes whether the order item is deletable or not.
@@ -543,16 +740,13 @@ type OrderItemDetails struct {
 	// READ-ONLY; Top level error for the job.
 	Error *ErrorDetail
 
-	// READ-ONLY; Forward Package Shipping details
+	// READ-ONLY; Forward Package Shipping details.
 	ForwardShippingDetails *ForwardShippingDetails
-
-	// READ-ONLY; Parent RP details - this returns only the first or default parent RP from the entire list
-	ManagementRpDetails *ResourceProviderDetails
 
 	// READ-ONLY; List of parent RP details supported for configuration.
 	ManagementRpDetailsList []*ResourceProviderDetails
 
-	// READ-ONLY; Order item status history
+	// READ-ONLY; Order item status history.
 	OrderItemStageHistory []*StageDetails
 
 	// READ-ONLY; Return reason.
@@ -561,61 +755,79 @@ type OrderItemDetails struct {
 	// READ-ONLY; Describes whether the order item is returnable or not.
 	ReturnStatus *OrderItemReturnEnum
 
-	// READ-ONLY; Reverse Package Shipping details
+	// READ-ONLY; Reverse Package Shipping details.
 	ReverseShippingDetails *ReverseShippingDetails
 }
 
-// OrderItemProperties - Represents order item details.
-type OrderItemProperties struct {
-	// REQUIRED; Represents shipping and return address for order item
-	AddressDetails *AddressDetails
+// OrderItemDetailsUpdateParameter - Order item details Patchable Properties.
+type OrderItemDetailsUpdateParameter struct {
+	// Represents product details.
+	ProductDetails *ProductDetailsUpdateParameter
 
-	// REQUIRED; Id of the order to which order item belongs to
+	// Site Related Details.
+	SiteDetails *SiteDetails
+}
+
+// OrderItemProperties - Represents order item properties.
+type OrderItemProperties struct {
+	// REQUIRED; Id of the order to which order item belongs to.
 	OrderID *string
 
 	// REQUIRED; Represents order item details.
 	OrderItemDetails *OrderItemDetails
 
-	// READ-ONLY; Start time of order item
+	// Represents shipping and return address for order item.
+	AddressDetails *AddressDetails
+
+	// READ-ONLY; Provisioning state
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Start time of order item.
 	StartTime *time.Time
 }
 
-// OrderItemResource - Represents order item contract
+// OrderItemResource - Represents order item resource.
 type OrderItemResource struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// REQUIRED; Order item properties
+	// REQUIRED; Order item properties.
 	Properties *OrderItemProperties
+
+	// Msi identity of the resource
+	Identity *ResourceIdentity
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Represents resource creation and update time
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// OrderItemResourceList - List of orderItems.
+// OrderItemResourceList - List of order items.
 type OrderItemResourceList struct {
-	// Link for the next set of order item resources.
-	NextLink *string
-
-	// READ-ONLY; List of order item resources.
+	// READ-ONLY; The OrderItemResource items on this page
 	Value []*OrderItemResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // OrderItemUpdateParameter - Updates order item parameters.
 type OrderItemUpdateParameter struct {
-	// Order item update properties
+	// Msi identity of the resource
+	Identity *ResourceIdentity
+
+	// Order item update properties.
 	Properties *OrderItemUpdateProperties
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
@@ -631,6 +843,9 @@ type OrderItemUpdateProperties struct {
 	// Additional notification email list.
 	NotificationEmailList []*string
 
+	// Represents order item details.
+	OrderItemDetails *OrderItemDetailsUpdateParameter
+
 	// Customer preference.
 	Preferences *Preferences
 }
@@ -643,22 +858,25 @@ type OrderProperties struct {
 	// READ-ONLY; List of order item ARM Ids which are part of an order.
 	OrderItemIDs []*string
 
+	// READ-ONLY; Order mode.
+	OrderMode *OrderMode
+
 	// READ-ONLY; Order status history.
 	OrderStageHistory []*StageDetails
 }
 
 // OrderResource - Specifies the properties or parameters for an order. Order is a grouping of one or more order items.
 type OrderResource struct {
-	// REQUIRED; Order properties
+	// REQUIRED; Order properties.
 	Properties *OrderProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Represents resource creation and update time
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -667,14 +885,14 @@ type OrderResource struct {
 
 // OrderResourceList - List of orders.
 type OrderResourceList struct {
-	// Link for the next set of order resources.
-	NextLink *string
-
-	// READ-ONLY; List of order resources.
+	// READ-ONLY; The OrderResource items on this page
 	Value []*OrderResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
-// Pav2MeterDetails - Billing type PAV2 meter details
+// Pav2MeterDetails - Billing type PAV2 meter details.
 type Pav2MeterDetails struct {
 	// REQUIRED; Represents billing type.
 	BillingType *BillingType
@@ -685,7 +903,7 @@ type Pav2MeterDetails struct {
 	// READ-ONLY; Validation status of requested data center and transport.
 	MeterGUID *string
 
-	// READ-ONLY; Billing unit applicable for Pav2 billing
+	// READ-ONLY; Billing unit applicable for Pav2 billing.
 	Multiplier *float64
 }
 
@@ -698,7 +916,7 @@ func (p *Pav2MeterDetails) GetMeterDetails() *MeterDetails {
 	}
 }
 
-// Preferences related to the order
+// Preferences related to the order.
 type Preferences struct {
 	// Preferences related to the Encryption.
 	EncryptionPreferences *EncryptionPreferences
@@ -709,55 +927,76 @@ type Preferences struct {
 	// Notification preferences.
 	NotificationPreferences []*NotificationPreference
 
+	// Preferences related to the Term commitment.
+	TermCommitmentPreferences *TermCommitmentPreferences
+
 	// Preferences related to the shipment logistics of the order.
 	TransportPreferences *TransportPreferences
 }
 
-// Product - List of Products
+// Product - Represents a product.
 type Product struct {
-	// READ-ONLY; Properties of product
+	// READ-ONLY; Properties of product.
 	Properties *ProductProperties
 }
 
-// ProductDetails - Represents product details
+// ProductDetails - Represents product details.
 type ProductDetails struct {
-	// REQUIRED; Hierarchy of the product which uniquely identifies the product
+	// REQUIRED; Hierarchy of the product which uniquely identifies the product.
 	HierarchyInformation *HierarchyInformation
 
-	// Display details of the product
+	// Display details of the product.
 	DisplayInfo *DisplayInfo
 
-	// READ-ONLY; Quantity of the product
-	Count *int32
+	// List of additional configurations customer wants in the order item apart from the ones included in the base configuration.
+	OptInAdditionalConfigurations []*AdditionalConfiguration
 
-	// READ-ONLY; list of device details
-	DeviceDetails []*DeviceDetails
+	// Device Provisioning Details for Parent.
+	ParentProvisioningDetails *ProvisioningDetails
+
+	// READ-ONLY; Details of all child configurations that are part of the order item.
+	ChildConfigurationDeviceDetails []*ConfigurationDeviceDetails
+
+	// READ-ONLY; Identification type of the configuration.
+	IdentificationType *IdentificationType
+
+	// READ-ONLY; Device details of the parent configuration.
+	ParentDeviceDetails *DeviceDetails
 
 	// READ-ONLY; Double encryption status of the configuration. Read-only field.
 	ProductDoubleEncryptionStatus *DoubleEncryptionStatus
+
+	// READ-ONLY; Term Commitment Information of the Device.
+	TermCommitmentInformation *TermCommitmentInformation
+}
+
+// ProductDetailsUpdateParameter - Represents product details patchable properties.
+type ProductDetailsUpdateParameter struct {
+	// Device Provisioning Details for Parent.
+	ParentProvisioningDetails *ProvisioningDetails
 }
 
 // ProductFamilies - The list of product families.
 type ProductFamilies struct {
-	// Link for the next set of product families.
-	NextLink *string
-
-	// READ-ONLY; List of product families.
+	// READ-ONLY; The ProductFamily items on this page
 	Value []*ProductFamily
+
+	// The link to the next page of items
+	NextLink *string
 }
 
-// ProductFamiliesMetadata - Holds details about product family metadata
+// ProductFamiliesMetadata - Holds details about product family metadata.
 type ProductFamiliesMetadata struct {
-	// READ-ONLY; Link for the next set of product families.
-	NextLink *string
-
-	// READ-ONLY; List of product family metadata details.
+	// READ-ONLY; The ProductFamiliesMetadataDetails items on this page
 	Value []*ProductFamiliesMetadataDetails
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ProductFamiliesMetadataDetails - Product families metadata details.
 type ProductFamiliesMetadataDetails struct {
-	// READ-ONLY; Product family properties
+	// READ-ONLY; Product family properties.
 	Properties *ProductFamilyProperties
 }
 
@@ -767,19 +1006,19 @@ type ProductFamiliesRequest struct {
 	FilterableProperties map[string][]*FilterableProperty
 
 	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing
-	// subscription details
+	// subscription details.
 	CustomerSubscriptionDetails *CustomerSubscriptionDetails
 }
 
-// ProductFamily - Product Family
+// ProductFamily - Product Family.
 type ProductFamily struct {
-	// READ-ONLY; Properties of product family
+	// READ-ONLY; Properties of product family.
 	Properties *ProductFamilyProperties
 }
 
-// ProductFamilyProperties - Properties of product family
+// ProductFamilyProperties - Properties of product family.
 type ProductFamilyProperties struct {
-	// Contains details related to resource provider
+	// Contains details related to resource provider.
 	ResourceProviderDetails []*ResourceProviderDetails
 
 	// READ-ONLY; Availability information of the product system.
@@ -794,8 +1033,11 @@ type ProductFamilyProperties struct {
 	// READ-ONLY; Display Name for the product system.
 	DisplayName *string
 
-	// READ-ONLY; list of filters supported for a product
+	// READ-ONLY; List of filters supported for a product.
 	FilterableProperties []*FilterableProperty
+
+	// READ-ONLY; The entity responsible for fulfillment of the item at the given hierarchy level.
+	FulfilledBy *FulfillmentType
 
 	// READ-ONLY; Hierarchy information of a product.
 	HierarchyInformation *HierarchyInformation
@@ -803,17 +1045,17 @@ type ProductFamilyProperties struct {
 	// READ-ONLY; Image information for the product system.
 	ImageInformation []*ImageInformation
 
-	// READ-ONLY; List of product lines supported in the product family
+	// READ-ONLY; List of product lines supported in the product family.
 	ProductLines []*ProductLine
 }
 
-// ProductLine - Product line
+// ProductLine - Product line.
 type ProductLine struct {
-	// READ-ONLY; Properties of product line
+	// READ-ONLY; Properties of product line.
 	Properties *ProductLineProperties
 }
 
-// ProductLineProperties - Properties of product line
+// ProductLineProperties - Properties of product line.
 type ProductLineProperties struct {
 	// READ-ONLY; Availability information of the product system.
 	AvailabilityInformation *AvailabilityInformation
@@ -827,8 +1069,11 @@ type ProductLineProperties struct {
 	// READ-ONLY; Display Name for the product system.
 	DisplayName *string
 
-	// READ-ONLY; list of filters supported for a product
+	// READ-ONLY; List of filters supported for a product.
 	FilterableProperties []*FilterableProperty
+
+	// READ-ONLY; The entity responsible for fulfillment of the item at the given hierarchy level.
+	FulfilledBy *FulfillmentType
 
 	// READ-ONLY; Hierarchy information of a product.
 	HierarchyInformation *HierarchyInformation
@@ -836,16 +1081,16 @@ type ProductLineProperties struct {
 	// READ-ONLY; Image information for the product system.
 	ImageInformation []*ImageInformation
 
-	// READ-ONLY; List of products in the product line
+	// READ-ONLY; List of products in the product line.
 	Products []*Product
 }
 
-// ProductProperties - Properties of products
+// ProductProperties - Properties of product.
 type ProductProperties struct {
 	// READ-ONLY; Availability information of the product system.
 	AvailabilityInformation *AvailabilityInformation
 
-	// READ-ONLY; List of configurations for the product
+	// READ-ONLY; List of configurations for the product.
 	Configurations []*Configuration
 
 	// READ-ONLY; Cost information for the product system.
@@ -857,8 +1102,11 @@ type ProductProperties struct {
 	// READ-ONLY; Display Name for the product system.
 	DisplayName *string
 
-	// READ-ONLY; list of filters supported for a product
+	// READ-ONLY; List of filters supported for a product.
 	FilterableProperties []*FilterableProperty
+
+	// READ-ONLY; The entity responsible for fulfillment of the item at the given hierarchy level.
+	FulfilledBy *FulfillmentType
 
 	// READ-ONLY; Hierarchy information of a product.
 	HierarchyInformation *HierarchyInformation
@@ -867,20 +1115,56 @@ type ProductProperties struct {
 	ImageInformation []*ImageInformation
 }
 
+// ProvisioningDetails - Details Related To Provision Resource.
+type ProvisioningDetails struct {
+	// Auto Provisioning Details.
+	AutoProvisioningStatus *AutoProvisioningStatus
+
+	// Proof of possession details.
+	DevicePresenceVerification *DevicePresenceVerificationDetails
+
+	// Management Resource ArmId.
+	ManagementResourceArmID *string
+
+	// Provisioning Resource Arm ID.
+	ProvisioningArmID *string
+
+	// Provisioning End Point.
+	ProvisioningEndPoint *string
+
+	// Quantity of the devices.
+	Quantity *int32
+
+	// Arc Enabled Resource Arm id.
+	ReadyToConnectArmID *string
+
+	// Serial Number for the Device.
+	SerialNumber *string
+
+	// Vendor Name for the Device , (for 1P devices - Microsoft).
+	VendorName *string
+
+	// READ-ONLY; Unique Identity for a Device.
+	UniqueDeviceIdentifier *string
+}
+
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// PurchaseMeterDetails - Billing type Purchase meter details
+// PurchaseMeterDetails - Billing type Purchase meter details.
 type PurchaseMeterDetails struct {
 	// REQUIRED; Represents billing type.
 	BillingType *BillingType
@@ -888,16 +1172,16 @@ type PurchaseMeterDetails struct {
 	// READ-ONLY; Charging type.
 	ChargingType *ChargingType
 
-	// READ-ONLY; Billing unit applicable for Pav2 billing
+	// READ-ONLY; Billing unit applicable for Pav2 billing.
 	Multiplier *float64
 
-	// READ-ONLY; Product Id
+	// READ-ONLY; Product Id.
 	ProductID *string
 
-	// READ-ONLY; Sku Id
+	// READ-ONLY; Sku Id.
 	SKUID *string
 
-	// READ-ONLY; Term Id
+	// READ-ONLY; Term Id.
 	TermID *string
 }
 
@@ -912,11 +1196,14 @@ func (p *PurchaseMeterDetails) GetMeterDetails() *MeterDetails {
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -927,6 +1214,9 @@ type ResourceIdentity struct {
 	// Identity type
 	Type *string
 
+	// User Assigned Identities
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
 	// READ-ONLY; Service Principal Id backing the Msi
 	PrincipalID *string
 
@@ -934,24 +1224,24 @@ type ResourceIdentity struct {
 	TenantID *string
 }
 
-// ResourceProviderDetails - Management RP details
+// ResourceProviderDetails - Management RP details.
 type ResourceProviderDetails struct {
-	// READ-ONLY; Resource provider namespace
+	// READ-ONLY; Resource provider namespace.
 	ResourceProviderNamespace *string
 }
 
-// ReturnOrderItemDetails - Return order item request body
+// ReturnOrderItemDetails - Return order item request body.
 type ReturnOrderItemDetails struct {
 	// REQUIRED; Return Reason.
 	ReturnReason *string
 
-	// customer return address.
+	// Customer return address.
 	ReturnAddress *AddressProperties
 
-	// Service tag (located on the bottom-right corner of the device)
+	// Service tag (located on the bottom-right corner of the device).
 	ServiceTag *string
 
-	// Shipping Box required
+	// Shipping Box required.
 	ShippingBoxRequired *bool
 }
 
@@ -966,7 +1256,7 @@ type ReverseShippingDetails struct {
 	// READ-ONLY; SAS key to download the reverse shipment label of the package.
 	SasKeyForLabel *string
 
-	// READ-ONLY; TrackingId of the package
+	// READ-ONLY; TrackingId of the package.
 	TrackingID *string
 
 	// READ-ONLY; TrackingUrl of the package.
@@ -977,9 +1267,6 @@ type ReverseShippingDetails struct {
 type ShippingAddress struct {
 	// REQUIRED; Name of the Country.
 	Country *string
-
-	// REQUIRED; Street Address line 1.
-	StreetAddress1 *string
 
 	// Type of address.
 	AddressType *AddressType
@@ -996,6 +1283,9 @@ type ShippingAddress struct {
 	// Name of the State or Province.
 	StateOrProvince *string
 
+	// Street Address line 1.
+	StreetAddress1 *string
+
 	// Street Address line 2.
 	StreetAddress2 *string
 
@@ -1006,27 +1296,18 @@ type ShippingAddress struct {
 	ZipExtendedCode *string
 }
 
-// ShippingDetails - Package shipping details
-type ShippingDetails struct {
-	// READ-ONLY; Carrier Name for display purpose. Not to be used for any processing.
-	CarrierDisplayName *string
-
-	// READ-ONLY; Name of the carrier.
-	CarrierName *string
-
-	// READ-ONLY; TrackingId of the package
-	TrackingID *string
-
-	// READ-ONLY; TrackingUrl of the package.
-	TrackingURL *string
+// SiteDetails - Represents Site Related Details.
+type SiteDetails struct {
+	// REQUIRED; Unique Id, Identifying A Site.
+	SiteID *string
 }
 
-// Specifications of the configurations
+// Specification of the configurations.
 type Specification struct {
-	// READ-ONLY; Name of the specification
+	// READ-ONLY; Name of the specification.
 	Name *string
 
-	// READ-ONLY; Value of the specification
+	// READ-ONLY; Value of the specification.
 	Value *string
 }
 
@@ -1035,13 +1316,13 @@ type StageDetails struct {
 	// READ-ONLY; Display name of the resource stage.
 	DisplayName *string
 
-	// READ-ONLY; Stage name
+	// READ-ONLY; Stage name.
 	StageName *StageName
 
 	// READ-ONLY; Stage status.
 	StageStatus *StageStatus
 
-	// READ-ONLY; Stage start time
+	// READ-ONLY; Stage start time.
 	StartTime *time.Time
 }
 
@@ -1066,6 +1347,36 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TermCommitmentInformation - Term Commitment Information.
+type TermCommitmentInformation struct {
+	// REQUIRED; Term Commitment Type
+	TermCommitmentType *TermCommitmentType
+
+	// READ-ONLY; Number of Days Pending for Term Commitment
+	PendingDaysForTerm *int32
+
+	// READ-ONLY; Term Commitment Duration. Currently Supporting P365D, P1095D
+	TermCommitmentTypeDuration *string
+}
+
+// TermCommitmentPreferences - Term Commitment preference received from customer.
+type TermCommitmentPreferences struct {
+	// REQUIRED; Term Commitment Type
+	PreferredTermCommitmentType *TermCommitmentType
+
+	// Customer preferred Term Duration.
+	PreferredTermCommitmentDuration *string
+}
+
+// TermTypeDetails - Holds details about term type and duration.
+type TermTypeDetails struct {
+	// REQUIRED; Term Commitment Type
+	TermType *TermCommitmentType
+
+	// REQUIRED; Duration for the term type.
+	TermTypeDuration *string
+}
+
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -1075,18 +1386,30 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// TransportPreferences - Preferences related to the shipment logistics of the sku
+// TransportPreferences - Preferences related to the shipment logistics of the sku.
 type TransportPreferences struct {
 	// REQUIRED; Indicates Shipment Logistics type that the customer preferred.
 	PreferredShipmentType *TransportShipmentTypes
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }

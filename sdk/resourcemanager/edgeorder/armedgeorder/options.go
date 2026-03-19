@@ -5,176 +5,194 @@
 
 package armedgeorder
 
-// ManagementClientBeginCreateAddressOptions contains the optional parameters for the ManagementClient.BeginCreateAddress
-// method.
-type ManagementClientBeginCreateAddressOptions struct {
-	// Resumes the LRO from the provided token.
+// AddressesClientBeginCreateOptions contains the optional parameters for the AddressesClient.BeginCreate method.
+type AddressesClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ManagementClientBeginCreateOrderItemOptions contains the optional parameters for the ManagementClient.BeginCreateOrderItem
-// method.
-type ManagementClientBeginCreateOrderItemOptions struct {
-	// Resumes the LRO from the provided token.
+// AddressesClientBeginDeleteOptions contains the optional parameters for the AddressesClient.BeginDelete method.
+type AddressesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ManagementClientBeginDeleteAddressByNameOptions contains the optional parameters for the ManagementClient.BeginDeleteAddressByName
-// method.
-type ManagementClientBeginDeleteAddressByNameOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagementClientBeginDeleteOrderItemByNameOptions contains the optional parameters for the ManagementClient.BeginDeleteOrderItemByName
-// method.
-type ManagementClientBeginDeleteOrderItemByNameOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagementClientBeginReturnOrderItemOptions contains the optional parameters for the ManagementClient.BeginReturnOrderItem
-// method.
-type ManagementClientBeginReturnOrderItemOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagementClientBeginUpdateAddressOptions contains the optional parameters for the ManagementClient.BeginUpdateAddress
-// method.
-type ManagementClientBeginUpdateAddressOptions struct {
+// AddressesClientBeginUpdateOptions contains the optional parameters for the AddressesClient.BeginUpdate method.
+type AddressesClientBeginUpdateOptions struct {
 	// Defines the If-Match condition. The patch will be performed only if the ETag of the job on the server matches this value.
 	IfMatch *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ManagementClientBeginUpdateOrderItemOptions contains the optional parameters for the ManagementClient.BeginUpdateOrderItem
-// method.
-type ManagementClientBeginUpdateOrderItemOptions struct {
-	// Defines the If-Match condition. The patch will be performed only if the ETag of the order on the server matches this value.
-	IfMatch *string
-
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagementClientCancelOrderItemOptions contains the optional parameters for the ManagementClient.CancelOrderItem method.
-type ManagementClientCancelOrderItemOptions struct {
+// AddressesClientGetOptions contains the optional parameters for the AddressesClient.Get method.
+type AddressesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementClientGetAddressByNameOptions contains the optional parameters for the ManagementClient.GetAddressByName method.
-type ManagementClientGetAddressByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagementClientGetOrderByNameOptions contains the optional parameters for the ManagementClient.GetOrderByName method.
-type ManagementClientGetOrderByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagementClientGetOrderItemByNameOptions contains the optional parameters for the ManagementClient.GetOrderItemByName
+// AddressesClientListByResourceGroupOptions contains the optional parameters for the AddressesClient.NewListByResourceGroupPager
 // method.
-type ManagementClientGetOrderItemByNameOptions struct {
-	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these
-	// can be provided as a comma separated list. Device Details for order item
-	// provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
-	// details respectively.
-	Expand *string
-}
-
-// ManagementClientListAddressesAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.NewListAddressesAtResourceGroupLevelPager
-// method.
-type ManagementClientListAddressesAtResourceGroupLevelOptions struct {
-	// $filter is supported to filter based on shipping address properties. Filter supports only equals operation.
-	Filter *string
-
-	// $skipToken is supported on Get list of addresses, which provides the next page in the list of address.
-	SkipToken *string
-}
-
-// ManagementClientListAddressesAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.NewListAddressesAtSubscriptionLevelPager
-// method.
-type ManagementClientListAddressesAtSubscriptionLevelOptions struct {
+type AddressesClientListByResourceGroupOptions struct {
 	// $filter is supported to filter based on shipping address properties. Filter supports only equals operation.
 	Filter *string
 
 	// $skipToken is supported on Get list of addresses, which provides the next page in the list of addresses.
 	SkipToken *string
+
+	// $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to
+	// the API caller.
+	Top *int32
 }
 
-// ManagementClientListConfigurationsOptions contains the optional parameters for the ManagementClient.NewListConfigurationsPager
+// AddressesClientListBySubscriptionOptions contains the optional parameters for the AddressesClient.NewListBySubscriptionPager
 // method.
-type ManagementClientListConfigurationsOptions struct {
+type AddressesClientListBySubscriptionOptions struct {
+	// $filter is supported to filter based on shipping address properties. Filter supports only equals operation.
+	Filter *string
+
+	// $skipToken is supported on Get list of addresses, which provides the next page in the list of addresses.
+	SkipToken *string
+
+	// $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to
+	// the API caller.
+	Top *int32
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrderItemsClientBeginCreateOptions contains the optional parameters for the OrderItemsClient.BeginCreate method.
+type OrderItemsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// OrderItemsClientBeginDeleteOptions contains the optional parameters for the OrderItemsClient.BeginDelete method.
+type OrderItemsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// OrderItemsClientBeginReturnOptions contains the optional parameters for the OrderItemsClient.BeginReturn method.
+type OrderItemsClientBeginReturnOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// OrderItemsClientBeginUpdateOptions contains the optional parameters for the OrderItemsClient.BeginUpdate method.
+type OrderItemsClientBeginUpdateOptions struct {
+	// Defines the If-Match condition. The patch will be performed only if the ETag of the order on the server matches this value.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// OrderItemsClientCancelOptions contains the optional parameters for the OrderItemsClient.Cancel method.
+type OrderItemsClientCancelOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrderItemsClientGetOptions contains the optional parameters for the OrderItemsClient.Get method.
+type OrderItemsClientGetOptions struct {
+	// $expand is supported on parent device details, device details, forward shipping details and reverse shipping details parameters.
+	// Each of these can be provided as a comma separated list. Parent Device
+	// Details for order item provides details on the devices of the product, Device Details for order item provides details on
+	// the devices of the child configurations of the product, Forward and Reverse
+	// Shipping details provide forward and reverse shipping details respectively.
+	Expand *string
+}
+
+// OrderItemsClientListByResourceGroupOptions contains the optional parameters for the OrderItemsClient.NewListByResourceGroupPager
+// method.
+type OrderItemsClientListByResourceGroupOptions struct {
+	// $expand is supported on parent device details, device details, forward shipping details and reverse shipping details parameters.
+	// Each of these can be provided as a comma separated list. Parent Device
+	// Details for order item provides details on the devices of the product, Device Details for order item provides details on
+	// the devices of the child configurations of the product, Forward and Reverse
+	// Shipping details provide forward and reverse shipping details respectively.
+	Expand *string
+
+	// $filter is supported to filter based on order id and order Item Type. Filter supports only equals operation.
+	Filter *string
+
+	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
+	SkipToken *string
+
+	// $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to
+	// the API caller.
+	Top *int32
+}
+
+// OrderItemsClientListBySubscriptionOptions contains the optional parameters for the OrderItemsClient.NewListBySubscriptionPager
+// method.
+type OrderItemsClientListBySubscriptionOptions struct {
+	// $expand is supported on parent device details, device details, forward shipping details and reverse shipping details parameters.
+	// Each of these can be provided as a comma separated list. Parent Device
+	// Details for order item provides details on the devices of the product, Device Details for order item provides details on
+	// the devices of the child configurations of the product, Forward and Reverse
+	// Shipping details provide forward and reverse shipping details respectively.
+	Expand *string
+
+	// $filter is supported to filter based on order id and order Item Type. Filter supports only equals operation.
+	Filter *string
+
+	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
+	SkipToken *string
+
+	// $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to
+	// the API caller.
+	Top *int32
+}
+
+// OrdersClientGetOptions contains the optional parameters for the OrdersClient.Get method.
+type OrdersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrdersClientListByResourceGroupOptions contains the optional parameters for the OrdersClient.NewListByResourceGroupPager
+// method.
+type OrdersClientListByResourceGroupOptions struct {
+	// $skipToken is supported on Get list of orders, which provides the next page in the list of orders.
+	SkipToken *string
+
+	// $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to
+	// the API caller.
+	Top *int32
+}
+
+// OrdersClientListBySubscriptionOptions contains the optional parameters for the OrdersClient.NewListBySubscriptionPager
+// method.
+type OrdersClientListBySubscriptionOptions struct {
+	// $skipToken is supported on Get list of orders, which provides the next page in the list of orders.
+	SkipToken *string
+
+	// $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to
+	// the API caller.
+	Top *int32
+}
+
+// ProductsAndConfigurationsClientListConfigurationsOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListConfigurationsPager
+// method.
+type ProductsAndConfigurationsClientListConfigurationsOptions struct {
 	// $skipToken is supported on list of configurations, which provides the next page in the list of configurations.
 	SkipToken *string
 }
 
-// ManagementClientListOperationsOptions contains the optional parameters for the ManagementClient.NewListOperationsPager
+// ProductsAndConfigurationsClientListProductFamiliesMetadataOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager
 // method.
-type ManagementClientListOperationsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagementClientListOrderAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.NewListOrderAtResourceGroupLevelPager
-// method.
-type ManagementClientListOrderAtResourceGroupLevelOptions struct {
-	// $skipToken is supported on Get list of order, which provides the next page in the list of order.
-	SkipToken *string
-}
-
-// ManagementClientListOrderAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.NewListOrderAtSubscriptionLevelPager
-// method.
-type ManagementClientListOrderAtSubscriptionLevelOptions struct {
-	// $skipToken is supported on Get list of order, which provides the next page in the list of order.
-	SkipToken *string
-}
-
-// ManagementClientListOrderItemsAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.NewListOrderItemsAtResourceGroupLevelPager
-// method.
-type ManagementClientListOrderItemsAtResourceGroupLevelOptions struct {
-	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these
-	// can be provided as a comma separated list. Device Details for order item
-	// provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
-	// details respectively.
-	Expand *string
-
-	// $filter is supported to filter based on order id. Filter supports only equals operation.
-	Filter *string
-
-	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
-	SkipToken *string
-}
-
-// ManagementClientListOrderItemsAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.NewListOrderItemsAtSubscriptionLevelPager
-// method.
-type ManagementClientListOrderItemsAtSubscriptionLevelOptions struct {
-	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these
-	// can be provided as a comma separated list. Device Details for order item
-	// provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
-	// details respectively.
-	Expand *string
-
-	// $filter is supported to filter based on order id. Filter supports only equals operation.
-	Filter *string
-
-	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
-	SkipToken *string
-}
-
-// ManagementClientListProductFamiliesMetadataOptions contains the optional parameters for the ManagementClient.NewListProductFamiliesMetadataPager
-// method.
-type ManagementClientListProductFamiliesMetadataOptions struct {
+type ProductsAndConfigurationsClientListProductFamiliesMetadataOptions struct {
 	// $skipToken is supported on list of product families metadata, which provides the next page in the list of product families
 	// metadata.
 	SkipToken *string
 }
 
-// ManagementClientListProductFamiliesOptions contains the optional parameters for the ManagementClient.NewListProductFamiliesPager
+// ProductsAndConfigurationsClientListProductFamiliesOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesPager
 // method.
-type ManagementClientListProductFamiliesOptions struct {
+type ProductsAndConfigurationsClientListProductFamiliesOptions struct {
 	// $expand is supported on configurations parameter for product, which provides details on the configurations for the product.
 	Expand *string
 

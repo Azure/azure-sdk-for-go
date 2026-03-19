@@ -23,7 +23,7 @@ import (
 // ProjectCatalogsServer is a fake server for instances of the armdevcenter.ProjectCatalogsClient type.
 type ProjectCatalogsServer struct {
 	// BeginConnect is the fake for method ProjectCatalogsClient.BeginConnect
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginConnect func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *armdevcenter.ProjectCatalogsClientBeginConnectOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientConnectResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method ProjectCatalogsClient.BeginCreateOrUpdate
@@ -31,7 +31,7 @@ type ProjectCatalogsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, body armdevcenter.Catalog, options *armdevcenter.ProjectCatalogsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ProjectCatalogsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *armdevcenter.ProjectCatalogsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ProjectCatalogsClient.Get
@@ -51,7 +51,7 @@ type ProjectCatalogsServer struct {
 	BeginPatch func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, body armdevcenter.CatalogUpdate, options *armdevcenter.ProjectCatalogsClientBeginPatchOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientPatchResponse], errResp azfake.ErrorResponder)
 
 	// BeginSync is the fake for method ProjectCatalogsClient.BeginSync
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginSync func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *armdevcenter.ProjectCatalogsClientBeginSyncOptions) (resp azfake.PollerResponder[armdevcenter.ProjectCatalogsClientSyncResponse], errResp azfake.ErrorResponder)
 }
 
@@ -90,35 +90,54 @@ func (p *ProjectCatalogsServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ProjectCatalogsClient.BeginConnect":
-		resp, err = p.dispatchBeginConnect(req)
-	case "ProjectCatalogsClient.BeginCreateOrUpdate":
-		resp, err = p.dispatchBeginCreateOrUpdate(req)
-	case "ProjectCatalogsClient.BeginDelete":
-		resp, err = p.dispatchBeginDelete(req)
-	case "ProjectCatalogsClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "ProjectCatalogsClient.GetSyncErrorDetails":
-		resp, err = p.dispatchGetSyncErrorDetails(req)
-	case "ProjectCatalogsClient.NewListPager":
-		resp, err = p.dispatchNewListPager(req)
-	case "ProjectCatalogsClient.BeginPatch":
-		resp, err = p.dispatchBeginPatch(req)
-	case "ProjectCatalogsClient.BeginSync":
-		resp, err = p.dispatchBeginSync(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *ProjectCatalogsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if projectCatalogsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = projectCatalogsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ProjectCatalogsClient.BeginConnect":
+				res.resp, res.err = p.dispatchBeginConnect(req)
+			case "ProjectCatalogsClient.BeginCreateOrUpdate":
+				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
+			case "ProjectCatalogsClient.BeginDelete":
+				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "ProjectCatalogsClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "ProjectCatalogsClient.GetSyncErrorDetails":
+				res.resp, res.err = p.dispatchGetSyncErrorDetails(req)
+			case "ProjectCatalogsClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			case "ProjectCatalogsClient.BeginPatch":
+				res.resp, res.err = p.dispatchBeginPatch(req)
+			case "ProjectCatalogsClient.BeginSync":
+				res.resp, res.err = p.dispatchBeginSync(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *ProjectCatalogsServerTransport) dispatchBeginConnect(req *http.Request) (*http.Response, error) {
@@ -130,7 +149,7 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginConnect(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connect`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -158,9 +177,9 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginConnect(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginConnect.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginConnect) {
 		p.beginConnect.remove(req)
@@ -178,7 +197,7 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdevcenter.Catalog](req)
@@ -230,7 +249,7 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginDelete(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -258,9 +277,9 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		p.beginDelete.remove(req)
@@ -276,7 +295,7 @@ func (p *ProjectCatalogsServerTransport) dispatchGet(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -313,7 +332,7 @@ func (p *ProjectCatalogsServerTransport) dispatchGetSyncErrorDetails(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSyncErrorDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -352,7 +371,7 @@ func (p *ProjectCatalogsServerTransport) dispatchNewListPager(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -414,7 +433,7 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginPatch(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdevcenter.CatalogUpdate](req)
@@ -466,7 +485,7 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginSync(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sync`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -494,13 +513,19 @@ func (p *ProjectCatalogsServerTransport) dispatchBeginSync(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginSync.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginSync) {
 		p.beginSync.remove(req)
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ProjectCatalogsServerTransport
+var projectCatalogsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

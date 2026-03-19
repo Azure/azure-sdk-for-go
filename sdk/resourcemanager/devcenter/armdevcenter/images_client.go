@@ -28,7 +28,7 @@ type ImagesClient struct {
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // Get - Gets a gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -73,7 +73,7 @@ func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, d
 }
 
 // getCreateRequest creates the Get request.
-func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, options *ImagesClientGetOptions) (*policy.Request, error) {
+func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, _ *ImagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -100,7 +100,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,9 +115,78 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 	return result, nil
 }
 
+// GetByProject - Gets an image.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - projectName - The name of the project.
+//   - imageName - The name of the image.
+//   - options - ImagesClientGetByProjectOptions contains the optional parameters for the ImagesClient.GetByProject method.
+func (client *ImagesClient) GetByProject(ctx context.Context, resourceGroupName string, projectName string, imageName string, options *ImagesClientGetByProjectOptions) (ImagesClientGetByProjectResponse, error) {
+	var err error
+	const operationName = "ImagesClient.GetByProject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByProjectCreateRequest(ctx, resourceGroupName, projectName, imageName, options)
+	if err != nil {
+		return ImagesClientGetByProjectResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ImagesClientGetByProjectResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ImagesClientGetByProjectResponse{}, err
+	}
+	resp, err := client.getByProjectHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByProjectCreateRequest creates the GetByProject request.
+func (client *ImagesClient) getByProjectCreateRequest(ctx context.Context, resourceGroupName string, projectName string, imageName string, _ *ImagesClientGetByProjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/images/{imageName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if imageName == "" {
+		return nil, errors.New("parameter imageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByProjectHandleResponse handles the GetByProject response.
+func (client *ImagesClient) getByProjectHandleResponse(resp *http.Response) (ImagesClientGetByProjectResponse, error) {
+	result := ImagesClientGetByProjectResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
+		return ImagesClientGetByProjectResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByDevCenterPager - Lists images for a devcenter.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - options - ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.NewListByDevCenterPager
@@ -168,7 +237,7 @@ func (client *ImagesClient) listByDevCenterCreateRequest(ctx context.Context, re
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,7 +254,7 @@ func (client *ImagesClient) listByDevCenterHandleResponse(resp *http.Response) (
 
 // NewListByGalleryPager - Lists images for a gallery.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -241,7 +310,7 @@ func (client *ImagesClient) listByGalleryCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -252,6 +321,71 @@ func (client *ImagesClient) listByGalleryHandleResponse(resp *http.Response) (Im
 	result := ImagesClientListByGalleryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
 		return ImagesClientListByGalleryResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByProjectPager - Lists images for a project.
+//
+// Generated from API version 2025-07-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - projectName - The name of the project.
+//   - options - ImagesClientListByProjectOptions contains the optional parameters for the ImagesClient.NewListByProjectPager
+//     method.
+func (client *ImagesClient) NewListByProjectPager(resourceGroupName string, projectName string, options *ImagesClientListByProjectOptions) *runtime.Pager[ImagesClientListByProjectResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ImagesClientListByProjectResponse]{
+		More: func(page ImagesClientListByProjectResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ImagesClientListByProjectResponse) (ImagesClientListByProjectResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.NewListByProjectPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
+			}, nil)
+			if err != nil {
+				return ImagesClientListByProjectResponse{}, err
+			}
+			return client.listByProjectHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByProjectCreateRequest creates the ListByProject request.
+func (client *ImagesClient) listByProjectCreateRequest(ctx context.Context, resourceGroupName string, projectName string, _ *ImagesClientListByProjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/images"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByProjectHandleResponse handles the ListByProject response.
+func (client *ImagesClient) listByProjectHandleResponse(resp *http.Response) (ImagesClientListByProjectResponse, error) {
+	result := ImagesClientListByProjectResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
+		return ImagesClientListByProjectResponse{}, err
 	}
 	return result, nil
 }

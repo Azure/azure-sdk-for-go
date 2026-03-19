@@ -26,6 +26,10 @@ type ImagesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, options *armdevcenter.ImagesClientGetOptions) (resp azfake.Responder[armdevcenter.ImagesClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetByProject is the fake for method ImagesClient.GetByProject
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByProject func(ctx context.Context, resourceGroupName string, projectName string, imageName string, options *armdevcenter.ImagesClientGetByProjectOptions) (resp azfake.Responder[armdevcenter.ImagesClientGetByProjectResponse], errResp azfake.ErrorResponder)
+
 	// NewListByDevCenterPager is the fake for method ImagesClient.NewListByDevCenterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByDevCenterPager func(resourceGroupName string, devCenterName string, options *armdevcenter.ImagesClientListByDevCenterOptions) (resp azfake.PagerResponder[armdevcenter.ImagesClientListByDevCenterResponse])
@@ -33,6 +37,10 @@ type ImagesServer struct {
 	// NewListByGalleryPager is the fake for method ImagesClient.NewListByGalleryPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByGalleryPager func(resourceGroupName string, devCenterName string, galleryName string, options *armdevcenter.ImagesClientListByGalleryOptions) (resp azfake.PagerResponder[armdevcenter.ImagesClientListByGalleryResponse])
+
+	// NewListByProjectPager is the fake for method ImagesClient.NewListByProjectPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByProjectPager func(resourceGroupName string, projectName string, options *armdevcenter.ImagesClientListByProjectOptions) (resp azfake.PagerResponder[armdevcenter.ImagesClientListByProjectResponse])
 }
 
 // NewImagesServerTransport creates a new instance of ImagesServerTransport with the provided implementation.
@@ -43,6 +51,7 @@ func NewImagesServerTransport(srv *ImagesServer) *ImagesServerTransport {
 		srv:                     srv,
 		newListByDevCenterPager: newTracker[azfake.PagerResponder[armdevcenter.ImagesClientListByDevCenterResponse]](),
 		newListByGalleryPager:   newTracker[azfake.PagerResponder[armdevcenter.ImagesClientListByGalleryResponse]](),
+		newListByProjectPager:   newTracker[azfake.PagerResponder[armdevcenter.ImagesClientListByProjectResponse]](),
 	}
 }
 
@@ -52,6 +61,7 @@ type ImagesServerTransport struct {
 	srv                     *ImagesServer
 	newListByDevCenterPager *tracker[azfake.PagerResponder[armdevcenter.ImagesClientListByDevCenterResponse]]
 	newListByGalleryPager   *tracker[azfake.PagerResponder[armdevcenter.ImagesClientListByGalleryResponse]]
+	newListByProjectPager   *tracker[azfake.PagerResponder[armdevcenter.ImagesClientListByProjectResponse]]
 }
 
 // Do implements the policy.Transporter interface for ImagesServerTransport.
@@ -62,25 +72,48 @@ func (i *ImagesServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return i.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ImagesClient.Get":
-		resp, err = i.dispatchGet(req)
-	case "ImagesClient.NewListByDevCenterPager":
-		resp, err = i.dispatchNewListByDevCenterPager(req)
-	case "ImagesClient.NewListByGalleryPager":
-		resp, err = i.dispatchNewListByGalleryPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (i *ImagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if imagesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = imagesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ImagesClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
+			case "ImagesClient.GetByProject":
+				res.resp, res.err = i.dispatchGetByProject(req)
+			case "ImagesClient.NewListByDevCenterPager":
+				res.resp, res.err = i.dispatchNewListByDevCenterPager(req)
+			case "ImagesClient.NewListByGalleryPager":
+				res.resp, res.err = i.dispatchNewListByGalleryPager(req)
+			case "ImagesClient.NewListByProjectPager":
+				res.resp, res.err = i.dispatchNewListByProjectPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (i *ImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -90,7 +123,7 @@ func (i *ImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -124,6 +157,43 @@ func (i *ImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	return resp, nil
 }
 
+func (i *ImagesServerTransport) dispatchGetByProject(req *http.Request) (*http.Response, error) {
+	if i.srv.GetByProject == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByProject not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	imageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.GetByProject(req.Context(), resourceGroupNameParam, projectNameParam, imageNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Image, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (i *ImagesServerTransport) dispatchNewListByDevCenterPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListByDevCenterPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByDevCenterPager not implemented")}
@@ -133,7 +203,7 @@ func (i *ImagesServerTransport) dispatchNewListByDevCenterPager(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -195,7 +265,7 @@ func (i *ImagesServerTransport) dispatchNewListByGalleryPager(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -250,4 +320,51 @@ func (i *ImagesServerTransport) dispatchNewListByGalleryPager(req *http.Request)
 		i.newListByGalleryPager.remove(req)
 	}
 	return resp, nil
+}
+
+func (i *ImagesServerTransport) dispatchNewListByProjectPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListByProjectPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByProjectPager not implemented")}
+	}
+	newListByProjectPager := i.newListByProjectPager.get(req)
+	if newListByProjectPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListByProjectPager(resourceGroupNameParam, projectNameParam, nil)
+		newListByProjectPager = &resp
+		i.newListByProjectPager.add(req, newListByProjectPager)
+		server.PagerResponderInjectNextLinks(newListByProjectPager, req, func(page *armdevcenter.ImagesClientListByProjectResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByProjectPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListByProjectPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByProjectPager) {
+		i.newListByProjectPager.remove(req)
+	}
+	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ImagesServerTransport
+var imagesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

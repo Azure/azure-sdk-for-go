@@ -27,7 +27,7 @@ type NetworkConnectionsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, networkConnectionName string, body armdevcenter.NetworkConnection, options *armdevcenter.NetworkConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method NetworkConnectionsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method NetworkConnectionsClient.Get
@@ -55,7 +55,7 @@ type NetworkConnectionsServer struct {
 	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse])
 
 	// BeginRunHealthChecks is the fake for method NetworkConnectionsClient.BeginRunHealthChecks
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRunHealthChecks func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginRunHealthChecksOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method NetworkConnectionsClient.BeginUpdate
@@ -102,39 +102,58 @@ func (n *NetworkConnectionsServerTransport) Do(req *http.Request) (*http.Respons
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return n.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "NetworkConnectionsClient.BeginCreateOrUpdate":
-		resp, err = n.dispatchBeginCreateOrUpdate(req)
-	case "NetworkConnectionsClient.BeginDelete":
-		resp, err = n.dispatchBeginDelete(req)
-	case "NetworkConnectionsClient.Get":
-		resp, err = n.dispatchGet(req)
-	case "NetworkConnectionsClient.GetHealthDetails":
-		resp, err = n.dispatchGetHealthDetails(req)
-	case "NetworkConnectionsClient.NewListByResourceGroupPager":
-		resp, err = n.dispatchNewListByResourceGroupPager(req)
-	case "NetworkConnectionsClient.NewListBySubscriptionPager":
-		resp, err = n.dispatchNewListBySubscriptionPager(req)
-	case "NetworkConnectionsClient.NewListHealthDetailsPager":
-		resp, err = n.dispatchNewListHealthDetailsPager(req)
-	case "NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager":
-		resp, err = n.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
-	case "NetworkConnectionsClient.BeginRunHealthChecks":
-		resp, err = n.dispatchBeginRunHealthChecks(req)
-	case "NetworkConnectionsClient.BeginUpdate":
-		resp, err = n.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (n *NetworkConnectionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if networkConnectionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = networkConnectionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "NetworkConnectionsClient.BeginCreateOrUpdate":
+				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
+			case "NetworkConnectionsClient.BeginDelete":
+				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkConnectionsClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetworkConnectionsClient.GetHealthDetails":
+				res.resp, res.err = n.dispatchGetHealthDetails(req)
+			case "NetworkConnectionsClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NetworkConnectionsClient.NewListBySubscriptionPager":
+				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
+			case "NetworkConnectionsClient.NewListHealthDetailsPager":
+				res.resp, res.err = n.dispatchNewListHealthDetailsPager(req)
+			case "NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager":
+				res.resp, res.err = n.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
+			case "NetworkConnectionsClient.BeginRunHealthChecks":
+				res.resp, res.err = n.dispatchBeginRunHealthChecks(req)
+			case "NetworkConnectionsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (n *NetworkConnectionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -146,7 +165,7 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdevcenter.NetworkConnection](req)
@@ -194,7 +213,7 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginDelete(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -218,9 +237,9 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginDelete(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		n.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		n.beginDelete.remove(req)
@@ -236,7 +255,7 @@ func (n *NetworkConnectionsServerTransport) dispatchGet(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -269,7 +288,7 @@ func (n *NetworkConnectionsServerTransport) dispatchGetHealthDetails(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/healthChecks/latest`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -304,7 +323,7 @@ func (n *NetworkConnectionsServerTransport) dispatchNewListByResourceGroupPager(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -362,7 +381,7 @@ func (n *NetworkConnectionsServerTransport) dispatchNewListBySubscriptionPager(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -416,7 +435,7 @@ func (n *NetworkConnectionsServerTransport) dispatchNewListHealthDetailsPager(re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/healthChecks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -475,7 +494,7 @@ func (n *NetworkConnectionsServerTransport) dispatchNewListOutboundNetworkDepend
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -537,7 +556,7 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginRunHealthChecks(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runHealthChecks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -561,9 +580,9 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginRunHealthChecks(req *ht
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		n.beginRunHealthChecks.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRunHealthChecks) {
 		n.beginRunHealthChecks.remove(req)
@@ -581,7 +600,7 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginUpdate(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdevcenter.NetworkConnectionUpdate](req)
@@ -618,4 +637,10 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginUpdate(req *http.Reques
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to NetworkConnectionsServerTransport
+var networkConnectionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

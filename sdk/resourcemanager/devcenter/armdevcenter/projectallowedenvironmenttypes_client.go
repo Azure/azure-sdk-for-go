@@ -28,7 +28,7 @@ type ProjectAllowedEnvironmentTypesClient struct {
 // NewProjectAllowedEnvironmentTypesClient creates a new instance of ProjectAllowedEnvironmentTypesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectAllowedEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectAllowedEnvironmentTypesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewProjectAllowedEnvironmentTypesClient(subscriptionID string, credential a
 // Get - Gets an allowed environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - environmentTypeName - The name of the environment type.
@@ -73,7 +73,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) Get(ctx context.Context, res
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProjectAllowedEnvironmentTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, projectName string, environmentTypeName string, options *ProjectAllowedEnvironmentTypesClientGetOptions) (*policy.Request, error) {
+func (client *ProjectAllowedEnvironmentTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, projectName string, environmentTypeName string, _ *ProjectAllowedEnvironmentTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/allowedEnvironmentTypes/{environmentTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,7 +96,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +113,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) getHandleResponse(resp *http
 
 // NewListPager - Lists allowed environment types for a project.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - options - ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.NewListPager
@@ -164,7 +164,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) listCreateRequest(ctx contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

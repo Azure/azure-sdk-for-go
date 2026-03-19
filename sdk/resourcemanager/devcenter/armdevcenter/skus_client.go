@@ -28,7 +28,7 @@ type SKUsClient struct {
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,9 +41,73 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
+// NewListByProjectPager - Lists SKUs available to the project
+//
+// Generated from API version 2025-07-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - projectName - The name of the project.
+//   - options - SKUsClientListByProjectOptions contains the optional parameters for the SKUsClient.NewListByProjectPager method.
+func (client *SKUsClient) NewListByProjectPager(resourceGroupName string, projectName string, options *SKUsClientListByProjectOptions) *runtime.Pager[SKUsClientListByProjectResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SKUsClientListByProjectResponse]{
+		More: func(page SKUsClientListByProjectResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SKUsClientListByProjectResponse) (SKUsClientListByProjectResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SKUsClient.NewListByProjectPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
+			}, nil)
+			if err != nil {
+				return SKUsClientListByProjectResponse{}, err
+			}
+			return client.listByProjectHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByProjectCreateRequest creates the ListByProject request.
+func (client *SKUsClient) listByProjectCreateRequest(ctx context.Context, resourceGroupName string, projectName string, _ *SKUsClientListByProjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/listSkus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByProjectHandleResponse handles the ListByProject response.
+func (client *SKUsClient) listByProjectHandleResponse(resp *http.Response) (SKUsClientListByProjectResponse, error) {
+	result := SKUsClientListByProjectResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUListResult); err != nil {
+		return SKUsClientListByProjectResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListBySubscriptionPager - Lists the Microsoft.DevCenter SKUs available in a subscription
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - options - SKUsClientListBySubscriptionOptions contains the optional parameters for the SKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *SKUsClient) NewListBySubscriptionPager(options *SKUsClientListBySubscriptionOptions) *runtime.Pager[SKUsClientListBySubscriptionResponse] {
@@ -84,7 +148,7 @@ func (client *SKUsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

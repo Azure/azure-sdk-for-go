@@ -28,7 +28,7 @@ type EnvironmentTypesClient struct {
 // NewEnvironmentTypesClient creates a new instance of EnvironmentTypesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentTypesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Creates or updates an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - environmentTypeName - The name of the environment type.
@@ -74,7 +74,7 @@ func (client *EnvironmentTypesClient) CreateOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EnvironmentTypesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentType, options *EnvironmentTypesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *EnvironmentTypesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentType, _ *EnvironmentTypesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,7 +97,7 @@ func (client *EnvironmentTypesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -118,7 +118,7 @@ func (client *EnvironmentTypesClient) createOrUpdateHandleResponse(resp *http.Re
 // Delete - Deletes an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - environmentTypeName - The name of the environment type.
@@ -145,7 +145,7 @@ func (client *EnvironmentTypesClient) Delete(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EnvironmentTypesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, options *EnvironmentTypesClientDeleteOptions) (*policy.Request, error) {
+func (client *EnvironmentTypesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, _ *EnvironmentTypesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -168,7 +168,7 @@ func (client *EnvironmentTypesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,7 +177,7 @@ func (client *EnvironmentTypesClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - environmentTypeName - The name of the environment type.
@@ -205,7 +205,7 @@ func (client *EnvironmentTypesClient) Get(ctx context.Context, resourceGroupName
 }
 
 // getCreateRequest creates the Get request.
-func (client *EnvironmentTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, options *EnvironmentTypesClientGetOptions) (*policy.Request, error) {
+func (client *EnvironmentTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, _ *EnvironmentTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -228,7 +228,7 @@ func (client *EnvironmentTypesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *EnvironmentTypesClient) getHandleResponse(resp *http.Response) (En
 
 // NewListByDevCenterPager - Lists environment types for the devcenter.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - options - EnvironmentTypesClientListByDevCenterOptions contains the optional parameters for the EnvironmentTypesClient.NewListByDevCenterPager
@@ -296,7 +296,7 @@ func (client *EnvironmentTypesClient) listByDevCenterCreateRequest(ctx context.C
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,7 +314,7 @@ func (client *EnvironmentTypesClient) listByDevCenterHandleResponse(resp *http.R
 // Update - Partially updates an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - environmentTypeName - The name of the environment type.
@@ -343,7 +343,7 @@ func (client *EnvironmentTypesClient) Update(ctx context.Context, resourceGroupN
 }
 
 // updateCreateRequest creates the Update request.
-func (client *EnvironmentTypesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentTypeUpdate, options *EnvironmentTypesClientUpdateOptions) (*policy.Request, error) {
+func (client *EnvironmentTypesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentTypeUpdate, _ *EnvironmentTypesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -366,7 +366,7 @@ func (client *EnvironmentTypesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

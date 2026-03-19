@@ -6,5 +6,5 @@ package armredhatopenshift
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.0.1"
 )

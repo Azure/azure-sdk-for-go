@@ -3,8 +3,8 @@
 ## 1.0.0 (2026-02-06)
 ### Breaking Changes
 
-- VariableValuesClient and it's operations has been removed
-- DataPolicyManifestsClient and it's operations has been removed
+- VariableValuesClient and its operations has been removed
+- DataPolicyManifestsClient and its operations has been removed
 - Enum `AliasPathAttributes` has been removed
 - Enum `AliasPathTokenType` has been removed
 - Enum `AliasPatternType` has been removed

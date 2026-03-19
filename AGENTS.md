@@ -45,11 +45,11 @@ AI agents should **NOT** perform the following actions without human approval:
 #### Build and Release
 - **Triggering releases**: Only humans should use `CheckPackageReleaseReadiness` and `ReleasePackage` MCP tools
 - **Modifying CI/CD pipelines**: Changes to `ci.yml`, Azure Pipelines configurations, or workflow files require careful review
-- **Approving releases**: Release stage approvals in pipelines must be done by authorized personnel
+- **Approving releases**: Release stage approvals in pipelines must be done by authorized humans
 
 #### Code Generation
-- **Regenerating SDK code**: Most packages in `sdk/` are generated from [Azure API specs](https://github.com/Azure/azure-rest-api-specs) using AutoRest or TypeSpec and should not be manually modified
-- **AutoRest/TypeSpec changes**: SDK generation from specifications requires specific tools and workflows (see [code generation docs](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/generate.md))
+- **Regenerating SDK code**: Most packages in `sdk/` are generated from [Azure API specs](https://github.com/Azure/azure-rest-api-specs) using TypeSpec and should not be manually modified
+- **TypeSpec changes**: SDK generation from specifications requires specific tools and workflows (see [code generation docs](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/generate.md))
 
 #### Security and Compliance
 - **CODEOWNERS modifications**: Changes require following [CODEOWNERS validation workflow](https://github.com/Azure/azure-sdk-for-go/blob/main/eng/common/instructions/azsdk-tools/validate-codeowners.instructions.md)

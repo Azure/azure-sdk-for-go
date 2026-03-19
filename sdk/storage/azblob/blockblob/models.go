@@ -296,13 +296,14 @@ func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 
 func (o *uploadFromReaderOptions) getUploadBlockBlobOptions() *UploadOptions {
 	return &UploadOptions{
-		Tags:             o.Tags,
-		Metadata:         o.Metadata,
-		Tier:             o.AccessTier,
-		HTTPHeaders:      o.HTTPHeaders,
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
-		CPKScopeInfo:     o.CPKScopeInfo,
+		Tags:                    o.Tags,
+		Metadata:                o.Metadata,
+		Tier:                    o.AccessTier,
+		HTTPHeaders:             o.HTTPHeaders,
+		AccessConditions:        o.AccessConditions,
+		CPKInfo:                 o.CPKInfo,
+		CPKScopeInfo:            o.CPKScopeInfo,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -385,13 +386,14 @@ func (u *UploadStreamOptions) getUploadOptions() *UploadOptions {
 	}
 
 	return &UploadOptions{
-		Tags:             u.Tags,
-		Metadata:         u.Metadata,
-		Tier:             u.AccessTier,
-		HTTPHeaders:      u.HTTPHeaders,
-		CPKInfo:          u.CPKInfo,
-		CPKScopeInfo:     u.CPKScopeInfo,
-		AccessConditions: u.AccessConditions,
+		Tags:                    u.Tags,
+		Metadata:                u.Metadata,
+		Tier:                    u.AccessTier,
+		HTTPHeaders:             u.HTTPHeaders,
+		CPKInfo:                 u.CPKInfo,
+		CPKScopeInfo:            u.CPKScopeInfo,
+		AccessConditions:        u.AccessConditions,
+		TransactionalValidation: u.TransactionalValidation,
 	}
 }
 

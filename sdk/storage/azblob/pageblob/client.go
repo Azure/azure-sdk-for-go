@@ -172,7 +172,11 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, conte
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, uploadPagesOptions)
 		if err != nil {
-			return UploadPagesResponse{}, nil
+			return UploadPagesResponse{}, err
+		}
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return UploadPagesResponse{}, err
 		}
 	}
 

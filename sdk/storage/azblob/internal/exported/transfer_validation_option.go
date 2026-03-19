@@ -55,6 +55,23 @@ func (c TransferValidationTypeMD5) Apply(rsc io.ReadSeekCloser, cfg generated.Tr
 
 func (TransferValidationTypeMD5) notPubliclyImplementable() {}
 
+// TransferValidationTypeComputeStructuredMessageCRC64 is a TransferValidationType that computes
+// per-segment CRC64 checksums using the structured message binary format.
+// The body is re-encoded into SM format with the specified segment size.
+// segmentSize specifies the maximum segment size in bytes (use 0 for default 4MB).
+func TransferValidationTypeComputeStructuredMessageCRC64(segmentSize int) TransferValidationType {
+	return transferValidationTypeFn(func(rsc io.ReadSeekCloser, cfg generated.TransactionalContentSetter) (io.ReadSeekCloser, error) {
+		buf, err := io.ReadAll(rsc)
+		if err != nil {
+			return nil, err
+		}
+
+		result := shared.SMEncode(buf, segmentSize)
+		cfg.SetStructuredBody(shared.SMHeaderValue, result.OriginalContentLength)
+		return streaming.NopCloser(bytes.NewReader(result.EncodedData)), nil
+	})
+}
+
 type transferValidationTypeFn func(io.ReadSeekCloser, generated.TransactionalContentSetter) (io.ReadSeekCloser, error)
 
 func (t transferValidationTypeFn) Apply(rsc io.ReadSeekCloser, cfg generated.TransactionalContentSetter) (io.ReadSeekCloser, error) {

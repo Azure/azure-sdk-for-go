@@ -2069,6 +2069,103 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 	_require.Equal(*resp2.ErrorCode, string(bloberror.ConditionNotMet))
 }
 
+func (s *BlobUnrecordedTestsSuite) TestDownloadStreamWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Upload a blob with known content
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	content := make([]byte, 4*1024) // 4 KB
+	_, _ = rand.Read(content)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Download with structured message CRC64 validation
+	smHeader := "XSM/1.0; properties=crc64"
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		StructuredBodyType: &smHeader,
+	})
+	_require.NoError(err)
+
+	// Read the body — SMDecoder validates CRC64 and returns raw data
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDownloadStreamWithStructuredMessageCRC64RangeDownload() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Upload a blob with known content
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	content := make([]byte, 8*1024) // 8 KB
+	_, _ = rand.Read(content)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Download a range with structured message CRC64 validation
+	smHeader := "XSM/1.0; properties=crc64"
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		StructuredBodyType: &smHeader,
+		Range:              blob.HTTPRange{Offset: 1024, Count: 2048},
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content[1024:1024+2048], downloadedData)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDownloadBufferWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Upload a blob with known content (large enough to have multiple chunks)
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	_, _ = rand.Read(content)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Download to buffer with structured message CRC64 validation
+	smHeader := "XSM/1.0; properties=crc64"
+	blobClient := containerClient.NewBlobClient(blobName)
+	buff := make([]byte, contentSize)
+	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
+		StructuredBodyType: &smHeader,
+		BlockSize:          4 * 1024, // 4 KB chunks to test parallel downloads
+	})
+	_require.NoError(err)
+	_require.Equal(int64(contentSize), n)
+	_require.Equal(content, buff[:n])
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobDeleteNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

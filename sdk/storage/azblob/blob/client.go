@@ -417,6 +417,12 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		return DownloadStreamResponse{}, err
 	}
 
+	// If the response contains a structured message body, wrap it with SMDecoder
+	// to validate CRC64 checksums and extract the raw data.
+	if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" {
+		dr.Body = shared.NewSMDecoder(dr.Body)
+	}
+
 	return DownloadStreamResponse{
 		client:                 b,
 		DownloadResponse:       dr,
@@ -424,6 +430,7 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		ObjectReplicationRules: deserializeORSPolicies(dr.ObjectReplicationRules),
 		cpkInfo:                o.CPKInfo,
 		cpkScope:               o.CPKScopeInfo,
+		structuredBodyType:     o.StructuredBodyType,
 	}, err
 }
 

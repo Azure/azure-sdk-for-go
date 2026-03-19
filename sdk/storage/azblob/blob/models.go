@@ -65,6 +65,12 @@ type DownloadStreamOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
+	// StructuredBodyType specifies the structured message format for the response body.
+	// When set (e.g., to shared.SMHeaderValue), the service returns the blob data wrapped in a
+	// structured message with per-segment CRC64 checksums. The SDK automatically decodes the
+	// structured message and validates CRC64 checksums before returning data to the caller.
+	StructuredBodyType *string
+
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
@@ -78,6 +84,7 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 	basics := generated.BlobClientDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
 		Range:              exported.FormatHTTPRange(o.Range),
+		StructuredBodyType: o.StructuredBodyType,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -109,6 +116,9 @@ type downloadOptions struct {
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// StructuredBodyType specifies the structured message format for download responses.
+	StructuredBodyType *string
 }
 
 func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
@@ -131,6 +141,7 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 		CPKScopeInfo:       o.CPKScopeInfo,
 		Range:              rnge,
 		RangeGetContentMD5: rangeGetContentMD5,
+		StructuredBodyType: o.StructuredBodyType,
 	}
 }
 
@@ -159,6 +170,10 @@ type DownloadBufferOptions struct {
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// StructuredBodyType specifies the structured message format for download responses.
+	// When set, each downloaded chunk is returned as a structured message with CRC64 checksums.
+	StructuredBodyType *string
 }
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
@@ -184,6 +199,10 @@ type DownloadFileOptions struct {
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// StructuredBodyType specifies the structured message format for download responses.
+	// When set, each downloaded chunk is returned as a structured message with CRC64 checksums.
+	StructuredBodyType *string
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

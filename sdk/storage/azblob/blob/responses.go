@@ -22,10 +22,11 @@ type DownloadStreamResponse struct {
 	DownloadResponse
 	ObjectReplicationRules []ObjectReplicationPolicy
 
-	client   *Client
-	getInfo  httpGetterInfo
-	cpkInfo  *CPKInfo
-	cpkScope *CPKScopeInfo
+	client             *Client
+	getInfo            httpGetterInfo
+	cpkInfo            *CPKInfo
+	cpkScope           *CPKScopeInfo
+	structuredBodyType *string
 }
 
 // NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
@@ -42,10 +43,11 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: getInfo.ETag},
 		}
 		options := DownloadStreamOptions{
-			Range:            getInfo.Range,
-			AccessConditions: accessConditions,
-			CPKInfo:          r.cpkInfo,
-			CPKScopeInfo:     r.cpkScope,
+			Range:              getInfo.Range,
+			AccessConditions:   accessConditions,
+			CPKInfo:            r.cpkInfo,
+			CPKScopeInfo:       r.cpkScope,
+			StructuredBodyType: r.structuredBodyType,
 		}
 		resp, err := r.client.DownloadStream(ctx, &options)
 		if err != nil {

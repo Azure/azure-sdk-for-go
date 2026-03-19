@@ -25,9 +25,9 @@ type ServerEndpointsClient struct {
 }
 
 // NewServerEndpointsClient creates a new instance of ServerEndpointsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServerEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerEndpointsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewServerEndpointsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreate - Create a new ServerEndpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -58,7 +58,8 @@ func (client *ServerEndpointsClient) BeginCreate(ctx context.Context, resourceGr
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServerEndpointsClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -71,7 +72,7 @@ func (client *ServerEndpointsClient) BeginCreate(ctx context.Context, resourceGr
 // Create - Create a new ServerEndpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *ServerEndpointsClient) create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters, options *ServerEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerEndpointsClient.BeginCreate"
@@ -94,7 +95,7 @@ func (client *ServerEndpointsClient) create(ctx context.Context, resourceGroupNa
 }
 
 // createCreateRequest creates the Create request.
-func (client *ServerEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters, options *ServerEndpointsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *ServerEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters, _ *ServerEndpointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -121,7 +122,7 @@ func (client *ServerEndpointsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,7 +134,7 @@ func (client *ServerEndpointsClient) createCreateRequest(ctx context.Context, re
 // BeginDelete - Delete a given ServerEndpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -147,7 +148,8 @@ func (client *ServerEndpointsClient) BeginDelete(ctx context.Context, resourceGr
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServerEndpointsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -160,7 +162,7 @@ func (client *ServerEndpointsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete a given ServerEndpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *ServerEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *ServerEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerEndpointsClient.BeginDelete"
@@ -183,7 +185,7 @@ func (client *ServerEndpointsClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *ServerEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServerEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, _ *ServerEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -210,7 +212,7 @@ func (client *ServerEndpointsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +221,7 @@ func (client *ServerEndpointsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get a ServerEndpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -248,7 +250,7 @@ func (client *ServerEndpointsClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *ServerEndpointsClientGetOptions) (*policy.Request, error) {
+func (client *ServerEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, _ *ServerEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -275,7 +277,7 @@ func (client *ServerEndpointsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -298,7 +300,7 @@ func (client *ServerEndpointsClient) getHandleResponse(resp *http.Response) (Ser
 
 // NewListBySyncGroupPager - Get a ServerEndpoint list.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -307,20 +309,19 @@ func (client *ServerEndpointsClient) getHandleResponse(resp *http.Response) (Ser
 func (client *ServerEndpointsClient) NewListBySyncGroupPager(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *ServerEndpointsClientListBySyncGroupOptions) *runtime.Pager[ServerEndpointsClientListBySyncGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServerEndpointsClientListBySyncGroupResponse]{
 		More: func(page ServerEndpointsClientListBySyncGroupResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServerEndpointsClientListBySyncGroupResponse) (ServerEndpointsClientListBySyncGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServerEndpointsClient.NewListBySyncGroupPager")
-			req, err := client.listBySyncGroupCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySyncGroupCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, options)
+			}, nil)
 			if err != nil {
 				return ServerEndpointsClientListBySyncGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServerEndpointsClientListBySyncGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServerEndpointsClientListBySyncGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySyncGroupHandleResponse(resp)
 		},
@@ -329,7 +330,7 @@ func (client *ServerEndpointsClient) NewListBySyncGroupPager(resourceGroupName s
 }
 
 // listBySyncGroupCreateRequest creates the ListBySyncGroup request.
-func (client *ServerEndpointsClient) listBySyncGroupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *ServerEndpointsClientListBySyncGroupOptions) (*policy.Request, error) {
+func (client *ServerEndpointsClient) listBySyncGroupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, _ *ServerEndpointsClientListBySyncGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -352,7 +353,7 @@ func (client *ServerEndpointsClient) listBySyncGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,7 +380,7 @@ func (client *ServerEndpointsClient) listBySyncGroupHandleResponse(resp *http.Re
 // BeginRecallAction - Recall a server endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -394,7 +395,8 @@ func (client *ServerEndpointsClient) BeginRecallAction(ctx context.Context, reso
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServerEndpointsClientRecallActionResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -407,7 +409,7 @@ func (client *ServerEndpointsClient) BeginRecallAction(ctx context.Context, reso
 // RecallAction - Recall a server endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *ServerEndpointsClient) recallAction(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters, options *ServerEndpointsClientBeginRecallActionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerEndpointsClient.BeginRecallAction"
@@ -430,7 +432,7 @@ func (client *ServerEndpointsClient) recallAction(ctx context.Context, resourceG
 }
 
 // recallActionCreateRequest creates the RecallAction request.
-func (client *ServerEndpointsClient) recallActionCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters, options *ServerEndpointsClientBeginRecallActionOptions) (*policy.Request, error) {
+func (client *ServerEndpointsClient) recallActionCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters, _ *ServerEndpointsClientBeginRecallActionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}/recallAction"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -457,7 +459,7 @@ func (client *ServerEndpointsClient) recallActionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -469,7 +471,7 @@ func (client *ServerEndpointsClient) recallActionCreateRequest(ctx context.Conte
 // BeginUpdate - Patch a given ServerEndpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -483,7 +485,8 @@ func (client *ServerEndpointsClient) BeginUpdate(ctx context.Context, resourceGr
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServerEndpointsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -496,7 +499,7 @@ func (client *ServerEndpointsClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - Patch a given ServerEndpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *ServerEndpointsClient) update(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *ServerEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerEndpointsClient.BeginUpdate"
@@ -546,7 +549,7 @@ func (client *ServerEndpointsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {

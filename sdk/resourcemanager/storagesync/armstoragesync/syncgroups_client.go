@@ -25,9 +25,9 @@ type SyncGroupsClient struct {
 }
 
 // NewSyncGroupsClient creates a new instance of SyncGroupsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncGroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredentia
 // Create - Create a new SyncGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -72,7 +72,7 @@ func (client *SyncGroupsClient) Create(ctx context.Context, resourceGroupName st
 }
 
 // createCreateRequest creates the Create request.
-func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters, options *SyncGroupsClientCreateOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters, _ *SyncGroupsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,7 +122,7 @@ func (client *SyncGroupsClient) createHandleResponse(resp *http.Response) (SyncG
 // Delete - Delete a given SyncGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -150,7 +150,7 @@ func (client *SyncGroupsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsClientDeleteOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, _ *SyncGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -173,7 +173,7 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +194,7 @@ func (client *SyncGroupsClient) deleteHandleResponse(resp *http.Response) (SyncG
 // Get - Get a given SyncGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - syncGroupName - Name of Sync Group resource.
@@ -222,7 +222,7 @@ func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsClientGetOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, _ *SyncGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -245,7 +245,7 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -268,7 +268,7 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 
 // NewListByStorageSyncServicePager - Get a SyncGroup List.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - options - SyncGroupsClientListByStorageSyncServiceOptions contains the optional parameters for the SyncGroupsClient.NewListByStorageSyncServicePager
@@ -276,20 +276,19 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 func (client *SyncGroupsClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *SyncGroupsClientListByStorageSyncServiceOptions) *runtime.Pager[SyncGroupsClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListByStorageSyncServiceResponse]{
 		More: func(page SyncGroupsClientListByStorageSyncServiceResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SyncGroupsClientListByStorageSyncServiceResponse) (SyncGroupsClientListByStorageSyncServiceResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SyncGroupsClient.NewListByStorageSyncServicePager")
-			req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			}, nil)
 			if err != nil {
 				return SyncGroupsClientListByStorageSyncServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SyncGroupsClientListByStorageSyncServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SyncGroupsClientListByStorageSyncServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByStorageSyncServiceHandleResponse(resp)
 		},
@@ -298,7 +297,7 @@ func (client *SyncGroupsClient) NewListByStorageSyncServicePager(resourceGroupNa
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
-func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *SyncGroupsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, _ *SyncGroupsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -317,7 +316,7 @@ func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -5,6 +5,18 @@
 
 package armstoragesync
 
+// CloudEndpointsClientAfsShareMetadataCertificatePublicKeysResponse contains the response from method CloudEndpointsClient.AfsShareMetadataCertificatePublicKeys.
+type CloudEndpointsClientAfsShareMetadataCertificatePublicKeysResponse struct {
+	// Cloud endpoint AFS file share metadata signing certificate public keys.
+	CloudEndpointAfsShareMetadataCertificatePublicKeys
+
+	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
+	XMSCorrelationRequestID *string
+
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	XMSRequestID *string
+}
+
 // CloudEndpointsClientCreateResponse contains the response from method CloudEndpointsClient.BeginCreate.
 type CloudEndpointsClientCreateResponse struct {
 	// Cloud Endpoint object.
@@ -101,7 +113,7 @@ type OperationStatusClientGetResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// The list of storage sync operations.
+	// Paged collection of OperationEntity items
 	OperationEntityListResult
 
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
@@ -113,7 +125,7 @@ type OperationsClientListResponse struct {
 
 // PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreate.
 type PrivateEndpointConnectionsClientCreateResponse struct {
-	// The Private Endpoint Connection resource.
+	// The private endpoint connection resource.
 	PrivateEndpointConnection
 }
 
@@ -124,13 +136,13 @@ type PrivateEndpointConnectionsClientDeleteResponse struct {
 
 // PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
 type PrivateEndpointConnectionsClientGetResponse struct {
-	// The Private Endpoint Connection resource.
+	// The private endpoint connection resource.
 	PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionsClientListByStorageSyncServiceResponse contains the response from method PrivateEndpointConnectionsClient.NewListByStorageSyncServicePager.
 type PrivateEndpointConnectionsClientListByStorageSyncServiceResponse struct {
-	// List of private endpoint connection associated with the specified storage account
+	// List of private endpoint connections associated with the specified resource.
 	PrivateEndpointConnectionListResult
 
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
@@ -142,7 +154,7 @@ type PrivateEndpointConnectionsClientListByStorageSyncServiceResponse struct {
 
 // PrivateLinkResourcesClientListByStorageSyncServiceResponse contains the response from method PrivateLinkResourcesClient.ListByStorageSyncService.
 type PrivateLinkResourcesClientListByStorageSyncServiceResponse struct {
-	// A list of private link resources
+	// A list of private link resources.
 	PrivateLinkResourceListResult
 }
 
@@ -184,6 +196,12 @@ type RegisteredServersClientListByStorageSyncServiceResponse struct {
 // RegisteredServersClientTriggerRolloverResponse contains the response from method RegisteredServersClient.BeginTriggerRollover.
 type RegisteredServersClientTriggerRolloverResponse struct {
 	// placeholder for future response values
+}
+
+// RegisteredServersClientUpdateResponse contains the response from method RegisteredServersClient.BeginUpdate.
+type RegisteredServersClientUpdateResponse struct {
+	// Registered Server resource.
+	RegisteredServer
 }
 
 // ServerEndpointsClientCreateResponse contains the response from method ServerEndpointsClient.BeginCreate.

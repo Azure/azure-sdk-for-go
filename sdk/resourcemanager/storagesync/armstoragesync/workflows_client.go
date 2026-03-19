@@ -25,9 +25,9 @@ type WorkflowsClient struct {
 }
 
 // NewWorkflowsClient creates a new instance of WorkflowsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential
 // Abort - Abort the given workflow.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - workflowID - workflow Id
@@ -71,7 +71,7 @@ func (client *WorkflowsClient) Abort(ctx context.Context, resourceGroupName stri
 }
 
 // abortCreateRequest creates the Abort request.
-func (client *WorkflowsClient) abortCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string, options *WorkflowsClientAbortOptions) (*policy.Request, error) {
+func (client *WorkflowsClient) abortCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string, _ *WorkflowsClientAbortOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/workflows/{workflowId}/abort"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +94,7 @@ func (client *WorkflowsClient) abortCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *WorkflowsClient) abortHandleResponse(resp *http.Response) (Workflo
 // Get - Get Workflows resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - workflowID - workflow Id
@@ -143,7 +143,7 @@ func (client *WorkflowsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string, options *WorkflowsClientGetOptions) (*policy.Request, error) {
+func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string, _ *WorkflowsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/workflows/{workflowId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -166,7 +166,7 @@ func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 
 // NewListByStorageSyncServicePager - Get a Workflow List
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - options - WorkflowsClientListByStorageSyncServiceOptions contains the optional parameters for the WorkflowsClient.NewListByStorageSyncServicePager
@@ -197,20 +197,19 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 func (client *WorkflowsClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *WorkflowsClientListByStorageSyncServiceOptions) *runtime.Pager[WorkflowsClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowsClientListByStorageSyncServiceResponse]{
 		More: func(page WorkflowsClientListByStorageSyncServiceResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkflowsClientListByStorageSyncServiceResponse) (WorkflowsClientListByStorageSyncServiceResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkflowsClient.NewListByStorageSyncServicePager")
-			req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			}, nil)
 			if err != nil {
 				return WorkflowsClientListByStorageSyncServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkflowsClientListByStorageSyncServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkflowsClientListByStorageSyncServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByStorageSyncServiceHandleResponse(resp)
 		},
@@ -219,7 +218,7 @@ func (client *WorkflowsClient) NewListByStorageSyncServicePager(resourceGroupNam
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
-func (client *WorkflowsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *WorkflowsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
+func (client *WorkflowsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, _ *WorkflowsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/workflows"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +237,7 @@ func (client *WorkflowsClient) listByStorageSyncServiceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -25,9 +25,9 @@ type RegisteredServersClient struct {
 }
 
 // NewRegisteredServersClient creates a new instance of RegisteredServersClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegisteredServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegisteredServersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewRegisteredServersClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreate - Add a new registered server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - serverID - GUID identifying the on-premises server.
@@ -57,7 +57,8 @@ func (client *RegisteredServersClient) BeginCreate(ctx context.Context, resource
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegisteredServersClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -70,7 +71,7 @@ func (client *RegisteredServersClient) BeginCreate(ctx context.Context, resource
 // Create - Add a new registered server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *RegisteredServersClient) create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters, options *RegisteredServersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegisteredServersClient.BeginCreate"
@@ -93,7 +94,7 @@ func (client *RegisteredServersClient) create(ctx context.Context, resourceGroup
 }
 
 // createCreateRequest creates the Create request.
-func (client *RegisteredServersClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters, options *RegisteredServersClientBeginCreateOptions) (*policy.Request, error) {
+func (client *RegisteredServersClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters, _ *RegisteredServersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,7 +117,7 @@ func (client *RegisteredServersClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,7 +129,7 @@ func (client *RegisteredServersClient) createCreateRequest(ctx context.Context, 
 // BeginDelete - Delete the given registered server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - serverID - GUID identifying the on-premises server.
@@ -141,7 +142,8 @@ func (client *RegisteredServersClient) BeginDelete(ctx context.Context, resource
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegisteredServersClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -154,7 +156,7 @@ func (client *RegisteredServersClient) BeginDelete(ctx context.Context, resource
 // Delete - Delete the given registered server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *RegisteredServersClient) deleteOperation(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, options *RegisteredServersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegisteredServersClient.BeginDelete"
@@ -177,7 +179,7 @@ func (client *RegisteredServersClient) deleteOperation(ctx context.Context, reso
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RegisteredServersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, options *RegisteredServersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RegisteredServersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, _ *RegisteredServersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +202,7 @@ func (client *RegisteredServersClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +211,7 @@ func (client *RegisteredServersClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get a given registered server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - serverID - GUID identifying the on-premises server.
@@ -237,7 +239,7 @@ func (client *RegisteredServersClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *RegisteredServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, options *RegisteredServersClientGetOptions) (*policy.Request, error) {
+func (client *RegisteredServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, _ *RegisteredServersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -260,7 +262,7 @@ func (client *RegisteredServersClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +285,7 @@ func (client *RegisteredServersClient) getHandleResponse(resp *http.Response) (R
 
 // NewListByStorageSyncServicePager - Get a given registered server list.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - options - RegisteredServersClientListByStorageSyncServiceOptions contains the optional parameters for the RegisteredServersClient.NewListByStorageSyncServicePager
@@ -291,20 +293,19 @@ func (client *RegisteredServersClient) getHandleResponse(resp *http.Response) (R
 func (client *RegisteredServersClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *RegisteredServersClientListByStorageSyncServiceOptions) *runtime.Pager[RegisteredServersClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RegisteredServersClientListByStorageSyncServiceResponse]{
 		More: func(page RegisteredServersClientListByStorageSyncServiceResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RegisteredServersClientListByStorageSyncServiceResponse) (RegisteredServersClientListByStorageSyncServiceResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegisteredServersClient.NewListByStorageSyncServicePager")
-			req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			}, nil)
 			if err != nil {
 				return RegisteredServersClientListByStorageSyncServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RegisteredServersClientListByStorageSyncServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RegisteredServersClientListByStorageSyncServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByStorageSyncServiceHandleResponse(resp)
 		},
@@ -313,7 +314,7 @@ func (client *RegisteredServersClient) NewListByStorageSyncServicePager(resource
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
-func (client *RegisteredServersClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *RegisteredServersClientListByStorageSyncServiceOptions) (*policy.Request, error) {
+func (client *RegisteredServersClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, _ *RegisteredServersClientListByStorageSyncServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -332,7 +333,7 @@ func (client *RegisteredServersClient) listByStorageSyncServiceCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -356,10 +357,10 @@ func (client *RegisteredServersClient) listByStorageSyncServiceHandleResponse(re
 // BeginTriggerRollover - Triggers Server certificate rollover.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
-//   - serverID - Server Id
+//   - serverID - GUID identifying the on-premises server.
 //   - parameters - Body of Trigger Rollover request.
 //   - options - RegisteredServersClientBeginTriggerRolloverOptions contains the optional parameters for the RegisteredServersClient.BeginTriggerRollover
 //     method.
@@ -370,7 +371,8 @@ func (client *RegisteredServersClient) BeginTriggerRollover(ctx context.Context,
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegisteredServersClientTriggerRolloverResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -383,7 +385,7 @@ func (client *RegisteredServersClient) BeginTriggerRollover(ctx context.Context,
 // TriggerRollover - Triggers Server certificate rollover.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *RegisteredServersClient) triggerRollover(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest, options *RegisteredServersClientBeginTriggerRolloverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegisteredServersClient.BeginTriggerRollover"
@@ -406,7 +408,7 @@ func (client *RegisteredServersClient) triggerRollover(ctx context.Context, reso
 }
 
 // triggerRolloverCreateRequest creates the TriggerRollover request.
-func (client *RegisteredServersClient) triggerRolloverCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest, options *RegisteredServersClientBeginTriggerRolloverOptions) (*policy.Request, error) {
+func (client *RegisteredServersClient) triggerRolloverCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest, _ *RegisteredServersClientBeginTriggerRolloverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}/triggerRollover"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -429,7 +431,93 @@ func (client *RegisteredServersClient) triggerRolloverCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update registered server.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storageSyncServiceName - Name of Storage Sync Service resource.
+//   - serverID - GUID identifying the on-premises server.
+//   - parameters - Body of Registered Server object.
+//   - options - RegisteredServersClientBeginUpdateOptions contains the optional parameters for the RegisteredServersClient.BeginUpdate
+//     method.
+func (client *RegisteredServersClient) BeginUpdate(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerUpdateParameters, options *RegisteredServersClientBeginUpdateOptions) (*runtime.Poller[RegisteredServersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, storageSyncServiceName, serverID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegisteredServersClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegisteredServersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Update registered server.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-09-01
+func (client *RegisteredServersClient) update(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerUpdateParameters, options *RegisteredServersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RegisteredServersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageSyncServiceName, serverID, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the Update request.
+func (client *RegisteredServersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerUpdateParameters, _ *RegisteredServersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storageSyncServiceName == "" {
+		return nil, errors.New("parameter storageSyncServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageSyncServiceName}", url.PathEscape(storageSyncServiceName))
+	if serverID == "" {
+		return nil, errors.New("parameter serverID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverId}", url.PathEscape(serverID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

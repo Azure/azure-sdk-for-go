@@ -12,7 +12,8 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -66,27 +67,46 @@ func (p *PrivateEndpointConnectionsServerTransport) Do(req *http.Request) (*http
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PrivateEndpointConnectionsClient.BeginCreate":
-		resp, err = p.dispatchBeginCreate(req)
-	case "PrivateEndpointConnectionsClient.BeginDelete":
-		resp, err = p.dispatchBeginDelete(req)
-	case "PrivateEndpointConnectionsClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "PrivateEndpointConnectionsClient.NewListByStorageSyncServicePager":
-		resp, err = p.dispatchNewListByStorageSyncServicePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if privateEndpointConnectionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = privateEndpointConnectionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PrivateEndpointConnectionsClient.BeginCreate":
+				res.resp, res.err = p.dispatchBeginCreate(req)
+			case "PrivateEndpointConnectionsClient.BeginDelete":
+				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PrivateEndpointConnectionsClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PrivateEndpointConnectionsClient.NewListByStorageSyncServicePager":
+				res.resp, res.err = p.dispatchNewListByStorageSyncServicePager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -98,7 +118,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginCreate(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armstoragesync.PrivateEndpointConnection](req)
@@ -150,7 +170,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -196,7 +216,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -235,7 +255,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByStorageSync
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -249,6 +269,9 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByStorageSync
 		resp := p.srv.NewListByStorageSyncServicePager(resourceGroupNameParam, storageSyncServiceNameParam, nil)
 		newListByStorageSyncServicePager = &resp
 		p.newListByStorageSyncServicePager.add(req, newListByStorageSyncServicePager)
+		server.PagerResponderInjectNextLinks(newListByStorageSyncServicePager, req, func(page *armstoragesync.PrivateEndpointConnectionsClientListByStorageSyncServiceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newListByStorageSyncServicePager, req)
 	if err != nil {
@@ -262,4 +285,10 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByStorageSync
 		p.newListByStorageSyncServicePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PrivateEndpointConnectionsServerTransport
+var privateEndpointConnectionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

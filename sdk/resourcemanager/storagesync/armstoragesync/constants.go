@@ -5,11 +5,6 @@
 
 package armstoragesync
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync"
-	moduleVersion = "v1.2.0"
-)
-
 // ChangeDetectionMode - Change Detection Mode. Applies to a directory specified in directoryPath parameter.
 type ChangeDetectionMode string
 
@@ -55,6 +50,22 @@ func PossibleCloudEndpointChangeEnumerationTotalCountsStateValues() []CloudEndpo
 	return []CloudEndpointChangeEnumerationTotalCountsState{
 		CloudEndpointChangeEnumerationTotalCountsStateCalculating,
 		CloudEndpointChangeEnumerationTotalCountsStateFinal,
+	}
+}
+
+// CloudTieringLowDiskModeState - Type of the cloud tiering low disk mode state
+type CloudTieringLowDiskModeState string
+
+const (
+	CloudTieringLowDiskModeStateDisabled CloudTieringLowDiskModeState = "Disabled"
+	CloudTieringLowDiskModeStateEnabled  CloudTieringLowDiskModeState = "Enabled"
+)
+
+// PossibleCloudTieringLowDiskModeStateValues returns the possible values for the CloudTieringLowDiskModeState const type.
+func PossibleCloudTieringLowDiskModeStateValues() []CloudTieringLowDiskModeState {
+	return []CloudTieringLowDiskModeState{
+		CloudTieringLowDiskModeStateDisabled,
+		CloudTieringLowDiskModeStateEnabled,
 	}
 }
 
@@ -110,7 +121,7 @@ func PossibleIncomingTrafficPolicyValues() []IncomingTrafficPolicy {
 	}
 }
 
-// InitialDownloadPolicy - Policy for how namespace and files are recalled during FastDr
+// InitialDownloadPolicy - Policy for how namespace and files are recalled during FastDr.
 type InitialDownloadPolicy string
 
 const (
@@ -158,6 +169,26 @@ func PossibleLocalCacheModeValues() []LocalCacheMode {
 	return []LocalCacheMode{
 		LocalCacheModeDownloadNewAndModifiedFiles,
 		LocalCacheModeUpdateLocallyCachedFiles,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 
@@ -234,50 +265,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ProgressType - Type of the ProgressType
-type ProgressType string
-
-const (
-	ProgressTypeDownload   ProgressType = "download"
-	ProgressTypeInitialize ProgressType = "initialize"
-	ProgressTypeNone       ProgressType = "none"
-	ProgressTypeRecall     ProgressType = "recall"
-	ProgressTypeUpload     ProgressType = "upload"
-)
-
-// PossibleProgressTypeValues returns the possible values for the ProgressType const type.
-func PossibleProgressTypeValues() []ProgressType {
-	return []ProgressType{
-		ProgressTypeDownload,
-		ProgressTypeInitialize,
-		ProgressTypeNone,
-		ProgressTypeRecall,
-		ProgressTypeUpload,
-	}
-}
-
-// Reason - State of Azure Subscription
-type Reason string
-
-const (
-	ReasonDeleted      Reason = "Deleted"
-	ReasonRegistered   Reason = "Registered"
-	ReasonSuspended    Reason = "Suspended"
-	ReasonUnregistered Reason = "Unregistered"
-	ReasonWarned       Reason = "Warned"
-)
-
-// PossibleReasonValues returns the possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{
-		ReasonDeleted,
-		ReasonRegistered,
-		ReasonSuspended,
-		ReasonUnregistered,
-		ReasonWarned,
-	}
-}
-
 // RegisteredServerAgentVersionStatus - Type of the registered server agent version status
 type RegisteredServerAgentVersionStatus string
 
@@ -295,6 +282,22 @@ func PossibleRegisteredServerAgentVersionStatusValues() []RegisteredServerAgentV
 		RegisteredServerAgentVersionStatusExpired,
 		RegisteredServerAgentVersionStatusNearExpiry,
 		RegisteredServerAgentVersionStatusOk,
+	}
+}
+
+// ServerAuthType - Type of the Server Auth type
+type ServerAuthType string
+
+const (
+	ServerAuthTypeCertificate     ServerAuthType = "Certificate"
+	ServerAuthTypeManagedIdentity ServerAuthType = "ManagedIdentity"
+)
+
+// PossibleServerAuthTypeValues returns the possible values for the ServerAuthType const type.
+func PossibleServerAuthTypeValues() []ServerAuthType {
+	return []ServerAuthType{
+		ServerAuthTypeCertificate,
+		ServerAuthTypeManagedIdentity,
 	}
 }
 
@@ -373,6 +376,28 @@ func PossibleServerEndpointSyncModeValues() []ServerEndpointSyncMode {
 		ServerEndpointSyncModeNamespaceDownload,
 		ServerEndpointSyncModeRegular,
 		ServerEndpointSyncModeSnapshotUpload,
+	}
+}
+
+// ServerProvisioningStatus - Server provisioning status
+type ServerProvisioningStatus string
+
+const (
+	ServerProvisioningStatusError                  ServerProvisioningStatus = "Error"
+	ServerProvisioningStatusInProgress             ServerProvisioningStatus = "InProgress"
+	ServerProvisioningStatusNotStarted             ServerProvisioningStatus = "NotStarted"
+	ServerProvisioningStatusReadySyncFunctional    ServerProvisioningStatus = "Ready_SyncFunctional"
+	ServerProvisioningStatusReadySyncNotFunctional ServerProvisioningStatus = "Ready_SyncNotFunctional"
+)
+
+// PossibleServerProvisioningStatusValues returns the possible values for the ServerProvisioningStatus const type.
+func PossibleServerProvisioningStatusValues() []ServerProvisioningStatus {
+	return []ServerProvisioningStatus{
+		ServerProvisioningStatusError,
+		ServerProvisioningStatusInProgress,
+		ServerProvisioningStatusNotStarted,
+		ServerProvisioningStatusReadySyncFunctional,
+		ServerProvisioningStatusReadySyncNotFunctional,
 	}
 }
 

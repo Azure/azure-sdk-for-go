@@ -25,9 +25,9 @@ type PrivateEndpointConnectionsClient struct {
 }
 
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,10 +43,10 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginCreate - Update the state of specified private endpoint connection associated with the storage sync service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storageSyncServiceName - The name of the storage sync service name within the specified resource group.
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+//   - storageSyncServiceName - Name of Storage Sync Service resource.
+//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - properties - The private endpoint connection properties.
 //   - options - PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
 //     method.
@@ -57,7 +57,8 @@ func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context,
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionsClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -70,7 +71,7 @@ func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context,
 // Create - Update the state of specified private endpoint connection associated with the storage sync service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginCreate"
@@ -93,8 +94,12 @@ func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, reso
 }
 
 // createCreateRequest creates the Create request.
-func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, _ *PrivateEndpointConnectionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -103,10 +108,6 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, errors.New("parameter storageSyncServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageSyncServiceName}", url.PathEscape(storageSyncServiceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
@@ -116,7 +117,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -128,10 +129,10 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 // BeginDelete - Deletes the specified private endpoint connection associated with the storage sync service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storageSyncServiceName - The name of the storage sync service name within the specified resource group.
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+//   - storageSyncServiceName - Name of Storage Sync Service resource.
+//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 //     method.
 func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
@@ -141,7 +142,8 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -154,7 +156,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // Delete - Deletes the specified private endpoint connection associated with the storage sync service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -177,8 +179,12 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -187,10 +193,6 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter storageSyncServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageSyncServiceName}", url.PathEscape(storageSyncServiceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
@@ -200,7 +202,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,10 +211,10 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 // Get - Gets the specified private endpoint connection associated with the storage sync service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storageSyncServiceName - The name of the storage sync service name within the specified resource group.
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+//   - storageSyncServiceName - Name of Storage Sync Service resource.
+//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - options - PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
 //     method.
 func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error) {
@@ -238,8 +240,12 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -248,10 +254,6 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter storageSyncServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageSyncServiceName}", url.PathEscape(storageSyncServiceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
@@ -261,7 +263,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +280,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListByStorageSyncServicePager - Get a PrivateEndpointConnection List.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageSyncServiceName - Name of Storage Sync Service resource.
 //   - options - PrivateEndpointConnectionsClientListByStorageSyncServiceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByStorageSyncServicePager
@@ -286,20 +288,19 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 func (client *PrivateEndpointConnectionsClient) NewListByStorageSyncServicePager(resourceGroupName string, storageSyncServiceName string, options *PrivateEndpointConnectionsClientListByStorageSyncServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByStorageSyncServiceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListByStorageSyncServiceResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByStorageSyncServiceResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByStorageSyncServiceResponse) (PrivateEndpointConnectionsClientListByStorageSyncServiceResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointConnectionsClient.NewListByStorageSyncServicePager")
-			req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
+			}, nil)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListByStorageSyncServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateEndpointConnectionsClientListByStorageSyncServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateEndpointConnectionsClientListByStorageSyncServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByStorageSyncServiceHandleResponse(resp)
 		},
@@ -308,7 +309,7 @@ func (client *PrivateEndpointConnectionsClient) NewListByStorageSyncServicePager
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
-func (client *PrivateEndpointConnectionsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *PrivateEndpointConnectionsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, _ *PrivateEndpointConnectionsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -327,7 +328,7 @@ func (client *PrivateEndpointConnectionsClient) listByStorageSyncServiceCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

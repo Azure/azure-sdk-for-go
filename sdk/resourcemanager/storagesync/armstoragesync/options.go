@@ -5,50 +5,56 @@
 
 package armstoragesync
 
+// CloudEndpointsClientAfsShareMetadataCertificatePublicKeysOptions contains the optional parameters for the CloudEndpointsClient.AfsShareMetadataCertificatePublicKeys
+// method.
+type CloudEndpointsClientAfsShareMetadataCertificatePublicKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CloudEndpointsClientBeginCreateOptions contains the optional parameters for the CloudEndpointsClient.BeginCreate method.
 type CloudEndpointsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CloudEndpointsClientBeginDeleteOptions contains the optional parameters for the CloudEndpointsClient.BeginDelete method.
 type CloudEndpointsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPostBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPostBackup
 // method.
 type CloudEndpointsClientBeginPostBackupOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPostRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPostRestore
 // method.
 type CloudEndpointsClientBeginPostRestoreOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPreBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPreBackup
 // method.
 type CloudEndpointsClientBeginPreBackupOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPreRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPreRestore
 // method.
 type CloudEndpointsClientBeginPreRestoreOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CloudEndpointsClientBeginTriggerChangeDetectionOptions contains the optional parameters for the CloudEndpointsClient.BeginTriggerChangeDetection
 // method.
 type CloudEndpointsClientBeginTriggerChangeDetectionOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -88,14 +94,14 @@ type OperationsClientListOptions struct {
 // PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -120,21 +126,28 @@ type PrivateLinkResourcesClientListByStorageSyncServiceOptions struct {
 // RegisteredServersClientBeginCreateOptions contains the optional parameters for the RegisteredServersClient.BeginCreate
 // method.
 type RegisteredServersClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RegisteredServersClientBeginDeleteOptions contains the optional parameters for the RegisteredServersClient.BeginDelete
 // method.
 type RegisteredServersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RegisteredServersClientBeginTriggerRolloverOptions contains the optional parameters for the RegisteredServersClient.BeginTriggerRollover
 // method.
 type RegisteredServersClientBeginTriggerRolloverOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RegisteredServersClientBeginUpdateOptions contains the optional parameters for the RegisteredServersClient.BeginUpdate
+// method.
+type RegisteredServersClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -151,20 +164,20 @@ type RegisteredServersClientListByStorageSyncServiceOptions struct {
 
 // ServerEndpointsClientBeginCreateOptions contains the optional parameters for the ServerEndpointsClient.BeginCreate method.
 type ServerEndpointsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ServerEndpointsClientBeginDeleteOptions contains the optional parameters for the ServerEndpointsClient.BeginDelete method.
 type ServerEndpointsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ServerEndpointsClientBeginRecallActionOptions contains the optional parameters for the ServerEndpointsClient.BeginRecallAction
 // method.
 type ServerEndpointsClientBeginRecallActionOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -173,7 +186,7 @@ type ServerEndpointsClientBeginUpdateOptions struct {
 	// Any of the properties applicable in PUT request.
 	Parameters *ServerEndpointUpdateParameters
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -190,13 +203,13 @@ type ServerEndpointsClientListBySyncGroupOptions struct {
 
 // ServicesClientBeginCreateOptions contains the optional parameters for the ServicesClient.BeginCreate method.
 type ServicesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
 type ServicesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -205,7 +218,7 @@ type ServicesClientBeginUpdateOptions struct {
 	// Storage Sync Service resource.
 	Parameters *ServiceUpdateParameters
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

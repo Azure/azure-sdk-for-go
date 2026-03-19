@@ -5,24 +5,26 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor/v2"
 	"net/http"
+	"regexp"
 	"strings"
 	"sync"
 )
 
-// ServerFactory is a fake server for instances of the armadvisor.ClientFactory type.
-type ServerFactory struct {
+// Server is a fake server for instances of the armadvisor.Client type.
+type Server struct {
 	// AssessmentTypesServer contains the fakes for client AssessmentTypesClient
 	AssessmentTypesServer AssessmentTypesServer
 
 	// AssessmentsServer contains the fakes for client AssessmentsClient
 	AssessmentsServer AssessmentsServer
-
-	// Server contains the fakes for client Client
-	Server Server
 
 	// ConfigurationsServer contains the fakes for client ConfigurationsClient
 	ConfigurationsServer ConfigurationsServer
@@ -53,25 +55,26 @@ type ServerFactory struct {
 
 	// WorkloadsServer contains the fakes for client WorkloadsClient
 	WorkloadsServer WorkloadsServer
+
+	// Predict is the fake for method Client.Predict
+	// HTTP status codes to indicate success: http.StatusOK
+	Predict func(ctx context.Context, predictionRequest armadvisor.PredictionRequest, options *armadvisor.ClientPredictOptions) (resp azfake.Responder[armadvisor.ClientPredictResponse], errResp azfake.ErrorResponder)
 }
 
-// NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
-// The returned ServerFactoryTransport instance is connected to an instance of armadvisor.ClientFactory via the
+// NewServerTransport creates a new instance of ServerTransport with the provided implementation.
+// The returned ServerTransport instance is connected to an instance of armadvisor.Client via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
-	return &ServerFactoryTransport{
-		srv: srv,
-	}
+func NewServerTransport(srv *Server) *ServerTransport {
+	return &ServerTransport{srv: srv}
 }
 
-// ServerFactoryTransport connects instances of armadvisor.ClientFactory to instances of ServerFactory.
-// Don't use this type directly, use NewServerFactoryTransport instead.
-type ServerFactoryTransport struct {
-	srv                            *ServerFactory
+// ServerTransport connects instances of armadvisor.Client to instances of Server.
+// Don't use this type directly, use NewServerTransport instead.
+type ServerTransport struct {
+	srv                            *Server
 	trMu                           sync.Mutex
 	trAssessmentTypesServer        *AssessmentTypesServerTransport
 	trAssessmentsServer            *AssessmentsServerTransport
-	trServer                       *ServerTransport
 	trConfigurationsServer         *ConfigurationsServerTransport
 	trOperationsServer             *OperationsServerTransport
 	trRecommendationMetadataServer *RecommendationMetadataServerTransport
@@ -84,15 +87,21 @@ type ServerFactoryTransport struct {
 	trWorkloadsServer              *WorkloadsServerTransport
 }
 
-// Do implements the policy.Transporter interface for ServerFactoryTransport.
-func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ServerTransport.
+func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	client := method[:strings.Index(method, ".")]
+	if client := method[:strings.Index(method, ".")]; client != "Client" {
+		return s.dispatchToClientFake(req, client)
+	}
+	return s.dispatchToMethodFake(req, method)
+}
+
+func (s *ServerTransport) dispatchToClientFake(req *http.Request, client string) (*http.Response, error) {
 	var resp *http.Response
 	var err error
 
@@ -103,18 +112,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		})
 		resp, err = s.trAssessmentTypesServer.Do(req)
 	case "AssessmentsClient":
-		initServer(&s.trMu, &s.trAssessmentsServer, func() *AssessmentsServerTransport { return NewAssessmentsServerTransport(&s.srv.AssessmentsServer) })
+		initServer(&s.trMu, &s.trAssessmentsServer, func() *AssessmentsServerTransport {
+			return NewAssessmentsServerTransport(&s.srv.AssessmentsServer)
+		})
 		resp, err = s.trAssessmentsServer.Do(req)
-	case "Client":
-		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
-		resp, err = s.trServer.Do(req)
 	case "ConfigurationsClient":
 		initServer(&s.trMu, &s.trConfigurationsServer, func() *ConfigurationsServerTransport {
 			return NewConfigurationsServerTransport(&s.srv.ConfigurationsServer)
 		})
 		resp, err = s.trConfigurationsServer.Do(req)
 	case "OperationsClient":
-		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport {
+			return NewOperationsServerTransport(&s.srv.OperationsServer)
+		})
 		resp, err = s.trOperationsServer.Do(req)
 	case "RecommendationMetadataClient":
 		initServer(&s.trMu, &s.trRecommendationMetadataServer, func() *RecommendationMetadataServerTransport {
@@ -132,10 +142,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		})
 		resp, err = s.trResiliencyReviewsServer.Do(req)
 	case "ScoresClient":
-		initServer(&s.trMu, &s.trScoresServer, func() *ScoresServerTransport { return NewScoresServerTransport(&s.srv.ScoresServer) })
+		initServer(&s.trMu, &s.trScoresServer, func() *ScoresServerTransport {
+			return NewScoresServerTransport(&s.srv.ScoresServer)
+		})
 		resp, err = s.trScoresServer.Do(req)
 	case "SuppressionsClient":
-		initServer(&s.trMu, &s.trSuppressionsServer, func() *SuppressionsServerTransport { return NewSuppressionsServerTransport(&s.srv.SuppressionsServer) })
+		initServer(&s.trMu, &s.trSuppressionsServer, func() *SuppressionsServerTransport {
+			return NewSuppressionsServerTransport(&s.srv.SuppressionsServer)
+		})
 		resp, err = s.trSuppressionsServer.Do(req)
 	case "TriageRecommendationsClient":
 		initServer(&s.trMu, &s.trTriageRecommendationsServer, func() *TriageRecommendationsServerTransport {
@@ -148,15 +162,81 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		})
 		resp, err = s.trTriageResourcesServer.Do(req)
 	case "WorkloadsClient":
-		initServer(&s.trMu, &s.trWorkloadsServer, func() *WorkloadsServerTransport { return NewWorkloadsServerTransport(&s.srv.WorkloadsServer) })
+		initServer(&s.trMu, &s.trWorkloadsServer, func() *WorkloadsServerTransport {
+			return NewWorkloadsServerTransport(&s.srv.WorkloadsServer)
+		})
 		resp, err = s.trWorkloadsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}
 
+	return resp, err
+}
+
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "Client.Predict":
+				res.resp, res.err = s.dispatchPredict(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
+	}
+}
+
+func (s *ServerTransport) dispatchPredict(req *http.Request) (*http.Response, error) {
+	if s.srv.Predict == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Predict not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Advisor/predict`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armadvisor.PredictionRequest](req)
 	if err != nil {
 		return nil, err
 	}
-
+	respr, errRespr := s.srv.Predict(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PredictionResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

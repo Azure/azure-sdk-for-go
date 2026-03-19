@@ -72,9 +72,9 @@ func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 
 	// Message Header (13 bytes)
 	buf.WriteByte(SMVersion)
-	binary.Write(&buf, binary.LittleEndian, msgLen)
-	binary.Write(&buf, binary.LittleEndian, SMFlagCRC64)
-	binary.Write(&buf, binary.LittleEndian, uint16(numSegments))
+	_ = binary.Write(&buf, binary.LittleEndian, msgLen)
+	_ = binary.Write(&buf, binary.LittleEndian, SMFlagCRC64)
+	_ = binary.Write(&buf, binary.LittleEndian, uint16(numSegments))
 
 	// Compute message-level CRC64 over all raw data
 	messageCRC := crc64.Checksum(data, CRC64Table)
@@ -88,19 +88,19 @@ func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 		segData := data[segStart:segEnd]
 
 		// Segment Header (10 bytes)
-		binary.Write(&buf, binary.LittleEndian, uint16(i+1))
-		binary.Write(&buf, binary.LittleEndian, int64(len(segData)))
+		_ = binary.Write(&buf, binary.LittleEndian, uint16(i+1))
+		_ = binary.Write(&buf, binary.LittleEndian, int64(len(segData)))
 
 		// Segment Data
 		buf.Write(segData)
 
 		// Segment Footer - CRC64 of segment data (8 bytes)
 		segCRC := crc64.Checksum(segData, CRC64Table)
-		binary.Write(&buf, binary.LittleEndian, segCRC)
+		_ = binary.Write(&buf, binary.LittleEndian, segCRC)
 	}
 
 	// Message Trailer - CRC64 of all raw content (8 bytes)
-	binary.Write(&buf, binary.LittleEndian, messageCRC)
+	_ = binary.Write(&buf, binary.LittleEndian, messageCRC)
 
 	return SMEncodeResult{
 		EncodedData:           buf.Bytes(),

@@ -26,7 +26,7 @@ type Client struct {
 
 // NewClient creates a new instance of Client with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +68,7 @@ func (client *Client) CheckZonePeers(ctx context.Context, subscriptionID string,
 }
 
 // checkZonePeersCreateRequest creates the CheckZonePeers request.
-func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (*policy.Request, error) {
+func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest, _ *ClientCheckZonePeersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/checkZonePeers/"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -126,7 +126,7 @@ func (client *Client) Get(ctx context.Context, subscriptionID string, options *C
 }
 
 // getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, subscriptionID string, options *ClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, subscriptionID string, _ *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -180,7 +180,7 @@ func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[Cl
 }
 
 // listCreateRequest creates the List request.
-func (client *Client) listCreateRequest(ctx context.Context, options *ClientListOptions) (*policy.Request, error) {
+func (client *Client) listCreateRequest(ctx context.Context, _ *ClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

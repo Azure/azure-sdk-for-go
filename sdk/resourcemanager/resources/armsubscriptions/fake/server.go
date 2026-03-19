@@ -66,27 +66,46 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "Client.CheckZonePeers":
-		resp, err = s.dispatchCheckZonePeers(req)
-	case "Client.Get":
-		resp, err = s.dispatchGet(req)
-	case "Client.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	case "Client.NewListLocationsPager":
-		resp, err = s.dispatchNewListLocationsPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "Client.CheckZonePeers":
+				res.resp, res.err = s.dispatchCheckZonePeers(req)
+			case "Client.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "Client.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "Client.NewListLocationsPager":
+				res.resp, res.err = s.dispatchNewListLocationsPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *ServerTransport) dispatchCheckZonePeers(req *http.Request) (*http.Response, error) {
@@ -96,7 +115,7 @@ func (s *ServerTransport) dispatchCheckZonePeers(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/checkZonePeers/`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsubscriptions.CheckZonePeersRequest](req)
@@ -129,7 +148,7 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
@@ -187,7 +206,7 @@ func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -225,4 +244,10 @@ func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*htt
 		s.newListLocationsPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

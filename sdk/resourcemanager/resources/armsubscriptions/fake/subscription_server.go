@@ -45,21 +45,40 @@ func (s *SubscriptionServerTransport) Do(req *http.Request) (*http.Response, err
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SubscriptionClient.CheckResourceName":
-		resp, err = s.dispatchCheckResourceName(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SubscriptionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if subscriptionServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = subscriptionServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SubscriptionClient.CheckResourceName":
+				res.resp, res.err = s.dispatchCheckResourceName(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SubscriptionServerTransport) dispatchCheckResourceName(req *http.Request) (*http.Response, error) {
@@ -89,4 +108,10 @@ func (s *SubscriptionServerTransport) dispatchCheckResourceName(req *http.Reques
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SubscriptionServerTransport
+var subscriptionServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

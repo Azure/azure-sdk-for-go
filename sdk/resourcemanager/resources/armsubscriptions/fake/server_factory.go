@@ -16,10 +16,17 @@ import (
 
 // ServerFactory is a fake server for instances of the armsubscriptions.ClientFactory type.
 type ServerFactory struct {
-	Server             Server
-	OperationsServer   OperationsServer
+	// Server contains the fakes for client Client
+	Server Server
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// SubscriptionServer contains the fakes for client SubscriptionClient
 	SubscriptionServer SubscriptionServer
-	TenantsServer      TenantsServer
+
+	// TenantsServer contains the fakes for client TenantsClient
+	TenantsServer TenantsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

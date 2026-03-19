@@ -22,7 +22,7 @@ type TenantsClient struct {
 
 // NewTenantsClient creates a new instance of TenantsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -62,7 +62,7 @@ func (client *TenantsClient) NewListPager(options *TenantsClientListOptions) *ru
 }
 
 // listCreateRequest creates the List request.
-func (client *TenantsClient) listCreateRequest(ctx context.Context, options *TenantsClientListOptions) (*policy.Request, error) {
+func (client *TenantsClient) listCreateRequest(ctx context.Context, _ *TenantsClientListOptions) (*policy.Request, error) {
 	urlPath := "/tenants"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

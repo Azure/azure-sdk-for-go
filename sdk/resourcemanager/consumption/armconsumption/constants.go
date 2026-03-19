@@ -5,11 +5,6 @@
 
 package armconsumption
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
-	moduleVersion = "v1.2.0"
-)
-
 // BillingFrequency - The billing frequency.
 type BillingFrequency string
 
@@ -69,6 +64,26 @@ func PossibleChargeSummaryKindValues() []ChargeSummaryKind {
 	return []ChargeSummaryKind{
 		ChargeSummaryKindLegacy,
 		ChargeSummaryKindModern,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
@@ -147,6 +162,7 @@ func PossibleDatagrainValues() []Datagrain {
 type EventType string
 
 const (
+	EventTypeCreditExpired        EventType = "CreditExpired"
 	EventTypeNewCredit            EventType = "NewCredit"
 	EventTypePendingAdjustments   EventType = "PendingAdjustments"
 	EventTypePendingCharges       EventType = "PendingCharges"
@@ -159,6 +175,7 @@ const (
 // PossibleEventTypeValues returns the possible values for the EventType const type.
 func PossibleEventTypeValues() []EventType {
 	return []EventType{
+		EventTypeCreditExpired,
 		EventTypeNewCredit,
 		EventTypePendingAdjustments,
 		EventTypePendingCharges,
@@ -227,12 +244,37 @@ func PossibleMetrictypeValues() []Metrictype {
 	}
 }
 
+// OperationStatusType - The status of the long running operation.
+type OperationStatusType string
+
+const (
+	OperationStatusTypeCompleted OperationStatusType = "Completed"
+	OperationStatusTypeFailed    OperationStatusType = "Failed"
+	OperationStatusTypeRunning   OperationStatusType = "Running"
+)
+
+// PossibleOperationStatusTypeValues returns the possible values for the OperationStatusType const type.
+func PossibleOperationStatusTypeValues() []OperationStatusType {
+	return []OperationStatusType{
+		OperationStatusTypeCompleted,
+		OperationStatusTypeFailed,
+		OperationStatusTypeRunning,
+	}
+}
+
 // OperatorType - The comparison operator.
 type OperatorType string
 
 const (
-	OperatorTypeEqualTo              OperatorType = "EqualTo"
-	OperatorTypeGreaterThan          OperatorType = "GreaterThan"
+	// OperatorTypeEqualTo - Alert will be triggered if the evaluated cost is the same as threshold value. Note: It’s not recommended
+	// to use this OperatorType as there’s low chance of cost being exactly the same as threshold value, leading to missing of
+	// your alert. This OperatorType will be deprecated in future.
+	OperatorTypeEqualTo OperatorType = "EqualTo"
+	// OperatorTypeGreaterThan - Alert will be triggered if the evaluated cost is greater than the threshold value. Note: This
+	// is the recommended OperatorType while configuring Budget Alert.
+	OperatorTypeGreaterThan OperatorType = "GreaterThan"
+	// OperatorTypeGreaterThanOrEqualTo - Alert will be triggered if the evaluated cost is greater than or equal to the threshold
+	// value.
 	OperatorTypeGreaterThanOrEqualTo OperatorType = "GreaterThanOrEqualTo"
 )
 
@@ -242,6 +284,24 @@ func PossibleOperatorTypeValues() []OperatorType {
 		OperatorTypeEqualTo,
 		OperatorTypeGreaterThan,
 		OperatorTypeGreaterThanOrEqualTo,
+	}
+}
+
+// OrganizationType - The organization type of the lot.
+type OrganizationType string
+
+const (
+	// OrganizationTypeContributorOrganizationType - Contributor organization type for Multi-Entity consumption commitment.
+	OrganizationTypeContributorOrganizationType OrganizationType = "Contributor"
+	// OrganizationTypePrimaryOrganizationType - Primary organization type for Multi-Entity consumption commitment.
+	OrganizationTypePrimaryOrganizationType OrganizationType = "Primary"
+)
+
+// PossibleOrganizationTypeValues returns the possible values for the OrganizationType const type.
+func PossibleOrganizationTypeValues() []OrganizationType {
+	return []OrganizationType{
+		OrganizationTypeContributorOrganizationType,
+		OrganizationTypePrimaryOrganizationType,
 	}
 }
 
@@ -321,6 +381,8 @@ func PossibleStatusValues() []Status {
 type Term string
 
 const (
+	// TermP1M - 1 month reservation term
+	TermP1M Term = "P1M"
 	// TermP1Y - 1 year reservation term
 	TermP1Y Term = "P1Y"
 	// TermP3Y - 3 year reservation term
@@ -330,6 +392,7 @@ const (
 // PossibleTermValues returns the possible values for the Term const type.
 func PossibleTermValues() []Term {
 	return []Term{
+		TermP1M,
 		TermP1Y,
 		TermP3Y,
 	}
@@ -339,7 +402,10 @@ func PossibleTermValues() []Term {
 type ThresholdType string
 
 const (
-	ThresholdTypeActual     ThresholdType = "Actual"
+	// ThresholdTypeActual - Actual costs budget alerts notify when the actual accrued cost exceeds the allocated budget .
+	ThresholdTypeActual ThresholdType = "Actual"
+	// ThresholdTypeForecasted - Forecasted costs budget alerts provide advanced notification that your spending trends are likely
+	// to exceed your allocated budget, as it relies on forecasted cost predictions.
 	ThresholdTypeForecasted ThresholdType = "Forecasted"
 )
 

@@ -25,7 +25,7 @@ type BalancesClient struct {
 
 // NewBalancesClient creates a new instance of BalancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBalancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BalancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,7 +41,7 @@ func NewBalancesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - options - BalancesClientGetByBillingAccountOptions contains the optional parameters for the BalancesClient.GetByBillingAccount
 //     method.
@@ -68,7 +68,7 @@ func (client *BalancesClient) GetByBillingAccount(ctx context.Context, billingAc
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
-func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, options *BalancesClientGetByBillingAccountOptions) (*policy.Request, error) {
+func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, _ *BalancesClientGetByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/balances"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -79,7 +79,7 @@ func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,7 +98,7 @@ func (client *BalancesClient) getByBillingAccountHandleResponse(resp *http.Respo
 // available via this API only for May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - billingPeriodName - Billing Period Name.
 //   - options - BalancesClientGetForBillingPeriodByBillingAccountOptions contains the optional parameters for the BalancesClient.GetForBillingPeriodByBillingAccount
@@ -126,7 +126,7 @@ func (client *BalancesClient) GetForBillingPeriodByBillingAccount(ctx context.Co
 }
 
 // getForBillingPeriodByBillingAccountCreateRequest creates the GetForBillingPeriodByBillingAccount request.
-func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, billingPeriodName string, options *BalancesClientGetForBillingPeriodByBillingAccountOptions) (*policy.Request, error) {
+func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, billingPeriodName string, _ *BalancesClientGetForBillingPeriodByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/balances"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -141,7 +141,7 @@ func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

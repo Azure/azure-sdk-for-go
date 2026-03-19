@@ -8,7 +8,7 @@ package armconsumption
 import "encoding/json"
 
 func unmarshalChargeSummaryClassification(rawMsg json.RawMessage) (ChargeSummaryClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -31,7 +31,7 @@ func unmarshalChargeSummaryClassification(rawMsg json.RawMessage) (ChargeSummary
 }
 
 func unmarshalChargeSummaryClassificationArray(rawMsg json.RawMessage) ([]ChargeSummaryClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -50,7 +50,7 @@ func unmarshalChargeSummaryClassificationArray(rawMsg json.RawMessage) ([]Charge
 }
 
 func unmarshalLegacyReservationRecommendationPropertiesClassification(rawMsg json.RawMessage) (LegacyReservationRecommendationPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -72,8 +72,31 @@ func unmarshalLegacyReservationRecommendationPropertiesClassification(rawMsg jso
 	return b, nil
 }
 
+func unmarshalModernReservationRecommendationPropertiesClassification(rawMsg json.RawMessage) (ModernReservationRecommendationPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ModernReservationRecommendationPropertiesClassification
+	switch m["scope"] {
+	case "Shared":
+		b = &ModernSharedScopeReservationRecommendationProperties{}
+	case "Single":
+		b = &ModernSingleScopeReservationRecommendationProperties{}
+	default:
+		b = &ModernReservationRecommendationProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalReservationRecommendationClassification(rawMsg json.RawMessage) (ReservationRecommendationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -96,7 +119,7 @@ func unmarshalReservationRecommendationClassification(rawMsg json.RawMessage) (R
 }
 
 func unmarshalReservationRecommendationClassificationArray(rawMsg json.RawMessage) ([]ReservationRecommendationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -115,7 +138,7 @@ func unmarshalReservationRecommendationClassificationArray(rawMsg json.RawMessag
 }
 
 func unmarshalUsageDetailClassification(rawMsg json.RawMessage) (UsageDetailClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -138,7 +161,7 @@ func unmarshalUsageDetailClassification(rawMsg json.RawMessage) (UsageDetailClas
 }
 
 func unmarshalUsageDetailClassificationArray(rawMsg json.RawMessage) ([]UsageDetailClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

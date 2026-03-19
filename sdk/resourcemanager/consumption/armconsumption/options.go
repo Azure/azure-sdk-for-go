@@ -8,9 +8,7 @@ package armconsumption
 // AggregatedCostClientGetByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetByManagementGroup
 // method.
 type AggregatedCostClientGetByManagementGroupOptions struct {
-	// May be used to filter aggregated cost by properties/usageStart (Utc time), properties/usageEnd (Utc time). The filter supports
-	// 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
-	// 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+	// Required only for daily grain. The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'
 	Filter *string
 }
 
@@ -134,6 +132,13 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PriceSheetClientBeginDownloadByBillingAccountPeriodOptions contains the optional parameters for the PriceSheetClient.BeginDownloadByBillingAccountPeriod
+// method.
+type PriceSheetClientBeginDownloadByBillingAccountPeriodOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // PriceSheetClientGetByBillingPeriodOptions contains the optional parameters for the PriceSheetClient.GetByBillingPeriod
 // method.
 type PriceSheetClientGetByBillingPeriodOptions struct {
@@ -168,7 +173,9 @@ type PriceSheetClientGetOptions struct {
 // ReservationRecommendationDetailsClientGetOptions contains the optional parameters for the ReservationRecommendationDetailsClient.Get
 // method.
 type ReservationRecommendationDetailsClientGetOptions struct {
-	// placeholder for future optional parameters
+	// Used to filter reservation recommendation details by: properties/subscriptionId can be specified for billing account and
+	// billing profile paths.
+	Filter *string
 }
 
 // ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.NewListPager
@@ -188,7 +195,10 @@ type ReservationRecommendationsClientListOptions struct {
 // method.
 type ReservationTransactionsClientListByBillingProfileOptions struct {
 	// Filter reservation transactions by date range. The properties/EventDate for start date and end date. The filter supports
-	// 'le' and 'ge'
+	// 'le' and 'ge'. Note: API returns data for the entire start date's and end
+	// date's billing month. For example, filter properties/eventDate+ge+2020-01-01+AND+properties/eventDate+le+2020-12-29 will
+	// include data for entire December 2020 month (i.e. will contain records for
+	// dates December 30 and 31)
 	Filter *string
 }
 
@@ -196,8 +206,17 @@ type ReservationTransactionsClientListByBillingProfileOptions struct {
 // method.
 type ReservationTransactionsClientListOptions struct {
 	// Filter reservation transactions by date range. The properties/EventDate for start date and end date. The filter supports
-	// 'le' and 'ge'
+	// 'le' and 'ge'. Note: API returns data for the entire start date's and end
+	// date's billing month. For example, filter properties/eventDate+ge+2020-01-01+AND+properties/eventDate+le+2020-12-29 will
+	// include data for the entire December 2020 month (i.e. will contain records for
+	// dates December 30 and 31)
 	Filter *string
+
+	// Preview markup percentage to be applied.
+	PreviewMarkupPercentage *float64
+
+	// Applies mark up to the transactions if the caller is a partner.
+	UseMarkupIfPartner *bool
 }
 
 // ReservationsDetailsClientListByReservationOrderAndReservationOptions contains the optional parameters for the ReservationsDetailsClient.NewListByReservationOrderAndReservationPager

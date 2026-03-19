@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -50,21 +50,40 @@ func (r *ReservationRecommendationsServerTransport) Do(req *http.Request) (*http
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ReservationRecommendationsClient.NewListPager":
-		resp, err = r.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *ReservationRecommendationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if reservationRecommendationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = reservationRecommendationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ReservationRecommendationsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *ReservationRecommendationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -76,19 +95,19 @@ func (r *ReservationRecommendationsServerTransport) dispatchNewListPager(req *ht
 		const regexStr = `/(?P<resourceScope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/reservationRecommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		resourceScopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceScope")])
+		if err != nil {
+			return nil, err
+		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
-		resourceScopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceScope")])
-		if err != nil {
-			return nil, err
-		}
 		var options *armconsumption.ReservationRecommendationsClientListOptions
 		if filterParam != nil {
 			options = &armconsumption.ReservationRecommendationsClientListOptions{
@@ -114,4 +133,10 @@ func (r *ReservationRecommendationsServerTransport) dispatchNewListPager(req *ht
 		r.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ReservationRecommendationsServerTransport
+var reservationRecommendationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

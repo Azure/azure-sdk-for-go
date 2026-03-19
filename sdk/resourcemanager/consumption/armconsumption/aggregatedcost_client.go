@@ -25,7 +25,7 @@ type AggregatedCostClient struct {
 
 // NewAggregatedCostClient creates a new instance of AggregatedCostClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAggregatedCostClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AggregatedCostClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,8 +41,8 @@ func NewAggregatedCostClient(credential azcore.TokenCredential, options *arm.Cli
 // period.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
-//   - managementGroupID - Azure Management Group ID.
+// Generated from API version 2024-08-01
+//   - managementGroupID - Order Id of the reservation
 //   - options - AggregatedCostClientGetByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetByManagementGroup
 //     method.
 func (client *AggregatedCostClient) GetByManagementGroup(ctx context.Context, managementGroupID string, options *AggregatedCostClientGetByManagementGroupOptions) (AggregatedCostClientGetByManagementGroupResponse, error) {
@@ -79,10 +79,10 @@ func (client *AggregatedCostClient) getByManagementGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -101,8 +101,8 @@ func (client *AggregatedCostClient) getByManagementGroupHandleResponse(resp *htt
 // by specified billing period
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
-//   - managementGroupID - Azure Management Group ID.
+// Generated from API version 2024-08-01
+//   - managementGroupID - Order Id of the reservation
 //   - billingPeriodName - Billing Period Name.
 //   - options - AggregatedCostClientGetForBillingPeriodByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetForBillingPeriodByManagementGroup
 //     method.
@@ -129,7 +129,7 @@ func (client *AggregatedCostClient) GetForBillingPeriodByManagementGroup(ctx con
 }
 
 // getForBillingPeriodByManagementGroupCreateRequest creates the GetForBillingPeriodByManagementGroup request.
-func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, billingPeriodName string, options *AggregatedCostClientGetForBillingPeriodByManagementGroupOptions) (*policy.Request, error) {
+func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, billingPeriodName string, _ *AggregatedCostClientGetForBillingPeriodByManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/aggregatedCost"
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
@@ -144,7 +144,7 @@ func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

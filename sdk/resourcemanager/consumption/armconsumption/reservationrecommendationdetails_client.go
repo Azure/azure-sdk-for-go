@@ -23,7 +23,7 @@ type ReservationRecommendationDetailsClient struct {
 
 // NewReservationRecommendationDetailsClient creates a new instance of ReservationRecommendationDetailsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReservationRecommendationDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationRecommendationDetailsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -38,7 +38,7 @@ func NewReservationRecommendationDetailsClient(credential azcore.TokenCredential
 // Get - Details of a reservation recommendation for what-if analysis of reserved instances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - resourceScope - The scope associated with reservation recommendation details operations. This includes '/subscriptions/{subscriptionId}/'
 //     for subscription scope,
 //     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope, /providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
@@ -84,12 +84,15 @@ func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
-	reqQP.Set("scope", string(scope))
-	reqQP.Set("region", region)
-	reqQP.Set("term", string(term))
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	reqQP.Set("api-version", "2024-08-01")
 	reqQP.Set("lookBackPeriod", string(lookBackPeriod))
 	reqQP.Set("product", product)
+	reqQP.Set("region", region)
+	reqQP.Set("scope", string(scope))
+	reqQP.Set("term", string(term))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

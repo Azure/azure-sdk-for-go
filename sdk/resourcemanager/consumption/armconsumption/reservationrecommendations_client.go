@@ -23,7 +23,7 @@ type ReservationRecommendationsClient struct {
 
 // NewReservationRecommendationsClient creates a new instance of ReservationRecommendationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReservationRecommendationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationRecommendationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,13 +37,8 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 
 // NewListPager - List of recommendations for purchasing reserved instances.
 //
-// Generated from API version 2021-10-01
-//   - resourceScope - The scope associated with reservation recommendations operations. This includes '/subscriptions/{subscriptionId}/'
-//     for subscription scope,
-//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
-//     for BillingAccount scope, and
-//     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billingProfile
-//     scope
+// Generated from API version 2024-08-01
+//   - resourceScope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.NewListPager
 //     method.
 func (client *ReservationRecommendationsClient) NewListPager(resourceScope string, options *ReservationRecommendationsClientListOptions) *runtime.Pager[ReservationRecommendationsClientListResponse] {
@@ -81,7 +76,7 @@ func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

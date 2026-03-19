@@ -24,7 +24,7 @@ type UsageDetailsClient struct {
 
 // NewUsageDetailsClient creates a new instance of UsageDetailsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUsageDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*UsageDetailsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -38,23 +38,14 @@ func NewUsageDetailsClient(credential azcore.TokenCredential, options *arm.Clien
 
 // NewListPager - Lists the usage details for the defined scope. Usage details are available via this API only for May 1,
 // 2014 or later.
+// Note:Microsoft will be retiring the Consumption Usage Details API at some point in the future. We do not recommend that
+// you take a new dependency on this API. Please use the Cost Details API instead.
+// We will notify customers once a date for retirement has been determined.For Learn more,see Generate Cost Details Report
+// - Create Operation
+// [https://learn.microsoft.com/en-us/rest/api/cost-management/generate-cost-details-report/create-operation?tabs=HTTP]
 //
-// Generated from API version 2021-10-01
-//   - scope - The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription
-//     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
-//     Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
-//     for EnrollmentAccount
-//     scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription,
-//     billing account, department, enrollment account and management group, you
-//     can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g.
-//     to specify billing period at department scope use
-//     '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'.
-//     Also, Modern Commerce Account scopes are
-//     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for billingAccount scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
-//     for
-//     billingProfile scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-//     for invoiceSection scope, and
-//     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// Generated from API version 2024-08-01
+//   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - UsageDetailsClientListOptions contains the optional parameters for the UsageDetailsClient.NewListPager method.
 func (client *UsageDetailsClient) NewListPager(scope string, options *UsageDetailsClientListOptions) *runtime.Pager[UsageDetailsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsageDetailsClientListResponse]{
@@ -100,7 +91,7 @@ func (client *UsageDetailsClient) listCreateRequest(ctx context.Context, scope s
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2024-08-01")
 	if options != nil && options.Metric != nil {
 		reqQP.Set("metric", string(*options.Metric))
 	}

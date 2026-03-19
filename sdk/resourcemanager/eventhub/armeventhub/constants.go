@@ -5,11 +5,6 @@
 
 package armeventhub
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
-	moduleVersion = "v1.4.0-beta.1"
-)
-
 type AccessRights string
 
 const (
@@ -24,88 +19,6 @@ func PossibleAccessRightsValues() []AccessRights {
 		AccessRightsListen,
 		AccessRightsManage,
 		AccessRightsSend,
-	}
-}
-
-// ApplicationGroupPolicyType - Application Group Policy types
-type ApplicationGroupPolicyType string
-
-const (
-	ApplicationGroupPolicyTypeThrottlingPolicy ApplicationGroupPolicyType = "ThrottlingPolicy"
-)
-
-// PossibleApplicationGroupPolicyTypeValues returns the possible values for the ApplicationGroupPolicyType const type.
-func PossibleApplicationGroupPolicyTypeValues() []ApplicationGroupPolicyType {
-	return []ApplicationGroupPolicyType{
-		ApplicationGroupPolicyTypeThrottlingPolicy,
-	}
-}
-
-// CaptureIdentityType - Type of Azure Active Directory Managed Identity.
-type CaptureIdentityType string
-
-const (
-	CaptureIdentityTypeSystemAssigned CaptureIdentityType = "SystemAssigned"
-	CaptureIdentityTypeUserAssigned   CaptureIdentityType = "UserAssigned"
-)
-
-// PossibleCaptureIdentityTypeValues returns the possible values for the CaptureIdentityType const type.
-func PossibleCaptureIdentityTypeValues() []CaptureIdentityType {
-	return []CaptureIdentityType{
-		CaptureIdentityTypeSystemAssigned,
-		CaptureIdentityTypeUserAssigned,
-	}
-}
-
-// CleanupPolicyRetentionDescription - Enumerates the possible values for cleanup policy
-type CleanupPolicyRetentionDescription string
-
-const (
-	CleanupPolicyRetentionDescriptionCompact         CleanupPolicyRetentionDescription = "Compact"
-	CleanupPolicyRetentionDescriptionDelete          CleanupPolicyRetentionDescription = "Delete"
-	CleanupPolicyRetentionDescriptionDeleteOrCompact CleanupPolicyRetentionDescription = "DeleteOrCompact"
-)
-
-// PossibleCleanupPolicyRetentionDescriptionValues returns the possible values for the CleanupPolicyRetentionDescription const type.
-func PossibleCleanupPolicyRetentionDescriptionValues() []CleanupPolicyRetentionDescription {
-	return []CleanupPolicyRetentionDescription{
-		CleanupPolicyRetentionDescriptionCompact,
-		CleanupPolicyRetentionDescriptionDelete,
-		CleanupPolicyRetentionDescriptionDeleteOrCompact,
-	}
-}
-
-// ClusterSKUName - Name of this SKU.
-type ClusterSKUName string
-
-const (
-	ClusterSKUNameDedicated ClusterSKUName = "Dedicated"
-)
-
-// PossibleClusterSKUNameValues returns the possible values for the ClusterSKUName const type.
-func PossibleClusterSKUNameValues() []ClusterSKUName {
-	return []ClusterSKUName{
-		ClusterSKUNameDedicated,
-	}
-}
-
-// CreatedByType - The type of identity that created the resource.
-type CreatedByType string
-
-const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
-	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
-)
-
-// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
-		CreatedByTypeApplication,
-		CreatedByTypeKey,
-		CreatedByTypeManagedIdentity,
-		CreatedByTypeUser,
 	}
 }
 
@@ -142,30 +55,6 @@ func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
 	}
 }
 
-// EndPointProvisioningState - Provisioning state of the Private Endpoint Connection.
-type EndPointProvisioningState string
-
-const (
-	EndPointProvisioningStateCanceled  EndPointProvisioningState = "Canceled"
-	EndPointProvisioningStateCreating  EndPointProvisioningState = "Creating"
-	EndPointProvisioningStateDeleting  EndPointProvisioningState = "Deleting"
-	EndPointProvisioningStateFailed    EndPointProvisioningState = "Failed"
-	EndPointProvisioningStateSucceeded EndPointProvisioningState = "Succeeded"
-	EndPointProvisioningStateUpdating  EndPointProvisioningState = "Updating"
-)
-
-// PossibleEndPointProvisioningStateValues returns the possible values for the EndPointProvisioningState const type.
-func PossibleEndPointProvisioningStateValues() []EndPointProvisioningState {
-	return []EndPointProvisioningState{
-		EndPointProvisioningStateCanceled,
-		EndPointProvisioningStateCreating,
-		EndPointProvisioningStateDeleting,
-		EndPointProvisioningStateFailed,
-		EndPointProvisioningStateSucceeded,
-		EndPointProvisioningStateUpdating,
-	}
-}
-
 // EntityStatus - Enumerates the possible values for the status of the Event Hub.
 type EntityStatus string
 
@@ -196,22 +85,6 @@ func PossibleEntityStatusValues() []EntityStatus {
 	}
 }
 
-// GeoDRRoleType - GeoDR Role Types
-type GeoDRRoleType string
-
-const (
-	GeoDRRoleTypePrimary   GeoDRRoleType = "Primary"
-	GeoDRRoleTypeSecondary GeoDRRoleType = "Secondary"
-)
-
-// PossibleGeoDRRoleTypeValues returns the possible values for the GeoDRRoleType const type.
-func PossibleGeoDRRoleTypeValues() []GeoDRRoleType {
-	return []GeoDRRoleType{
-		GeoDRRoleTypePrimary,
-		GeoDRRoleTypeSecondary,
-	}
-}
-
 // KeyType - The access key to regenerate.
 type KeyType string
 
@@ -228,47 +101,6 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
-// ManagedServiceIdentityType - Type of managed service identity.
-type ManagedServiceIdentityType string
-
-const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
-)
-
-// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
-func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
-		ManagedServiceIdentityTypeNone,
-		ManagedServiceIdentityTypeSystemAssigned,
-		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
-		ManagedServiceIdentityTypeUserAssigned,
-	}
-}
-
-// MetricID - Metric Id on which the throttle limit should be set, MetricId can be discovered by hovering over Metric in the
-// Metrics section of Event Hub Namespace inside Azure Portal
-type MetricID string
-
-const (
-	MetricIDIncomingBytes    MetricID = "IncomingBytes"
-	MetricIDIncomingMessages MetricID = "IncomingMessages"
-	MetricIDOutgoingBytes    MetricID = "OutgoingBytes"
-	MetricIDOutgoingMessages MetricID = "OutgoingMessages"
-)
-
-// PossibleMetricIDValues returns the possible values for the MetricID const type.
-func PossibleMetricIDValues() []MetricID {
-	return []MetricID{
-		MetricIDIncomingBytes,
-		MetricIDIncomingMessages,
-		MetricIDOutgoingBytes,
-		MetricIDOutgoingMessages,
-	}
-}
-
 // NetworkRuleIPAction - The IP Filter Action
 type NetworkRuleIPAction string
 
@@ -280,104 +112,6 @@ const (
 func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return []NetworkRuleIPAction{
 		NetworkRuleIPActionAllow,
-	}
-}
-
-// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of NetworkSecurityPerimeter configuration propagation
-type NetworkSecurityPerimeterConfigurationProvisioningState string
-
-const (
-	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted            NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled            NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCreating            NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
-	NetworkSecurityPerimeterConfigurationProvisioningStateDeleted             NetworkSecurityPerimeterConfigurationProvisioningState = "Deleted"
-	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting            NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
-	NetworkSecurityPerimeterConfigurationProvisioningStateFailed              NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
-	NetworkSecurityPerimeterConfigurationProvisioningStateInvalidResponse     NetworkSecurityPerimeterConfigurationProvisioningState = "InvalidResponse"
-	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded           NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
-	NetworkSecurityPerimeterConfigurationProvisioningStateSucceededWithIssues NetworkSecurityPerimeterConfigurationProvisioningState = "SucceededWithIssues"
-	NetworkSecurityPerimeterConfigurationProvisioningStateUnknown             NetworkSecurityPerimeterConfigurationProvisioningState = "Unknown"
-	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating            NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
-)
-
-// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
-func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
-	return []NetworkSecurityPerimeterConfigurationProvisioningState{
-		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
-		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
-		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
-		NetworkSecurityPerimeterConfigurationProvisioningStateDeleted,
-		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
-		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
-		NetworkSecurityPerimeterConfigurationProvisioningStateInvalidResponse,
-		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
-		NetworkSecurityPerimeterConfigurationProvisioningStateSucceededWithIssues,
-		NetworkSecurityPerimeterConfigurationProvisioningStateUnknown,
-		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
-	}
-}
-
-// NspAccessRuleDirection - Direction of Access Rule
-type NspAccessRuleDirection string
-
-const (
-	NspAccessRuleDirectionInbound  NspAccessRuleDirection = "Inbound"
-	NspAccessRuleDirectionOutbound NspAccessRuleDirection = "Outbound"
-)
-
-// PossibleNspAccessRuleDirectionValues returns the possible values for the NspAccessRuleDirection const type.
-func PossibleNspAccessRuleDirectionValues() []NspAccessRuleDirection {
-	return []NspAccessRuleDirection{
-		NspAccessRuleDirectionInbound,
-		NspAccessRuleDirectionOutbound,
-	}
-}
-
-// PrivateLinkConnectionStatus - Status of the connection.
-type PrivateLinkConnectionStatus string
-
-const (
-	PrivateLinkConnectionStatusApproved     PrivateLinkConnectionStatus = "Approved"
-	PrivateLinkConnectionStatusDisconnected PrivateLinkConnectionStatus = "Disconnected"
-	PrivateLinkConnectionStatusPending      PrivateLinkConnectionStatus = "Pending"
-	PrivateLinkConnectionStatusRejected     PrivateLinkConnectionStatus = "Rejected"
-)
-
-// PossiblePrivateLinkConnectionStatusValues returns the possible values for the PrivateLinkConnectionStatus const type.
-func PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus {
-	return []PrivateLinkConnectionStatus{
-		PrivateLinkConnectionStatusApproved,
-		PrivateLinkConnectionStatusDisconnected,
-		PrivateLinkConnectionStatusPending,
-		PrivateLinkConnectionStatusRejected,
-	}
-}
-
-// ProvisioningState - Provisioning state of the Cluster.
-type ProvisioningState string
-
-const (
-	ProvisioningStateActive    ProvisioningState = "Active"
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStateScaling   ProvisioningState = "Scaling"
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUnknown   ProvisioningState = "Unknown"
-)
-
-// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
-		ProvisioningStateActive,
-		ProvisioningStateCanceled,
-		ProvisioningStateCreating,
-		ProvisioningStateDeleting,
-		ProvisioningStateFailed,
-		ProvisioningStateScaling,
-		ProvisioningStateSucceeded,
-		ProvisioningStateUnknown,
 	}
 }
 
@@ -397,66 +131,6 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 		ProvisioningStateDRAccepted,
 		ProvisioningStateDRFailed,
 		ProvisioningStateDRSucceeded,
-	}
-}
-
-// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled.
-type PublicNetworkAccess string
-
-const (
-	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
-	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
-)
-
-// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
-		PublicNetworkAccessDisabled,
-		PublicNetworkAccessEnabled,
-		PublicNetworkAccessSecuredByPerimeter,
-	}
-}
-
-// PublicNetworkAccessFlag - This determines if traffic is allowed over public network. By default it is enabled. If value
-// is SecuredByPerimeter then Inbound and Outbound communication is controlled by the network security
-// perimeter and profile's access rules.
-type PublicNetworkAccessFlag string
-
-const (
-	PublicNetworkAccessFlagDisabled           PublicNetworkAccessFlag = "Disabled"
-	PublicNetworkAccessFlagEnabled            PublicNetworkAccessFlag = "Enabled"
-	PublicNetworkAccessFlagSecuredByPerimeter PublicNetworkAccessFlag = "SecuredByPerimeter"
-)
-
-// PossiblePublicNetworkAccessFlagValues returns the possible values for the PublicNetworkAccessFlag const type.
-func PossiblePublicNetworkAccessFlagValues() []PublicNetworkAccessFlag {
-	return []PublicNetworkAccessFlag{
-		PublicNetworkAccessFlagDisabled,
-		PublicNetworkAccessFlagEnabled,
-		PublicNetworkAccessFlagSecuredByPerimeter,
-	}
-}
-
-// ResourceAssociationAccessMode - Access Mode of the resource association
-type ResourceAssociationAccessMode string
-
-const (
-	ResourceAssociationAccessModeAuditMode         ResourceAssociationAccessMode = "AuditMode"
-	ResourceAssociationAccessModeEnforcedMode      ResourceAssociationAccessMode = "EnforcedMode"
-	ResourceAssociationAccessModeLearningMode      ResourceAssociationAccessMode = "LearningMode"
-	ResourceAssociationAccessModeNoAssociationMode ResourceAssociationAccessMode = "NoAssociationMode"
-	ResourceAssociationAccessModeUnspecifiedMode   ResourceAssociationAccessMode = "UnspecifiedMode"
-)
-
-// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
-func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
-	return []ResourceAssociationAccessMode{
-		ResourceAssociationAccessModeAuditMode,
-		ResourceAssociationAccessModeEnforcedMode,
-		ResourceAssociationAccessModeLearningMode,
-		ResourceAssociationAccessModeNoAssociationMode,
-		ResourceAssociationAccessModeUnspecifiedMode,
 	}
 }
 
@@ -483,7 +157,6 @@ type SKUName string
 
 const (
 	SKUNameBasic    SKUName = "Basic"
-	SKUNamePremium  SKUName = "Premium"
 	SKUNameStandard SKUName = "Standard"
 )
 
@@ -491,7 +164,6 @@ const (
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameBasic,
-		SKUNamePremium,
 		SKUNameStandard,
 	}
 }
@@ -501,7 +173,6 @@ type SKUTier string
 
 const (
 	SKUTierBasic    SKUTier = "Basic"
-	SKUTierPremium  SKUTier = "Premium"
 	SKUTierStandard SKUTier = "Standard"
 )
 
@@ -509,82 +180,7 @@ const (
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierBasic,
-		SKUTierPremium,
 		SKUTierStandard,
-	}
-}
-
-type SchemaCompatibility string
-
-const (
-	SchemaCompatibilityBackward SchemaCompatibility = "Backward"
-	SchemaCompatibilityForward  SchemaCompatibility = "Forward"
-	SchemaCompatibilityNone     SchemaCompatibility = "None"
-)
-
-// PossibleSchemaCompatibilityValues returns the possible values for the SchemaCompatibility const type.
-func PossibleSchemaCompatibilityValues() []SchemaCompatibility {
-	return []SchemaCompatibility{
-		SchemaCompatibilityBackward,
-		SchemaCompatibilityForward,
-		SchemaCompatibilityNone,
-	}
-}
-
-type SchemaType string
-
-const (
-	SchemaTypeAvro     SchemaType = "Avro"
-	SchemaTypeJSON     SchemaType = "Json"
-	SchemaTypeProtoBuf SchemaType = "ProtoBuf"
-	SchemaTypeUnknown  SchemaType = "Unknown"
-)
-
-// PossibleSchemaTypeValues returns the possible values for the SchemaType const type.
-func PossibleSchemaTypeValues() []SchemaType {
-	return []SchemaType{
-		SchemaTypeAvro,
-		SchemaTypeJSON,
-		SchemaTypeProtoBuf,
-		SchemaTypeUnknown,
-	}
-}
-
-// TLSVersion - The minimum TLS version for the cluster to support, e.g. '1.2'
-type TLSVersion string
-
-const (
-	TLSVersionOne0 TLSVersion = "1.0"
-	TLSVersionOne1 TLSVersion = "1.1"
-	TLSVersionOne2 TLSVersion = "1.2"
-)
-
-// PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
-func PossibleTLSVersionValues() []TLSVersion {
-	return []TLSVersion{
-		TLSVersionOne0,
-		TLSVersionOne1,
-		TLSVersionOne2,
-	}
-}
-
-// TimestampType - Denotes the type of timestamp the message will hold.Two types of timestamp types - "AppendTime" and "CreateTime".
-// AppendTime refers the time in which message got appended inside broker log. CreateTime
-// refers to the time in which the message was generated on source side and producers can set this timestamp while sending
-// the message. Default value is AppendTime. If you are using AMQP protocol,
-// CreateTime equals AppendTime and its behavior remains the same.
-type TimestampType string
-
-const (
-	TimestampTypeCreate    TimestampType = "Create"
-	TimestampTypeLogAppend TimestampType = "LogAppend"
-)
-
-// PossibleTimestampTypeValues returns the possible values for the TimestampType const type.
-func PossibleTimestampTypeValues() []TimestampType {
-	return []TimestampType{
-		TimestampTypeCreate,
-		TimestampTypeLogAppend,
 	}
 }
 

@@ -16,19 +16,23 @@ import (
 
 // ServerFactory is a fake server for instances of the armeventhub.ClientFactory type.
 type ServerFactory struct {
-	ApplicationGroupServer                       ApplicationGroupServer
-	ClustersServer                               ClustersServer
-	ConfigurationServer                          ConfigurationServer
-	ConsumerGroupsServer                         ConsumerGroupsServer
-	DisasterRecoveryConfigsServer                DisasterRecoveryConfigsServer
-	EventHubsServer                              EventHubsServer
-	NamespacesServer                             NamespacesServer
-	NetworkSecurityPerimeterConfigurationServer  NetworkSecurityPerimeterConfigurationServer
-	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
-	OperationsServer                             OperationsServer
-	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
-	SchemaRegistryServer                         SchemaRegistryServer
+	// ConsumerGroupsServer contains the fakes for client ConsumerGroupsClient
+	ConsumerGroupsServer ConsumerGroupsServer
+
+	// DisasterRecoveryConfigsServer contains the fakes for client DisasterRecoveryConfigsClient
+	DisasterRecoveryConfigsServer DisasterRecoveryConfigsServer
+
+	// EventHubsServer contains the fakes for client EventHubsClient
+	EventHubsServer EventHubsServer
+
+	// NamespacesServer contains the fakes for client NamespacesClient
+	NamespacesServer NamespacesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// RegionsServer contains the fakes for client RegionsClient
+	RegionsServer RegionsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -43,21 +47,14 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armeventhub.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                            *ServerFactory
-	trMu                                           sync.Mutex
-	trApplicationGroupServer                       *ApplicationGroupServerTransport
-	trClustersServer                               *ClustersServerTransport
-	trConfigurationServer                          *ConfigurationServerTransport
-	trConsumerGroupsServer                         *ConsumerGroupsServerTransport
-	trDisasterRecoveryConfigsServer                *DisasterRecoveryConfigsServerTransport
-	trEventHubsServer                              *EventHubsServerTransport
-	trNamespacesServer                             *NamespacesServerTransport
-	trNetworkSecurityPerimeterConfigurationServer  *NetworkSecurityPerimeterConfigurationServerTransport
-	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
-	trOperationsServer                             *OperationsServerTransport
-	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
-	trSchemaRegistryServer                         *SchemaRegistryServerTransport
+	srv                             *ServerFactory
+	trMu                            sync.Mutex
+	trConsumerGroupsServer          *ConsumerGroupsServerTransport
+	trDisasterRecoveryConfigsServer *DisasterRecoveryConfigsServerTransport
+	trEventHubsServer               *EventHubsServerTransport
+	trNamespacesServer              *NamespacesServerTransport
+	trOperationsServer              *OperationsServerTransport
+	trRegionsServer                 *RegionsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -73,19 +70,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "ApplicationGroupClient":
-		initServer(s, &s.trApplicationGroupServer, func() *ApplicationGroupServerTransport {
-			return NewApplicationGroupServerTransport(&s.srv.ApplicationGroupServer)
-		})
-		resp, err = s.trApplicationGroupServer.Do(req)
-	case "ClustersClient":
-		initServer(s, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
-		resp, err = s.trClustersServer.Do(req)
-	case "ConfigurationClient":
-		initServer(s, &s.trConfigurationServer, func() *ConfigurationServerTransport {
-			return NewConfigurationServerTransport(&s.srv.ConfigurationServer)
-		})
-		resp, err = s.trConfigurationServer.Do(req)
 	case "ConsumerGroupsClient":
 		initServer(s, &s.trConsumerGroupsServer, func() *ConsumerGroupsServerTransport {
 			return NewConsumerGroupsServerTransport(&s.srv.ConsumerGroupsServer)
@@ -102,34 +86,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "NamespacesClient":
 		initServer(s, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
 		resp, err = s.trNamespacesServer.Do(req)
-	case "NetworkSecurityPerimeterConfigurationClient":
-		initServer(s, &s.trNetworkSecurityPerimeterConfigurationServer, func() *NetworkSecurityPerimeterConfigurationServerTransport {
-			return NewNetworkSecurityPerimeterConfigurationServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationServer)
-		})
-		resp, err = s.trNetworkSecurityPerimeterConfigurationServer.Do(req)
-	case "NetworkSecurityPerimeterConfigurationsClient":
-		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
-			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
-		})
-		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
-			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
-		})
-		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
-	case "PrivateLinkResourcesClient":
-		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
-			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
-		})
-		resp, err = s.trPrivateLinkResourcesServer.Do(req)
-	case "SchemaRegistryClient":
-		initServer(s, &s.trSchemaRegistryServer, func() *SchemaRegistryServerTransport {
-			return NewSchemaRegistryServerTransport(&s.srv.SchemaRegistryServer)
-		})
-		resp, err = s.trSchemaRegistryServer.Do(req)
+	case "RegionsClient":
+		initServer(s, &s.trRegionsServer, func() *RegionsServerTransport { return NewRegionsServerTransport(&s.srv.RegionsServer) })
+		resp, err = s.trRegionsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

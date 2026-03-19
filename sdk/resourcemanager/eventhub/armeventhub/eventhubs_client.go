@@ -29,7 +29,7 @@ type EventHubsClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEventHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventHubsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewEventHubsClient(subscriptionID string, credential azcore.TokenCredential
 // CreateOrUpdate - Creates or updates a new Event Hub as a nested resource within a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -75,7 +75,7 @@ func (client *EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub, options *EventHubsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub, _ *EventHubsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,7 +98,7 @@ func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -120,7 +120,7 @@ func (client *EventHubsClient) createOrUpdateHandleResponse(resp *http.Response)
 // of the AuthorizationRule will take a few seconds to take effect.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -151,7 +151,7 @@ func (client *EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Conte
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule, options *EventHubsClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule, _ *EventHubsClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,7 +178,7 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -199,7 +199,7 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleHandleResponse(res
 // Delete - Deletes an Event Hub from the specified Namespace and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -226,7 +226,7 @@ func (client *EventHubsClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EventHubsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientDeleteOptions) (*policy.Request, error) {
+func (client *EventHubsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, _ *EventHubsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -249,7 +249,7 @@ func (client *EventHubsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,7 +258,7 @@ func (client *EventHubsClient) deleteCreateRequest(ctx context.Context, resource
 // DeleteAuthorizationRule - Deletes an Event Hub AuthorizationRule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -287,7 +287,7 @@ func (client *EventHubsClient) DeleteAuthorizationRule(ctx context.Context, reso
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *EventHubsClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *EventHubsClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, _ *EventHubsClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -314,7 +314,7 @@ func (client *EventHubsClient) deleteAuthorizationRuleCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,7 +323,7 @@ func (client *EventHubsClient) deleteAuthorizationRuleCreateRequest(ctx context.
 // Get - Gets an Event Hubs description for the specified Event Hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -351,7 +351,7 @@ func (client *EventHubsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientGetOptions) (*policy.Request, error) {
+func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, _ *EventHubsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -374,7 +374,7 @@ func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -392,7 +392,7 @@ func (client *EventHubsClient) getHandleResponse(resp *http.Response) (EventHubs
 // GetAuthorizationRule - Gets an AuthorizationRule for an Event Hub by rule name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -422,7 +422,7 @@ func (client *EventHubsClient) GetAuthorizationRule(ctx context.Context, resourc
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientGetAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, _ *EventHubsClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -449,7 +449,7 @@ func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -466,7 +466,7 @@ func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Res
 
 // NewListAuthorizationRulesPager - Gets the authorization rules for an Event Hub.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -496,7 +496,7 @@ func (client *EventHubsClient) NewListAuthorizationRulesPager(resourceGroupName 
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientListAuthorizationRulesOptions) (*policy.Request, error) {
+func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, _ *EventHubsClientListAuthorizationRulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -519,7 +519,7 @@ func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -536,7 +536,7 @@ func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.R
 
 // NewListByNamespacePager - Gets all the Event Hubs in a Namespace.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - options - EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.NewListByNamespacePager
@@ -590,7 +590,7 @@ func (client *EventHubsClient) listByNamespaceCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -608,7 +608,7 @@ func (client *EventHubsClient) listByNamespaceHandleResponse(resp *http.Response
 // ListKeys - Gets the ACS and SAS connection strings for the Event Hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -637,7 +637,7 @@ func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName s
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientListKeysOptions) (*policy.Request, error) {
+func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, _ *EventHubsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -664,7 +664,7 @@ func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -682,7 +682,7 @@ func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response) (Even
 // RegenerateKeys - Regenerates the ACS and SAS connection strings for the Event Hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -713,7 +713,7 @@ func (client *EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroup
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *EventHubsClientRegenerateKeysOptions) (*policy.Request, error) {
+func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, _ *EventHubsClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -740,7 +740,7 @@ func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -29,7 +29,7 @@ type ConsumerGroupsClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConsumerGroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCrede
 // CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -76,7 +76,7 @@ func (client *ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup, options *ConsumerGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup, _ *ConsumerGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -103,7 +103,7 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,7 +124,7 @@ func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Resp
 // Delete - Deletes a consumer group from the specified Event Hub and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -152,7 +152,7 @@ func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsClientDeleteOptions) (*policy.Request, error) {
+func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, _ *ConsumerGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -179,7 +179,7 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Gets a description for the specified consumer group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -217,7 +217,7 @@ func (client *ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsClientGetOptions) (*policy.Request, error) {
+func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, _ *ConsumerGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -244,7 +244,7 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (Cons
 // NewListByEventHubPager - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists
 // in the Namespace.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - eventHubName - The Event Hub name
@@ -321,7 +321,7 @@ func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

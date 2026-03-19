@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -90,39 +90,58 @@ func (e *EventHubsServerTransport) Do(req *http.Request) (*http.Response, error)
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EventHubsClient.CreateOrUpdate":
-		resp, err = e.dispatchCreateOrUpdate(req)
-	case "EventHubsClient.CreateOrUpdateAuthorizationRule":
-		resp, err = e.dispatchCreateOrUpdateAuthorizationRule(req)
-	case "EventHubsClient.Delete":
-		resp, err = e.dispatchDelete(req)
-	case "EventHubsClient.DeleteAuthorizationRule":
-		resp, err = e.dispatchDeleteAuthorizationRule(req)
-	case "EventHubsClient.Get":
-		resp, err = e.dispatchGet(req)
-	case "EventHubsClient.GetAuthorizationRule":
-		resp, err = e.dispatchGetAuthorizationRule(req)
-	case "EventHubsClient.NewListAuthorizationRulesPager":
-		resp, err = e.dispatchNewListAuthorizationRulesPager(req)
-	case "EventHubsClient.NewListByNamespacePager":
-		resp, err = e.dispatchNewListByNamespacePager(req)
-	case "EventHubsClient.ListKeys":
-		resp, err = e.dispatchListKeys(req)
-	case "EventHubsClient.RegenerateKeys":
-		resp, err = e.dispatchRegenerateKeys(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EventHubsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if eventHubsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = eventHubsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EventHubsClient.CreateOrUpdate":
+				res.resp, res.err = e.dispatchCreateOrUpdate(req)
+			case "EventHubsClient.CreateOrUpdateAuthorizationRule":
+				res.resp, res.err = e.dispatchCreateOrUpdateAuthorizationRule(req)
+			case "EventHubsClient.Delete":
+				res.resp, res.err = e.dispatchDelete(req)
+			case "EventHubsClient.DeleteAuthorizationRule":
+				res.resp, res.err = e.dispatchDeleteAuthorizationRule(req)
+			case "EventHubsClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "EventHubsClient.GetAuthorizationRule":
+				res.resp, res.err = e.dispatchGetAuthorizationRule(req)
+			case "EventHubsClient.NewListAuthorizationRulesPager":
+				res.resp, res.err = e.dispatchNewListAuthorizationRulesPager(req)
+			case "EventHubsClient.NewListByNamespacePager":
+				res.resp, res.err = e.dispatchNewListByNamespacePager(req)
+			case "EventHubsClient.ListKeys":
+				res.resp, res.err = e.dispatchListKeys(req)
+			case "EventHubsClient.RegenerateKeys":
+				res.resp, res.err = e.dispatchRegenerateKeys(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EventHubsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -132,7 +151,7 @@ func (e *EventHubsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.Eventhub](req)
@@ -173,7 +192,7 @@ func (e *EventHubsServerTransport) dispatchCreateOrUpdateAuthorizationRule(req *
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.AuthorizationRule](req)
@@ -218,7 +237,7 @@ func (e *EventHubsServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -255,7 +274,7 @@ func (e *EventHubsServerTransport) dispatchDeleteAuthorizationRule(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -296,7 +315,7 @@ func (e *EventHubsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -333,7 +352,7 @@ func (e *EventHubsServerTransport) dispatchGetAuthorizationRule(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -376,7 +395,7 @@ func (e *EventHubsServerTransport) dispatchNewListAuthorizationRulesPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -421,7 +440,7 @@ func (e *EventHubsServerTransport) dispatchNewListByNamespacePager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -496,7 +515,7 @@ func (e *EventHubsServerTransport) dispatchListKeys(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -537,7 +556,7 @@ func (e *EventHubsServerTransport) dispatchRegenerateKeys(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.RegenerateAccessKeyParameters](req)
@@ -573,4 +592,10 @@ func (e *EventHubsServerTransport) dispatchRegenerateKeys(req *http.Request) (*h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EventHubsServerTransport
+var eventHubsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

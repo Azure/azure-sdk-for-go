@@ -34,30 +34,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewApplicationGroupClient creates a new instance of ApplicationGroupClient.
-func (c *ClientFactory) NewApplicationGroupClient() *ApplicationGroupClient {
-	return &ApplicationGroupClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewClustersClient creates a new instance of ClustersClient.
-func (c *ClientFactory) NewClustersClient() *ClustersClient {
-	return &ClustersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewConfigurationClient creates a new instance of ConfigurationClient.
-func (c *ClientFactory) NewConfigurationClient() *ConfigurationClient {
-	return &ConfigurationClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewConsumerGroupsClient creates a new instance of ConsumerGroupsClient.
 func (c *ClientFactory) NewConsumerGroupsClient() *ConsumerGroupsClient {
 	return &ConsumerGroupsClient{
@@ -90,22 +66,6 @@ func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
 	}
 }
 
-// NewNetworkSecurityPerimeterConfigurationClient creates a new instance of NetworkSecurityPerimeterConfigurationClient.
-func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationClient() *NetworkSecurityPerimeterConfigurationClient {
-	return &NetworkSecurityPerimeterConfigurationClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
-func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
-	return &NetworkSecurityPerimeterConfigurationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -113,25 +73,9 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
-func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
-	return &PrivateEndpointConnectionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
-func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
-	return &PrivateLinkResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewSchemaRegistryClient creates a new instance of SchemaRegistryClient.
-func (c *ClientFactory) NewSchemaRegistryClient() *SchemaRegistryClient {
-	return &SchemaRegistryClient{
+// NewRegionsClient creates a new instance of RegionsClient.
+func (c *ClientFactory) NewRegionsClient() *RegionsClient {
+	return &RegionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

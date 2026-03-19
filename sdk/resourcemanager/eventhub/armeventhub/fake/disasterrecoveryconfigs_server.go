@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,7 +34,7 @@ type DisasterRecoveryConfigsServer struct {
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters armeventhub.ArmDisasterRecovery, options *armeventhub.DisasterRecoveryConfigsClientCreateOrUpdateOptions) (resp azfake.Responder[armeventhub.DisasterRecoveryConfigsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method DisasterRecoveryConfigsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK
 	Delete func(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *armeventhub.DisasterRecoveryConfigsClientDeleteOptions) (resp azfake.Responder[armeventhub.DisasterRecoveryConfigsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// FailOver is the fake for method DisasterRecoveryConfigsClient.FailOver
@@ -89,39 +89,58 @@ func (d *DisasterRecoveryConfigsServerTransport) Do(req *http.Request) (*http.Re
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DisasterRecoveryConfigsClient.BreakPairing":
-		resp, err = d.dispatchBreakPairing(req)
-	case "DisasterRecoveryConfigsClient.CheckNameAvailability":
-		resp, err = d.dispatchCheckNameAvailability(req)
-	case "DisasterRecoveryConfigsClient.CreateOrUpdate":
-		resp, err = d.dispatchCreateOrUpdate(req)
-	case "DisasterRecoveryConfigsClient.Delete":
-		resp, err = d.dispatchDelete(req)
-	case "DisasterRecoveryConfigsClient.FailOver":
-		resp, err = d.dispatchFailOver(req)
-	case "DisasterRecoveryConfigsClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DisasterRecoveryConfigsClient.GetAuthorizationRule":
-		resp, err = d.dispatchGetAuthorizationRule(req)
-	case "DisasterRecoveryConfigsClient.NewListPager":
-		resp, err = d.dispatchNewListPager(req)
-	case "DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager":
-		resp, err = d.dispatchNewListAuthorizationRulesPager(req)
-	case "DisasterRecoveryConfigsClient.ListKeys":
-		resp, err = d.dispatchListKeys(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DisasterRecoveryConfigsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if disasterRecoveryConfigsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = disasterRecoveryConfigsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DisasterRecoveryConfigsClient.BreakPairing":
+				res.resp, res.err = d.dispatchBreakPairing(req)
+			case "DisasterRecoveryConfigsClient.CheckNameAvailability":
+				res.resp, res.err = d.dispatchCheckNameAvailability(req)
+			case "DisasterRecoveryConfigsClient.CreateOrUpdate":
+				res.resp, res.err = d.dispatchCreateOrUpdate(req)
+			case "DisasterRecoveryConfigsClient.Delete":
+				res.resp, res.err = d.dispatchDelete(req)
+			case "DisasterRecoveryConfigsClient.FailOver":
+				res.resp, res.err = d.dispatchFailOver(req)
+			case "DisasterRecoveryConfigsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DisasterRecoveryConfigsClient.GetAuthorizationRule":
+				res.resp, res.err = d.dispatchGetAuthorizationRule(req)
+			case "DisasterRecoveryConfigsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			case "DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager":
+				res.resp, res.err = d.dispatchNewListAuthorizationRulesPager(req)
+			case "DisasterRecoveryConfigsClient.ListKeys":
+				res.resp, res.err = d.dispatchListKeys(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DisasterRecoveryConfigsServerTransport) dispatchBreakPairing(req *http.Request) (*http.Response, error) {
@@ -131,7 +150,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchBreakPairing(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/breakPairing`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -168,7 +187,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchCheckNameAvailability(r
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.CheckNameAvailabilityParameter](req)
@@ -205,7 +224,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchCreateOrUpdate(req *htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.ArmDisasterRecovery](req)
@@ -246,7 +265,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchDelete(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -266,8 +285,8 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchDelete(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
@@ -283,7 +302,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchFailOver(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -320,7 +339,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchGet(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -357,7 +376,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchGetAuthorizationRule(re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -400,7 +419,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchNewListPager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -441,7 +460,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchNewListAuthorizationRul
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -484,7 +503,7 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchListKeys(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disasterRecoveryConfigs/(?P<alias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -516,4 +535,10 @@ func (d *DisasterRecoveryConfigsServerTransport) dispatchListKeys(req *http.Requ
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DisasterRecoveryConfigsServerTransport
+var disasterRecoveryConfigsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

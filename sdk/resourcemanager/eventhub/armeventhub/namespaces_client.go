@@ -28,7 +28,7 @@ type NamespacesClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespacesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredentia
 // CheckNameAvailability - Check the give Namespace name availability.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - parameters - Parameters to check availability of the given Namespace name
 //   - options - NamespacesClientCheckNameAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckNameAvailability
 //     method.
@@ -71,7 +71,7 @@ func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, param
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityParameter, options *NamespacesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityParameter, _ *NamespacesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +82,7 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -104,7 +104,7 @@ func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.R
 // operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - parameters - Parameters for creating a namespace resource.
@@ -117,8 +117,7 @@ func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespacesClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -132,7 +131,7 @@ func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EHNamespace, options *NamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespacesClient.BeginCreateOrUpdate"
@@ -155,7 +154,7 @@ func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EHNamespace, options *NamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EHNamespace, _ *NamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -174,7 +173,7 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -186,7 +185,7 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 // CreateOrUpdateAuthorizationRule - Creates or updates an AuthorizationRule for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -216,7 +215,7 @@ func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Cont
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, _ *NamespacesClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -239,7 +238,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -260,7 +259,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(re
 // CreateOrUpdateNetworkRuleSet - Create or update NetworkRuleSet for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - parameters - The Namespace IpFilterRule.
@@ -289,7 +288,7 @@ func (client *NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context
 }
 
 // createOrUpdateNetworkRuleSetCreateRequest creates the CreateOrUpdateNetworkRuleSet request.
-func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet, options *NamespacesClientCreateOrUpdateNetworkRuleSetOptions) (*policy.Request, error) {
+func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet, _ *NamespacesClientCreateOrUpdateNetworkRuleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -308,7 +307,7 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -329,7 +328,7 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp 
 // BeginDelete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - options - NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
@@ -340,8 +339,7 @@ func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespacesClientDeleteResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -354,7 +352,7 @@ func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespacesClient.BeginDelete"
@@ -377,7 +375,7 @@ func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -396,7 +394,7 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -405,7 +403,7 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 // DeleteAuthorizationRule - Deletes an AuthorizationRule for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -433,7 +431,7 @@ func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, res
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, _ *NamespacesClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -456,97 +454,16 @@ func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginFailover - GeoDR Failover
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-05-01-preview
-//   - resourceGroupName - Name of the resource group within the azure subscription.
-//   - namespaceName - The Namespace name
-//   - parameters - Parameters for updating a namespace resource.
-//   - options - NamespacesClientBeginFailoverOptions contains the optional parameters for the NamespacesClient.BeginFailover
-//     method.
-func (client *NamespacesClient) BeginFailover(ctx context.Context, resourceGroupName string, namespaceName string, parameters FailOver, options *NamespacesClientBeginFailoverOptions) (*runtime.Poller[NamespacesClientFailoverResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.failover(ctx, resourceGroupName, namespaceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespacesClientFailoverResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespacesClientFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Failover - GeoDR Failover
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-05-01-preview
-func (client *NamespacesClient) failover(ctx context.Context, resourceGroupName string, namespaceName string, parameters FailOver, options *NamespacesClientBeginFailoverOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NamespacesClient.BeginFailover"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.failoverCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// failoverCreateRequest creates the Failover request.
-func (client *NamespacesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters FailOver, options *NamespacesClientBeginFailoverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/failover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
 // Get - Gets the description of the specified namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - options - NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
@@ -564,7 +481,7 @@ func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
 		return NamespacesClientGetResponse{}, err
 	}
@@ -573,7 +490,7 @@ func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientGetOptions) (*policy.Request, error) {
+func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -592,7 +509,7 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -610,7 +527,7 @@ func (client *NamespacesClient) getHandleResponse(resp *http.Response) (Namespac
 // GetAuthorizationRule - Gets an AuthorizationRule for a Namespace by rule name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -639,7 +556,7 @@ func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resour
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientGetAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, _ *NamespacesClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -662,7 +579,7 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -677,10 +594,75 @@ func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Re
 	return result, nil
 }
 
+// GetMessagingPlan - Gets messaging plan for specified namespace.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2017-04-01
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - options - NamespacesClientGetMessagingPlanOptions contains the optional parameters for the NamespacesClient.GetMessagingPlan
+//     method.
+func (client *NamespacesClient) GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientGetMessagingPlanOptions) (NamespacesClientGetMessagingPlanResponse, error) {
+	var err error
+	const operationName = "NamespacesClient.GetMessagingPlan"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getMessagingPlanCreateRequest(ctx, resourceGroupName, namespaceName, options)
+	if err != nil {
+		return NamespacesClientGetMessagingPlanResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return NamespacesClientGetMessagingPlanResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return NamespacesClientGetMessagingPlanResponse{}, err
+	}
+	resp, err := client.getMessagingPlanHandleResponse(httpResp)
+	return resp, err
+}
+
+// getMessagingPlanCreateRequest creates the GetMessagingPlan request.
+func (client *NamespacesClient) getMessagingPlanCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientGetMessagingPlanOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/messagingplan"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2017-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getMessagingPlanHandleResponse handles the GetMessagingPlan response.
+func (client *NamespacesClient) getMessagingPlanHandleResponse(resp *http.Response) (NamespacesClientGetMessagingPlanResponse, error) {
+	result := NamespacesClientGetMessagingPlanResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MessagingPlan); err != nil {
+		return NamespacesClientGetMessagingPlanResponse{}, err
+	}
+	return result, nil
+}
+
 // GetNetworkRuleSet - Gets NetworkRuleSet for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - options - NamespacesClientGetNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.GetNetworkRuleSet
@@ -708,7 +690,7 @@ func (client *NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceG
 }
 
 // getNetworkRuleSetCreateRequest creates the GetNetworkRuleSet request.
-func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientGetNetworkRuleSetOptions) (*policy.Request, error) {
+func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientGetNetworkRuleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -727,7 +709,7 @@ func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -744,7 +726,7 @@ func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Respo
 
 // NewListPager - Lists all the available Namespaces within a subscription, irrespective of the resource groups.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - options - NamespacesClientListOptions contains the optional parameters for the NamespacesClient.NewListPager method.
 func (client *NamespacesClient) NewListPager(options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[NamespacesClientListResponse]{
@@ -770,7 +752,7 @@ func (client *NamespacesClient) NewListPager(options *NamespacesClientListOption
 }
 
 // listCreateRequest creates the List request.
-func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *NamespacesClientListOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listCreateRequest(ctx context.Context, _ *NamespacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -781,7 +763,7 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -798,7 +780,7 @@ func (client *NamespacesClient) listHandleResponse(resp *http.Response) (Namespa
 
 // NewListAuthorizationRulesPager - Gets a list of authorization rules for a Namespace.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - options - NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.NewListAuthorizationRulesPager
@@ -827,7 +809,7 @@ func (client *NamespacesClient) NewListAuthorizationRulesPager(resourceGroupName
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientListAuthorizationRulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -846,7 +828,7 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -863,7 +845,7 @@ func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.
 
 // NewListByResourceGroupPager - Lists the available Namespaces within a resource group.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - options - NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.NewListByResourceGroupPager
 //     method.
@@ -891,7 +873,7 @@ func (client *NamespacesClient) NewListByResourceGroupPager(resourceGroupName st
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NamespacesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NamespacesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -906,7 +888,7 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -924,7 +906,7 @@ func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Res
 // ListKeys - Gets the primary and secondary connection strings for the Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -952,7 +934,7 @@ func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName 
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientListKeysOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, _ *NamespacesClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -975,7 +957,7 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -990,38 +972,38 @@ func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (Nam
 	return result, nil
 }
 
-// ListNetworkRuleSet - Gets NetworkRuleSet for a Namespace.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListNetworkRuleSetsPager - Gets list of NetworkRuleSet for a Namespace.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
-//   - options - NamespacesClientListNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.ListNetworkRuleSet
+//   - options - NamespacesClientListNetworkRuleSetsOptions contains the optional parameters for the NamespacesClient.NewListNetworkRuleSetsPager
 //     method.
-func (client *NamespacesClient) ListNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientListNetworkRuleSetOptions) (NamespacesClientListNetworkRuleSetResponse, error) {
-	var err error
-	const operationName = "NamespacesClient.ListNetworkRuleSet"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listNetworkRuleSetCreateRequest(ctx, resourceGroupName, namespaceName, options)
-	if err != nil {
-		return NamespacesClientListNetworkRuleSetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return NamespacesClientListNetworkRuleSetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientListNetworkRuleSetResponse{}, err
-	}
-	resp, err := client.listNetworkRuleSetHandleResponse(httpResp)
-	return resp, err
+func (client *NamespacesClient) NewListNetworkRuleSetsPager(resourceGroupName string, namespaceName string, options *NamespacesClientListNetworkRuleSetsOptions) *runtime.Pager[NamespacesClientListNetworkRuleSetsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NamespacesClientListNetworkRuleSetsResponse]{
+		More: func(page NamespacesClientListNetworkRuleSetsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *NamespacesClientListNetworkRuleSetsResponse) (NamespacesClientListNetworkRuleSetsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespacesClient.NewListNetworkRuleSetsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listNetworkRuleSetsCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			}, nil)
+			if err != nil {
+				return NamespacesClientListNetworkRuleSetsResponse{}, err
+			}
+			return client.listNetworkRuleSetsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// listNetworkRuleSetCreateRequest creates the ListNetworkRuleSet request.
-func (client *NamespacesClient) listNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientListNetworkRuleSetOptions) (*policy.Request, error) {
+// listNetworkRuleSetsCreateRequest creates the ListNetworkRuleSets request.
+func (client *NamespacesClient) listNetworkRuleSetsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientListNetworkRuleSetsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1040,17 +1022,17 @@ func (client *NamespacesClient) listNetworkRuleSetCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listNetworkRuleSetHandleResponse handles the ListNetworkRuleSet response.
-func (client *NamespacesClient) listNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesClientListNetworkRuleSetResponse, error) {
-	result := NamespacesClientListNetworkRuleSetResponse{}
+// listNetworkRuleSetsHandleResponse handles the ListNetworkRuleSets response.
+func (client *NamespacesClient) listNetworkRuleSetsHandleResponse(resp *http.Response) (NamespacesClientListNetworkRuleSetsResponse, error) {
+	result := NamespacesClientListNetworkRuleSetsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSetListResult); err != nil {
-		return NamespacesClientListNetworkRuleSetResponse{}, err
+		return NamespacesClientListNetworkRuleSetsResponse{}, err
 	}
 	return result, nil
 }
@@ -1058,7 +1040,7 @@ func (client *NamespacesClient) listNetworkRuleSetHandleResponse(resp *http.Resp
 // RegenerateKeys - Regenerates the primary or secondary connection strings for the specified Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -1088,7 +1070,7 @@ func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGrou
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesClientRegenerateKeysOptions) (*policy.Request, error) {
+func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, _ *NamespacesClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1111,7 +1093,7 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1133,7 +1115,7 @@ func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response
 // is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2017-04-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - parameters - Parameters for updating a namespace resource.
@@ -1161,7 +1143,7 @@ func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EHNamespace, options *NamespacesClientUpdateOptions) (*policy.Request, error) {
+func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EHNamespace, _ *NamespacesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1180,7 +1162,7 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

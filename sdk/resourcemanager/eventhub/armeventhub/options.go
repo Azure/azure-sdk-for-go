@@ -5,84 +5,6 @@
 
 package armeventhub
 
-// ApplicationGroupClientCreateOrUpdateApplicationGroupOptions contains the optional parameters for the ApplicationGroupClient.CreateOrUpdateApplicationGroup
-// method.
-type ApplicationGroupClientCreateOrUpdateApplicationGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationGroupClientDeleteOptions contains the optional parameters for the ApplicationGroupClient.Delete method.
-type ApplicationGroupClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationGroupClientGetOptions contains the optional parameters for the ApplicationGroupClient.Get method.
-type ApplicationGroupClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationGroupClientListByNamespaceOptions contains the optional parameters for the ApplicationGroupClient.NewListByNamespacePager
-// method.
-type ApplicationGroupClientListByNamespaceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
-type ClustersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
-type ClustersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
-type ClustersClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
-type ClustersClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientListAvailableClusterRegionOptions contains the optional parameters for the ClustersClient.ListAvailableClusterRegion
-// method.
-type ClustersClientListAvailableClusterRegionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
-// method.
-type ClustersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.NewListBySubscriptionPager
-// method.
-type ClustersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientListNamespacesOptions contains the optional parameters for the ClustersClient.ListNamespaces method.
-type ClustersClientListNamespacesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationClientGetOptions contains the optional parameters for the ConfigurationClient.Get method.
-type ConfigurationClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationClientPatchOptions contains the optional parameters for the ConfigurationClient.Patch method.
-type ConfigurationClientPatchOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ConsumerGroupsClientCreateOrUpdateOptions contains the optional parameters for the ConsumerGroupsClient.CreateOrUpdate
 // method.
 type ConsumerGroupsClientCreateOrUpdateOptions struct {
@@ -234,19 +156,13 @@ type EventHubsClientRegenerateKeysOptions struct {
 // NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
 // method.
 type NamespacesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
 type NamespacesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NamespacesClientBeginFailoverOptions contains the optional parameters for the NamespacesClient.BeginFailover method.
-type NamespacesClientBeginFailoverOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -280,6 +196,11 @@ type NamespacesClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NamespacesClientGetMessagingPlanOptions contains the optional parameters for the NamespacesClient.GetMessagingPlan method.
+type NamespacesClientGetMessagingPlanOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NamespacesClientGetNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.GetNetworkRuleSet method.
 type NamespacesClientGetNetworkRuleSetOptions struct {
 	// placeholder for future optional parameters
@@ -307,9 +228,9 @@ type NamespacesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.ListNetworkRuleSet
+// NamespacesClientListNetworkRuleSetsOptions contains the optional parameters for the NamespacesClient.NewListNetworkRuleSetsPager
 // method.
-type NamespacesClientListNetworkRuleSetOptions struct {
+type NamespacesClientListNetworkRuleSetsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -328,78 +249,12 @@ type NamespacesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkSecurityPerimeterConfigurationClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationClient.List
-// method.
-type NetworkSecurityPerimeterConfigurationClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.BeginCreateOrUpdate
-// method.
-type NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
-// method.
-type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PrivateEndpointConnectionsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.CreateOrUpdate
-// method.
-type PrivateEndpointConnectionsClientCreateOrUpdateOptions struct {
+// RegionsClientListBySKUOptions contains the optional parameters for the RegionsClient.NewListBySKUPager method.
+type RegionsClientListBySKUOptions struct {
 	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
-// method.
-type PrivateEndpointConnectionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
-// method.
-type PrivateEndpointConnectionsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
-type PrivateLinkResourcesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SchemaRegistryClientCreateOrUpdateOptions contains the optional parameters for the SchemaRegistryClient.CreateOrUpdate
-// method.
-type SchemaRegistryClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SchemaRegistryClientDeleteOptions contains the optional parameters for the SchemaRegistryClient.Delete method.
-type SchemaRegistryClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SchemaRegistryClientGetOptions contains the optional parameters for the SchemaRegistryClient.Get method.
-type SchemaRegistryClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SchemaRegistryClientListByNamespaceOptions contains the optional parameters for the SchemaRegistryClient.NewListByNamespacePager
-// method.
-type SchemaRegistryClientListByNamespaceOptions struct {
-	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skip parameter that specifies
-	// a starting point to use for subsequent calls.
-	Skip *int32
-
-	// May be used to limit the number of results to the most recent N usageDetails.
-	Top *int32
 }

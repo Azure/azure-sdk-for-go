@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -45,17 +45,17 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	DeleteAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armeventhub.NamespacesClientDeleteAuthorizationRuleOptions) (resp azfake.Responder[armeventhub.NamespacesClientDeleteAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
-	// BeginFailover is the fake for method NamespacesClient.BeginFailover
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginFailover func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armeventhub.FailOver, options *armeventhub.NamespacesClientBeginFailoverOptions) (resp azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse], errResp azfake.ErrorResponder)
-
 	// Get is the fake for method NamespacesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientGetOptions) (resp azfake.Responder[armeventhub.NamespacesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetAuthorizationRule is the fake for method NamespacesClient.GetAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armeventhub.NamespacesClientGetAuthorizationRuleOptions) (resp azfake.Responder[armeventhub.NamespacesClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
+
+	// GetMessagingPlan is the fake for method NamespacesClient.GetMessagingPlan
+	// HTTP status codes to indicate success: http.StatusOK
+	GetMessagingPlan func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientGetMessagingPlanOptions) (resp azfake.Responder[armeventhub.NamespacesClientGetMessagingPlanResponse], errResp azfake.ErrorResponder)
 
 	// GetNetworkRuleSet is the fake for method NamespacesClient.GetNetworkRuleSet
 	// HTTP status codes to indicate success: http.StatusOK
@@ -77,9 +77,9 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armeventhub.NamespacesClientListKeysOptions) (resp azfake.Responder[armeventhub.NamespacesClientListKeysResponse], errResp azfake.ErrorResponder)
 
-	// ListNetworkRuleSet is the fake for method NamespacesClient.ListNetworkRuleSet
+	// NewListNetworkRuleSetsPager is the fake for method NamespacesClient.NewListNetworkRuleSetsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListNetworkRuleSet func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientListNetworkRuleSetOptions) (resp azfake.Responder[armeventhub.NamespacesClientListNetworkRuleSetResponse], errResp azfake.ErrorResponder)
+	NewListNetworkRuleSetsPager func(resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientListNetworkRuleSetsOptions) (resp azfake.PagerResponder[armeventhub.NamespacesClientListNetworkRuleSetsResponse])
 
 	// RegenerateKeys is the fake for method NamespacesClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -98,10 +98,10 @@ func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransp
 		srv:                            srv,
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armeventhub.NamespacesClientCreateOrUpdateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse]](),
-		beginFailover:                  newTracker[azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse]](),
 		newListPager:                   newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]](),
 		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListAuthorizationRulesResponse]](),
 		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListByResourceGroupResponse]](),
+		newListNetworkRuleSetsPager:    newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListNetworkRuleSetsResponse]](),
 	}
 }
 
@@ -111,10 +111,10 @@ type NamespacesServerTransport struct {
 	srv                            *NamespacesServer
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armeventhub.NamespacesClientCreateOrUpdateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse]]
-	beginFailover                  *tracker[azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse]]
 	newListPager                   *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]]
 	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListAuthorizationRulesResponse]]
 	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListByResourceGroupResponse]]
+	newListNetworkRuleSetsPager    *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListNetworkRuleSetsResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespacesServerTransport.
@@ -125,53 +125,72 @@ func (n *NamespacesServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return n.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "NamespacesClient.CheckNameAvailability":
-		resp, err = n.dispatchCheckNameAvailability(req)
-	case "NamespacesClient.BeginCreateOrUpdate":
-		resp, err = n.dispatchBeginCreateOrUpdate(req)
-	case "NamespacesClient.CreateOrUpdateAuthorizationRule":
-		resp, err = n.dispatchCreateOrUpdateAuthorizationRule(req)
-	case "NamespacesClient.CreateOrUpdateNetworkRuleSet":
-		resp, err = n.dispatchCreateOrUpdateNetworkRuleSet(req)
-	case "NamespacesClient.BeginDelete":
-		resp, err = n.dispatchBeginDelete(req)
-	case "NamespacesClient.DeleteAuthorizationRule":
-		resp, err = n.dispatchDeleteAuthorizationRule(req)
-	case "NamespacesClient.BeginFailover":
-		resp, err = n.dispatchBeginFailover(req)
-	case "NamespacesClient.Get":
-		resp, err = n.dispatchGet(req)
-	case "NamespacesClient.GetAuthorizationRule":
-		resp, err = n.dispatchGetAuthorizationRule(req)
-	case "NamespacesClient.GetNetworkRuleSet":
-		resp, err = n.dispatchGetNetworkRuleSet(req)
-	case "NamespacesClient.NewListPager":
-		resp, err = n.dispatchNewListPager(req)
-	case "NamespacesClient.NewListAuthorizationRulesPager":
-		resp, err = n.dispatchNewListAuthorizationRulesPager(req)
-	case "NamespacesClient.NewListByResourceGroupPager":
-		resp, err = n.dispatchNewListByResourceGroupPager(req)
-	case "NamespacesClient.ListKeys":
-		resp, err = n.dispatchListKeys(req)
-	case "NamespacesClient.ListNetworkRuleSet":
-		resp, err = n.dispatchListNetworkRuleSet(req)
-	case "NamespacesClient.RegenerateKeys":
-		resp, err = n.dispatchRegenerateKeys(req)
-	case "NamespacesClient.Update":
-		resp, err = n.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (n *NamespacesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if namespacesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = namespacesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "NamespacesClient.CheckNameAvailability":
+				res.resp, res.err = n.dispatchCheckNameAvailability(req)
+			case "NamespacesClient.BeginCreateOrUpdate":
+				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
+			case "NamespacesClient.CreateOrUpdateAuthorizationRule":
+				res.resp, res.err = n.dispatchCreateOrUpdateAuthorizationRule(req)
+			case "NamespacesClient.CreateOrUpdateNetworkRuleSet":
+				res.resp, res.err = n.dispatchCreateOrUpdateNetworkRuleSet(req)
+			case "NamespacesClient.BeginDelete":
+				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NamespacesClient.DeleteAuthorizationRule":
+				res.resp, res.err = n.dispatchDeleteAuthorizationRule(req)
+			case "NamespacesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NamespacesClient.GetAuthorizationRule":
+				res.resp, res.err = n.dispatchGetAuthorizationRule(req)
+			case "NamespacesClient.GetMessagingPlan":
+				res.resp, res.err = n.dispatchGetMessagingPlan(req)
+			case "NamespacesClient.GetNetworkRuleSet":
+				res.resp, res.err = n.dispatchGetNetworkRuleSet(req)
+			case "NamespacesClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
+			case "NamespacesClient.NewListAuthorizationRulesPager":
+				res.resp, res.err = n.dispatchNewListAuthorizationRulesPager(req)
+			case "NamespacesClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NamespacesClient.ListKeys":
+				res.resp, res.err = n.dispatchListKeys(req)
+			case "NamespacesClient.NewListNetworkRuleSetsPager":
+				res.resp, res.err = n.dispatchNewListNetworkRuleSetsPager(req)
+			case "NamespacesClient.RegenerateKeys":
+				res.resp, res.err = n.dispatchRegenerateKeys(req)
+			case "NamespacesClient.Update":
+				res.resp, res.err = n.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (n *NamespacesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
@@ -181,7 +200,7 @@ func (n *NamespacesServerTransport) dispatchCheckNameAvailability(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.CheckNameAvailabilityParameter](req)
@@ -212,7 +231,7 @@ func (n *NamespacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armeventhub.EHNamespace](req)
@@ -258,7 +277,7 @@ func (n *NamespacesServerTransport) dispatchCreateOrUpdateAuthorizationRule(req 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.AuthorizationRule](req)
@@ -299,7 +318,7 @@ func (n *NamespacesServerTransport) dispatchCreateOrUpdateNetworkRuleSet(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkRuleSets/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.NetworkRuleSet](req)
@@ -338,7 +357,7 @@ func (n *NamespacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -380,7 +399,7 @@ func (n *NamespacesServerTransport) dispatchDeleteAuthorizationRule(req *http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -410,54 +429,6 @@ func (n *NamespacesServerTransport) dispatchDeleteAuthorizationRule(req *http.Re
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchBeginFailover(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginFailover == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginFailover not implemented")}
-	}
-	beginFailover := n.beginFailover.get(req)
-	if beginFailover == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventhub.FailOver](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginFailover(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginFailover = &respr
-		n.beginFailover.add(req, beginFailover)
-	}
-
-	resp, err := server.PollerResponderNext(beginFailover, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginFailover.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginFailover) {
-		n.beginFailover.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (n *NamespacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -465,7 +436,7 @@ func (n *NamespacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -481,8 +452,8 @@ func (n *NamespacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EHNamespace, req)
 	if err != nil {
@@ -498,7 +469,7 @@ func (n *NamespacesServerTransport) dispatchGetAuthorizationRule(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -528,6 +499,39 @@ func (n *NamespacesServerTransport) dispatchGetAuthorizationRule(req *http.Reque
 	return resp, nil
 }
 
+func (n *NamespacesServerTransport) dispatchGetMessagingPlan(req *http.Request) (*http.Response, error) {
+	if n.srv.GetMessagingPlan == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetMessagingPlan not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/messagingplan`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.GetMessagingPlan(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MessagingPlan, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (n *NamespacesServerTransport) dispatchGetNetworkRuleSet(req *http.Request) (*http.Response, error) {
 	if n.srv.GetNetworkRuleSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetNetworkRuleSet not implemented")}
@@ -535,7 +539,7 @@ func (n *NamespacesServerTransport) dispatchGetNetworkRuleSet(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkRuleSets/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -570,7 +574,7 @@ func (n *NamespacesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := n.srv.NewListPager(nil)
@@ -603,7 +607,7 @@ func (n *NamespacesServerTransport) dispatchNewListAuthorizationRulesPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -644,7 +648,7 @@ func (n *NamespacesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -679,7 +683,7 @@ func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -709,35 +713,43 @@ func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchListNetworkRuleSet(req *http.Request) (*http.Response, error) {
-	if n.srv.ListNetworkRuleSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListNetworkRuleSet not implemented")}
+func (n *NamespacesServerTransport) dispatchNewListNetworkRuleSetsPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListNetworkRuleSetsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListNetworkRuleSetsPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkRuleSets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListNetworkRuleSetsPager := n.newListNetworkRuleSetsPager.get(req)
+	if newListNetworkRuleSetsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkRuleSets`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListNetworkRuleSetsPager(resourceGroupNameParam, namespaceNameParam, nil)
+		newListNetworkRuleSetsPager = &resp
+		n.newListNetworkRuleSetsPager.add(req, newListNetworkRuleSetsPager)
+		server.PagerResponderInjectNextLinks(newListNetworkRuleSetsPager, req, func(page *armeventhub.NamespacesClientListNetworkRuleSetsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListNetworkRuleSetsPager, req)
 	if err != nil {
 		return nil, err
 	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListNetworkRuleSetsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	respr, errRespr := n.srv.ListNetworkRuleSet(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkRuleSetListResult, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListNetworkRuleSetsPager) {
+		n.newListNetworkRuleSetsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -749,7 +761,7 @@ func (n *NamespacesServerTransport) dispatchRegenerateKeys(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.RegenerateAccessKeyParameters](req)
@@ -790,7 +802,7 @@ func (n *NamespacesServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armeventhub.EHNamespace](req)
@@ -818,4 +830,10 @@ func (n *NamespacesServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to NamespacesServerTransport
+var namespacesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

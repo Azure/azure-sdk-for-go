@@ -1,5 +1,148 @@
 # Release History
 
+## 2.0.0 (2026-03-19)
+### Breaking Changes
+
+- `SKUNamePremium` from enum `SKUName` has been removed
+- `SKUTierPremium` from enum `SKUTier` has been removed
+- Enum `ApplicationGroupPolicyType` has been removed
+- Enum `CaptureIdentityType` has been removed
+- Enum `CleanupPolicyRetentionDescription` has been removed
+- Enum `ClusterSKUName` has been removed
+- Enum `CreatedByType` has been removed
+- Enum `EndPointProvisioningState` has been removed
+- Enum `ManagedServiceIdentityType` has been removed
+- Enum `MetricID` has been removed
+- Enum `NetworkSecurityPerimeterConfigurationProvisioningState` has been removed
+- Enum `NspAccessRuleDirection` has been removed
+- Enum `PrivateLinkConnectionStatus` has been removed
+- Enum `ProvisioningState` has been removed
+- Enum `PublicNetworkAccess` has been removed
+- Enum `PublicNetworkAccessFlag` has been removed
+- Enum `ResourceAssociationAccessMode` has been removed
+- Enum `SchemaCompatibility` has been removed
+- Enum `SchemaType` has been removed
+- Enum `TLSVersion` has been removed
+- Function `NewApplicationGroupClient` has been removed
+- Function `*ApplicationGroupClient.CreateOrUpdateApplicationGroup` has been removed
+- Function `*ApplicationGroupClient.Delete` has been removed
+- Function `*ApplicationGroupClient.Get` has been removed
+- Function `*ApplicationGroupClient.NewListByNamespacePager` has been removed
+- Function `*ApplicationGroupPolicy.GetApplicationGroupPolicy` has been removed
+- Function `*ClientFactory.NewApplicationGroupClient` has been removed
+- Function `*ClientFactory.NewClustersClient` has been removed
+- Function `*ClientFactory.NewConfigurationClient` has been removed
+- Function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationClient` has been removed
+- Function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient` has been removed
+- Function `*ClientFactory.NewPrivateEndpointConnectionsClient` has been removed
+- Function `*ClientFactory.NewPrivateLinkResourcesClient` has been removed
+- Function `*ClientFactory.NewSchemaRegistryClient` has been removed
+- Function `NewClustersClient` has been removed
+- Function `*ClustersClient.BeginCreateOrUpdate` has been removed
+- Function `*ClustersClient.BeginDelete` has been removed
+- Function `*ClustersClient.Get` has been removed
+- Function `*ClustersClient.ListAvailableClusterRegion` has been removed
+- Function `*ClustersClient.NewListByResourceGroupPager` has been removed
+- Function `*ClustersClient.NewListBySubscriptionPager` has been removed
+- Function `*ClustersClient.ListNamespaces` has been removed
+- Function `*ClustersClient.BeginUpdate` has been removed
+- Function `NewConfigurationClient` has been removed
+- Function `*ConfigurationClient.Get` has been removed
+- Function `*ConfigurationClient.Patch` has been removed
+- Function `NewPrivateEndpointConnectionsClient` has been removed
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` has been removed
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` has been removed
+- Function `*PrivateEndpointConnectionsClient.Get` has been removed
+- Function `*PrivateEndpointConnectionsClient.NewListPager` has been removed
+- Function `NewPrivateLinkResourcesClient` has been removed
+- Function `*PrivateLinkResourcesClient.Get` has been removed
+- Function `NewSchemaRegistryClient` has been removed
+- Function `*SchemaRegistryClient.CreateOrUpdate` has been removed
+- Function `*SchemaRegistryClient.Delete` has been removed
+- Function `*SchemaRegistryClient.Get` has been removed
+- Function `*SchemaRegistryClient.NewListByNamespacePager` has been removed
+- Function `*ThrottlingPolicy.GetApplicationGroupPolicy` has been removed
+- Function `*NamespacesClient.ListNetworkRuleSet` has been removed
+- Function `NewNetworkSecurityPerimeterConfigurationClient` has been removed
+- Function `*NetworkSecurityPerimeterConfigurationClient.List` has been removed
+- Function `NewNetworkSecurityPerimeterConfigurationsClient` has been removed
+- Function `*NetworkSecurityPerimeterConfigurationsClient.BeginCreateOrUpdate` has been removed
+- Struct `ApplicationGroup` has been removed
+- Struct `ApplicationGroupListResult` has been removed
+- Struct `ApplicationGroupProperties` has been removed
+- Struct `AvailableCluster` has been removed
+- Struct `AvailableClustersList` has been removed
+- Struct `CaptureIdentity` has been removed
+- Struct `Cluster` has been removed
+- Struct `ClusterListResult` has been removed
+- Struct `ClusterProperties` has been removed
+- Struct `ClusterQuotaConfigurationProperties` has been removed
+- Struct `ClusterSKU` has been removed
+- Struct `ConnectionState` has been removed
+- Struct `EHNamespaceIDContainer` has been removed
+- Struct `EHNamespaceIDListResult` has been removed
+- Struct `Encryption` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `Identity` has been removed
+- Struct `KeyVaultProperties` has been removed
+- Struct `NetworkSecurityPerimeter` has been removed
+- Struct `NetworkSecurityPerimeterConfiguration` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationList` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationProperties` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationPropertiesProfile` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation` has been removed
+- Struct `NspAccessRule` has been removed
+- Struct `NspAccessRuleProperties` has been removed
+- Struct `NspAccessRulePropertiesSubscriptionsItem` has been removed
+- Struct `PrivateEndpoint` has been removed
+- Struct `PrivateEndpointConnection` has been removed
+- Struct `PrivateEndpointConnectionListResult` has been removed
+- Struct `PrivateEndpointConnectionProperties` has been removed
+- Struct `PrivateLinkResource` has been removed
+- Struct `PrivateLinkResourceProperties` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `ProvisioningIssue` has been removed
+- Struct `ProvisioningIssueProperties` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `RetentionDescription` has been removed
+- Struct `SchemaGroup` has been removed
+- Struct `SchemaGroupListResult` has been removed
+- Struct `SchemaGroupProperties` has been removed
+- Struct `SystemData` has been removed
+- Struct `ThrottlingPolicy` has been removed
+- Struct `UserAssignedIdentity` has been removed
+- Struct `UserAssignedIdentityProperties` has been removed
+- Field `Location`, `SystemData` of struct `ArmDisasterRecovery` has been removed
+- Field `Location`, `SystemData` of struct `AuthorizationRule` has been removed
+- Field `Location`, `SystemData` of struct `ConsumerGroup` has been removed
+- Field `Identity` of struct `Destination` has been removed
+- Field `DataLakeAccountName`, `DataLakeFolderPath`, `DataLakeSubscriptionID` of struct `DestinationProperties` has been removed
+- Field `Identity`, `SystemData` of struct `EHNamespace` has been removed
+- Field `AlternateName`, `ClusterArmID`, `DisableLocalAuth`, `Encryption`, `MinimumTLSVersion`, `PrivateEndpointConnections`, `PublicNetworkAccess`, `Status`, `ZoneRedundant` of struct `EHNamespaceProperties` has been removed
+- Field `Error` of struct `ErrorResponse` has been removed
+- Field `Location`, `SystemData` of struct `Eventhub` has been removed
+- Field `Location`, `SystemData` of struct `NetworkRuleSet` has been removed
+- Field `PublicNetworkAccess`, `TrustedServiceAccessEnabled` of struct `NetworkRuleSetProperties` has been removed
+- Field `IsDataAction`, `Origin`, `Properties` of struct `Operation` has been removed
+- Field `Description` of struct `OperationDisplay` has been removed
+- Field `RetentionDescription`, `UserMetadata` of struct `Properties` has been removed
+
+### Features Added
+
+- New function `*ClientFactory.NewRegionsClient() *RegionsClient`
+- New function `NewRegionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegionsClient, error)`
+- New function `*RegionsClient.NewListBySKUPager(sku string, options *RegionsClientListBySKUOptions) *runtime.Pager[RegionsClientListBySKUResponse]`
+- New function `*NamespacesClient.GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientGetMessagingPlanOptions) (NamespacesClientGetMessagingPlanResponse, error)`
+- New function `*NamespacesClient.NewListNetworkRuleSetsPager(resourceGroupName string, namespaceName string, options *NamespacesClientListNetworkRuleSetsOptions) *runtime.Pager[NamespacesClientListNetworkRuleSetsResponse]`
+- New struct `MessagingPlan`
+- New struct `MessagingPlanProperties`
+- New struct `MessagingRegions`
+- New struct `MessagingRegionsListResult`
+- New struct `MessagingRegionsProperties`
+- New field `Code`, `Message` in struct `ErrorResponse`
+
+
 ## 1.4.0-beta.1 (2025-01-23)
 ### Features Added
 

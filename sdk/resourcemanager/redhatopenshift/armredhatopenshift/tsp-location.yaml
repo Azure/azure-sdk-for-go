@@ -1,0 +1,4 @@
+directory: specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/OpenShiftClusters
+commit: e7ce374273a5324c0f1d6706657a4d022dcec909
+repo: i-specs
+additionalDirectories: 

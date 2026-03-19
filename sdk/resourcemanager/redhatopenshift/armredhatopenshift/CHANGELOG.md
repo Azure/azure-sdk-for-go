@@ -1,5 +1,24 @@
 # Release History
 
+## 3.0.0 (2026-03-19)
+### Breaking Changes
+
+- Type of `Operation.Display` has been changed from `*Display` to `*OperationDisplay`
+- Type of `Operation.Origin` has been changed from `*string` to `*Origin`
+- Struct `Display` has been removed
+- Struct `OperationList` has been removed
+- Field `OperationList` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New struct `OperationDisplay`
+- New struct `OperationListResult`
+- New field `ActionType`, `IsDataAction` in struct `Operation`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+
+
 ## 2.0.0 (2026-01-23)
 ### Breaking Changes
 

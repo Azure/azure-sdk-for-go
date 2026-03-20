@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/CredentialSetCreate.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetCreate.json
 func ExampleCredentialSetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleCredentialSetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetDelete.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetDelete.json
 func ExampleCredentialSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleCredentialSetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetGet.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetGet.json
 func ExampleCredentialSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleCredentialSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetList.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetList.json
 func ExampleCredentialSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleCredentialSetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetUpdate.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetUpdate.json
 func ExampleCredentialSetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

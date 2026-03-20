@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachines_Get.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachines_Get.json
 func ExampleStandbyVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleStandbyVirtualMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
 func ExampleStandbyVirtualMachinesClient_NewListByStandbyVirtualMachinePoolResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

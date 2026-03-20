@@ -1,5 +1,53 @@
 # Release History
 
+## 0.10.0 (2026-03-20)
+### Breaking Changes
+
+- Function `NewClientFactory` parameter(s) have been changed from `(credential azcore.TokenCredential, options *arm.ClientOptions)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Enum `ColumnDataType` has been removed
+- Struct `Column` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Table` has been removed
+- Field `Interface` of struct `ClientResourcesHistoryResponse` has been removed
+
+### Features Added
+
+- New enum type `ChangeCategory` with values `ChangeCategorySystem`, `ChangeCategoryUser`
+- New enum type `ChangeType` with values `ChangeTypeCreate`, `ChangeTypeDelete`, `ChangeTypeUpdate`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `PropertyChangeType` with values `PropertyChangeTypeInsert`, `PropertyChangeTypeRemove`, `PropertyChangeTypeUpdate`
+- New enum type `ResultKind` with values `ResultKindBasic`
+- New function `*Client.NewGraphQueryClient() *GraphQueryClient`
+- New function `*Client.NewOperationsClient() *OperationsClient`
+- New function `*Client.ResourceChangeDetails(ctx context.Context, parameters ResourceChangeDetailsRequestParameters, options *ClientResourceChangeDetailsOptions) (ClientResourceChangeDetailsResponse, error)`
+- New function `*Client.ResourceChanges(ctx context.Context, parameters ResourceChangesRequestParameters, options *ClientResourceChangesOptions) (ClientResourceChangesResponse, error)`
+- New function `*ClientFactory.NewGraphQueryClient() *GraphQueryClient`
+- New function `NewGraphQueryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GraphQueryClient, error)`
+- New function `*GraphQueryClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, properties GraphQueryResource, options *GraphQueryClientCreateOrUpdateOptions) (GraphQueryClientCreateOrUpdateResponse, error)`
+- New function `*GraphQueryClient.Delete(ctx context.Context, resourceGroupName string, resourceName string, options *GraphQueryClientDeleteOptions) (GraphQueryClientDeleteResponse, error)`
+- New function `*GraphQueryClient.Get(ctx context.Context, resourceGroupName string, resourceName string, options *GraphQueryClientGetOptions) (GraphQueryClientGetResponse, error)`
+- New function `*GraphQueryClient.NewListBySubscriptionPager(options *GraphQueryClientListBySubscriptionOptions) *runtime.Pager[GraphQueryClientListBySubscriptionResponse]`
+- New function `*GraphQueryClient.NewListPager(resourceGroupName string, options *GraphQueryClientListOptions) *runtime.Pager[GraphQueryClientListResponse]`
+- New function `*GraphQueryClient.Update(ctx context.Context, resourceGroupName string, resourceName string, body GraphQueryUpdateParameters, options *GraphQueryClientUpdateOptions) (GraphQueryClientUpdateResponse, error)`
+- New struct `GraphQueryListResult`
+- New struct `GraphQueryProperties`
+- New struct `GraphQueryPropertiesUpdateParameters`
+- New struct `GraphQueryResource`
+- New struct `GraphQueryUpdateParameters`
+- New struct `ResourceChangeData`
+- New struct `ResourceChangeDataAfterSnapshot`
+- New struct `ResourceChangeDataBeforeSnapshot`
+- New struct `ResourceChangeDetailsRequestParameters`
+- New struct `ResourceChangeList`
+- New struct `ResourceChangesRequestParameters`
+- New struct `ResourceChangesRequestParametersInterval`
+- New struct `ResourcePropertyChange`
+- New struct `SystemData`
+- New field `Value` in struct `ClientResourcesHistoryResponse`
+- New field `NextLink` in struct `OperationListResult`
+
+
 ## 0.9.0 (2023-11-24)
 ### Features Added
 

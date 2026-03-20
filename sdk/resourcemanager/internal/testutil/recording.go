@@ -35,14 +35,6 @@ func StartProxy(pathToPackage string) func() {
 		if err != nil {
 			panic(fmt.Sprintf("Failed to remove location header sanitizer: %v", err))
 		}
-		// ignore api-version query parameter during playback matching to avoid
-		// re-recording when only the API version changes
-		err = recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
-			IgnoredQueryParameters: []string{"api-version"},
-		})
-		if err != nil {
-			panic(fmt.Sprintf("Failed to set default matcher: %v", err))
-		}
 
 		return func() {
 			err := recording.StopTestProxy(proxy)

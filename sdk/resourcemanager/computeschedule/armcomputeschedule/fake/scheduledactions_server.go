@@ -84,6 +84,10 @@ type ScheduledActionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	VirtualMachinesExecuteCreate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteCreateContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateResponse], errResp azfake.ErrorResponder)
 
+	// VirtualMachinesExecuteCreateFlex is the fake for method ScheduledActionsClient.VirtualMachinesExecuteCreateFlex
+	// HTTP status codes to indicate success: http.StatusOK
+	VirtualMachinesExecuteCreateFlex func(ctx context.Context, locationparameter string, body armcomputeschedule.ExecuteCreateFlexContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse], errResp azfake.ErrorResponder)
+
 	// VirtualMachinesExecuteDeallocate is the fake for method ScheduledActionsClient.VirtualMachinesExecuteDeallocate
 	// HTTP status codes to indicate success: http.StatusOK
 	VirtualMachinesExecuteDeallocate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteDeallocateContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse], errResp azfake.ErrorResponder)
@@ -201,6 +205,8 @@ func (s *ScheduledActionsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = s.dispatchVirtualMachinesCancelOperations(req)
 			case "ScheduledActionsClient.VirtualMachinesExecuteCreate":
 				res.resp, res.err = s.dispatchVirtualMachinesExecuteCreate(req)
+			case "ScheduledActionsClient.VirtualMachinesExecuteCreateFlex":
+				res.resp, res.err = s.dispatchVirtualMachinesExecuteCreateFlex(req)
 			case "ScheduledActionsClient.VirtualMachinesExecuteDeallocate":
 				res.resp, res.err = s.dispatchVirtualMachinesExecuteDeallocate(req)
 			case "ScheduledActionsClient.VirtualMachinesExecuteDelete":
@@ -818,6 +824,39 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteCreate(r
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CreateResourceOperationResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteCreateFlex(req *http.Request) (*http.Response, error) {
+	if s.srv.VirtualMachinesExecuteCreateFlex == nil {
+		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesExecuteCreateFlex not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeSchedule/locations/(?P<locationparameter>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesExecuteCreateFlex`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteCreateFlexContent](req)
+	if err != nil {
+		return nil, err
+	}
+	locationparameterParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationparameter")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.VirtualMachinesExecuteCreateFlex(req.Context(), locationparameterParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CreateFlexResourceOperationResponse, req)
 	if err != nil {
 		return nil, err
 	}

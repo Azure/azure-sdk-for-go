@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -93,6 +94,13 @@ var SpecialCharBlobTagsMap = map[string]string{
 	"go":              "written in golang",
 }
 
+func init() {
+	log.SetListener(func(event log.Event, msg string) {
+		fmt.Printf("[%s] %s\n", event, msg)
+	})
+	log.SetEvents(log.EventRequest, log.EventResponse)
+}
+
 func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
 
@@ -106,9 +114,9 @@ func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	}
 	return
 
-	//transport, err := recording.NewRecordingHTTPClient(t, nil)
-	//require.NoError(t, err)
-	//opts.Transport = transport
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	opts.Transport = transport
 }
 
 func GetClient(t *testing.T, accountType TestAccountType, options *azblob.ClientOptions) (*azblob.Client, error) {

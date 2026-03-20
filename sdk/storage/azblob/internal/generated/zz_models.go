@@ -78,6 +78,9 @@ type BlobItem struct {
 type BlobLayout struct {
 	Endpoints *BlobLayoutEndpoints `xml:"Endpoints"`
 
+	// The continuation marker used for this request.
+	Marker *string `xml:"Marker"`
+
 	// The maximum number of ranges to return per request.
 	MaxResults *int32 `xml:"MaxResults"`
 

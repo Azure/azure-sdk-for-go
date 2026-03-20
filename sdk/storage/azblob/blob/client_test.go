@@ -20,11 +20,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -34,6 +32,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
@@ -4620,4 +4619,35 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKScope() {
 		_, err = pager.NextPage(context.Background())
 		_require.NoError(err)
 	}
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDownloadBufferWithLayoutAwareRouting() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create a blob with enough data to test chunked download
+	blobSize := 100 * 1024 * 1024 // 10 MiB
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+	blobContentReader, expectedData := testcommon.GenerateData(blobSize)
+
+	_, err = bbClient.UploadStream(context.Background(), blobContentReader, &azblob.UploadStreamOptions{
+		BlockSize: 4 * 1024 * 1024, // 4 MiB block size to ensure multiple chunks
+	})
+	_require.NoError(err)
+
+	// Test with EnableLayoutAwareRouting = true
+	buff := make([]byte, blobSize)
+	_, err = bbClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
+		EnableLayoutAwareRouting: true,
+		BlockSize:                4 * 1024 * 1024, // 4 MiB blocks
+	})
+	_require.NoError(err)
+	_require.Equal(expectedData, buff)
 }

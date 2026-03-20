@@ -38,11 +38,12 @@ func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layo
 		if err != nil {
 			return layout{}, time.Time{}, err
 		}
-		contentLength = *resp.ContentLength
+		contentLength = *resp.BlobContentLength
 		if eTag == nil {
 			eTag = resp.ETag
 		}
-		if len(resp.BlobLayout.Endpoints.Endpoint) == 0 {
+		if resp.BlobLayout.Endpoints == nil || resp.BlobLayout.Endpoints.Endpoint == nil || len(resp.BlobLayout.Endpoints.Endpoint) == 0 ||
+			resp.BlobLayout.Ranges == nil || resp.BlobLayout.Ranges.Range == nil || len(resp.BlobLayout.Ranges.Range) == 0 {
 			// No layout means we can download the whole blob from the primary endpoint.
 			return layout{contentLength: contentLength, eTag: eTag}, time.Time{}, nil
 		}

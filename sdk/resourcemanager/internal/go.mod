@@ -2,6 +2,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3
 
 go 1.24.0
 
+replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../../internal
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.20.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2

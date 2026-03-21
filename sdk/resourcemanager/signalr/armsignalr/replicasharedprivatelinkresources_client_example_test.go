@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/SignalRSharedPrivateLinkResources_CreateOrUpdate.json
-func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2025-01-01-preview/SignalRReplicaSharedPrivateLinkResources_CreateOrUpdate.json
+func ExampleReplicaSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSharedPrivateLinkResourcesClient().BeginCreateOrUpdate(ctx, "upstream", "myResourceGroup", "mySignalRService", armsignalr.SharedPrivateLinkResource{
+	poller, err := clientFactory.NewReplicaSharedPrivateLinkResourcesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "mySignalRService", "mySignalRService-eastus", "upstream", armsignalr.SharedPrivateLinkResource{
 		Properties: &armsignalr.SharedPrivateLinkResourceProperties{
 			GroupID:               to.Ptr("sites"),
 			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Web/sites/myWebApp"),
@@ -40,7 +40,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsignalr.SharedPrivateLinkResourcesClientCreateOrUpdateResponse{
+	// res = armsignalr.ReplicaSharedPrivateLinkResourcesClientCreateOrUpdateResponse{
 	// 	SharedPrivateLinkResource: &armsignalr.SharedPrivateLinkResource{
 	// 		Name: to.Ptr("upstream"),
 	// 		Type: to.Ptr("Microsoft.SignalRService/SignalR/privateEndpointConnections"),
@@ -56,8 +56,8 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/SignalRSharedPrivateLinkResources_Delete.json
-func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
+// Generated from example definition: 2025-01-01-preview/SignalRReplicaSharedPrivateLinkResources_Get.json
+func ExampleReplicaSharedPrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -67,40 +67,14 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSharedPrivateLinkResourcesClient().BeginDelete(ctx, "upstream", "myResourceGroup", "mySignalRService", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsignalr.SharedPrivateLinkResourcesClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2025-01-01-preview/SignalRSharedPrivateLinkResources_Get.json
-func ExampleSharedPrivateLinkResourcesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsignalr.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewSharedPrivateLinkResourcesClient().Get(ctx, "upstream", "myResourceGroup", "mySignalRService", nil)
+	res, err := clientFactory.NewReplicaSharedPrivateLinkResourcesClient().Get(ctx, "myResourceGroup", "mySignalRService", "mySignalRService-eastus", "upstream", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsignalr.SharedPrivateLinkResourcesClientGetResponse{
+	// res = armsignalr.ReplicaSharedPrivateLinkResourcesClientGetResponse{
 	// 	SharedPrivateLinkResource: &armsignalr.SharedPrivateLinkResource{
 	// 		Name: to.Ptr("upstream"),
 	// 		Type: to.Ptr("Microsoft.SignalRService/SignalR/privateEndpointConnections"),
@@ -116,8 +90,8 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/SignalRSharedPrivateLinkResources_List.json
-func ExampleSharedPrivateLinkResourcesClient_NewListPager() {
+// Generated from example definition: 2025-01-01-preview/SignalRReplicaSharedPrivateLinkResources_List.json
+func ExampleReplicaSharedPrivateLinkResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,7 +101,7 @@ func ExampleSharedPrivateLinkResourcesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSharedPrivateLinkResourcesClient().NewListPager("myResourceGroup", "mySignalRService", nil)
+	pager := clientFactory.NewReplicaSharedPrivateLinkResourcesClient().NewListPager("myResourceGroup", "mySignalRService", "mySignalRService-eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -138,7 +112,7 @@ func ExampleSharedPrivateLinkResourcesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsignalr.SharedPrivateLinkResourcesClientListResponse{
+		// page = armsignalr.ReplicaSharedPrivateLinkResourcesClientListResponse{
 		// 	SharedPrivateLinkResourceList: armsignalr.SharedPrivateLinkResourceList{
 		// 		Value: []*armsignalr.SharedPrivateLinkResource{
 		// 			{

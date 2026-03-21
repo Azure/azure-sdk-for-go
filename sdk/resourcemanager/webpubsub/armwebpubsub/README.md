@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Web PubSub module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub/v2
 ```
 
 ## Authorization

@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Dynatrace.Observability": "2024-04-24"
+  },
+  "emitterVersion": "0.10.2"
+}

@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.ConfidentialLedger": "2025-06-10-preview"
+  },
+  "emitterVersion": "0.10.2"
+}

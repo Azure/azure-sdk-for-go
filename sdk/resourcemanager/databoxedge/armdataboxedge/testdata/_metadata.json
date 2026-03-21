@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.DataBoxEdge": "2023-12-01"
+  },
+  "emitterVersion": "0.10.2"
+}

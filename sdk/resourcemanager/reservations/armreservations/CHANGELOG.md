@@ -1,5 +1,65 @@
 # Release History
 
+## 4.0.0 (2026-03-12)
+### Breaking Changes
+
+- Function `NewClientFactory` parameter(s) have been changed from `(credential azcore.TokenCredential, options *arm.ClientOptions)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Function `NewQuotaClient` parameter(s) have been changed from `(credential azcore.TokenCredential, options *arm.ClientOptions)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Function `*QuotaClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions)`
+- Function `*QuotaClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions)` to `(ctx context.Context, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions)`
+- Function `*QuotaClient.Get` parameter(s) have been changed from `(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, options *QuotaClientGetOptions)` to `(ctx context.Context, providerID string, location string, resourceName string, options *QuotaClientGetOptions)`
+- Function `*QuotaClient.NewListPager` parameter(s) have been changed from `(subscriptionID string, providerID string, location string, options *QuotaClientListOptions)` to `(providerID string, location string, options *QuotaClientListOptions)`
+- Function `NewQuotaRequestStatusClient` parameter(s) have been changed from `(credential azcore.TokenCredential, options *arm.ClientOptions)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Function `*QuotaRequestStatusClient.Get` parameter(s) have been changed from `(ctx context.Context, subscriptionID string, providerID string, location string, id string, options *QuotaRequestStatusClientGetOptions)` to `(ctx context.Context, providerID string, location string, id string, options *QuotaRequestStatusClientGetOptions)`
+- Function `*QuotaRequestStatusClient.NewListPager` parameter(s) have been changed from `(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions)` to `(providerID string, location string, options *QuotaRequestStatusClientListOptions)`
+- Enum `DisplayProvisioningState` has been removed
+- Enum `Location` has been removed
+- Enum `UserFriendlyAppliedScopeType` has been removed
+- Enum `UserFriendlyRenewState` has been removed
+- Function `NewAzureReservationAPIClient` has been removed
+- Function `*AzureReservationAPIClient.GetAppliedReservationList` has been removed
+- Function `*AzureReservationAPIClient.NewGetCatalogPager` has been removed
+- Function `*ClientFactory.NewAzureReservationAPIClient` has been removed
+- Struct `CreateGenericQuotaRequestParameters` has been removed
+- Struct `CurrentQuotaLimit` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExceptionResponse` has been removed
+- Struct `ExtendedErrorInfo` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `QuotaLimitsResponse` has been removed
+- Struct `QuotaRequestOneResourceProperties` has been removed
+- Struct `QuotaRequestOneResourceSubmitResponse` has been removed
+- Struct `QuotaRequestStatusDetails` has been removed
+- Struct `QuotaRequestSubmitResponse` has been removed
+- Struct `QuotaRequestSubmitResponse201` has been removed
+- Struct `RefundResponse` has been removed
+- Struct `Resource` has been removed
+- Struct `ServiceError` has been removed
+- Struct `ServiceErrorDetail` has been removed
+- Field `ReservationResponseArray` of struct `ReservationClientMergeResponse` has been removed
+- Field `ReservationResponseArray` of struct `ReservationClientSplitResponse` has been removed
+
+### Features Added
+
+- New function `NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error)`
+- New function `*Client.GetAppliedReservationList(ctx context.Context, options *ClientGetAppliedReservationListOptions) (ClientGetAppliedReservationListResponse, error)`
+- New function `*Client.NewGetCatalogPager(options *ClientGetCatalogOptions) *runtime.Pager[ClientGetCatalogResponse]`
+- New function `*Client.NewCalculateExchangeClient() *CalculateExchangeClient`
+- New function `*Client.NewCalculateRefundClient() *CalculateRefundClient`
+- New function `*Client.NewExchangeClient() *ExchangeClient`
+- New function `*Client.NewOperationClient() *OperationClient`
+- New function `*Client.NewQuotaClient() *QuotaClient`
+- New function `*Client.NewQuotaRequestStatusClient() *QuotaRequestStatusClient`
+- New function `*Client.NewReservationClient() *ReservationClient`
+- New function `*Client.NewReservationOrderClient() *ReservationOrderClient`
+- New function `*Client.NewReturnClient() *ReturnClient`
+- New function `*ClientFactory.NewClient() *Client`
+- New field `SystemData` in struct `CurrentQuotaLimitBase`
+- New field `SystemData` in struct `QuotaRequestDetails`
+
+
 ## 3.1.0 (2023-11-24)
 ### Features Added
 

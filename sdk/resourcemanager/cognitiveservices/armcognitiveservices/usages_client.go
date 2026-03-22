@@ -42,7 +42,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - Get usages for the requested subscription
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - location - Resource location.
 //   - options - UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 func (client *UsagesClient) NewListPager(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
@@ -87,7 +87,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

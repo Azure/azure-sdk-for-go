@@ -125,6 +125,110 @@ type AccountsClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AgentApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentApplicationsClient.BeginCreateOrUpdate
+// method.
+type AgentApplicationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentApplicationsClientBeginDeleteOptions contains the optional parameters for the AgentApplicationsClient.BeginDelete
+// method.
+type AgentApplicationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentApplicationsClientDisableOptions contains the optional parameters for the AgentApplicationsClient.Disable method.
+type AgentApplicationsClientDisableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentApplicationsClientEnableOptions contains the optional parameters for the AgentApplicationsClient.Enable method.
+type AgentApplicationsClientEnableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentApplicationsClientGetOptions contains the optional parameters for the AgentApplicationsClient.Get method.
+type AgentApplicationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentApplicationsClientListAgentsOptions contains the optional parameters for the AgentApplicationsClient.ListAgents method.
+type AgentApplicationsClientListAgentsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentApplicationsClientListOptions contains the optional parameters for the AgentApplicationsClient.NewListPager method.
+type AgentApplicationsClientListOptions struct {
+	// Number of agent applications to be retrieved in a page of results.
+	Count *int32
+
+	// Names of agent applications to retrieve.
+	Names []string
+
+	// Field to order by.
+	OrderBy *string
+
+	// Whether to order in ascending order.
+	OrderByAsc *bool
+
+	// Search text for filtering agent applications.
+	SearchText *string
+
+	// Number of agent applications to skip.
+	Skip *int32
+
+	// Continuation token for pagination.
+	SkipToken *string
+}
+
+// AgentDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentDeploymentsClient.BeginCreateOrUpdate
+// method.
+type AgentDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentDeploymentsClientBeginDeleteOptions contains the optional parameters for the AgentDeploymentsClient.BeginDelete method.
+type AgentDeploymentsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentDeploymentsClientGetOptions contains the optional parameters for the AgentDeploymentsClient.Get method.
+type AgentDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentDeploymentsClientListOptions contains the optional parameters for the AgentDeploymentsClient.NewListPager method.
+type AgentDeploymentsClientListOptions struct {
+	// Number of agent deployments to be retrieved in a page of results.
+	Count *int32
+
+	// Names of agent deployments to retrieve.
+	Names []string
+
+	// Field to order by.
+	OrderBy *string
+
+	// Whether to order in ascending order.
+	OrderByAsc *bool
+
+	// Continuation token for pagination.
+	SkipToken *string
+}
+
+// AgentDeploymentsClientStartOptions contains the optional parameters for the AgentDeploymentsClient.Start method.
+type AgentDeploymentsClientStartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentDeploymentsClientStopOptions contains the optional parameters for the AgentDeploymentsClient.Stop method.
+type AgentDeploymentsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CommitmentPlansClientBeginCreateOrUpdateAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdateAssociation
 // method.
 type CommitmentPlansClientBeginCreateOrUpdateAssociationOptions struct {
@@ -288,6 +392,16 @@ type DeploymentsClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DeploymentsClientPauseOptions contains the optional parameters for the DeploymentsClient.Pause method.
+type DeploymentsClientPauseOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientResumeOptions contains the optional parameters for the DeploymentsClient.Resume method.
+type DeploymentsClientResumeOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EncryptionScopesClientBeginDeleteOptions contains the optional parameters for the EncryptionScopesClient.BeginDelete method.
 type EncryptionScopesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -313,6 +427,44 @@ type EncryptionScopesClientListOptions struct {
 // LocationBasedModelCapacitiesClientListOptions contains the optional parameters for the LocationBasedModelCapacitiesClient.NewListPager
 // method.
 type LocationBasedModelCapacitiesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions contains the optional parameters for the ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork
+// method.
+type ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions struct {
+	// Managed Network Provisioning Options for a cognitive services account.
+	Body any
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedNetworkSettingsClientBeginPatchOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPatch
+// method.
+type ManagedNetworkSettingsClientBeginPatchOptions struct {
+	// The Managed Network Settings object of the account.
+	Body *ManagedNetworkSettingsPropertiesBasicResource
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedNetworkSettingsClientBeginPutOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPut
+// method.
+type ManagedNetworkSettingsClientBeginPutOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedNetworkSettingsClientGetOptions contains the optional parameters for the ManagedNetworkSettingsClient.Get method.
+type ManagedNetworkSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedNetworkSettingsClientListOptions contains the optional parameters for the ManagedNetworkSettingsClient.NewListPager
+// method.
+type ManagedNetworkSettingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -366,6 +518,35 @@ type NetworkSecurityPerimeterConfigurationsClientListOptions struct {
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OutboundRuleClientBeginCreateOrUpdateOptions contains the optional parameters for the OutboundRuleClient.BeginCreateOrUpdate
+// method.
+type OutboundRuleClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// OutboundRuleClientBeginDeleteOptions contains the optional parameters for the OutboundRuleClient.BeginDelete method.
+type OutboundRuleClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// OutboundRuleClientGetOptions contains the optional parameters for the OutboundRuleClient.Get method.
+type OutboundRuleClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OutboundRuleClientListOptions contains the optional parameters for the OutboundRuleClient.NewListPager method.
+type OutboundRuleClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OutboundRulesClientBeginPostOptions contains the optional parameters for the OutboundRulesClient.BeginPost method.
+type OutboundRulesClientBeginPostOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -572,6 +753,31 @@ type RaiContentFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RaiExternalSafetyProviderClientBeginDeleteOptions contains the optional parameters for the RaiExternalSafetyProviderClient.BeginDelete
+// method.
+type RaiExternalSafetyProviderClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RaiExternalSafetyProviderClientCreateOrUpdateOptions contains the optional parameters for the RaiExternalSafetyProviderClient.CreateOrUpdate
+// method.
+type RaiExternalSafetyProviderClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiExternalSafetyProviderClientGetOptions contains the optional parameters for the RaiExternalSafetyProviderClient.Get
+// method.
+type RaiExternalSafetyProviderClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiExternalSafetyProvidersClientListOptions contains the optional parameters for the RaiExternalSafetyProvidersClient.NewListPager
+// method.
+type RaiExternalSafetyProvidersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // RaiPoliciesClientBeginDeleteOptions contains the optional parameters for the RaiPoliciesClient.BeginDelete method.
 type RaiPoliciesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -590,6 +796,27 @@ type RaiPoliciesClientGetOptions struct {
 
 // RaiPoliciesClientListOptions contains the optional parameters for the RaiPoliciesClient.NewListPager method.
 type RaiPoliciesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiToolLabelsClientBeginDeleteOptions contains the optional parameters for the RaiToolLabelsClient.BeginDelete method.
+type RaiToolLabelsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RaiToolLabelsClientCreateOrUpdateOptions contains the optional parameters for the RaiToolLabelsClient.CreateOrUpdate method.
+type RaiToolLabelsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiToolLabelsClientGetOptions contains the optional parameters for the RaiToolLabelsClient.Get method.
+type RaiToolLabelsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiToolLabelsClientListOptions contains the optional parameters for the RaiToolLabelsClient.NewListPager method.
+type RaiToolLabelsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -616,6 +843,30 @@ type RaiTopicsClientListOptions struct {
 
 // ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
 type ResourceSKUsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionRaiPolicyClientBeginDeleteOptions contains the optional parameters for the SubscriptionRaiPolicyClient.BeginDelete
+// method.
+type SubscriptionRaiPolicyClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionRaiPolicyClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionRaiPolicyClient.CreateOrUpdate
+// method.
+type SubscriptionRaiPolicyClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionRaiPolicyClientGetOptions contains the optional parameters for the SubscriptionRaiPolicyClient.Get method.
+type SubscriptionRaiPolicyClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TestRaiExternalSafetyProviderClientCreateOrUpdateOptions contains the optional parameters for the TestRaiExternalSafetyProviderClient.CreateOrUpdate
+// method.
+type TestRaiExternalSafetyProviderClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

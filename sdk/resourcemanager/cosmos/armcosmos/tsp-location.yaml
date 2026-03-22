@@ -1,0 +1,4 @@
+directory: specification/cosmos-db/CosmosDB.Management
+commit: 127a77dbab999acf7c29be1139d066afedace172
+repo: i-specs
+additionalDirectories: 

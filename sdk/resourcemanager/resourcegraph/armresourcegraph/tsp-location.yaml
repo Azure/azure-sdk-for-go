@@ -1,0 +1,4 @@
+directory: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/ResourceGraph
+commit: ff61d7ad64cc9ef929ddeb21cc854a66108119da
+repo: i-specs
+additionalDirectories: 

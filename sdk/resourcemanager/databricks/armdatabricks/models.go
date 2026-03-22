@@ -7,7 +7,7 @@ package armdatabricks
 
 import "time"
 
-// AccessConnector - Information about azure databricks accessConnector.
+// AccessConnector - Information about Azure Databricks Access Connector.
 type AccessConnector struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -15,7 +15,7 @@ type AccessConnector struct {
 	// Managed service identity (system assigned and/or user assigned identities)
 	Identity *ManagedServiceIdentity
 
-	// Azure Databricks accessConnector properties
+	// Azure Databricks Access Connector properties
 	Properties *AccessConnectorProperties
 
 	// Resource tags.
@@ -34,21 +34,24 @@ type AccessConnector struct {
 	Type *string
 }
 
-// AccessConnectorListResult - List of azure databricks accessConnector.
+// AccessConnectorListResult - List of Azure Databricks Access Connector.
 type AccessConnectorListResult struct {
 	// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// The array of azure databricks accessConnector.
+	// The array of Azure Databricks Access Connector.
 	Value []*AccessConnector
 }
 
 type AccessConnectorProperties struct {
-	// READ-ONLY; Provisioning status of the accessConnector.
+	// READ-ONLY; Provisioning status of the Access Connector.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; List of workspaces referring this Access Connector.
+	ReferedBy []*string
 }
 
-// AccessConnectorUpdate - An update to an azure databricks accessConnector.
+// AccessConnectorUpdate - An update to an Azure Databricks Access Connector.
 type AccessConnectorUpdate struct {
 	// Managed service identity (system assigned and/or user assigned identities)
 	Identity *ManagedServiceIdentity
@@ -63,6 +66,18 @@ type AddressSpace struct {
 	AddressPrefixes []*string
 }
 
+// AutomaticClusterUpdateDefinition - Status of automated cluster updates feature.
+type AutomaticClusterUpdateDefinition struct {
+	Value *AutomaticClusterUpdateValue
+}
+
+// ComplianceSecurityProfileDefinition - Status of Compliance Security Profile feature.
+type ComplianceSecurityProfileDefinition struct {
+	// Compliance standards associated with the workspace.
+	ComplianceStandards []*string
+	Value               *ComplianceSecurityProfileValue
+}
+
 // CreatedBy - Provides details of the entity that created/updated the workspace.
 type CreatedBy struct {
 	// READ-ONLY; The application ID of the application that initiated the creation of the workspace. For example, Azure Portal.
@@ -73,6 +88,16 @@ type CreatedBy struct {
 
 	// READ-ONLY; The Personal Object ID corresponding to the object ID above
 	Puid *string
+}
+
+// DefaultCatalogProperties - These properties lets user specify default catalog properties during workspace creation. Not
+// allowed in Serverless ComputeMode workspace.
+type DefaultCatalogProperties struct {
+	// Specifies the initial Name of default catalog. If not specified, the name of the workspace will be used.
+	InitialName *string
+
+	// Defines the initial type of the default catalog. Possible values (case-insensitive): HiveMetastore, UnityCatalog
+	InitialType *InitialType
 }
 
 // Encryption - The object that contains details of encryption used on the workspace.
@@ -92,10 +117,10 @@ type Encryption struct {
 
 // EncryptionEntitiesDefinition - Encryption entities for databricks workspace resource.
 type EncryptionEntitiesDefinition struct {
-	// Encryption properties for the databricks managed disks.
+	// Encryption properties for the databricks managed disks. Not allowed in Serverless ComputeMode workspace.
 	ManagedDisk *ManagedDiskEncryption
 
-	// Encryption properties for the databricks managed services.
+	// Encryption properties for the databricks managed services. Supported in both Serverless and Hybrid ComputeMode.
 	ManagedServices *EncryptionV2
 }
 
@@ -144,6 +169,23 @@ type EndpointDetail struct {
 	Port *int32
 }
 
+// EnhancedSecurityComplianceDefinition - Status of settings related to the Enhanced Security and Compliance Add-On.
+type EnhancedSecurityComplianceDefinition struct {
+	// Status of automated cluster updates feature.
+	AutomaticClusterUpdate *AutomaticClusterUpdateDefinition
+
+	// Status of Compliance Security Profile feature.
+	ComplianceSecurityProfile *ComplianceSecurityProfileDefinition
+
+	// Status of Enhanced Security Monitoring feature.
+	EnhancedSecurityMonitoring *EnhancedSecurityMonitoringDefinition
+}
+
+// EnhancedSecurityMonitoringDefinition - Status of Enhanced Security Monitoring feature.
+type EnhancedSecurityMonitoringDefinition struct {
+	Value *EnhancedSecurityMonitoringValue
+}
+
 // GroupIDInformation - The group information for creating a private endpoint on a workspace
 type GroupIDInformation struct {
 	// REQUIRED; The group id properties.
@@ -173,7 +215,8 @@ type GroupIDInformationProperties struct {
 
 // ManagedDiskEncryption - The object that contains details of encryption used on the workspace.
 type ManagedDiskEncryption struct {
-	// REQUIRED; The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault
+	// REQUIRED; The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault. Not allowed in Serverless
+	// ComputeMode workspace.
 	KeySource *EncryptionKeySource
 
 	// REQUIRED; Key Vault input properties for encryption.
@@ -270,13 +313,13 @@ type OutboundEnvironmentEndpoint struct {
 	Endpoints []*EndpointDependency
 }
 
-// PrivateEndpoint - The private endpoint property of a private endpoint connection
+// PrivateEndpoint - The private endpoint property of a private endpoint connection.
 type PrivateEndpoint struct {
 	// READ-ONLY; The resource identifier.
 	ID *string
 }
 
-// PrivateEndpointConnection - The private endpoint connection of a workspace
+// PrivateEndpointConnection - The private endpoint connection of a workspace.
 type PrivateEndpointConnection struct {
 	// REQUIRED; The private endpoint connection properties.
 	Properties *PrivateEndpointConnectionProperties
@@ -291,7 +334,7 @@ type PrivateEndpointConnection struct {
 	Type *string
 }
 
-// PrivateEndpointConnectionProperties - The properties of a private endpoint connection
+// PrivateEndpointConnectionProperties - The properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; Private endpoint connection state
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
@@ -324,7 +367,7 @@ type PrivateLinkResourcesList struct {
 	Value []*GroupIDInformation
 }
 
-// PrivateLinkServiceConnectionState - The current state of a private endpoint connection
+// PrivateLinkServiceConnectionState - The current state of a private endpoint connection.
 type PrivateLinkServiceConnectionState struct {
 	// REQUIRED; The status of a private endpoint connection
 	Status *PrivateLinkServiceConnectionStatus
@@ -481,7 +524,7 @@ type WorkspaceCustomBooleanParameter struct {
 	// REQUIRED; The value which should be used for this field.
 	Value *bool
 
-	// READ-ONLY; The type of variable that this is
+	// The type of variable that this is
 	Type *CustomParameterType
 }
 
@@ -490,59 +533,69 @@ type WorkspaceCustomObjectParameter struct {
 	// REQUIRED; The value which should be used for this field.
 	Value any
 
-	// READ-ONLY; The type of variable that this is
+	// The type of variable that this is
 	Type *CustomParameterType
 }
 
-// WorkspaceCustomParameters - Custom Parameters used for Cluster Creation.
+// WorkspaceCustomParameters - Custom Parameters used for Workspace Creation. Not allowed in Serverless ComputeMode workspace.
 type WorkspaceCustomParameters struct {
-	// The ID of a Azure Machine Learning workspace to link with Databricks workspace
+	// The ID of a Azure Machine Learning workspace to link with Databricks workspace. Not allowed in Serverless ComputeMode workspace.
 	AmlWorkspaceID *WorkspaceCustomStringParameter
 
-	// The name of the Private Subnet within the Virtual Network
+	// The name of the Private Subnet within the Virtual Network. Not allowed in Serverless ComputeMode workspace.
 	CustomPrivateSubnetName *WorkspaceCustomStringParameter
 
-	// The name of a Public Subnet within the Virtual Network
+	// The name of a Public Subnet within the Virtual Network. Not allowed in Serverless ComputeMode workspace.
 	CustomPublicSubnetName *WorkspaceCustomStringParameter
 
-	// The ID of a Virtual Network where this Databricks Cluster should be created
+	// The ID of a Virtual Network where this Databricks Cluster should be created. Not allowed in Serverless ComputeMode workspace.
 	CustomVirtualNetworkID *WorkspaceCustomStringParameter
 
-	// Should the Public IP be Disabled?
-	EnableNoPublicIP *WorkspaceCustomBooleanParameter
+	// Boolean indicating whether the public IP should be disabled. Default value is true. Not allowed in Serverless ComputeMode
+	// workspace.
+	EnableNoPublicIP *WorkspaceNoPublicIPBooleanParameter
 
-	// Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.
+	// Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.Not allowed in Serverless ComputeMode
+	// workspace.
 	Encryption *WorkspaceEncryptionParameter
 
-	// Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).
+	// Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP). Not allowed in Serverless
+	// ComputeMode workspace.
 	LoadBalancerBackendPoolName *WorkspaceCustomStringParameter
 
-	// Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace.
+	// Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace. Not allowed in Serverless
+	// ComputeMode workspace.
 	LoadBalancerID *WorkspaceCustomStringParameter
 
-	// Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets.
+	// Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets. Not allowed in Serverless ComputeMode
+	// workspace.
 	NatGatewayName *WorkspaceCustomStringParameter
 
-	// Prepare the workspace for encryption. Enables the Managed Identity for managed storage account.
+	// Prepare the workspace for encryption. Enables the Managed Identity for managed storage account. Not allowed in Serverless
+	// ComputeMode workspace.
 	PrepareEncryption *WorkspaceCustomBooleanParameter
 
-	// Name of the Public IP for No Public IP workspace with managed vNet.
+	// Name of the Public IP for No Public IP workspace with managed vNet. Not allowed in Serverless ComputeMode workspace.
 	PublicIPName *WorkspaceCustomStringParameter
 
 	// A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform
-	// managed keys for data at rest.
+	// managed keys for data at rest. Not allowed in Serverless ComputeMode
+	// workspace.
 	RequireInfrastructureEncryption *WorkspaceCustomBooleanParameter
 
-	// Default DBFS storage account name.
+	// Default DBFS storage account name. Not allowed in Serverless ComputeMode workspace.
 	StorageAccountName *WorkspaceCustomStringParameter
 
-	// Storage account SKU name, ex: StandardGRS, StandardLRS. Refer https://aka.ms/storageskus for valid inputs.
+	// Storage account SKU name, ex: StandardGRS, StandardLRS. Refer https://aka.ms/storageskus for valid inputs. Not allowed
+	// in Serverless ComputeMode workspace.
 	StorageAccountSKUName *WorkspaceCustomStringParameter
 
-	// Address prefix for Managed virtual network. Default value for this input is 10.139.
+	// Address prefix for Managed virtual network. Default value for this input is 10.139. Not allowed in Serverless ComputeMode
+	// workspace.
 	VnetAddressPrefix *WorkspaceCustomStringParameter
 
 	// READ-ONLY; Tags applied to resources under Managed resource group. These can be updated by updating tags at workspace level.
+	// Not allowed in Serverless ComputeMode workspace.
 	ResourceTags *WorkspaceCustomObjectParameter
 }
 
@@ -551,17 +604,17 @@ type WorkspaceCustomStringParameter struct {
 	// REQUIRED; The value which should be used for this field.
 	Value *string
 
-	// READ-ONLY; The type of variable that this is
+	// The type of variable that this is
 	Type *CustomParameterType
 }
 
 // WorkspaceEncryptionParameter - The object that contains details of encryption used on the workspace.
 type WorkspaceEncryptionParameter struct {
+	// The type of variable that this is
+	Type *CustomParameterType
+
 	// The value which should be used for this field.
 	Value *Encryption
-
-	// READ-ONLY; The type of variable that this is
-	Type *CustomParameterType
 }
 
 // WorkspaceListResult - List of workspaces.
@@ -573,10 +626,23 @@ type WorkspaceListResult struct {
 	Value []*Workspace
 }
 
+// WorkspaceNoPublicIPBooleanParameter - The value which should be used for this field.
+type WorkspaceNoPublicIPBooleanParameter struct {
+	// REQUIRED; The value which should be used for this field.
+	Value *bool
+
+	// The type of variable that this is
+	Type *CustomParameterType
+}
+
 // WorkspaceProperties - The workspace properties.
 type WorkspaceProperties struct {
-	// REQUIRED; The managed resource group Id.
-	ManagedResourceGroupID *string
+	// REQUIRED; The workspace compute mode. Required on create, cannot be changed. Possible values include: 'Serverless', 'Hybrid'
+	ComputeMode *ComputeMode
+
+	// Access Connector Resource that is going to be associated with Databricks Workspace. Not allowed in Serverless ComputeMode
+	// workspace.
+	AccessConnector *WorkspacePropertiesAccessConnector
 
 	// The workspace provider authorizations.
 	Authorizations []*WorkspaceProviderAuthorization
@@ -584,24 +650,39 @@ type WorkspaceProperties struct {
 	// Indicates the Object ID, PUID and Application ID of entity that created the workspace.
 	CreatedBy *CreatedBy
 
-	// Encryption properties for databricks workspace
+	// Properties for Default Catalog configuration during workspace creation. Not allowed in Serverless ComputeMode workspace.
+	DefaultCatalog *DefaultCatalogProperties
+
+	// Gets or Sets Default Storage Firewall configuration information. Not allowed in Serverless ComputeMode workspace.
+	DefaultStorageFirewall *DefaultStorageFirewall
+
+	// Encryption properties for databricks workspace. Supported in both Serverless and Hybrid ComputeMode workspace.
 	Encryption *WorkspacePropertiesEncryption
 
-	// The details of Managed Identity of Disk Encryption Set used for Managed Disk Encryption
+	// Contains settings related to the Enhanced Security and Compliance Add-On. Supported in both Serverless and Hybrid ComputeMode
+	// workspace.
+	EnhancedSecurityCompliance *EnhancedSecurityComplianceDefinition
+
+	// The details of Managed Identity of Disk Encryption Set used for Managed Disk Encryption. Only returned in Hybrid ComputeMode
+	// workspace.
 	ManagedDiskIdentity *ManagedIdentityConfiguration
+
+	// The managed resource group Id. Required in Hybrid ComputeMode workspace. Not allowed in Serverless ComputeMode workspace.
+	ManagedResourceGroupID *string
 
 	// The workspace's custom parameters.
 	Parameters *WorkspaceCustomParameters
 
-	// The network access type for accessing workspace. Set value to disabled to access workspace only via private link.
+	// The network access type for accessing workspace. Set value to disabled to access workspace only via private link. Used
+	// to configure front-end only private link for Serverless ComputeMode workspace.
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint.
 	// Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
-	// 'NoAzureServiceRules' value is for internal use only.
+	// 'NoAzureServiceRules' value is for internal use only. Not allowed in Serverless ComputeMode workspace.
 	RequiredNsgRules *RequiredNsgRules
 
-	// The details of Managed Identity of Storage Account
+	// The details of Managed Identity of Storage Account. Only returned in Hybrid ComputeMode workspace.
 	StorageAccountIdentity *ManagedIdentityConfiguration
 
 	// The blob URI where the UI definition file is located.
@@ -613,10 +694,13 @@ type WorkspaceProperties struct {
 	// READ-ONLY; Specifies the date and time when the workspace is created.
 	CreatedDateTime *time.Time
 
-	// READ-ONLY; The resource Id of the managed disk encryption set.
+	// READ-ONLY; The resource Id of the managed disk encryption set. Not allowed in Serverless ComputeMode workspace.
 	DiskEncryptionSetID *string
 
-	// READ-ONLY; Private endpoint connections created on the workspace
+	// READ-ONLY; Indicates whether unity catalog enabled for the workspace or not. Set as true in Serverless ComputeMode workspace.
+	IsUcEnabled *bool
+
+	// READ-ONLY; Private endpoint connections created on the workspace. Supported in both Serverless and Hybrid ComputeMode workspace.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The workspace provisioning state.
@@ -629,7 +713,22 @@ type WorkspaceProperties struct {
 	WorkspaceURL *string
 }
 
-// WorkspacePropertiesEncryption - Encryption properties for databricks workspace
+// WorkspacePropertiesAccessConnector - Access Connector Resource that is going to be associated with Databricks Workspace.
+// Not allowed in Serverless ComputeMode workspace.
+type WorkspacePropertiesAccessConnector struct {
+	// REQUIRED; The resource ID of Azure Databricks Access Connector Resource.
+	ID *string
+
+	// REQUIRED; The identity type of the Access Connector Resource.
+	IdentityType *IdentityType
+
+	// The resource ID of the User Assigned Identity associated with the Access Connector Resource. This is required for type
+	// 'UserAssigned' and not valid for type 'SystemAssigned'.
+	UserAssignedIdentityID *string
+}
+
+// WorkspacePropertiesEncryption - Encryption properties for databricks workspace. Supported in both Serverless and Hybrid
+// ComputeMode workspace.
 type WorkspacePropertiesEncryption struct {
 	// REQUIRED; Encryption entities definition for the workspace.
 	Entities *EncryptionEntitiesDefinition

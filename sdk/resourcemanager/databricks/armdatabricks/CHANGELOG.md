@@ -1,5 +1,31 @@
 # Release History
 
+## 2.0.0 (2026-03-19)
+### Breaking Changes
+
+- Type of `WorkspaceCustomParameters.EnableNoPublicIP` has been changed from `*WorkspaceCustomBooleanParameter` to `*WorkspaceNoPublicIPBooleanParameter`
+
+### Features Added
+
+- New enum type `AutomaticClusterUpdateValue` with values `AutomaticClusterUpdateValueDisabled`, `AutomaticClusterUpdateValueEnabled`
+- New enum type `ComplianceSecurityProfileValue` with values `ComplianceSecurityProfileValueDisabled`, `ComplianceSecurityProfileValueEnabled`
+- New enum type `ComputeMode` with values `ComputeModeHybrid`, `ComputeModeServerless`
+- New enum type `DefaultStorageFirewall` with values `DefaultStorageFirewallDisabled`, `DefaultStorageFirewallEnabled`
+- New enum type `EnhancedSecurityMonitoringValue` with values `EnhancedSecurityMonitoringValueDisabled`, `EnhancedSecurityMonitoringValueEnabled`
+- New enum type `IdentityType` with values `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
+- New enum type `InitialType` with values `InitialTypeHiveMetastore`, `InitialTypeUnityCatalog`
+- New struct `AutomaticClusterUpdateDefinition`
+- New struct `ComplianceSecurityProfileDefinition`
+- New struct `DefaultCatalogProperties`
+- New struct `EnhancedSecurityComplianceDefinition`
+- New struct `EnhancedSecurityMonitoringDefinition`
+- New struct `WorkspaceNoPublicIPBooleanParameter`
+- New struct `WorkspacePropertiesAccessConnector`
+- New field `ReferedBy` in struct `AccessConnectorProperties`
+- New field `AccessConnector`, `ComputeMode`, `DefaultCatalog`, `DefaultStorageFirewall`, `EnhancedSecurityCompliance`, `IsUcEnabled` in struct `WorkspaceProperties`
+- New field `ForceDeletion` in struct `WorkspacesClientBeginDeleteOptions`
+
+
 ## 1.1.0 (2023-11-24)
 ### Features Added
 

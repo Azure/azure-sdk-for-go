@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/network/resource-manager/Microsoft.Network/Network/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/network/resource-manager/Microsoft.Network/Network/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 9.0.0
+module-version: 9.0.1
 tag: package-2025-05-01
 ```

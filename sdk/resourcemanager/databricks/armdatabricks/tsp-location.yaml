@@ -1,0 +1,4 @@
+directory: specification/databricks/resource-manager/Microsoft.Databricks/Databricks
+commit: 95153744695a7b3a1257ec72eb490d26a5e09bdf
+repo: i-specs
+additionalDirectories: 

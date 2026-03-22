@@ -9,16 +9,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
 )
 
 // AssociatedTenantsServer is a fake server for instances of the armbilling.AssociatedTenantsClient type.
@@ -28,7 +27,7 @@ type AssociatedTenantsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, billingAccountName string, associatedTenantName string, parameters armbilling.AssociatedTenant, options *armbilling.AssociatedTenantsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armbilling.AssociatedTenantsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method AssociatedTenantsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, billingAccountName string, associatedTenantName string, options *armbilling.AssociatedTenantsClientBeginDeleteOptions) (resp azfake.PollerResponder[armbilling.AssociatedTenantsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AssociatedTenantsClient.Get
@@ -69,27 +68,46 @@ func (a *AssociatedTenantsServerTransport) Do(req *http.Request) (*http.Response
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AssociatedTenantsClient.BeginCreateOrUpdate":
-		resp, err = a.dispatchBeginCreateOrUpdate(req)
-	case "AssociatedTenantsClient.BeginDelete":
-		resp, err = a.dispatchBeginDelete(req)
-	case "AssociatedTenantsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AssociatedTenantsClient.NewListByBillingAccountPager":
-		resp, err = a.dispatchNewListByBillingAccountPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AssociatedTenantsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if associatedTenantsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = associatedTenantsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AssociatedTenantsClient.BeginCreateOrUpdate":
+				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
+			case "AssociatedTenantsClient.BeginDelete":
+				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AssociatedTenantsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AssociatedTenantsClient.NewListByBillingAccountPager":
+				res.resp, res.err = a.dispatchNewListByBillingAccountPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AssociatedTenantsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -101,7 +119,7 @@ func (a *AssociatedTenantsServerTransport) dispatchBeginCreateOrUpdate(req *http
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associatedTenants/(?P<associatedTenantName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.AssociatedTenant](req)
@@ -149,7 +167,7 @@ func (a *AssociatedTenantsServerTransport) dispatchBeginDelete(req *http.Request
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associatedTenants/(?P<associatedTenantName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -173,9 +191,9 @@ func (a *AssociatedTenantsServerTransport) dispatchBeginDelete(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)
@@ -191,7 +209,7 @@ func (a *AssociatedTenantsServerTransport) dispatchGet(req *http.Request) (*http
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associatedTenants/(?P<associatedTenantName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -226,7 +244,7 @@ func (a *AssociatedTenantsServerTransport) dispatchNewListByBillingAccountPager(
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associatedTenants`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -324,4 +342,10 @@ func (a *AssociatedTenantsServerTransport) dispatchNewListByBillingAccountPager(
 		a.newListByBillingAccountPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AssociatedTenantsServerTransport
+var associatedTenantsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

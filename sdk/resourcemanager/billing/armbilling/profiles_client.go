@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // ProfilesClient contains the methods for the BillingProfiles group.
@@ -27,7 +26,7 @@ type ProfilesClient struct {
 
 // NewProfilesClient creates a new instance of ProfilesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProfilesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProfilesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -96,7 +95,7 @@ func (client *ProfilesClient) createOrUpdate(ctx context.Context, billingAccount
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, _ *ProfilesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -173,7 +172,7 @@ func (client *ProfilesClient) deleteOperation(ctx context.Context, billingAccoun
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *ProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -225,7 +224,7 @@ func (client *ProfilesClient) Get(ctx context.Context, billingAccountName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProfilesClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientGetOptions) (*policy.Request, error) {
+func (client *ProfilesClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *ProfilesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -365,7 +364,7 @@ func (client *ProfilesClient) ValidateDeleteEligibility(ctx context.Context, bil
 }
 
 // validateDeleteEligibilityCreateRequest creates the ValidateDeleteEligibility request.
-func (client *ProfilesClient) validateDeleteEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientValidateDeleteEligibilityOptions) (*policy.Request, error) {
+func (client *ProfilesClient) validateDeleteEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *ProfilesClientValidateDeleteEligibilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/validateDeleteEligibility"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

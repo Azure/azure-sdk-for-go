@@ -9,16 +9,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
 )
 
 // RoleAssignmentsServer is a fake server for instances of the armbilling.RoleAssignmentsClient type.
@@ -197,77 +196,96 @@ func (r *RoleAssignmentsServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleAssignmentsClient.BeginCreateByBillingAccount":
-		resp, err = r.dispatchBeginCreateByBillingAccount(req)
-	case "RoleAssignmentsClient.BeginCreateByBillingProfile":
-		resp, err = r.dispatchBeginCreateByBillingProfile(req)
-	case "RoleAssignmentsClient.BeginCreateByCustomer":
-		resp, err = r.dispatchBeginCreateByCustomer(req)
-	case "RoleAssignmentsClient.BeginCreateByInvoiceSection":
-		resp, err = r.dispatchBeginCreateByInvoiceSection(req)
-	case "RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount":
-		resp, err = r.dispatchBeginCreateOrUpdateByBillingAccount(req)
-	case "RoleAssignmentsClient.BeginCreateOrUpdateByDepartment":
-		resp, err = r.dispatchBeginCreateOrUpdateByDepartment(req)
-	case "RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount":
-		resp, err = r.dispatchBeginCreateOrUpdateByEnrollmentAccount(req)
-	case "RoleAssignmentsClient.DeleteByBillingAccount":
-		resp, err = r.dispatchDeleteByBillingAccount(req)
-	case "RoleAssignmentsClient.DeleteByBillingProfile":
-		resp, err = r.dispatchDeleteByBillingProfile(req)
-	case "RoleAssignmentsClient.DeleteByCustomer":
-		resp, err = r.dispatchDeleteByCustomer(req)
-	case "RoleAssignmentsClient.DeleteByDepartment":
-		resp, err = r.dispatchDeleteByDepartment(req)
-	case "RoleAssignmentsClient.DeleteByEnrollmentAccount":
-		resp, err = r.dispatchDeleteByEnrollmentAccount(req)
-	case "RoleAssignmentsClient.DeleteByInvoiceSection":
-		resp, err = r.dispatchDeleteByInvoiceSection(req)
-	case "RoleAssignmentsClient.GetByBillingAccount":
-		resp, err = r.dispatchGetByBillingAccount(req)
-	case "RoleAssignmentsClient.GetByBillingProfile":
-		resp, err = r.dispatchGetByBillingProfile(req)
-	case "RoleAssignmentsClient.GetByCustomer":
-		resp, err = r.dispatchGetByCustomer(req)
-	case "RoleAssignmentsClient.GetByDepartment":
-		resp, err = r.dispatchGetByDepartment(req)
-	case "RoleAssignmentsClient.GetByEnrollmentAccount":
-		resp, err = r.dispatchGetByEnrollmentAccount(req)
-	case "RoleAssignmentsClient.GetByInvoiceSection":
-		resp, err = r.dispatchGetByInvoiceSection(req)
-	case "RoleAssignmentsClient.NewListByBillingAccountPager":
-		resp, err = r.dispatchNewListByBillingAccountPager(req)
-	case "RoleAssignmentsClient.NewListByBillingProfilePager":
-		resp, err = r.dispatchNewListByBillingProfilePager(req)
-	case "RoleAssignmentsClient.NewListByCustomerPager":
-		resp, err = r.dispatchNewListByCustomerPager(req)
-	case "RoleAssignmentsClient.NewListByDepartmentPager":
-		resp, err = r.dispatchNewListByDepartmentPager(req)
-	case "RoleAssignmentsClient.NewListByEnrollmentAccountPager":
-		resp, err = r.dispatchNewListByEnrollmentAccountPager(req)
-	case "RoleAssignmentsClient.NewListByInvoiceSectionPager":
-		resp, err = r.dispatchNewListByInvoiceSectionPager(req)
-	case "RoleAssignmentsClient.BeginResolveByBillingAccount":
-		resp, err = r.dispatchBeginResolveByBillingAccount(req)
-	case "RoleAssignmentsClient.BeginResolveByBillingProfile":
-		resp, err = r.dispatchBeginResolveByBillingProfile(req)
-	case "RoleAssignmentsClient.BeginResolveByCustomer":
-		resp, err = r.dispatchBeginResolveByCustomer(req)
-	case "RoleAssignmentsClient.BeginResolveByInvoiceSection":
-		resp, err = r.dispatchBeginResolveByInvoiceSection(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleAssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if roleAssignmentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = roleAssignmentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleAssignmentsClient.BeginCreateByBillingAccount":
+				res.resp, res.err = r.dispatchBeginCreateByBillingAccount(req)
+			case "RoleAssignmentsClient.BeginCreateByBillingProfile":
+				res.resp, res.err = r.dispatchBeginCreateByBillingProfile(req)
+			case "RoleAssignmentsClient.BeginCreateByCustomer":
+				res.resp, res.err = r.dispatchBeginCreateByCustomer(req)
+			case "RoleAssignmentsClient.BeginCreateByInvoiceSection":
+				res.resp, res.err = r.dispatchBeginCreateByInvoiceSection(req)
+			case "RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount":
+				res.resp, res.err = r.dispatchBeginCreateOrUpdateByBillingAccount(req)
+			case "RoleAssignmentsClient.BeginCreateOrUpdateByDepartment":
+				res.resp, res.err = r.dispatchBeginCreateOrUpdateByDepartment(req)
+			case "RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount":
+				res.resp, res.err = r.dispatchBeginCreateOrUpdateByEnrollmentAccount(req)
+			case "RoleAssignmentsClient.DeleteByBillingAccount":
+				res.resp, res.err = r.dispatchDeleteByBillingAccount(req)
+			case "RoleAssignmentsClient.DeleteByBillingProfile":
+				res.resp, res.err = r.dispatchDeleteByBillingProfile(req)
+			case "RoleAssignmentsClient.DeleteByCustomer":
+				res.resp, res.err = r.dispatchDeleteByCustomer(req)
+			case "RoleAssignmentsClient.DeleteByDepartment":
+				res.resp, res.err = r.dispatchDeleteByDepartment(req)
+			case "RoleAssignmentsClient.DeleteByEnrollmentAccount":
+				res.resp, res.err = r.dispatchDeleteByEnrollmentAccount(req)
+			case "RoleAssignmentsClient.DeleteByInvoiceSection":
+				res.resp, res.err = r.dispatchDeleteByInvoiceSection(req)
+			case "RoleAssignmentsClient.GetByBillingAccount":
+				res.resp, res.err = r.dispatchGetByBillingAccount(req)
+			case "RoleAssignmentsClient.GetByBillingProfile":
+				res.resp, res.err = r.dispatchGetByBillingProfile(req)
+			case "RoleAssignmentsClient.GetByCustomer":
+				res.resp, res.err = r.dispatchGetByCustomer(req)
+			case "RoleAssignmentsClient.GetByDepartment":
+				res.resp, res.err = r.dispatchGetByDepartment(req)
+			case "RoleAssignmentsClient.GetByEnrollmentAccount":
+				res.resp, res.err = r.dispatchGetByEnrollmentAccount(req)
+			case "RoleAssignmentsClient.GetByInvoiceSection":
+				res.resp, res.err = r.dispatchGetByInvoiceSection(req)
+			case "RoleAssignmentsClient.NewListByBillingAccountPager":
+				res.resp, res.err = r.dispatchNewListByBillingAccountPager(req)
+			case "RoleAssignmentsClient.NewListByBillingProfilePager":
+				res.resp, res.err = r.dispatchNewListByBillingProfilePager(req)
+			case "RoleAssignmentsClient.NewListByCustomerPager":
+				res.resp, res.err = r.dispatchNewListByCustomerPager(req)
+			case "RoleAssignmentsClient.NewListByDepartmentPager":
+				res.resp, res.err = r.dispatchNewListByDepartmentPager(req)
+			case "RoleAssignmentsClient.NewListByEnrollmentAccountPager":
+				res.resp, res.err = r.dispatchNewListByEnrollmentAccountPager(req)
+			case "RoleAssignmentsClient.NewListByInvoiceSectionPager":
+				res.resp, res.err = r.dispatchNewListByInvoiceSectionPager(req)
+			case "RoleAssignmentsClient.BeginResolveByBillingAccount":
+				res.resp, res.err = r.dispatchBeginResolveByBillingAccount(req)
+			case "RoleAssignmentsClient.BeginResolveByBillingProfile":
+				res.resp, res.err = r.dispatchBeginResolveByBillingProfile(req)
+			case "RoleAssignmentsClient.BeginResolveByCustomer":
+				res.resp, res.err = r.dispatchBeginResolveByCustomer(req)
+			case "RoleAssignmentsClient.BeginResolveByInvoiceSection":
+				res.resp, res.err = r.dispatchBeginResolveByInvoiceSection(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByBillingAccount(req *http.Request) (*http.Response, error) {
@@ -279,7 +297,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByBillingAccount(req
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
@@ -323,7 +341,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByBillingProfile(req
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
@@ -371,7 +389,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByCustomer(req *http
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
@@ -423,7 +441,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByInvoiceSection(req
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
@@ -475,7 +493,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginCreateOrUpdateByBillingAcc
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignment](req)
@@ -523,7 +541,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginCreateOrUpdateByDepartment
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignment](req)
@@ -575,7 +593,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginCreateOrUpdateByEnrollment
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignment](req)
@@ -625,7 +643,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByBillingAccount(req *htt
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -658,7 +676,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByBillingProfile(req *htt
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -695,7 +713,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByCustomer(req *http.Requ
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -736,7 +754,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByDepartment(req *http.Re
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -773,7 +791,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByEnrollmentAccount(req *
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -810,7 +828,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByInvoiceSection(req *htt
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -851,7 +869,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByBillingAccount(req *http.R
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -884,7 +902,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByBillingProfile(req *http.R
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -921,7 +939,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByCustomer(req *http.Request
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -962,7 +980,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByDepartment(req *http.Reque
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -999,7 +1017,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByEnrollmentAccount(req *htt
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -1036,7 +1054,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByInvoiceSection(req *http.R
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -1079,7 +1097,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingAccountPager(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1158,7 +1176,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingProfilePager(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1241,7 +1259,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByCustomerPager(req *htt
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1328,7 +1346,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByDepartmentPager(req *h
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -1369,7 +1387,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByEnrollmentAccountPager
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -1410,7 +1428,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByInvoiceSectionPager(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1497,7 +1515,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByBillingAccount(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1558,7 +1576,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByBillingProfile(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1623,7 +1641,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByCustomer(req *htt
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1692,7 +1710,7 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByInvoiceSection(re
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1750,4 +1768,10 @@ func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByInvoiceSection(re
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleAssignmentsServerTransport
+var roleAssignmentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

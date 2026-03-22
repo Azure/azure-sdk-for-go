@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // SavingsPlansClient contains the methods for the SavingsPlans group.
@@ -27,7 +26,7 @@ type SavingsPlansClient struct {
 
 // NewSavingsPlansClient creates a new instance of SavingsPlansClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSavingsPlansClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SavingsPlansClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -213,7 +212,7 @@ func (client *SavingsPlansClient) NewListBySavingsPlanOrderPager(billingAccountN
 }
 
 // listBySavingsPlanOrderCreateRequest creates the ListBySavingsPlanOrder request.
-func (client *SavingsPlansClient) listBySavingsPlanOrderCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, options *SavingsPlansClientListBySavingsPlanOrderOptions) (*policy.Request, error) {
+func (client *SavingsPlansClient) listBySavingsPlanOrderCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, _ *SavingsPlansClientListBySavingsPlanOrderOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -297,7 +296,7 @@ func (client *SavingsPlansClient) updateByBillingAccount(ctx context.Context, bi
 }
 
 // updateByBillingAccountCreateRequest creates the UpdateByBillingAccount request.
-func (client *SavingsPlansClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
+func (client *SavingsPlansClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, _ *SavingsPlansClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -358,7 +357,7 @@ func (client *SavingsPlansClient) ValidateUpdateByBillingAccount(ctx context.Con
 }
 
 // validateUpdateByBillingAccountCreateRequest creates the ValidateUpdateByBillingAccount request.
-func (client *SavingsPlansClient) validateUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateValidateRequest, options *SavingsPlansClientValidateUpdateByBillingAccountOptions) (*policy.Request, error) {
+func (client *SavingsPlansClient) validateUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateValidateRequest, _ *SavingsPlansClientValidateUpdateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/validate"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

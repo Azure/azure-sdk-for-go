@@ -8,14 +8,13 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PoliciesClient contains the methods for the Policies group.
@@ -28,7 +27,7 @@ type PoliciesClient struct {
 // NewPoliciesClient creates a new instance of PoliciesClient with the specified values.
 //   - subscriptionID - The ID that uniquely identifies a billing subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -92,7 +91,7 @@ func (client *PoliciesClient) createOrUpdateByBillingAccount(ctx context.Context
 }
 
 // createOrUpdateByBillingAccountCreateRequest creates the CreateOrUpdateByBillingAccount request.
-func (client *PoliciesClient) createOrUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPolicy, options *PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (*policy.Request, error) {
+func (client *PoliciesClient) createOrUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPolicy, _ *PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -166,7 +165,7 @@ func (client *PoliciesClient) createOrUpdateByBillingProfile(ctx context.Context
 }
 
 // createOrUpdateByBillingProfileCreateRequest creates the CreateOrUpdateByBillingProfile request.
-func (client *PoliciesClient) createOrUpdateByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters ProfilePolicy, options *PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (*policy.Request, error) {
+func (client *PoliciesClient) createOrUpdateByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters ProfilePolicy, _ *PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -245,7 +244,7 @@ func (client *PoliciesClient) createOrUpdateByCustomer(ctx context.Context, bill
 }
 
 // createOrUpdateByCustomerCreateRequest creates the CreateOrUpdateByCustomer request.
-func (client *PoliciesClient) createOrUpdateByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerOptions) (*policy.Request, error) {
+func (client *PoliciesClient) createOrUpdateByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CustomerPolicy, _ *PoliciesClientBeginCreateOrUpdateByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -327,7 +326,7 @@ func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccount(ctx conte
 }
 
 // createOrUpdateByCustomerAtBillingAccountCreateRequest creates the CreateOrUpdateByCustomerAtBillingAccount request.
-func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (*policy.Request, error) {
+func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, _ *PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -381,7 +380,7 @@ func (client *PoliciesClient) GetByBillingAccount(ctx context.Context, billingAc
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
-func (client *PoliciesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *PoliciesClientGetByBillingAccountOptions) (*policy.Request, error) {
+func (client *PoliciesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, _ *PoliciesClientGetByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -439,7 +438,7 @@ func (client *PoliciesClient) GetByBillingProfile(ctx context.Context, billingAc
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
-func (client *PoliciesClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *PoliciesClientGetByBillingProfileOptions) (*policy.Request, error) {
+func (client *PoliciesClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *PoliciesClientGetByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -502,7 +501,7 @@ func (client *PoliciesClient) GetByCustomer(ctx context.Context, billingAccountN
 }
 
 // getByCustomerCreateRequest creates the GetByCustomer request.
-func (client *PoliciesClient) getByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, policyName ServiceDefinedResourceName, options *PoliciesClientGetByCustomerOptions) (*policy.Request, error) {
+func (client *PoliciesClient) getByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, policyName ServiceDefinedResourceName, _ *PoliciesClientGetByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/policies/{policyName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -572,7 +571,7 @@ func (client *PoliciesClient) GetByCustomerAtBillingAccount(ctx context.Context,
 }
 
 // getByCustomerAtBillingAccountCreateRequest creates the GetByCustomerAtBillingAccount request.
-func (client *PoliciesClient) getByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *PoliciesClientGetByCustomerAtBillingAccountOptions) (*policy.Request, error) {
+func (client *PoliciesClient) getByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, _ *PoliciesClientGetByCustomerAtBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -633,7 +632,7 @@ func (client *PoliciesClient) GetBySubscription(ctx context.Context, options *Po
 }
 
 // getBySubscriptionCreateRequest creates the GetBySubscription request.
-func (client *PoliciesClient) getBySubscriptionCreateRequest(ctx context.Context, options *PoliciesClientGetBySubscriptionOptions) (*policy.Request, error) {
+func (client *PoliciesClient) getBySubscriptionCreateRequest(ctx context.Context, _ *PoliciesClientGetBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/policies/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

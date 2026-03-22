@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // ReservationsClient contains the methods for the Reservations group.
@@ -27,7 +26,7 @@ type ReservationsClient struct {
 
 // NewReservationsClient creates a new instance of ReservationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReservationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -294,7 +293,7 @@ func (client *ReservationsClient) NewListByReservationOrderPager(billingAccountN
 }
 
 // listByReservationOrderCreateRequest creates the ListByReservationOrder request.
-func (client *ReservationsClient) listByReservationOrderCreateRequest(ctx context.Context, billingAccountName string, reservationOrderID string, options *ReservationsClientListByReservationOrderOptions) (*policy.Request, error) {
+func (client *ReservationsClient) listByReservationOrderCreateRequest(ctx context.Context, billingAccountName string, reservationOrderID string, _ *ReservationsClientListByReservationOrderOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/reservationOrders/{reservationOrderId}/reservations"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -378,7 +377,7 @@ func (client *ReservationsClient) updateByBillingAccount(ctx context.Context, bi
 }
 
 // updateByBillingAccountCreateRequest creates the UpdateByBillingAccount request.
-func (client *ReservationsClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, options *ReservationsClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
+func (client *ReservationsClient) updateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body Patch, _ *ReservationsClientBeginUpdateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

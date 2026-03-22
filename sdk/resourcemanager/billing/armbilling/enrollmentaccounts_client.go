@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // EnrollmentAccountsClient contains the methods for the EnrollmentAccounts group.
@@ -27,7 +26,7 @@ type EnrollmentAccountsClient struct {
 
 // NewEnrollmentAccountsClient creates a new instance of EnrollmentAccountsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEnrollmentAccountsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EnrollmentAccountsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +69,7 @@ func (client *EnrollmentAccountsClient) Get(ctx context.Context, billingAccountN
 }
 
 // getCreateRequest creates the Get request.
-func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, options *EnrollmentAccountsClientGetOptions) (*policy.Request, error) {
+func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, _ *EnrollmentAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -133,7 +132,7 @@ func (client *EnrollmentAccountsClient) GetByDepartment(ctx context.Context, bil
 }
 
 // getByDepartmentCreateRequest creates the GetByDepartment request.
-func (client *EnrollmentAccountsClient) getByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, enrollmentAccountName string, options *EnrollmentAccountsClientGetByDepartmentOptions) (*policy.Request, error) {
+func (client *EnrollmentAccountsClient) getByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, enrollmentAccountName string, _ *EnrollmentAccountsClientGetByDepartmentOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/enrollmentAccounts/{enrollmentAccountName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")

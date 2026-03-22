@@ -8,15 +8,14 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // InvoicesClient contains the methods for the Invoices group.
@@ -29,7 +28,7 @@ type InvoicesClient struct {
 // NewInvoicesClient creates a new instance of InvoicesClient with the specified values.
 //   - subscriptionID - The ID that uniquely identifies a billing subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInvoicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InvoicesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -95,7 +94,7 @@ func (client *InvoicesClient) amend(ctx context.Context, billingAccountName stri
 }
 
 // amendCreateRequest creates the Amend request.
-func (client *InvoicesClient) amendCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *InvoicesClientBeginAmendOptions) (*policy.Request, error) {
+func (client *InvoicesClient) amendCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *InvoicesClientBeginAmendOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/amend"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -327,7 +326,7 @@ func (client *InvoicesClient) downloadDocumentsByBillingAccount(ctx context.Cont
 }
 
 // downloadDocumentsByBillingAccountCreateRequest creates the DownloadDocumentsByBillingAccount request.
-func (client *InvoicesClient) downloadDocumentsByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters []*DocumentDownloadRequest, options *InvoicesClientBeginDownloadDocumentsByBillingAccountOptions) (*policy.Request, error) {
+func (client *InvoicesClient) downloadDocumentsByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters []*DocumentDownloadRequest, _ *InvoicesClientBeginDownloadDocumentsByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/downloadDocuments"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -402,7 +401,7 @@ func (client *InvoicesClient) downloadDocumentsByBillingSubscription(ctx context
 }
 
 // downloadDocumentsByBillingSubscriptionCreateRequest creates the DownloadDocumentsByBillingSubscription request.
-func (client *InvoicesClient) downloadDocumentsByBillingSubscriptionCreateRequest(ctx context.Context, parameters []*DocumentDownloadRequest, options *InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions) (*policy.Request, error) {
+func (client *InvoicesClient) downloadDocumentsByBillingSubscriptionCreateRequest(ctx context.Context, parameters []*DocumentDownloadRequest, _ *InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/downloadDocuments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -476,7 +475,7 @@ func (client *InvoicesClient) downloadSummaryByBillingAccount(ctx context.Contex
 }
 
 // downloadSummaryByBillingAccountCreateRequest creates the DownloadSummaryByBillingAccount request.
-func (client *InvoicesClient) downloadSummaryByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *InvoicesClientBeginDownloadSummaryByBillingAccountOptions) (*policy.Request, error) {
+func (client *InvoicesClient) downloadSummaryByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *InvoicesClientBeginDownloadSummaryByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/downloadSummary"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -527,7 +526,7 @@ func (client *InvoicesClient) Get(ctx context.Context, invoiceName string, optio
 }
 
 // getCreateRequest creates the Get request.
-func (client *InvoicesClient) getCreateRequest(ctx context.Context, invoiceName string, options *InvoicesClientGetOptions) (*policy.Request, error) {
+func (client *InvoicesClient) getCreateRequest(ctx context.Context, invoiceName string, _ *InvoicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/invoices/{invoiceName}"
 	if invoiceName == "" {
 		return nil, errors.New("parameter invoiceName cannot be empty")
@@ -585,7 +584,7 @@ func (client *InvoicesClient) GetByBillingAccount(ctx context.Context, billingAc
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
-func (client *InvoicesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *InvoicesClientGetByBillingAccountOptions) (*policy.Request, error) {
+func (client *InvoicesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *InvoicesClientGetByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -646,7 +645,7 @@ func (client *InvoicesClient) GetByBillingSubscription(ctx context.Context, invo
 }
 
 // getByBillingSubscriptionCreateRequest creates the GetByBillingSubscription request.
-func (client *InvoicesClient) getByBillingSubscriptionCreateRequest(ctx context.Context, invoiceName string, options *InvoicesClientGetByBillingSubscriptionOptions) (*policy.Request, error) {
+func (client *InvoicesClient) getByBillingSubscriptionCreateRequest(ctx context.Context, invoiceName string, _ *InvoicesClientGetByBillingSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

@@ -9,16 +9,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
 )
 
 // EnrollmentAccountsServer is a fake server for instances of the armbilling.EnrollmentAccountsClient type.
@@ -67,27 +66,46 @@ func (e *EnrollmentAccountsServerTransport) Do(req *http.Request) (*http.Respons
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EnrollmentAccountsClient.Get":
-		resp, err = e.dispatchGet(req)
-	case "EnrollmentAccountsClient.GetByDepartment":
-		resp, err = e.dispatchGetByDepartment(req)
-	case "EnrollmentAccountsClient.NewListByBillingAccountPager":
-		resp, err = e.dispatchNewListByBillingAccountPager(req)
-	case "EnrollmentAccountsClient.NewListByDepartmentPager":
-		resp, err = e.dispatchNewListByDepartmentPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EnrollmentAccountsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if enrollmentAccountsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = enrollmentAccountsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EnrollmentAccountsClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "EnrollmentAccountsClient.GetByDepartment":
+				res.resp, res.err = e.dispatchGetByDepartment(req)
+			case "EnrollmentAccountsClient.NewListByBillingAccountPager":
+				res.resp, res.err = e.dispatchNewListByBillingAccountPager(req)
+			case "EnrollmentAccountsClient.NewListByDepartmentPager":
+				res.resp, res.err = e.dispatchNewListByDepartmentPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EnrollmentAccountsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -97,7 +115,7 @@ func (e *EnrollmentAccountsServerTransport) dispatchGet(req *http.Request) (*htt
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -130,7 +148,7 @@ func (e *EnrollmentAccountsServerTransport) dispatchGetByDepartment(req *http.Re
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
@@ -169,7 +187,7 @@ func (e *EnrollmentAccountsServerTransport) dispatchNewListByBillingAccountPager
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -269,7 +287,7 @@ func (e *EnrollmentAccountsServerTransport) dispatchNewListByDepartmentPager(req
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -362,4 +380,10 @@ func (e *EnrollmentAccountsServerTransport) dispatchNewListByDepartmentPager(req
 		e.newListByDepartmentPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EnrollmentAccountsServerTransport
+var enrollmentAccountsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -7,12 +7,12 @@ package armsecurityinsights
 
 import "time"
 
-// AADCheckRequirements - Represents AAD (Azure Active Directory) requirements check request.
+// AADCheckRequirements - Represents AADIP (Azure Active Directory Identity Protection) requirements check request.
 type AADCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
 	Kind *DataConnectorKind
 
-	// AAD (Azure Active Directory) requirements check properties.
+	// AADIP (Azure Active Directory Identity Protection) requirements check properties.
 	Properties *AADCheckRequirementsProperties
 }
 
@@ -23,13 +23,13 @@ func (a *AADCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnect
 	}
 }
 
-// AADCheckRequirementsProperties - AAD (Azure Active Directory) requirements check properties.
+// AADCheckRequirementsProperties - AADIP (Azure Active Directory Identity Protection) requirements check properties.
 type AADCheckRequirementsProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
 	TenantID *string
 }
 
-// AADDataConnector - Represents AAD (Azure Active Directory) data connector.
+// AADDataConnector - Represents AADIP (Azure Active Directory Identity Protection) data connector.
 type AADDataConnector struct {
 	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
@@ -37,10 +37,10 @@ type AADDataConnector struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// AAD (Azure Active Directory) data connector properties.
+	// AADIP (Azure Active Directory Identity Protection) data connector properties.
 	Properties *AADDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -65,7 +65,7 @@ func (a *AADDataConnector) GetDataConnector() *DataConnector {
 	}
 }
 
-// AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
+// AADDataConnectorProperties - AADIP (Azure Active Directory Identity Protection) data connector properties.
 type AADDataConnectorProperties struct {
 	// REQUIRED; The tenant id to connect to, and get the data from.
 	TenantID *string
@@ -107,7 +107,7 @@ type AATPDataConnector struct {
 	// AATP (Azure Advanced Threat Protection) data connector properties.
 	Properties *AATPDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -139,6 +139,33 @@ type AATPDataConnectorProperties struct {
 
 	// The available data types for the connector.
 	DataTypes *AlertsDataTypeOfDataConnector
+}
+
+// APIKeyAuthModel - Model for authentication with the API Key. Will result in additional header on the request (default behavior)
+// to the remote server: 'ApiKeyName: ApiKeyIdentifier ApiKey'. If 'IsApiKeyInPostPayload' is
+// true it will send it in the body of the request and not the header.
+type APIKeyAuthModel struct {
+	// REQUIRED; API Key for the user secret key credential
+	APIKey *string
+
+	// REQUIRED; API Key name
+	APIKeyName *string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// API Key Identifier
+	APIKeyIdentifier *string
+
+	// Flag to indicate if API key is set in HTTP POST payload
+	IsAPIKeyInPostPayload *bool
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type APIKeyAuthModel.
+func (a *APIKeyAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: a.Type,
+	}
 }
 
 // APIPollingParameters - Represents Codeless API Polling data connector
@@ -183,7 +210,7 @@ type ASCDataConnector struct {
 	// ASC (Azure Security Center) data connector properties.
 	Properties *ASCDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -217,15 +244,34 @@ type ASCDataConnectorProperties struct {
 	SubscriptionID *string
 }
 
+// AWSAuthModel - Model for API authentication with AWS.
+type AWSAuthModel struct {
+	// REQUIRED; AWS STS assume role ARN
+	RoleArn *string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// AWS STS assume role external ID. This is used to prevent the confused deputy problem: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html'
+	ExternalID *string
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type AWSAuthModel.
+func (a *AWSAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: a.Type,
+	}
+}
+
 // AccountEntity - Represents an account entity.
 type AccountEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Account entity properties
 	Properties *AccountEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -304,7 +350,7 @@ type ActionRequest struct {
 	// Action properties for put request
 	Properties *ActionRequestProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -328,13 +374,13 @@ type ActionRequestProperties struct {
 
 // ActionResponse - Action for alert rule.
 type ActionResponse struct {
-	// Etag of the azure resource
+	// ETag of the action.
 	Etag *string
 
 	// Action properties for get request
 	Properties *ActionResponseProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -376,7 +422,7 @@ type ActivityCustomEntityQuery struct {
 	// Activity entity query properties
 	Properties *ActivityEntityQueriesProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -454,7 +500,7 @@ type ActivityEntityQuery struct {
 	// Activity entity query properties
 	Properties *ActivityEntityQueriesProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -487,7 +533,7 @@ type ActivityEntityQueryTemplate struct {
 	// Activity entity query properties
 	Properties *ActivityEntityQueryTemplateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -581,6 +627,14 @@ func (a *ActivityTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
 	}
 }
 
+type AddIncidentTaskActionProperties struct {
+	// REQUIRED; The title of the task.
+	Title *string
+
+	// The description of the task.
+	Description *string
+}
+
 // AlertDetailsOverride - Settings for how to dynamically override alert static details
 type AlertDetailsOverride struct {
 	// the format containing columns name(s) to override the alert description
@@ -589,11 +643,23 @@ type AlertDetailsOverride struct {
 	// the format containing columns name(s) to override the alert name
 	AlertDisplayNameFormat *string
 
+	// List of additional dynamic properties to override
+	AlertDynamicProperties []*AlertPropertyMapping
+
 	// the column name to take the alert severity from
 	AlertSeverityColumnName *string
 
 	// the column name to take the alert tactics from
 	AlertTacticsColumnName *string
+}
+
+// AlertPropertyMapping - A single alert property mapping to override
+type AlertPropertyMapping struct {
+	// The V3 alert property
+	AlertProperty *AlertProperty
+
+	// the column name to use to override this property
+	Value *string
 }
 
 // AlertRule - Alert rule.
@@ -604,7 +670,7 @@ type AlertRule struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -625,7 +691,7 @@ type AlertRuleTemplate struct {
 	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -674,6 +740,18 @@ type AlertsDataTypeOfDataConnector struct {
 	Alerts *DataConnectorDataTypeCommon
 }
 
+// AnalyticsRuleRunTrigger - Analytics Rule Run Trigger request
+type AnalyticsRuleRunTrigger struct {
+	// REQUIRED; The analytics Rule Run Trigger request
+	Properties *AnalyticsRuleRunTriggerProperties
+}
+
+// AnalyticsRuleRunTriggerProperties - The Analytics Rule Run Trigger properties
+type AnalyticsRuleRunTriggerProperties struct {
+	// REQUIRED
+	ExecutionTimeUTC *time.Time
+}
+
 // Anomalies - Settings with single toggle.
 type Anomalies struct {
 	// REQUIRED; The kind of the setting
@@ -685,7 +763,7 @@ type Anomalies struct {
 	// Anomalies properties
 	Properties *AnomaliesSettingsProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -727,7 +805,7 @@ type AnomalySecurityMLAnalyticsSettings struct {
 	// Anomaly Security ML Analytics Settings properties
 	Properties *AnomalySecurityMLAnalyticsSettingsProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -844,6 +922,45 @@ func (a *AnomalyTimelineItem) GetEntityTimelineItem() *EntityTimelineItem {
 	}
 }
 
+// AssignmentItem - An entity describing a content item.
+type AssignmentItem struct {
+	// The resource id of the content item
+	ResourceID *string
+}
+
+// AttackPattern - Represents an attack pattern in Azure Security Insights.
+type AttackPattern struct {
+	// REQUIRED; The kind of the TI object
+	Kind *TIObjectKind
+
+	// The properties of the TI object
+	Properties *TIObjectCommonProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetTIObject implements the TIObjectClassification interface for type AttackPattern.
+func (a *AttackPattern) GetTIObject() *TIObject {
+	return &TIObject{
+		ID:         a.ID,
+		Kind:       a.Kind,
+		Name:       a.Name,
+		Properties: a.Properties,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
+}
+
 type AutomationRule struct {
 	// REQUIRED; Automation rule properties
 	Properties *AutomationRuleProperties
@@ -851,7 +968,7 @@ type AutomationRule struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -875,6 +992,24 @@ type AutomationRuleAction struct {
 
 // GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleAction.
 func (a *AutomationRuleAction) GetAutomationRuleAction() *AutomationRuleAction { return a }
+
+// AutomationRuleAddIncidentTaskAction - Describes an automation rule action to add a task to an incident
+type AutomationRuleAddIncidentTaskAction struct {
+	// REQUIRED; The type of the automation rule action.
+	ActionType *ActionType
+
+	// REQUIRED
+	Order               *int32
+	ActionConfiguration *AddIncidentTaskActionProperties
+}
+
+// GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleAddIncidentTaskAction.
+func (a *AutomationRuleAddIncidentTaskAction) GetAutomationRuleAction() *AutomationRuleAction {
+	return &AutomationRuleAction{
+		ActionType: a.ActionType,
+		Order:      a.Order,
+	}
+}
 
 type AutomationRuleBooleanCondition struct {
 	InnerConditions []AutomationRuleConditionClassification
@@ -1004,11 +1139,12 @@ type AutomationRulesList struct {
 
 // Availability - Connector Availability Status
 type Availability struct {
+	// CONSTANT; The connector Availability Status
+	// Field has constant value 1, any specified value is ignored.
+	Status *int32
+
 	// Set connector as preview
 	IsPreview *bool
-
-	// The connector Availability Status
-	Status *int32
 }
 
 // AwsCloudTrailCheckRequirements - Amazon Web Services CloudTrail requirements check request.
@@ -1035,7 +1171,7 @@ type AwsCloudTrailDataConnector struct {
 	// Amazon Web Services CloudTrail data connector properties.
 	Properties *AwsCloudTrailDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1105,7 +1241,7 @@ type AwsS3DataConnector struct {
 	// Amazon Web Services S3 data connector properties.
 	Properties *AwsS3DataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1169,12 +1305,12 @@ type AzureDevOpsResourceInfo struct {
 // AzureResourceEntity - Represents an azure resource entity.
 type AzureResourceEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// AzureResource entity properties
 	Properties *AzureResourceEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1214,6 +1350,58 @@ type AzureResourceEntityProperties struct {
 	SubscriptionID *string
 }
 
+// BasicAuthModel - Model for API authentication with basic flow - user name + password.
+type BasicAuthModel struct {
+	// REQUIRED; The password
+	Password *string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// REQUIRED; The user name.
+	UserName *string
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type BasicAuthModel.
+func (b *BasicAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: b.Type,
+	}
+}
+
+// BillingStatistic - Billing statistic
+type BillingStatistic struct {
+	// REQUIRED; The kind of the billing statistic
+	Kind *BillingStatisticKind
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetBillingStatistic implements the BillingStatisticClassification interface for type BillingStatistic.
+func (b *BillingStatistic) GetBillingStatistic() *BillingStatistic { return b }
+
+// BillingStatisticList - List of all Microsoft Sentinel billing statistics.
+type BillingStatisticList struct {
+	// REQUIRED; Array of billing statistics.
+	Value []BillingStatisticClassification
+
+	// READ-ONLY; URL to fetch the next set of billing statistics.
+	NextLink *string
+}
+
 // Bookmark - Represents a bookmark in Azure Security Insights.
 type Bookmark struct {
 	// Etag of the azure resource
@@ -1222,7 +1410,7 @@ type Bookmark struct {
 	// Bookmark properties
 	Properties *BookmarkProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1385,6 +1573,53 @@ func (b *BooleanConditionProperties) GetAutomationRuleCondition() *AutomationRul
 	}
 }
 
+// CcpAuthConfig - Base Model for API authentication.
+type CcpAuthConfig struct {
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type CcpAuthConfig.
+func (c *CcpAuthConfig) GetCcpAuthConfig() *CcpAuthConfig { return c }
+
+// CcpResponseConfig - A custom response configuration for a rule.
+type CcpResponseConfig struct {
+	// REQUIRED; The json paths, '$' char is the json root.
+	EventsJSONPaths []*string
+
+	// The csv delimiter, in case the response format is CSV.
+	CSVDelimiter *string
+
+	// The character used to escape characters in CSV.
+	CSVEscape *string
+
+	// The compression algorithm. For Example: 'gzip', 'multi-gzip', 'deflate'.
+	CompressionAlgo *string
+
+	// The value indicating whether the response isn't an array of events / logs. By setting this flag to true it means the remote
+	// server will response with an object which each property has as a value an
+	// array of events / logs.
+	ConvertChildPropertiesToArray *bool
+
+	// The response format. possible values are json,csv,xml
+	Format *string
+
+	// The value indicating whether the response has CSV boundary in case the response in CSV format.
+	HasCSVBoundary *bool
+
+	// The value indicating whether the response has headers in case the response in CSV format.
+	HasCSVHeader *bool
+
+	// The value indicating whether the remote server support Gzip and we should expect Gzip response.
+	IsGzipCompressed *bool
+
+	// The value where the status message/code should appear in the response.
+	SuccessStatusJSONPath *string
+
+	// The status value.
+	SuccessStatusValue *string
+}
+
 // ClientInfo - Information on the client (user or application) that made some action
 type ClientInfo struct {
 	// The email of the client.
@@ -1403,12 +1638,12 @@ type ClientInfo struct {
 // CloudApplicationEntity - Represents a cloud application entity.
 type CloudApplicationEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// CloudApplication entity properties
 	Properties *CloudApplicationEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1463,7 +1698,7 @@ type CodelessAPIPollingDataConnector struct {
 	// Codeless poling data connector properties
 	Properties *APIPollingParameters
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1735,7 +1970,7 @@ type CodelessUIDataConnector struct {
 	// Codeless UI data connector properties
 	Properties *CodelessParameters
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1760,6 +1995,34 @@ func (c *CodelessUIDataConnector) GetDataConnector() *DataConnector {
 	}
 }
 
+// ConditionClause - Represents a single clause to be evaluated by a NormalizedCondition.
+type ConditionClause struct {
+	// REQUIRED; The name of the field that is evaluated.
+	Field *string
+
+	// REQUIRED; Represents an operator in a ConditionClause.
+	Operator *Operator
+
+	// REQUIRED; The top level connective operator for this condition.
+	Values []*string
+
+	// The connective used to join all values in this ConditionClause
+	ClauseConnective *Connective
+}
+
+// ConditionProperties - Represents a condition used to query for TI objects.
+type ConditionProperties struct {
+	// REQUIRED; The list of clauses to be evaluated in disjunction or conjunction base on the specified top level connective
+	// operator.
+	Clauses []*ConditionClause
+
+	// The top level connective operator for this condition.
+	ConditionConnective *Connective
+
+	// READ-ONLY; The STIX type for the objects returned by this query.
+	StixObjectType *string
+}
+
 // ConnectedEntity - Expansion result connected entities
 type ConnectedEntity struct {
 	// key-value pairs for a connected entity mapping
@@ -1769,13 +2032,75 @@ type ConnectedEntity struct {
 	TargetEntityID *string
 }
 
-// ContentPathMap - The mapping of content type to a repo path.
-type ContentPathMap struct {
-	// Content type.
-	ContentType *ContentType
+// ConnectivityCriterion - The criteria by which we determine whether the connector is connected or not. For Example, use
+// a KQL query to check if the expected data type is flowing).
+type ConnectivityCriterion struct {
+	// REQUIRED; Gets or sets the type of connectivity.
+	Type *string
 
-	// The path to the content.
-	Path *string
+	// Gets or sets the queries for checking connectivity.
+	Value []*string
+}
+
+// ConnectorDataType - The data type which is created by the connector, including a query indicated when was the last time
+// that data type was received in the workspace.
+type ConnectorDataType struct {
+	// REQUIRED; Gets or sets the query to indicate when relevant data was last received in the workspace.
+	LastDataReceivedQuery *string
+
+	// REQUIRED; Gets or sets the name of the data type to show in the graph.
+	Name *string
+}
+
+// ConnectorDefinitionsAvailability - The exposure status of the connector to the customers.
+type ConnectorDefinitionsAvailability struct {
+	// Gets or sets a value indicating whether the connector is preview.
+	IsPreview *bool
+
+	// The exposure status of the connector to the customers. Available values are 0-4 (0=None, 1=Available, 2=FeatureFlag, 3=Internal).
+	Status *int32
+}
+
+// ConnectorDefinitionsPermissions - The required Permissions for the connector.
+type ConnectorDefinitionsPermissions struct {
+	// Gets or sets the customs permissions required for the user to create connections.
+	Customs []*CustomPermissionDetails
+
+	// Gets or sets the required licenses for the user to create connections.
+	Licenses []*string
+
+	// Gets or sets the resource provider permissions required for the user to create connections.
+	ResourceProvider []*ConnectorDefinitionsResourceProvider
+
+	// Gets or sets the required tenant permissions for the connector.
+	Tenant []*string
+}
+
+// ConnectorDefinitionsResourceProvider - The resource provider details include the required permissions for the user to create
+// connections. The user should have the required permissions(Read\Write, ..) in the specified scope
+// ProviderPermissionsScope against the specified resource provider.
+type ConnectorDefinitionsResourceProvider struct {
+	// REQUIRED; Gets or sets the permissions description text.
+	PermissionsDisplayText *string
+
+	// REQUIRED; Gets or sets the provider name.
+	Provider *string
+
+	// REQUIRED; Gets or sets the permissions provider display name.
+	ProviderDisplayName *string
+
+	// REQUIRED; Required permissions for the connector resource provider that define in ResourceProviders. For more information
+	// about the permissions see here.
+	RequiredPermissions *ResourceProviderRequiredPermissions
+
+	// REQUIRED; The scope on which the user should have permissions, in order to be able to create connections.
+	Scope *ProviderPermissionsScope
+}
+
+// CountQuery - Represents a query to run on the TI objects in the workspace.
+type CountQuery struct {
+	// Query properties
+	Properties *QueryProperties
 }
 
 // CustomEntityQuery - Specific entity query that supports put requests.
@@ -1786,7 +2111,7 @@ type CustomEntityQuery struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1802,15 +2127,137 @@ type CustomEntityQuery struct {
 // GetCustomEntityQuery implements the CustomEntityQueryClassification interface for type CustomEntityQuery.
 func (c *CustomEntityQuery) GetCustomEntityQuery() *CustomEntityQuery { return c }
 
+// CustomPermissionDetails - The Custom permissions required for the connector.
+type CustomPermissionDetails struct {
+	// REQUIRED; Gets or sets the custom permissions description.
+	Description *string
+
+	// REQUIRED; Gets or sets the custom permissions name.
+	Name *string
+}
+
+// CustomizableConnectionsConfig - The UiConfig for 'Customizable' connector definition kind.
+type CustomizableConnectionsConfig struct {
+	// REQUIRED; Gets or sets the template name. The template includes ARM templates that can be created by the connector, usually
+	// it will be the dataConnectors ARM templates.
+	TemplateSpecName *string
+
+	// REQUIRED; Gets or sets the template version.
+	TemplateSpecVersion *string
+}
+
+// CustomizableConnectorDefinition - Connector definition for kind 'Customizable'.
+type CustomizableConnectorDefinition struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorDefinitionKind
+
+	// Etag of the azure resource
+	Etag *string
+
+	// Customizable properties.
+	Properties *CustomizableConnectorDefinitionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnectorDefinition implements the DataConnectorDefinitionClassification interface for type CustomizableConnectorDefinition.
+func (c *CustomizableConnectorDefinition) GetDataConnectorDefinition() *DataConnectorDefinition {
+	return &DataConnectorDefinition{
+		Etag:       c.Etag,
+		ID:         c.ID,
+		Kind:       c.Kind,
+		Name:       c.Name,
+		SystemData: c.SystemData,
+		Type:       c.Type,
+	}
+}
+
+// CustomizableConnectorDefinitionProperties - The UiConfig for 'Customizable' connector definition kind.
+type CustomizableConnectorDefinitionProperties struct {
+	// REQUIRED; The UiConfig for 'Customizable' connector definition kind.
+	ConnectorUIConfig *CustomizableConnectorUIConfig
+
+	// The UiConfig for 'Customizable' connector definition kind.
+	ConnectionsConfig *CustomizableConnectionsConfig
+
+	// Gets or sets the connector definition created date in UTC format.
+	CreatedTimeUTC *time.Time
+
+	// Gets or sets the connector definition last modified date in UTC format.
+	LastModifiedUTC *time.Time
+}
+
+// CustomizableConnectorUIConfig - The UiConfig for 'Customizable' connector definition kind.
+type CustomizableConnectorUIConfig struct {
+	// REQUIRED; Gets or sets the way the connector checks whether the connector is connected.
+	ConnectivityCriteria []*ConnectivityCriterion
+
+	// REQUIRED; Gets or sets the data types to check for last data received.
+	DataTypes []*ConnectorDataType
+
+	// REQUIRED; Gets or sets the connector description in markdown format.
+	DescriptionMarkdown *string
+
+	// REQUIRED; Gets or sets the graph queries to show the current data volume over time.
+	GraphQueries []*GraphQuery
+
+	// REQUIRED; Gets or sets the instruction steps to enable the connector.
+	InstructionSteps []*InstructionStep
+
+	// REQUIRED; The required Permissions for the connector.
+	Permissions *ConnectorDefinitionsPermissions
+
+	// REQUIRED; Gets or sets the connector publisher name.
+	Publisher *string
+
+	// REQUIRED; Gets or sets the connector blade title.
+	Title *string
+
+	// The exposure status of the connector to the customers.
+	Availability *ConnectorDefinitionsAvailability
+
+	// Gets or sets custom connector id. optional field.
+	ID *string
+
+	// Gets or sets a value indicating whether to use 'OR'(SOME) or 'AND' between ConnectivityCriteria items.
+	IsConnectivityCriteriasMatchSome *bool
+
+	// Gets or sets the connector logo to be used when displaying the connector within Azure Sentinel's connector's gallery. The
+	// logo value should be in SVG format.
+	Logo *string
+}
+
+// DCRConfiguration - The configuration of the destination of the data.
+type DCRConfiguration struct {
+	// REQUIRED; Represents the data collection ingestion endpoint in log analytics.
+	DataCollectionEndpoint *string
+
+	// REQUIRED; The data collection rule immutable id, the rule defines the transformation and data destination.
+	DataCollectionRuleImmutableID *string
+
+	// REQUIRED; The stream we are sending the data to.
+	StreamName *string
+}
+
 // DNSEntity - Represents a dns entity.
 type DNSEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Dns entity properties
 	Properties *DNSEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1864,7 +2311,7 @@ type DataConnector struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1919,6 +2366,37 @@ type DataConnectorConnectBody struct {
 type DataConnectorDataTypeCommon struct {
 	// REQUIRED; Describe whether this data type connection is enabled or not.
 	State *DataTypeState
+}
+
+// DataConnectorDefinition - An Azure resource, which encapsulate the entire info requires to display a data connector page
+// in Azure portal, and the info required to define data connections.
+type DataConnectorDefinition struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorDefinitionKind
+
+	// Etag of the azure resource
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnectorDefinition implements the DataConnectorDefinitionClassification interface for type DataConnectorDefinition.
+func (d *DataConnectorDefinition) GetDataConnectorDefinition() *DataConnectorDefinition { return d }
+
+// DataConnectorDefinitionArmCollectionWrapper - Encapsulate the data connector definition object
+type DataConnectorDefinitionArmCollectionWrapper struct {
+	NextLink *string
+	Value    []DataConnectorDefinitionClassification
 }
 
 // DataConnectorList - List all the data connectors.
@@ -2019,7 +2497,7 @@ type Dynamics365DataConnector struct {
 	// Dynamics365 data connector properties.
 	Properties *Dynamics365DataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2063,6 +2541,12 @@ type Dynamics365DataConnectorProperties struct {
 
 	// REQUIRED; The tenant id to connect to, and get the data from.
 	TenantID *string
+}
+
+// EnrichmentDomainBody - Domain name to be enriched
+type EnrichmentDomainBody struct {
+	// The domain name
+	Domain *string
 }
 
 // EnrichmentDomainWhois - Whois information for a given domain and associated metadata
@@ -2170,6 +2654,12 @@ type EnrichmentDomainWhoisRegistrarDetails struct {
 	WhoisServer *string
 }
 
+// EnrichmentIPAddressBody - IP address (v4 or v6) to be enriched
+type EnrichmentIPAddressBody struct {
+	// The dotted-decimal or colon-separated string representation of the IP address
+	IPAddress *string
+}
+
 // EnrichmentIPGeodata - Geodata information for a given IP address
 type EnrichmentIPGeodata struct {
 	// The autonomous system number associated with this IP address
@@ -2182,7 +2672,7 @@ type EnrichmentIPGeodata struct {
 	City *string
 
 	// A numeric rating of confidence that the value in the 'city' field is correct, on a scale of 0-100
-	CityCf *int32
+	CityConfidenceFactor *int32
 
 	// The continent this IP address is located on
 	Continent *string
@@ -2191,7 +2681,7 @@ type EnrichmentIPGeodata struct {
 	Country *string
 
 	// A numeric rating of confidence that the value in the 'country' field is correct on a scale of 0-100
-	CountryCf *int32
+	CountryConfidenceFactor *int32
 
 	// The dotted-decimal or colon-separated string representation of the IP address
 	IPAddr *string
@@ -2217,19 +2707,19 @@ type EnrichmentIPGeodata struct {
 	// The state this IP address is located in
 	State *string
 
-	// A numeric rating of confidence that the value in the 'state' field is correct on a scale of 0-100
-	StateCf *int32
-
 	// The abbreviated name for the state this IP address is located in
 	StateCode *string
+
+	// A numeric rating of confidence that the value in the 'state' field is correct on a scale of 0-100
+	StateConfidenceFactor *int32
 }
 
 // Entity - Specific entity.
 type Entity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2256,7 +2746,7 @@ type EntityAnalytics struct {
 	// EntityAnalytics properties
 	Properties *EntityAnalyticsProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2392,6 +2882,18 @@ type EntityList struct {
 	NextLink *string
 }
 
+// EntityManualTriggerRequestBody - Describes the request body for triggering a playbook on an entity.
+type EntityManualTriggerRequestBody struct {
+	// REQUIRED; The resource id of the playbook resource.
+	LogicAppsResourceID *string
+
+	// Incident ARM id.
+	IncidentArmID *string
+
+	// The tenant id of the playbook resource.
+	TenantID *string
+}
+
 // EntityMapping - Single entity mapping for the alert rule
 type EntityMapping struct {
 	// The V3 type of the mapped entity
@@ -2409,7 +2911,7 @@ type EntityQuery struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2462,7 +2964,7 @@ type EntityQueryTemplate struct {
 	// REQUIRED; the entity query template kind
 	Kind *EntityQueryTemplateKind
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2520,6 +3022,15 @@ type EntityTimelineResponse struct {
 	Value []EntityTimelineItemClassification
 }
 
+// Error - The error description for why a publication failed
+type Error struct {
+	// REQUIRED; The error message
+	ErrorMessage *string
+
+	// REQUIRED; The member resource name for which the publication error occured
+	MemberResourceName *string
+}
+
 // EventGroupingSettings - Event grouping settings property bag.
 type EventGroupingSettings struct {
 	// The event grouping aggregation kinds
@@ -2558,7 +3069,7 @@ type ExpansionEntityQuery struct {
 	// Expansion entity query properties
 	Properties *ExpansionEntityQueriesProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2589,7 +3100,7 @@ type ExpansionResultAggregation struct {
 	Count *int32
 
 	// REQUIRED; The kind of the aggregated entity.
-	EntityKind *EntityKind
+	EntityKind *EntityKindEnum
 
 	// The common type of the aggregation. (for e.g. entity field name)
 	AggregationType *string
@@ -2615,7 +3126,7 @@ type EyesOn struct {
 	// EyesOn properties
 	Properties *EyesOnSettingsProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2658,12 +3169,12 @@ type FieldMapping struct {
 // FileEntity - Represents a file entity.
 type FileEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// File entity properties
 	Properties *FileEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2712,12 +3223,12 @@ type FileEntityProperties struct {
 // FileHashEntity - Represents a file hash entity.
 type FileHashEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// FileHash entity properties
 	Properties *FileHashEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2762,7 +3273,7 @@ type FileImport struct {
 	// File import properties
 	Properties *FileImportProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2855,7 +3366,7 @@ type FusionAlertRule struct {
 	// Fusion alert rule properties
 	Properties *FusionAlertRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2906,6 +3417,9 @@ type FusionAlertRuleProperties struct {
 	// READ-ONLY; The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
 
+	// READ-ONLY; The sub-techniques of the alert rule
+	SubTechniques []*string
+
 	// READ-ONLY; The tactics of the alert rule
 	Tactics []*AttackTactic
 
@@ -2921,7 +3435,7 @@ type FusionAlertRuleTemplate struct {
 	// Fusion alert rule template properties
 	Properties *FusionAlertRuleTemplateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2947,7 +3461,7 @@ func (f *FusionAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
 
 // FusionAlertRuleTemplateProperties - Fusion alert rule template properties
 type FusionAlertRuleTemplateProperties struct {
-	// the number of alert rules that were created by this template
+	// The number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32
 
 	// The description of the alert rule template.
@@ -2967,6 +3481,9 @@ type FusionAlertRuleTemplateProperties struct {
 
 	// The alert rule template status.
 	Status *TemplateStatus
+
+	// The sub-techniques of the alert rule
+	SubTechniques []*string
 
 	// The tactics of the alert rule template
 	Tactics []*AttackTactic
@@ -3067,6 +3584,119 @@ type FusionTemplateSubTypeSeverityFilter struct {
 	SeverityFilters []*AlertSeverity
 }
 
+// GCPAuthModel - Model for API authentication for all GCP kind connectors.
+type GCPAuthModel struct {
+	// REQUIRED; GCP Project Number
+	ProjectNumber *string
+
+	// REQUIRED; GCP Service Account Email
+	ServiceAccountEmail *string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// REQUIRED; GCP Workload Identity Provider ID
+	WorkloadIdentityProviderID *string
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type GCPAuthModel.
+func (g *GCPAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: g.Type,
+	}
+}
+
+// GCPAuthProperties - Google Cloud Platform auth section properties.
+type GCPAuthProperties struct {
+	// REQUIRED; The GCP project number.
+	ProjectNumber *string
+
+	// REQUIRED; The service account that is used to access the GCP project.
+	ServiceAccountEmail *string
+
+	// REQUIRED; The workload identity provider id that is used to gain access to the GCP project.
+	WorkloadIdentityProviderID *string
+}
+
+// GCPDataConnector - Represents Google Cloud Platform data connector.
+type GCPDataConnector struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorKind
+
+	// Etag of the azure resource
+	Etag *string
+
+	// Google Cloud Platform data connector properties.
+	Properties *GCPDataConnectorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type GCPDataConnector.
+func (g *GCPDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Etag:       g.Etag,
+		ID:         g.ID,
+		Kind:       g.Kind,
+		Name:       g.Name,
+		SystemData: g.SystemData,
+		Type:       g.Type,
+	}
+}
+
+// GCPDataConnectorProperties - Google Cloud Platform data connector properties.
+type GCPDataConnectorProperties struct {
+	// REQUIRED; The auth section of the connector.
+	Auth *GCPAuthProperties
+
+	// REQUIRED; The name of the connector definition that represents the UI config.
+	ConnectorDefinitionName *string
+
+	// REQUIRED; The request section of the connector.
+	Request *GCPRequestProperties
+
+	// The configuration of the destination of the data.
+	DcrConfig *DCRConfiguration
+}
+
+// GCPRequestProperties - Google Cloud Platform request section properties.
+type GCPRequestProperties struct {
+	// REQUIRED; The GCP project id.
+	ProjectID *string
+
+	// REQUIRED; The GCP pub/sub subscription names.
+	SubscriptionNames []*string
+}
+
+// GenericBlobSbsAuthModel - Model for API authentication for working with service bus or storage account.
+type GenericBlobSbsAuthModel struct {
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// Credentials for service bus namespace, keyvault uri for access key
+	CredentialsConfig map[string]*string
+
+	// Credentials for storage account, keyvault uri for access key
+	StorageAccountCredentialsConfig map[string]*string
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type GenericBlobSbsAuthModel.
+func (g *GenericBlobSbsAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: g.Type,
+	}
+}
+
 // GeoLocation - The geo-location context attached to the ip entity
 type GeoLocation struct {
 	// READ-ONLY; Autonomous System Number
@@ -3081,14 +3711,12 @@ type GeoLocation struct {
 	// READ-ONLY; Country name according to ISO 3166 Alpha 2: the lowercase of the English Short Name
 	CountryName *string
 
-	// READ-ONLY; The longitude of the identified location, expressed as a floating point number with range of -180 to 180, with
-	// positive numbers representing East and negative numbers representing West. Latitude and
-	// longitude are derived from the city or postal code.
+	// READ-ONLY; The latitude of the identified location, expressed as a floating point number with range of - 90 to 90. Latitude
+	// and longitude are derived from the city or postal code.
 	Latitude *float64
 
-	// READ-ONLY; The latitude of the identified location, expressed as a floating point number with range of - 90 to 90, with
-	// positive numbers representing North and negative numbers representing South. Latitude and
-	// longitude are derived from the city or postal code.
+	// READ-ONLY; The longitude of the identified location, expressed as a floating point number with range of -180 to 180. Latitude
+	// and longitude are derived from the city or postal code.
 	Longitude *float64
 
 	// READ-ONLY; State name
@@ -3122,10 +3750,41 @@ type GetQueriesResponse struct {
 	Value []EntityQueryItemClassification
 }
 
+// GitHubAuthModel - Model for API authentication for GitHub. For this authentication first we need to approve the Router
+// app (Microsoft Security DevOps) to access the GitHub account, Then we only need the InstallationId
+// to get the access token from https://api.github.com/app/installations/{installId}/access_tokens.
+type GitHubAuthModel struct {
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// The GitHubApp auth installation id.
+	InstallationID *string
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type GitHubAuthModel.
+func (g *GitHubAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: g.Type,
+	}
+}
+
 // GitHubResourceInfo - Resources created in GitHub repository.
 type GitHubResourceInfo struct {
 	// GitHub application installation id.
 	AppInstallationID *string
+}
+
+// GraphQuery - The graph query to show the volume of data arriving into the workspace over time.
+type GraphQuery struct {
+	// REQUIRED; Gets or sets the base query for the graph. The base query is wrapped by Sentinel UI infra with a KQL query, that
+	// measures the volume over time.
+	BaseQuery *string
+
+	// REQUIRED; Gets or sets the legend for the graph.
+	Legend *string
+
+	// REQUIRED; Gets or sets the metric name that the query is checking. For example: 'Total data receive'.
+	MetricName *string
 }
 
 // GroupingConfiguration - Grouping configuration property bag.
@@ -3158,12 +3817,12 @@ type GroupingConfiguration struct {
 // HostEntity - Represents a host entity.
 type HostEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Host entity properties
 	Properties *HostEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3225,15 +3884,174 @@ type HostEntityProperties struct {
 	OmsAgentID *string
 }
 
+// Hunt - Represents a Hunt in Azure Security Insights.
+type Hunt struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// Hunt properties
+	Properties *HuntProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// HuntComment - Represents a Hunt Comment in Azure Security Insights
+type HuntComment struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// Hunt Comment properties
+	Properties *HuntCommentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// HuntCommentList - List of all hunt comments
+type HuntCommentList struct {
+	// REQUIRED; Array of hunt comments
+	Value []*HuntComment
+
+	// READ-ONLY; URL to fetch the next set of hunt comments.
+	NextLink *string
+}
+
+// HuntCommentProperties - Describes a hunt comment properties
+type HuntCommentProperties struct {
+	// REQUIRED; The message for the comment
+	Message *string
+}
+
+// HuntList - List all the hunts.
+type HuntList struct {
+	// REQUIRED; Array of hunts.
+	Value []*Hunt
+
+	// READ-ONLY; URL to fetch the next set of hunts.
+	NextLink *string
+}
+
+// HuntOwner - Describes a user that the hunt is assigned to
+type HuntOwner struct {
+	// The name of the user the hunt is assigned to.
+	AssignedTo *string
+
+	// The email of the user the hunt is assigned to.
+	Email *string
+
+	// The object id of the user the hunt is assigned to.
+	ObjectID *string
+
+	// The type of the owner the hunt is assigned to.
+	OwnerType *OwnerType
+
+	// The user principal name of the user the hunt is assigned to.
+	UserPrincipalName *string
+}
+
+// HuntProperties - Describes hunt properties
+type HuntProperties struct {
+	// REQUIRED; The description of the hunt
+	Description *string
+
+	// REQUIRED; The display name of the hunt
+	DisplayName *string
+
+	// A list of mitre attack tactics the hunt is associated with
+	AttackTactics []*AttackTactic
+
+	// A list of a mitre attack techniques the hunt is associated with
+	AttackTechniques []*string
+
+	// The hypothesis status of the hunt.
+	HypothesisStatus *HypothesisStatus
+
+	// List of labels relevant to this hunt
+	Labels []*string
+
+	// Describes a user that the hunt is assigned to
+	Owner *HuntOwner
+
+	// The status of the hunt.
+	Status *Status
+}
+
+// HuntRelation - Represents a Hunt Relation in Azure Security Insights.
+type HuntRelation struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// Hunt Relation properties
+	Properties *HuntRelationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// HuntRelationList - List of all the hunt relations
+type HuntRelationList struct {
+	// REQUIRED; Array of hunt relations
+	Value []*HuntRelation
+
+	// READ-ONLY; URL to fetch the next set of hunt relations.
+	NextLink *string
+}
+
+// HuntRelationProperties - Describes hunt relation properties
+type HuntRelationProperties struct {
+	// REQUIRED; The id of the related resource
+	RelatedResourceID *string
+
+	// List of labels relevant to this hunt
+	Labels []*string
+
+	// READ-ONLY; The resource that the relation is related to
+	RelatedResourceKind *string
+
+	// READ-ONLY; The name of the related resource
+	RelatedResourceName *string
+
+	// READ-ONLY; The type of the hunt relation
+	RelationType *string
+}
+
 // HuntingBookmark - Represents a Hunting bookmark entity.
 type HuntingBookmark struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// HuntingBookmark entity properties
 	Properties *HuntingBookmarkProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3303,12 +4121,12 @@ type HuntingBookmarkProperties struct {
 // IPEntity - Represents an ip entity.
 type IPEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Ip entity properties
 	Properties *IPEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3351,6 +4169,39 @@ type IPEntityProperties struct {
 	ThreatIntelligence []*ThreatIntelligence
 }
 
+// Identity - Represents an identity in Azure Security Insights.
+type Identity struct {
+	// REQUIRED; The kind of the TI object
+	Kind *TIObjectKind
+
+	// The properties of the TI object
+	Properties *TIObjectCommonProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetTIObject implements the TIObjectClassification interface for type Identity.
+func (i *Identity) GetTIObject() *TIObject {
+	return &TIObject{
+		ID:         i.ID,
+		Kind:       i.Kind,
+		Name:       i.Name,
+		Properties: i.Properties,
+		SystemData: i.SystemData,
+		Type:       i.Type,
+	}
+}
+
 // Incident - Represents an incident in Azure Security Insights.
 type Incident struct {
 	// Etag of the azure resource
@@ -3359,7 +4210,7 @@ type Incident struct {
 	// Incident properties
 	Properties *IncidentProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3386,13 +4237,19 @@ type IncidentAdditionalData struct {
 	// READ-ONLY; The number of comments in the incident
 	CommentsCount *int32
 
+	// READ-ONLY; The incident number of the incident that the current incident was merged into
+	MergedIncidentNumber *string
+
+	// READ-ONLY; The URL to the incident that the current incident was merged into
+	MergedIncidentURL *string
+
 	// READ-ONLY; The provider incident url to the incident in Microsoft 365 Defender portal
 	ProviderIncidentURL *string
 
 	// READ-ONLY; The tactics associated with incident
 	Tactics []*AttackTactic
 
-	// READ-ONLY; The techniques associated with incident's tactics'
+	// READ-ONLY; The techniques associated with incident's tactics
 	Techniques []*string
 }
 
@@ -3416,7 +4273,7 @@ type IncidentComment struct {
 	// Incident comment properties
 	Properties *IncidentCommentProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3477,7 +4334,7 @@ type IncidentEntitiesResultsMetadata struct {
 	Count *int32
 
 	// REQUIRED; The kind of the aggregated entity.
-	EntityKind *EntityKind
+	EntityKind *EntityKindEnum
 }
 
 // IncidentInfo - Describes related incident information for the bookmark
@@ -3566,12 +4423,6 @@ type IncidentProperties struct {
 	// Describes a user that the incident is assigned to
 	Owner *IncidentOwnerInfo
 
-	// The incident ID assigned by the incident provider
-	ProviderIncidentID *string
-
-	// The name of the source provider that generated the incident
-	ProviderName *string
-
 	// Describes a team for the incident
 	TeamInformation *TeamInformation
 
@@ -3589,6 +4440,12 @@ type IncidentProperties struct {
 
 	// READ-ONLY; The last time the incident was updated
 	LastModifiedTimeUTC *time.Time
+
+	// READ-ONLY; The incident ID assigned by the incident provider
+	ProviderIncidentID *string
+
+	// READ-ONLY; The name of the source provider that generated the incident
+	ProviderName *string
 
 	// READ-ONLY; List of resource ids of Analytic rules related to the incident
 	RelatedAnalyticRuleIDs []*string
@@ -3615,6 +4472,102 @@ type IncidentPropertiesAction struct {
 
 	// The status of the incident
 	Status *IncidentStatus
+}
+
+// IncidentTask - Describes incident task properties
+type IncidentTask struct {
+	// REQUIRED; Describes the properties of an incident task
+	Properties *IncidentTaskProperties
+
+	// Etag of the azure resource
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IncidentTaskList - List of incident tasks
+type IncidentTaskList struct {
+	NextLink *string
+	Value    []*IncidentTask
+}
+
+// IncidentTaskProperties - Describes the properties of an incident task
+type IncidentTaskProperties struct {
+	// REQUIRED; The status of the task
+	Status *IncidentTaskStatus
+
+	// REQUIRED; The title of the task
+	Title *string
+
+	// Information on the client (user or application) that made some action
+	CreatedBy *ClientInfo
+
+	// The description of the task
+	Description *string
+
+	// Information on the client (user or application) that made some action
+	LastModifiedBy *ClientInfo
+
+	// READ-ONLY; The time the task was created
+	CreatedTimeUTC *time.Time
+
+	// READ-ONLY; The last time the task was updated
+	LastModifiedTimeUTC *time.Time
+}
+
+// Indicator - Represents an indicator in Azure Security Insights.
+type Indicator struct {
+	// REQUIRED; The kind of the TI object
+	Kind *TIObjectKind
+
+	// The observables of this indicator
+	Observables []*IndicatorObservablesItem
+
+	// The properties of the TI object
+	Properties *TIObjectCommonProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetTIObject implements the TIObjectClassification interface for type Indicator.
+func (i *Indicator) GetTIObject() *TIObject {
+	return &TIObject{
+		ID:         i.ID,
+		Kind:       i.Kind,
+		Name:       i.Name,
+		Properties: i.Properties,
+		SystemData: i.SystemData,
+		Type:       i.Type,
+	}
+}
+
+// IndicatorObservablesItem - An observable of this indicator
+type IndicatorObservablesItem struct {
+	// The type of the observable of this indicator
+	Type *string
+
+	// The value of the observable of this indicator
+	Value *string
 }
 
 // InsightQueryItem - Represents Insight Query.
@@ -3760,10 +4713,36 @@ type InsightsTableResult struct {
 }
 
 type InsightsTableResultColumnsItem struct {
-	// the name of the colum
+	// the name of the column
 	Name *string
 
-	// the type of the colum
+	// the type of the column
+	Type *string
+}
+
+// InstructionStep - Instruction steps to enable the connector.
+type InstructionStep struct {
+	// Gets or sets the instruction step description.
+	Description *string
+
+	// Gets or sets the inner instruction steps details. For Example: instruction step 1 might contain inner instruction steps:
+	// [instruction step 1.1, instruction step 1.2].
+	InnerSteps []*InstructionStep
+
+	// Gets or sets the instruction step details.
+	Instructions []*InstructionStepDetails
+
+	// Gets or sets the instruction step title.
+	Title *string
+}
+
+// InstructionStepDetails - Instruction step details, to be displayed in the Instructions steps section in the connector's
+// page in Sentinel Portal.
+type InstructionStepDetails struct {
+	// REQUIRED; Gets or sets the instruction type parameters settings.
+	Parameters any
+
+	// REQUIRED; Gets or sets the instruction type name.
 	Type *string
 }
 
@@ -3808,7 +4787,7 @@ type IoTDataConnector struct {
 	// IoT data connector properties.
 	Properties *IoTDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3845,12 +4824,12 @@ type IoTDataConnectorProperties struct {
 // IoTDeviceEntity - Represents an IoT device entity.
 type IoTDeviceEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// IoTDevice entity properties
 	Properties *IoTDeviceEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3968,6 +4947,109 @@ type IoTDeviceEntityProperties struct {
 	Zone *string
 }
 
+// Job - The assignment job
+type Job struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// The job object
+	Properties *JobProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// JobItem - An entity describing the publish status of a content item.
+type JobItem struct {
+	// The list of error descriptions if the item publication fails.
+	Errors []*Error
+
+	// The resource id of the content item
+	ResourceID *string
+
+	// READ-ONLY; The time the item publishing was completed
+	ExecutionTime *time.Time
+
+	// READ-ONLY; Status of the item publication
+	Status *Status
+}
+
+// JobList - List of all the jobs
+type JobList struct {
+	// REQUIRED; Array of jobs.
+	Value []*Job
+
+	// READ-ONLY; URL to fetch the next set of jobs.
+	NextLink *string
+}
+
+// JobProperties - The job properties
+type JobProperties struct {
+	// List of items published by the job
+	Items []*JobItem
+
+	// READ-ONLY; The time the job completed
+	EndTime *time.Time
+
+	// READ-ONLY; Message to describe error, if an error exists
+	ErrorMessage *string
+
+	// READ-ONLY; State of the job
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The time the job started
+	StartTime *time.Time
+}
+
+// JwtAuthModel - Model for API authentication with JWT. Simple exchange between user name + password to access token.
+type JwtAuthModel struct {
+	// REQUIRED; The password
+	Password map[string]*string
+
+	// REQUIRED; Token endpoint to request JWT
+	TokenEndpoint *string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// REQUIRED; The user name. If user name and password sent in header request we only need to populate the value property with
+	// the user name (Same as basic auth). If user name and password sent in body request we
+	// need to specify the Key and Value.
+	UserName map[string]*string
+
+	// The custom headers we want to add once we send request to token endpoint.
+	Headers map[string]*string
+
+	// Flag indicating whether we want to send the user name and password to token endpoint in the headers.
+	IsCredentialsInHeaders *bool
+
+	// Flag indicating whether the body request is JSON (header Content-Type = application/json), meaning its a Form URL encoded
+	// request (header Content-Type = application/x-www-form-urlencoded).
+	IsJSONRequest *bool
+
+	// The custom query parameter we want to add once we send request to token endpoint.
+	QueryParameters map[string]*string
+
+	// Request timeout in seconds.
+	RequestTimeoutInSeconds *int32
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type JwtAuthModel.
+func (j *JwtAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: j.Type,
+	}
+}
+
 // MCASCheckRequirements - Represents MCAS (Microsoft Cloud App Security) requirements check request.
 type MCASCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
@@ -4001,7 +5083,7 @@ type MCASDataConnector struct {
 	// MCAS (Microsoft Cloud App Security) data connector properties.
 	Properties *MCASDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4077,7 +5159,7 @@ type MDATPDataConnector struct {
 	// MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
 	Properties *MDATPDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4122,7 +5204,7 @@ type MLBehaviorAnalyticsAlertRule struct {
 	// MLBehaviorAnalytics alert rule properties
 	Properties *MLBehaviorAnalyticsAlertRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4167,6 +5249,9 @@ type MLBehaviorAnalyticsAlertRuleProperties struct {
 	// READ-ONLY; The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
 
+	// READ-ONLY; The sub-techniques of the alert rule
+	SubTechniques []*string
+
 	// READ-ONLY; The tactics of the alert rule
 	Tactics []*AttackTactic
 
@@ -4182,7 +5267,7 @@ type MLBehaviorAnalyticsAlertRuleTemplate struct {
 	// MLBehaviorAnalytics alert rule template properties.
 	Properties *MLBehaviorAnalyticsAlertRuleTemplateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4211,7 +5296,7 @@ type MLBehaviorAnalyticsAlertRuleTemplateProperties struct {
 	// REQUIRED; The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
 
-	// the number of alert rules that were created by this template
+	// The number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32
 
 	// The description of the alert rule template.
@@ -4272,7 +5357,7 @@ type MSTIDataConnector struct {
 	// Microsoft Threat Intelligence data connector properties.
 	Properties *MSTIDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4300,25 +5385,13 @@ func (m *MSTIDataConnector) GetDataConnector() *DataConnector {
 // MSTIDataConnectorDataTypes - The available data types for Microsoft Threat Intelligence Platforms data connector.
 type MSTIDataConnectorDataTypes struct {
 	// REQUIRED; Data type for Microsoft Threat Intelligence Platforms data connector.
-	BingSafetyPhishingURL *MSTIDataConnectorDataTypesBingSafetyPhishingURL
-
-	// REQUIRED; Data type for Microsoft Threat Intelligence Platforms data connector.
 	MicrosoftEmergingThreatFeed *MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed
-}
-
-// MSTIDataConnectorDataTypesBingSafetyPhishingURL - Data type for Microsoft Threat Intelligence Platforms data connector.
-type MSTIDataConnectorDataTypesBingSafetyPhishingURL struct {
-	// REQUIRED; lookback period
-	LookbackPeriod *string
-
-	// REQUIRED; Describe whether this data type connection is enabled or not.
-	State *DataTypeState
 }
 
 // MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed - Data type for Microsoft Threat Intelligence Platforms data connector.
 type MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed struct {
-	// REQUIRED; lookback period
-	LookbackPeriod *string
+	// REQUIRED; The lookback period for the feed to be imported.
+	LookbackPeriod *time.Time
 
 	// REQUIRED; Describe whether this data type connection is enabled or not.
 	State *DataTypeState
@@ -4350,7 +5423,7 @@ type MTPDataConnector struct {
 	// MTP (Microsoft Threat Protection) data connector properties.
 	Properties *MTPDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4377,11 +5450,20 @@ func (m *MTPDataConnector) GetDataConnector() *DataConnector {
 
 // MTPDataConnectorDataTypes - The available data types for Microsoft Threat Protection Platforms data connector.
 type MTPDataConnectorDataTypes struct {
-	// REQUIRED; Data type for Microsoft Threat Protection Platforms data connector.
+	// REQUIRED; Incidents data type for Microsoft Threat Protection Platforms data connector.
 	Incidents *MTPDataConnectorDataTypesIncidents
+
+	// Alerts data type for Microsoft Threat Protection Platforms data connector.
+	Alerts *MTPDataConnectorDataTypesAlerts
 }
 
-// MTPDataConnectorDataTypesIncidents - Data type for Microsoft Threat Protection Platforms data connector.
+// MTPDataConnectorDataTypesAlerts - Alerts data type for Microsoft Threat Protection Platforms data connector.
+type MTPDataConnectorDataTypesAlerts struct {
+	// REQUIRED; Describe whether this data type connection is enabled or not.
+	State *DataTypeState
+}
+
+// MTPDataConnectorDataTypesIncidents - Incidents data type for Microsoft Threat Protection Platforms data connector.
 type MTPDataConnectorDataTypesIncidents struct {
 	// REQUIRED; Describe whether this data type connection is enabled or not.
 	State *DataTypeState
@@ -4394,17 +5476,20 @@ type MTPDataConnectorProperties struct {
 
 	// REQUIRED; The tenant id to connect to, and get the data from.
 	TenantID *string
+
+	// The available filtered providers for the connector.
+	FilteredProviders *MtpFilteredProviders
 }
 
 // MailClusterEntity - Represents a mail cluster entity.
 type MailClusterEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Mail cluster entity properties
 	Properties *MailClusterEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4486,12 +5571,12 @@ type MailClusterEntityProperties struct {
 // MailMessageEntity - Represents a mail message entity.
 type MailMessageEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Mail message entity properties
 	Properties *MailMessageEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4604,12 +5689,12 @@ type MailMessageEntityProperties struct {
 // MailboxEntity - Represents a mailbox entity.
 type MailboxEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Mailbox entity properties
 	Properties *MailboxEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4659,12 +5744,12 @@ type MailboxEntityProperties struct {
 // MalwareEntity - Represents a malware entity.
 type MalwareEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// File entity properties
 	Properties *MalwareEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4779,7 +5864,7 @@ type MetadataModel struct {
 	// Metadata properties
 	Properties *MetadataProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4800,7 +5885,7 @@ type MetadataPatch struct {
 	// Metadata patch request body
 	Properties *MetadataPropertiesPatch
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -4816,7 +5901,7 @@ type MetadataPatch struct {
 // MetadataProperties - Metadata property bag.
 type MetadataProperties struct {
 	// REQUIRED; The kind of content the metadata is for.
-	Kind *Kind
+	Kind *string
 
 	// REQUIRED; Full parent resource ID of the content item the metadata is for. This is the full resource ID including the scope
 	// (subscription and resource group)
@@ -4912,7 +5997,7 @@ type MetadataPropertiesPatch struct {
 	Icon *string
 
 	// The kind of content the metadata is for.
-	Kind *Kind
+	Kind *string
 
 	// last publish date for the solution content item
 	LastPublishDate *time.Time
@@ -4975,6 +6060,89 @@ type MetadataSupport struct {
 	Name *string
 }
 
+// MicrosoftPurviewInformationProtectionCheckRequirements - Represents MicrosoftPurviewInformationProtection requirements
+// check request.
+type MicrosoftPurviewInformationProtectionCheckRequirements struct {
+	// REQUIRED; Describes the kind of connector to be checked.
+	Kind *DataConnectorKind
+
+	// MicrosoftPurviewInformationProtection requirements check properties.
+	Properties *MicrosoftPurviewInformationProtectionCheckRequirementsProperties
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type MicrosoftPurviewInformationProtectionCheckRequirements.
+func (m *MicrosoftPurviewInformationProtectionCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: m.Kind,
+	}
+}
+
+// MicrosoftPurviewInformationProtectionCheckRequirementsProperties - MicrosoftPurviewInformationProtection requirements check
+// properties.
+type MicrosoftPurviewInformationProtectionCheckRequirementsProperties struct {
+	// REQUIRED; The tenant id to connect to, and get the data from.
+	TenantID *string
+}
+
+// MicrosoftPurviewInformationProtectionConnectorDataTypes - The available data types for Microsoft Purview Information Protection
+// data connector.
+type MicrosoftPurviewInformationProtectionConnectorDataTypes struct {
+	// REQUIRED; Logs data type.
+	Logs *MicrosoftPurviewInformationProtectionConnectorDataTypesLogs
+}
+
+// MicrosoftPurviewInformationProtectionConnectorDataTypesLogs - Logs data type.
+type MicrosoftPurviewInformationProtectionConnectorDataTypesLogs struct {
+	// REQUIRED; Describe whether this data type connection is enabled or not.
+	State *DataTypeState
+}
+
+// MicrosoftPurviewInformationProtectionDataConnector - Represents Microsoft Purview Information Protection data connector.
+type MicrosoftPurviewInformationProtectionDataConnector struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorKind
+
+	// Etag of the azure resource
+	Etag *string
+
+	// Microsoft Purview Information Protection data connector properties.
+	Properties *MicrosoftPurviewInformationProtectionDataConnectorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type MicrosoftPurviewInformationProtectionDataConnector.
+func (m *MicrosoftPurviewInformationProtectionDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Etag:       m.Etag,
+		ID:         m.ID,
+		Kind:       m.Kind,
+		Name:       m.Name,
+		SystemData: m.SystemData,
+		Type:       m.Type,
+	}
+}
+
+// MicrosoftPurviewInformationProtectionDataConnectorProperties - Microsoft Purview Information Protection data connector
+// properties.
+type MicrosoftPurviewInformationProtectionDataConnectorProperties struct {
+	// REQUIRED; The available data types for the connector.
+	DataTypes *MicrosoftPurviewInformationProtectionConnectorDataTypes
+
+	// REQUIRED; The tenant id to connect to, and get the data from.
+	TenantID *string
+}
+
 // MicrosoftSecurityIncidentCreationAlertRule - Represents MicrosoftSecurityIncidentCreation rule.
 type MicrosoftSecurityIncidentCreationAlertRule struct {
 	// REQUIRED; The kind of the alert rule
@@ -4986,7 +6154,7 @@ type MicrosoftSecurityIncidentCreationAlertRule struct {
 	// MicrosoftSecurityIncidentCreation rule properties
 	Properties *MicrosoftSecurityIncidentCreationAlertRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5049,7 +6217,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	// MicrosoftSecurityIncidentCreation rule template properties
 	Properties *MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5075,7 +6243,7 @@ func (m *MicrosoftSecurityIncidentCreationAlertRuleTemplate) GetAlertRuleTemplat
 
 // MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties - MicrosoftSecurityIncidentCreation rule template properties
 type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
-	// the number of alert rules that were created by this template
+	// The number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32
 
 	// The description of the alert rule template.
@@ -5125,15 +6293,22 @@ func (m *MtpCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnect
 	}
 }
 
+// MtpFilteredProviders - Represents the connector's Filtered providers
+type MtpFilteredProviders struct {
+	// REQUIRED; Alerts filtered providers. When filters are not applied, all alerts will stream through the MTP pipeline, still
+	// in private preview for all products EXCEPT MDA and MDI, which are in GA state.
+	Alerts []*MtpProvider
+}
+
 // NicEntity - Represents an network interface entity.
 type NicEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Network interface entity properties
 	Properties *NicEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5176,6 +6351,19 @@ type NicEntityProperties struct {
 	Vlans []*string
 }
 
+// NoneAuthModel - Model for API authentication with no authentication method - public API.
+type NoneAuthModel struct {
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type NoneAuthModel.
+func (n *NoneAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: n.Type,
+	}
+}
+
 // NrtAlertRule - Represents NRT alert rule.
 type NrtAlertRule struct {
 	// REQUIRED; The kind of the alert rule
@@ -5187,7 +6375,7 @@ type NrtAlertRule struct {
 	// NRT alert rule properties
 	Properties *NrtAlertRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5253,6 +6441,12 @@ type NrtAlertRuleProperties struct {
 	// The settings of the incidents that created from alerts triggered by this analytics rule
 	IncidentConfiguration *IncidentConfiguration
 
+	// Array of the sentinel entity mappings of the alert rule
+	SentinelEntitiesMappings []*SentinelEntityMapping
+
+	// The sub-techniques of the alert rule
+	SubTechniques []*string
+
 	// The tactics of the alert rule
 	Tactics []*AttackTactic
 
@@ -5274,7 +6468,7 @@ type NrtAlertRuleTemplate struct {
 	// NRT alert rule template properties
 	Properties *NrtAlertRuleTemplateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5303,7 +6497,7 @@ type NrtAlertRuleTemplateProperties struct {
 	// The alert details override settings
 	AlertDetailsOverride *AlertDetailsOverride
 
-	// the number of alert rules that were created by this template
+	// The number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32
 
 	// Dictionary of string key-value pairs of columns to be attached to the alert
@@ -5327,6 +6521,9 @@ type NrtAlertRuleTemplateProperties struct {
 	// The required data sources for this template
 	RequiredDataConnectors []*AlertRuleTemplateDataSource
 
+	// Array of the sentinel entity mappings of the alert rule
+	SentinelEntitiesMappings []*SentinelEntityMapping
+
 	// The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
 
@@ -5347,6 +6544,64 @@ type NrtAlertRuleTemplateProperties struct {
 
 	// READ-ONLY; The last time that this alert rule template has been updated.
 	LastUpdatedDateUTC *time.Time
+}
+
+// OAuthModel - Model for API authentication with OAuth2.
+type OAuthModel struct {
+	// REQUIRED; The Application (client) ID that the OAuth provider assigned to your app.
+	ClientID *string
+
+	// REQUIRED; The Application (client) secret that the OAuth provider assigned to your app.
+	ClientSecret *string
+
+	// REQUIRED; The grant type, usually will be 'authorization code'.
+	GrantType *string
+
+	// REQUIRED; The token endpoint. Defines the OAuth2 refresh token.
+	TokenEndpoint *string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// Access token prepend. Default is 'Bearer'.
+	AccessTokenPrepend *string
+
+	// The user's authorization code.
+	AuthorizationCode *string
+
+	// The authorization endpoint.
+	AuthorizationEndpoint *string
+
+	// The authorization endpoint headers.
+	AuthorizationEndpointHeaders map[string]*string
+
+	// The authorization endpoint query parameters.
+	AuthorizationEndpointQueryParameters map[string]*string
+
+	// Indicating whether we want to send the clientId and clientSecret to token endpoint in the headers.
+	IsCredentialsInHeaders *bool
+
+	// A value indicating whether it's a JWT flow.
+	IsJwtBearerFlow *bool
+
+	// The Application redirect url that the user config in the OAuth provider.
+	RedirectURI *string
+
+	// The Application (client) Scope that the OAuth provider assigned to your app.
+	Scope *string
+
+	// The token endpoint headers.
+	TokenEndpointHeaders map[string]*string
+
+	// The token endpoint query parameters.
+	TokenEndpointQueryParameters map[string]*string
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type OAuthModel.
+func (o *OAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: o.Type,
+	}
 }
 
 // Office365ProjectCheckRequirements - Represents Office365 Project requirements check request.
@@ -5394,7 +6649,7 @@ type Office365ProjectDataConnector struct {
 	// Office Microsoft Project data connector properties.
 	Properties *Office365ProjectDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5461,7 +6716,7 @@ type OfficeATPDataConnector struct {
 	// OfficeATP (Office 365 Advanced Threat Protection) data connector properties.
 	Properties *OfficeATPDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5500,7 +6755,7 @@ type OfficeConsent struct {
 	// Office consent properties
 	Properties *OfficeConsentProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5542,7 +6797,7 @@ type OfficeDataConnector struct {
 	// Office data connector properties.
 	Properties *OfficeDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5639,7 +6894,7 @@ type OfficeIRMDataConnector struct {
 	// OfficeIRM (Microsoft Insider Risk Management) data connector properties.
 	Properties *OfficeIRMDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5718,7 +6973,7 @@ type OfficePowerBIDataConnector struct {
 	// Office Microsoft PowerBI data connector properties.
 	Properties *OfficePowerBIDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5791,6 +7046,133 @@ type OperationsList struct {
 	NextLink *string
 }
 
+// OracleAuthModel - Model for API authentication for Oracle.
+type OracleAuthModel struct {
+	// REQUIRED; Content of the PRM file
+	PemFile *string
+
+	// REQUIRED; Public Fingerprint
+	PublicFingerprint *string
+
+	// REQUIRED; Oracle tenant ID
+	TenantID *string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// REQUIRED; Oracle user ID
+	UserID *string
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type OracleAuthModel.
+func (o *OracleAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: o.Type,
+	}
+}
+
+// PackageList - List available packages.
+type PackageList struct {
+	// REQUIRED; Array of packages.
+	Value []*PackageModel
+
+	// READ-ONLY; URL to fetch the next set of packages.
+	NextLink *string
+}
+
+// PackageModel - Represents a Package in Azure Security Insights.
+type PackageModel struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// package properties
+	Properties *PackageProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PackageProperties - Describes package properties
+type PackageProperties struct {
+	// The author of the package
+	Author *MetadataAuthor
+
+	// The categories of the package
+	Categories *MetadataCategories
+
+	// The content id of the package
+	ContentID *string
+
+	// The package kind
+	ContentKind *PackageKind
+
+	// Unique ID for the content. It should be generated based on the contentId, contentKind and the contentVersion of the package
+	ContentProductID *string
+
+	// The version of the content schema.
+	ContentSchemaVersion *string
+
+	// The support tier of the package
+	Dependencies *MetadataDependencies
+
+	// The description of the package
+	Description *string
+
+	// The display name of the package
+	DisplayName *string
+
+	// first publish date package item
+	FirstPublishDate *time.Time
+
+	// the icon identifier. this id can later be fetched from the content metadata
+	Icon *string
+
+	// Flag indicates if this template is deprecated
+	IsDeprecated *Flag
+
+	// Flag indicates if this package is among the featured list.
+	IsFeatured *Flag
+
+	// Flag indicates if this is a newly published package.
+	IsNew *Flag
+
+	// Flag indicates if this package is in preview.
+	IsPreview *Flag
+
+	// last publish date for the package item
+	LastPublishDate *time.Time
+
+	// Providers for the package item
+	Providers []*string
+
+	// The publisher display name of the package
+	PublisherDisplayName *string
+
+	// The source of the package
+	Source *MetadataSource
+
+	// The support tier of the package
+	Support *MetadataSupport
+
+	// the tactics the resource covers
+	ThreatAnalysisTactics []*string
+
+	// the techniques the resource covers, these have to be aligned with the tactics being used
+	ThreatAnalysisTechniques []*string
+
+	// the latest version number of the package
+	Version *string
+}
+
 // Permissions required for the connector
 type Permissions struct {
 	// Customs permissions required for the connector
@@ -5826,22 +7208,87 @@ type PermissionsResourceProviderItem struct {
 }
 
 type PlaybookActionProperties struct {
-	// The resource id of the playbook resource.
+	// REQUIRED; The resource id of the playbook resource.
 	LogicAppResourceID *string
 
 	// The tenant id of the playbook resource.
 	TenantID *string
 }
 
+// PremiumMdtiDataConnectorDataTypes - The available data types for Microsoft Defender for Threat Intelligence Premium data
+// connector.
+type PremiumMdtiDataConnectorDataTypes struct {
+	// REQUIRED; Data type for Microsoft Defender for Threat Intelligence Premium data connector.
+	Connector *PremiumMdtiDataConnectorDataTypesConnector
+}
+
+// PremiumMdtiDataConnectorDataTypesConnector - Data type for Microsoft Defender for Threat Intelligence Premium data connector.
+type PremiumMdtiDataConnectorDataTypesConnector struct {
+	// REQUIRED; Describe whether this data type connection is enabled or not.
+	State *DataTypeState
+}
+
+// PremiumMdtiDataConnectorProperties - Microsoft Defender for Threat Intelligence Premium data connector properties.
+type PremiumMdtiDataConnectorProperties struct {
+	// REQUIRED; The available data types for the connector.
+	DataTypes *PremiumMdtiDataConnectorDataTypes
+
+	// REQUIRED; The lookback period for the feed to be imported. The date-time to begin importing the feed from, for example:
+	// 2024-01-01T00:00:00.000Z.
+	LookbackPeriod *time.Time
+
+	// REQUIRED; The tenant id to connect to, and get the data from.
+	TenantID *string
+
+	// The flag to indicate whether the tenant has the premium SKU required to access this connector.
+	RequiredSKUsPresent *bool
+}
+
+// PremiumMicrosoftDefenderForThreatIntelligence - Represents Microsoft Defender for Threat Intelligence Premium data connector.
+type PremiumMicrosoftDefenderForThreatIntelligence struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorKind
+
+	// Etag of the azure resource
+	Etag *string
+
+	// Microsoft Defender for Threat Intelligence Premium data connector properties.
+	Properties *PremiumMdtiDataConnectorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type PremiumMicrosoftDefenderForThreatIntelligence.
+func (p *PremiumMicrosoftDefenderForThreatIntelligence) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Etag:       p.Etag,
+		ID:         p.ID,
+		Kind:       p.Kind,
+		Name:       p.Name,
+		SystemData: p.SystemData,
+		Type:       p.Type,
+	}
+}
+
 // ProcessEntity - Represents a process entity.
 type ProcessEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Process entity properties
 	Properties *ProcessEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -5902,6 +7349,237 @@ type ProcessEntityProperties struct {
 	ProcessID *string
 }
 
+// ProductPackageList - List available packages.
+type ProductPackageList struct {
+	// REQUIRED; Array of packages.
+	Value []*ProductPackageModel
+
+	// READ-ONLY; URL to fetch the next set of packages.
+	NextLink *string
+}
+
+// ProductPackageModel - Represents a Package in Azure Security Insights.
+type ProductPackageModel struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// package properties
+	Properties *ProductPackageProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProductPackageProperties - Describes package properties
+type ProductPackageProperties struct {
+	// The author of the package
+	Author *MetadataAuthor
+
+	// The categories of the package
+	Categories *MetadataCategories
+
+	// The content id of the package
+	ContentID *string
+
+	// The package kind
+	ContentKind *PackageKind
+
+	// Unique ID for the content. It should be generated based on the contentId, contentKind and the contentVersion of the package
+	ContentProductID *string
+
+	// The version of the content schema.
+	ContentSchemaVersion *string
+
+	// The support tier of the package
+	Dependencies *MetadataDependencies
+
+	// The description of the package
+	Description *string
+
+	// The display name of the package
+	DisplayName *string
+
+	// first publish date package item
+	FirstPublishDate *time.Time
+
+	// the icon identifier. this id can later be fetched from the content metadata
+	Icon *string
+
+	// The version of the installed package, null or absent means not installed.
+	InstalledVersion *string
+
+	// Flag indicates if this template is deprecated
+	IsDeprecated *Flag
+
+	// Flag indicates if this package is among the featured list.
+	IsFeatured *Flag
+
+	// Flag indicates if this is a newly published package.
+	IsNew *Flag
+
+	// Flag indicates if this package is in preview.
+	IsPreview *Flag
+
+	// last publish date for the package item
+	LastPublishDate *time.Time
+
+	// The metadata resource id.
+	MetadataResourceID *string
+
+	// The json of the ARM template to deploy. Expandable.
+	PackagedContent any
+
+	// Providers for the package item
+	Providers []*string
+
+	// The publisher display name of the package
+	PublisherDisplayName *string
+
+	// The source of the package
+	Source *MetadataSource
+
+	// The support tier of the package
+	Support *MetadataSupport
+
+	// the tactics the resource covers
+	ThreatAnalysisTactics []*string
+
+	// the techniques the resource covers, these have to be aligned with the tactics being used
+	ThreatAnalysisTechniques []*string
+
+	// the latest version number of the package
+	Version *string
+}
+
+// ProductTemplateList - List of all the template.
+type ProductTemplateList struct {
+	// REQUIRED; Array of templates.
+	Value []*ProductTemplateModel
+
+	// READ-ONLY; URL to fetch the next page of template.
+	NextLink *string
+}
+
+// ProductTemplateModel - Template resource definition.
+type ProductTemplateModel struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// template properties
+	Properties *ProductTemplateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProductTemplateProperties - Template property bag.
+type ProductTemplateProperties struct {
+	// The creator of the content item.
+	Author *MetadataAuthor
+
+	// Categories for the item
+	Categories *MetadataCategories
+
+	// Static ID for the content. Used to identify dependencies and content from solutions or community. Hard-coded/static for
+	// out of the box content and solutions. Dynamic for user-created. This is the
+	// resource name
+	ContentID *string
+
+	// The kind of content the template is for.
+	ContentKind *Kind
+
+	// Unique ID for the content. It should be generated based on the contentId of the package, contentId of the template, contentKind
+	// of the template and the contentVersion of the template
+	ContentProductID *string
+
+	// Schema version of the content. Can be used to distinguish between different flow based on the schema version
+	ContentSchemaVersion *string
+
+	// The custom version of the content. A optional free text
+	CustomVersion *string
+
+	// Dependencies for the content item, what other content items it requires to work. Can describe more complex dependencies
+	// using a recursive/nested structure. For a single dependency an id/kind/version
+	// can be supplied or operator/criteria for complex formats.
+	Dependencies *MetadataDependencies
+
+	// The display name of the template
+	DisplayName *string
+
+	// first publish date content item
+	FirstPublishDate *time.Time
+
+	// the icon identifier. this id can later be fetched from the content metadata
+	Icon *string
+
+	// last publish date for the content item
+	LastPublishDate *time.Time
+
+	// the package Id contains this template
+	PackageID *string
+
+	// the packageKind of the package contains this template
+	PackageKind *PackageKind
+
+	// the name of the package contains this template
+	PackageName *string
+
+	// Version of the package. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM metadata
+	// best practices. Can also be any string, but then we cannot guarantee any version
+	// checks
+	PackageVersion *string
+
+	// The json of the ARM template to deploy
+	PackagedContent any
+
+	// preview image file names. These will be taken from the solution artifacts
+	PreviewImages []*string
+
+	// preview image file names. These will be taken from the solution artifacts. used for dark theme support
+	PreviewImagesDark []*string
+
+	// Providers for the content item
+	Providers []*string
+
+	// Source of the content. This is where/how it was created.
+	Source *MetadataSource
+
+	// Support information for the template - type, name, contact information
+	Support *MetadataSupport
+
+	// the tactics the resource covers
+	ThreatAnalysisTactics []*string
+
+	// the techniques the resource covers, these have to be aligned with the tactics being used
+	ThreatAnalysisTechniques []*string
+
+	// Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM metadata
+	// best practices. Can also be any string, but then we cannot guarantee any version
+	// checks
+	Version *string
+
+	// READ-ONLY; Flag indicates if this template is deprecated
+	IsDeprecated *Flag
+}
+
 // PropertyArrayChangedConditionProperties - Describes an automation rule condition that evaluates an array property's value
 // change
 type PropertyArrayChangedConditionProperties struct {
@@ -5959,15 +7637,254 @@ func (p *PropertyConditionProperties) GetAutomationRuleCondition() *AutomationRu
 	}
 }
 
+// PullRequest - Information regarding pull request for protected branches.
+type PullRequest struct {
+	// READ-ONLY; State of the pull request
+	State *State
+
+	// READ-ONLY; URL of pull request
+	URL *string
+}
+
+// PurviewAuditCheckRequirements - Represents PurviewAudit requirements check request.
+type PurviewAuditCheckRequirements struct {
+	// REQUIRED; Describes the kind of connector to be checked.
+	Kind *DataConnectorKind
+
+	// PurviewAudit requirements check properties.
+	Properties *PurviewAuditCheckRequirementsProperties
+}
+
+// GetDataConnectorsCheckRequirements implements the DataConnectorsCheckRequirementsClassification interface for type PurviewAuditCheckRequirements.
+func (p *PurviewAuditCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements {
+	return &DataConnectorsCheckRequirements{
+		Kind: p.Kind,
+	}
+}
+
+// PurviewAuditCheckRequirementsProperties - PurviewAudit requirements check properties.
+type PurviewAuditCheckRequirementsProperties struct {
+	// REQUIRED; The tenant id to connect to, and get the data from.
+	TenantID *string
+}
+
+// PurviewAuditConnectorDataTypes - The available data types for PurviewAudit data connector.
+type PurviewAuditConnectorDataTypes struct {
+	// REQUIRED; Logs data type.
+	Logs *PurviewAuditConnectorDataTypesLogs
+}
+
+// PurviewAuditConnectorDataTypesLogs - Logs data type.
+type PurviewAuditConnectorDataTypesLogs struct {
+	// REQUIRED; Describe whether this data type connection is enabled or not.
+	State *DataTypeState
+}
+
+// PurviewAuditDataConnector - Represents PurviewAudit data connector.
+type PurviewAuditDataConnector struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorKind
+
+	// Etag of the azure resource
+	Etag *string
+
+	// PurviewAudit data connector properties.
+	Properties *PurviewAuditDataConnectorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type PurviewAuditDataConnector.
+func (p *PurviewAuditDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Etag:       p.Etag,
+		ID:         p.ID,
+		Kind:       p.Kind,
+		Name:       p.Name,
+		SystemData: p.SystemData,
+		Type:       p.Type,
+	}
+}
+
+// PurviewAuditDataConnectorProperties - PurviewAudit data connector properties.
+type PurviewAuditDataConnectorProperties struct {
+	// REQUIRED; The available data types for the connector.
+	DataTypes *PurviewAuditConnectorDataTypes
+
+	// REQUIRED; The tenant id to connect to, and get the data from.
+	TenantID *string
+
+	// The connector definition name (the dataConnectorDefinition resource id).
+	ConnectorDefinitionName *string
+
+	// The DCR related properties.
+	DcrConfig *DCRConfiguration
+
+	// The source type indicates which kind of data is relevant for this connector.
+	SourceType *string
+}
+
+// Query - Represents a query to run on the TI objects in the workspace.
+type Query struct {
+	// Represents a condition used to query for TI objects.
+	Condition *QueryCondition
+
+	// Represents the maximum size of the page that will be returned from the query API.
+	MaxPageSize *int32
+
+	// Represents the minimum size of the page that will be returned from the query API.
+	MinPageSize *int32
+
+	// Specifies how to sort the query results.
+	SortBy *QuerySortBy
+}
+
+// QueryCondition - Represents a condition used to query for TI objects.
+type QueryCondition struct {
+	// REQUIRED; The list of clauses to be evaluated in disjunction or conjunction base on the specified top level connective
+	// operator.
+	Clauses []*ConditionClause
+
+	// The top level connective operator for this condition.
+	ConditionConnective *Connective
+
+	// The STIX type for the objects returned by this query.
+	StixObjectType *string
+}
+
+// QueryProperties - Describes the query properties
+type QueryProperties struct {
+	// Represents a condition used to query for TI objects.
+	Condition *ConditionProperties
+}
+
+// QuerySortBy - Specifies how to sort the query results.
+type QuerySortBy struct {
+	// The direction to sort the results by.
+	Direction *SortingDirection
+
+	// Represents the field to sort the results by.
+	Field *string
+}
+
+// Recommendation object.
+type Recommendation struct {
+	// Etag of the azure resource
+	Etag *string
+
+	// Recommendation properties object.
+	Properties *RecommendationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RecommendationList - A list of recommendations
+type RecommendationList struct {
+	// REQUIRED; An list of recommendations
+	Value []*Recommendation
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// RecommendationPatch - Recommendation Fields to update.
+type RecommendationPatch struct {
+	// Recommendation Fields Properties to update.
+	Properties *RecommendationPatchProperties
+}
+
+// RecommendationPatchProperties - Recommendation Fields Properties to update.
+type RecommendationPatchProperties struct {
+	// State of the recommendation.
+	State *State
+}
+
+// RecommendationProperties - Recommendation properties object.
+type RecommendationProperties struct {
+	// REQUIRED; The time stamp (UTC) when the recommendation was created.
+	CreationTimeUTC *time.Time
+
+	// REQUIRED; Description of the recommendation.
+	Description *string
+
+	// REQUIRED; The time stamp (UTC) when the recommendation was last evaluated.
+	LastEvaluatedTimeUTC *time.Time
+
+	// REQUIRED; The time stamp (UTC) when the recommendation was last modified.
+	LastModifiedTimeUTC *time.Time
+
+	// REQUIRED; Id of the recommendation type.
+	RecommendationTypeID *string
+
+	// REQUIRED; State of the recommendation.
+	State *State
+
+	// REQUIRED; List of suggestions to take for this recommendation.
+	Suggestions []*RecommendedSuggestion
+
+	// REQUIRED; Title of the recommendation.
+	Title *string
+
+	// Collection of additional properties for the recommendation.
+	AdditionalProperties map[string]*string
+
+	// Id of the resource this recommendation refers to.
+	ResourceID *string
+}
+
+// RecommendedSuggestion - What suggestions should be taken to complete the recommendation.
+type RecommendedSuggestion struct {
+	// REQUIRED; Action of the suggestion.
+	Action *string
+
+	// REQUIRED; Description of the suggestion.
+	Description *string
+
+	// REQUIRED; Id of the suggestion type.
+	SuggestionTypeID *string
+
+	// REQUIRED; Title of the suggestion.
+	Title *string
+
+	// Collection of additional properties for the suggestion.
+	AdditionalProperties map[string]*string
+}
+
+// ReevaluateResponse - Reevaluate response object.
+type ReevaluateResponse struct {
+	// The time stamp (UTC) when the recommendation was last evaluated.
+	LastEvaluatedTimeUTC *time.Time
+}
+
 // RegistryKeyEntity - Represents a registry key entity.
 type RegistryKeyEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// RegistryKey entity properties
 	Properties *RegistryKeyEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6010,12 +7927,12 @@ type RegistryKeyEntityProperties struct {
 // RegistryValueEntity - Represents a registry value entity.
 type RegistryValueEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// RegistryKey entity properties
 	Properties *RegistryValueEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6070,7 +7987,7 @@ type Relation struct {
 	// Relation properties
 	Properties *RelationProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6107,6 +8024,45 @@ type RelationProperties struct {
 	RelatedResourceType *string
 }
 
+// Relationship - Represents a relationship in Azure Security Insights.
+type Relationship struct {
+	// REQUIRED; The kind of the TI object
+	Kind *TIObjectKind
+
+	// The properties of the TI object
+	Properties *TIObjectCommonProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetTIObject implements the TIObjectClassification interface for type Relationship.
+func (r *Relationship) GetTIObject() *TIObject {
+	return &TIObject{
+		ID:         r.ID,
+		Kind:       r.Kind,
+		Name:       r.Name,
+		Properties: r.Properties,
+		SystemData: r.SystemData,
+		Type:       r.Type,
+	}
+}
+
+// RelationshipHint - An object used to help follow relationships from this object to other STIX objects.
+type RelationshipHint struct {
+	FieldName *string
+	Source    *string
+}
+
 // Repo - Represents a repository.
 type Repo struct {
 	// Array of branches.
@@ -6114,6 +8070,9 @@ type Repo struct {
 
 	// The name of the repository.
 	FullName *string
+
+	// The installation id of the repository.
+	InstallationID *int64
 
 	// The url to access the repository.
 	URL *string
@@ -6130,32 +8089,62 @@ type RepoList struct {
 
 // Repository - metadata of a repository.
 type Repository struct {
-	// Branch name of repository.
+	// REQUIRED; Branch name of repository.
 	Branch *string
 
-	// Url to access repository action logs.
-	DeploymentLogsURL *string
+	// REQUIRED; Url of repository.
+	URL *string
 
 	// Display url of repository.
 	DisplayURL *string
 
-	// Dictionary of source control content type and path mapping.
-	PathMapping []*ContentPathMap
+	// READ-ONLY; Url to access repository action logs.
+	DeploymentLogsURL *string
+}
 
-	// Url of repository.
-	URL *string
+// RepositoryAccess - Credentials to access repository.
+type RepositoryAccess struct {
+	// REQUIRED; The kind of repository access credentials
+	Kind *RepositoryAccessKind
+
+	// OAuth ClientId. Required when kind is OAuth
+	ClientID *string
+
+	// OAuth Code. Required when kind is OAuth
+	Code *string
+
+	// Application installation ID. Required when kind is App. Supported by GitHub only.
+	InstallationID *string
+
+	// OAuth State. Required when kind is OAuth
+	State *string
+
+	// Personal Access Token. Required when kind is PAT
+	Token *string
+}
+
+// RepositoryAccessObject - Credentials to access repository.
+type RepositoryAccessObject struct {
+	// REQUIRED; RepositoryAccess properties
+	RepositoryAccess *RepositoryAccess
+}
+
+// RepositoryAccessProperties - Credentials to access repository.
+type RepositoryAccessProperties struct {
+	// REQUIRED; RepositoryAccess properties
+	Properties *RepositoryAccessObject
 }
 
 // RepositoryResourceInfo - Resources created in user's repository for the source-control.
 type RepositoryResourceInfo struct {
-	// Resources created in Azure DevOps for this source-control.
-	AzureDevOpsResourceInfo *AzureDevOpsResourceInfo
-
-	// Resources created in GitHub for this source-control.
-	GitHubResourceInfo *GitHubResourceInfo
-
 	// The webhook object created for the source-control.
 	Webhook *Webhook
+
+	// READ-ONLY; Resources created in Azure DevOps for this source-control.
+	AzureDevOpsResourceInfo *AzureDevOpsResourceInfo
+
+	// READ-ONLY; Resources created in GitHub for this source-control.
+	GitHubResourceInfo *GitHubResourceInfo
 }
 
 // RequiredPermissions - Required permissions for the connector
@@ -6173,6 +8162,197 @@ type RequiredPermissions struct {
 	Write *bool
 }
 
+// ResourceProviderRequiredPermissions - Required permissions for the connector resource provider that define in ResourceProviders.
+// For more information about the permissions see here.
+type ResourceProviderRequiredPermissions struct {
+	// Gets or sets a value indicating whether the permission is custom actions (POST).
+	Action *bool
+
+	// Gets or sets a value indicating whether the permission is delete action (DELETE).
+	Delete *bool
+
+	// Gets or sets a value indicating whether the permission is read action (GET).
+	Read *bool
+
+	// Gets or sets a value indicating whether the permission is write action (PUT or PATCH).
+	Write *bool
+}
+
+// RestAPIPollerDataConnector - Represents Rest Api Poller data connector.
+type RestAPIPollerDataConnector struct {
+	// REQUIRED; The data connector kind
+	Kind *DataConnectorKind
+
+	// Etag of the azure resource
+	Etag *string
+
+	// Rest Api Poller data connector properties.
+	Properties *RestAPIPollerDataConnectorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnector implements the DataConnectorClassification interface for type RestAPIPollerDataConnector.
+func (r *RestAPIPollerDataConnector) GetDataConnector() *DataConnector {
+	return &DataConnector{
+		Etag:       r.Etag,
+		ID:         r.ID,
+		Kind:       r.Kind,
+		Name:       r.Name,
+		SystemData: r.SystemData,
+		Type:       r.Type,
+	}
+}
+
+// RestAPIPollerDataConnectorProperties - Rest Api Poller data connector properties.
+type RestAPIPollerDataConnectorProperties struct {
+	// REQUIRED; The a authentication model.
+	Auth CcpAuthConfigClassification
+
+	// REQUIRED; The connector definition name (the dataConnectorDefinition resource id).
+	ConnectorDefinitionName *string
+
+	// REQUIRED; The request configuration.
+	Request *RestAPIPollerRequestConfig
+
+	// The add on attributes. The key name will become attribute name (a column) and the value will become the attribute value
+	// in the payload.
+	AddOnAttributes map[string]*string
+
+	// The Log Analytics table destination.
+	DataType *string
+
+	// The DCR related properties.
+	DcrConfig *DCRConfiguration
+
+	// Indicates whether the connector is active or not.
+	IsActive *bool
+
+	// The paging configuration.
+	Paging *RestAPIPollerRequestPagingConfig
+
+	// The response configuration.
+	Response *CcpResponseConfig
+}
+
+// RestAPIPollerRequestConfig - The request configuration.
+type RestAPIPollerRequestConfig struct {
+	// REQUIRED; The API endpoint.
+	APIEndpoint *string
+
+	// The query parameter name which the remote server expect to end query. This property goes hand to hand with startTimeAttributeName
+	EndTimeAttributeName *string
+
+	// The HTTP method, default value GET.
+	HTTPMethod *HTTPMethodVerb
+
+	// The header for the request for the remote server.
+	Headers map[string]*string
+
+	// Flag to indicate if HTTP POST payload is in JSON format (vs form-urlencoded).
+	IsPostPayloadJSON *bool
+
+	// The HTTP query parameters to RESTful API.
+	QueryParameters map[string]any
+
+	// the query parameters template. Defines the query parameters template to use when passing query parameters in advanced scenarios.
+	QueryParametersTemplate *string
+
+	// The query time format. A remote server can have a query to pull data from range 'start' to 'end'. This property indicate
+	// what is the expected time format the remote server know to parse.
+	QueryTimeFormat *string
+
+	// The query parameter name which we need to send the server for query logs in time interval. Should be defined with queryTimeIntervalPrepend
+	// and queryTimeIntervalDelimiter
+	QueryTimeIntervalAttributeName *string
+
+	// The delimiter string between 2 QueryTimeFormat in the query parameter queryTimeIntervalAttributeName.
+	QueryTimeIntervalDelimiter *string
+
+	// The string prepend to the value of the query parameter in queryTimeIntervalAttributeName.
+	QueryTimeIntervalPrepend *string
+
+	// The query window in minutes for the request.
+	QueryWindowInMin *int32
+
+	// The Rate limit queries per second for the request..
+	RateLimitQPS *int32
+
+	// The retry count.
+	RetryCount *int32
+
+	// The query parameter name which the remote server expect to start query. This property goes hand to hand with endTimeAttributeName.
+	StartTimeAttributeName *string
+
+	// The timeout in seconds.
+	TimeoutInSeconds *int32
+}
+
+// RestAPIPollerRequestPagingConfig - The request paging configuration.
+type RestAPIPollerRequestPagingConfig struct {
+	// REQUIRED; Type of paging
+	PagingType *RestAPIPollerRequestPagingKind
+
+	// Page size
+	PageSize *int32
+
+	// Page size parameter name
+	PageSizeParameterName *string
+}
+
+// SapSolutionUsageStatistic - Billing statistic about the Microsoft Sentinel solution for SAP Usage
+type SapSolutionUsageStatistic struct {
+	// REQUIRED; The kind of the billing statistic
+	Kind *BillingStatisticKind
+
+	// The SAP solution usage object
+	Properties *SapSolutionUsageStatisticProperties
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetBillingStatistic implements the BillingStatisticClassification interface for type SapSolutionUsageStatistic.
+func (s *SapSolutionUsageStatistic) GetBillingStatistic() *BillingStatistic {
+	return &BillingStatistic{
+		Etag:       s.Etag,
+		ID:         s.ID,
+		Kind:       s.Kind,
+		Name:       s.Name,
+		SystemData: s.SystemData,
+		Type:       s.Type,
+	}
+}
+
+// SapSolutionUsageStatisticProperties - Properties of the billing statistic about the Microsoft Sentinel solution for SAP
+// usage
+type SapSolutionUsageStatisticProperties struct {
+	// READ-ONLY; The latest count of active SAP system IDs under the Microsoft Sentinel solution for SAP Usage
+	ActiveSystemIDCount *int64
+}
+
 // ScheduledAlertRule - Represents scheduled alert rule.
 type ScheduledAlertRule struct {
 	// REQUIRED; The kind of the alert rule
@@ -6184,7 +8364,7 @@ type ScheduledAlertRule struct {
 	// Scheduled alert rule properties
 	Properties *ScheduledAlertRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6253,8 +8433,14 @@ type ScheduledAlertRuleProperties struct {
 	// The period (in ISO 8601 duration format) that this alert rule looks at.
 	QueryPeriod *string
 
+	// Array of the sentinel entity mappings of the alert rule
+	SentinelEntitiesMappings []*SentinelEntityMapping
+
 	// The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
+
+	// The sub-techniques of the alert rule
+	SubTechniques []*string
 
 	// The tactics of the alert rule
 	Tactics []*AttackTactic
@@ -6283,7 +8469,7 @@ type ScheduledAlertRuleTemplate struct {
 	// Scheduled alert rule template properties
 	Properties *ScheduledAlertRuleTemplateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6312,7 +8498,7 @@ type ScheduledAlertRuleTemplateProperties struct {
 	// The alert details override settings
 	AlertDetailsOverride *AlertDetailsOverride
 
-	// the number of alert rules that were created by this template
+	// The number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32
 
 	// Dictionary of string key-value pairs of columns to be attached to the alert
@@ -6342,11 +8528,17 @@ type ScheduledAlertRuleTemplateProperties struct {
 	// The required data connectors for this template
 	RequiredDataConnectors []*AlertRuleTemplateDataSource
 
+	// Array of the sentinel entity mappings of the alert rule
+	SentinelEntitiesMappings []*SentinelEntityMapping
+
 	// The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
 
 	// The alert rule template status.
 	Status *TemplateStatus
+
+	// The sub-techniques of the alert rule
+	SubTechniques []*string
 
 	// The tactics of the alert rule template
 	Tactics []*AttackTactic
@@ -6373,12 +8565,12 @@ type ScheduledAlertRuleTemplateProperties struct {
 // SecurityAlert - Represents a security alert entity.
 type SecurityAlert struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// SecurityAlert entity properties
 	Properties *SecurityAlertProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6528,6 +8720,12 @@ type SecurityAlertTimelineItem struct {
 
 	// The alert product name.
 	ProductName *string
+
+	// The techniques of the alert.
+	Techniques []*string
+
+	// READ-ONLY; The intent of the alert.
+	Intent *KillChainIntent
 }
 
 // GetEntityTimelineItem implements the EntityTimelineItemClassification interface for type SecurityAlertTimelineItem.
@@ -6540,12 +8738,12 @@ func (s *SecurityAlertTimelineItem) GetEntityTimelineItem() *EntityTimelineItem 
 // SecurityGroupEntity - Represents a security group entity.
 type SecurityGroupEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// SecurityGroup entity properties
 	Properties *SecurityGroupEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6596,7 +8794,7 @@ type SecurityMLAnalyticsSetting struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6632,6 +8830,12 @@ type SecurityMLAnalyticsSettingsList struct {
 	NextLink *string
 }
 
+// SentinelEntityMapping - A single sentinel entity mapping
+type SentinelEntityMapping struct {
+	// the column name to be mapped to the SentinelEntities
+	ColumnName *string
+}
+
 // SentinelOnboardingState - Sentinel onboarding state
 type SentinelOnboardingState struct {
 	// Etag of the azure resource
@@ -6640,7 +8844,7 @@ type SentinelOnboardingState struct {
 	// The Sentinel onboarding state object
 	Properties *SentinelOnboardingStateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6665,10 +8869,65 @@ type SentinelOnboardingStatesList struct {
 	Value []*SentinelOnboardingState
 }
 
+// ServicePrincipal - Service principal metadata.
+type ServicePrincipal struct {
+	// Expiration time of service principal credentials.
+	CredentialsExpireOn *time.Time
+
+	// READ-ONLY; App id of service principal.
+	AppID *string
+
+	// READ-ONLY; Id of service principal.
+	ID *string
+
+	// READ-ONLY; Tenant id of service principal.
+	TenantID *string
+}
+
+// SessionAuthModel - Model for API authentication with session cookie.
+type SessionAuthModel struct {
+	// REQUIRED; The password attribute name.
+	Password map[string]*string
+
+	// REQUIRED; The auth type
+	Type *CcpAuthType
+
+	// REQUIRED; The user name attribute key value.
+	UserName map[string]*string
+
+	// HTTP request headers to session service endpoint.
+	Headers map[string]*string
+
+	// Indicating whether API key is set in HTTP POST payload.
+	IsPostPayloadJSON *bool
+
+	// Query parameters to session service endpoint.
+	QueryParameters map[string]any
+
+	// Session id attribute name from HTTP response header.
+	SessionIDName *string
+
+	// HTTP request URL to session service endpoint.
+	SessionLoginRequestURI *string
+
+	// Session timeout in minutes.
+	SessionTimeoutInMinutes *int32
+}
+
+// GetCcpAuthConfig implements the CcpAuthConfigClassification interface for type SessionAuthModel.
+func (s *SessionAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
+	return &CcpAuthConfig{
+		Type: s.Type,
+	}
+}
+
 // SettingList - List of all the settings.
 type SettingList struct {
 	// REQUIRED; Array of settings.
 	Value []SettingsClassification
+
+	// READ-ONLY; URL to fetch the next set of settings.
+	NextLink *string
 }
 
 // Settings - The Setting.
@@ -6679,7 +8938,7 @@ type Settings struct {
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6697,13 +8956,13 @@ func (s *Settings) GetSettings() *Settings { return s }
 
 // SourceControl - Represents a SourceControl in Azure Security Insights.
 type SourceControl struct {
+	// REQUIRED; source control properties
+	Properties *SourceControlProperties
+
 	// Etag of the azure resource
 	Etag *string
 
-	// source control properties
-	Properties *SourceControlProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6742,28 +9001,40 @@ type SourceControlProperties struct {
 	// A description of the source control
 	Description *string
 
-	// The id (a Guid) of the source control
-	ID *string
-
-	// Information regarding the latest deployment for the source control.
-	LastDeploymentInfo *DeploymentInfo
+	// Repository access credentials. This is write-only object and it never returns back to a user.
+	RepositoryAccess *RepositoryAccess
 
 	// Information regarding the resources created in user's repository.
 	RepositoryResourceInfo *RepositoryResourceInfo
 
-	// The version number associated with the source control
+	// Service principal metadata.
+	ServicePrincipal *ServicePrincipal
+
+	// READ-ONLY; The id (a Guid) of the source control
+	ID *string
+
+	// READ-ONLY; Information regarding the latest deployment for the source control.
+	LastDeploymentInfo *DeploymentInfo
+
+	// READ-ONLY; Information regarding the pull request of the source control.
+	PullRequest *PullRequest
+
+	// READ-ONLY; The version number associated with the source control
 	Version *Version
+
+	// READ-ONLY; Workload Identity metadata.
+	WorkloadIdentityFederation *WorkloadIdentityFederation
 }
 
 // SubmissionMailEntity - Represents a submission mail entity.
 type SubmissionMailEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Submission mail entity properties
 	Properties *SubmissionMailEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6881,7 +9152,7 @@ type TIDataConnector struct {
 	// TI (Threat Intelligence) data connector properties.
 	Properties *TIDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -6930,6 +9201,65 @@ type TIDataConnectorProperties struct {
 	TipLookbackPeriod *time.Time
 }
 
+// TIObject - Represents a threat intelligence object in Azure Security Insights.
+type TIObject struct {
+	// REQUIRED; The kind of the TI object
+	Kind *TIObjectKind
+
+	// The properties of the TI object
+	Properties *TIObjectCommonProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetTIObject implements the TIObjectClassification interface for type TIObject.
+func (t *TIObject) GetTIObject() *TIObject { return t }
+
+// TIObjectCommonProperties - Describes properties common to all threat intelligence objects
+type TIObjectCommonProperties struct {
+	// READ-ONLY; The UserInfo of the user/entity which originally created this TI object.
+	CreatedBy *UserInfo
+
+	// READ-ONLY; The core STIX object that this TI object represents.
+	Data map[string]any
+
+	// READ-ONLY; The timestamp for the first time this object was ingested.
+	FirstIngestedTimeUTC *time.Time
+
+	// READ-ONLY; The ID of the rules version that was active when this TI object was last ingested.
+	IngestionRulesVersion *string
+
+	// READ-ONLY; The timestamp for the last time this object was ingested.
+	LastIngestedTimeUTC *time.Time
+
+	// READ-ONLY; The UserInfo of the user/entity which last modified this TI object.
+	LastModifiedBy *UserInfo
+
+	// READ-ONLY; The name of the method/application that initiated the last write to this TI object.
+	LastUpdateMethod *string
+
+	// READ-ONLY; The timestamp for the last time this TI object was updated.
+	LastUpdatedDateTimeUTC *time.Time
+
+	// READ-ONLY; A dictionary used to help follow relationships from this object to other STIX objects. The keys are field names
+	// from the STIX object (in the 'data' field), and the values are lists of sources that can
+	// be prepended to the object ID in order to efficiently locate the target TI object.
+	RelationshipHints []*RelationshipHint
+
+	// READ-ONLY; The source name for this TI object.
+	Source *string
+}
+
 // TeamInformation - Describes team information
 type TeamInformation struct {
 	// READ-ONLY; The description of the team
@@ -6948,19 +9278,160 @@ type TeamInformation struct {
 	TeamID *string
 }
 
-// TeamProperties - Describes team properties
-type TeamProperties struct {
-	// REQUIRED; The name of the team
-	TeamName *string
+// TemplateList - List of all the template.
+type TemplateList struct {
+	// REQUIRED; Array of templates.
+	Value []*TemplateModel
 
-	// List of group IDs to add their members to the team
-	GroupIDs []*string
+	// READ-ONLY; URL to fetch the next page of template.
+	NextLink *string
+}
 
-	// List of member IDs to add to the team
-	MemberIDs []*string
+// TemplateModel - Template resource definition.
+type TemplateModel struct {
+	// Etag of the azure resource
+	Etag *string
 
-	// The description of the team
-	TeamDescription *string
+	// template properties
+	Properties *TemplateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TemplateProperties - Template property bag.
+type TemplateProperties struct {
+	// The creator of the content item.
+	Author *MetadataAuthor
+
+	// Categories for the item
+	Categories *MetadataCategories
+
+	// Static ID for the content. Used to identify dependencies and content from solutions or community. Hard-coded/static for
+	// out of the box content and solutions. Dynamic for user-created. This is the
+	// resource name
+	ContentID *string
+
+	// The kind of content the template is for.
+	ContentKind *Kind
+
+	// Unique ID for the content. It should be generated based on the contentId of the package, contentId of the template, contentKind
+	// of the template and the contentVersion of the template
+	ContentProductID *string
+
+	// Schema version of the content. Can be used to distinguish between different flow based on the schema version
+	ContentSchemaVersion *string
+
+	// The custom version of the content. A optional free text
+	CustomVersion *string
+
+	// Dependencies for the content item, what other content items it requires to work. Can describe more complex dependencies
+	// using a recursive/nested structure. For a single dependency an id/kind/version
+	// can be supplied or operator/criteria for complex formats.
+	Dependencies *MetadataDependencies
+
+	// The display name of the template
+	DisplayName *string
+
+	// first publish date content item
+	FirstPublishDate *time.Time
+
+	// the icon identifier. this id can later be fetched from the content metadata
+	Icon *string
+
+	// last publish date for the content item
+	LastPublishDate *time.Time
+
+	// The JSON of the ARM template to deploy active content. Expandable.
+	MainTemplate any
+
+	// the package Id contains this template
+	PackageID *string
+
+	// the packageKind of the package contains this template
+	PackageKind *PackageKind
+
+	// the name of the package contains this template
+	PackageName *string
+
+	// Version of the package. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM metadata
+	// best practices. Can also be any string, but then we cannot guarantee any version
+	// checks
+	PackageVersion *string
+
+	// preview image file names. These will be taken from the solution artifacts
+	PreviewImages []*string
+
+	// preview image file names. These will be taken from the solution artifacts. used for dark theme support
+	PreviewImagesDark []*string
+
+	// Providers for the content item
+	Providers []*string
+
+	// Source of the content. This is where/how it was created.
+	Source *MetadataSource
+
+	// Support information for the template - type, name, contact information
+	Support *MetadataSupport
+
+	// the tactics the resource covers
+	ThreatAnalysisTactics []*string
+
+	// the techniques the resource covers, these have to be aligned with the tactics being used
+	ThreatAnalysisTechniques []*string
+
+	// Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM metadata
+	// best practices. Can also be any string, but then we cannot guarantee any version
+	// checks
+	Version *string
+
+	// READ-ONLY; Dependant templates. Expandable.
+	DependantTemplates []*TemplateProperties
+
+	// READ-ONLY; Flag indicates if this template is deprecated
+	IsDeprecated *Flag
+}
+
+// ThreatActor - Represents a threat actor in Azure Security Insights.
+type ThreatActor struct {
+	// REQUIRED; The kind of the TI object
+	Kind *TIObjectKind
+
+	// The properties of the TI object
+	Properties *TIObjectCommonProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetTIObject implements the TIObjectClassification interface for type ThreatActor.
+func (t *ThreatActor) GetTIObject() *TIObject {
+	return &TIObject{
+		ID:         t.ID,
+		Kind:       t.Kind,
+		Name:       t.Name,
+		Properties: t.Properties,
+		SystemData: t.SystemData,
+		Type:       t.Type,
+	}
 }
 
 // ThreatIntelligence property bag.
@@ -6995,7 +9466,7 @@ type ThreatIntelligenceAlertRule struct {
 	// Threat Intelligence alert rule properties
 	Properties *ThreatIntelligenceAlertRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7040,6 +9511,9 @@ type ThreatIntelligenceAlertRuleProperties struct {
 	// READ-ONLY; The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
 
+	// READ-ONLY; The sub-techniques of the alert rule
+	SubTechniques []*string
+
 	// READ-ONLY; The tactics of the alert rule
 	Tactics []*AttackTactic
 
@@ -7055,7 +9529,7 @@ type ThreatIntelligenceAlertRuleTemplate struct {
 	// Threat Intelligence alert rule template properties
 	Properties *ThreatIntelligenceAlertRuleTemplateProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7084,7 +9558,7 @@ type ThreatIntelligenceAlertRuleTemplateProperties struct {
 	// REQUIRED; The severity for alerts created by this alert rule.
 	Severity *AlertSeverity
 
-	// the number of alert rules that were created by this template
+	// The number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32
 
 	// The description of the alert rule template.
@@ -7116,6 +9590,12 @@ type ThreatIntelligenceAlertRuleTemplateProperties struct {
 type ThreatIntelligenceAppendTags struct {
 	// List of tags to be appended.
 	ThreatIntelligenceTags []*string
+}
+
+// ThreatIntelligenceCount - Count of all the threat intelligence objects on the workspace that match the provided query.
+type ThreatIntelligenceCount struct {
+	// READ-ONLY; Count of all the threat intelligence objects on the workspace that match the provided query.
+	Count *int32
 }
 
 // ThreatIntelligenceExternalReference - Describes external reference
@@ -7193,7 +9673,7 @@ type ThreatIntelligenceGranularMarkingModel struct {
 // ThreatIntelligenceIndicatorModel - Threat intelligence indicator entity.
 type ThreatIntelligenceIndicatorModel struct {
 	// REQUIRED; The kind of the entity.
-	Kind *ThreatIntelligenceResourceKindEnum
+	Kind *ThreatIntelligenceResourceInnerKind
 
 	// Etag of the azure resource
 	Etag *string
@@ -7201,7 +9681,7 @@ type ThreatIntelligenceIndicatorModel struct {
 	// Threat Intelligence Entity properties
 	Properties *ThreatIntelligenceIndicatorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7323,12 +9803,12 @@ type ThreatIntelligenceIndicatorProperties struct {
 // ThreatIntelligenceInformation - Threat intelligence information object.
 type ThreatIntelligenceInformation struct {
 	// REQUIRED; The kind of the entity.
-	Kind *ThreatIntelligenceResourceKindEnum
+	Kind *ThreatIntelligenceResourceInnerKind
 
 	// Etag of the azure resource
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7362,6 +9842,15 @@ type ThreatIntelligenceKillChainPhase struct {
 
 	// Phase name
 	PhaseName *string
+}
+
+// ThreatIntelligenceList - List all the threat intelligence objects on the workspace that match the provided query.
+type ThreatIntelligenceList struct {
+	// REQUIRED; Array of threat intelligence objects on the workspace that match the provided query.
+	Value []TIObjectClassification
+
+	// READ-ONLY; URL to fetch the next set of threat intelligence objects.
+	NextLink *string
 }
 
 // ThreatIntelligenceMetric - Describes threat intelligence metric
@@ -7424,7 +9913,7 @@ type ThreatIntelligenceSortingCriteria struct {
 	ItemKey *string
 
 	// Sorting order (ascending/descending/unsorted).
-	SortOrder *ThreatIntelligenceSortingCriteriaEnum
+	SortOrder *ThreatIntelligenceSortingOrder
 }
 
 // TiTaxiiCheckRequirements - Threat Intelligence TAXII data connector check requirements
@@ -7460,7 +9949,7 @@ type TiTaxiiDataConnector struct {
 	// Threat intelligence TAXII data connector properties.
 	Properties *TiTaxiiDataConnectorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7563,15 +10052,63 @@ type TimelineResultsMetadata struct {
 	Errors []*TimelineError
 }
 
+// TriggeredAnalyticsRuleRun - The triggered analytics rule run
+type TriggeredAnalyticsRuleRun struct {
+	// REQUIRED; The triggered analytics rule run Properties
+	Properties *TriggeredAnalyticsRuleRunProperties
+
+	// Etag of the azure resource
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TriggeredAnalyticsRuleRunProperties - The triggered analytics rule run Properties
+type TriggeredAnalyticsRuleRunProperties struct {
+	// REQUIRED
+	ExecutionTimeUTC *time.Time
+
+	// REQUIRED; The triggered analytics rule run provisioning state
+	ProvisioningState *ProvisioningState
+
+	// REQUIRED
+	RuleID *string
+
+	// REQUIRED
+	TriggeredAnalyticsRuleRunID *string
+
+	// Dictionary of
+	RuleRunAdditionalData map[string]any
+}
+
+// TriggeredAnalyticsRuleRuns - The triggered analytics rule run array
+type TriggeredAnalyticsRuleRuns struct {
+	// REQUIRED
+	Value []*TriggeredAnalyticsRuleRun
+
+	// READ-ONLY
+	NextLink *string
+}
+
 // URLEntity - Represents a url entity.
 type URLEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKind
+	Kind *EntityKindEnum
 
 	// Url entity properties
 	Properties *URLEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7619,7 +10156,7 @@ type Ueba struct {
 	// Ueba properties
 	Properties *UebaProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7671,6 +10208,24 @@ type ValidationError struct {
 	ErrorMessages []*string
 }
 
+// Warning response structure.
+type Warning struct {
+	// READ-ONLY; Warning data.
+	Warning *WarningBody
+}
+
+// WarningBody - Warning details.
+type WarningBody struct {
+	// READ-ONLY; An identifier for the warning. Codes are invariant and are intended to be consumed programmatically.
+	Code *WarningCode
+
+	// READ-ONLY
+	Details []*WarningBody
+
+	// READ-ONLY; A message describing the warning, intended to be suitable for display in a user interface.
+	Message *string
+}
+
 // Watchlist - Represents a Watchlist in Azure Security Insights.
 type Watchlist struct {
 	// Etag of the azure resource
@@ -7679,7 +10234,7 @@ type Watchlist struct {
 	// Watchlist properties
 	Properties *WatchlistProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7692,7 +10247,7 @@ type Watchlist struct {
 	Type *string
 }
 
-// WatchlistItem - Represents a Watchlist item in Azure Security Insights.
+// WatchlistItem - Represents a Watchlist Item in Azure Security Insights.
 type WatchlistItem struct {
 	// Etag of the azure resource
 	Etag *string
@@ -7700,7 +10255,7 @@ type WatchlistItem struct {
 	// Watchlist Item properties
 	Properties *WatchlistItemProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -7718,14 +10273,14 @@ type WatchlistItemList struct {
 	// REQUIRED; Array of watchlist items.
 	Value []*WatchlistItem
 
-	// READ-ONLY; URL to fetch the next set of watchlist item.
+	// READ-ONLY; URL to fetch the next set of watchlist items.
 	NextLink *string
 }
 
 // WatchlistItemProperties - Describes watchlist item properties
 type WatchlistItemProperties struct {
 	// REQUIRED; key-value pairs for a watchlist item
-	ItemsKeyValue map[string]any
+	ItemsKeyValue any
 
 	// The time the watchlist item was created
 	Created *time.Time
@@ -7734,7 +10289,7 @@ type WatchlistItemProperties struct {
 	CreatedBy *UserInfo
 
 	// key-value pairs for a watchlist item entity mapping
-	EntityMapping map[string]any
+	EntityMapping any
 
 	// A flag that indicates if the watchlist item is deleted or not
 	IsDeleted *bool
@@ -7801,6 +10356,9 @@ type WatchlistProperties struct {
 	// The number of lines in a csv/tsv content to skip before the header
 	NumberOfLinesToSkip *int32
 
+	// The triggered analytics rule run provisioning state
+	ProvisioningState *ProvisioningState
+
 	// The raw content that represents to watchlist items to create. In case of csv/tsv content type, it's the content of the
 	// file that will parsed by the endpoint
 	RawContent *string
@@ -7820,8 +10378,8 @@ type WatchlistProperties struct {
 	// Describes a user that updated the watchlist
 	UpdatedBy *UserInfo
 
-	// The status of the Watchlist upload : New, InProgress or Complete. Pls note : When a Watchlist upload status is equal to
-	// InProgress, the Watchlist cannot be deleted
+	// The status of the Watchlist upload : New, InProgress or Complete. Note : When a Watchlist upload status is InProgress,
+	// the Watchlist cannot be deleted
 	UploadStatus *string
 
 	// The alias of the watchlist
@@ -7839,12 +10397,192 @@ type Webhook struct {
 	// A flag to instruct the backend service to rotate webhook secret.
 	RotateWebhookSecret *bool
 
-	// Unique identifier for the webhook.
+	// READ-ONLY; Unique identifier for the webhook.
 	WebhookID *string
 
-	// Time when the webhook secret was updated.
-	WebhookSecretUpdateTime *string
+	// READ-ONLY; Time when the webhook secret was updated.
+	WebhookSecretUpdateTime *time.Time
 
-	// URL that gets invoked by the webhook.
+	// READ-ONLY; URL that gets invoked by the webhook.
 	WebhookURL *string
+}
+
+// WorkloadIdentityFederation - Workload Identity Federation metadata.
+type WorkloadIdentityFederation struct {
+	// READ-ONLY; App id of Workload Identity Federation.
+	AppID *string
+
+	// READ-ONLY; Id of Workload Identity Federation.
+	ID *string
+
+	// READ-ONLY; Issuer of Workload Identity Federation.
+	Issuer *string
+
+	// READ-ONLY; Subject of Workload Identity Federation.
+	Subject *string
+
+	// READ-ONLY; Tenant id of Workload Identity Federation.
+	TenantID *string
+}
+
+// WorkspaceManagerAssignment - The workspace manager assignment
+type WorkspaceManagerAssignment struct {
+	// The workspace manager assignment object
+	Properties *WorkspaceManagerAssignmentProperties
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceManagerAssignmentList - List of all the workspace manager assignments.
+type WorkspaceManagerAssignmentList struct {
+	// REQUIRED; Array of workspace manager assignments.
+	Value []*WorkspaceManagerAssignment
+
+	// READ-ONLY; URL to fetch the next set of workspace manager assignments.
+	NextLink *string
+}
+
+// WorkspaceManagerAssignmentProperties - The workspace manager assignment properties
+type WorkspaceManagerAssignmentProperties struct {
+	// REQUIRED; List of resources included in this workspace manager assignment
+	Items []*AssignmentItem
+
+	// REQUIRED; The resource name of the workspace manager group targeted by the workspace manager assignment
+	TargetResourceName *string
+
+	// READ-ONLY; The time the last job associated to this assignment ended at
+	LastJobEndTime *time.Time
+
+	// READ-ONLY; State of the last job associated to this assignment
+	LastJobProvisioningState *ProvisioningState
+}
+
+// WorkspaceManagerConfiguration - The workspace manager configuration
+type WorkspaceManagerConfiguration struct {
+	// The workspace manager configuration object
+	Properties *WorkspaceManagerConfigurationProperties
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceManagerConfigurationList - List all the workspace manager configurations for the workspace.
+type WorkspaceManagerConfigurationList struct {
+	// REQUIRED; Array of workspace manager configurations.
+	Value []*WorkspaceManagerConfiguration
+
+	// READ-ONLY; URL to fetch the next set of workspace manager configurations.
+	NextLink *string
+}
+
+// WorkspaceManagerConfigurationProperties - The workspace manager configuration properties
+type WorkspaceManagerConfigurationProperties struct {
+	// REQUIRED; The current mode of the workspace manager configuration
+	Mode *Mode
+}
+
+// WorkspaceManagerGroup - The workspace manager group
+type WorkspaceManagerGroup struct {
+	// The workspace manager group object
+	Properties *WorkspaceManagerGroupProperties
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceManagerGroupList - List of all the workspace manager groups.
+type WorkspaceManagerGroupList struct {
+	// REQUIRED; Array of workspace manager groups.
+	Value []*WorkspaceManagerGroup
+
+	// READ-ONLY; URL to fetch the next set of workspace manager groups.
+	NextLink *string
+}
+
+// WorkspaceManagerGroupProperties - The workspace manager group properties
+type WorkspaceManagerGroupProperties struct {
+	// REQUIRED; The display name of the workspace manager group
+	DisplayName *string
+
+	// REQUIRED; The names of the workspace manager members participating in this group.
+	MemberResourceNames []*string
+
+	// The description of the workspace manager group
+	Description *string
+}
+
+// WorkspaceManagerMember - The workspace manager member
+type WorkspaceManagerMember struct {
+	// The workspace manager member object
+	Properties *WorkspaceManagerMemberProperties
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceManagerMemberProperties - The workspace manager member properties
+type WorkspaceManagerMemberProperties struct {
+	// REQUIRED; Fully qualified resource ID of the target Sentinel workspace joining the given Sentinel workspace manager
+	TargetWorkspaceResourceID *string
+
+	// REQUIRED; Tenant id of the target Sentinel workspace joining the given Sentinel workspace manager
+	TargetWorkspaceTenantID *string
+}
+
+// WorkspaceManagerMembersList - List of workspace manager members
+type WorkspaceManagerMembersList struct {
+	// REQUIRED; Array of workspace manager members
+	Value []*WorkspaceManagerMember
+
+	// READ-ONLY; URL to fetch the next set of workspace manager members
+	NextLink *string
 }

@@ -51,21 +51,40 @@ func (t *ThreatIntelligenceIndicatorsServerTransport) Do(req *http.Request) (*ht
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return t.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ThreatIntelligenceIndicatorsClient.NewListPager":
-		resp, err = t.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (t *ThreatIntelligenceIndicatorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if threatIntelligenceIndicatorsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = threatIntelligenceIndicatorsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ThreatIntelligenceIndicatorsClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (t *ThreatIntelligenceIndicatorsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -77,7 +96,7 @@ func (t *ThreatIntelligenceIndicatorsServerTransport) dispatchNewListPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/threatIntelligence/main/indicators`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -94,11 +113,6 @@ func (t *ThreatIntelligenceIndicatorsServerTransport) dispatchNewListPager(req *
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
-		orderbyUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
-		if err != nil {
-			return nil, err
-		}
-		orderbyParam := getOptional(orderbyUnescaped)
 		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
 		if err != nil {
 			return nil, err
@@ -118,13 +132,18 @@ func (t *ThreatIntelligenceIndicatorsServerTransport) dispatchNewListPager(req *
 			return nil, err
 		}
 		skipTokenParam := getOptional(skipTokenUnescaped)
+		orderbyUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderbyParam := getOptional(orderbyUnescaped)
 		var options *armsecurityinsights.ThreatIntelligenceIndicatorsClientListOptions
-		if filterParam != nil || orderbyParam != nil || topParam != nil || skipTokenParam != nil {
+		if filterParam != nil || topParam != nil || skipTokenParam != nil || orderbyParam != nil {
 			options = &armsecurityinsights.ThreatIntelligenceIndicatorsClientListOptions{
 				Filter:    filterParam,
-				Orderby:   orderbyParam,
 				Top:       topParam,
 				SkipToken: skipTokenParam,
+				Orderby:   orderbyParam,
 			}
 		}
 		resp := t.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
@@ -146,4 +165,10 @@ func (t *ThreatIntelligenceIndicatorsServerTransport) dispatchNewListPager(req *
 		t.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ThreatIntelligenceIndicatorsServerTransport
+var threatIntelligenceIndicatorsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

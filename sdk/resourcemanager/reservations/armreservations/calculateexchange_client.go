@@ -22,7 +22,7 @@ type CalculateExchangeClient struct {
 
 // NewCalculateExchangeClient creates a new instance of CalculateExchangeClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCalculateExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CalculateExchangeClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -85,7 +85,7 @@ func (client *CalculateExchangeClient) post(ctx context.Context, body CalculateE
 }
 
 // postCreateRequest creates the Post request.
-func (client *CalculateExchangeClient) postCreateRequest(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*policy.Request, error) {
+func (client *CalculateExchangeClient) postCreateRequest(ctx context.Context, body CalculateExchangeRequest, _ *CalculateExchangeClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/calculateExchange"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

@@ -25,7 +25,7 @@ type ReservationOrderClient struct {
 
 // NewReservationOrderClient creates a new instance of ReservationOrderClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReservationOrderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationOrderClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *ReservationOrderClient) Calculate(ctx context.Context, body Purcha
 }
 
 // calculateCreateRequest creates the Calculate request.
-func (client *ReservationOrderClient) calculateCreateRequest(ctx context.Context, body PurchaseRequest, options *ReservationOrderClientCalculateOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) calculateCreateRequest(ctx context.Context, body PurchaseRequest, _ *ReservationOrderClientCalculateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/calculatePrice"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -123,7 +123,7 @@ func (client *ReservationOrderClient) ChangeDirectory(ctx context.Context, reser
 }
 
 // changeDirectoryCreateRequest creates the ChangeDirectory request.
-func (client *ReservationOrderClient) changeDirectoryCreateRequest(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest, options *ReservationOrderClientChangeDirectoryOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) changeDirectoryCreateRequest(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest, _ *ReservationOrderClientChangeDirectoryOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/changeDirectory"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -192,10 +192,10 @@ func (client *ReservationOrderClient) getCreateRequest(ctx context.Context, rese
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +239,7 @@ func (client *ReservationOrderClient) NewListPager(options *ReservationOrderClie
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationOrderClient) listCreateRequest(ctx context.Context, options *ReservationOrderClientListOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) listCreateRequest(ctx context.Context, _ *ReservationOrderClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -313,7 +313,7 @@ func (client *ReservationOrderClient) purchase(ctx context.Context, reservationO
 }
 
 // purchaseCreateRequest creates the Purchase request.
-func (client *ReservationOrderClient) purchaseCreateRequest(ctx context.Context, reservationOrderID string, body PurchaseRequest, options *ReservationOrderClientBeginPurchaseOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) purchaseCreateRequest(ctx context.Context, reservationOrderID string, body PurchaseRequest, _ *ReservationOrderClientBeginPurchaseOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")

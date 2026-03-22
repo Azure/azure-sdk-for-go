@@ -22,7 +22,7 @@ type ExchangeClient struct {
 
 // NewExchangeClient creates a new instance of ExchangeClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExchangeClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -84,7 +84,7 @@ func (client *ExchangeClient) post(ctx context.Context, body ExchangeRequest, op
 }
 
 // postCreateRequest creates the Post request.
-func (client *ExchangeClient) postCreateRequest(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*policy.Request, error) {
+func (client *ExchangeClient) postCreateRequest(ctx context.Context, body ExchangeRequest, _ *ExchangeClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/exchange"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

@@ -25,7 +25,7 @@ type ReturnClient struct {
 
 // NewReturnClient creates a new instance of ReturnClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReturnClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReturnClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -88,7 +88,7 @@ func (client *ReturnClient) post(ctx context.Context, reservationOrderID string,
 }
 
 // postCreateRequest creates the Post request.
-func (client *ReturnClient) postCreateRequest(ctx context.Context, reservationOrderID string, body RefundRequest, options *ReturnClientBeginPostOptions) (*policy.Request, error) {
+func (client *ReturnClient) postCreateRequest(ctx context.Context, reservationOrderID string, body RefundRequest, _ *ReturnClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/return"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")

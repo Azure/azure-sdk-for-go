@@ -26,7 +26,7 @@ type AzureReservationAPIClient struct {
 
 // NewAzureReservationAPIClient creates a new instance of AzureReservationAPIClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAzureReservationAPIClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureReservationAPIClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *AzureReservationAPIClient) GetAppliedReservationList(ctx context.C
 }
 
 // getAppliedReservationListCreateRequest creates the GetAppliedReservationList request.
-func (client *AzureReservationAPIClient) getAppliedReservationListCreateRequest(ctx context.Context, subscriptionID string, options *AzureReservationAPIClientGetAppliedReservationListOptions) (*policy.Request, error) {
+func (client *AzureReservationAPIClient) getAppliedReservationListCreateRequest(ctx context.Context, subscriptionID string, _ *AzureReservationAPIClientGetAppliedReservationListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/appliedReservations"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -136,22 +136,6 @@ func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
-	if options != nil && options.ReservedResourceType != nil {
-		reqQP.Set("reservedResourceType", *options.ReservedResourceType)
-	}
-	if options != nil && options.Location != nil {
-		reqQP.Set("location", *options.Location)
-	}
-	if options != nil && options.PublisherID != nil {
-		reqQP.Set("publisherId", *options.PublisherID)
-	}
-	if options != nil && options.OfferID != nil {
-		reqQP.Set("offerId", *options.OfferID)
-	}
-	if options != nil && options.PlanID != nil {
-		reqQP.Set("planId", *options.PlanID)
-	}
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -160,6 +144,22 @@ func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Con
 	}
 	if options != nil && options.Take != nil {
 		reqQP.Set("$take", strconv.FormatFloat(float64(*options.Take), 'f', -1, 32))
+	}
+	reqQP.Set("api-version", "2022-11-01")
+	if options != nil && options.Location != nil {
+		reqQP.Set("location", *options.Location)
+	}
+	if options != nil && options.OfferID != nil {
+		reqQP.Set("offerId", *options.OfferID)
+	}
+	if options != nil && options.PlanID != nil {
+		reqQP.Set("planId", *options.PlanID)
+	}
+	if options != nil && options.PublisherID != nil {
+		reqQP.Set("publisherId", *options.PublisherID)
+	}
+	if options != nil && options.ReservedResourceType != nil {
+		reqQP.Set("reservedResourceType", *options.ReservedResourceType)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

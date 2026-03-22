@@ -69,29 +69,48 @@ func (r *ReservationOrderServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ReservationOrderClient.Calculate":
-		resp, err = r.dispatchCalculate(req)
-	case "ReservationOrderClient.ChangeDirectory":
-		resp, err = r.dispatchChangeDirectory(req)
-	case "ReservationOrderClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "ReservationOrderClient.NewListPager":
-		resp, err = r.dispatchNewListPager(req)
-	case "ReservationOrderClient.BeginPurchase":
-		resp, err = r.dispatchBeginPurchase(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *ReservationOrderServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if reservationOrderServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = reservationOrderServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ReservationOrderClient.Calculate":
+				res.resp, res.err = r.dispatchCalculate(req)
+			case "ReservationOrderClient.ChangeDirectory":
+				res.resp, res.err = r.dispatchChangeDirectory(req)
+			case "ReservationOrderClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "ReservationOrderClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
+			case "ReservationOrderClient.BeginPurchase":
+				res.resp, res.err = r.dispatchBeginPurchase(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *ReservationOrderServerTransport) dispatchCalculate(req *http.Request) (*http.Response, error) {
@@ -124,7 +143,7 @@ func (r *ReservationOrderServerTransport) dispatchChangeDirectory(req *http.Requ
 	const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeDirectory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armreservations.ChangeDirectoryRequest](req)
@@ -157,7 +176,7 @@ func (r *ReservationOrderServerTransport) dispatchGet(req *http.Request) (*http.
 	const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -227,7 +246,7 @@ func (r *ReservationOrderServerTransport) dispatchBeginPurchase(req *http.Reques
 		const regexStr = `/providers/Microsoft\.Capacity/reservationOrders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armreservations.PurchaseRequest](req)
@@ -260,4 +279,10 @@ func (r *ReservationOrderServerTransport) dispatchBeginPurchase(req *http.Reques
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ReservationOrderServerTransport
+var reservationOrderServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

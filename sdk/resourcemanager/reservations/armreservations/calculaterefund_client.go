@@ -25,7 +25,7 @@ type CalculateRefundClient struct {
 
 // NewCalculateRefundClient creates a new instance of CalculateRefundClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCalculateRefundClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CalculateRefundClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *CalculateRefundClient) Post(ctx context.Context, reservationOrderI
 }
 
 // postCreateRequest creates the Post request.
-func (client *CalculateRefundClient) postCreateRequest(ctx context.Context, reservationOrderID string, body CalculateRefundRequest, options *CalculateRefundClientPostOptions) (*policy.Request, error) {
+func (client *CalculateRefundClient) postCreateRequest(ctx context.Context, reservationOrderID string, body CalculateRefundRequest, _ *CalculateRefundClientPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/calculateRefund"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")

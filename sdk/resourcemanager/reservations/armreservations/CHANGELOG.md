@@ -1,5 +1,37 @@
 # Release History
 
+## 4.0.0 (2026-03-17)
+### Breaking Changes
+
+- Enum `DisplayProvisioningState` has been removed
+- Enum `Location` has been removed
+- Enum `UserFriendlyAppliedScopeType` has been removed
+- Enum `UserFriendlyRenewState` has been removed
+- Struct `CreateGenericQuotaRequestParameters` has been removed
+- Struct `CurrentQuotaLimit` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExceptionResponse` has been removed
+- Struct `ExtendedErrorInfo` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `QuotaLimitsResponse` has been removed
+- Struct `QuotaRequestOneResourceProperties` has been removed
+- Struct `QuotaRequestOneResourceSubmitResponse` has been removed
+- Struct `QuotaRequestStatusDetails` has been removed
+- Struct `QuotaRequestSubmitResponse` has been removed
+- Struct `QuotaRequestSubmitResponse201` has been removed
+- Struct `RefundResponse` has been removed
+- Struct `Resource` has been removed
+- Struct `ServiceError` has been removed
+- Struct `ServiceErrorDetail` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `CurrentQuotaLimitBase`
+- New field `SystemData` in struct `QuotaRequestDetails`
+
+
 ## 3.1.0 (2023-11-24)
 ### Features Added
 

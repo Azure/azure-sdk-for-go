@@ -5,10 +5,39 @@
 
 package armsqlvirtualmachine
 
+// AdditionalOsPatch - Additional VM Patching solution enabled on the Virtual Machine
+type AdditionalOsPatch string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
-	moduleVersion = "v0.10.0"
+	AdditionalOsPatchWSUS AdditionalOsPatch = "WSUS"
+	AdditionalOsPatchWU   AdditionalOsPatch = "WU"
+	AdditionalOsPatchWUMU AdditionalOsPatch = "WUMU"
 )
+
+// PossibleAdditionalOsPatchValues returns the possible values for the AdditionalOsPatch const type.
+func PossibleAdditionalOsPatchValues() []AdditionalOsPatch {
+	return []AdditionalOsPatch{
+		AdditionalOsPatchWSUS,
+		AdditionalOsPatchWU,
+		AdditionalOsPatchWUMU,
+	}
+}
+
+// AdditionalVMPatch - Additional Patch to be enable or enabled on the SQL Virtual Machine.
+type AdditionalVMPatch string
+
+const (
+	AdditionalVMPatchMicrosoftUpdate AdditionalVMPatch = "MicrosoftUpdate"
+	AdditionalVMPatchNotSet          AdditionalVMPatch = "NotSet"
+)
+
+// PossibleAdditionalVMPatchValues returns the possible values for the AdditionalVMPatch const type.
+func PossibleAdditionalVMPatchValues() []AdditionalVMPatch {
+	return []AdditionalVMPatch{
+		AdditionalVMPatchMicrosoftUpdate,
+		AdditionalVMPatchNotSet,
+	}
+}
 
 // AssessmentDayOfWeek - Day of the week to run assessment.
 type AssessmentDayOfWeek string
@@ -126,15 +155,15 @@ func PossibleClusterSubnetTypeValues() []ClusterSubnetType {
 type Commit string
 
 const (
-	CommitASYNCHRONOUSCOMMIT Commit = "ASYNCHRONOUS_COMMIT"
-	CommitSYNCHRONOUSCOMMIT  Commit = "SYNCHRONOUS_COMMIT"
+	CommitAsynchronousCommit Commit = "Asynchronous_Commit"
+	CommitSynchronousCommit  Commit = "Synchronous_Commit"
 )
 
 // PossibleCommitValues returns the possible values for the Commit const type.
 func PossibleCommitValues() []Commit {
 	return []Commit{
-		CommitASYNCHRONOUSCOMMIT,
-		CommitSYNCHRONOUSCOMMIT,
+		CommitAsynchronousCommit,
+		CommitSynchronousCommit,
 	}
 }
 
@@ -226,15 +255,15 @@ func PossibleDiskConfigurationTypeValues() []DiskConfigurationType {
 type Failover string
 
 const (
-	FailoverAUTOMATIC Failover = "AUTOMATIC"
-	FailoverMANUAL    Failover = "MANUAL"
+	FailoverAutomatic Failover = "Automatic"
+	FailoverManual    Failover = "Manual"
 )
 
 // PossibleFailoverValues returns the possible values for the Failover const type.
 func PossibleFailoverValues() []Failover {
 	return []Failover{
-		FailoverAUTOMATIC,
-		FailoverMANUAL,
+		FailoverAutomatic,
+		FailoverManual,
 	}
 }
 
@@ -259,8 +288,10 @@ func PossibleFullBackupFrequencyTypeValues() []FullBackupFrequencyType {
 type IdentityType string
 
 const (
-	IdentityTypeNone           IdentityType = "None"
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	IdentityTypeNone                       IdentityType = "None"
+	IdentityTypeSystemAssigned             IdentityType = "SystemAssigned"
+	IdentityTypeSystemAssignedUserAssigned IdentityType = "SystemAssigned,UserAssigned"
+	IdentityTypeUserAssigned               IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
@@ -268,6 +299,8 @@ func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
 		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
+		IdentityTypeSystemAssignedUserAssigned,
+		IdentityTypeUserAssigned,
 	}
 }
 
@@ -303,21 +336,37 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
+// OsType - Operating System of the current SQL Virtual Machine.
+type OsType string
+
+const (
+	OsTypeLinux   OsType = "Linux"
+	OsTypeWindows OsType = "Windows"
+)
+
+// PossibleOsTypeValues returns the possible values for the OsType const type.
+func PossibleOsTypeValues() []OsType {
+	return []OsType{
+		OsTypeLinux,
+		OsTypeWindows,
+	}
+}
+
 // ReadableSecondary - Replica readable secondary mode in availability group.
 type ReadableSecondary string
 
 const (
-	ReadableSecondaryALL      ReadableSecondary = "ALL"
-	ReadableSecondaryNO       ReadableSecondary = "NO"
-	ReadableSecondaryREADONLY ReadableSecondary = "READ_ONLY"
+	ReadableSecondaryAll      ReadableSecondary = "All"
+	ReadableSecondaryNo       ReadableSecondary = "No"
+	ReadableSecondaryReadOnly ReadableSecondary = "Read_Only"
 )
 
 // PossibleReadableSecondaryValues returns the possible values for the ReadableSecondary const type.
 func PossibleReadableSecondaryValues() []ReadableSecondary {
 	return []ReadableSecondary{
-		ReadableSecondaryALL,
-		ReadableSecondaryNO,
-		ReadableSecondaryREADONLY,
+		ReadableSecondaryAll,
+		ReadableSecondaryNo,
+		ReadableSecondaryReadOnly,
 	}
 }
 
@@ -325,15 +374,15 @@ func PossibleReadableSecondaryValues() []ReadableSecondary {
 type Role string
 
 const (
-	RolePRIMARY   Role = "PRIMARY"
-	RoleSECONDARY Role = "SECONDARY"
+	RolePrimary   Role = "Primary"
+	RoleSecondary Role = "Secondary"
 )
 
 // PossibleRoleValues returns the possible values for the Role const type.
 func PossibleRoleValues() []Role {
 	return []Role{
-		RolePRIMARY,
-		RoleSECONDARY,
+		RolePrimary,
+		RoleSecondary,
 	}
 }
 
@@ -359,7 +408,8 @@ func PossibleSQLImageSKUValues() []SQLImageSKU {
 	}
 }
 
-// SQLManagementMode - SQL Server Management type.
+// SQLManagementMode - SQL Server Management type. NOTE: This parameter is not used anymore. API will automatically detect
+// the Sql Management, refrain from using it.
 type SQLManagementMode string
 
 const (
@@ -472,5 +522,23 @@ const (
 func PossibleTroubleshootingScenarioValues() []TroubleshootingScenario {
 	return []TroubleshootingScenario{
 		TroubleshootingScenarioUnhealthyReplica,
+	}
+}
+
+// VMIdentityType - Identity type of the virtual machine. Specify None to opt-out of Managed Identities.
+type VMIdentityType string
+
+const (
+	VMIdentityTypeNone           VMIdentityType = "None"
+	VMIdentityTypeSystemAssigned VMIdentityType = "SystemAssigned"
+	VMIdentityTypeUserAssigned   VMIdentityType = "UserAssigned"
+)
+
+// PossibleVMIdentityTypeValues returns the possible values for the VMIdentityType const type.
+func PossibleVMIdentityTypeValues() []VMIdentityType {
+	return []VMIdentityType{
+		VMIdentityTypeNone,
+		VMIdentityTypeSystemAssigned,
+		VMIdentityTypeUserAssigned,
 	}
 }

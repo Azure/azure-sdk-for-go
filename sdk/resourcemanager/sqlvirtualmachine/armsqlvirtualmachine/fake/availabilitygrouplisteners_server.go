@@ -67,27 +67,46 @@ func (a *AvailabilityGroupListenersServerTransport) Do(req *http.Request) (*http
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AvailabilityGroupListenersClient.BeginCreateOrUpdate":
-		resp, err = a.dispatchBeginCreateOrUpdate(req)
-	case "AvailabilityGroupListenersClient.BeginDelete":
-		resp, err = a.dispatchBeginDelete(req)
-	case "AvailabilityGroupListenersClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AvailabilityGroupListenersClient.NewListByGroupPager":
-		resp, err = a.dispatchNewListByGroupPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AvailabilityGroupListenersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if availabilityGroupListenersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = availabilityGroupListenersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AvailabilityGroupListenersClient.BeginCreateOrUpdate":
+				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
+			case "AvailabilityGroupListenersClient.BeginDelete":
+				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AvailabilityGroupListenersClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AvailabilityGroupListenersClient.NewListByGroupPager":
+				res.resp, res.err = a.dispatchNewListByGroupPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AvailabilityGroupListenersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -99,7 +118,7 @@ func (a *AvailabilityGroupListenersServerTransport) dispatchBeginCreateOrUpdate(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups/(?P<sqlVirtualMachineGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availabilityGroupListeners/(?P<availabilityGroupListenerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsqlvirtualmachine.AvailabilityGroupListener](req)
@@ -151,7 +170,7 @@ func (a *AvailabilityGroupListenersServerTransport) dispatchBeginDelete(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups/(?P<sqlVirtualMachineGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availabilityGroupListeners/(?P<availabilityGroupListenerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -197,7 +216,7 @@ func (a *AvailabilityGroupListenersServerTransport) dispatchGet(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups/(?P<sqlVirtualMachineGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availabilityGroupListeners/(?P<availabilityGroupListenerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -248,7 +267,7 @@ func (a *AvailabilityGroupListenersServerTransport) dispatchNewListByGroupPager(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachineGroups/(?P<sqlVirtualMachineGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availabilityGroupListeners`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -278,4 +297,10 @@ func (a *AvailabilityGroupListenersServerTransport) dispatchNewListByGroupPager(
 		a.newListByGroupPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AvailabilityGroupListenersServerTransport
+var availabilityGroupListenersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

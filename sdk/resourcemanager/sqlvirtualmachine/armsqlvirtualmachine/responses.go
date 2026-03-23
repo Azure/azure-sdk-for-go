@@ -24,7 +24,7 @@ type AvailabilityGroupListenersClientGetResponse struct {
 
 // AvailabilityGroupListenersClientListByGroupResponse contains the response from method AvailabilityGroupListenersClient.NewListByGroupPager.
 type AvailabilityGroupListenersClientListByGroupResponse struct {
-	// A list of availability group listeners.
+	// The response of a AvailabilityGroupListener list operation.
 	AvailabilityGroupListenerListResult
 }
 
@@ -47,13 +47,13 @@ type GroupsClientGetResponse struct {
 
 // GroupsClientListByResourceGroupResponse contains the response from method GroupsClient.NewListByResourceGroupPager.
 type GroupsClientListByResourceGroupResponse struct {
-	// A list of SQL virtual machine groups.
+	// The response of a SqlVirtualMachineGroup list operation.
 	GroupListResult
 }
 
 // GroupsClientListResponse contains the response from method GroupsClient.NewListPager.
 type GroupsClientListResponse struct {
-	// A list of SQL virtual machine groups.
+	// The response of a SqlVirtualMachineGroup list operation.
 	GroupListResult
 }
 
@@ -65,7 +65,7 @@ type GroupsClientUpdateResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// Result of the request to list SQL operations.
+	// Virtual machine resource id for response.
 	OperationListResult
 }
 
@@ -80,6 +80,11 @@ type SQLVirtualMachinesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// SQLVirtualMachinesClientFetchDCAssessmentResponse contains the response from method SQLVirtualMachinesClient.BeginFetchDCAssessment.
+type SQLVirtualMachinesClientFetchDCAssessmentResponse struct {
+	// placeholder for future response values
+}
+
 // SQLVirtualMachinesClientGetResponse contains the response from method SQLVirtualMachinesClient.Get.
 type SQLVirtualMachinesClientGetResponse struct {
 	// A SQL virtual machine.
@@ -88,19 +93,19 @@ type SQLVirtualMachinesClientGetResponse struct {
 
 // SQLVirtualMachinesClientListByResourceGroupResponse contains the response from method SQLVirtualMachinesClient.NewListByResourceGroupPager.
 type SQLVirtualMachinesClientListByResourceGroupResponse struct {
-	// A list of SQL virtual machines.
+	// The response of a SqlVirtualMachine list operation.
 	ListResult
 }
 
 // SQLVirtualMachinesClientListBySQLVMGroupResponse contains the response from method SQLVirtualMachinesClient.NewListBySQLVMGroupPager.
 type SQLVirtualMachinesClientListBySQLVMGroupResponse struct {
-	// A list of SQL virtual machines.
+	// The response of a SqlVirtualMachine list operation.
 	ListResult
 }
 
 // SQLVirtualMachinesClientListResponse contains the response from method SQLVirtualMachinesClient.NewListPager.
 type SQLVirtualMachinesClientListResponse struct {
-	// A list of SQL virtual machines.
+	// The response of a SqlVirtualMachine list operation.
 	ListResult
 }
 

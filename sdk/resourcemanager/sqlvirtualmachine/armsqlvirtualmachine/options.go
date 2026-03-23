@@ -8,14 +8,14 @@ package armsqlvirtualmachine
 // AvailabilityGroupListenersClientBeginCreateOrUpdateOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginCreateOrUpdate
 // method.
 type AvailabilityGroupListenersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AvailabilityGroupListenersClientBeginDeleteOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginDelete
 // method.
 type AvailabilityGroupListenersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -34,19 +34,19 @@ type AvailabilityGroupListenersClientListByGroupOptions struct {
 
 // GroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupsClient.BeginCreateOrUpdate method.
 type GroupsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GroupsClientBeginDeleteOptions contains the optional parameters for the GroupsClient.BeginDelete method.
 type GroupsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GroupsClientBeginUpdateOptions contains the optional parameters for the GroupsClient.BeginUpdate method.
 type GroupsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -74,35 +74,42 @@ type OperationsClientListOptions struct {
 // SQLVirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginCreateOrUpdate
 // method.
 type SQLVirtualMachinesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SQLVirtualMachinesClientBeginDeleteOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginDelete
 // method.
 type SQLVirtualMachinesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SQLVirtualMachinesClientBeginFetchDCAssessmentOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginFetchDCAssessment
+// method.
+type SQLVirtualMachinesClientBeginFetchDCAssessmentOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SQLVirtualMachinesClientBeginRedeployOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginRedeploy
 // method.
 type SQLVirtualMachinesClientBeginRedeployOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SQLVirtualMachinesClientBeginStartAssessmentOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginStartAssessment
 // method.
 type SQLVirtualMachinesClientBeginStartAssessmentOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SQLVirtualMachinesClientBeginUpdateOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginUpdate
 // method.
 type SQLVirtualMachinesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -132,6 +139,6 @@ type SQLVirtualMachinesClientListOptions struct {
 // TroubleshootClientBeginTroubleshootOptions contains the optional parameters for the TroubleshootClient.BeginTroubleshoot
 // method.
 type TroubleshootClientBeginTroubleshootOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

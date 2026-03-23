@@ -16,11 +16,20 @@ import (
 
 // ServerFactory is a fake server for instances of the armsqlvirtualmachine.ClientFactory type.
 type ServerFactory struct {
+	// AvailabilityGroupListenersServer contains the fakes for client AvailabilityGroupListenersClient
 	AvailabilityGroupListenersServer AvailabilityGroupListenersServer
-	GroupsServer                     GroupsServer
-	OperationsServer                 OperationsServer
-	SQLVirtualMachinesServer         SQLVirtualMachinesServer
-	TroubleshootServer               TroubleshootServer
+
+	// GroupsServer contains the fakes for client GroupsClient
+	GroupsServer GroupsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// SQLVirtualMachinesServer contains the fakes for client SQLVirtualMachinesClient
+	SQLVirtualMachinesServer SQLVirtualMachinesServer
+
+	// TroubleshootServer contains the fakes for client TroubleshootClient
+	TroubleshootServer TroubleshootServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

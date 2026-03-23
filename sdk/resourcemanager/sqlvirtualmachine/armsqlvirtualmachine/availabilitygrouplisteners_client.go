@@ -25,9 +25,9 @@ type AvailabilityGroupListenersClient struct {
 }
 
 // NewAvailabilityGroupListenersClient creates a new instance of AvailabilityGroupListenersClient with the specified values.
-//   - subscriptionID - Subscription ID that identifies an Azure subscription.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailabilityGroupListenersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilityGroupListenersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,9 +43,8 @@ func NewAvailabilityGroupListenersClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Creates or updates an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
-//   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
-//     Manager API or the portal.
+// Generated from API version 2023-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - availabilityGroupListenerName - Name of the availability group listener.
 //   - parameters - The availability group listener.
@@ -72,7 +71,7 @@ func (client *AvailabilityGroupListenersClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Creates or updates an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 func (client *AvailabilityGroupListenersClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvailabilityGroupListenersClient.BeginCreateOrUpdate"
@@ -95,8 +94,12 @@ func (client *AvailabilityGroupListenersClient) createOrUpdate(ctx context.Conte
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, _ *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -109,16 +112,12 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter availabilityGroupListenerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilityGroupListenerName}", url.PathEscape(availabilityGroupListenerName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,9 +129,8 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Deletes an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
-//   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
-//     Manager API or the portal.
+// Generated from API version 2023-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - availabilityGroupListenerName - Name of the availability group listener.
 //   - options - AvailabilityGroupListenersClientBeginDeleteOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginDelete
@@ -158,7 +156,7 @@ func (client *AvailabilityGroupListenersClient) BeginDelete(ctx context.Context,
 // Delete - Deletes an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 func (client *AvailabilityGroupListenersClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvailabilityGroupListenersClient.BeginDelete"
@@ -181,8 +179,12 @@ func (client *AvailabilityGroupListenersClient) deleteOperation(ctx context.Cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, _ *AvailabilityGroupListenersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -195,16 +197,12 @@ func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter availabilityGroupListenerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilityGroupListenerName}", url.PathEscape(availabilityGroupListenerName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,9 +211,8 @@ func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.
 // Get - Gets an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
-//   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
-//     Manager API or the portal.
+// Generated from API version 2023-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - availabilityGroupListenerName - Name of the availability group listener.
 //   - options - AvailabilityGroupListenersClientGetOptions contains the optional parameters for the AvailabilityGroupListenersClient.Get
@@ -245,6 +242,10 @@ func (client *AvailabilityGroupListenersClient) Get(ctx context.Context, resourc
 // getCreateRequest creates the Get request.
 func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -257,10 +258,6 @@ func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter availabilityGroupListenerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilityGroupListenerName}", url.PathEscape(availabilityGroupListenerName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -269,7 +266,7 @@ func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Con
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,9 +283,8 @@ func (client *AvailabilityGroupListenersClient) getHandleResponse(resp *http.Res
 
 // NewListByGroupPager - Lists all availability group listeners in a SQL virtual machine group.
 //
-// Generated from API version 2022-08-01-preview
-//   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
-//     Manager API or the portal.
+// Generated from API version 2023-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - options - AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.NewListByGroupPager
 //     method.
@@ -316,8 +312,12 @@ func (client *AvailabilityGroupListenersClient) NewListByGroupPager(resourceGrou
 }
 
 // listByGroupCreateRequest creates the ListByGroup request.
-func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersClientListByGroupOptions) (*policy.Request, error) {
+func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, _ *AvailabilityGroupListenersClientListByGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -326,16 +326,12 @@ func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx con
 		return nil, errors.New("parameter sqlVirtualMachineGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlVirtualMachineGroupName}", url.PathEscape(sqlVirtualMachineGroupName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -41,6 +41,10 @@ type AccountServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armautomation.AccountClientListByResourceGroupOptions) (resp azfake.PagerResponder[armautomation.AccountClientListByResourceGroupResponse])
 
+	// NewListDeletedRunbooksPager is the fake for method AccountClient.NewListDeletedRunbooksPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListDeletedRunbooksPager func(resourceGroupName string, automationAccountName string, options *armautomation.AccountClientListDeletedRunbooksOptions) (resp azfake.PagerResponder[armautomation.AccountClientListDeletedRunbooksResponse])
+
 	// Update is the fake for method AccountClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, automationAccountName string, parameters armautomation.AccountUpdateParameters, options *armautomation.AccountClientUpdateOptions) (resp azfake.Responder[armautomation.AccountClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -54,6 +58,7 @@ func NewAccountServerTransport(srv *AccountServer) *AccountServerTransport {
 		srv:                         srv,
 		newListPager:                newTracker[azfake.PagerResponder[armautomation.AccountClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armautomation.AccountClientListByResourceGroupResponse]](),
+		newListDeletedRunbooksPager: newTracker[azfake.PagerResponder[armautomation.AccountClientListDeletedRunbooksResponse]](),
 	}
 }
 
@@ -63,6 +68,7 @@ type AccountServerTransport struct {
 	srv                         *AccountServer
 	newListPager                *tracker[azfake.PagerResponder[armautomation.AccountClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armautomation.AccountClientListByResourceGroupResponse]]
+	newListDeletedRunbooksPager *tracker[azfake.PagerResponder[armautomation.AccountClientListDeletedRunbooksResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccountServerTransport.
@@ -73,31 +79,52 @@ func (a *AccountServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AccountClient.CreateOrUpdate":
-		resp, err = a.dispatchCreateOrUpdate(req)
-	case "AccountClient.Delete":
-		resp, err = a.dispatchDelete(req)
-	case "AccountClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AccountClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	case "AccountClient.NewListByResourceGroupPager":
-		resp, err = a.dispatchNewListByResourceGroupPager(req)
-	case "AccountClient.Update":
-		resp, err = a.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AccountServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if accountServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = accountServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AccountClient.CreateOrUpdate":
+				res.resp, res.err = a.dispatchCreateOrUpdate(req)
+			case "AccountClient.Delete":
+				res.resp, res.err = a.dispatchDelete(req)
+			case "AccountClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AccountClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AccountClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AccountClient.NewListDeletedRunbooksPager":
+				res.resp, res.err = a.dispatchNewListDeletedRunbooksPager(req)
+			case "AccountClient.Update":
+				res.resp, res.err = a.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AccountServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -107,7 +134,7 @@ func (a *AccountServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armautomation.AccountCreateOrUpdateParameters](req)
@@ -144,7 +171,7 @@ func (a *AccountServerTransport) dispatchDelete(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -177,7 +204,7 @@ func (a *AccountServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -212,7 +239,7 @@ func (a *AccountServerTransport) dispatchNewListPager(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListPager(nil)
@@ -245,7 +272,7 @@ func (a *AccountServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -273,6 +300,47 @@ func (a *AccountServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 	return resp, nil
 }
 
+func (a *AccountServerTransport) dispatchNewListDeletedRunbooksPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListDeletedRunbooksPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListDeletedRunbooksPager not implemented")}
+	}
+	newListDeletedRunbooksPager := a.newListDeletedRunbooksPager.get(req)
+	if newListDeletedRunbooksPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDeletedRunbooks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListDeletedRunbooksPager(resourceGroupNameParam, automationAccountNameParam, nil)
+		newListDeletedRunbooksPager = &resp
+		a.newListDeletedRunbooksPager.add(req, newListDeletedRunbooksPager)
+		server.PagerResponderInjectNextLinks(newListDeletedRunbooksPager, req, func(page *armautomation.AccountClientListDeletedRunbooksResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListDeletedRunbooksPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListDeletedRunbooksPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListDeletedRunbooksPager) {
+		a.newListDeletedRunbooksPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (a *AccountServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
@@ -280,7 +348,7 @@ func (a *AccountServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armautomation.AccountUpdateParameters](req)
@@ -308,4 +376,10 @@ func (a *AccountServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AccountServerTransport
+var accountServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

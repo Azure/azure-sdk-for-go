@@ -9,14 +9,14 @@ import "time"
 
 // Account - Definition of the automation account type.
 type Account struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// Gets or sets the etag of the resource.
 	Etag *string
 
 	// Identity for the resource.
 	Identity *Identity
-
-	// The Azure Region where the resource lives
-	Location *string
 
 	// Gets or sets the automation account properties.
 	Properties *AccountProperties
@@ -24,16 +24,16 @@ type Account struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -322,13 +322,16 @@ type Certificate struct {
 	// Gets or sets the properties of the certificate.
 	Properties *CertificateProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -401,26 +404,21 @@ type CertificateUpdateProperties struct {
 	Description *string
 }
 
-type ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties struct {
-	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string
-
-	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string
-}
-
 // Connection - Definition of the connection.
 type Connection struct {
 	// Gets or sets the properties of the connection.
 	Properties *ConnectionProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -570,7 +568,7 @@ type ContentLink struct {
 	// Gets or sets the hash.
 	ContentHash *ContentHash
 
-	// Gets or sets the uri of the runbook content.
+	// Gets or sets the uri of content.
 	URI *string
 
 	// Gets or sets the version of the content.
@@ -597,13 +595,16 @@ type Credential struct {
 	// Gets or sets the properties of the credential.
 	Properties *CredentialProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -712,25 +713,10 @@ type DeletedAutomationAccountProperties struct {
 	DeletionTime *time.Time
 }
 
-// DscCompilationJob - Definition of the Dsc Compilation job.
-type DscCompilationJob struct {
-	// Gets or sets the properties of the Dsc Compilation job.
-	Properties *DscCompilationJobProperties
-
-	// READ-ONLY; Fully qualified resource Id for the resource
+// DeletedRunbook - Definition of deleted runbook.
+type DeletedRunbook struct {
+	// The resource id.
 	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// DscCompilationJobCreateParameters - The parameters supplied to the create compilation job operation.
-type DscCompilationJobCreateParameters struct {
-	// REQUIRED; Gets or sets the list of compilation job properties.
-	Properties *DscCompilationJobCreateProperties
 
 	// Gets or sets the location of the resource.
 	Location *string
@@ -738,83 +724,56 @@ type DscCompilationJobCreateParameters struct {
 	// Gets or sets name of the resource.
 	Name *string
 
-	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string
+	// Gets or sets the runbook properties.
+	Properties *DeletedRunbookProperties
 }
 
-// DscCompilationJobCreateProperties - The parameters supplied to the create compilation job operation.
-type DscCompilationJobCreateProperties struct {
-	// REQUIRED; Gets or sets the configuration.
-	Configuration *DscConfigurationAssociationProperty
-
-	// If a new build version of NodeConfiguration is required.
-	IncrementNodeConfigurationBuild *bool
-
-	// Gets or sets the parameters of the job.
-	Parameters map[string]*string
-}
-
-// DscCompilationJobListResult - The response model for the list job operation.
-type DscCompilationJobListResult struct {
+// DeletedRunbookListResult - The response model for the list deleted runbook.
+type DeletedRunbookListResult struct {
 	// Gets or sets the next link.
 	NextLink *string
 
-	// Gets or sets a list of Dsc Compilation jobs.
-	Value []*DscCompilationJob
+	// List of deleted runbooks in automation account.
+	Value []*DeletedRunbook
 }
 
-// DscCompilationJobProperties - Definition of Dsc Compilation job properties.
-type DscCompilationJobProperties struct {
-	// Gets or sets the configuration.
-	Configuration *DscConfigurationAssociationProperty
-
-	// Gets or sets the parameters of the job.
-	Parameters map[string]*string
-
-	// The current provisioning state of the job.
-	ProvisioningState *JobProvisioningState
-
-	// Gets or sets the runOn which specifies the group name where the job is to be executed.
-	RunOn *string
-
-	// Gets or sets the status of the job.
-	Status *JobStatus
-
-	// Gets or sets the status details of the job.
-	StatusDetails *string
-
-	// READ-ONLY; Gets the creation time of the job.
+// DeletedRunbookProperties - Definition of the deleted runbook property.
+type DeletedRunbookProperties struct {
+	// Gets or sets the creation time.
 	CreationTime *time.Time
 
-	// READ-ONLY; Gets the end time of the job.
-	EndTime *time.Time
+	// Gets or sets the last modified time.
+	DeletionTime *time.Time
 
-	// READ-ONLY; Gets the exception of the job.
-	Exception *string
+	// Gets or sets the Runbook Id.
+	RunbookID *string
 
-	// READ-ONLY; Gets the id of the job.
-	JobID *string
+	// Type of the runbook.
+	RunbookType *string
 
-	// READ-ONLY; Gets the last modified time of the job.
-	LastModifiedTime *time.Time
+	// Gets or sets runtime of the runbook.
+	Runtime *string
 
-	// READ-ONLY; Gets the last status modified time of the job.
-	LastStatusModifiedTime *time.Time
+	// Environment of the runbook.
+	RuntimeEnvironment *string
+}
 
-	// READ-ONLY; Gets the start time of the job.
-	StartTime *time.Time
+// Dimension of the metric.
+type Dimension struct {
+	// The display name of the dimension.
+	DisplayName *string
 
-	// READ-ONLY; Gets the compilation job started by.
-	StartedBy *string
+	// The name of the dimension.
+	Name *string
 }
 
 // DscConfiguration - Definition of the configuration type.
 type DscConfiguration struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// Gets or sets the etag of the resource.
 	Etag *string
-
-	// The Azure Region where the resource lives
-	Location *string
 
 	// Gets or sets the configuration properties.
 	Properties *DscConfigurationProperties
@@ -822,13 +781,16 @@ type DscConfiguration struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -900,6 +862,10 @@ type DscConfigurationParameter struct {
 
 // DscConfigurationProperties - Definition of the configuration property type.
 type DscConfigurationProperties struct {
+	// CONSTANT; Gets or sets the provisioning state of the configuration.
+	// Field has constant value "Succeeded", any specified value is ignored.
+	ProvisioningState *string
+
 	// Gets or sets the creation time.
 	CreationTime *time.Time
 
@@ -920,9 +886,6 @@ type DscConfigurationProperties struct {
 
 	// Gets or sets the configuration parameters.
 	Parameters map[string]*DscConfigurationParameter
-
-	// Gets or sets the provisioning state of the configuration.
-	ProvisioningState *string
 
 	// Gets or sets the source.
 	Source *ContentSource
@@ -972,13 +935,16 @@ type DscNode struct {
 	// The properties of a DscNode.
 	Properties *DscNodeProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -987,13 +953,16 @@ type DscNodeConfiguration struct {
 	// Gets or sets the configuration properties.
 	Properties *DscNodeConfigurationProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1307,19 +1276,25 @@ type GraphicalRunbookContent struct {
 
 // HybridRunbookWorker - Definition of hybrid runbook worker.
 type HybridRunbookWorker struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// Gets or sets the hybrid worker group properties.
 	Properties *HybridRunbookWorkerProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1331,28 +1306,34 @@ type HybridRunbookWorkerCreateOrUpdateParameters struct {
 
 // HybridRunbookWorkerCreateParameters - The parameters supplied to the create hybrid runbook worker operation.
 type HybridRunbookWorkerCreateParameters struct {
-	// REQUIRED; Gets or sets hybrid runbook worker group create or update properties.
+	// Gets or sets hybrid runbook worker group create or update properties.
 	Properties *HybridRunbookWorkerCreateOrUpdateParameters
 
-	// Gets or sets the name of the resource.
+	// READ-ONLY; Gets or sets the name of the resource.
 	Name *string
 }
 
 // HybridRunbookWorkerGroup - Definition of hybrid runbook worker group.
 type HybridRunbookWorkerGroup struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// Gets or sets the hybrid worker group properties.
 	Properties *HybridRunbookWorkerGroupProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1433,9 +1414,9 @@ type Identity struct {
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties
+	UserAssignedIdentities map[string]*UserAssignedIdentitiesProperties
 
-	// READ-ONLY; The principal ID of resource identity.
+	// READ-ONLY; The principal ID of resource identity. The value must be an UUID.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
@@ -1447,13 +1428,16 @@ type Job struct {
 	// The properties of the job.
 	Properties *JobProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1462,18 +1446,24 @@ type JobCollectionItem struct {
 	// REQUIRED; Job properties.
 	Properties *JobCollectionItemProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // JobCollectionItemProperties - Job collection item properties.
 type JobCollectionItemProperties struct {
+	// Runtime Environment Property
+	JobRuntimeEnvironment *JobRuntimeEnvironment
+
 	// Specifies the runOn group name where the job was executed.
 	RunOn *string
 
@@ -1497,6 +1487,9 @@ type JobCollectionItemProperties struct {
 
 	// READ-ONLY; The start time of the job.
 	StartTime *time.Time
+
+	// READ-ONLY; Gets or sets the job started by.
+	StartedBy *string
 
 	// READ-ONLY; The status of the job.
 	Status *JobStatus
@@ -1548,6 +1541,9 @@ type JobProperties struct {
 	// Gets or sets the id of the job.
 	JobID *string
 
+	// Runtime Environment Property
+	JobRuntimeEnvironment *JobRuntimeEnvironment
+
 	// Gets or sets the last modified time of the job.
 	LastModifiedTime *time.Time
 
@@ -1556,9 +1552,6 @@ type JobProperties struct {
 
 	// Gets or sets the parameters of the job.
 	Parameters map[string]*string
-
-	// The current provisioning state of the job.
-	ProvisioningState *JobProvisioningState
 
 	// Gets or sets the runOn which specifies the group name where the job is to be executed.
 	RunOn *string
@@ -1577,6 +1570,15 @@ type JobProperties struct {
 
 	// Gets or sets the status details of the job.
 	StatusDetails *string
+
+	// READ-ONLY; The current provisioning state of the job.
+	ProvisioningState *JobProvisioningState
+}
+
+// JobRuntimeEnvironment - The runbook property associated with the entity.
+type JobRuntimeEnvironment struct {
+	// Name of Runtime Environment.
+	RuntimeEnvironmentName *string
 }
 
 // JobSchedule - Definition of the job schedule.
@@ -1731,13 +1733,46 @@ type LinuxProperties struct {
 	RebootSetting *string
 }
 
+// LogSpecification - Description of logging specification.
+type LogSpecification struct {
+	// Duration of the blob.
+	BlobDuration *string
+
+	// The display name of the specification.
+	DisplayName *string
+
+	// The name of the specification.
+	Name *string
+}
+
+// MetricSpecification - Description of metrics specification.
+type MetricSpecification struct {
+	// The aggregation type.
+	AggregationType *string
+
+	// List of dimensions.
+	Dimensions []*Dimension
+
+	// The description of the metric.
+	DisplayDescription *string
+
+	// The display name of the metric.
+	DisplayName *string
+
+	// The name of the metric.
+	Name *string
+
+	// Units the metric to be displayed in.
+	Unit *string
+}
+
 // Module - Definition of the module type.
 type Module struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// Gets or sets the etag of the resource.
 	Etag *string
-
-	// The Azure Region where the resource lives
-	Location *string
 
 	// Gets or sets the module properties.
 	Properties *ModuleProperties
@@ -1745,13 +1780,16 @@ type Module struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1832,17 +1870,17 @@ type ModuleProperties struct {
 
 // ModuleUpdateParameters - The parameters supplied to the update module operation.
 type ModuleUpdateParameters struct {
-	// Gets or sets the location of the resource.
-	Location *string
-
-	// Gets or sets name of the resource.
-	Name *string
-
 	// Gets or sets the module update properties.
 	Properties *ModuleUpdateProperties
 
 	// Gets or sets the tags attached to the resource.
 	Tags map[string]*string
+
+	// READ-ONLY; Gets or sets the location of the resource.
+	Location *string
+
+	// READ-ONLY; Gets or sets name of the resource.
+	Name *string
 }
 
 // ModuleUpdateProperties - The parameters supplied to the update properties.
@@ -1888,10 +1926,19 @@ type Operation struct {
 
 	// Operation name: {provider}/{resource}/{operation}
 	Name *string
+
+	// Origin of the operation.
+	Origin *string
+
+	// Operation properties format.
+	Properties *OperationPropertiesFormat
 }
 
 // OperationDisplay - Provider, Resource and Operation values
 type OperationDisplay struct {
+	// Description of the operation.
+	Description *string
+
 	// Operation type: Read, write, delete, etc.
 	Operation *string
 
@@ -1908,18 +1955,132 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// PrivateEndpointConnection - A private endpoint connection
-type PrivateEndpointConnection struct {
-	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties
+// OperationPropertiesFormat - Description of operation properties format.
+type OperationPropertiesFormat struct {
+	// Specification of the service.
+	ServiceSpecification *OperationPropertiesFormatServiceSpecification
+}
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+// OperationPropertiesFormatServiceSpecification - Specification of the service.
+type OperationPropertiesFormatServiceSpecification struct {
+	// Operation log specification.
+	LogSpecifications []*LogSpecification
+
+	// Operation service specification.
+	MetricSpecifications []*MetricSpecification
+}
+
+// Package - Definition of the Package type.
+type Package struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Gets or sets the Package properties.
+	Properties *PackageProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PackageCreateOrUpdateParameters - The parameters supplied to the create or update package operation.
+type PackageCreateOrUpdateParameters struct {
+	// REQUIRED; Gets or sets the package create properties.
+	Properties *PackageCreateOrUpdateProperties
+
+	// The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+	AllOf *TrackedResource
+}
+
+// PackageCreateOrUpdateProperties - The parameters supplied to the create or update package properties.
+type PackageCreateOrUpdateProperties struct {
+	// REQUIRED; Gets or sets the package content link.
+	ContentLink *ContentLink
+}
+
+// PackageErrorInfo - Definition of the package error info type.
+type PackageErrorInfo struct {
+	// Package import error code.
+	Code *string
+
+	// Package import error message.
+	Message *string
+}
+
+// PackageListResult - The response model for the list runtime environments operation.
+type PackageListResult struct {
+	// Gets the next link.
+	NextLink *string
+
+	// list of the Packages of the runtime environment.
+	Value []*Package
+}
+
+// PackageProperties - Definition of the package property type.
+type PackageProperties struct {
+	// Gets or sets the contentLink of the Package.
+	ContentLink *ContentLink
+
+	// Gets or sets the isGlobal flag of the package.
+	Default *bool
+
+	// Gets or sets the error info of the Package.
+	Error *PackageErrorInfo
+
+	// Gets or sets the size in bytes of the Package.
+	SizeInBytes *int64
+
+	// Gets or sets the version of the Package.
+	Version *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	AllOf *SystemData
+
+	// READ-ONLY; Gets or sets the provisioning state of the Package.
+	ProvisioningState *PackageProvisioningState
+}
+
+// PackageUpdateParameters - The parameters supplied to the update package operation.
+type PackageUpdateParameters struct {
+	// The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+	AllOf *TrackedResource
+
+	// Gets or sets the package update properties.
+	Properties *PackageUpdateProperties
+}
+
+// PackageUpdateProperties - The parameters supplied to the update properties.
+type PackageUpdateProperties struct {
+	// Gets or sets the package content link.
+	ContentLink *ContentLink
+}
+
+// PrivateEndpointConnection - A private endpoint connection
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1952,13 +2113,16 @@ type PrivateLinkResource struct {
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1989,15 +2153,19 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string
 }
 
-// ProxyResource - ARM proxy resource.
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2034,15 +2202,18 @@ type RawGraphicalRunbookContent struct {
 	SchemaVersion *string
 }
 
-// Resource - The core properties of ARM resources
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2054,11 +2225,11 @@ type RunAsCredentialAssociationProperty struct {
 
 // Runbook - Definition of the runbook type.
 type Runbook struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// Gets or sets the etag of the resource.
 	Etag *string
-
-	// The Azure Region where the resource lives
-	Location *string
 
 	// Gets or sets the runbook properties.
 	Properties *RunbookProperties
@@ -2066,13 +2237,16 @@ type Runbook struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2107,6 +2281,9 @@ type RunbookCreateOrUpdateDraftProperties struct {
 
 	// Gets or sets verbose log option.
 	LogVerbose *bool
+
+	// Environment of the runbook.
+	RuntimeEnvironment *string
 }
 
 // RunbookCreateOrUpdateParameters - The parameters supplied to the create or update runbook operation.
@@ -2146,6 +2323,9 @@ type RunbookCreateOrUpdateProperties struct {
 
 	// Gets or sets the published runbook content link.
 	PublishContentLink *ContentLink
+
+	// Environment of the runbook.
+	RuntimeEnvironment *string
 }
 
 type RunbookDraft struct {
@@ -2200,6 +2380,10 @@ type RunbookParameter struct {
 
 // RunbookProperties - Definition of the runbook property type.
 type RunbookProperties struct {
+	// CONSTANT; Gets or sets the provisioning state of the runbook.
+	// Field has constant value "Succeeded", any specified value is ignored.
+	ProvisioningState *string
+
 	// Gets or sets the creation time.
 	CreationTime *time.Time
 
@@ -2233,14 +2417,14 @@ type RunbookProperties struct {
 	// Gets or sets the runbook parameters.
 	Parameters map[string]*RunbookParameter
 
-	// Gets or sets the provisioning state of the runbook.
-	ProvisioningState *string
-
 	// Gets or sets the published runbook content link.
 	PublishContentLink *ContentLink
 
 	// Gets or sets the type of the runbook.
 	RunbookType *RunbookTypeEnum
+
+	// Runtime Environment of the runbook execution.
+	RuntimeEnvironment *string
 
 	// Gets or sets the state of the runbook.
 	State *RunbookState
@@ -2274,6 +2458,75 @@ type RunbookUpdateProperties struct {
 
 	// Gets or sets verbose log option.
 	LogVerbose *bool
+}
+
+// RuntimeEnvironment - Definition of the Runtime Environment type.
+type RuntimeEnvironment struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Gets or sets the Runtime Environment properties.
+	Properties *RuntimeEnvironmentProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RuntimeEnvironmentListResult - List of all the Runtime Environments of automation account.
+type RuntimeEnvironmentListResult struct {
+	// Gets or sets the next link.
+	NextLink *string
+
+	// list of RuntimeEnvironment.
+	Value []*RuntimeEnvironment
+}
+
+// RuntimeEnvironmentProperties - Runtime Environment properties.
+type RuntimeEnvironmentProperties struct {
+	// List of Default packages for Environment
+	DefaultPackages map[string]*string
+
+	// Gets or sets the description.
+	Description *string
+
+	// Runtime properties.
+	Runtime *RuntimeProperties
+}
+
+// RuntimeEnvironmentUpdateParameters - The parameters supplied to the update automation account operation.
+type RuntimeEnvironmentUpdateParameters struct {
+	// Gets or sets Runtime update properties.
+	Properties *RuntimeEnvironmentUpdateProperties
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+}
+
+// RuntimeEnvironmentUpdateProperties - Gets or sets Runtime update properties.
+type RuntimeEnvironmentUpdateProperties struct {
+	// List of Default packages for Environment
+	DefaultPackages map[string]*string
+}
+
+// RuntimeProperties - Runtime properties.
+type RuntimeProperties struct {
+	// Language of Runtime Environment
+	Language *string
+
+	// Version of Language
+	Version *string
 }
 
 // SKU - The account SKU.
@@ -2338,13 +2591,16 @@ type Schedule struct {
 	// Gets or sets the properties of the schedule.
 	Properties *ScheduleProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2668,13 +2924,16 @@ type SourceControl struct {
 	// The properties of the source control.
 	Properties *SourceControlProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3056,23 +3315,30 @@ type TestJobCreateParameters struct {
 
 	// Gets or sets the runOn which specifies the group name where the job is to be executed.
 	RunOn *string
+
+	// The runtime Environment Name on which job needs to be tested
+	RuntimeEnvironment *string
 }
 
-// TrackedResource - The resource model definition for a ARM tracked top level resource
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	// The Azure Region where the resource lives
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3209,18 +3475,29 @@ type UsageListResult struct {
 	Value []*Usage
 }
 
+type UserAssignedIdentitiesProperties struct {
+	// READ-ONLY; The client id of user assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string
+}
+
 // Variable - Definition of the variable.
 type Variable struct {
 	// Gets or sets the properties of the variable.
 	Properties *VariableProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3304,13 +3581,16 @@ type Watcher struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3372,13 +3652,16 @@ type Webhook struct {
 	// Gets or sets the webhook properties.
 	Properties *WebhookProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 

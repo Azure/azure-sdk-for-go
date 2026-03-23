@@ -40,7 +40,7 @@ type DscConfigurationServer struct {
 	Get func(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *armautomation.DscConfigurationClientGetOptions) (resp azfake.Responder[armautomation.DscConfigurationClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetContent is the fake for method DscConfigurationClient.GetContent
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent
 	GetContent func(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *armautomation.DscConfigurationClientGetContentOptions) (resp azfake.Responder[armautomation.DscConfigurationClientGetContentResponse], errResp azfake.ErrorResponder)
 
 	// NewListByAutomationAccountPager is the fake for method DscConfigurationClient.NewListByAutomationAccountPager
@@ -81,35 +81,54 @@ func (d *DscConfigurationServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DscConfigurationClient.CreateOrUpdateWithJSON":
-		resp, err = d.dispatchCreateOrUpdateWithJSON(req)
-	case "DscConfigurationClient.CreateOrUpdateWithText":
-		resp, err = d.dispatchCreateOrUpdateWithText(req)
-	case "DscConfigurationClient.Delete":
-		resp, err = d.dispatchDelete(req)
-	case "DscConfigurationClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DscConfigurationClient.GetContent":
-		resp, err = d.dispatchGetContent(req)
-	case "DscConfigurationClient.NewListByAutomationAccountPager":
-		resp, err = d.dispatchNewListByAutomationAccountPager(req)
-	case "DscConfigurationClient.UpdateWithJSON":
-		resp, err = d.dispatchUpdateWithJSON(req)
-	case "DscConfigurationClient.UpdateWithText":
-		resp, err = d.dispatchUpdateWithText(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DscConfigurationServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if dscConfigurationServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = dscConfigurationServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DscConfigurationClient.CreateOrUpdateWithJSON":
+				res.resp, res.err = d.dispatchCreateOrUpdateWithJSON(req)
+			case "DscConfigurationClient.CreateOrUpdateWithText":
+				res.resp, res.err = d.dispatchCreateOrUpdateWithText(req)
+			case "DscConfigurationClient.Delete":
+				res.resp, res.err = d.dispatchDelete(req)
+			case "DscConfigurationClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DscConfigurationClient.GetContent":
+				res.resp, res.err = d.dispatchGetContent(req)
+			case "DscConfigurationClient.NewListByAutomationAccountPager":
+				res.resp, res.err = d.dispatchNewListByAutomationAccountPager(req)
+			case "DscConfigurationClient.UpdateWithJSON":
+				res.resp, res.err = d.dispatchUpdateWithJSON(req)
+			case "DscConfigurationClient.UpdateWithText":
+				res.resp, res.err = d.dispatchUpdateWithText(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DscConfigurationServerTransport) dispatchCreateOrUpdateWithJSON(req *http.Request) (*http.Response, error) {
@@ -119,7 +138,7 @@ func (d *DscConfigurationServerTransport) dispatchCreateOrUpdateWithJSON(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armautomation.DscConfigurationCreateOrUpdateParameters](req)
@@ -160,7 +179,7 @@ func (d *DscConfigurationServerTransport) dispatchCreateOrUpdateWithText(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsText(req)
@@ -201,7 +220,7 @@ func (d *DscConfigurationServerTransport) dispatchDelete(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -238,7 +257,7 @@ func (d *DscConfigurationServerTransport) dispatchGet(req *http.Request) (*http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -275,7 +294,7 @@ func (d *DscConfigurationServerTransport) dispatchGetContent(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/content`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -295,10 +314,10 @@ func (d *DscConfigurationServerTransport) dispatchGetContent(req *http.Request) 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsText(respContent, server.GetResponse(respr).Value, req)
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +333,7 @@ func (d *DscConfigurationServerTransport) dispatchNewListByAutomationAccountPage
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -401,7 +420,7 @@ func (d *DscConfigurationServerTransport) dispatchUpdateWithJSON(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armautomation.DscConfigurationUpdateParameters](req)
@@ -448,7 +467,7 @@ func (d *DscConfigurationServerTransport) dispatchUpdateWithText(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsText(req)
@@ -486,4 +505,10 @@ func (d *DscConfigurationServerTransport) dispatchUpdateWithText(req *http.Reque
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DscConfigurationServerTransport
+var dscConfigurationServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

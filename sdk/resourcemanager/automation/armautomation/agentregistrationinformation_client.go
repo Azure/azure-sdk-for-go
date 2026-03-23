@@ -28,7 +28,7 @@ type AgentRegistrationInformationClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAgentRegistrationInformationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentRegistrationInformationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewAgentRegistrationInformationClient(subscriptionID string, credential azc
 // Get - Retrieve the automation agent registration information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-13-preview
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - options - AgentRegistrationInformationClientGetOptions contains the optional parameters for the AgentRegistrationInformationClient.Get
@@ -72,7 +72,7 @@ func (client *AgentRegistrationInformationClient) Get(ctx context.Context, resou
 }
 
 // getCreateRequest creates the Get request.
-func (client *AgentRegistrationInformationClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *AgentRegistrationInformationClientGetOptions) (*policy.Request, error) {
+func (client *AgentRegistrationInformationClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *AgentRegistrationInformationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/agentRegistrationInformation"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -91,7 +91,7 @@ func (client *AgentRegistrationInformationClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-13-preview")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *AgentRegistrationInformationClient) getHandleResponse(resp *http.R
 // RegenerateKey - Regenerate a primary or secondary agent registration key
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-13-preview
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - parameters - The name of the agent registration key to be regenerated
@@ -138,7 +138,7 @@ func (client *AgentRegistrationInformationClient) RegenerateKey(ctx context.Cont
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *AgentRegistrationInformationClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AgentRegistrationRegenerateKeyParameter, options *AgentRegistrationInformationClientRegenerateKeyOptions) (*policy.Request, error) {
+func (client *AgentRegistrationInformationClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AgentRegistrationRegenerateKeyParameter, _ *AgentRegistrationInformationClientRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/agentRegistrationInformation/regenerateKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -157,7 +157,7 @@ func (client *AgentRegistrationInformationClient) regenerateKeyCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-13-preview")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

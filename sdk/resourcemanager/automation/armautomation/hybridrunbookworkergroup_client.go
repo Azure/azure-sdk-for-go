@@ -28,7 +28,7 @@ type HybridRunbookWorkerGroupClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHybridRunbookWorkerGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridRunbookWorkerGroupClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewHybridRunbookWorkerGroupClient(subscriptionID string, credential azcore.
 // Create - Create a hybrid runbook worker group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - hybridRunbookWorkerGroupName - The hybrid runbook worker group name
@@ -65,7 +65,7 @@ func (client *HybridRunbookWorkerGroupClient) Create(ctx context.Context, resour
 	if err != nil {
 		return HybridRunbookWorkerGroupClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
 		return HybridRunbookWorkerGroupClientCreateResponse{}, err
 	}
@@ -74,7 +74,7 @@ func (client *HybridRunbookWorkerGroupClient) Create(ctx context.Context, resour
 }
 
 // createCreateRequest creates the Create request.
-func (client *HybridRunbookWorkerGroupClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerGroupCreationParameters HybridRunbookWorkerGroupCreateOrUpdateParameters, options *HybridRunbookWorkerGroupClientCreateOptions) (*policy.Request, error) {
+func (client *HybridRunbookWorkerGroupClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerGroupCreationParameters HybridRunbookWorkerGroupCreateOrUpdateParameters, _ *HybridRunbookWorkerGroupClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups/{hybridRunbookWorkerGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +97,7 @@ func (client *HybridRunbookWorkerGroupClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hybridRunbookWorkerGroupCreationParameters); err != nil {
@@ -118,7 +118,7 @@ func (client *HybridRunbookWorkerGroupClient) createHandleResponse(resp *http.Re
 // Delete - Delete a hybrid runbook worker group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - hybridRunbookWorkerGroupName - The hybrid runbook worker group name
@@ -146,7 +146,7 @@ func (client *HybridRunbookWorkerGroupClient) Delete(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *HybridRunbookWorkerGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, options *HybridRunbookWorkerGroupClientDeleteOptions) (*policy.Request, error) {
+func (client *HybridRunbookWorkerGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, _ *HybridRunbookWorkerGroupClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups/{hybridRunbookWorkerGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -169,7 +169,7 @@ func (client *HybridRunbookWorkerGroupClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *HybridRunbookWorkerGroupClient) deleteCreateRequest(ctx context.Co
 // Get - Retrieve a hybrid runbook worker group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - hybridRunbookWorkerGroupName - The hybrid runbook worker group name
@@ -207,7 +207,7 @@ func (client *HybridRunbookWorkerGroupClient) Get(ctx context.Context, resourceG
 }
 
 // getCreateRequest creates the Get request.
-func (client *HybridRunbookWorkerGroupClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, options *HybridRunbookWorkerGroupClientGetOptions) (*policy.Request, error) {
+func (client *HybridRunbookWorkerGroupClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, _ *HybridRunbookWorkerGroupClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups/{hybridRunbookWorkerGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -230,7 +230,7 @@ func (client *HybridRunbookWorkerGroupClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,7 +247,7 @@ func (client *HybridRunbookWorkerGroupClient) getHandleResponse(resp *http.Respo
 
 // NewListByAutomationAccountPager - Retrieve a list of hybrid runbook worker groups.
 //
-// Generated from API version 2022-02-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - options - HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.NewListByAutomationAccountPager
@@ -298,7 +298,7 @@ func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountCreateReque
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2022-02-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -316,7 +316,7 @@ func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountHandleRespo
 // Update - Update a hybrid runbook worker group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - hybridRunbookWorkerGroupName - The hybrid runbook worker group name
@@ -346,7 +346,7 @@ func (client *HybridRunbookWorkerGroupClient) Update(ctx context.Context, resour
 }
 
 // updateCreateRequest creates the Update request.
-func (client *HybridRunbookWorkerGroupClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerGroupUpdationParameters HybridRunbookWorkerGroupCreateOrUpdateParameters, options *HybridRunbookWorkerGroupClientUpdateOptions) (*policy.Request, error) {
+func (client *HybridRunbookWorkerGroupClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerGroupUpdationParameters HybridRunbookWorkerGroupCreateOrUpdateParameters, _ *HybridRunbookWorkerGroupClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups/{hybridRunbookWorkerGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -369,7 +369,7 @@ func (client *HybridRunbookWorkerGroupClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hybridRunbookWorkerGroupUpdationParameters); err != nil {

@@ -28,7 +28,7 @@ type DeletedAutomationAccountsClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeletedAutomationAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedAutomationAccountsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewDeletedAutomationAccountsClient(subscriptionID string, credential azcore
 // ListBySubscription - Retrieve deleted automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-31
+// Generated from API version 2024-10-23
 //   - options - DeletedAutomationAccountsClientListBySubscriptionOptions contains the optional parameters for the DeletedAutomationAccountsClient.ListBySubscription
 //     method.
 func (client *DeletedAutomationAccountsClient) ListBySubscription(ctx context.Context, options *DeletedAutomationAccountsClientListBySubscriptionOptions) (DeletedAutomationAccountsClientListBySubscriptionResponse, error) {
@@ -70,7 +70,7 @@ func (client *DeletedAutomationAccountsClient) ListBySubscription(ctx context.Co
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DeletedAutomationAccountsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DeletedAutomationAccountsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DeletedAutomationAccountsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *DeletedAutomationAccountsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/deletedAutomationAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +81,7 @@ func (client *DeletedAutomationAccountsClient) listBySubscriptionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-31")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

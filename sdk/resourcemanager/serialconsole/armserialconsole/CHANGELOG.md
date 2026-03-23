@@ -1,5 +1,41 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-03-23)
+### Breaking Changes
+
+- Function `*MicrosoftSerialConsoleClient.DisableConsole` has been removed
+- Function `*MicrosoftSerialConsoleClient.EnableConsole` has been removed
+- Function `*SerialPortsClient.Delete` has been removed
+- Struct `GetSerialConsoleSubscriptionNotFound` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Field `Disabled` of struct `DisableSerialConsoleResult` has been removed
+- Field `Disabled` of struct `EnableSerialConsoleResult` has been removed
+- Field `Value` of struct `MicrosoftSerialConsoleClientGetConsoleStatusResponse` has been removed
+- Field `Disabled` of struct `Status` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `SerialPortConnectionState` with values `SerialPortConnectionStateActive`, `SerialPortConnectionStateInactive`
+- New function `*ClientFactory.NewOperationGroupClient() *OperationGroupClient`
+- New function `*MicrosoftSerialConsoleClient.NewOperationGroupClient() *OperationGroupClient`
+- New function `*MicrosoftSerialConsoleClient.NewSerialPortsClient() *SerialPortsClient`
+- New function `NewOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationGroupClient, error)`
+- New function `*OperationGroupClient.DisableConsole(ctx context.Context, defaultParam string, options *OperationGroupClientDisableConsoleOptions) (OperationGroupClientDisableConsoleResponse, error)`
+- New function `*OperationGroupClient.EnableConsole(ctx context.Context, defaultParam string, options *OperationGroupClientEnableConsoleOptions) (OperationGroupClientEnableConsoleResponse, error)`
+- New struct `DisableSerialConsoleResultProperties`
+- New struct `EnableSerialConsoleResultProperties`
+- New struct `StatusProperties`
+- New struct `SystemData`
+- New field `Properties` in struct `DisableSerialConsoleResult`
+- New field `Properties` in struct `EnableSerialConsoleResult`
+- New anonymous field `Status` in struct `MicrosoftSerialConsoleClientGetConsoleStatusResponse`
+- New field `SystemData` in struct `SerialPort`
+- New field `ConnectionState` in struct `SerialPortProperties`
+- New field `Properties` in struct `Status`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

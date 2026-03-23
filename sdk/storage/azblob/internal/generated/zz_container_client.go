@@ -411,9 +411,9 @@ func (client *ContainerClient) createHandleResponse(resp *http.Response) (Contai
 //
 // Generated from API version 2026-10-06
 //   - options - ContainerClientCreateSessionOptions contains the optional parameters for the ContainerClient.CreateSession method.
-func (client *ContainerClient) CreateSession(ctx context.Context, createSessionOptions CreateSessionOptions, options *ContainerClientCreateSessionOptions) (ContainerClientCreateSessionResponse, error) {
+func (client *ContainerClient) CreateSession(ctx context.Context, createSessionConfiguration CreateSessionConfiguration, options *ContainerClientCreateSessionOptions) (ContainerClientCreateSessionResponse, error) {
 	var err error
-	req, err := client.createSessionCreateRequest(ctx, createSessionOptions, options)
+	req, err := client.createSessionCreateRequest(ctx, createSessionConfiguration, options)
 	if err != nil {
 		return ContainerClientCreateSessionResponse{}, err
 	}
@@ -430,7 +430,7 @@ func (client *ContainerClient) CreateSession(ctx context.Context, createSessionO
 }
 
 // createSessionCreateRequest creates the CreateSession request.
-func (client *ContainerClient) createSessionCreateRequest(ctx context.Context, createSessionOptions CreateSessionOptions, options *ContainerClientCreateSessionOptions) (*policy.Request, error) {
+func (client *ContainerClient) createSessionCreateRequest(ctx context.Context, createSessionConfiguration CreateSessionConfiguration, options *ContainerClientCreateSessionOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -440,7 +440,7 @@ func (client *ContainerClient) createSessionCreateRequest(ctx context.Context, c
 	reqQP.Set("restype", "container")
 	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	if err := runtime.MarshalAsXML(req, createSessionOptions); err != nil {
+	if err := runtime.MarshalAsXML(req, createSessionConfiguration); err != nil {
 		return nil, err
 	}
 	return req, nil

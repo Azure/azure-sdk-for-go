@@ -297,10 +297,10 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	return nil
 }
 
-// MarshalXML implements the xml.Marshaller interface for type CreateSessionOptions.
-func (c CreateSessionOptions) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+// MarshalXML implements the xml.Marshaller interface for type CreateSessionConfiguration.
+func (c CreateSessionConfiguration) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "CreateSessionRequest"
-	type alias CreateSessionOptions
+	type alias CreateSessionConfiguration
 	aux := &struct {
 		*alias
 	}{

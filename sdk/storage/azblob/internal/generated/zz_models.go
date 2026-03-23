@@ -253,7 +253,7 @@ type CORSRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
-type CreateSessionOptions struct {
+type CreateSessionConfiguration struct {
 	// REQUIRED; The type of authentication required to create the session. The only type currently supported is HMAC.
 	AuthenticationType *AuthenticationType `xml:"AuthenticationType"`
 }

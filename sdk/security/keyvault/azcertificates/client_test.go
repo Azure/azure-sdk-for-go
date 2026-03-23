@@ -735,3 +735,193 @@ func TestSubjectAlternativeNames(t *testing.T) {
 	require.NotNil(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
 	testSerde(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
 }
+
+func TestSubjectAlternativeNamesSerde(t *testing.T) {
+	// Test serialization round-trip with all SAN fields including IPAddresses and URIs
+	t.Run("AllFields", func(t *testing.T) {
+		san := azcertificates.SubjectAlternativeNames{
+			DNSNames:           []*string{to.Ptr("localhost"), to.Ptr("example.com")},
+			Emails:             []*string{to.Ptr("admin@example.com")},
+			IPAddresses:        []*string{to.Ptr("192.168.1.1"), to.Ptr("2001:0db8::1")},
+			URIs:               []*string{to.Ptr("https://example.com"), to.Ptr("https://test.com/path")},
+			UserPrincipalNames: []*string{to.Ptr("user@domain.com")},
+		}
+		data, err := san.MarshalJSON()
+		require.NoError(t, err)
+
+		// verify JSON keys
+		var raw map[string]json.RawMessage
+		require.NoError(t, json.Unmarshal(data, &raw))
+		require.Contains(t, raw, "dns_names")
+		require.Contains(t, raw, "emails")
+		require.Contains(t, raw, "ipAddresses")
+		require.Contains(t, raw, "uris")
+		require.Contains(t, raw, "upns")
+
+		// round-trip
+		var san2 azcertificates.SubjectAlternativeNames
+		require.NoError(t, san2.UnmarshalJSON(data))
+		require.Equal(t, san.DNSNames, san2.DNSNames)
+		require.Equal(t, san.Emails, san2.Emails)
+		require.Equal(t, san.IPAddresses, san2.IPAddresses)
+		require.Equal(t, san.URIs, san2.URIs)
+		require.Equal(t, san.UserPrincipalNames, san2.UserPrincipalNames)
+	})
+
+	// Test with only the new IPAddresses field
+	t.Run("OnlyIPAddresses", func(t *testing.T) {
+		san := azcertificates.SubjectAlternativeNames{
+			IPAddresses: []*string{to.Ptr("10.0.0.1"), to.Ptr("fe80::1")},
+		}
+		data, err := san.MarshalJSON()
+		require.NoError(t, err)
+
+		var raw map[string]json.RawMessage
+		require.NoError(t, json.Unmarshal(data, &raw))
+		require.Contains(t, raw, "ipAddresses")
+		require.NotContains(t, raw, "dns_names")
+		require.NotContains(t, raw, "uris")
+
+		var san2 azcertificates.SubjectAlternativeNames
+		require.NoError(t, san2.UnmarshalJSON(data))
+		require.Equal(t, san.IPAddresses, san2.IPAddresses)
+		require.Nil(t, san2.DNSNames)
+		require.Nil(t, san2.URIs)
+	})
+
+	// Test with only the new URIs field
+	t.Run("OnlyURIs", func(t *testing.T) {
+		san := azcertificates.SubjectAlternativeNames{
+			URIs: []*string{to.Ptr("https://example.com"), to.Ptr("spiffe://cluster.local/ns/default/sa/app")},
+		}
+		data, err := san.MarshalJSON()
+		require.NoError(t, err)
+
+		var raw map[string]json.RawMessage
+		require.NoError(t, json.Unmarshal(data, &raw))
+		require.Contains(t, raw, "uris")
+		require.NotContains(t, raw, "ipAddresses")
+
+		var san2 azcertificates.SubjectAlternativeNames
+		require.NoError(t, san2.UnmarshalJSON(data))
+		require.Equal(t, san.URIs, san2.URIs)
+		require.Nil(t, san2.IPAddresses)
+	})
+
+	// Test deserialization from raw JSON matching the Key Vault REST API format
+	t.Run("DeserializeFromJSON", func(t *testing.T) {
+		jsonData := []byte(`{
+			"dns_names": ["host.example.com"],
+			"emails": ["test@example.com"],
+			"ipAddresses": ["192.168.0.1", "::1"],
+			"uris": ["https://api.example.com"],
+			"upns": ["admin@contoso.com"]
+		}`)
+
+		var san azcertificates.SubjectAlternativeNames
+		require.NoError(t, san.UnmarshalJSON(jsonData))
+		require.Equal(t, []*string{to.Ptr("host.example.com")}, san.DNSNames)
+		require.Equal(t, []*string{to.Ptr("test@example.com")}, san.Emails)
+		require.Equal(t, []*string{to.Ptr("192.168.0.1"), to.Ptr("::1")}, san.IPAddresses)
+		require.Equal(t, []*string{to.Ptr("https://api.example.com")}, san.URIs)
+		require.Equal(t, []*string{to.Ptr("admin@contoso.com")}, san.UserPrincipalNames)
+	})
+
+	// Test that empty SANs produce an empty JSON object
+	t.Run("EmptySAN", func(t *testing.T) {
+		san := azcertificates.SubjectAlternativeNames{}
+		data, err := san.MarshalJSON()
+		require.NoError(t, err)
+		require.Equal(t, "{}", string(data))
+
+		var san2 azcertificates.SubjectAlternativeNames
+		require.NoError(t, san2.UnmarshalJSON(data))
+		require.Nil(t, san2.IPAddresses)
+		require.Nil(t, san2.URIs)
+	})
+
+	// Test complete CreateCertificateParameters serde with new SAN fields
+	t.Run("CreateParamsWithSANs", func(t *testing.T) {
+		params := azcertificates.CreateCertificateParameters{
+			CertificatePolicy: &azcertificates.CertificatePolicy{
+				IssuerParameters: &azcertificates.IssuerParameters{Name: to.Ptr("Self")},
+				X509CertificateProperties: &azcertificates.X509CertificateProperties{
+					Subject: to.Ptr("CN=TestSAN"),
+					SubjectAlternativeNames: &azcertificates.SubjectAlternativeNames{
+						DNSNames:    []*string{to.Ptr("localhost")},
+						IPAddresses: []*string{to.Ptr("127.0.0.1"), to.Ptr("::1")},
+						URIs:        []*string{to.Ptr("https://localhost:8443")},
+					},
+				},
+			},
+		}
+		testSerde(t, &params)
+	})
+}
+
+func TestSubjectAlternativeNamesFakeServer(t *testing.T) {
+	// Test using the fake server to verify SANs round-trip through create and get policy
+	expectedSANs := &azcertificates.SubjectAlternativeNames{
+		DNSNames:           []*string{to.Ptr("example.com")},
+		Emails:             []*string{to.Ptr("admin@example.com")},
+		IPAddresses:        []*string{to.Ptr("10.0.0.1"), to.Ptr("2001:db8::1")},
+		URIs:               []*string{to.Ptr("https://example.com/api")},
+		UserPrincipalNames: []*string{to.Ptr("user@example.com")},
+	}
+
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+
+	// Mock CreateCertificate response
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{
+		"id": "https://fake-vault.vault.azure.net/certificates/test-san/pending",
+		"status": "completed"
+	}`)))
+
+	// Mock GetCertificatePolicy response with all SAN fields
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{
+		"id": "https://fake-vault.vault.azure.net/certificates/test-san/policy",
+		"issuer": {"name": "Self"},
+		"x509_props": {
+			"subject": "CN=TestSAN",
+			"sans": {
+				"dns_names": ["example.com"],
+				"emails": ["admin@example.com"],
+				"ipAddresses": ["10.0.0.1", "2001:db8::1"],
+				"uris": ["https://example.com/api"],
+				"upns": ["user@example.com"]
+			}
+		}
+	}`)))
+
+	client, err := azcertificates.NewClient("https://fake-vault.vault.azure.net", &azcred.Fake{}, &azcertificates.ClientOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
+	})
+	require.NoError(t, err)
+
+	// Create certificate with SANs
+	createParams := azcertificates.CreateCertificateParameters{
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+			IssuerParameters: &azcertificates.IssuerParameters{Name: to.Ptr("Self")},
+			X509CertificateProperties: &azcertificates.X509CertificateProperties{
+				Subject:                 to.Ptr("CN=TestSAN"),
+				SubjectAlternativeNames: expectedSANs,
+			},
+		},
+	}
+	_, err = client.CreateCertificate(context.Background(), "test-san", createParams, nil)
+	require.NoError(t, err)
+
+	// Get policy and verify SANs are deserialized correctly
+	policyResp, err := client.GetCertificatePolicy(context.Background(), "test-san", nil)
+	require.NoError(t, err)
+	require.NotNil(t, policyResp.X509CertificateProperties)
+	require.NotNil(t, policyResp.X509CertificateProperties.SubjectAlternativeNames)
+
+	sans := policyResp.X509CertificateProperties.SubjectAlternativeNames
+	require.Equal(t, expectedSANs.DNSNames, sans.DNSNames)
+	require.Equal(t, expectedSANs.Emails, sans.Emails)
+	require.Equal(t, expectedSANs.IPAddresses, sans.IPAddresses)
+	require.Equal(t, expectedSANs.URIs, sans.URIs)
+	require.Equal(t, expectedSANs.UserPrincipalNames, sans.UserPrincipalNames)
+}

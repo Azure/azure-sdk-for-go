@@ -1,5 +1,202 @@
 # Release History
 
+## 10.0.0 (2026-03-23)
+### Breaking Changes
+
+- Function `*AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager` parameter(s) have been changed from `(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions)` to `(resourceGroupName string, location string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions)`
+- Function `*AvailableResourceGroupDelegationsClient.NewListPager` parameter(s) have been changed from `(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsClientListOptions)` to `(resourceGroupName string, location string, options *AvailableResourceGroupDelegationsClientListOptions)`
+- Function `*IpamPoolsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, body IpamPoolUpdate, options *IpamPoolsClientUpdateOptions)`
+- Function `*PrivateDNSZoneGroupsClient.NewListPager` parameter(s) have been changed from `(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsClientListOptions)` to `(resourceGroupName string, privateEndpointName string, options *PrivateDNSZoneGroupsClientListOptions)`
+- Function `*PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibilityByResourceGroup` parameter(s) have been changed from `(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions)` to `(ctx context.Context, resourceGroupName string, location string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions)`
+- Function `*PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager` parameter(s) have been changed from `(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions)` to `(resourceGroupName string, location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions)`
+- Function `*StaticCidrsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, body StaticCidr, options *StaticCidrsClientCreateOptions)`
+- Function `*VerifierWorkspacesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, body VerifierWorkspaceUpdate, options *VerifierWorkspacesClientUpdateOptions)`
+- Function `*VipSwapClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions)` to `(ctx context.Context, groupName string, resourceName string, singletonResource SingletonResource, parameters SwapResource, options *VipSwapClientBeginCreateOptions)`
+- Function `*VipSwapClient.Get` parameter(s) have been changed from `(ctx context.Context, groupName string, resourceName string, options *VipSwapClientGetOptions)` to `(ctx context.Context, groupName string, resourceName string, singletonResource SingletonResource, options *VipSwapClientGetOptions)`
+- Function `*VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]], error)`
+- Function `*VirtualHubsClient.BeginGetInboundRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualHubsClientGetInboundRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualHubsClientGetInboundRoutesResponse]], error)`
+- Function `*VirtualHubsClient.BeginGetOutboundRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualHubsClientGetOutboundRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualHubsClientGetOutboundRoutesResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetLearnedRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetLearnedRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetLearnedRoutesResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse]], error)`
+- Type of `AdminPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `AdminRuleCollectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `ConnectivityParameters.Protocol` has been changed from `*Protocol` to `*BaseProtocol`
+- Type of `DefaultAdminPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `EffectiveNetworkSecurityGroup.TagMap` has been changed from `*string` to `map[string][]*string`
+- Type of `FirewallPolicyDraftProperties.ExplicitProxy` has been changed from `*ExplicitProxySettings` to `*ExplicitProxy`
+- Type of `IPTraffic.Protocols` has been changed from `[]*NetworkProtocol` to `[]*Protocol`
+- Type of `InterfacePropertiesFormat.AuxiliaryMode` has been changed from `*NetworkInterfaceAuxiliaryMode` to `*InterfaceAuxiliaryMode`
+- Type of `InterfacePropertiesFormat.AuxiliarySKU` has been changed from `*NetworkInterfaceAuxiliarySKU` to `*InterfaceAuxiliarySKU`
+- Type of `InterfacePropertiesFormat.MigrationPhase` has been changed from `*NetworkInterfaceMigrationPhase` to `*InterfaceMigrationPhase`
+- Type of `InterfacePropertiesFormat.NicType` has been changed from `*NetworkInterfaceNicType` to `*InterfaceNicType`
+- Type of `IpamPoolProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `ManagedServiceIdentity.UserAssignedIdentities` has been changed from `map[string]*Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties` to `map[string]*ManagedServiceIdentityUserAssignedIdentities`
+- Type of `NspAccessRule.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspAssociation.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspLink.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspLinkReference.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspLoggingConfiguration.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspProfile.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `ReachabilityAnalysisIntentProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `ReachabilityAnalysisRunProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `SecurityAdminConfigurationPropertiesFormat.ApplyOnNetworkIntentPolicyBasedServices` has been changed from `[]*NetworkIntentPolicyBasedService` to `[]*IntentPolicyBasedService`
+- Type of `SecurityAdminConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `SecurityPerimeter.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `ServiceGateway.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `ServiceGatewayPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `StaticCidrProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- Type of `VerifierWorkspaceProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*BaseProvisioningState`
+- `AzureFirewallSKUNameAZFWVnet` from enum `AzureFirewallSKUName` has been removed
+- `ProtocolHTTP`, `ProtocolHTTPS`, `ProtocolIcmp` from enum `Protocol` has been removed
+- `ProvisioningStateCanceled`, `ProvisioningStateCreating` from enum `ProvisioningState` has been removed
+- Enum `ConnectionMonitorSourceStatus` has been removed
+- Enum `ConnectionState` has been removed
+- Enum `EvaluationState` has been removed
+- Enum `HubVirtualNetworkConnectionStatus` has been removed
+- Enum `NetworkIntentPolicyBasedService` has been removed
+- Enum `NetworkInterfaceAuxiliaryMode` has been removed
+- Enum `NetworkInterfaceAuxiliarySKU` has been removed
+- Enum `NetworkInterfaceMigrationPhase` has been removed
+- Enum `NetworkInterfaceNicType` has been removed
+- Enum `NetworkOperationStatus` has been removed
+- Enum `NetworkProtocol` has been removed
+- Enum `TunnelConnectionStatus` has been removed
+- Function `*InterfacesClient.GetVirtualMachineScaleSetIPConfiguration` has been removed
+- Function `*InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager` has been removed
+- Function `*InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager` has been removed
+- Function `*P2SVPNGatewaysClient.BeginReset` has been removed
+- Function `*PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager` has been removed
+- Operation `*ExpressRouteConnectionsClient.List` has supported pagination, use `*ExpressRouteConnectionsClient.NewListPager` instead.
+- Operation `*ExpressRouteGatewaysClient.ListByResourceGroup` has supported pagination, use `*ExpressRouteGatewaysClient.NewListByResourceGroupPager` instead.
+- Operation `*ExpressRouteGatewaysClient.ListBySubscription` has supported pagination, use `*ExpressRouteGatewaysClient.NewListBySubscriptionPager` instead.
+- Operation `*FirewallPolicyIdpsSignaturesOverridesClient.List` has supported pagination, use `*FirewallPolicyIdpsSignaturesOverridesClient.NewListPager` instead.
+- Operation `*ManagementClient.ListActiveConnectivityConfigurations` has supported pagination, use `*ManagementClient.NewListActiveConnectivityConfigurationsPager` instead.
+- Operation `*ManagementClient.ListActiveSecurityAdminRules` has supported pagination, use `*ManagementClient.NewListActiveSecurityAdminRulesPager` instead.
+- Operation `*ManagementClient.ListNetworkManagerEffectiveConnectivityConfigurations` has supported pagination, use `*ManagementClient.NewListNetworkManagerEffectiveConnectivityConfigurationsPager` instead.
+- Operation `*ManagementClient.ListNetworkManagerEffectiveSecurityAdminRules` has supported pagination, use `*ManagementClient.NewListNetworkManagerEffectiveSecurityAdminRulesPager` instead.
+- Operation `*ManagerDeploymentStatusClient.List` has supported pagination, use `*ManagerDeploymentStatusClient.NewListPager` instead.
+- Operation `*VipSwapClient.List` has supported pagination, use `*VipSwapClient.NewListPager` instead.
+- Struct `AzureAsyncOperationResult` has been removed
+- Struct `ChildResource` has been removed
+- Struct `CommonErrorAdditionalInfo` has been removed
+- Struct `CommonErrorDetail` has been removed
+- Struct `CommonErrorResponse` has been removed
+- Struct `CommonProxyResource` has been removed
+- Struct `CommonResource` has been removed
+- Struct `CommonTrackedResource` has been removed
+- Struct `Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties` has been removed
+- Struct `ConnectionMonitorQueryResult` has been removed
+- Struct `ConnectionStateSnapshot` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExplicitProxySettings` has been removed
+- Struct `PatchRouteFilter` has been removed
+- Struct `PatchRouteFilterRule` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceSet` has been removed
+- Struct `SecurityPerimeterProxyResource` has been removed
+- Struct `SecurityPerimeterResource` has been removed
+- Struct `SecurityPerimeterSystemData` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `VPNSiteID` has been removed
+- Field `ExplicitProxySettings` of struct `FirewallPolicyPropertiesFormat` has been removed
+- Field `Body` of struct `IpamPoolsClientUpdateOptions` has been removed
+- Field `ResourceID` of struct `OperationStatusResult` has been removed
+- Field `PacketCaptureResult` of struct `PacketCapturesClientCreateResponse` has been removed
+- Field `Body` of struct `StaticCidrsClientCreateOptions` has been removed
+- Field `Value` of struct `VPNConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNGatewaysClientStopPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNLinkConnectionsClientGetIkeSasResponse` has been removed
+- Field `Body` of struct `VerifierWorkspacesClientUpdateOptions` has been removed
+- Field `Value` of struct `VirtualNetworkGatewayConnectionsClientGetIkeSasResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `Active` of struct `VirtualNetworkGatewayPropertiesFormat` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientGenerateVPNProfileResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStopPacketCaptureResponse` has been removed
+
+### Features Added
+
+- New value `AzureFirewallSKUNameAZFWVNet` added to enum type `AzureFirewallSKUName`
+- New value `ProtocolAny`, `ProtocolICMP`, `ProtocolUDP` added to enum type `Protocol`
+- New enum type `BaseProtocol` with values `BaseProtocolHTTP`, `BaseProtocolHTTPS`, `BaseProtocolIcmp`, `BaseProtocolTCP`
+- New enum type `BaseProvisioningState` with values `BaseProvisioningStateCanceled`, `BaseProvisioningStateCreating`, `BaseProvisioningStateDeleting`, `BaseProvisioningStateFailed`, `BaseProvisioningStateSucceeded`, `BaseProvisioningStateUpdating`
+- New enum type `IntentPolicyBasedService` with values `IntentPolicyBasedServiceAll`, `IntentPolicyBasedServiceAllowRulesOnly`, `IntentPolicyBasedServiceNone`
+- New enum type `InterfaceAuxiliaryMode` with values `InterfaceAuxiliaryModeAcceleratedConnections`, `InterfaceAuxiliaryModeFloating`, `InterfaceAuxiliaryModeMaxConnections`, `InterfaceAuxiliaryModeNone`
+- New enum type `InterfaceAuxiliarySKU` with values `InterfaceAuxiliarySKUA1`, `InterfaceAuxiliarySKUA2`, `InterfaceAuxiliarySKUA4`, `InterfaceAuxiliarySKUA8`, `InterfaceAuxiliarySKUNone`
+- New enum type `InterfaceMigrationPhase` with values `InterfaceMigrationPhaseAbort`, `InterfaceMigrationPhaseCommit`, `InterfaceMigrationPhaseCommitted`, `InterfaceMigrationPhaseNone`, `InterfaceMigrationPhasePrepare`
+- New enum type `InterfaceNicType` with values `InterfaceNicTypeElastic`, `InterfaceNicTypeStandard`
+- New enum type `SingletonResource` with values `SingletonResourceSwap`
+- New struct `DeleteBastionShareableLinkFinalResult`
+- New struct `DisconnectVirtualNetworkGatewayVPNConnectionsFinalResult`
+- New struct `ExplicitProxy`
+- New struct `GenerateVPNProfileFinalResult`
+- New struct `GeneratevpnclientpackageFinalResult`
+- New struct `GetIkeSasFinalResult`
+- New struct `GetVPNProfilePackageURLFinalResult`
+- New struct `ManagedServiceIdentityUserAssignedIdentities`
+- New struct `NoContentResponse`
+- New struct `PrepareNetworkPoliciesFinalResult`
+- New struct `ResetVPNClientSharedKeyFinalResult`
+- New struct `StartExpressRouteSiteFailoverSimulationFinalResult`
+- New struct `StartFinalResult`
+- New struct `StartPacketCaptureFinalResult`
+- New struct `StartPacketCaptureFinalResult1`
+- New struct `StartPacketCaptureFinalResult2`
+- New struct `StopExpressRouteSiteFailoverSimulationFinalResult`
+- New struct `StopFinalResult`
+- New struct `StopFinalResult1`
+- New struct `StopPacketCaptureFinalResult`
+- New struct `StopPacketCaptureFinalResult1`
+- New struct `StopPacketCaptureFinalResult2`
+- New struct `UnprepareNetworkPoliciesFinalResult`
+- New struct `VPNConnectionsStartPacketCaptureFinalResult`
+- New struct `VPNConnectionsStopPacketCaptureFinalResult`
+- New anonymous field `StartFinalResult` in struct `ApplicationGatewaysClientStartResponse`
+- New anonymous field `StopFinalResult` in struct `ApplicationGatewaysClientStopResponse`
+- New field `NextLink` in struct `ConnectionMonitorListResult`
+- New anonymous field `StopFinalResult1` in struct `ConnectionMonitorsClientStopResponse`
+- New field `ExplicitProxy` in struct `FirewallPolicyPropertiesFormat`
+- New field `RetryAfter` in struct `GroupsClientCreateOrUpdateResponse`
+- New anonymous field `DeleteBastionShareableLinkFinalResult` in struct `ManagementClientDeleteBastionShareableLinkResponse`
+- New field `NextLink` in struct `PacketCaptureListResult`
+- New anonymous field `Watcher` in struct `PacketCapturesClientCreateResponse`
+- New anonymous field `NoContentResponse` in struct `ServiceGatewaysClientUpdateAddressLocationsResponse`
+- New anonymous field `NoContentResponse` in struct `ServiceGatewaysClientUpdateServicesResponse`
+- New anonymous field `PrepareNetworkPoliciesFinalResult` in struct `SubnetsClientPrepareNetworkPoliciesResponse`
+- New anonymous field `UnprepareNetworkPoliciesFinalResult` in struct `SubnetsClientUnprepareNetworkPoliciesResponse`
+- New anonymous field `VPNConnectionsStartPacketCaptureFinalResult` in struct `VPNConnectionsClientStartPacketCaptureResponse`
+- New anonymous field `VPNConnectionsStopPacketCaptureFinalResult` in struct `VPNConnectionsClientStopPacketCaptureResponse`
+- New anonymous field `StartPacketCaptureFinalResult2` in struct `VPNGatewaysClientStartPacketCaptureResponse`
+- New anonymous field `StopPacketCaptureFinalResult2` in struct `VPNGatewaysClientStopPacketCaptureResponse`
+- New anonymous field `GetIkeSasFinalResult` in struct `VPNLinkConnectionsClientGetIkeSasResponse`
+- New anonymous field `StartPacketCaptureFinalResult1` in struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse`
+- New anonymous field `StopPacketCaptureFinalResult1` in struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse`
+- New field `ActiveActive` in struct `VirtualNetworkGatewayPropertiesFormat`
+- New anonymous field `DisconnectVirtualNetworkGatewayVPNConnectionsFinalResult` in struct `VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse`
+- New anonymous field `GenerateVPNProfileFinalResult` in struct `VirtualNetworkGatewaysClientGenerateVPNProfileResponse`
+- New anonymous field `GeneratevpnclientpackageFinalResult` in struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse`
+- New anonymous field `GetVPNProfilePackageURLFinalResult` in struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse`
+- New anonymous field `ResetVPNClientSharedKeyFinalResult` in struct `VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse`
+- New anonymous field `StartExpressRouteSiteFailoverSimulationFinalResult` in struct `VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse`
+- New anonymous field `StartPacketCaptureFinalResult` in struct `VirtualNetworkGatewaysClientStartPacketCaptureResponse`
+- New anonymous field `StopExpressRouteSiteFailoverSimulationFinalResult` in struct `VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse`
+- New anonymous field `StopPacketCaptureFinalResult` in struct `VirtualNetworkGatewaysClientStopPacketCaptureResponse`
+- New field `NextLink` in struct `WatcherListResult`
+
+
 ## 9.0.0 (2026-02-19)
 ### Breaking Changes
 

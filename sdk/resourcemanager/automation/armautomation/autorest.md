@@ -5,10 +5,11 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/947878feb7a528ff4344f8fe67ab85522afcbb79/specification/automation/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/947878feb7a528ff4344f8fe67ab85522afcbb79/specification/automation/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.9.0
+tag: package-2024-10-23
+module-version: 1.0.0
 directive:
   - where-operation: DscConfiguration_CreateOrUpdate
     transform: delete $['x-ms-examples']

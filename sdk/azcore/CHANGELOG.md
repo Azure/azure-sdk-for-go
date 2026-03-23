@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 * Redact query parameters when logging errors.
-* For `runtime.JoinPaths`, don't add a slash between root and paths when paths is a query parameter. 
+* For `runtime.JoinPaths`, don't add a slash between root and paths when `paths` starts with `?` (query string).
 
 ### Other Changes
 

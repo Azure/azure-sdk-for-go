@@ -1,0 +1,4 @@
+directory: specification/azure-kusto/resource-manager/Microsoft.Kusto/Kusto
+commit: 4392af84b3920498b5d7351416abd9685642850a
+repo: i-specs
+additionalDirectories: 

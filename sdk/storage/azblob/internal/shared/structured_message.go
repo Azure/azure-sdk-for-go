@@ -70,7 +70,7 @@ func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 	var buf bytes.Buffer
 	buf.Grow(int(msgLen))
 
-	// Message Header (13 bytes)
+	// Writing to bytes.Buffer cannot fail, so the return values are intentionally discarded.
 	_ = buf.WriteByte(SMVersion)
 	_ = binary.Write(&buf, binary.LittleEndian, msgLen)
 	_ = binary.Write(&buf, binary.LittleEndian, SMFlagCRC64)
@@ -120,6 +120,59 @@ type SMDecodeResult struct {
 	NumSegments uint16
 }
 
+type smDecodedSegment struct {
+	num        uint16
+	data       []byte
+	nextOffset int
+
+	expectedCRC uint64
+	hasCRC      bool
+}
+
+func decodeSMSegment(smData []byte, offset int, expectedSegmentNum uint16, hasCRC bool) (smDecodedSegment, error) {
+	if offset+SMSegmentHeaderSize > len(smData) {
+		return smDecodedSegment{}, fmt.Errorf("segment %d: insufficient data for segment header at offset %d", expectedSegmentNum, offset)
+	}
+
+	segNum := binary.LittleEndian.Uint16(smData[offset : offset+2])
+	segDataLen := binary.LittleEndian.Uint64(smData[offset+2 : offset+10])
+	offset += SMSegmentHeaderSize
+
+	if segNum != expectedSegmentNum {
+		return smDecodedSegment{}, fmt.Errorf("segment number mismatch: expected %d, got %d", expectedSegmentNum, segNum)
+	}
+
+	maxSegmentDataLen := uint64(int(^uint(0) >> 1))
+	if segDataLen > maxSegmentDataLen {
+		return smDecodedSegment{}, fmt.Errorf("segment %d: data length %d exceeds supported size", segNum, segDataLen)
+	}
+
+	remaining := uint64(len(smData) - offset)
+	footerSize := uint64(0)
+	if hasCRC {
+		footerSize = SMSegmentFooterSize
+	}
+
+	if segDataLen > remaining || remaining-segDataLen < footerSize {
+		return smDecodedSegment{}, fmt.Errorf("segment %d: insufficient data for segment content (need %d bytes at offset %d, have %d)", segNum, segDataLen, offset, len(smData))
+	}
+
+	dataEnd := offset + int(segDataLen)
+	segment := smDecodedSegment{
+		num:        segNum,
+		data:       smData[offset:dataEnd],
+		nextOffset: dataEnd,
+		hasCRC:     hasCRC,
+	}
+
+	if hasCRC {
+		segment.expectedCRC = binary.LittleEndian.Uint64(smData[dataEnd : dataEnd+SMSegmentFooterSize])
+		segment.nextOffset += SMSegmentFooterSize
+	}
+
+	return segment, nil
+}
+
 // SMDecode decodes a structured message binary payload and validates CRC64 checksums.
 // Returns the extracted raw data or an error if the SM is malformed or CRC validation fails.
 func SMDecode(smData []byte) (SMDecodeResult, error) {
@@ -140,84 +193,45 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 
 	flags := binary.LittleEndian.Uint16(smData[9:11])
 	numSegments := binary.LittleEndian.Uint16(smData[11:13])
-
 	hasCRC := flags&SMFlagCRC64 != 0
 
 	offset := SMHeaderSize
 	var result []byte
-
+	var msgHasher hash64
 	if hasCRC {
-		msgHasher := crc64.New(CRC64Table)
+		msgHasher = crc64.New(CRC64Table)
+	}
 
-		for i := 0; i < int(numSegments); i++ {
-			if offset+SMSegmentHeaderSize > len(smData) {
-				return SMDecodeResult{}, fmt.Errorf("segment %d: insufficient data for segment header at offset %d", i+1, offset)
-			}
-
-			segNum := binary.LittleEndian.Uint16(smData[offset : offset+2])
-			segDataLen := int64(binary.LittleEndian.Uint64(smData[offset+2 : offset+10]))
-			offset += SMSegmentHeaderSize
-
-			if segNum != uint16(i+1) {
-				return SMDecodeResult{}, fmt.Errorf("segment number mismatch: expected %d, got %d", i+1, segNum)
-			}
-
-			if segDataLen < 0 || offset+int(segDataLen) > len(smData) {
-				return SMDecodeResult{}, fmt.Errorf("segment %d: insufficient data for segment content (need %d bytes at offset %d, have %d)", segNum, segDataLen, offset, len(smData))
-			}
-
-			segData := smData[offset : offset+int(segDataLen)]
-			offset += int(segDataLen)
-			result = append(result, segData...)
-
-			if offset+SMSegmentFooterSize > len(smData) {
-				return SMDecodeResult{}, fmt.Errorf("segment %d: insufficient data for CRC64 footer at offset %d", segNum, offset)
-			}
-
-			expectedCRC := binary.LittleEndian.Uint64(smData[offset : offset+8])
-			actualCRC := crc64.Checksum(segData, CRC64Table)
-			offset += SMSegmentFooterSize
-
-			if expectedCRC != actualCRC {
-				return SMDecodeResult{}, fmt.Errorf("segment %d: CRC64 mismatch (expected 0x%016x, got 0x%016x)", segNum, expectedCRC, actualCRC)
-			}
-
-			msgHasher.Write(segData)
+	for i := uint16(1); i <= numSegments; i++ {
+		segment, err := decodeSMSegment(smData, offset, i, hasCRC)
+		if err != nil {
+			return SMDecodeResult{}, err
 		}
 
-		// Validate message trailer CRC64
+		result = append(result, segment.data...)
+		offset = segment.nextOffset
+
+		if !segment.hasCRC {
+			continue
+		}
+
+		actualCRC := crc64.Checksum(segment.data, CRC64Table)
+		if segment.expectedCRC != actualCRC {
+			return SMDecodeResult{}, fmt.Errorf("segment %d: CRC64 mismatch (expected 0x%016x, got 0x%016x)", segment.num, segment.expectedCRC, actualCRC)
+		}
+
+		_, _ = msgHasher.Write(segment.data)
+	}
+
+	if hasCRC {
 		if offset+SMMessageTrailerSize > len(smData) {
 			return SMDecodeResult{}, fmt.Errorf("insufficient data for message trailer CRC64 at offset %d", offset)
 		}
 
 		expectedMsgCRC := binary.LittleEndian.Uint64(smData[offset : offset+8])
 		actualMsgCRC := msgHasher.Sum64()
-
 		if expectedMsgCRC != actualMsgCRC {
 			return SMDecodeResult{}, fmt.Errorf("message trailer CRC64 mismatch (expected 0x%016x, got 0x%016x)", expectedMsgCRC, actualMsgCRC)
-		}
-	} else {
-		// No CRC — just extract segment data
-		for i := 0; i < int(numSegments); i++ {
-			if offset+SMSegmentHeaderSize > len(smData) {
-				return SMDecodeResult{}, fmt.Errorf("segment %d: insufficient data for segment header at offset %d", i+1, offset)
-			}
-
-			segNum := binary.LittleEndian.Uint16(smData[offset : offset+2])
-			segDataLen := int64(binary.LittleEndian.Uint64(smData[offset+2 : offset+10]))
-			offset += SMSegmentHeaderSize
-
-			if segNum != uint16(i+1) {
-				return SMDecodeResult{}, fmt.Errorf("segment number mismatch: expected %d, got %d", i+1, segNum)
-			}
-
-			if segDataLen < 0 || offset+int(segDataLen) > len(smData) {
-				return SMDecodeResult{}, fmt.Errorf("segment %d: insufficient data for segment content", segNum)
-			}
-
-			segData := smData[offset : offset+int(segDataLen)]
-			offset += int(segDataLen)
-			result = append(result, segData...)
 		}
 	}
 
@@ -229,93 +243,517 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 	}, nil
 }
 
-// SMEncoder wraps raw data as an io.ReadSeekCloser that produces SM-encoded output.
-// This is used for uploads — the body content is replaced with the SM-encoded form.
-type SMEncoder struct {
-	reader *bytes.Reader
-	result SMEncodeResult
+type hash64 interface {
+	Write(p []byte) (n int, err error)
+	Sum64() uint64
 }
 
-// NewSMEncoder creates a new encoder that wraps the given raw data.
+// --- Streaming Encoder ---
+
+// encoder state for the state-machine based SMEncoder
+type encoderState int
+
+const (
+	encStateHeader    encoderState = iota // emitting the 13-byte message header
+	encStateSegHeader                     // emitting a 10-byte segment header
+	encStateSegData                       // streaming segment data from inner source
+	encStateSegFooter                     // emitting an 8-byte segment CRC footer
+	encStateTrailer                       // emitting the 8-byte message trailer CRC
+	encStateDone                          // all bytes emitted
+)
+
+// SMEncoder wraps an io.ReadSeeker source and produces SM-encoded output on Read().
+// CRC64 checksums are computed on-the-fly as content is read from the inner source.
+// Supports Seek(0, io.SeekStart) for retry.
+type SMEncoder struct {
+	inner       io.ReadSeeker
+	contentLen  int64 // total original content length
+	segmentSize int
+	numSegments int
+	encodedLen  int64
+
+	state      encoderState
+	segIndex   int    // current segment (0-based)
+	segRemain  int64  // bytes remaining in current segment data
+	segCRC     hash64 // per-segment CRC hasher
+	msgCRC     hash64 // message-level CRC hasher
+	pending    []byte // buffered framing bytes (headers/footers) being drained
+	pendingOff int    // read offset into pending
+}
+
+// NewSMEncoder creates a streaming encoder that wraps the given content source.
+// contentLen is the total size of the content (must be known upfront for the SM header).
 // segmentSize specifies the max segment size; use 0 for the default (4MB).
-func NewSMEncoder(data []byte, segmentSize int) *SMEncoder {
-	result := SMEncode(data, segmentSize)
-	return &SMEncoder{
-		reader: bytes.NewReader(result.EncodedData),
-		result: result,
+func NewSMEncoder(inner io.ReadSeeker, contentLen int64, segmentSize int) *SMEncoder {
+	if segmentSize <= 0 {
+		segmentSize = SMDefaultSegmentSize
 	}
+
+	numSegments := int(contentLen) / segmentSize
+	if int(contentLen)%segmentSize != 0 {
+		numSegments++
+	}
+	if numSegments == 0 {
+		numSegments = 1
+	}
+
+	// Calculate total encoded length
+	encodedLen := int64(SMHeaderSize)
+	remaining := contentLen
+	for i := 0; i < numSegments; i++ {
+		segDataLen := int64(segmentSize)
+		if segDataLen > remaining {
+			segDataLen = remaining
+		}
+		encodedLen += int64(SMSegmentHeaderSize) + segDataLen + int64(SMSegmentFooterSize)
+		remaining -= segDataLen
+	}
+	encodedLen += int64(SMMessageTrailerSize)
+
+	e := &SMEncoder{
+		inner:       inner,
+		contentLen:  contentLen,
+		segmentSize: segmentSize,
+		numSegments: numSegments,
+		encodedLen:  encodedLen,
+	}
+	e.initState()
+	return e
+}
+
+func (e *SMEncoder) initState() {
+	e.state = encStateHeader
+	e.segIndex = 0
+	e.segRemain = 0
+	e.segCRC = nil
+	e.msgCRC = crc64.New(CRC64Table)
+	e.pending = nil
+	e.pendingOff = 0
+
+	// Build the 13-byte message header
+	hdr := make([]byte, SMHeaderSize)
+	hdr[0] = SMVersion
+	binary.LittleEndian.PutUint64(hdr[1:9], uint64(e.encodedLen))
+	binary.LittleEndian.PutUint16(hdr[9:11], SMFlagCRC64)
+	binary.LittleEndian.PutUint16(hdr[11:13], uint16(e.numSegments))
+	e.pending = hdr
+	e.pendingOff = 0
 }
 
 func (e *SMEncoder) Read(p []byte) (int, error) {
-	return e.reader.Read(p)
+	if len(p) == 0 {
+		return 0, nil
+	}
+
+	totalRead := 0
+	for totalRead < len(p) {
+		switch e.state {
+		case encStateHeader:
+			n := e.drainPending(p[totalRead:])
+			totalRead += n
+			if e.pendingOff >= len(e.pending) {
+				e.advanceToNextSegment()
+			}
+
+		case encStateSegHeader:
+			n := e.drainPending(p[totalRead:])
+			totalRead += n
+			if e.pendingOff >= len(e.pending) {
+				e.state = encStateSegData
+			}
+
+		case encStateSegData:
+			// Read from inner source, up to segment remaining and caller buffer
+			toRead := int64(len(p) - totalRead)
+			if toRead > e.segRemain {
+				toRead = e.segRemain
+			}
+			n, err := e.inner.Read(p[totalRead : totalRead+int(toRead)])
+			if n > 0 {
+				_, _ = e.segCRC.Write(p[totalRead : totalRead+n])
+				_, _ = e.msgCRC.Write(p[totalRead : totalRead+n])
+				totalRead += n
+				e.segRemain -= int64(n)
+			}
+			if e.segRemain == 0 {
+				// Segment data fully read — emit footer
+				footer := make([]byte, SMSegmentFooterSize)
+				binary.LittleEndian.PutUint64(footer, e.segCRC.Sum64())
+				e.pending = footer
+				e.pendingOff = 0
+				e.state = encStateSegFooter
+			}
+			if err != nil && e.segRemain > 0 {
+				return totalRead, err
+			}
+
+		case encStateSegFooter:
+			n := e.drainPending(p[totalRead:])
+			totalRead += n
+			if e.pendingOff >= len(e.pending) {
+				e.advanceToNextSegment()
+			}
+
+		case encStateTrailer:
+			n := e.drainPending(p[totalRead:])
+			totalRead += n
+			if e.pendingOff >= len(e.pending) {
+				e.state = encStateDone
+			}
+
+		case encStateDone:
+			if totalRead > 0 {
+				return totalRead, nil
+			}
+			return 0, io.EOF
+		}
+	}
+	return totalRead, nil
+}
+
+func (e *SMEncoder) advanceToNextSegment() {
+	if e.segIndex >= e.numSegments {
+		// All segments done — emit trailer
+		trailer := make([]byte, SMMessageTrailerSize)
+		binary.LittleEndian.PutUint64(trailer, e.msgCRC.Sum64())
+		e.pending = trailer
+		e.pendingOff = 0
+		e.state = encStateTrailer
+		return
+	}
+
+	// Calculate this segment's data length
+	segDataLen := int64(e.segmentSize)
+	consumed := int64(e.segIndex) * int64(e.segmentSize)
+	if consumed+segDataLen > e.contentLen {
+		segDataLen = e.contentLen - consumed
+	}
+
+	// Build segment header
+	hdr := make([]byte, SMSegmentHeaderSize)
+	binary.LittleEndian.PutUint16(hdr[0:2], uint16(e.segIndex+1))
+	binary.LittleEndian.PutUint64(hdr[2:10], uint64(segDataLen))
+	e.pending = hdr
+	e.pendingOff = 0
+
+	e.segRemain = segDataLen
+	e.segCRC = crc64.New(CRC64Table)
+	e.segIndex++
+	e.state = encStateSegHeader
+}
+
+func (e *SMEncoder) drainPending(dst []byte) int {
+	n := copy(dst, e.pending[e.pendingOff:])
+	e.pendingOff += n
+	return n
 }
 
 func (e *SMEncoder) Seek(offset int64, whence int) (int64, error) {
-	return e.reader.Seek(offset, whence)
+	if offset != 0 || whence != io.SeekStart {
+		return 0, fmt.Errorf("SMEncoder: only Seek(0, io.SeekStart) is supported")
+	}
+	// Reset inner source to beginning
+	if _, err := e.inner.Seek(0, io.SeekStart); err != nil {
+		return 0, err
+	}
+	e.initState()
+	return 0, nil
 }
 
 func (e *SMEncoder) Close() error {
+	if closer, ok := e.inner.(io.Closer); ok {
+		return closer.Close()
+	}
 	return nil
 }
 
-// OriginalContentLength returns the length of the original unframed data.
+// OriginalContentLength returns the length of the original unframed content.
 func (e *SMEncoder) OriginalContentLength() int64 {
-	return e.result.OriginalContentLength
+	return e.contentLen
 }
 
-// EncodedLength returns the total length of the SM-encoded data.
+// EncodedLength returns the total length of the SM-encoded output.
 func (e *SMEncoder) EncodedLength() int64 {
-	return int64(len(e.result.EncodedData))
+	return e.encodedLen
 }
 
-// SMDecoder wraps an SM-encoded io.ReadCloser and produces raw data on Read().
-// It reads the full SM payload, validates CRC64 checksums, and serves the extracted raw data.
+// --- Streaming Decoder ---
+
+// decoder state for the state-machine based SMDecoder
+type decoderState int
+
+const (
+	decStateHeader    decoderState = iota // reading the 13-byte message header
+	decStateSegHeader                     // reading a 10-byte segment header
+	decStateSegData                       // streaming segment data to caller
+	decStateSegFooter                     // reading an 8-byte segment CRC footer
+	decStateTrailer                       // reading the 8-byte message trailer CRC
+	decStateDone                          // all data consumed and validated
+	decStateError                         // terminal error state
+)
+
+// SMDecoder wraps an SM-encoded io.ReadCloser and yields raw content on Read().
+// Framing is parsed incrementally and CRC64 checksums are validated per-segment on-the-fly.
 type SMDecoder struct {
-	source    io.ReadCloser
-	reader    *bytes.Reader
-	decoded   bool
-	rawData   []byte
-	decResult SMDecodeResult
-	err       error
+	source io.ReadCloser
+
+	state     decoderState
+	frameBuf  []byte // small buffer for accumulating framing bytes
+	frameNeed int    // how many bytes we need to accumulate
+	frameHave int    // how many bytes accumulated so far
+
+	// Message-level metadata (populated after header is parsed)
+	version     uint8
+	flags       uint16
+	numSegments uint16
+	hasCRC      bool
+	msgLen      uint64
+
+	// Segment tracking
+	segIndex  uint16 // 1-based segment number currently being processed
+	segRemain int64  // bytes remaining in current segment data
+	segCRC    hash64 // per-segment CRC hasher
+	msgCRC    hash64 // message-level CRC hasher
+	bytesRead int64  // total bytes read from source (for length validation)
+
+	err error
 }
 
-// NewSMDecoder creates a decoder that wraps an SM-encoded body.
-// The full body is read and validated on the first call to Read().
+// NewSMDecoder creates a streaming decoder that wraps an SM-encoded body.
+// CRC64 checksums are validated per-segment as data flows through.
 func NewSMDecoder(body io.ReadCloser) *SMDecoder {
-	return &SMDecoder{
-		source: body,
+	d := &SMDecoder{
+		source:    body,
+		state:     decStateHeader,
+		frameBuf:  make([]byte, SMHeaderSize), // reused for all framing reads
+		frameNeed: SMHeaderSize,
+		frameHave: 0,
 	}
-}
-
-func (d *SMDecoder) decode() error {
-	if d.decoded {
-		return d.err
-	}
-	d.decoded = true
-
-	smData, err := io.ReadAll(d.source)
-	if err != nil {
-		d.err = fmt.Errorf("failed to read structured message body: %w", err)
-		return d.err
-	}
-
-	result, err := SMDecode(smData)
-	if err != nil {
-		d.err = err
-		return d.err
-	}
-
-	d.decResult = result
-	d.rawData = result.Data
-	d.reader = bytes.NewReader(d.rawData)
-	return nil
+	return d
 }
 
 func (d *SMDecoder) Read(p []byte) (int, error) {
-	if err := d.decode(); err != nil {
-		return 0, err
+	if d.err != nil {
+		return 0, d.err
 	}
-	return d.reader.Read(p)
+	if len(p) == 0 {
+		return 0, nil
+	}
+
+	totalOut := 0
+	for totalOut < len(p) {
+		switch d.state {
+		case decStateHeader:
+			done, err := d.fillFrame()
+			if err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+			if !done {
+				return totalOut, nil
+			}
+			if err := d.parseHeader(); err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+
+		case decStateSegHeader:
+			done, err := d.fillFrame()
+			if err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+			if !done {
+				return totalOut, nil
+			}
+			if err := d.parseSegmentHeader(); err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+
+		case decStateSegData:
+			// Read segment data from source, pass through to caller
+			toRead := int64(len(p) - totalOut)
+			if toRead > d.segRemain {
+				toRead = d.segRemain
+			}
+			n, err := d.source.Read(p[totalOut : totalOut+int(toRead)])
+			if n > 0 {
+				d.bytesRead += int64(n)
+				if d.hasCRC {
+					_, _ = d.segCRC.Write(p[totalOut : totalOut+n])
+					_, _ = d.msgCRC.Write(p[totalOut : totalOut+n])
+				}
+				totalOut += n
+				d.segRemain -= int64(n)
+			}
+			if d.segRemain == 0 {
+				// Segment data done
+				if d.hasCRC {
+					d.prepareFrame(SMSegmentFooterSize)
+					d.state = decStateSegFooter
+				} else {
+					d.advanceAfterSegment()
+				}
+			}
+			if err != nil && d.segRemain > 0 {
+				d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
+				return totalOut, d.err
+			}
+
+		case decStateSegFooter:
+			done, err := d.fillFrame()
+			if err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+			if !done {
+				return totalOut, nil
+			}
+			if err := d.validateSegmentCRC(); err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+
+		case decStateTrailer:
+			done, err := d.fillFrame()
+			if err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+			if !done {
+				return totalOut, nil
+			}
+			if err := d.validateTrailerCRC(); err != nil {
+				d.setError(err)
+				return totalOut, d.err
+			}
+
+		case decStateDone:
+			if totalOut > 0 {
+				return totalOut, nil
+			}
+			return 0, io.EOF
+
+		case decStateError:
+			return totalOut, d.err
+		}
+	}
+	return totalOut, nil
+}
+
+func (d *SMDecoder) parseHeader() error {
+	buf := d.frameBuf[:SMHeaderSize]
+	d.version = buf[0]
+	if d.version != SMVersion {
+		return fmt.Errorf("unsupported structured message version: %d (expected %d)", d.version, SMVersion)
+	}
+
+	d.msgLen = binary.LittleEndian.Uint64(buf[1:9])
+	d.flags = binary.LittleEndian.Uint16(buf[9:11])
+	d.numSegments = binary.LittleEndian.Uint16(buf[11:13])
+	d.hasCRC = d.flags&SMFlagCRC64 != 0
+
+	if d.hasCRC {
+		d.msgCRC = crc64.New(CRC64Table)
+	}
+
+	d.segIndex = 0
+	d.prepareFrame(SMSegmentHeaderSize)
+	d.state = decStateSegHeader
+	return nil
+}
+
+func (d *SMDecoder) parseSegmentHeader() error {
+	buf := d.frameBuf[:SMSegmentHeaderSize]
+	segNum := binary.LittleEndian.Uint16(buf[0:2])
+	segDataLen := binary.LittleEndian.Uint64(buf[2:10])
+
+	d.segIndex++
+	if segNum != d.segIndex {
+		return fmt.Errorf("segment number mismatch: expected %d, got %d", d.segIndex, segNum)
+	}
+
+	maxSegmentDataLen := uint64(int(^uint(0) >> 1))
+	if segDataLen > maxSegmentDataLen {
+		return fmt.Errorf("segment %d: data length %d exceeds supported size", segNum, segDataLen)
+	}
+
+	d.segRemain = int64(segDataLen)
+	if d.hasCRC {
+		d.segCRC = crc64.New(CRC64Table)
+	}
+	d.state = decStateSegData
+	return nil
+}
+
+func (d *SMDecoder) validateSegmentCRC() error {
+	expected := binary.LittleEndian.Uint64(d.frameBuf[:SMSegmentFooterSize])
+	actual := d.segCRC.Sum64()
+	if expected != actual {
+		return fmt.Errorf("segment %d: CRC64 mismatch (expected 0x%016x, got 0x%016x)", d.segIndex, expected, actual)
+	}
+	d.advanceAfterSegment()
+	return nil
+}
+
+func (d *SMDecoder) advanceAfterSegment() {
+	if d.segIndex >= d.numSegments {
+		if d.hasCRC {
+			d.prepareFrame(SMMessageTrailerSize)
+			d.state = decStateTrailer
+		} else {
+			d.state = decStateDone
+		}
+	} else {
+		d.prepareFrame(SMSegmentHeaderSize)
+		d.state = decStateSegHeader
+	}
+}
+
+func (d *SMDecoder) validateTrailerCRC() error {
+	expected := binary.LittleEndian.Uint64(d.frameBuf[:SMMessageTrailerSize])
+	actual := d.msgCRC.Sum64()
+	if expected != actual {
+		return fmt.Errorf("message trailer CRC64 mismatch (expected 0x%016x, got 0x%016x)", expected, actual)
+	}
+	d.state = decStateDone
+	return nil
+}
+
+// fillFrame reads from source into frameBuf until frameNeed bytes are accumulated.
+// Returns (true, nil) when the full frame is available.
+func (d *SMDecoder) fillFrame() (bool, error) {
+	for d.frameHave < d.frameNeed {
+		n, err := d.source.Read(d.frameBuf[d.frameHave:d.frameNeed])
+		d.frameHave += n
+		d.bytesRead += int64(n)
+		if d.frameHave >= d.frameNeed {
+			return true, nil
+		}
+		if err != nil {
+			if err == io.EOF {
+				return false, fmt.Errorf("unexpected EOF reading structured message framing (have %d of %d bytes)", d.frameHave, d.frameNeed)
+			}
+			return false, err
+		}
+	}
+	return true, nil
+}
+
+func (d *SMDecoder) prepareFrame(size int) {
+	if cap(d.frameBuf) < size {
+		d.frameBuf = make([]byte, size)
+	} else {
+		d.frameBuf = d.frameBuf[:size]
+	}
+	d.frameNeed = size
+	d.frameHave = 0
+}
+
+func (d *SMDecoder) setError(err error) {
+	d.err = err
+	d.state = decStateError
 }
 
 func (d *SMDecoder) Close() error {
@@ -325,11 +763,15 @@ func (d *SMDecoder) Close() error {
 	return nil
 }
 
-// DecodeResult returns the decode result after the first Read().
-// Returns nil if not yet decoded.
+// DecodeResult returns the decoded message metadata after the header has been parsed.
+// Returns nil if the header has not yet been read (i.e., no Read() call has been made).
 func (d *SMDecoder) DecodeResult() *SMDecodeResult {
-	if !d.decoded {
+	if d.state == decStateHeader {
 		return nil
 	}
-	return &d.decResult
+	return &SMDecodeResult{
+		Version:     d.version,
+		Flags:       d.flags,
+		NumSegments: d.numSegments,
+	}
 }

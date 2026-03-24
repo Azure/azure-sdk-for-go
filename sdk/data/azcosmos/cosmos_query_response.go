@@ -36,6 +36,7 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
 	if queryMetrics != "" {
 		response.QueryMetrics = &queryMetrics
+		recordQueryMetricsFromResponse(resp)
 	}
 	queryIndexUtilization := resp.Header.Get(cosmosHeaderIndexUtilization)
 	if queryIndexUtilization != "" {

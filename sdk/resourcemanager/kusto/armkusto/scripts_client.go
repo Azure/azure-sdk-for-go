@@ -27,7 +27,7 @@ type ScriptsClient struct {
 // NewScriptsClient creates a new instance of ScriptsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, 
 // CheckNameAvailability - Checks that the script name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -73,7 +73,7 @@ func (client *ScriptsClient) CheckNameAvailability(ctx context.Context, resource
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ScriptsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName ScriptCheckNameRequest, options *ScriptsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ScriptsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName ScriptCheckNameRequest, _ *ScriptsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scriptsCheckNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -96,7 +96,7 @@ func (client *ScriptsClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, scriptName); err != nil {
@@ -117,7 +117,7 @@ func (client *ScriptsClient) checkNameAvailabilityHandleResponse(resp *http.Resp
 // BeginCreateOrUpdate - Creates a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -145,7 +145,7 @@ func (client *ScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // CreateOrUpdate - Creates a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 func (client *ScriptsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScriptsClient.BeginCreateOrUpdate"
@@ -168,7 +168,7 @@ func (client *ScriptsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ScriptsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ScriptsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, _ *ScriptsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +195,7 @@ func (client *ScriptsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -207,7 +207,7 @@ func (client *ScriptsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // BeginDelete - Deletes a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -233,7 +233,7 @@ func (client *ScriptsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Deletes a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 func (client *ScriptsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScriptsClient.BeginDelete"
@@ -256,7 +256,7 @@ func (client *ScriptsClient) deleteOperation(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, _ *ScriptsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -283,7 +283,7 @@ func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,7 +292,7 @@ func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Gets a Kusto cluster database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -321,7 +321,7 @@ func (client *ScriptsClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScriptsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientGetOptions) (*policy.Request, error) {
+func (client *ScriptsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, _ *ScriptsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -348,7 +348,7 @@ func (client *ScriptsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,7 +365,7 @@ func (client *ScriptsClient) getHandleResponse(resp *http.Response) (ScriptsClie
 
 // NewListByDatabasePager - Returns the list of database scripts for given database.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -396,7 +396,7 @@ func (client *ScriptsClient) NewListByDatabasePager(resourceGroupName string, cl
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ScriptsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *ScriptsClientListByDatabaseOptions) (*policy.Request, error) {
+func (client *ScriptsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *ScriptsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -419,7 +419,7 @@ func (client *ScriptsClient) listByDatabaseCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -437,7 +437,7 @@ func (client *ScriptsClient) listByDatabaseHandleResponse(resp *http.Response) (
 // BeginUpdate - Updates a database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -464,7 +464,7 @@ func (client *ScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Update - Updates a database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 func (client *ScriptsClient) update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScriptsClient.BeginUpdate"
@@ -487,7 +487,7 @@ func (client *ScriptsClient) update(ctx context.Context, resourceGroupName strin
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ScriptsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ScriptsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, _ *ScriptsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -514,7 +514,7 @@ func (client *ScriptsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

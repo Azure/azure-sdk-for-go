@@ -1868,6 +1868,81 @@ func (e *EventGridConnectionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EventGridConnectionWithManagedIdentityProperties.
+func (e EventGridConnectionWithManagedIdentityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "blobStorageEventType", e.BlobStorageEventType)
+	populate(objectMap, "consumerGroup", e.ConsumerGroup)
+	populate(objectMap, "dataFormat", e.DataFormat)
+	populate(objectMap, "databaseRouting", e.DatabaseRouting)
+	populate(objectMap, "eventGridResourceId", e.EventGridResourceID)
+	populate(objectMap, "eventHubResourceIdForManagedIdentity", e.EventHubResourceIDForManagedIdentity)
+	populate(objectMap, "ignoreFirstRecord", e.IgnoreFirstRecord)
+	populate(objectMap, "managedIdentityObjectId", e.ManagedIdentityObjectID)
+	populate(objectMap, "managedIdentityResourceId", e.ManagedIdentityResourceID)
+	populate(objectMap, "mappingRuleName", e.MappingRuleName)
+	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populate(objectMap, "storageAccountResourceIdForManagedIdentity", e.StorageAccountResourceIDForManagedIdentity)
+	populate(objectMap, "tableName", e.TableName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventGridConnectionWithManagedIdentityProperties.
+func (e *EventGridConnectionWithManagedIdentityProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "blobStorageEventType":
+			err = unpopulate(val, "BlobStorageEventType", &e.BlobStorageEventType)
+			delete(rawMsg, key)
+		case "consumerGroup":
+			err = unpopulate(val, "ConsumerGroup", &e.ConsumerGroup)
+			delete(rawMsg, key)
+		case "dataFormat":
+			err = unpopulate(val, "DataFormat", &e.DataFormat)
+			delete(rawMsg, key)
+		case "databaseRouting":
+			err = unpopulate(val, "DatabaseRouting", &e.DatabaseRouting)
+			delete(rawMsg, key)
+		case "eventGridResourceId":
+			err = unpopulate(val, "EventGridResourceID", &e.EventGridResourceID)
+			delete(rawMsg, key)
+		case "eventHubResourceIdForManagedIdentity":
+			err = unpopulate(val, "EventHubResourceIDForManagedIdentity", &e.EventHubResourceIDForManagedIdentity)
+			delete(rawMsg, key)
+		case "ignoreFirstRecord":
+			err = unpopulate(val, "IgnoreFirstRecord", &e.IgnoreFirstRecord)
+			delete(rawMsg, key)
+		case "managedIdentityObjectId":
+			err = unpopulate(val, "ManagedIdentityObjectID", &e.ManagedIdentityObjectID)
+			delete(rawMsg, key)
+		case "managedIdentityResourceId":
+			err = unpopulate(val, "ManagedIdentityResourceID", &e.ManagedIdentityResourceID)
+			delete(rawMsg, key)
+		case "mappingRuleName":
+			err = unpopulate(val, "MappingRuleName", &e.MappingRuleName)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		case "storageAccountResourceIdForManagedIdentity":
+			err = unpopulate(val, "StorageAccountResourceIDForManagedIdentity", &e.StorageAccountResourceIDForManagedIdentity)
+			delete(rawMsg, key)
+		case "tableName":
+			err = unpopulate(val, "TableName", &e.TableName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type EventGridDataConnection.
 func (e EventGridDataConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1882,6 +1957,53 @@ func (e EventGridDataConnection) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type EventGridDataConnection.
 func (e *EventGridDataConnection) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &e.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, "Kind", &e.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &e.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &e.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &e.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &e.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EventGridDataConnectionWithManagedIdentity.
+func (e EventGridDataConnectionWithManagedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", e.ID)
+	objectMap["kind"] = DataConnectionKindEventGridWithManagedIdentity
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
+	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "type", e.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventGridDataConnectionWithManagedIdentity.
+func (e *EventGridDataConnectionWithManagedIdentity) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -1986,6 +2108,77 @@ func (e *EventHubConnectionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EventHubConnectionWithManagedIdentityProperties.
+func (e EventHubConnectionWithManagedIdentityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "compression", e.Compression)
+	populate(objectMap, "consumerGroup", e.ConsumerGroup)
+	populate(objectMap, "dataFormat", e.DataFormat)
+	populate(objectMap, "databaseRouting", e.DatabaseRouting)
+	populate(objectMap, "eventHubResourceIdForManagedIdentity", e.EventHubResourceIDForManagedIdentity)
+	populate(objectMap, "eventSystemProperties", e.EventSystemProperties)
+	populate(objectMap, "managedIdentityObjectId", e.ManagedIdentityObjectID)
+	populate(objectMap, "managedIdentityResourceId", e.ManagedIdentityResourceID)
+	populate(objectMap, "mappingRuleName", e.MappingRuleName)
+	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populateDateTimeRFC3339(objectMap, "retrievalStartDate", e.RetrievalStartDate)
+	populate(objectMap, "tableName", e.TableName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventHubConnectionWithManagedIdentityProperties.
+func (e *EventHubConnectionWithManagedIdentityProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "compression":
+			err = unpopulate(val, "Compression", &e.Compression)
+			delete(rawMsg, key)
+		case "consumerGroup":
+			err = unpopulate(val, "ConsumerGroup", &e.ConsumerGroup)
+			delete(rawMsg, key)
+		case "dataFormat":
+			err = unpopulate(val, "DataFormat", &e.DataFormat)
+			delete(rawMsg, key)
+		case "databaseRouting":
+			err = unpopulate(val, "DatabaseRouting", &e.DatabaseRouting)
+			delete(rawMsg, key)
+		case "eventHubResourceIdForManagedIdentity":
+			err = unpopulate(val, "EventHubResourceIDForManagedIdentity", &e.EventHubResourceIDForManagedIdentity)
+			delete(rawMsg, key)
+		case "eventSystemProperties":
+			err = unpopulate(val, "EventSystemProperties", &e.EventSystemProperties)
+			delete(rawMsg, key)
+		case "managedIdentityObjectId":
+			err = unpopulate(val, "ManagedIdentityObjectID", &e.ManagedIdentityObjectID)
+			delete(rawMsg, key)
+		case "managedIdentityResourceId":
+			err = unpopulate(val, "ManagedIdentityResourceID", &e.ManagedIdentityResourceID)
+			delete(rawMsg, key)
+		case "mappingRuleName":
+			err = unpopulate(val, "MappingRuleName", &e.MappingRuleName)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		case "retrievalStartDate":
+			err = unpopulateDateTimeRFC3339(val, "RetrievalStartDate", &e.RetrievalStartDate)
+			delete(rawMsg, key)
+		case "tableName":
+			err = unpopulate(val, "TableName", &e.TableName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type EventHubDataConnection.
 func (e EventHubDataConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2000,6 +2193,53 @@ func (e EventHubDataConnection) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type EventHubDataConnection.
 func (e *EventHubDataConnection) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &e.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, "Kind", &e.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &e.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &e.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &e.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &e.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EventHubDataConnectionWithManagedIdentity.
+func (e EventHubDataConnectionWithManagedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", e.ID)
+	objectMap["kind"] = DataConnectionKindEventHubWithManagedIdentity
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
+	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "type", e.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventHubDataConnectionWithManagedIdentity.
+func (e *EventHubDataConnectionWithManagedIdentity) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -2356,6 +2596,7 @@ func (i *IotHubDataConnection) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type KeyVaultProperties.
 func (k KeyVaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "federatedIdentityClientId", k.FederatedIdentityClientID)
 	populate(objectMap, "keyName", k.KeyName)
 	populate(objectMap, "keyVaultUri", k.KeyVaultURI)
 	populate(objectMap, "keyVersion", k.KeyVersion)
@@ -2372,6 +2613,9 @@ func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "federatedIdentityClientId":
+			err = unpopulate(val, "FederatedIdentityClientID", &k.FederatedIdentityClientID)
+			delete(rawMsg, key)
 		case "keyName":
 			err = unpopulate(val, "KeyName", &k.KeyName)
 			delete(rawMsg, key)
@@ -3951,6 +4195,7 @@ func (s ScriptProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "continueOnErrors", s.ContinueOnErrors)
 	populate(objectMap, "forceUpdateTag", s.ForceUpdateTag)
+	populate(objectMap, "managedIdentityResourceId", s.ManagedIdentityResourceID)
 	populate(objectMap, "principalPermissionsAction", s.PrincipalPermissionsAction)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "scriptContent", s.ScriptContent)
@@ -3974,6 +4219,9 @@ func (s *ScriptProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "forceUpdateTag":
 			err = unpopulate(val, "ForceUpdateTag", &s.ForceUpdateTag)
+			delete(rawMsg, key)
+		case "managedIdentityResourceId":
+			err = unpopulate(val, "ManagedIdentityResourceID", &s.ManagedIdentityResourceID)
 			delete(rawMsg, key)
 		case "principalPermissionsAction":
 			err = unpopulate(val, "PrincipalPermissionsAction", &s.PrincipalPermissionsAction)

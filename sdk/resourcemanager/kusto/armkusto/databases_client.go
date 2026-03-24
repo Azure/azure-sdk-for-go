@@ -28,7 +28,7 @@ type DatabasesClient struct {
 // NewDatabasesClient creates a new instance of DatabasesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential
 // AddPrincipals - Add Database principals permissions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -73,7 +73,7 @@ func (client *DatabasesClient) AddPrincipals(ctx context.Context, resourceGroupN
 }
 
 // addPrincipalsCreateRequest creates the AddPrincipals request.
-func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToAdd DatabasePrincipalListRequest, options *DatabasesClientAddPrincipalsOptions) (*policy.Request, error) {
+func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToAdd DatabasePrincipalListRequest, _ *DatabasesClientAddPrincipalsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/addPrincipals"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -96,7 +96,7 @@ func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, databasePrincipalsToAdd); err != nil {
@@ -117,7 +117,7 @@ func (client *DatabasesClient) addPrincipalsHandleResponse(resp *http.Response) 
 // CheckNameAvailability - Checks that the databases resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - resourceName - The name of the resource.
@@ -146,7 +146,7 @@ func (client *DatabasesClient) CheckNameAvailability(ctx context.Context, resour
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName CheckNameRequest, options *DatabasesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName CheckNameRequest, _ *DatabasesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -165,7 +165,7 @@ func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resourceName); err != nil {
@@ -186,7 +186,7 @@ func (client *DatabasesClient) checkNameAvailabilityHandleResponse(resp *http.Re
 // BeginCreateOrUpdate - Creates or updates a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -213,7 +213,7 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // CreateOrUpdate - Creates or updates a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginCreateOrUpdate"
@@ -259,7 +259,7 @@ func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	if options != nil && options.CallerRole != nil {
 		reqQP.Set("callerRole", string(*options.CallerRole))
 	}
@@ -274,7 +274,7 @@ func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Deletes the database with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -299,7 +299,7 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes the database with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginDelete"
@@ -322,7 +322,7 @@ func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGrou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -345,7 +345,7 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -354,7 +354,7 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Returns a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -382,7 +382,7 @@ func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientGetOptions) (*policy.Request, error) {
+func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -405,7 +405,7 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -422,7 +422,7 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response) (Databases
 
 // NewListByClusterPager - Returns the list of databases of the given Kusto cluster.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - options - DatabasesClientListByClusterOptions contains the optional parameters for the DatabasesClient.NewListByClusterPager
@@ -476,7 +476,7 @@ func (client *DatabasesClient) listByClusterCreateRequest(ctx context.Context, r
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -493,7 +493,7 @@ func (client *DatabasesClient) listByClusterHandleResponse(resp *http.Response) 
 
 // NewListPrincipalsPager - Returns a list of database principals of the given Kusto cluster and database.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -524,7 +524,7 @@ func (client *DatabasesClient) NewListPrincipalsPager(resourceGroupName string, 
 }
 
 // listPrincipalsCreateRequest creates the ListPrincipals request.
-func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientListPrincipalsOptions) (*policy.Request, error) {
+func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasesClientListPrincipalsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/listPrincipals"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -547,7 +547,7 @@ func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -565,7 +565,7 @@ func (client *DatabasesClient) listPrincipalsHandleResponse(resp *http.Response)
 // RemovePrincipals - Remove Database principals permissions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -595,7 +595,7 @@ func (client *DatabasesClient) RemovePrincipals(ctx context.Context, resourceGro
 }
 
 // removePrincipalsCreateRequest creates the RemovePrincipals request.
-func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToRemove DatabasePrincipalListRequest, options *DatabasesClientRemovePrincipalsOptions) (*policy.Request, error) {
+func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToRemove DatabasePrincipalListRequest, _ *DatabasesClientRemovePrincipalsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/removePrincipals"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -618,7 +618,7 @@ func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, databasePrincipalsToRemove); err != nil {
@@ -639,7 +639,7 @@ func (client *DatabasesClient) removePrincipalsHandleResponse(resp *http.Respons
 // BeginUpdate - Updates a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -665,7 +665,7 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Update - Updates a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginUpdate"
@@ -711,7 +711,7 @@ func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	if options != nil && options.CallerRole != nil {
 		reqQP.Set("callerRole", string(*options.CallerRole))
 	}

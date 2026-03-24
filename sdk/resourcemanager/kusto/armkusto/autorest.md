@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/f9a6f43ddbae5c7bbaa40a9de20a128013d09e60/specification/azure-kusto/resource-manager/Microsoft.Kusto/Kusto/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/f9a6f43ddbae5c7bbaa40a9de20a128013d09e60/specification/azure-kusto/resource-manager/Microsoft.Kusto/Kusto/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 2.3.0
-tag: package-2024-04
+module-version: 2.4.0
+tag: package-2025-02
 ```

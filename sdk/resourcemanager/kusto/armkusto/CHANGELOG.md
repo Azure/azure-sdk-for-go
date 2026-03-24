@@ -1,5 +1,23 @@
 # Release History
 
+## 2.4.0 (2026-03-24)
+### Features Added
+
+- New value `DataConnectionKindEventGridWithManagedIdentity`, `DataConnectionKindEventHubWithManagedIdentity` added to enum type `DataConnectionKind`
+- New value `EventGridDataFormatAZMONSTREAM` added to enum type `EventGridDataFormat`
+- New value `EventHubDataFormatAZMONSTREAM` added to enum type `EventHubDataFormat`
+- New value `IotHubDataFormatAZMONSTREAM` added to enum type `IotHubDataFormat`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New function `*EventGridDataConnectionWithManagedIdentity.GetDataConnection() *DataConnection`
+- New function `*EventHubDataConnectionWithManagedIdentity.GetDataConnection() *DataConnection`
+- New struct `EventGridConnectionWithManagedIdentityProperties`
+- New struct `EventGridDataConnectionWithManagedIdentity`
+- New struct `EventHubConnectionWithManagedIdentityProperties`
+- New struct `EventHubDataConnectionWithManagedIdentity`
+- New field `FederatedIdentityClientID` in struct `KeyVaultProperties`
+- New field `ManagedIdentityResourceID` in struct `ScriptProperties`
+
+
 ## 2.3.0 (2025-01-24)
 ### Features Added
 

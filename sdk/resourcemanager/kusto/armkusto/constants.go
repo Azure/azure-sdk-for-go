@@ -5,11 +5,6 @@
 
 package armkusto
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
-	moduleVersion = "v2.3.0"
-)
-
 // AzureSKUName - SKU name.
 type AzureSKUName string
 
@@ -324,10 +319,12 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DataConnectionKind string
 
 const (
-	DataConnectionKindCosmosDb  DataConnectionKind = "CosmosDb"
-	DataConnectionKindEventGrid DataConnectionKind = "EventGrid"
-	DataConnectionKindEventHub  DataConnectionKind = "EventHub"
-	DataConnectionKindIotHub    DataConnectionKind = "IotHub"
+	DataConnectionKindCosmosDb                     DataConnectionKind = "CosmosDb"
+	DataConnectionKindEventGrid                    DataConnectionKind = "EventGrid"
+	DataConnectionKindEventGridWithManagedIdentity DataConnectionKind = "EventGridWithManagedIdentity"
+	DataConnectionKindEventHub                     DataConnectionKind = "EventHub"
+	DataConnectionKindEventHubWithManagedIdentity  DataConnectionKind = "EventHubWithManagedIdentity"
+	DataConnectionKindIotHub                       DataConnectionKind = "IotHub"
 )
 
 // PossibleDataConnectionKindValues returns the possible values for the DataConnectionKind const type.
@@ -335,7 +332,9 @@ func PossibleDataConnectionKindValues() []DataConnectionKind {
 	return []DataConnectionKind{
 		DataConnectionKindCosmosDb,
 		DataConnectionKindEventGrid,
+		DataConnectionKindEventGridWithManagedIdentity,
 		DataConnectionKindEventHub,
+		DataConnectionKindEventHubWithManagedIdentity,
 		DataConnectionKindIotHub,
 	}
 }
@@ -455,22 +454,23 @@ func PossibleEngineTypeValues() []EngineType {
 type EventGridDataFormat string
 
 const (
-	EventGridDataFormatAPACHEAVRO EventGridDataFormat = "APACHEAVRO"
-	EventGridDataFormatAVRO       EventGridDataFormat = "AVRO"
-	EventGridDataFormatCSV        EventGridDataFormat = "CSV"
-	EventGridDataFormatJSON       EventGridDataFormat = "JSON"
-	EventGridDataFormatMULTIJSON  EventGridDataFormat = "MULTIJSON"
-	EventGridDataFormatORC        EventGridDataFormat = "ORC"
-	EventGridDataFormatPARQUET    EventGridDataFormat = "PARQUET"
-	EventGridDataFormatPSV        EventGridDataFormat = "PSV"
-	EventGridDataFormatRAW        EventGridDataFormat = "RAW"
-	EventGridDataFormatSCSV       EventGridDataFormat = "SCSV"
-	EventGridDataFormatSINGLEJSON EventGridDataFormat = "SINGLEJSON"
-	EventGridDataFormatSOHSV      EventGridDataFormat = "SOHSV"
-	EventGridDataFormatTSV        EventGridDataFormat = "TSV"
-	EventGridDataFormatTSVE       EventGridDataFormat = "TSVE"
-	EventGridDataFormatTXT        EventGridDataFormat = "TXT"
-	EventGridDataFormatW3CLOGFILE EventGridDataFormat = "W3CLOGFILE"
+	EventGridDataFormatAPACHEAVRO  EventGridDataFormat = "APACHEAVRO"
+	EventGridDataFormatAVRO        EventGridDataFormat = "AVRO"
+	EventGridDataFormatAZMONSTREAM EventGridDataFormat = "AZMONSTREAM"
+	EventGridDataFormatCSV         EventGridDataFormat = "CSV"
+	EventGridDataFormatJSON        EventGridDataFormat = "JSON"
+	EventGridDataFormatMULTIJSON   EventGridDataFormat = "MULTIJSON"
+	EventGridDataFormatORC         EventGridDataFormat = "ORC"
+	EventGridDataFormatPARQUET     EventGridDataFormat = "PARQUET"
+	EventGridDataFormatPSV         EventGridDataFormat = "PSV"
+	EventGridDataFormatRAW         EventGridDataFormat = "RAW"
+	EventGridDataFormatSCSV        EventGridDataFormat = "SCSV"
+	EventGridDataFormatSINGLEJSON  EventGridDataFormat = "SINGLEJSON"
+	EventGridDataFormatSOHSV       EventGridDataFormat = "SOHSV"
+	EventGridDataFormatTSV         EventGridDataFormat = "TSV"
+	EventGridDataFormatTSVE        EventGridDataFormat = "TSVE"
+	EventGridDataFormatTXT         EventGridDataFormat = "TXT"
+	EventGridDataFormatW3CLOGFILE  EventGridDataFormat = "W3CLOGFILE"
 )
 
 // PossibleEventGridDataFormatValues returns the possible values for the EventGridDataFormat const type.
@@ -478,6 +478,7 @@ func PossibleEventGridDataFormatValues() []EventGridDataFormat {
 	return []EventGridDataFormat{
 		EventGridDataFormatAPACHEAVRO,
 		EventGridDataFormatAVRO,
+		EventGridDataFormatAZMONSTREAM,
 		EventGridDataFormatCSV,
 		EventGridDataFormatJSON,
 		EventGridDataFormatMULTIJSON,
@@ -499,22 +500,23 @@ func PossibleEventGridDataFormatValues() []EventGridDataFormat {
 type EventHubDataFormat string
 
 const (
-	EventHubDataFormatAPACHEAVRO EventHubDataFormat = "APACHEAVRO"
-	EventHubDataFormatAVRO       EventHubDataFormat = "AVRO"
-	EventHubDataFormatCSV        EventHubDataFormat = "CSV"
-	EventHubDataFormatJSON       EventHubDataFormat = "JSON"
-	EventHubDataFormatMULTIJSON  EventHubDataFormat = "MULTIJSON"
-	EventHubDataFormatORC        EventHubDataFormat = "ORC"
-	EventHubDataFormatPARQUET    EventHubDataFormat = "PARQUET"
-	EventHubDataFormatPSV        EventHubDataFormat = "PSV"
-	EventHubDataFormatRAW        EventHubDataFormat = "RAW"
-	EventHubDataFormatSCSV       EventHubDataFormat = "SCSV"
-	EventHubDataFormatSINGLEJSON EventHubDataFormat = "SINGLEJSON"
-	EventHubDataFormatSOHSV      EventHubDataFormat = "SOHSV"
-	EventHubDataFormatTSV        EventHubDataFormat = "TSV"
-	EventHubDataFormatTSVE       EventHubDataFormat = "TSVE"
-	EventHubDataFormatTXT        EventHubDataFormat = "TXT"
-	EventHubDataFormatW3CLOGFILE EventHubDataFormat = "W3CLOGFILE"
+	EventHubDataFormatAPACHEAVRO  EventHubDataFormat = "APACHEAVRO"
+	EventHubDataFormatAVRO        EventHubDataFormat = "AVRO"
+	EventHubDataFormatAZMONSTREAM EventHubDataFormat = "AZMONSTREAM"
+	EventHubDataFormatCSV         EventHubDataFormat = "CSV"
+	EventHubDataFormatJSON        EventHubDataFormat = "JSON"
+	EventHubDataFormatMULTIJSON   EventHubDataFormat = "MULTIJSON"
+	EventHubDataFormatORC         EventHubDataFormat = "ORC"
+	EventHubDataFormatPARQUET     EventHubDataFormat = "PARQUET"
+	EventHubDataFormatPSV         EventHubDataFormat = "PSV"
+	EventHubDataFormatRAW         EventHubDataFormat = "RAW"
+	EventHubDataFormatSCSV        EventHubDataFormat = "SCSV"
+	EventHubDataFormatSINGLEJSON  EventHubDataFormat = "SINGLEJSON"
+	EventHubDataFormatSOHSV       EventHubDataFormat = "SOHSV"
+	EventHubDataFormatTSV         EventHubDataFormat = "TSV"
+	EventHubDataFormatTSVE        EventHubDataFormat = "TSVE"
+	EventHubDataFormatTXT         EventHubDataFormat = "TXT"
+	EventHubDataFormatW3CLOGFILE  EventHubDataFormat = "W3CLOGFILE"
 )
 
 // PossibleEventHubDataFormatValues returns the possible values for the EventHubDataFormat const type.
@@ -522,6 +524,7 @@ func PossibleEventHubDataFormatValues() []EventHubDataFormat {
 	return []EventHubDataFormat{
 		EventHubDataFormatAPACHEAVRO,
 		EventHubDataFormatAVRO,
+		EventHubDataFormatAZMONSTREAM,
 		EventHubDataFormatCSV,
 		EventHubDataFormatJSON,
 		EventHubDataFormatMULTIJSON,
@@ -565,22 +568,23 @@ func PossibleIdentityTypeValues() []IdentityType {
 type IotHubDataFormat string
 
 const (
-	IotHubDataFormatAPACHEAVRO IotHubDataFormat = "APACHEAVRO"
-	IotHubDataFormatAVRO       IotHubDataFormat = "AVRO"
-	IotHubDataFormatCSV        IotHubDataFormat = "CSV"
-	IotHubDataFormatJSON       IotHubDataFormat = "JSON"
-	IotHubDataFormatMULTIJSON  IotHubDataFormat = "MULTIJSON"
-	IotHubDataFormatORC        IotHubDataFormat = "ORC"
-	IotHubDataFormatPARQUET    IotHubDataFormat = "PARQUET"
-	IotHubDataFormatPSV        IotHubDataFormat = "PSV"
-	IotHubDataFormatRAW        IotHubDataFormat = "RAW"
-	IotHubDataFormatSCSV       IotHubDataFormat = "SCSV"
-	IotHubDataFormatSINGLEJSON IotHubDataFormat = "SINGLEJSON"
-	IotHubDataFormatSOHSV      IotHubDataFormat = "SOHSV"
-	IotHubDataFormatTSV        IotHubDataFormat = "TSV"
-	IotHubDataFormatTSVE       IotHubDataFormat = "TSVE"
-	IotHubDataFormatTXT        IotHubDataFormat = "TXT"
-	IotHubDataFormatW3CLOGFILE IotHubDataFormat = "W3CLOGFILE"
+	IotHubDataFormatAPACHEAVRO  IotHubDataFormat = "APACHEAVRO"
+	IotHubDataFormatAVRO        IotHubDataFormat = "AVRO"
+	IotHubDataFormatAZMONSTREAM IotHubDataFormat = "AZMONSTREAM"
+	IotHubDataFormatCSV         IotHubDataFormat = "CSV"
+	IotHubDataFormatJSON        IotHubDataFormat = "JSON"
+	IotHubDataFormatMULTIJSON   IotHubDataFormat = "MULTIJSON"
+	IotHubDataFormatORC         IotHubDataFormat = "ORC"
+	IotHubDataFormatPARQUET     IotHubDataFormat = "PARQUET"
+	IotHubDataFormatPSV         IotHubDataFormat = "PSV"
+	IotHubDataFormatRAW         IotHubDataFormat = "RAW"
+	IotHubDataFormatSCSV        IotHubDataFormat = "SCSV"
+	IotHubDataFormatSINGLEJSON  IotHubDataFormat = "SINGLEJSON"
+	IotHubDataFormatSOHSV       IotHubDataFormat = "SOHSV"
+	IotHubDataFormatTSV         IotHubDataFormat = "TSV"
+	IotHubDataFormatTSVE        IotHubDataFormat = "TSVE"
+	IotHubDataFormatTXT         IotHubDataFormat = "TXT"
+	IotHubDataFormatW3CLOGFILE  IotHubDataFormat = "W3CLOGFILE"
 )
 
 // PossibleIotHubDataFormatValues returns the possible values for the IotHubDataFormat const type.
@@ -588,6 +592,7 @@ func PossibleIotHubDataFormatValues() []IotHubDataFormat {
 	return []IotHubDataFormat{
 		IotHubDataFormatAPACHEAVRO,
 		IotHubDataFormatAVRO,
+		IotHubDataFormatAZMONSTREAM,
 		IotHubDataFormatCSV,
 		IotHubDataFormatJSON,
 		IotHubDataFormatMULTIJSON,
@@ -804,12 +809,14 @@ func PossiblePublicIPTypeValues() []PublicIPType {
 }
 
 // PublicNetworkAccess - Public network access to the cluster is enabled by default. When disabled, only private endpoint
-// connection to the cluster is allowed
+// connections to the cluster are allowed. When 'SecuredByPerimeter', inbound and outbound traffic is
+// controlled by the NSP profile's access rules.
 type PublicNetworkAccess string
 
 const (
-	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -817,6 +824,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 

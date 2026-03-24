@@ -221,7 +221,7 @@ func (c *Client) CreateDatabase(
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 
 	if o == nil {
@@ -286,7 +286,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 			if err != nil {
 				return QueryDatabasesResponse{}, err
 			}
-			ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+			ctx, endSpan := startSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
@@ -487,6 +487,8 @@ func (c *Client) createRequest(
 		requestEnricher(req)
 	}
 
+	req = attachRequestDiagnostics(req, operationContext)
+
 	return req, nil
 }
 
@@ -510,18 +512,31 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 
 func (c *Client) executeAndEnsureSuccessResponse(ctx context.Context, request *policy.Request) (*http.Response, error) {
 	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
+	state := requestDiagnosticsStateFromContext(request.Raw().Context())
+	if state != nil && state.requestTrace != nil {
+		defer state.requestTrace.End()
+	}
+
 	response, err := c.internal.Pipeline().Do(request)
 	if err != nil {
-		return nil, err
+		var responseErr *azcore.ResponseError
+		if errors.As(err, &responseErr) && responseErr.RawResponse != nil {
+			addPointOperationStatisticsFromResponse(responseErr.RawResponse, responseErr.Error(), traceDatumKeyPointOperationStatistics)
+			return nil, err
+		}
+
+		return nil, wrapRequestError(err, diagnosticsFromContext(request.Raw().Context()))
 	}
 
 	c.addResponseValuesToSpan(ctx, response)
 
 	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
 	if successResponse {
+		addPointOperationStatisticsFromResponse(response, "", traceDatumKeyPointOperationStatistics)
 		return response, nil
 	}
 
+	addPointOperationStatisticsFromResponse(response, response.Status, traceDatumKeyPointOperationStatistics)
 	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 

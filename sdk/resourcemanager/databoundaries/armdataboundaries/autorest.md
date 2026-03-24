@@ -5,9 +5,10 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/d426a4238db8dcd4da1c03c2c380fa27628093e7/specification/resources/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/d426a4238db8dcd4da1c03c2c380fa27628093e7/specification/resources/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/f9a6f43ddbae5c7bbaa40a9de20a128013d09e60/specification/resources/resource-manager/Microsoft.Resources/databoundaries/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/f9a6f43ddbae5c7bbaa40a9de20a128013d09e60/specification/resources/resource-manager/Microsoft.Resources/databoundaries/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 1.0.0
 package-databoundaries: true
+tag: package-databoundaries-2024-08
 ```

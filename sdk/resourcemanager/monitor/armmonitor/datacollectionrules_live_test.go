@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -99,14 +99,14 @@ func (testsuite *DatacollectionrulesTestSuite) Prepare() {
 			},
 		},
 	}
-	params := map[string]interface{}{
-		"location": map[string]interface{}{"value": testsuite.location},
+	params := map[string]*armdeployments.DeploymentParameter{
+		"location": {Value: testsuite.location},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "WorkSpaces_Create", &deployment)
@@ -232,17 +232,17 @@ func (testsuite *DatacollectionrulesTestSuite) Prepare() {
 		},
 		"variables": map[string]interface{}{},
 	}
-	params = map[string]interface{}{
-		"azureClientId":       map[string]interface{}{"value": testsuite.azureClientId},
-		"azureClientSecret":   map[string]interface{}{"value": testsuite.azureClientSecret},
-		"location":            map[string]interface{}{"value": testsuite.location},
-		"managedClustersName": map[string]interface{}{"value": testsuite.managedClustersName},
+	params = map[string]*armdeployments.DeploymentParameter{
+		"azureClientId":       {Value: testsuite.azureClientId},
+		"azureClientSecret":   {Value: testsuite.azureClientSecret},
+		"location":            {Value: testsuite.location},
+		"managedClustersName": {Value: testsuite.managedClustersName},
 	}
-	deployment = armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment = armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "ContainerService_Create", &deployment)

@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -118,10 +118,10 @@ func (testsuite *DataExportsTestSuite) Prepare() {
 		},
 		"variables": map[string]interface{}{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "EventhubNamespace_Create", &deployment)

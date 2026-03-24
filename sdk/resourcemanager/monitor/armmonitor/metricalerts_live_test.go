@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -107,14 +107,14 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 			},
 		},
 	}
-	params := map[string]interface{}{
-		"location": map[string]interface{}{"value": testsuite.location},
+	params := map[string]*armdeployments.DeploymentParameter{
+		"location": {Value: testsuite.location},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "VirtualNetwork_Create", &deployment)
@@ -163,15 +163,15 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 			},
 		},
 	}
-	params = map[string]interface{}{
-		"location": map[string]interface{}{"value": testsuite.location},
-		"subnetId": map[string]interface{}{"value": testsuite.subnetId},
+	params = map[string]*armdeployments.DeploymentParameter{
+		"location": {Value: testsuite.location},
+		"subnetId": {Value: testsuite.subnetId},
 	}
-	deployment = armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment = armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "NetworkInterface_Create", &deployment)
@@ -272,16 +272,16 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 		},
 		"variables": map[string]interface{}{},
 	}
-	params = map[string]interface{}{
-		"adminPassword": map[string]interface{}{"value": testsuite.adminPassword},
-		"location":      map[string]interface{}{"value": testsuite.location},
-		"vnicId":        map[string]interface{}{"value": testsuite.vnicId},
+	params = map[string]*armdeployments.DeploymentParameter{
+		"adminPassword": {Value: testsuite.adminPassword},
+		"location":      {Value: testsuite.location},
+		"vnicId":        {Value: testsuite.vnicId},
 	}
-	deployment = armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment = armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "VirtualMachine_Create", &deployment)

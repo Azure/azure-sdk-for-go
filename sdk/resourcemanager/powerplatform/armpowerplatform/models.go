@@ -44,6 +44,9 @@ type AccountList struct {
 type AccountProperties struct {
 	// The description of the account.
 	Description *string
+
+	// READ-ONLY; The internally assigned unique identifier of the resource.
+	SystemID *string
 }
 
 // EnterprisePolicy - Definition of the EnterprisePolicy.
@@ -365,11 +368,17 @@ type Properties struct {
 	// The encryption settings for a configuration store.
 	Encryption *PropertiesEncryption
 
+	// The health status of the resource.
+	HealthStatus *HealthStatus
+
 	// Settings concerning lockbox.
 	Lockbox *PropertiesLockbox
 
 	// Settings concerning network injection.
 	NetworkInjection *PropertiesNetworkInjection
+
+	// READ-ONLY; The internally assigned unique identifier of the resource.
+	SystemID *string
 }
 
 // PropertiesEncryption - The encryption settings for a configuration store.
@@ -390,7 +399,7 @@ type PropertiesLockbox struct {
 // PropertiesNetworkInjection - Settings concerning network injection.
 type PropertiesNetworkInjection struct {
 	// Network injection configuration
-	VirtualNetworks *VirtualNetworkPropertiesList
+	VirtualNetworks []*VirtualNetworkProperties
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
@@ -471,13 +480,4 @@ type VirtualNetworkProperties struct {
 
 	// Properties of a subnet.
 	Subnet *SubnetProperties
-}
-
-// VirtualNetworkPropertiesList - A list of private link resources
-type VirtualNetworkPropertiesList struct {
-	// Next page link if any.
-	NextLink *string
-
-	// Array of virtual networks.
-	Value []*VirtualNetworkProperties
 }

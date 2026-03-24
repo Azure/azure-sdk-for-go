@@ -16,11 +16,20 @@ import (
 
 // ServerFactory is a fake server for instances of the armpowerplatform.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer                   AccountsServer
-	EnterprisePoliciesServer         EnterprisePoliciesServer
-	OperationsServer                 OperationsServer
+	// AccountsServer contains the fakes for client AccountsClient
+	AccountsServer AccountsServer
+
+	// EnterprisePoliciesServer contains the fakes for client EnterprisePoliciesClient
+	EnterprisePoliciesServer EnterprisePoliciesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

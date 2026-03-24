@@ -98,6 +98,7 @@ func (a *AccountList) UnmarshalJSON(data []byte) error {
 func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", a.Description)
+	populate(objectMap, "systemId", a.SystemID)
 	return json.Marshal(objectMap)
 }
 
@@ -112,6 +113,9 @@ func (a *AccountProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "description":
 			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "systemId":
+			err = unpopulate(val, "SystemID", &a.SystemID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -947,8 +951,10 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "encryption", p.Encryption)
+	populate(objectMap, "healthStatus", p.HealthStatus)
 	populate(objectMap, "lockbox", p.Lockbox)
 	populate(objectMap, "networkInjection", p.NetworkInjection)
+	populate(objectMap, "systemId", p.SystemID)
 	return json.Marshal(objectMap)
 }
 
@@ -964,11 +970,17 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 		case "encryption":
 			err = unpopulate(val, "Encryption", &p.Encryption)
 			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, "HealthStatus", &p.HealthStatus)
+			delete(rawMsg, key)
 		case "lockbox":
 			err = unpopulate(val, "Lockbox", &p.Lockbox)
 			delete(rawMsg, key)
 		case "networkInjection":
 			err = unpopulate(val, "NetworkInjection", &p.NetworkInjection)
+			delete(rawMsg, key)
+		case "systemId":
+			err = unpopulate(val, "SystemID", &p.SystemID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1281,37 +1293,6 @@ func (v *VirtualNetworkProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkPropertiesList.
-func (v VirtualNetworkPropertiesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkPropertiesList.
-func (v *VirtualNetworkPropertiesList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", v, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &v.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &v.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", v, err)
-		}
-	}
-	return nil
-}
-
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -1333,7 +1314,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

@@ -1,5 +1,50 @@
 # Release History
 
+## 2.4.0 (2026-03-24)
+### Features Added
+
+- New value `DataConnectionKindEventGridWithManagedIdentity`, `DataConnectionKindEventHubWithManagedIdentity` added to enum type `DataConnectionKind`
+- New value `EventGridDataFormatAZMONSTREAM` added to enum type `EventGridDataFormat`
+- New value `EventHubDataFormatAZMONSTREAM` added to enum type `EventHubDataFormat`
+- New value `IotHubDataFormatAZMONSTREAM` added to enum type `IotHubDataFormat`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New function `*EventGridDataConnectionWithManagedIdentity.GetDataConnection() *DataConnection`
+- New function `*EventHubDataConnectionWithManagedIdentity.GetDataConnection() *DataConnection`
+- New struct `EventGridConnectionWithManagedIdentityProperties`
+- New struct `EventGridDataConnectionWithManagedIdentity`
+- New struct `EventHubConnectionWithManagedIdentityProperties`
+- New struct `EventHubDataConnectionWithManagedIdentity`
+- New field `SystemData` in struct `AttachedDatabaseConfiguration`
+- New field `NextLink` in struct `AttachedDatabaseConfigurationListResult`
+- New field `NextLink` in struct `ClusterListResult`
+- New field `SystemData` in struct `ClusterPrincipalAssignment`
+- New field `NextLink` in struct `ClusterPrincipalAssignmentListResult`
+- New field `SystemData` in struct `ClusterUpdate`
+- New field `SystemData` in struct `CosmosDbDataConnection`
+- New field `NextLink` in struct `DataConnectionListResult`
+- New field `SystemData` in struct `Database`
+- New field `SystemData` in struct `DatabasePrincipalAssignment`
+- New field `NextLink` in struct `DatabasePrincipalAssignmentListResult`
+- New field `NextLink` in struct `DatabasePrincipalListResult`
+- New field `SystemData` in struct `EventGridDataConnection`
+- New field `SystemData` in struct `EventHubDataConnection`
+- New field `NextLink` in struct `FollowerDatabaseListResult`
+- New field `SystemData` in struct `IotHubDataConnection`
+- New field `FederatedIdentityClientID` in struct `KeyVaultProperties`
+- New field `NextLink` in struct `LanguageExtensionsList`
+- New field `NextLink` in struct `ListResourceSKUsResult`
+- New field `NextLink` in struct `ManagedPrivateEndpointListResult`
+- New field `SystemData` in struct `OutboundNetworkDependenciesEndpoint`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `NextLink` in struct `PrivateLinkResourceListResult`
+- New field `SystemData` in struct `ReadOnlyFollowingDatabase`
+- New field `SystemData` in struct `ReadWriteDatabase`
+- New field `NextLink` in struct `SKUDescriptionList`
+- New field `SystemData` in struct `SandboxCustomImage`
+- New field `NextLink` in struct `ScriptListResult`
+- New field `ManagedIdentityResourceID` in struct `ScriptProperties`
+
+
 ## 2.3.0 (2025-01-24)
 ### Features Added
 

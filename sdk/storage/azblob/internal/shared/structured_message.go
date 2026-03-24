@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -70,7 +67,7 @@ func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 	var buf bytes.Buffer
 	buf.Grow(int(msgLen))
 
-	// Writing to bytes.Buffer cannot fail, so the return values are intentionally discarded.
+	// The return values are intentionally discarded.
 	_ = buf.WriteByte(SMVersion)
 	_ = binary.Write(&buf, binary.LittleEndian, msgLen)
 	_ = binary.Write(&buf, binary.LittleEndian, SMFlagCRC64)
@@ -764,7 +761,7 @@ func (d *SMDecoder) Close() error {
 }
 
 // DecodeResult returns the decoded message metadata after the header has been parsed.
-// Returns nil if the header has not yet been read (i.e., no Read() call has been made).
+// Returns nil if the header has not yet been read.
 func (d *SMDecoder) DecodeResult() *SMDecodeResult {
 	if d.state == decStateHeader {
 		return nil

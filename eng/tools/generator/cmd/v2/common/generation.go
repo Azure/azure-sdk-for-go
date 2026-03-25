@@ -694,7 +694,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 
 	generationType := "TypeSpecUpdate"
 
-	// remove autorest.md and build.go
+	// remove autorest.md and build.go (build.go only for ARM packages)
 	autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
 	if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
 		log.Println("Remove autorest.md...")
@@ -703,11 +703,15 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 		}
 		generationType = "MigrateToTypeSpec"
 	}
-	buildGoPath := filepath.Join(t.PackagePath, "build.go")
-	if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
-		log.Println("Remove build.go...")
-		if err = os.Remove(buildGoPath); err != nil {
-			return nil, err
+	// only delete build.go for ARM packages when migrating from Swagger to TypeSpec,
+	// data plane packages may use build.go for customization
+	if generationType == "MigrateToTypeSpec" && strings.HasPrefix(t.PackageRelativePath, "sdk/resourcemanager/") {
+		buildGoPath := filepath.Join(t.PackagePath, "build.go")
+		if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
+			log.Println("Remove build.go...")
+			if err = os.Remove(buildGoPath); err != nil {
+				return nil, err
+			}
 		}
 	}
 

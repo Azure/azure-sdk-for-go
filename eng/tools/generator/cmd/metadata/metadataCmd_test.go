@@ -9,19 +9,21 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
 	"github.com/stretchr/testify/require"
 )
 
 func TestValidatePackagePath(t *testing.T) {
 	t.Run("NonExistentPath", func(t *testing.T) {
-		err := validatePackagePath("/nonexistent/path")
+		err := utils.ValidatePackagePath("/nonexistent/path")
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "does not exist or is not a directory")
 	})
 
 	t.Run("PathWithoutGoMod", func(t *testing.T) {
 		tmpDir := t.TempDir()
-		err := validatePackagePath(tmpDir)
+		err := utils.ValidatePackagePath(tmpDir)
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "does not contain a go.mod file")
 	})
@@ -30,7 +32,7 @@ func TestValidatePackagePath(t *testing.T) {
 		tmpDir := t.TempDir()
 		err := os.WriteFile(filepath.Join(tmpDir, "go.mod"), []byte("module test"), 0644)
 		require.NoError(t, err)
-		err = validatePackagePath(tmpDir)
+		err = utils.ValidatePackagePath(tmpDir)
 		require.NoError(t, err)
 	})
 }
@@ -64,7 +66,7 @@ func TestIsMgmtPlanePackage(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := isMgmtPlanePackage(tt.packagePath, tt.sdkRoot)
+			result := utils.IsMgmtPlanePackage(tt.packagePath, tt.sdkRoot)
 			require.Equal(t, tt.expected, result)
 		})
 	}
@@ -93,7 +95,7 @@ func TestGetModuleRelativePath(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := getModuleRelativePath(tt.packagePath, tt.sdkRoot)
+			result, err := utils.GetModuleRelativePath(tt.packagePath, tt.sdkRoot)
 			require.NoError(t, err)
 			require.Equal(t, tt.expected, result)
 		})
@@ -120,15 +122,10 @@ func TestGetServiceDir(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := getServiceDir(tt.moduleRelativePath)
+			result := utils.GetServiceDir(tt.moduleRelativePath)
 			require.Equal(t, tt.expected, result)
 		})
 	}
-}
-
-func TestGetPackageName(t *testing.T) {
-	require.Equal(t, "armcompute", getPackageName("/root/sdk/resourcemanager/compute/armcompute"))
-	require.Equal(t, "azblob", getPackageName("/root/sdk/storage/azblob"))
 }
 
 func TestInferPackageTitle(t *testing.T) {
@@ -151,19 +148,51 @@ func TestInferPackageTitle(t *testing.T) {
 	}
 }
 
-func TestCreateCIYml(t *testing.T) {
+func TestParseSingleTemplate_CIYml(t *testing.T) {
+	// Create a temporary template file
 	tmpDir := t.TempDir()
-	ciYmlPath := filepath.Join(tmpDir, "ci.yml")
+	tplPath := filepath.Join(tmpDir, "ci.yml.tpl")
+	tplContent := `# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
 
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
+
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: '{{.serviceDir}}'
+`
+	err := os.WriteFile(tplPath, []byte(tplContent), 0644)
+	require.NoError(t, err)
+
+	outputPath := filepath.Join(tmpDir, "ci.yml")
 	data := map[string]string{
 		"moduleRelativePath": "sdk/resourcemanager/compute/armcompute",
 		"serviceDir":         "resourcemanager/compute/armcompute",
 	}
 
-	err := createCIYml(ciYmlPath, data)
+	err = typespec.ParseSingleTemplate(tplPath, outputPath, data)
 	require.NoError(t, err)
 
-	content, err := os.ReadFile(ciYmlPath)
+	content, err := os.ReadFile(outputPath)
 	require.NoError(t, err)
 
 	contentStr := string(content)
@@ -173,19 +202,31 @@ func TestCreateCIYml(t *testing.T) {
 	require.Contains(t, contentStr, "template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml")
 }
 
-func TestCreateCIYml_DataPlane(t *testing.T) {
+func TestParseSingleTemplate_DataPlane(t *testing.T) {
 	tmpDir := t.TempDir()
-	ciYmlPath := filepath.Join(tmpDir, "ci.yml")
+	tplPath := filepath.Join(tmpDir, "ci.yml.tpl")
+	tplContent := `trigger:
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: '{{.serviceDir}}'
+`
+	err := os.WriteFile(tplPath, []byte(tplContent), 0644)
+	require.NoError(t, err)
 
+	outputPath := filepath.Join(tmpDir, "ci.yml")
 	data := map[string]string{
 		"moduleRelativePath": "sdk/messaging/azeventhubs",
 		"serviceDir":         "messaging/azeventhubs",
 	}
 
-	err := createCIYml(ciYmlPath, data)
+	err = typespec.ParseSingleTemplate(tplPath, outputPath, data)
 	require.NoError(t, err)
 
-	content, err := os.ReadFile(ciYmlPath)
+	content, err := os.ReadFile(outputPath)
 	require.NoError(t, err)
 
 	contentStr := string(content)
@@ -199,9 +240,40 @@ func TestProcessMetadata_MgmtPlaneNewPackage(t *testing.T) {
 	err := os.MkdirAll(filepath.Join(sdkRoot, ".git"), 0755)
 	require.NoError(t, err)
 
-	// Create the template directory with README.md.tpl
+	// Create the template directory with ci.yml.tpl and README.md.tpl
 	templateDir := filepath.Join(sdkRoot, "eng", "tools", "generator", "template", "typespec")
 	err = os.MkdirAll(templateDir, 0755)
+	require.NoError(t, err)
+
+	ciTpl := `# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
+
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: '{{.serviceDir}}'
+`
+	err = os.WriteFile(filepath.Join(templateDir, "ci.yml.tpl"), []byte(ciTpl), 0644)
 	require.NoError(t, err)
 
 	readmeTpl := `# Azure {{.packageTitle}} Module for Go
@@ -246,6 +318,28 @@ func TestProcessMetadata_DataPlaneNewPackage(t *testing.T) {
 	err := os.MkdirAll(filepath.Join(sdkRoot, ".git"), 0755)
 	require.NoError(t, err)
 
+	// Create the template directory with ci.yml.tpl
+	templateDir := filepath.Join(sdkRoot, "eng", "tools", "generator", "template", "typespec")
+	err = os.MkdirAll(templateDir, 0755)
+	require.NoError(t, err)
+
+	ciTpl := `# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
+pr:
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: '{{.serviceDir}}'
+`
+	err = os.WriteFile(filepath.Join(templateDir, "ci.yml.tpl"), []byte(ciTpl), 0644)
+	require.NoError(t, err)
+
 	// Create the package directory (data plane - no README.md should be created)
 	packageDir := filepath.Join(sdkRoot, "sdk", "storage", "azblob")
 	err = os.MkdirAll(packageDir, 0755)
@@ -276,9 +370,11 @@ func TestProcessMetadata_ExistingFiles(t *testing.T) {
 	err := os.MkdirAll(filepath.Join(sdkRoot, ".git"), 0755)
 	require.NoError(t, err)
 
-	// Create the template directory with README.md.tpl
+	// Create the template directory with templates
 	templateDir := filepath.Join(sdkRoot, "eng", "tools", "generator", "template", "typespec")
 	err = os.MkdirAll(templateDir, 0755)
+	require.NoError(t, err)
+	err = os.WriteFile(filepath.Join(templateDir, "ci.yml.tpl"), []byte("# {{.serviceDir}}"), 0644)
 	require.NoError(t, err)
 	err = os.WriteFile(filepath.Join(templateDir, "README.md.tpl"), []byte("# {{.packageTitle}}"), 0644)
 	require.NoError(t, err)
@@ -331,19 +427,50 @@ func TestProcessMetadata_NoSDKRoot(t *testing.T) {
 }
 
 func TestCIYmlTemplate_Format(t *testing.T) {
-	// Verify the ci.yml template produces valid YAML-like output
+	// Create a template file matching the real ci.yml.tpl
 	tmpDir := t.TempDir()
-	ciYmlPath := filepath.Join(tmpDir, "ci.yml")
+	tplPath := filepath.Join(tmpDir, "ci.yml.tpl")
+	tplContent := `# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
 
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - {{.moduleRelativePath}}/
+
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: '{{.serviceDir}}'
+`
+	err := os.WriteFile(tplPath, []byte(tplContent), 0644)
+	require.NoError(t, err)
+
+	outputPath := filepath.Join(tmpDir, "ci.yml")
 	data := map[string]string{
 		"moduleRelativePath": "sdk/resourcemanager/network/armnetwork",
 		"serviceDir":         "resourcemanager/network/armnetwork",
 	}
 
-	err := createCIYml(ciYmlPath, data)
+	err = typespec.ParseSingleTemplate(tplPath, outputPath, data)
 	require.NoError(t, err)
 
-	content, err := os.ReadFile(ciYmlPath)
+	content, err := os.ReadFile(outputPath)
 	require.NoError(t, err)
 
 	lines := strings.Split(string(content), "\n")

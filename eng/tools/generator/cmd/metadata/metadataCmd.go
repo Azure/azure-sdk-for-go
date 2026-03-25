@@ -10,17 +10,17 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"text/template"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
 	"github.com/spf13/cobra"
 )
 
 // MetadataResult represents the result of a metadata operation
 type MetadataResult struct {
-	Success     bool     `json:"success"`
-	Message     string   `json:"message"`
-	PackagePath string   `json:"package_path,omitempty"`
+	Success      bool     `json:"success"`
+	Message      string   `json:"message"`
+	PackagePath  string   `json:"package_path,omitempty"`
 	CreatedFiles []string `json:"created_files,omitempty"`
 	SkippedFiles []string `json:"skipped_files,omitempty"`
 }
@@ -59,7 +59,7 @@ Examples:
 			packagePath := args[0]
 
 			// Validate package path
-			if err := validatePackagePath(packagePath); err != nil {
+			if err := utils.ValidatePackagePath(packagePath); err != nil {
 				return fmt.Errorf("package path validation error: %v", err)
 			}
 
@@ -111,54 +111,6 @@ Examples:
 	return metadataCmd
 }
 
-// validatePackagePath validates that the provided package path exists and contains a go.mod file
-func validatePackagePath(packagePath string) error {
-	if info, err := os.Stat(packagePath); err != nil || !info.IsDir() {
-		return fmt.Errorf("package path '%s' does not exist or is not a directory", packagePath)
-	}
-
-	// Check if directory contains go.mod file
-	goModPath := filepath.Join(packagePath, "go.mod")
-	if _, err := os.Stat(goModPath); os.IsNotExist(err) {
-		return fmt.Errorf("package path '%s' does not contain a go.mod file", packagePath)
-	} else if err != nil {
-		return fmt.Errorf("failed to check for go.mod file: %v", err)
-	}
-
-	return nil
-}
-
-// isMgmtPlanePackage determines if the package is a management plane package
-// by checking if its path contains "sdk/resourcemanager/"
-func isMgmtPlanePackage(packagePath, sdkRoot string) bool {
-	relPath, err := filepath.Rel(sdkRoot, packagePath)
-	if err != nil {
-		return false
-	}
-	relPath = filepath.ToSlash(relPath)
-	return strings.HasPrefix(relPath, "sdk/resourcemanager/")
-}
-
-// getModuleRelativePath returns the module path relative to the SDK root (e.g., "sdk/resourcemanager/compute/armcompute")
-func getModuleRelativePath(packagePath, sdkRoot string) (string, error) {
-	relPath, err := filepath.Rel(sdkRoot, packagePath)
-	if err != nil {
-		return "", fmt.Errorf("failed to get relative path: %v", err)
-	}
-	return filepath.ToSlash(relPath), nil
-}
-
-// getServiceDir returns the service directory for the pipeline (e.g., "resourcemanager/compute/armcompute")
-func getServiceDir(moduleRelativePath string) string {
-	// Remove the "sdk/" prefix
-	return strings.TrimPrefix(moduleRelativePath, "sdk/")
-}
-
-// getPackageName returns the last component of the package path (e.g., "armcompute")
-func getPackageName(packagePath string) string {
-	return filepath.Base(packagePath)
-}
-
 // inferPackageTitle infers the package title from the package name
 // For example: "armcompute" -> "Compute", "azblob" -> "Blob"
 func inferPackageTitle(packageName string) string {
@@ -191,16 +143,16 @@ func processMetadata(packagePath, packageTitle string, verbose bool) (*MetadataR
 	}
 
 	// Get module relative path
-	moduleRelativePath, err := getModuleRelativePath(packagePath, sdkRoot)
+	moduleRelativePath, err := utils.GetModuleRelativePath(packagePath, sdkRoot)
 	if err != nil {
 		result.Success = false
 		result.Message = fmt.Sprintf("Failed to get module relative path: %v", err)
 		return result, nil
 	}
 
-	serviceDir := getServiceDir(moduleRelativePath)
-	packageName := getPackageName(packagePath)
-	isMgmt := isMgmtPlanePackage(packagePath, sdkRoot)
+	serviceDir := utils.GetServiceDir(moduleRelativePath)
+	packageName := filepath.Base(packagePath)
+	isMgmt := utils.IsMgmtPlanePackage(packagePath, sdkRoot)
 
 	if verbose {
 		log.Printf("Package path: %s", packagePath)
@@ -224,13 +176,16 @@ func processMetadata(packagePath, packageTitle string, verbose bool) (*MetadataR
 		"packageTitle":       packageTitle,
 	}
 
+	templateDir := filepath.Join(sdkRoot, "eng", "tools", "generator", "template", "typespec")
+
 	// Create ci.yml if not exists
 	ciYmlPath := filepath.Join(packagePath, "ci.yml")
 	if _, err := os.Stat(ciYmlPath); os.IsNotExist(err) {
 		if verbose {
 			log.Printf("Creating ci.yml at %s", ciYmlPath)
 		}
-		if err := createCIYml(ciYmlPath, data); err != nil {
+		ciTplPath := filepath.Join(templateDir, "ci.yml.tpl")
+		if err := typespec.ParseSingleTemplate(ciTplPath, ciYmlPath, data); err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("Failed to create ci.yml: %v", err)
 			return result, nil
@@ -254,8 +209,8 @@ func processMetadata(packagePath, packageTitle string, verbose bool) (*MetadataR
 			if verbose {
 				log.Printf("Creating README.md at %s", readmePath)
 			}
-			templateDir := filepath.Join(sdkRoot, "eng", "tools", "generator", "template", "typespec")
-			if err := createReadme(readmePath, templateDir, data); err != nil {
+			readmeTplPath := filepath.Join(templateDir, "README.md.tpl")
+			if err := typespec.ParseSingleTemplate(readmeTplPath, readmePath, data); err != nil {
 				result.Success = false
 				result.Message = fmt.Sprintf("Failed to create README.md: %v", err)
 				return result, nil
@@ -276,82 +231,4 @@ func processMetadata(packagePath, packageTitle string, verbose bool) (*MetadataR
 	result.Success = true
 	result.Message = "Metadata files processed successfully"
 	return result, nil
-}
-
-const ciYmlTemplate = `# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
-trigger:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-    - {{.moduleRelativePath}}/
-
-pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-    - {{.moduleRelativePath}}/
-
-extends:
-  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
-  parameters:
-    ServiceDirectory: '{{.serviceDir}}'
-`
-
-// createCIYml creates a ci.yml file from the inline template
-func createCIYml(outputPath string, data map[string]string) error {
-	tpl, err := template.New("ci.yml").Parse(ciYmlTemplate)
-	if err != nil {
-		return fmt.Errorf("failed to parse ci.yml template: %v", err)
-	}
-
-	f, err := os.Create(outputPath)
-	if err != nil {
-		return fmt.Errorf("failed to create ci.yml file: %v", err)
-	}
-	defer f.Close()
-
-	if err := tpl.Execute(f, data); err != nil {
-		return fmt.Errorf("failed to execute ci.yml template: %v", err)
-	}
-
-	return nil
-}
-
-// createReadme creates a README.md file using the existing typespec README.md.tpl template
-func createReadme(outputPath, templateDir string, data map[string]string) error {
-	templatePath := filepath.Join(templateDir, "README.md.tpl")
-
-	// Read the template file
-	templateContent, err := os.ReadFile(templatePath)
-	if err != nil {
-		return fmt.Errorf("failed to read README.md template from '%s': %v", templatePath, err)
-	}
-
-	// Parse and execute the template
-	tpl, err := template.New("README.md").Parse(string(templateContent))
-	if err != nil {
-		return fmt.Errorf("failed to parse README.md template: %v", err)
-	}
-
-	f, err := os.Create(outputPath)
-	if err != nil {
-		return fmt.Errorf("failed to create README.md file: %v", err)
-	}
-	defer f.Close()
-
-	if err := tpl.Execute(f, data); err != nil {
-		return fmt.Errorf("failed to execute README.md template: %v", err)
-	}
-
-	return nil
 }

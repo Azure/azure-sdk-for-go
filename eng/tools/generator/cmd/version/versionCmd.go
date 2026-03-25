@@ -114,17 +114,11 @@ Examples:
 }
 
 // validatePackagePath validates that the provided package path exists and contains necessary files
+// validatePackagePath validates that the provided package path exists, contains
+// a go.mod file, and additionally contains a version.go file
 func validatePackagePath(packagePath string) error {
-	if info, err := os.Stat(packagePath); err != nil || !info.IsDir() {
-		return fmt.Errorf("package path '%s' does not exist or is not a directory", packagePath)
-	}
-
-	// Check if directory contains go.mod file
-	goModPath := filepath.Join(packagePath, "go.mod")
-	if _, err := os.Stat(goModPath); os.IsNotExist(err) {
-		return fmt.Errorf("package path '%s' does not contain a go.mod file", packagePath)
-	} else if err != nil {
-		return fmt.Errorf("failed to check for go.mod file: %v", err)
+	if err := utils.ValidatePackagePath(packagePath); err != nil {
+		return err
 	}
 
 	// Check if directory contains version.go file

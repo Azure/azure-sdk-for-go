@@ -52,7 +52,6 @@ AI agents should **NOT** perform the following actions without human approval:
 - **TypeSpec changes**: SDK generation from specifications requires specific tools and workflows (see [code generation docs](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/generate.md))
 
 #### Security and Compliance
-- **CODEOWNERS modifications**: Changes require following [CODEOWNERS validation workflow](https://github.com/Azure/azure-sdk-for-go/blob/main/eng/common/instructions/azsdk-tools/validate-codeowners.instructions.md)
 - **Security issues**: Must be reported privately to <secure@microsoft.com>, not in public issues
 - **License changes**: No modifications to licensing without explicit approval
 

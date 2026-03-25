@@ -68,5 +68,3 @@ func (testsuite *ComputeScheduleOperationsTestSuite) TestOperationsNewListPager(
 		testsuite.Require().NoError(err)
 	}
 }
-
-

@@ -118,5 +118,3 @@ func (testsuite *ConnectedCacheTestSuite) TestIspCustomersGet() {
 	}
 	fmt.Println("TestGetIspCustomersClient over")
 }
-
-

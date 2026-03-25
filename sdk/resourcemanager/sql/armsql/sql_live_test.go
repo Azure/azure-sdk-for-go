@@ -101,5 +101,3 @@ func (testsuite *SqlAccessTestSuite) Cleanup() {
 	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
 	testsuite.Require().NoError(err)
 }
-
-

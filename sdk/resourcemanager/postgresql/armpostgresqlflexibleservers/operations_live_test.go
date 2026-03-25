@@ -68,5 +68,3 @@ func (testsuite *PostgresqlflexibleserversOperationsTestSuite) TestOperationsNew
 		testsuite.Require().NoError(err)
 	}
 }
-
-

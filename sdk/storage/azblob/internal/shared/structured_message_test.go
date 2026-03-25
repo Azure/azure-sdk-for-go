@@ -504,15 +504,52 @@ func TestStreamingDecoderBadVersion(t *testing.T) {
 	require.Contains(t, err.Error(), "unsupported structured message version")
 }
 
-func TestStreamingEncoderSeekOnlyStart(t *testing.T) {
+func TestStreamingEncoderSeekSupport(t *testing.T) {
 	data := []byte("seek test")
 	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
 
+	// Seek(0, SeekEnd) returns encoded length
+	pos, err := enc.Seek(0, io.SeekEnd)
+	require.NoError(t, err)
+	require.Equal(t, enc.EncodedLength(), pos)
+
+	// Seek(0, SeekCurrent) at initial position returns 0
+	pos, err = enc.Seek(0, io.SeekCurrent)
+	require.NoError(t, err)
+	require.Equal(t, int64(0), pos)
+
+	// After reading some data, SeekCurrent returns non-zero
+	buf := make([]byte, 1)
+	_, _ = enc.Read(buf)
+	pos, err = enc.Seek(0, io.SeekCurrent)
+	require.NoError(t, err)
+	require.NotEqual(t, int64(0), pos)
+
 	// Non-zero offset should fail
-	_, err := enc.Seek(1, io.SeekStart)
+	_, err = enc.Seek(1, io.SeekStart)
 	require.Error(t, err)
 
-	// SeekCurrent should fail
-	_, err = enc.Seek(0, io.SeekCurrent)
+	// Non-zero offset with SeekEnd should fail
+	_, err = enc.Seek(1, io.SeekEnd)
 	require.Error(t, err)
+
+	// Seek(0, SeekStart) resets successfully
+	pos, err = enc.Seek(0, io.SeekStart)
+	require.NoError(t, err)
+	require.Equal(t, int64(0), pos)
+}
+
+func TestStreamingEncoderWorksWithValidateSeekableStream(t *testing.T) {
+	data := []byte("validate seekable test data")
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
+
+	// ValidateSeekableStreamAt0AndGetCount uses Seek(0, SeekCurrent), Seek(0, SeekEnd), Seek(0, SeekStart)
+	count, err := ValidateSeekableStreamAt0AndGetCount(enc)
+	require.NoError(t, err)
+	require.Equal(t, enc.EncodedLength(), count)
+
+	// After validation, encoder should still be at position 0 and readable
+	encoded, err := io.ReadAll(enc)
+	require.NoError(t, err)
+	require.Equal(t, int(count), len(encoded))
 }

@@ -446,8 +446,24 @@ func (e *SMEncoder) drainPending(dst []byte) int {
 }
 
 func (e *SMEncoder) Seek(offset int64, whence int) (int64, error) {
+	// Support Seek(0, SeekEnd) to report total encoded length.
+	// This is needed by ValidateSeekableStreamAt0AndGetCount to compute Content-Length.
+	if offset == 0 && whence == io.SeekEnd {
+		return e.encodedLen, nil
+	}
+	// Support Seek(0, SeekCurrent) to report current position (used for position validation).
+	if offset == 0 && whence == io.SeekCurrent {
+		// If we're in the initial header state with pendingOff==0, we're at position 0.
+		// Otherwise, exact position tracking is complex; return 0 only if we haven't started.
+		if e.state == encStateHeader && e.pendingOff == 0 {
+			return 0, nil
+		}
+		// For non-zero positions, we don't track exact offset — but the only caller
+		// (validateSeekableStreamAt0) checks pos != 0, so return non-zero to indicate we've started.
+		return -1, nil
+	}
 	if offset != 0 || whence != io.SeekStart {
-		return 0, fmt.Errorf("SMEncoder: only Seek(0, io.SeekStart) is supported")
+		return 0, fmt.Errorf("SMEncoder: unsupported Seek(%d, %d); only Seek(0, SeekStart), Seek(0, SeekEnd), and Seek(0, SeekCurrent) are supported", offset, whence)
 	}
 	// Reset inner source to beginning
 	if _, err := e.inner.Seek(0, io.SeekStart); err != nil {

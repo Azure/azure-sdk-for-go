@@ -6174,7 +6174,11 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobFromURLSourceCPK() {
 
 	// Test UploadBlobFromURL with Source CPK
 	_, err = destBlobClient.UploadBlobFromURL(context.Background(), srcURL, &blockblob.UploadBlobFromURLOptions{
-		SourceCustomerProvidedKey: &cpk,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
 	})
 	_require.NoError(err)
 }
@@ -6207,9 +6211,14 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobFromURLSourceCPKFail() {
 	destBlobName := testcommon.GenerateBlobName("dest")
 	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
 
+	invalidCPK := testcommon.TestInvalidCPKByValue
 	// Test UploadBlobFromURL with Source CPK
 	_, err = destBlobClient.UploadBlobFromURL(context.Background(), srcURL, &blockblob.UploadBlobFromURLOptions{
-		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
 	})
 	_require.Error(err)
 }
@@ -6246,7 +6255,11 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPK() {
 
 	// Test StageBlockFromURL with Source CPK
 	_, err = destBlobClient.StageBlockFromURL(context.Background(), blockID, srcURL, &blockblob.StageBlockFromURLOptions{
-		SourceCustomerProvidedKey: &cpk,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
 	})
 	_require.NoError(err)
 }
@@ -6281,9 +6294,14 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPKFail() {
 
 	blockID := base64.StdEncoding.EncodeToString([]byte("blockID"))
 
+	invalidCPK := testcommon.TestInvalidCPKByValue
 	// Test StageBlockFromURL with Source CPK
 	_, err = destBlobClient.StageBlockFromURL(context.Background(), blockID, srcURL, &blockblob.StageBlockFromURLOptions{
-		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
 	})
 	_require.Error(err)
 }

@@ -98,7 +98,7 @@ type UploadBlobFromURLOptions struct {
 	Tier *blob.AccessTier
 
 	// Optional. Specifies the customer-provided encryption key to use to decrypt the source blob.
-	SourceCustomerProvidedKey *blob.CPKInfo
+	SourceCustomerProvidedKey *blob.SourceCPKInfo
 
 	// Additional optional headers
 	HTTPHeaders                    *blob.HTTPHeaders
@@ -128,7 +128,7 @@ func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFr
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions,
-		o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+		o.SourceModifiedAccessConditions, o.SourceCustomerProvidedKey
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ type StageBlockFromURLOptions struct {
 	CPKScopeInfo *blob.CPKScopeInfo
 
 	// Optional. Specifies the customer-provided encryption key to use to decrypt the source blob.
-	SourceCustomerProvidedKey *blob.CPKInfo
+	SourceCustomerProvidedKey *blob.SourceCPKInfo
 }
 
 func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions, *generated.SourceCPKInfo) {
@@ -199,7 +199,7 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 	}
 
 	return options, o.CPKInfo, o.CPKScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions,
-		blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+		o.SourceCustomerProvidedKey
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

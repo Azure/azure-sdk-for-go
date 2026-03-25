@@ -6,7 +6,6 @@ package blob
 import (
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
@@ -74,16 +73,4 @@ type URLParts = sas.URLParts
 // query parameters remain in the UnparsedParams field. This method overwrites all fields in the URLParts object.
 func ParseURL(u string) (URLParts, error) {
 	return sas.ParseURL(u)
-}
-
-// ToGeneratedSourceCPKInfo is a utility function to convert CPKInfo to generated SourceCPKInfo.
-func ToGeneratedSourceCPKInfo(o *CPKInfo) *generated.SourceCPKInfo {
-	if o == nil {
-		return nil
-	}
-	return &generated.SourceCPKInfo{
-		SourceEncryptionAlgorithm: o.EncryptionAlgorithm,
-		SourceEncryptionKey:       o.EncryptionKey,
-		SourceEncryptionKeySHA256: o.EncryptionKeySHA256,
-	}
 }

@@ -5099,7 +5099,11 @@ func (s *PageBlobRecordedTestsSuite) TestUploadPagesFromURLSourceCPK() {
 
 	// Test UploadPagesFromURL with Source CPK
 	_, err = destBlobClient.UploadPagesFromURL(context.Background(), srcURL, 0, 0, int64(contentSize), &pageblob.UploadPagesFromURLOptions{
-		SourceCustomerProvidedKey: &cpk,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
 	})
 	_require.NoError(err)
 }
@@ -5141,9 +5145,14 @@ func (s *PageBlobRecordedTestsSuite) TestUploadPagesFromURLSourceCPKFail() {
 	_, err = destBlobClient.Create(context.Background(), pageblob.PageBytes*10, nil)
 	_require.NoError(err)
 
+	invalidCPK := testcommon.TestInvalidCPKByValue
 	// Test UploadPagesFromURL with Source CPK
 	_, err = destBlobClient.UploadPagesFromURL(context.Background(), srcURL, 0, 0, int64(contentSize), &pageblob.UploadPagesFromURLOptions{
-		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
 	})
 	_require.Error(err)
 }

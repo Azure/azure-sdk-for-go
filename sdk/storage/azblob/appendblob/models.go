@@ -119,7 +119,7 @@ type AppendBlockFromURLOptions struct {
 	Range blob.HTTPRange
 
 	// Optional. Specifies the customer-provided encryption key to use to decrypt the source blob.
-	SourceCustomerProvidedKey *blob.CPKInfo
+	SourceCustomerProvidedKey *blob.SourceCPKInfo
 }
 
 func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendBlockFromURLOptions, *generated.CPKInfo,
@@ -141,7 +141,7 @@ func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendB
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions,
-		modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+		modifiedAccessConditions, o.SourceModifiedAccessConditions, o.SourceCustomerProvidedKey
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

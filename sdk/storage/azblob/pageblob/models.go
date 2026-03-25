@@ -126,7 +126,7 @@ type UploadPagesFromURLOptions struct {
 	AccessConditions *blob.AccessConditions
 
 	// Optional. Specifies the customer-provided encryption key to use to decrypt the source blob.
-	SourceCustomerProvidedKey *blob.CPKInfo
+	SourceCustomerProvidedKey *blob.SourceCPKInfo
 }
 
 func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPagesFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo,
@@ -146,7 +146,7 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions,
-		modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+		modifiedAccessConditions, o.SourceModifiedAccessConditions, o.SourceCustomerProvidedKey
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

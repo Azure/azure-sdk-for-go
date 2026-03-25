@@ -600,7 +600,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPK() {
 
 	// Test AppendBlockFromURL with Source CPK
 	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
-		SourceCustomerProvidedKey: cpk,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
 	})
 	_require.NoError(err)
 }
@@ -654,9 +658,14 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPKFail() {
 	_, err = destBlobClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
+	invalidCPK := testcommon.TestInvalidCPKByValue
 	// Test AppendBlockFromURL with Source CPK
 	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
-		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
 	})
 	_require.Error(err)
 }

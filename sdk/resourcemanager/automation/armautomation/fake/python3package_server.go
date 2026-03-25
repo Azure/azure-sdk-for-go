@@ -18,48 +18,48 @@ import (
 	"regexp"
 )
 
-// Python2PackageServer is a fake server for instances of the armautomation.Python2PackageClient type.
-type Python2PackageServer struct {
-	// CreateOrUpdate is the fake for method Python2PackageClient.CreateOrUpdate
+// Python3PackageServer is a fake server for instances of the armautomation.Python3PackageClient type.
+type Python3PackageServer struct {
+	// CreateOrUpdate is the fake for method Python3PackageClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters armautomation.PythonPackageCreateParameters, options *armautomation.Python2PackageClientCreateOrUpdateOptions) (resp azfake.Responder[armautomation.Python2PackageClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters armautomation.PythonPackageCreateParameters, options *armautomation.Python3PackageClientCreateOrUpdateOptions) (resp azfake.Responder[armautomation.Python3PackageClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method Python2PackageClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK
-	Delete func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, options *armautomation.Python2PackageClientDeleteOptions) (resp azfake.Responder[armautomation.Python2PackageClientDeleteResponse], errResp azfake.ErrorResponder)
+	// Delete is the fake for method Python3PackageClient.Delete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	Delete func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, options *armautomation.Python3PackageClientDeleteOptions) (resp azfake.Responder[armautomation.Python3PackageClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method Python2PackageClient.Get
+	// Get is the fake for method Python3PackageClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, options *armautomation.Python2PackageClientGetOptions) (resp azfake.Responder[armautomation.Python2PackageClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, options *armautomation.Python3PackageClientGetOptions) (resp azfake.Responder[armautomation.Python3PackageClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByAutomationAccountPager is the fake for method Python2PackageClient.NewListByAutomationAccountPager
+	// NewListByAutomationAccountPager is the fake for method Python3PackageClient.NewListByAutomationAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByAutomationAccountPager func(resourceGroupName string, automationAccountName string, options *armautomation.Python2PackageClientListByAutomationAccountOptions) (resp azfake.PagerResponder[armautomation.Python2PackageClientListByAutomationAccountResponse])
+	NewListByAutomationAccountPager func(resourceGroupName string, automationAccountName string, options *armautomation.Python3PackageClientListByAutomationAccountOptions) (resp azfake.PagerResponder[armautomation.Python3PackageClientListByAutomationAccountResponse])
 
-	// Update is the fake for method Python2PackageClient.Update
+	// Update is the fake for method Python3PackageClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters armautomation.PythonPackageUpdateParameters, options *armautomation.Python2PackageClientUpdateOptions) (resp azfake.Responder[armautomation.Python2PackageClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters armautomation.PythonPackageUpdateParameters, options *armautomation.Python3PackageClientUpdateOptions) (resp azfake.Responder[armautomation.Python3PackageClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
-// NewPython2PackageServerTransport creates a new instance of Python2PackageServerTransport with the provided implementation.
-// The returned Python2PackageServerTransport instance is connected to an instance of armautomation.Python2PackageClient via the
+// NewPython3PackageServerTransport creates a new instance of Python3PackageServerTransport with the provided implementation.
+// The returned Python3PackageServerTransport instance is connected to an instance of armautomation.Python3PackageClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewPython2PackageServerTransport(srv *Python2PackageServer) *Python2PackageServerTransport {
-	return &Python2PackageServerTransport{
+func NewPython3PackageServerTransport(srv *Python3PackageServer) *Python3PackageServerTransport {
+	return &Python3PackageServerTransport{
 		srv:                             srv,
-		newListByAutomationAccountPager: newTracker[azfake.PagerResponder[armautomation.Python2PackageClientListByAutomationAccountResponse]](),
+		newListByAutomationAccountPager: newTracker[azfake.PagerResponder[armautomation.Python3PackageClientListByAutomationAccountResponse]](),
 	}
 }
 
-// Python2PackageServerTransport connects instances of armautomation.Python2PackageClient to instances of Python2PackageServer.
-// Don't use this type directly, use NewPython2PackageServerTransport instead.
-type Python2PackageServerTransport struct {
-	srv                             *Python2PackageServer
-	newListByAutomationAccountPager *tracker[azfake.PagerResponder[armautomation.Python2PackageClientListByAutomationAccountResponse]]
+// Python3PackageServerTransport connects instances of armautomation.Python3PackageClient to instances of Python3PackageServer.
+// Don't use this type directly, use NewPython3PackageServerTransport instead.
+type Python3PackageServerTransport struct {
+	srv                             *Python3PackageServer
+	newListByAutomationAccountPager *tracker[azfake.PagerResponder[armautomation.Python3PackageClientListByAutomationAccountResponse]]
 }
 
-// Do implements the policy.Transporter interface for Python2PackageServerTransport.
-func (p *Python2PackageServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for Python3PackageServerTransport.
+func (p *Python3PackageServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -69,27 +69,27 @@ func (p *Python2PackageServerTransport) Do(req *http.Request) (*http.Response, e
 	return p.dispatchToMethodFake(req, method)
 }
 
-func (p *Python2PackageServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (p *Python3PackageServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if python2PackageServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = python2PackageServerTransportInterceptor.Do(req)
+		if python3PackageServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = python3PackageServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "Python2PackageClient.CreateOrUpdate":
+			case "Python3PackageClient.CreateOrUpdate":
 				res.resp, res.err = p.dispatchCreateOrUpdate(req)
-			case "Python2PackageClient.Delete":
+			case "Python3PackageClient.Delete":
 				res.resp, res.err = p.dispatchDelete(req)
-			case "Python2PackageClient.Get":
+			case "Python3PackageClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
-			case "Python2PackageClient.NewListByAutomationAccountPager":
+			case "Python3PackageClient.NewListByAutomationAccountPager":
 				res.resp, res.err = p.dispatchNewListByAutomationAccountPager(req)
-			case "Python2PackageClient.Update":
+			case "Python3PackageClient.Update":
 				res.resp, res.err = p.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -110,11 +110,11 @@ func (p *Python2PackageServerTransport) dispatchToMethodFake(req *http.Request, 
 	}
 }
 
-func (p *Python2PackageServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (p *Python3PackageServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python2Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python3Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -151,11 +151,11 @@ func (p *Python2PackageServerTransport) dispatchCreateOrUpdate(req *http.Request
 	return resp, nil
 }
 
-func (p *Python2PackageServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+func (p *Python3PackageServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python2Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python3Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -178,8 +178,8 @@ func (p *Python2PackageServerTransport) dispatchDelete(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
@@ -188,11 +188,11 @@ func (p *Python2PackageServerTransport) dispatchDelete(req *http.Request) (*http
 	return resp, nil
 }
 
-func (p *Python2PackageServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (p *Python3PackageServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python2Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python3Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -225,13 +225,13 @@ func (p *Python2PackageServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (p *Python2PackageServerTransport) dispatchNewListByAutomationAccountPager(req *http.Request) (*http.Response, error) {
+func (p *Python3PackageServerTransport) dispatchNewListByAutomationAccountPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListByAutomationAccountPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByAutomationAccountPager not implemented")}
 	}
 	newListByAutomationAccountPager := p.newListByAutomationAccountPager.get(req)
 	if newListByAutomationAccountPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python2Packages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python3Packages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -248,7 +248,7 @@ func (p *Python2PackageServerTransport) dispatchNewListByAutomationAccountPager(
 		resp := p.srv.NewListByAutomationAccountPager(resourceGroupNameParam, automationAccountNameParam, nil)
 		newListByAutomationAccountPager = &resp
 		p.newListByAutomationAccountPager.add(req, newListByAutomationAccountPager)
-		server.PagerResponderInjectNextLinks(newListByAutomationAccountPager, req, func(page *armautomation.Python2PackageClientListByAutomationAccountResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByAutomationAccountPager, req, func(page *armautomation.Python3PackageClientListByAutomationAccountResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -266,11 +266,11 @@ func (p *Python2PackageServerTransport) dispatchNewListByAutomationAccountPager(
 	return resp, nil
 }
 
-func (p *Python2PackageServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+func (p *Python3PackageServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python2Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/python3Packages/(?P<packageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -307,8 +307,8 @@ func (p *Python2PackageServerTransport) dispatchUpdate(req *http.Request) (*http
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to Python2PackageServerTransport
-var python2PackageServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to Python3PackageServerTransport
+var python3PackageServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

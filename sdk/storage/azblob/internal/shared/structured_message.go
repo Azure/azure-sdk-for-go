@@ -594,7 +594,7 @@ func (d *SMDecoder) Read(p []byte) (int, error) {
 				}
 			}
 			if err != nil && d.segRemain > 0 {
-				d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
+				d.setError(fmt.Errorf("segment %d: %s", d.segIndex, err))
 				return totalOut, d.err
 			}
 

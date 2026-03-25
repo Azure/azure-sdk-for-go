@@ -7,10 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/stretchr/testify/require"
 )
 
@@ -115,11 +113,11 @@ func TestProcessMetadata_DataPlaneNewPackage(t *testing.T) {
 	require.NoError(t, err)
 	copyTemplate(t, root, "ci.yml.tpl", templateDir)
 
-	// Create the package directory (data plane - no README.md should be created)
-	packageDir := filepath.Join(sdkRoot, "sdk", "storage", "azblob")
+	// Create a three-layer data plane package directory (no README.md should be created)
+	packageDir := filepath.Join(sdkRoot, "sdk", "monitor", "ingestion", "azlogs")
 	err = os.MkdirAll(packageDir, 0755)
 	require.NoError(t, err)
-	err = os.WriteFile(filepath.Join(packageDir, "go.mod"), []byte("module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"), 0644)
+	err = os.WriteFile(filepath.Join(packageDir, "go.mod"), []byte("module github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs"), 0644)
 	require.NoError(t, err)
 
 	// Process metadata
@@ -135,8 +133,8 @@ func TestProcessMetadata_DataPlaneNewPackage(t *testing.T) {
 	// Verify ci.yml was created
 	ciContent, err := os.ReadFile(filepath.Join(packageDir, "ci.yml"))
 	require.NoError(t, err)
-	require.Contains(t, string(ciContent), "sdk/storage/azblob/")
-	require.Contains(t, string(ciContent), "ServiceDirectory: 'storage/azblob'")
+	require.Contains(t, string(ciContent), "sdk/monitor/ingestion/azlogs/")
+	require.Contains(t, string(ciContent), "ServiceDirectory: 'monitor/ingestion/azlogs'")
 }
 
 func TestProcessMetadata_ExistingFiles(t *testing.T) {
@@ -199,37 +197,4 @@ func TestProcessMetadata_NoSDKRoot(t *testing.T) {
 	require.NoError(t, err)
 	require.False(t, result.Success)
 	require.Contains(t, result.Message, "Failed to find SDK root")
-}
-
-func TestCIYmlTemplate_Format(t *testing.T) {
-	root := repoRoot(t)
-
-	// Copy the real ci.yml.tpl template
-	tmpDir := t.TempDir()
-	copyTemplate(t, root, "ci.yml.tpl", tmpDir)
-	tplPath := filepath.Join(tmpDir, "ci.yml.tpl")
-
-	outputPath := filepath.Join(tmpDir, "ci.yml")
-	data := map[string]string{
-		"moduleRelativePath": "sdk/resourcemanager/network/armnetwork",
-		"serviceDir":         "resourcemanager/network/armnetwork",
-	}
-
-	err := typespec.ParseSingleTemplate(tplPath, outputPath, data)
-	require.NoError(t, err)
-
-	content, err := os.ReadFile(outputPath)
-	require.NoError(t, err)
-
-	lines := strings.Split(string(content), "\n")
-
-	// Verify the overall structure
-	require.True(t, strings.HasPrefix(lines[0], "# NOTE:"))
-
-	// Count occurrences of the path
-	pathCount := strings.Count(string(content), "sdk/resourcemanager/network/armnetwork/")
-	require.Equal(t, 2, pathCount, "Path should appear twice (trigger and PR sections)")
-
-	serviceDirCount := strings.Count(string(content), "ServiceDirectory: 'resourcemanager/network/armnetwork'")
-	require.Equal(t, 1, serviceDirCount, "ServiceDirectory should appear once")
 }

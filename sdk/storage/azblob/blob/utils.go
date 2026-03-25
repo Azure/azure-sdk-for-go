@@ -76,6 +76,7 @@ func ParseURL(u string) (URLParts, error) {
 	return sas.ParseURL(u)
 }
 
+// ToGeneratedSourceCPKInfo is a utility function to convert CPKInfo to generated SourceCPKInfo.
 func ToGeneratedSourceCPKInfo(o *CPKInfo) *generated.SourceCPKInfo {
 	if o == nil {
 		return nil

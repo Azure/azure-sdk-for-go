@@ -145,7 +145,8 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions,
+		modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

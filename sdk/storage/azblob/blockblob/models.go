@@ -127,7 +127,8 @@ func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFr
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions,
+		o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -197,7 +198,8 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 		o.SourceContentValidation.Apply(options)
 	}
 
-	return options, o.CPKInfo, o.CPKScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+	return options, o.CPKInfo, o.CPKScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions,
+		blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

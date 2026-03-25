@@ -140,7 +140,8 @@ func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendB
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
+	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions,
+		modifiedAccessConditions, o.SourceModifiedAccessConditions, blob.ToGeneratedSourceCPKInfo(o.SourceCustomerProvidedKey)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

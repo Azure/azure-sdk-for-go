@@ -5,7 +5,7 @@
 ### Bugs Fixed
 
 - Fixed wrong version calculation logic for previous version with breaking changes.
-- Fixed `build.go` deletion to only apply to ARM packages during Swagger to TypeSpec migration, preserving it for data plane packages that use it for customization.
+- Fixed `build.go` deletion to only apply to ARM packages, preserving it for data plane packages that use it for customization.
 
 ## 0.4.7 (2026-03-03)
 

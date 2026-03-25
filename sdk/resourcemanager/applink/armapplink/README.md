@@ -1,8 +1,8 @@
-# Azure Applink Module for Go
+# Azure AppNetwork Module for Go
 
-The `armapplink` module provides operations for working with Azure Applink.
+The `armappnetwork` module provides operations for working with Azure AppNetwork.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/applink/armapplink)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/appnetwork/armappnetwork)
 
 # Getting started
 
@@ -15,15 +15,15 @@ The `armapplink` module provides operations for working with Azure Applink.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Applink module:
+Install the Azure AppNetwork module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applink/armapplink
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appnetwork/armappnetwork
 ```
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Applink.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure AppNetwork.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,10 +33,10 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Applink module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure AppNetwork module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
-clientFactory, err := armapplink.NewClientFactory(<subscription ID>, cred, nil)
+clientFactory, err := armappnetwork.NewClientFactory(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -47,7 +47,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-clientFactory, err := armapplink.NewClientFactory(<subscription ID>, cred, &options)
+clientFactory, err := armappnetwork.NewClientFactory(<subscription ID>, cred, &options)
 ```
 
 ## Clients
@@ -55,7 +55,7 @@ clientFactory, err := armapplink.NewClientFactory(<subscription ID>, cred, &opti
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewAppLinksClient()
+client := clientFactory.NewAppNetworksClient()
 ```
 
 ## Fakes
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Applink` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `AppNetwork` label.
 
 # Contributing
 

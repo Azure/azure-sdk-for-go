@@ -278,6 +278,41 @@ Locate the model property and use `@@alternateType` to change the property type 
 @@alternateType(RegistryNameCheckRequest.type, "Microsoft.ContainerRegistry/registries", "go");
 ```
 
+### 8. New Enum Type Operation Parameter Added
+
+**Changelog Pattern**:
+
+An additional enum parameter is added to an operation, along with a newly added enum type:
+
+```md
+- Function `*VipSwapClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions)` to `(ctx context.Context, groupName string, resourceName string, singletonResource SingletonResource, parameters SwapResource, options *VipSwapClientBeginCreateOptions)`
+- New enum type `SingletonResource` with values `SingletonResourceSwap`
+```
+
+**Reason**: In Swagger, single-value fixed enum parameters are treated as constants and automatically handled when composing the request payload, so they do not appear as explicit parameters. In TypeSpec, these become explicit enum parameters. We need to use client customization to restore the original behavior.
+
+**Spec Pattern**:
+
+Find the operation and enum using the name from the changelog (pattern: `New enum type '<enum name>'`):
+
+```tsp
+enum SingletonResource {
+  Swap: "swap",
+}
+
+interface VipSwap {
+  op create(singletonResource: SingletonResource, ...): ...;
+}
+```
+
+**Resolution**:
+
+Locate the operation parameter and use `@@alternateType` to change the parameter type back to the constant string:
+
+```tsp
+@@alternateType(VipSwap.create::parameters.singletonResource, "swap", "go");
+```
+
 ## Breaking Changes That Can Be Accepted
 
 All these breaking changes will be released in a new major version, except the last one about unreferenced types.

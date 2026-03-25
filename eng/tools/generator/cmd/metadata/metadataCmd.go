@@ -338,7 +338,6 @@ func createReadme(outputPath, templateDir string, data map[string]string) error 
 	}
 
 	// Parse and execute the template
-	// Use a custom delimiters-safe approach since the template contains {{NewClientName}} which is literal
 	tpl, err := template.New("README.md").Parse(string(templateContent))
 	if err != nil {
 		return fmt.Errorf("failed to parse README.md template: %v", err)

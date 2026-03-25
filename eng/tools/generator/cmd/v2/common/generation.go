@@ -703,9 +703,9 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 		}
 		generationType = "MigrateToTypeSpec"
 	}
-	// only delete build.go for ARM packages when migrating from Swagger to TypeSpec,
+	// only delete build.go for ARM packages
 	// data plane packages may use build.go for customization
-	if generationType == "MigrateToTypeSpec" && strings.HasPrefix(t.PackageRelativePath, "sdk/resourcemanager/") {
+	if strings.HasPrefix(t.PackageRelativePath, "sdk/resourcemanager/") {
 		buildGoPath := filepath.Join(t.PackagePath, "build.go")
 		if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
 			log.Println("Remove build.go...")

@@ -625,12 +625,6 @@ type SignedIdentifier struct {
 	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
 }
 
-// SignedIdentifiers - Represents an array of signed identifiers
-type SignedIdentifiers struct {
-	// REQUIRED; The array of signed identifiers.
-	Items []*SignedIdentifier `xml:"items"`
-}
-
 // StaticWebsite - The properties that enable an account to host a static website
 type StaticWebsite struct {
 	// REQUIRED; Indicates whether this account is hosting a static website

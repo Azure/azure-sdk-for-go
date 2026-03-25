@@ -282,6 +282,18 @@ func (b BlockLookupList) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type CORSRule.
+func (c CORSRule) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "CorsRule"
+	type alias CORSRule
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&c),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type ContainerItem.
 func (c ContainerItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "Container"
@@ -459,21 +471,6 @@ func (s SignedIdentifier) MarshalXML(enc *xml.Encoder, start xml.StartElement) e
 		*alias
 	}{
 		alias: (*alias)(&s),
-	}
-	return enc.EncodeElement(aux, start)
-}
-
-// MarshalXML implements the xml.Marshaller interface for type SignedIdentifiers.
-func (s SignedIdentifiers) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias SignedIdentifiers
-	aux := &struct {
-		*alias
-		Items *[]*SignedIdentifier `xml:"items"`
-	}{
-		alias: (*alias)(&s),
-	}
-	if s.Items != nil {
-		aux.Items = &s.Items
 	}
 	return enc.EncodeElement(aux, start)
 }

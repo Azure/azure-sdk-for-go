@@ -1512,9 +1512,6 @@ type ContainerClientFilterBlobsResponse struct {
 
 // ContainerClientGetAccessPolicyResponse contains the response from method ContainerClient.GetAccessPolicy.
 type ContainerClientGetAccessPolicyResponse struct {
-	// Represents an array of signed identifiers
-	SignedIdentifiers
-
 	// The public access setting for the container.
 	BlobPublicAccess *PublicAccessType
 
@@ -1534,7 +1531,8 @@ type ContainerClientGetAccessPolicyResponse struct {
 	LastModified *time.Time
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	RequestID *string
+	RequestID         *string
+	SignedIdentifiers []*SignedIdentifier `xml:"SignedIdentifier"`
 
 	// Specifies the version of the operation to use for this request.
 	Version *string

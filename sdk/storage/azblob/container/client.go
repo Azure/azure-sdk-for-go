@@ -226,7 +226,7 @@ func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions)
 			}
 		}
 	}
-	return c.generated().SetAccessPolicy(ctx, generated.SignedIdentifiers{Items: o.ContainerACL}, o.format())
+	return c.generated().SetAccessPolicy(ctx, o.ContainerACL, o.format())
 }
 
 // GetAccountInfo provides account level information

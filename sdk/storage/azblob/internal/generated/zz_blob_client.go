@@ -1962,6 +1962,9 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
+	if val := resp.Header.Get("x-ms-smart-access-tier"); val != "" {
+		result.SmartAccessTier = &val
+	}
 	if val := resp.Header.Get("x-ms-tag-count"); val != "" {
 		tagCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {

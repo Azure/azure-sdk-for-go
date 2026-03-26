@@ -1,0 +1,4 @@
+directory: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/ContainerInstance
+commit: aa7aa2c07a5e77d1691c84d15dafb0b8aa09ef9a
+repo: i-specs
+additionalDirectories: 

@@ -5,10 +5,44 @@
 
 package armcontainerinstance
 
+// AzureFileShareAccessTier - Access tier for specific share. GpV2 account can choose between TransactionOptimized (default),
+// Hot, and Cool. FileStorage account can choose Premium. Learn more at:
+// https://learn.microsoft.com/en-us/rest/api/storagerp/file-shares/create?tabs=HTTP#shareaccesstier
+type AzureFileShareAccessTier string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance"
-	moduleVersion = "v2.5.0-beta.1"
+	AzureFileShareAccessTierCool                 AzureFileShareAccessTier = "Cool"
+	AzureFileShareAccessTierHot                  AzureFileShareAccessTier = "Hot"
+	AzureFileShareAccessTierPremium              AzureFileShareAccessTier = "Premium"
+	AzureFileShareAccessTierTransactionOptimized AzureFileShareAccessTier = "TransactionOptimized"
 )
+
+// PossibleAzureFileShareAccessTierValues returns the possible values for the AzureFileShareAccessTier const type.
+func PossibleAzureFileShareAccessTierValues() []AzureFileShareAccessTier {
+	return []AzureFileShareAccessTier{
+		AzureFileShareAccessTierCool,
+		AzureFileShareAccessTierHot,
+		AzureFileShareAccessTierPremium,
+		AzureFileShareAccessTierTransactionOptimized,
+	}
+}
+
+// AzureFileShareAccessType - Specifies how Container Groups can access the Azure file share i.e. all CG will share same Azure
+// file share or going to have exclusive file share.
+type AzureFileShareAccessType string
+
+const (
+	AzureFileShareAccessTypeExclusive AzureFileShareAccessType = "Exclusive"
+	AzureFileShareAccessTypeShared    AzureFileShareAccessType = "Shared"
+)
+
+// PossibleAzureFileShareAccessTypeValues returns the possible values for the AzureFileShareAccessType const type.
+func PossibleAzureFileShareAccessTypeValues() []AzureFileShareAccessType {
+	return []AzureFileShareAccessType{
+		AzureFileShareAccessTypeExclusive,
+		AzureFileShareAccessTypeShared,
+	}
+}
 
 // ContainerGroupIPAddressType - Specifies if the IP is exposed to the public internet or private VNET.
 type ContainerGroupIPAddressType string
@@ -58,6 +92,44 @@ func PossibleContainerGroupPriorityValues() []ContainerGroupPriority {
 	}
 }
 
+// ContainerGroupProvisioningState - The provisioning state of the container group. This only appears in the response.
+type ContainerGroupProvisioningState string
+
+const (
+	ContainerGroupProvisioningStateAccepted       ContainerGroupProvisioningState = "Accepted"
+	ContainerGroupProvisioningStateCanceled       ContainerGroupProvisioningState = "Canceled"
+	ContainerGroupProvisioningStateCreating       ContainerGroupProvisioningState = "Creating"
+	ContainerGroupProvisioningStateDeleting       ContainerGroupProvisioningState = "Deleting"
+	ContainerGroupProvisioningStateFailed         ContainerGroupProvisioningState = "Failed"
+	ContainerGroupProvisioningStateNotAccessible  ContainerGroupProvisioningState = "NotAccessible"
+	ContainerGroupProvisioningStateNotSpecified   ContainerGroupProvisioningState = "NotSpecified"
+	ContainerGroupProvisioningStatePending        ContainerGroupProvisioningState = "Pending"
+	ContainerGroupProvisioningStatePreProvisioned ContainerGroupProvisioningState = "PreProvisioned"
+	ContainerGroupProvisioningStateRepairing      ContainerGroupProvisioningState = "Repairing"
+	ContainerGroupProvisioningStateSucceeded      ContainerGroupProvisioningState = "Succeeded"
+	ContainerGroupProvisioningStateUnhealthy      ContainerGroupProvisioningState = "Unhealthy"
+	ContainerGroupProvisioningStateUpdating       ContainerGroupProvisioningState = "Updating"
+)
+
+// PossibleContainerGroupProvisioningStateValues returns the possible values for the ContainerGroupProvisioningState const type.
+func PossibleContainerGroupProvisioningStateValues() []ContainerGroupProvisioningState {
+	return []ContainerGroupProvisioningState{
+		ContainerGroupProvisioningStateAccepted,
+		ContainerGroupProvisioningStateCanceled,
+		ContainerGroupProvisioningStateCreating,
+		ContainerGroupProvisioningStateDeleting,
+		ContainerGroupProvisioningStateFailed,
+		ContainerGroupProvisioningStateNotAccessible,
+		ContainerGroupProvisioningStateNotSpecified,
+		ContainerGroupProvisioningStatePending,
+		ContainerGroupProvisioningStatePreProvisioned,
+		ContainerGroupProvisioningStateRepairing,
+		ContainerGroupProvisioningStateSucceeded,
+		ContainerGroupProvisioningStateUnhealthy,
+		ContainerGroupProvisioningStateUpdating,
+	}
+}
+
 // ContainerGroupRestartPolicy - Restart policy for all containers within the container group.
 // * Always Always restart
 // * OnFailure Restart on failure
@@ -85,6 +157,7 @@ type ContainerGroupSKU string
 const (
 	ContainerGroupSKUConfidential ContainerGroupSKU = "Confidential"
 	ContainerGroupSKUDedicated    ContainerGroupSKU = "Dedicated"
+	ContainerGroupSKUNotSpecified ContainerGroupSKU = "NotSpecified"
 	ContainerGroupSKUStandard     ContainerGroupSKU = "Standard"
 )
 
@@ -93,6 +166,7 @@ func PossibleContainerGroupSKUValues() []ContainerGroupSKU {
 	return []ContainerGroupSKU{
 		ContainerGroupSKUConfidential,
 		ContainerGroupSKUDedicated,
+		ContainerGroupSKUNotSpecified,
 		ContainerGroupSKUStandard,
 	}
 }
@@ -126,6 +200,26 @@ func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
 	return []ContainerNetworkProtocol{
 		ContainerNetworkProtocolTCP,
 		ContainerNetworkProtocolUDP,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
@@ -175,6 +269,24 @@ func PossibleGpuSKUValues() []GpuSKU {
 	}
 }
 
+// IdentityAccessLevel - The access level of an identity.
+type IdentityAccessLevel string
+
+const (
+	IdentityAccessLevelAll    IdentityAccessLevel = "All"
+	IdentityAccessLevelSystem IdentityAccessLevel = "System"
+	IdentityAccessLevelUser   IdentityAccessLevel = "User"
+)
+
+// PossibleIdentityAccessLevelValues returns the possible values for the IdentityAccessLevel const type.
+func PossibleIdentityAccessLevelValues() []IdentityAccessLevel {
+	return []IdentityAccessLevel{
+		IdentityAccessLevelAll,
+		IdentityAccessLevelSystem,
+		IdentityAccessLevelUser,
+	}
+}
+
 // LogAnalyticsLogType - The log type to be used.
 type LogAnalyticsLogType string
 
@@ -188,6 +300,47 @@ func PossibleLogAnalyticsLogTypeValues() []LogAnalyticsLogType {
 	return []LogAnalyticsLogType{
 		LogAnalyticsLogTypeContainerInsights,
 		LogAnalyticsLogTypeContainerInstanceLogs,
+	}
+}
+
+// NGroupProvisioningState - The provisioning state, which only appears in the response.
+type NGroupProvisioningState string
+
+const (
+	NGroupProvisioningStateCanceled  NGroupProvisioningState = "Canceled"
+	NGroupProvisioningStateCreating  NGroupProvisioningState = "Creating"
+	NGroupProvisioningStateDeleting  NGroupProvisioningState = "Deleting"
+	NGroupProvisioningStateFailed    NGroupProvisioningState = "Failed"
+	NGroupProvisioningStateMigrating NGroupProvisioningState = "Migrating"
+	NGroupProvisioningStateSucceeded NGroupProvisioningState = "Succeeded"
+	NGroupProvisioningStateUpdating  NGroupProvisioningState = "Updating"
+)
+
+// PossibleNGroupProvisioningStateValues returns the possible values for the NGroupProvisioningState const type.
+func PossibleNGroupProvisioningStateValues() []NGroupProvisioningState {
+	return []NGroupProvisioningState{
+		NGroupProvisioningStateCanceled,
+		NGroupProvisioningStateCreating,
+		NGroupProvisioningStateDeleting,
+		NGroupProvisioningStateFailed,
+		NGroupProvisioningStateMigrating,
+		NGroupProvisioningStateSucceeded,
+		NGroupProvisioningStateUpdating,
+	}
+}
+
+type NGroupUpdateMode string
+
+const (
+	NGroupUpdateModeManual  NGroupUpdateMode = "Manual"
+	NGroupUpdateModeRolling NGroupUpdateMode = "Rolling"
+)
+
+// PossibleNGroupUpdateModeValues returns the possible values for the NGroupUpdateMode const type.
+func PossibleNGroupUpdateModeValues() []NGroupUpdateMode {
+	return []NGroupUpdateMode{
+		NGroupUpdateModeManual,
+		NGroupUpdateModeRolling,
 	}
 }
 

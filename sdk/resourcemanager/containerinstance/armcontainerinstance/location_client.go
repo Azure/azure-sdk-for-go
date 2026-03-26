@@ -27,7 +27,7 @@ type LocationClient struct {
 // NewLocationClient creates a new instance of LocationClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewLocationClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListCachedImagesPager - Get the list of cached images on specific OS type for a subscription in a region.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.NewListCachedImagesPager
 //     method.
@@ -70,7 +70,7 @@ func (client *LocationClient) NewListCachedImagesPager(location string, options 
 }
 
 // listCachedImagesCreateRequest creates the ListCachedImages request.
-func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context, location string, options *LocationClientListCachedImagesOptions) (*policy.Request, error) {
+func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context, location string, _ *LocationClientListCachedImagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -85,7 +85,7 @@ func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -102,7 +102,7 @@ func (client *LocationClient) listCachedImagesHandleResponse(resp *http.Response
 
 // NewListCapabilitiesPager - Get the list of CPU/memory/GPU capabilities of a region.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.NewListCapabilitiesPager
 //     method.
@@ -130,7 +130,7 @@ func (client *LocationClient) NewListCapabilitiesPager(location string, options 
 }
 
 // listCapabilitiesCreateRequest creates the ListCapabilities request.
-func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context, location string, options *LocationClientListCapabilitiesOptions) (*policy.Request, error) {
+func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context, location string, _ *LocationClientListCapabilitiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -145,7 +145,7 @@ func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -162,7 +162,7 @@ func (client *LocationClient) listCapabilitiesHandleResponse(resp *http.Response
 
 // NewListUsagePager - Get the usage for a subscription
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - LocationClientListUsageOptions contains the optional parameters for the LocationClient.NewListUsagePager method.
 func (client *LocationClient) NewListUsagePager(location string, options *LocationClientListUsageOptions) *runtime.Pager[LocationClientListUsageResponse] {
@@ -190,7 +190,7 @@ func (client *LocationClient) NewListUsagePager(location string, options *Locati
 }
 
 // listUsageCreateRequest creates the ListUsage request.
-func (client *LocationClient) listUsageCreateRequest(ctx context.Context, location string, options *LocationClientListUsageOptions) (*policy.Request, error) {
+func (client *LocationClient) listUsageCreateRequest(ctx context.Context, location string, _ *LocationClientListUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -205,7 +205,7 @@ func (client *LocationClient) listUsageCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

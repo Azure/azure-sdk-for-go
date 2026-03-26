@@ -5,51 +5,57 @@
 
 package armcontainerinstance
 
-// ContainerGroupProfileClientGetByRevisionNumberResponse contains the response from method ContainerGroupProfileClient.GetByRevisionNumber.
-type ContainerGroupProfileClientGetByRevisionNumberResponse struct {
-	// A container group profile.
+// CGProfileClientCreateOrUpdateResponse contains the response from method CGProfileClient.CreateOrUpdate.
+type CGProfileClientCreateOrUpdateResponse struct {
+	// A container group profile object
 	ContainerGroupProfile
+
+	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
+	XMSCorrelationRequestID *string
 }
 
-// ContainerGroupProfileClientListAllRevisionsResponse contains the response from method ContainerGroupProfileClient.NewListAllRevisionsPager.
-type ContainerGroupProfileClientListAllRevisionsResponse struct {
-	// The container group profile list response that contains the container group profile properties.
-	ContainerGroupProfileListResult
-}
-
-// ContainerGroupProfilesClientCreateOrUpdateResponse contains the response from method ContainerGroupProfilesClient.CreateOrUpdate.
-type ContainerGroupProfilesClientCreateOrUpdateResponse struct {
-	// A container group profile.
-	ContainerGroupProfile
-}
-
-// ContainerGroupProfilesClientDeleteResponse contains the response from method ContainerGroupProfilesClient.Delete.
-type ContainerGroupProfilesClientDeleteResponse struct {
+// CGProfileClientDeleteResponse contains the response from method CGProfileClient.Delete.
+type CGProfileClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ContainerGroupProfilesClientGetResponse contains the response from method ContainerGroupProfilesClient.Get.
-type ContainerGroupProfilesClientGetResponse struct {
-	// A container group profile.
+// CGProfileClientGetByRevisionNumberResponse contains the response from method CGProfileClient.GetByRevisionNumber.
+type CGProfileClientGetByRevisionNumberResponse struct {
+	// A container group profile object
 	ContainerGroupProfile
 }
 
-// ContainerGroupProfilesClientListByResourceGroupResponse contains the response from method ContainerGroupProfilesClient.NewListByResourceGroupPager.
-type ContainerGroupProfilesClientListByResourceGroupResponse struct {
-	// The container group profile list response that contains the container group profile properties.
-	ContainerGroupProfileListResult
-}
-
-// ContainerGroupProfilesClientListResponse contains the response from method ContainerGroupProfilesClient.NewListPager.
-type ContainerGroupProfilesClientListResponse struct {
-	// The container group profile list response that contains the container group profile properties.
-	ContainerGroupProfileListResult
-}
-
-// ContainerGroupProfilesClientPatchResponse contains the response from method ContainerGroupProfilesClient.Patch.
-type ContainerGroupProfilesClientPatchResponse struct {
-	// A container group profile.
+// CGProfileClientGetResponse contains the response from method CGProfileClient.Get.
+type CGProfileClientGetResponse struct {
+	// A container group profile object
 	ContainerGroupProfile
+}
+
+// CGProfileClientListAllRevisionsResponse contains the response from method CGProfileClient.NewListAllRevisionsPager.
+type CGProfileClientListAllRevisionsResponse struct {
+	// The container group profile list response
+	ContainerGroupProfileListResult
+}
+
+// CGProfileClientUpdateResponse contains the response from method CGProfileClient.Update.
+type CGProfileClientUpdateResponse struct {
+	// A container group profile object
+	ContainerGroupProfile
+
+	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
+	XMSCorrelationRequestID *string
+}
+
+// CGProfilesClientListByResourceGroupResponse contains the response from method CGProfilesClient.NewListByResourceGroupPager.
+type CGProfilesClientListByResourceGroupResponse struct {
+	// The container group profile list response
+	ContainerGroupProfileListResult
+}
+
+// CGProfilesClientListBySubscriptionResponse contains the response from method CGProfilesClient.NewListBySubscriptionPager.
+type CGProfilesClientListBySubscriptionResponse struct {
+	// The container group profile list response
+	ContainerGroupProfileListResult
 }
 
 // ContainerGroupsClientCreateOrUpdateResponse contains the response from method ContainerGroupsClient.BeginCreateOrUpdate.
@@ -143,6 +149,56 @@ type LocationClientListCapabilitiesResponse struct {
 type LocationClientListUsageResponse struct {
 	// The response containing the usage data
 	UsageListResult
+}
+
+// NGroupsClientCreateOrUpdateResponse contains the response from method NGroupsClient.BeginCreateOrUpdate.
+type NGroupsClientCreateOrUpdateResponse struct {
+	// Describes the NGroups resource.
+	NGroup
+}
+
+// NGroupsClientDeleteResponse contains the response from method NGroupsClient.BeginDelete.
+type NGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NGroupsClientGetResponse contains the response from method NGroupsClient.Get.
+type NGroupsClientGetResponse struct {
+	// Describes the NGroups resource.
+	NGroup
+}
+
+// NGroupsClientListByResourceGroupResponse contains the response from method NGroupsClient.NewListByResourceGroupPager.
+type NGroupsClientListByResourceGroupResponse struct {
+	// The NGroups list response that contains the NGroups properties.
+	NGroupsListResult
+}
+
+// NGroupsClientListResponse contains the response from method NGroupsClient.NewListPager.
+type NGroupsClientListResponse struct {
+	// The NGroups list response that contains the NGroups properties.
+	NGroupsListResult
+}
+
+// NGroupsClientRestartResponse contains the response from method NGroupsClient.BeginRestart.
+type NGroupsClientRestartResponse struct {
+	// placeholder for future response values
+}
+
+// NGroupsClientStartResponse contains the response from method NGroupsClient.BeginStart.
+type NGroupsClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// NGroupsClientStopResponse contains the response from method NGroupsClient.Stop.
+type NGroupsClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// NGroupsClientUpdateResponse contains the response from method NGroupsClient.BeginUpdate.
+type NGroupsClientUpdateResponse struct {
+	// Describes the NGroups resource.
+	NGroup
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

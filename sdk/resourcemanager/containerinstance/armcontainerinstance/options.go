@@ -5,74 +5,72 @@
 
 package armcontainerinstance
 
-// ContainerGroupProfileClientGetByRevisionNumberOptions contains the optional parameters for the ContainerGroupProfileClient.GetByRevisionNumber
+// CGProfileClientCreateOrUpdateOptions contains the optional parameters for the CGProfileClient.CreateOrUpdate method.
+type CGProfileClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CGProfileClientDeleteOptions contains the optional parameters for the CGProfileClient.Delete method.
+type CGProfileClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CGProfileClientGetByRevisionNumberOptions contains the optional parameters for the CGProfileClient.GetByRevisionNumber
 // method.
-type ContainerGroupProfileClientGetByRevisionNumberOptions struct {
+type CGProfileClientGetByRevisionNumberOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupProfileClientListAllRevisionsOptions contains the optional parameters for the ContainerGroupProfileClient.NewListAllRevisionsPager
+// CGProfileClientGetOptions contains the optional parameters for the CGProfileClient.Get method.
+type CGProfileClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CGProfileClientListAllRevisionsOptions contains the optional parameters for the CGProfileClient.NewListAllRevisionsPager
 // method.
-type ContainerGroupProfileClientListAllRevisionsOptions struct {
+type CGProfileClientListAllRevisionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupProfilesClientCreateOrUpdateOptions contains the optional parameters for the ContainerGroupProfilesClient.CreateOrUpdate
+// CGProfileClientUpdateOptions contains the optional parameters for the CGProfileClient.Update method.
+type CGProfileClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CGProfilesClientListByResourceGroupOptions contains the optional parameters for the CGProfilesClient.NewListByResourceGroupPager
 // method.
-type ContainerGroupProfilesClientCreateOrUpdateOptions struct {
+type CGProfilesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupProfilesClientDeleteOptions contains the optional parameters for the ContainerGroupProfilesClient.Delete
+// CGProfilesClientListBySubscriptionOptions contains the optional parameters for the CGProfilesClient.NewListBySubscriptionPager
 // method.
-type ContainerGroupProfilesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupProfilesClientGetOptions contains the optional parameters for the ContainerGroupProfilesClient.Get method.
-type ContainerGroupProfilesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupProfilesClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupProfilesClient.NewListByResourceGroupPager
-// method.
-type ContainerGroupProfilesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupProfilesClientListOptions contains the optional parameters for the ContainerGroupProfilesClient.NewListPager
-// method.
-type ContainerGroupProfilesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupProfilesClientPatchOptions contains the optional parameters for the ContainerGroupProfilesClient.Patch method.
-type ContainerGroupProfilesClientPatchOptions struct {
+type CGProfilesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ContainerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroupsClient.BeginCreateOrUpdate
 // method.
 type ContainerGroupsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ContainerGroupsClientBeginDeleteOptions contains the optional parameters for the ContainerGroupsClient.BeginDelete method.
 type ContainerGroupsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart method.
 type ContainerGroupsClientBeginRestartOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart method.
 type ContainerGroupsClientBeginStartOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -145,6 +143,57 @@ type LocationClientListUsageOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the NGroupsClient.BeginCreateOrUpdate method.
+type NGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NGroupsClientBeginDeleteOptions contains the optional parameters for the NGroupsClient.BeginDelete method.
+type NGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NGroupsClientBeginRestartOptions contains the optional parameters for the NGroupsClient.BeginRestart method.
+type NGroupsClientBeginRestartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NGroupsClientBeginStartOptions contains the optional parameters for the NGroupsClient.BeginStart method.
+type NGroupsClientBeginStartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NGroupsClientBeginUpdateOptions contains the optional parameters for the NGroupsClient.BeginUpdate method.
+type NGroupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NGroupsClientGetOptions contains the optional parameters for the NGroupsClient.Get method.
+type NGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NGroupsClientListByResourceGroupOptions contains the optional parameters for the NGroupsClient.NewListByResourceGroupPager
+// method.
+type NGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NGroupsClientListOptions contains the optional parameters for the NGroupsClient.NewListPager method.
+type NGroupsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NGroupsClientStopOptions contains the optional parameters for the NGroupsClient.Stop method.
+type NGroupsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -153,6 +202,6 @@ type OperationsClientListOptions struct {
 // SubnetServiceAssociationLinkClientBeginDeleteOptions contains the optional parameters for the SubnetServiceAssociationLinkClient.BeginDelete
 // method.
 type SubnetServiceAssociationLinkClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

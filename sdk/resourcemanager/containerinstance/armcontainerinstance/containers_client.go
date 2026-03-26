@@ -28,7 +28,7 @@ type ContainersClient struct {
 // NewContainersClient creates a new instance of ContainersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewContainersClient(subscriptionID string, credential azcore.TokenCredentia
 // Attach - Attach to the output stream of a specific container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
@@ -72,7 +72,7 @@ func (client *ContainersClient) Attach(ctx context.Context, resourceGroupName st
 }
 
 // attachCreateRequest creates the Attach request.
-func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersClientAttachOptions) (*policy.Request, error) {
+func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, _ *ContainersClientAttachOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/attach"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +113,7 @@ func (client *ContainersClient) attachHandleResponse(resp *http.Response) (Conta
 // ExecuteCommand - Executes a command for a specific container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
@@ -143,7 +143,7 @@ func (client *ContainersClient) ExecuteCommand(ctx context.Context, resourceGrou
 }
 
 // executeCommandCreateRequest creates the ExecuteCommand request.
-func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest, options *ContainersClientExecuteCommandOptions) (*policy.Request, error) {
+func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest, _ *ContainersClientExecuteCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/exec"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -166,7 +166,7 @@ func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, containerExecRequest); err != nil {
@@ -187,7 +187,7 @@ func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response
 // ListLogs - Get the logs for a specified container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
@@ -238,7 +238,7 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	if options != nil && options.Tail != nil {
 		reqQP.Set("tail", strconv.FormatInt(int64(*options.Tail), 10))
 	}

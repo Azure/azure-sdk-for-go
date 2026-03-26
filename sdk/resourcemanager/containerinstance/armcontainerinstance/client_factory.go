@@ -33,17 +33,17 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewContainerGroupProfileClient creates a new instance of ContainerGroupProfileClient.
-func (c *ClientFactory) NewContainerGroupProfileClient() *ContainerGroupProfileClient {
-	return &ContainerGroupProfileClient{
+// NewCGProfileClient creates a new instance of CGProfileClient.
+func (c *ClientFactory) NewCGProfileClient() *CGProfileClient {
+	return &CGProfileClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewContainerGroupProfilesClient creates a new instance of ContainerGroupProfilesClient.
-func (c *ClientFactory) NewContainerGroupProfilesClient() *ContainerGroupProfilesClient {
-	return &ContainerGroupProfilesClient{
+// NewCGProfilesClient creates a new instance of CGProfilesClient.
+func (c *ClientFactory) NewCGProfilesClient() *CGProfilesClient {
+	return &CGProfilesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -68,6 +68,14 @@ func (c *ClientFactory) NewContainersClient() *ContainersClient {
 // NewLocationClient creates a new instance of LocationClient.
 func (c *ClientFactory) NewLocationClient() *LocationClient {
 	return &LocationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNGroupsClient creates a new instance of NGroupsClient.
+func (c *ClientFactory) NewNGroupsClient() *NGroupsClient {
+	return &NGroupsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

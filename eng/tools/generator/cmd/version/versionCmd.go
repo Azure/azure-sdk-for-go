@@ -113,7 +113,6 @@ Examples:
 	return versionCmd
 }
 
-// validatePackagePath validates that the provided package path exists and contains necessary files
 // validatePackagePath validates that the provided package path exists, contains
 // a go.mod file, and additionally contains a version.go file
 func validatePackagePath(packagePath string) error {

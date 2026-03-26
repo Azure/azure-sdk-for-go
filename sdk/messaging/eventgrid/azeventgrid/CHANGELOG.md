@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Canonicalized HTTP header keys to reduce per-call string allocations.
+
 ## 1.0.0 (2024-04-09)
 
 - GA for the Event Grid basic module.

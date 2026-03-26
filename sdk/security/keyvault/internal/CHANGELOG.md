@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Canonicalized HTTP header keys to reduce per-call string allocations.
+
 ## 1.2.0 (2025-06-12)
 
 ### Other Changes

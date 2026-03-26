@@ -1,5 +1,11 @@
 # Release History
 
+## 3.0.0-beta.2 (Unreleased)
+
+### Other Changes
+
+* Canonicalized HTTP header keys to reduce per-call string allocations.
+
 ## 3.0.0-beta.1 (2026-03-16)
 ### Breaking Changes
 

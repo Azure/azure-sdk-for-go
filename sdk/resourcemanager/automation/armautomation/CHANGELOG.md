@@ -1,5 +1,11 @@
 # Release History
 
+## 0.9.1 (Unreleased)
+
+### Other Changes
+
+* Canonicalized HTTP header keys to reduce per-call string allocations.
+
 ## 0.9.0 (2023-11-30)
 ### Features Added
 

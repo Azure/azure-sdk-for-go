@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.3 (Unreleased)
+
+### Other Changes
+
+* Canonicalized HTTP header keys to reduce per-call string allocations.
+
 ## 2.0.2 (2026-01-05)
 ### Other Changes
 

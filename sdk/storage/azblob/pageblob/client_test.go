@@ -705,7 +705,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	waitForIncrementalCopy(_require, dstBlob, &resp)
 }
 
-func (s *PageBlobRecordedTestsSuite) TestIncrementalCopyErrorCode() {
+func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopyErrorCode() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

@@ -121,7 +121,7 @@ func (c *ComponentPolicyStatesServerTransport) dispatchListQueryResultsForPolicy
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/componentPolicyStates/(?P<componentPolicyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -227,7 +227,7 @@ func (c *ComponentPolicyStatesServerTransport) dispatchListQueryResultsForResour
 	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/componentPolicyStates/(?P<componentPolicyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -335,7 +335,7 @@ func (c *ComponentPolicyStatesServerTransport) dispatchListQueryResultsForResour
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/componentPolicyStates/(?P<componentPolicyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -441,7 +441,7 @@ func (c *ComponentPolicyStatesServerTransport) dispatchListQueryResultsForResour
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/componentPolicyStates/(?P<componentPolicyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -551,7 +551,7 @@ func (c *ComponentPolicyStatesServerTransport) dispatchListQueryResultsForSubscr
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/componentPolicyStates/(?P<componentPolicyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -653,7 +653,7 @@ func (c *ComponentPolicyStatesServerTransport) dispatchListQueryResultsForSubscr
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/componentPolicyStates/(?P<componentPolicyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()

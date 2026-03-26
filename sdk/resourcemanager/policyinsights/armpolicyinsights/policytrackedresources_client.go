@@ -28,7 +28,7 @@ type PolicyTrackedResourcesClient struct {
 // NewPolicyTrackedResourcesClient creates a new instance of PolicyTrackedResourcesClient with the specified values.
 //   - subscriptionID - Microsoft Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyTrackedResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

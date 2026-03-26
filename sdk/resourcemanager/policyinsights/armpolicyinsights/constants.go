@@ -5,11 +5,6 @@
 
 package armpolicyinsights
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
-	moduleVersion = "v0.9.0"
-)
-
 // ComplianceState - The compliance state that should be set on the resource.
 type ComplianceState string
 

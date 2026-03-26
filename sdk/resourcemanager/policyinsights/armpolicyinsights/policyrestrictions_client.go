@@ -27,7 +27,7 @@ type PolicyRestrictionsClient struct {
 // NewPolicyRestrictionsClient creates a new instance of PolicyRestrictionsClient with the specified values.
 //   - subscriptionID - Microsoft Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyRestrictionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyRestrictionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

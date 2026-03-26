@@ -1,4 +1,4 @@
 directory: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/extensions
-commit: 402bf21e472d87c1b3abcd0b2675a8b6c8a42700
+commit: 0758803aaaacc14ce831053cf0eb592e09e14f93
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

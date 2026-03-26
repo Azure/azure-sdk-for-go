@@ -32,7 +32,7 @@ func TestRequestIDPolicy(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if resp.Request.Header.Get("x-ms-client-request-id") == "" {
+	if resp.Request.Header.Get("X-Ms-Client-Request-Id") == "" {
 		t.Fatalf("client request id header was not set")
 	}
 }

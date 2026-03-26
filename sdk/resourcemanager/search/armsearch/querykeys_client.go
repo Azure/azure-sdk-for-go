@@ -98,7 +98,7 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -169,7 +169,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -228,7 +228,7 @@ func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }

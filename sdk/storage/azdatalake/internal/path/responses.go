@@ -284,22 +284,22 @@ func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *htt
 	newResp.TagCount = r.TagCount
 	newResp.Version = r.Version
 	newResp.VersionID = r.VersionID
-	if val := rawResponse.Header.Get("x-ms-owner"); val != "" {
+	if val := rawResponse.Header.Get("X-Ms-Owner"); val != "" {
 		newResp.Owner = &val
 	}
-	if val := rawResponse.Header.Get("x-ms-group"); val != "" {
+	if val := rawResponse.Header.Get("X-Ms-Group"); val != "" {
 		newResp.Group = &val
 	}
-	if val := rawResponse.Header.Get("x-ms-permissions"); val != "" {
+	if val := rawResponse.Header.Get("X-Ms-Permissions"); val != "" {
 		newResp.Permissions = &val
 	}
-	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+	if val := rawResponse.Header.Get("X-Ms-Acl"); val != "" {
 		newResp.AccessControlList = &val
 	}
-	if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
+	if val := rawResponse.Header.Get("X-Ms-Resource-Type"); val != "" {
 		newResp.ResourceType = &val
 	}
-	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+	if val := rawResponse.Header.Get("X-Ms-Encryption-Context"); val != "" {
 		newResp.EncryptionContext = &val
 	}
 	return newResp

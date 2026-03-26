@@ -56,8 +56,8 @@ func TestResponder(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.Equal(t, req, resp.Request)
-	require.Equal(t, "1", resp.Header.Get("one"))
-	require.Equal(t, "2", resp.Header.Get("two"))
+	require.Equal(t, "1", resp.Header.Get("One"))
+	require.Equal(t, "2", resp.Header.Get("Two"))
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 	require.EqualValues(t, "200 OK", resp.Status)
 

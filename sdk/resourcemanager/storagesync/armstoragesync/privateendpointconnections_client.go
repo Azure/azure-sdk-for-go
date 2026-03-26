@@ -336,10 +336,10 @@ func (client *PrivateEndpointConnectionsClient) listByStorageSyncServiceCreateRe
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
 func (client *PrivateEndpointConnectionsClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByStorageSyncServiceResponse, error) {
 	result := PrivateEndpointConnectionsClientListByStorageSyncServiceResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {

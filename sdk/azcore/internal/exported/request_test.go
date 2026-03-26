@@ -205,8 +205,8 @@ func TestRequestWithContext(t *testing.T) {
 	require.NotNil(t, req2.Raw().Context().Value(ctxKey2{}))
 
 	// shallow copy, so changing req2 affects req1
-	req2.Raw().Header.Add("added-req2", "value")
-	require.EqualValues(t, "value", req1.Raw().Header.Get("added-req2"))
+	req2.Raw().Header.Add("Added-Req2", "value")
+	require.EqualValues(t, "value", req1.Raw().Header.Get("Added-Req2"))
 }
 
 func TestSetBodyWithClobber(t *testing.T) {

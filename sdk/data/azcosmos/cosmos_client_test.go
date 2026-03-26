@@ -160,7 +160,7 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 	}
 
 	addHeader := func(r *policy.Request) {
-		r.Raw().Header.Add("my-header", "12345")
+		r.Raw().Header.Add("My-Header", "12345")
 	}
 
 	req, err := client.createRequest("/", context.Background(), http.MethodGet, operationContext, &ReadContainerOptions{}, addHeader)
@@ -168,8 +168,8 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if req.Raw().Header.Get("my-header") != "12345" {
-		t.Errorf("Expected %v, but got %v", "12345", req.Raw().Header.Get("my-header"))
+	if req.Raw().Header.Get("My-Header") != "12345" {
+		t.Errorf("Expected %v, but got %v", "12345", req.Raw().Header.Get("My-Header"))
 	}
 }
 

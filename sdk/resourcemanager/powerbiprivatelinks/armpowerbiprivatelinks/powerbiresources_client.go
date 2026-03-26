@@ -93,7 +93,7 @@ func (client *PowerBIResourcesClient) createCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientTenantID != nil {
-		req.Raw().Header["x-ms-client-tenant-id"] = []string{*options.ClientTenantID}
+		req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{*options.ClientTenantID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -283,7 +283,7 @@ func (client *PowerBIResourcesClient) updateCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientTenantID != nil {
-		req.Raw().Header["x-ms-client-tenant-id"] = []string{*options.ClientTenantID}
+		req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{*options.ClientTenantID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

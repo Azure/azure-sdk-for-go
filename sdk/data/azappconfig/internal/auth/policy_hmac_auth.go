@@ -66,7 +66,7 @@ func (policy *HMACPolicy) Do(request *policy.Request) (*http.Response, error) {
 		return nil, err
 	}
 
-	req.Header.Set("x-ms-content-sha256", contentHash)
+	req.Header.Set("X-Ms-Content-Sha256", contentHash)
 	req.Header.Set("Date", timestamp)
 	req.Header.Set("Authorization", "HMAC-SHA256 Credential="+policy.credential+", SignedHeaders=date;host;x-ms-content-sha256, Signature="+signature)
 

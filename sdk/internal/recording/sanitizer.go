@@ -93,7 +93,7 @@ func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOption
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "BodyKeySanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "BodyKeySanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -131,7 +131,7 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "BodyRegexSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "BodyRegexSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -168,7 +168,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "ContinuationSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "ContinuationSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -204,7 +204,7 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "GeneralRegexSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "GeneralRegexSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -243,7 +243,7 @@ func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "HeaderRegexSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "HeaderRegexSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -279,7 +279,7 @@ func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "OAuthResponseSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "OAuthResponseSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	return handleProxyResponse(client.Do(req))
@@ -298,7 +298,7 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "RemoveHeaderSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "RemoveHeaderSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	if options.TestInstance != nil {
@@ -337,7 +337,7 @@ func AddURISanitizer(value, regex string, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "UriRegexSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -370,7 +370,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "UriSubscriptionIdSanitizer")
+	req.Header.Set("X-Abstraction-Identifier", "UriSubscriptionIdSanitizer")
 	handleTestLevelSanitizer(req, options)
 
 	if value != "" {

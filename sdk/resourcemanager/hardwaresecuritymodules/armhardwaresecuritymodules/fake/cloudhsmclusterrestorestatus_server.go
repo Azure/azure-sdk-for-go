@@ -119,7 +119,7 @@ func (c *CloudHsmClusterRestoreStatusServerTransport) dispatchGet(req *http.Requ
 		resp.Header.Set("Location", *val)
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

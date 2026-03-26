@@ -52,9 +52,9 @@ func (client *ServiceClient) ListFileSystemsCreateRequest(ctx context.Context, o
 	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -64,7 +64,7 @@ func (client *ServiceClient) ListFileSystemsHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -74,10 +74,10 @@ func (client *ServiceClient) ListFileSystemsHandleResponse(resp *http.Response) 
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileSystemList); err != nil {

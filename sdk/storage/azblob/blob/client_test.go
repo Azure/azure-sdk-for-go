@@ -3805,7 +3805,7 @@ type fakeDownloadBlob struct {
 // nolint
 func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
 	// check how many times range based get blob is called
-	if _, ok := req.Header["x-ms-range"]; ok {
+	if _, ok := req.Header["X-Ms-Range"]; ok {
 		atomic.AddUint64(&f.numChunks, 1)
 	}
 	return &http.Response{

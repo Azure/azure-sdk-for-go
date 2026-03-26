@@ -59,13 +59,13 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, event
 	reqQP.Set("api-version", "2018-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.AegChannelName != nil {
-		req.Raw().Header["aeg-channel-name"] = []string{*options.AegChannelName}
+		req.Raw().Header["Aeg-Channel-Name"] = []string{*options.AegChannelName}
 	}
 	if err := runtime.MarshalAsJSON(req, events); err != nil {
 		return nil, err
 	}
 
-	req.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")
+	req.Raw().Header.Set("Content-Type", "application/cloudevents-batch+json; charset=utf-8")
 	return req, nil
 }
 

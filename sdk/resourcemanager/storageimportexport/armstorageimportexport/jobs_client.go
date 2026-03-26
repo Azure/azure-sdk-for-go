@@ -97,7 +97,7 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, jobName strin
 		req.Raw().Header["Accept-Language"] = []string{*options.AcceptLanguage}
 	}
 	if options != nil && options.ClientTenantID != nil {
-		req.Raw().Header["x-ms-client-tenant-id"] = []string{*options.ClientTenantID}
+		req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{*options.ClientTenantID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

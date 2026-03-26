@@ -109,7 +109,7 @@ func (client *HyperVCollectorsClient) createCreateRequest(ctx context.Context, r
 // createHandleResponse handles the Create response.
 func (client *HyperVCollectorsClient) createHandleResponse(resp *http.Response) (HyperVCollectorsClientCreateResponse, error) {
 	result := HyperVCollectorsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HyperVCollector); err != nil {
@@ -181,7 +181,7 @@ func (client *HyperVCollectorsClient) deleteCreateRequest(ctx context.Context, r
 // deleteHandleResponse handles the Delete response.
 func (client *HyperVCollectorsClient) deleteHandleResponse(resp *http.Response) (HyperVCollectorsClientDeleteResponse, error) {
 	result := HyperVCollectorsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -250,7 +250,7 @@ func (client *HyperVCollectorsClient) getCreateRequest(ctx context.Context, reso
 // getHandleResponse handles the Get response.
 func (client *HyperVCollectorsClient) getHandleResponse(resp *http.Response) (HyperVCollectorsClientGetResponse, error) {
 	result := HyperVCollectorsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HyperVCollector); err != nil {
@@ -319,7 +319,7 @@ func (client *HyperVCollectorsClient) listByProjectCreateRequest(ctx context.Con
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *HyperVCollectorsClient) listByProjectHandleResponse(resp *http.Response) (HyperVCollectorsClientListByProjectResponse, error) {
 	result := HyperVCollectorsClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HyperVCollectorList); err != nil {

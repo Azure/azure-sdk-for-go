@@ -130,7 +130,7 @@ func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultNam
 	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+		req.Raw().Header["X-Ms-Authorization-Auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

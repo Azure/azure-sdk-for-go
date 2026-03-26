@@ -316,10 +316,10 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 // getHandleResponse handles the Get response.
 func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesClientGetResponse, error) {
 	result := ServicesClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Service); err != nil {
@@ -383,10 +383,10 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (ServicesClientListByResourceGroupResponse, error) {
 	result := ServicesClientListByResourceGroupResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceArray); err != nil {
@@ -445,10 +445,10 @@ func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Contex
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (ServicesClientListBySubscriptionResponse, error) {
 	result := ServicesClientListBySubscriptionResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceArray); err != nil {

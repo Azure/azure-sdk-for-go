@@ -62,9 +62,9 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -73,10 +73,10 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (ServiceClientGetPropertiesResponse, error) {
 	result := ServiceClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.StorageServiceProperties); err != nil {
@@ -124,9 +124,9 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
@@ -138,7 +138,7 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 // getUserDelegationKeyHandleResponse handles the GetUserDelegationKey response.
 func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Response) (ServiceClientGetUserDelegationKeyResponse, error) {
 	result := ServiceClientGetUserDelegationKeyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -148,10 +148,10 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.UserDelegationKey); err != nil {
@@ -191,9 +191,9 @@ func (client *ServiceClient) ListSharesSegmentCreateRequest(ctx context.Context,
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -202,10 +202,10 @@ func (client *ServiceClient) ListSharesSegmentCreateRequest(ctx context.Context,
 // listSharesSegmentHandleResponse handles the ListSharesSegment response.
 func (client *ServiceClient) ListSharesSegmentHandleResponse(resp *http.Response) (ServiceClientListSharesSegmentResponse, error) {
 	result := ServiceClientListSharesSegmentResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListSharesResponse); err != nil {
@@ -252,9 +252,9 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
@@ -266,10 +266,10 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 // setPropertiesHandleResponse handles the SetProperties response.
 func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (ServiceClientSetPropertiesResponse, error) {
 	result := ServiceClientSetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

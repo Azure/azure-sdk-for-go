@@ -64,9 +64,9 @@ func (client *MessagesClient) clearCreateRequest(ctx context.Context, options *M
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -75,10 +75,10 @@ func (client *MessagesClient) clearCreateRequest(ctx context.Context, options *M
 // clearHandleResponse handles the Clear response.
 func (client *MessagesClient) clearHandleResponse(resp *http.Response) (MessagesClientClearResponse, error) {
 	result := MessagesClientClearResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -128,9 +128,9 @@ func (client *MessagesClient) dequeueCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -139,10 +139,10 @@ func (client *MessagesClient) dequeueCreateRequest(ctx context.Context, options 
 // dequeueHandleResponse handles the Dequeue response.
 func (client *MessagesClient) dequeueHandleResponse(resp *http.Response) (MessagesClientDequeueResponse, error) {
 	result := MessagesClientDequeueResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -199,9 +199,9 @@ func (client *MessagesClient) enqueueCreateRequest(ctx context.Context, queueMes
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, runtime.MarshalAsXML(req, queueMessage)
@@ -210,10 +210,10 @@ func (client *MessagesClient) enqueueCreateRequest(ctx context.Context, queueMes
 // enqueueHandleResponse handles the Enqueue response.
 func (client *MessagesClient) enqueueHandleResponse(resp *http.Response) (MessagesClientEnqueueResponse, error) {
 	result := MessagesClientEnqueueResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -265,9 +265,9 @@ func (client *MessagesClient) peekCreateRequest(ctx context.Context, options *Me
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -276,10 +276,10 @@ func (client *MessagesClient) peekCreateRequest(ctx context.Context, options *Me
 // peekHandleResponse handles the Peek response.
 func (client *MessagesClient) peekHandleResponse(resp *http.Response) (MessagesClientPeekResponse, error) {
 	result := MessagesClientPeekResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {

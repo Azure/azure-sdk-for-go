@@ -177,7 +177,7 @@ func (s *SubAccountTagRulesServerTransport) dispatchDelete(req *http.Request) (*
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }

@@ -104,7 +104,7 @@ func (client *ProjectsClient) assessmentOptionsCreateRequest(ctx context.Context
 // assessmentOptionsHandleResponse handles the AssessmentOptions response.
 func (client *ProjectsClient) assessmentOptionsHandleResponse(resp *http.Response) (ProjectsClientAssessmentOptionsResponse, error) {
 	result := ProjectsClientAssessmentOptionsResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentOptions); err != nil {
@@ -173,7 +173,7 @@ func (client *ProjectsClient) assessmentOptionsListCreateRequest(ctx context.Con
 // assessmentOptionsListHandleResponse handles the AssessmentOptionsList response.
 func (client *ProjectsClient) assessmentOptionsListHandleResponse(resp *http.Response) (ProjectsClientAssessmentOptionsListResponse, error) {
 	result := ProjectsClientAssessmentOptionsListResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentOptionsResultList); err != nil {
@@ -246,7 +246,7 @@ func (client *ProjectsClient) createCreateRequest(ctx context.Context, resourceG
 // createHandleResponse handles the Create response.
 func (client *ProjectsClient) createHandleResponse(resp *http.Response) (ProjectsClientCreateResponse, error) {
 	result := ProjectsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Project); err != nil {
@@ -313,7 +313,7 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, resourceG
 // deleteHandleResponse handles the Delete response.
 func (client *ProjectsClient) deleteHandleResponse(resp *http.Response) (ProjectsClientDeleteResponse, error) {
 	result := ProjectsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -377,7 +377,7 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGrou
 // getHandleResponse handles the Get response.
 func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsClientGetResponse, error) {
 	result := ProjectsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Project); err != nil {
@@ -439,7 +439,7 @@ func (client *ProjectsClient) listCreateRequest(ctx context.Context, resourceGro
 // listHandleResponse handles the List response.
 func (client *ProjectsClient) listHandleResponse(resp *http.Response) (ProjectsClientListResponse, error) {
 	result := ProjectsClientListResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResultList); err != nil {
@@ -497,7 +497,7 @@ func (client *ProjectsClient) listBySubscriptionCreateRequest(ctx context.Contex
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *ProjectsClient) listBySubscriptionHandleResponse(resp *http.Response) (ProjectsClientListBySubscriptionResponse, error) {
 	result := ProjectsClientListBySubscriptionResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResultList); err != nil {
@@ -570,7 +570,7 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceG
 // updateHandleResponse handles the Update response.
 func (client *ProjectsClient) updateHandleResponse(resp *http.Response) (ProjectsClientUpdateResponse, error) {
 	result := ProjectsClientUpdateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Project); err != nil {

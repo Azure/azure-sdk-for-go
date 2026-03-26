@@ -103,7 +103,7 @@ func (client *MachinesClient) getCreateRequest(ctx context.Context, resourceGrou
 // getHandleResponse handles the Get response.
 func (client *MachinesClient) getHandleResponse(resp *http.Response) (MachinesClientGetResponse, error) {
 	result := MachinesClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Machine); err != nil {
@@ -172,7 +172,7 @@ func (client *MachinesClient) listByProjectCreateRequest(ctx context.Context, re
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *MachinesClient) listByProjectHandleResponse(resp *http.Response) (MachinesClientListByProjectResponse, error) {
 	result := MachinesClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MachineResultList); err != nil {

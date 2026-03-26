@@ -153,7 +153,7 @@ func (s *ServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	if val := server.GetResponse(respr).RequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -189,7 +189,7 @@ func (s *ServerTransport) dispatchDelete(req *http.Request) (*http.Response, err
 		return nil, err
 	}
 	if val := server.GetResponse(respr).RequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -225,7 +225,7 @@ func (s *ServerTransport) dispatchGetByName(req *http.Request) (*http.Response, 
 		return nil, err
 	}
 	if val := server.GetResponse(respr).RequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -335,7 +335,7 @@ func (s *ServerTransport) dispatchUpdate(req *http.Request) (*http.Response, err
 		return nil, err
 	}
 	if val := server.GetResponse(respr).RequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

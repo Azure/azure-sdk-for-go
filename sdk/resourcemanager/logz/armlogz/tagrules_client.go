@@ -176,7 +176,7 @@ func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 // deleteHandleResponse handles the Delete response.
 func (client *TagRulesClient) deleteHandleResponse(resp *http.Response) (TagRulesClientDeleteResponse, error) {
 	result := TagRulesClientDeleteResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil

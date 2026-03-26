@@ -64,51 +64,51 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, options 
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.FilePermission != nil {
-		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
+		req.Raw().Header["X-Ms-File-Permission"] = []string{*options.FilePermission}
 	}
 	if options != nil && options.FilePermissionFormat != nil {
-		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
+		req.Raw().Header["X-Ms-File-Permission-Format"] = []string{string(*options.FilePermissionFormat)}
 	}
 	if options != nil && options.FilePermissionKey != nil {
-		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
+		req.Raw().Header["X-Ms-File-Permission-Key"] = []string{*options.FilePermissionKey}
 	}
 	if options != nil && options.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+		req.Raw().Header["X-Ms-File-Attributes"] = []string{*options.FileAttributes}
 	}
 	if options != nil && options.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
+		req.Raw().Header["X-Ms-File-Creation-Time"] = []string{*options.FileCreationTime}
 	}
 	if options != nil && options.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
+		req.Raw().Header["X-Ms-File-Last-Write-Time"] = []string{*options.FileLastWriteTime}
 	}
 	if options != nil && options.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
+		req.Raw().Header["X-Ms-File-Change-Time"] = []string{*options.FileChangeTime}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+		req.Raw().Header["X-Ms-Owner"] = []string{*options.Owner}
 	}
 	if options != nil && options.Group != nil {
-		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+		req.Raw().Header["X-Ms-Group"] = []string{*options.Group}
 	}
 	if options != nil && options.FileMode != nil {
-		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
+		req.Raw().Header["X-Ms-Mode"] = []string{*options.FileMode}
 	}
 	if options != nil && options.FilePropertySemantics != nil {
-		req.Raw().Header["x-ms-file-property-semantics"] = []string{string(*options.FilePropertySemantics)}
+		req.Raw().Header["X-Ms-File-Property-Semantics"] = []string{string(*options.FilePropertySemantics)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -127,46 +127,46 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-mode"); val != "" {
+	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
@@ -180,16 +180,16 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-File-Type"); val != "" {
 		result.NFSFileType = (*NFSFileType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -231,11 +231,11 @@ func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, options 
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -251,10 +251,10 @@ func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (Direct
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -304,16 +304,16 @@ func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
+	req.Raw().Header["X-Ms-Handle-Id"] = []string{handleID}
 	if options != nil && options.Recursive != nil {
-		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
+		req.Raw().Header["X-Ms-Recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -329,10 +329,10 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-marker"); val != "" {
+	if val := resp.Header.Get("X-Ms-Marker"); val != "" {
 		result.Marker = &val
 	}
-	if val := resp.Header.Get("x-ms-number-of-handles-closed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Number-Of-Handles-Closed"); val != "" {
 		numberOfHandlesClosed32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesClosed := int32(numberOfHandlesClosed32)
 		if err != nil {
@@ -340,7 +340,7 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		}
 		result.NumberOfHandlesClosed = &numberOfHandlesClosed
 	}
-	if val := resp.Header.Get("x-ms-number-of-handles-failed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Number-Of-Handles-Failed"); val != "" {
 		numberOfHandlesFailedToClose32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesFailedToClose := int32(numberOfHandlesFailedToClose32)
 		if err != nil {
@@ -348,10 +348,10 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		}
 		result.NumberOfHandlesFailedToClose = &numberOfHandlesFailedToClose
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -398,11 +398,11 @@ func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, o
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -421,46 +421,46 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-mode"); val != "" {
+	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
@@ -482,16 +482,16 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
-	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-File-Type"); val != "" {
 		result.NFSFileType = (*NFSFileType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -532,15 +532,15 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx c
 		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.IncludeExtendedInfo != nil {
-		req.Raw().Header["x-ms-file-extended-info"] = []string{strconv.FormatBool(*options.IncludeExtendedInfo)}
+		req.Raw().Header["X-Ms-File-Extended-Info"] = []string{strconv.FormatBool(*options.IncludeExtendedInfo)}
 	}
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -559,10 +559,10 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListFilesAndDirectoriesSegmentResponse); err != nil {
@@ -616,14 +616,14 @@ func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Recursive != nil {
-		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
+		req.Raw().Header["X-Ms-Recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -642,10 +642,10 @@ func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (D
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListHandlesResponse); err != nil {
@@ -696,56 +696,56 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
-	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-File-Rename-Source"] = []string{renameSource}
 	if options != nil && options.ReplaceIfExists != nil {
-		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
+		req.Raw().Header["X-Ms-File-Rename-Replace-If-Exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
 	}
 	if options != nil && options.IgnoreReadOnly != nil {
-		req.Raw().Header["x-ms-file-rename-ignore-readonly"] = []string{strconv.FormatBool(*options.IgnoreReadOnly)}
+		req.Raw().Header["X-Ms-File-Rename-Ignore-Readonly"] = []string{strconv.FormatBool(*options.IgnoreReadOnly)}
 	}
 	if sourceLeaseAccessConditions != nil && sourceLeaseAccessConditions.SourceLeaseID != nil {
-		req.Raw().Header["x-ms-source-lease-id"] = []string{*sourceLeaseAccessConditions.SourceLeaseID}
+		req.Raw().Header["X-Ms-Source-Lease-Id"] = []string{*sourceLeaseAccessConditions.SourceLeaseID}
 	}
 	if destinationLeaseAccessConditions != nil && destinationLeaseAccessConditions.DestinationLeaseID != nil {
-		req.Raw().Header["x-ms-destination-lease-id"] = []string{*destinationLeaseAccessConditions.DestinationLeaseID}
+		req.Raw().Header["X-Ms-Destination-Lease-Id"] = []string{*destinationLeaseAccessConditions.DestinationLeaseID}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSMBInfo.FileAttributes}
+		req.Raw().Header["X-Ms-File-Attributes"] = []string{*copyFileSMBInfo.FileAttributes}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSMBInfo.FileCreationTime}
+		req.Raw().Header["X-Ms-File-Creation-Time"] = []string{*copyFileSMBInfo.FileCreationTime}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSMBInfo.FileLastWriteTime}
+		req.Raw().Header["X-Ms-File-Last-Write-Time"] = []string{*copyFileSMBInfo.FileLastWriteTime}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*copyFileSMBInfo.FileChangeTime}
+		req.Raw().Header["X-Ms-File-Change-Time"] = []string{*copyFileSMBInfo.FileChangeTime}
 	}
 	if options != nil && options.FilePermission != nil {
-		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
+		req.Raw().Header["X-Ms-File-Permission"] = []string{*options.FilePermission}
 	}
 	if options != nil && options.FilePermissionFormat != nil {
-		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
+		req.Raw().Header["X-Ms-File-Permission-Format"] = []string{string(*options.FilePermissionFormat)}
 	}
 	if options != nil && options.FilePermissionKey != nil {
-		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
+		req.Raw().Header["X-Ms-File-Permission-Key"] = []string{*options.FilePermissionKey}
 	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.allowSourceTrailingDot != nil {
-		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
+		req.Raw().Header["X-Ms-Source-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -764,40 +764,40 @@ func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (Direct
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
@@ -811,10 +811,10 @@ func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (Direct
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -859,16 +859,16 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -887,17 +887,17 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientSetMetadataResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -939,42 +939,42 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.FilePermission != nil {
-		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
+		req.Raw().Header["X-Ms-File-Permission"] = []string{*options.FilePermission}
 	}
 	if options != nil && options.FilePermissionFormat != nil {
-		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
+		req.Raw().Header["X-Ms-File-Permission-Format"] = []string{string(*options.FilePermissionFormat)}
 	}
 	if options != nil && options.FilePermissionKey != nil {
-		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
+		req.Raw().Header["X-Ms-File-Permission-Key"] = []string{*options.FilePermissionKey}
 	}
 	if options != nil && options.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+		req.Raw().Header["X-Ms-File-Attributes"] = []string{*options.FileAttributes}
 	}
 	if options != nil && options.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
+		req.Raw().Header["X-Ms-File-Creation-Time"] = []string{*options.FileCreationTime}
 	}
 	if options != nil && options.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
+		req.Raw().Header["X-Ms-File-Last-Write-Time"] = []string{*options.FileLastWriteTime}
 	}
 	if options != nil && options.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
+		req.Raw().Header["X-Ms-File-Change-Time"] = []string{*options.FileChangeTime}
 	}
 	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+		req.Raw().Header["X-Ms-Allow-Trailing-Dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+		req.Raw().Header["X-Ms-Owner"] = []string{*options.Owner}
 	}
 	if options != nil && options.Group != nil {
-		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+		req.Raw().Header["X-Ms-Group"] = []string{*options.Group}
 	}
 	if options != nil && options.FileMode != nil {
-		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
+		req.Raw().Header["X-Ms-Mode"] = []string{*options.FileMode}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -993,46 +993,46 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-mode"); val != "" {
+	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
@@ -1046,13 +1046,13 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

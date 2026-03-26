@@ -269,10 +269,10 @@ func (client *RegisteredServersClient) getCreateRequest(ctx context.Context, res
 // getHandleResponse handles the Get response.
 func (client *RegisteredServersClient) getHandleResponse(resp *http.Response) (RegisteredServersClientGetResponse, error) {
 	result := RegisteredServersClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredServer); err != nil {
@@ -341,10 +341,10 @@ func (client *RegisteredServersClient) listByStorageSyncServiceCreateRequest(ctx
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
 func (client *RegisteredServersClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (RegisteredServersClientListByStorageSyncServiceResponse, error) {
 	result := RegisteredServersClientListByStorageSyncServiceResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredServerArray); err != nil {

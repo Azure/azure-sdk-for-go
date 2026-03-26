@@ -211,10 +211,10 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSDeleteSnapshots != nil {
-		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*options.XMSDeleteSnapshots)}
+		req.Raw().Header["X-Ms-Delete-Snapshots"] = []string{string(*options.XMSDeleteSnapshots)}
 	}
 	if options != nil && options.XMSForceDelete != nil {
-		req.Raw().Header["x-ms-force-delete"] = []string{string(*options.XMSForceDelete)}
+		req.Raw().Header["X-Ms-Force-Delete"] = []string{string(*options.XMSForceDelete)}
 	}
 	return req, nil
 }

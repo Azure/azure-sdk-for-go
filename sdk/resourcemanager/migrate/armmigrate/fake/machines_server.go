@@ -109,7 +109,7 @@ func (m *MachinesServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

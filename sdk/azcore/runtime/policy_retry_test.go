@@ -831,7 +831,7 @@ func challengeLikePolicy(req *policy.Request) (*http.Response, error) {
 	if req.Body() == nil {
 		return nil, errors.New("request body wasn't restored")
 	}
-	if req.Raw().Header.Get("content-type") != "text/plain" {
+	if req.Raw().Header.Get("Content-Type") != "text/plain" {
 		return nil, errors.New("content-type header wasn't restored")
 	}
 

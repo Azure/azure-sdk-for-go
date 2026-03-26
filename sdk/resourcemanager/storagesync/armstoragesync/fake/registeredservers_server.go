@@ -232,10 +232,10 @@ func (r *RegisteredServersServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("x-ms-correlation-request-id", *val)
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

@@ -127,7 +127,7 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 		if p := req.URL.Query().Get("resource"); p != strings.TrimSuffix(expectedScope, defaultSuffix) {
 			t.Fatalf("unexpected resource: %s", p)
 		}
-		if h := req.Header.Get("metadata"); h != "true" {
+		if h := req.Header.Get("Metadata"); h != "true" {
 			t.Fatalf("unexpected metadata header: %s", h)
 		}
 		if h := req.Header.Get("Authorization"); h != "Basic "+expectedKey {
@@ -324,7 +324,7 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 		if v := req.FormValue("resource"); v != strings.TrimSuffix(t.Name(), defaultSuffix) {
 			t.Fatalf("unexpected resource: %s", v)
 		}
-		if h := req.Header.Get("metadata"); h != "true" {
+		if h := req.Header.Get("Metadata"); h != "true" {
 			t.Fatalf("unexpected metadata header: %s", h)
 		}
 		return nil

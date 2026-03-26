@@ -87,7 +87,7 @@ func (client *TenantActionGroupsClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
+	req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{xmsClientTenantID}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, actionGroup); err != nil {
 		return nil, err
@@ -152,7 +152,7 @@ func (client *TenantActionGroupsClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
+	req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{xmsClientTenantID}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -205,7 +205,7 @@ func (client *TenantActionGroupsClient) getCreateRequest(ctx context.Context, ma
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
+	req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{xmsClientTenantID}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,7 +264,7 @@ func (client *TenantActionGroupsClient) listByManagementGroupIDCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
+	req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{xmsClientTenantID}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -328,7 +328,7 @@ func (client *TenantActionGroupsClient) updateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
+	req.Raw().Header["X-Ms-Client-Tenant-Id"] = []string{xmsClientTenantID}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tenantActionGroupPatch); err != nil {
 		return nil, err

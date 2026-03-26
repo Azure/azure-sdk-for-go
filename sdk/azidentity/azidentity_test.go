@@ -83,7 +83,7 @@ func validateX5C(t *testing.T, certs []*x509.Certificate) func(*http.Request) *h
 		if token == nil {
 			t.Fatalf("failed to parse the assertion: %s", assertion)
 		}
-		if v, ok := token.Header["x5c"].([]any); !ok {
+		if v, ok := token.Header["X5c"].([]any); !ok {
 			t.Fatal("missing x5c header")
 		} else if actual := len(v); actual != len(certs) {
 			t.Fatalf("expected %d certs, got %d", len(certs), actual)

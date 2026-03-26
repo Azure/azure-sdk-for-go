@@ -284,10 +284,10 @@ func (client *CloudEndpointsClient) getCreateRequest(ctx context.Context, resour
 // getHandleResponse handles the Get response.
 func (client *CloudEndpointsClient) getHandleResponse(resp *http.Response) (CloudEndpointsClientGetResponse, error) {
 	result := CloudEndpointsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudEndpoint); err != nil {
@@ -361,10 +361,10 @@ func (client *CloudEndpointsClient) listBySyncGroupCreateRequest(ctx context.Con
 // listBySyncGroupHandleResponse handles the ListBySyncGroup response.
 func (client *CloudEndpointsClient) listBySyncGroupHandleResponse(resp *http.Response) (CloudEndpointsClientListBySyncGroupResponse, error) {
 	result := CloudEndpointsClientListBySyncGroupResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudEndpointArray); err != nil {
@@ -802,10 +802,10 @@ func (client *CloudEndpointsClient) restoreheartbeatCreateRequest(ctx context.Co
 // restoreheartbeatHandleResponse handles the Restoreheartbeat response.
 func (client *CloudEndpointsClient) restoreheartbeatHandleResponse(resp *http.Response) (CloudEndpointsClientRestoreheartbeatResponse, error) {
 	result := CloudEndpointsClientRestoreheartbeatResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil

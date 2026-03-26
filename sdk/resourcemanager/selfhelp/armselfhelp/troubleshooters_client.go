@@ -99,7 +99,7 @@ func (client *TroubleshootersClient) continueCreateRequest(ctx context.Context, 
 // continueHandleResponse handles the Continue response.
 func (client *TroubleshootersClient) continueHandleResponse(resp *http.Response) (TroubleshootersClientContinueResponse, error) {
 	result := TroubleshootersClientContinueResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil
@@ -229,7 +229,7 @@ func (client *TroubleshootersClient) endCreateRequest(ctx context.Context, scope
 // endHandleResponse handles the End response.
 func (client *TroubleshootersClient) endHandleResponse(resp *http.Response) (TroubleshootersClientEndResponse, error) {
 	result := TroubleshootersClientEndResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil
@@ -353,7 +353,7 @@ func (client *TroubleshootersClient) restartCreateRequest(ctx context.Context, s
 // restartHandleResponse handles the Restart response.
 func (client *TroubleshootersClient) restartHandleResponse(resp *http.Response) (TroubleshootersClientRestartResponse, error) {
 	result := TroubleshootersClientRestartResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestartTroubleshooterResponse); err != nil {

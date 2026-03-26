@@ -104,7 +104,7 @@ func (p *PrivateLinkResourceServerTransport) dispatchGet(req *http.Request) (*ht
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -140,7 +140,7 @@ func (p *PrivateLinkResourceServerTransport) dispatchListByProject(req *http.Req
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

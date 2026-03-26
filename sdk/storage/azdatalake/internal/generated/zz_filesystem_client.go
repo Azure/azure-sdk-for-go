@@ -62,19 +62,19 @@ func (client *FileSystemClient) createCreateRequest(ctx context.Context, options
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.Properties != nil {
-		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
+		req.Raw().Header["X-Ms-Properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
 func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileSystemClientCreateResponse, error) {
 	result := FileSystemClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -94,10 +94,10 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-namespace-enabled"); val != "" {
+	if val := resp.Header.Get("X-Ms-Namespace-Enabled"); val != "" {
 		result.NamespaceEnabled = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -155,9 +155,9 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, options
 		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -171,10 +171,10 @@ func (client *FileSystemClient) deleteHandleResponse(resp *http.Response) (FileS
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -218,9 +218,9 @@ func (client *FileSystemClient) getPropertiesCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -244,16 +244,16 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-namespace-enabled"); val != "" {
+	if val := resp.Header.Get("X-Ms-Namespace-Enabled"); val != "" {
 		result.NamespaceEnabled = &val
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -298,16 +298,16 @@ func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // listBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
 func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListPathHierarchySegmentResponse, error) {
 	result := FileSystemClientListPathHierarchySegmentResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
@@ -320,10 +320,10 @@ func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *htt
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListPathsHierarchySegmentResponse); err != nil {
@@ -369,16 +369,16 @@ func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recu
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // listPathsHandleResponse handles the ListPaths response.
 func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (FileSystemClientListPathsResponse, error) {
 	result := FileSystemClientListPathsResponse{}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -398,10 +398,10 @@ func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (Fi
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PathList); err != nil {
@@ -458,12 +458,12 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.Properties != nil {
-		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
+		req.Raw().Header["X-Ms-Properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -487,10 +487,10 @@ func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response)
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

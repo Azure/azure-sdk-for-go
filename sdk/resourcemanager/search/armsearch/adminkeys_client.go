@@ -93,7 +93,7 @@ func (client *AdminKeysClient) getCreateRequest(ctx context.Context, resourceGro
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -165,7 +165,7 @@ func (client *AdminKeysClient) regenerateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }

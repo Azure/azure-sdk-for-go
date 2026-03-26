@@ -197,10 +197,10 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["if-none-match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -282,7 +282,7 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	return req, nil
 }
@@ -488,7 +488,7 @@ func (client *ManagedClustersClient) getCommandResultCreateRequest(ctx context.C
 // getCommandResultHandleResponse handles the GetCommandResult response.
 func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *http.Response) (ManagedClustersClientGetCommandResultResponse, error) {
 	result := ManagedClustersClientGetCommandResultResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunCommandResult); err != nil {
@@ -1932,7 +1932,7 @@ func (client *ManagedClustersClient) updateTagsCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

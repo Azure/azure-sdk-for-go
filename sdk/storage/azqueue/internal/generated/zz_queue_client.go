@@ -70,13 +70,13 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, options *Que
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -85,10 +85,10 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, options *Que
 // createHandleResponse handles the Create response.
 func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueClientCreateResponse, error) {
 	result := QueueClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -132,9 +132,9 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, options *Que
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -143,10 +143,10 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, options *Que
 // deleteHandleResponse handles the Delete response.
 func (client *QueueClient) deleteHandleResponse(resp *http.Response) (QueueClientDeleteResponse, error) {
 	result := QueueClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -192,9 +192,9 @@ func (client *QueueClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -203,10 +203,10 @@ func (client *QueueClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 // getAccessPolicyHandleResponse handles the GetAccessPolicy response.
 func (client *QueueClient) getAccessPolicyHandleResponse(resp *http.Response) (QueueClientGetAccessPolicyResponse, error) {
 	result := QueueClientGetAccessPolicyResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -255,9 +255,9 @@ func (client *QueueClient) getPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -274,17 +274,17 @@ func (client *QueueClient) getPropertiesHandleResponse(resp *http.Response) (Que
 			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
-	if val := resp.Header.Get("x-ms-approximate-messages-count"); val != "" {
+	if val := resp.Header.Get("X-Ms-Approximate-Messages-Count"); val != "" {
 		approximateMessagesCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return QueueClientGetPropertiesResponse{}, err
 		}
 		result.ApproximateMessagesCount = &approximateMessagesCount
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -330,9 +330,9 @@ func (client *QueueClient) setAccessPolicyCreateRequest(ctx context.Context, que
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	type wrapper struct {
@@ -345,10 +345,10 @@ func (client *QueueClient) setAccessPolicyCreateRequest(ctx context.Context, que
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
 func (client *QueueClient) setAccessPolicyHandleResponse(resp *http.Response) (QueueClientSetAccessPolicyResponse, error) {
 	result := QueueClientSetAccessPolicyResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -396,13 +396,13 @@ func (client *QueueClient) setMetadataCreateRequest(ctx context.Context, options
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -411,10 +411,10 @@ func (client *QueueClient) setMetadataCreateRequest(ctx context.Context, options
 // setMetadataHandleResponse handles the SetMetadata response.
 func (client *QueueClient) setMetadataHandleResponse(resp *http.Response) (QueueClientSetMetadataResponse, error) {
 	result := QueueClientSetMetadataResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {

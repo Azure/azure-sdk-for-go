@@ -103,10 +103,10 @@ func (client *WorkflowsClient) abortCreateRequest(ctx context.Context, resourceG
 // abortHandleResponse handles the Abort response.
 func (client *WorkflowsClient) abortHandleResponse(resp *http.Response) (WorkflowsClientAbortResponse, error) {
 	result := WorkflowsClientAbortResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -175,10 +175,10 @@ func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGro
 // getHandleResponse handles the Get response.
 func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (WorkflowsClientGetResponse, error) {
 	result := WorkflowsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
@@ -247,10 +247,10 @@ func (client *WorkflowsClient) listByStorageSyncServiceCreateRequest(ctx context
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
 func (client *WorkflowsClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (WorkflowsClientListByStorageSyncServiceResponse, error) {
 	result := WorkflowsClientListByStorageSyncServiceResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowArray); err != nil {

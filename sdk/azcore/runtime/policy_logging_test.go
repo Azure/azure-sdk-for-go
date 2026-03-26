@@ -91,7 +91,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.Raw().Header.Add("header", "one")
+	req.Raw().Header.Add("Header", "one")
 	req.Raw().Header.Add("Authorization", "redact")
 	resp, err := pl.Do(req)
 	if err == nil {

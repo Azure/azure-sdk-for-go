@@ -592,7 +592,7 @@ func (client *PrivateStoreClient) fetchAllSubscriptionsInTenantCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.NextPageToken != nil {
-		req.Raw().Header["next-page-token"] = []string{*options.NextPageToken}
+		req.Raw().Header["Next-Page-Token"] = []string{*options.NextPageToken}
 	}
 	return req, nil
 }

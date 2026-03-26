@@ -206,7 +206,7 @@ func (client *Client) getManifestCreateRequest(ctx context.Context, name string,
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Accept != nil {
-		req.Raw().Header["accept"] = []string{*options.Accept}
+		req.Raw().Header["Accept"] = []string{*options.Accept}
 	}
 	return req, nil
 }

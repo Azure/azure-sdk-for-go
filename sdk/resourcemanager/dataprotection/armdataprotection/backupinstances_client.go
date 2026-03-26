@@ -205,7 +205,7 @@ func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+		req.Raw().Header["X-Ms-Authorization-Auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -292,7 +292,7 @@ func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+		req.Raw().Header["X-Ms-Authorization-Auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}
 	return req, nil
 }
@@ -744,7 +744,7 @@ func (client *BackupInstancesClient) stopProtectionCreateRequest(ctx context.Con
 	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+		req.Raw().Header["X-Ms-Authorization-Auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}
 	if options != nil && options.Parameters != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -836,7 +836,7 @@ func (client *BackupInstancesClient) suspendBackupsCreateRequest(ctx context.Con
 	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+		req.Raw().Header["X-Ms-Authorization-Auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}
 	if options != nil && options.Parameters != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1181,7 +1181,7 @@ func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+		req.Raw().Header["X-Ms-Authorization-Auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -111,7 +111,7 @@ func (client *GroupsClient) createCreateRequest(ctx context.Context, resourceGro
 // createHandleResponse handles the Create response.
 func (client *GroupsClient) createHandleResponse(resp *http.Response) (GroupsClientCreateResponse, error) {
 	result := GroupsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Group); err != nil {
@@ -185,7 +185,7 @@ func (client *GroupsClient) deleteCreateRequest(ctx context.Context, resourceGro
 // deleteHandleResponse handles the Delete response.
 func (client *GroupsClient) deleteHandleResponse(resp *http.Response) (GroupsClientDeleteResponse, error) {
 	result := GroupsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -255,7 +255,7 @@ func (client *GroupsClient) getCreateRequest(ctx context.Context, resourceGroupN
 // getHandleResponse handles the Get response.
 func (client *GroupsClient) getHandleResponse(resp *http.Response) (GroupsClientGetResponse, error) {
 	result := GroupsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Group); err != nil {
@@ -325,7 +325,7 @@ func (client *GroupsClient) listByProjectCreateRequest(ctx context.Context, reso
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *GroupsClient) listByProjectHandleResponse(resp *http.Response) (GroupsClientListByProjectResponse, error) {
 	result := GroupsClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupResultList); err != nil {
@@ -403,7 +403,7 @@ func (client *GroupsClient) updateMachinesCreateRequest(ctx context.Context, res
 // updateMachinesHandleResponse handles the UpdateMachines response.
 func (client *GroupsClient) updateMachinesHandleResponse(resp *http.Response) (GroupsClientUpdateMachinesResponse, error) {
 	result := GroupsClientUpdateMachinesResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Group); err != nil {

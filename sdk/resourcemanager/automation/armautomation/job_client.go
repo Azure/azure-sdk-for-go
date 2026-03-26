@@ -99,7 +99,7 @@ func (client *JobClient) createCreateRequest(ctx context.Context, resourceGroupN
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -174,7 +174,7 @@ func (client *JobClient) getCreateRequest(ctx context.Context, resourceGroupName
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *JobClient) getOutputCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"text/plain"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *JobClient) getRunbookContentCreateRequest(ctx context.Context, res
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"text/powershell"}
 	return req, nil
@@ -395,7 +395,7 @@ func (client *JobClient) listByAutomationAccountCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -466,7 +466,7 @@ func (client *JobClient) resumeCreateRequest(ctx context.Context, resourceGroupN
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -528,7 +528,7 @@ func (client *JobClient) stopCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -590,7 +590,7 @@ func (client *JobClient) suspendCreateRequest(ctx context.Context, resourceGroup
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

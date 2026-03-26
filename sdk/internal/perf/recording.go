@@ -165,7 +165,7 @@ func (c *RecordingHTTPClient) replaceAuthority(rawReq *http.Request) (*http.Requ
 	cp.Header.Set(upstreamURIHeader, fmt.Sprintf("%v://%v", originalURLScheme, originalURLHost))
 	cp.Header.Set(modeHeader, c.mode)
 	cp.Header.Set(idHeader, c.recID)
-	cp.Header.Set("x-recording-remove", "false")
+	cp.Header.Set("X-Recording-Remove", "false")
 	return &cp, nil
 }
 
@@ -216,7 +216,7 @@ func (c *RecordingHTTPClient) stop() error {
 		return errors.New("recording ID was never set. Did you call Start?")
 	}
 
-	req.Header.Set("x-recording-id", c.recID)
+	req.Header.Set("X-Recording-Id", c.recID)
 	resp, err := defaultHTTPClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())

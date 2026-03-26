@@ -83,7 +83,7 @@ package azblob_test
 //	uploadSrcResp, err := srcBlob.Upload(ctx, r, HTTPHeaders{}, Metadata{}, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.NoError(err)
 //	_assert(uploadSrcResp.Response().StatusCode, chk.Equals, 201)
-//	_assert(uploadSrcResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
+//	_assert(uploadSrcResp.Response().Header.Get("X-Ms-Version-Id"), chk.NotNil)
 //
 //	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 //
@@ -113,7 +113,7 @@ package azblob_test
 //	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
 //	_require.NoError(err)
 //	_assert(destData, chk.DeepEquals, sourceData)
-//	_assert(downloadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
+//	_assert(downloadResp.Response().Header.Get("X-Ms-Version-Id"), chk.NotNil)
 //	_assert(len(downloadResp.NewMetadata()), chk.Equals, 1)
 //	_, badMD5 := testcommon.GetRandomDataAndReader(16)
 //	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, badMD5, DefaultAccessTier, nil)
@@ -123,8 +123,8 @@ package azblob_test
 //	_require.NoError(err)
 //	_assert(resp.Response().StatusCode, chk.Equals, 202)
 //	_assert(resp.ContentCRC64(), chk.Not(chk.Equals), "")
-//	_assert(resp.Response().Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
-//	_assert(resp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
+//	_assert(resp.Response().Header.Get("X-Ms-Version"), chk.Equals, ServiceVersion)
+//	_assert(resp.Response().Header.Get("X-Ms-Version-Id"), chk.NotNil)
 //}
 //
 //func (s *AZBlobRecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
@@ -149,17 +149,17 @@ package azblob_test
 //	uploadResp, err := blobURL.Upload(ctx, r, HTTPHeaders{}, Metadata{}, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_require.NoError(err)
 //	_assert(uploadResp.Response().StatusCode, chk.Equals, 201)
-//	_assert(uploadResp.rawResponse.Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
-//	_assert(uploadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
+//	_assert(uploadResp.rawResponse.Header.Get("X-Ms-Version"), chk.Equals, ServiceVersion)
+//	_assert(uploadResp.Response().Header.Get("X-Ms-Version-Id"), chk.NotNil)
 //
 //	csResp, err := blobURL.CreateSnapshot(ctx, Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
 //	_require.NoError(err)
 //	_assert(csResp.Response().StatusCode, chk.Equals, 201)
-//	_assert(csResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
+//	_assert(csResp.Response().Header.Get("X-Ms-Version-Id"), chk.NotNil)
 //
 //	listBlobResp, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
 //	_require.NoError(err)
-//	_assert(listBlobResp.rawResponse.Header.Get("x-ms-request-id"), chk.NotNil)
+//	_assert(listBlobResp.rawResponse.Header.Get("X-Ms-Request-Id"), chk.NotNil)
 //	if len(listBlobResp.Segment.BlobItems) < 2 {
 //		s.T().Fail()
 //	}
@@ -167,11 +167,11 @@ package azblob_test
 //	deleteResp, err := blobURL.Delete(ctx, DeleteSnapshotsOptionOnly, LeaseAccessConditions{})
 //	_require.NoError(err)
 //	_assert(deleteResp.Response().StatusCode, chk.Equals, 202)
-//	_assert(deleteResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
+//	_assert(deleteResp.Response().Header.Get("X-Ms-Version-Id"), chk.NotNil)
 //
 //	listBlobResp, err = containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Versions: true}})
 //	_require.NoError(err)
-//	_assert(listBlobResp.rawResponse.Header.Get("x-ms-request-id"), chk.NotNil)
+//	_assert(listBlobResp.rawResponse.Header.Get("X-Ms-Request-Id"), chk.NotNil)
 //	if len(listBlobResp.Segment.BlobItems) == 0 {
 //		s.T().Fail()
 //	}

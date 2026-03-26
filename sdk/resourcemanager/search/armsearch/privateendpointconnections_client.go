@@ -100,7 +100,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -174,7 +174,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -242,7 +242,7 @@ func (client *PrivateEndpointConnectionsClient) listByServiceCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -317,7 +317,7 @@ func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointConnection); err != nil {

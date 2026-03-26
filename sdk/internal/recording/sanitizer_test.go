@@ -158,7 +158,7 @@ func (s *sanitizerTests) TestHeaderRegexSanitizer() {
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IDHeader, GetRecordingId(s.T()))
-	req.Header.Set("testproxy-header", "fakevalue")
+	req.Header.Set("Testproxy-Header", "fakevalue")
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegex", "https://fakeaccount.table.core.windows.net")
 

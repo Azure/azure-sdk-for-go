@@ -107,10 +107,10 @@ func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourc
 // createHandleResponse handles the Create response.
 func (client *SyncGroupsClient) createHandleResponse(resp *http.Response) (SyncGroupsClientCreateResponse, error) {
 	result := SyncGroupsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
@@ -182,10 +182,10 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 // deleteHandleResponse handles the Delete response.
 func (client *SyncGroupsClient) deleteHandleResponse(resp *http.Response) (SyncGroupsClientDeleteResponse, error) {
 	result := SyncGroupsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -254,10 +254,10 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 // getHandleResponse handles the Get response.
 func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGroupsClientGetResponse, error) {
 	result := SyncGroupsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
@@ -326,10 +326,10 @@ func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx contex
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
 func (client *SyncGroupsClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (SyncGroupsClientListByStorageSyncServiceResponse, error) {
 	result := SyncGroupsClientListByStorageSyncServiceResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroupArray); err != nil {

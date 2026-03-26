@@ -205,7 +205,7 @@ func TestHMACPolicyDoGETRequest(t *testing.T) {
 	require.Contains(t, authHeader, "Signature=")
 
 	require.NotEmpty(t, req.Raw().Header.Get("Date"))
-	require.NotEmpty(t, req.Raw().Header.Get("x-ms-content-sha256"))
+	require.NotEmpty(t, req.Raw().Header.Get("X-Ms-Content-Sha256"))
 }
 
 func TestHMACPolicyDoPOSTRequestWithBody(t *testing.T) {
@@ -244,7 +244,7 @@ func TestHMACPolicyDoPOSTRequestWithBody(t *testing.T) {
 	require.Contains(t, authHeader, "Signature=")
 
 	require.NotEmpty(t, req.Raw().Header.Get("Date"))
-	require.NotEmpty(t, req.Raw().Header.Get("x-ms-content-sha256"))
+	require.NotEmpty(t, req.Raw().Header.Get("X-Ms-Content-Sha256"))
 }
 
 func TestHMACPolicyDoRequestWithQueryParams(t *testing.T) {
@@ -276,7 +276,7 @@ func TestHMACPolicyDoRequestWithQueryParams(t *testing.T) {
 	authHeader := req.Raw().Header.Get("Authorization")
 	require.Contains(t, authHeader, "HMAC-SHA256 Credential="+credential)
 	require.NotEmpty(t, req.Raw().Header.Get("Date"))
-	require.NotEmpty(t, req.Raw().Header.Get("x-ms-content-sha256"))
+	require.NotEmpty(t, req.Raw().Header.Get("X-Ms-Content-Sha256"))
 }
 
 func TestHMACPolicyDoWithDifferentMethods(t *testing.T) {
@@ -312,7 +312,7 @@ func TestHMACPolicyDoWithDifferentMethods(t *testing.T) {
 			authHeader := req.Raw().Header.Get("Authorization")
 			require.Contains(t, authHeader, "HMAC-SHA256 Credential="+credential)
 			require.NotEmpty(t, req.Raw().Header.Get("Date"))
-			require.NotEmpty(t, req.Raw().Header.Get("x-ms-content-sha256"))
+			require.NotEmpty(t, req.Raw().Header.Get("X-Ms-Content-Sha256"))
 		})
 	}
 }
@@ -409,7 +409,7 @@ func TestHMACPolicyDoWithLargeBody(t *testing.T) {
 
 	authHeader := req.Raw().Header.Get("Authorization")
 	require.Contains(t, authHeader, "HMAC-SHA256 Credential="+credential)
-	require.NotEmpty(t, req.Raw().Header.Get("x-ms-content-sha256"))
+	require.NotEmpty(t, req.Raw().Header.Get("X-Ms-Content-Sha256"))
 }
 
 func TestHMACPolicySignatureConsistency(t *testing.T) {

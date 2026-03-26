@@ -182,7 +182,7 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSSnapshot != nil {
-		req.Raw().Header["x-ms-snapshot"] = []string{*options.XMSSnapshot}
+		req.Raw().Header["X-Ms-Snapshot"] = []string{*options.XMSSnapshot}
 	}
 	return req, nil
 }
@@ -251,7 +251,7 @@ func (client *FileSharesClient) getCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSSnapshot != nil {
-		req.Raw().Header["x-ms-snapshot"] = []string{*options.XMSSnapshot}
+		req.Raw().Header["X-Ms-Snapshot"] = []string{*options.XMSSnapshot}
 	}
 	return req, nil
 }
@@ -327,7 +327,7 @@ func (client *FileSharesClient) leaseCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSSnapshot != nil {
-		req.Raw().Header["x-ms-snapshot"] = []string{*options.XMSSnapshot}
+		req.Raw().Header["X-Ms-Snapshot"] = []string{*options.XMSSnapshot}
 	}
 	if options != nil && options.Parameters != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

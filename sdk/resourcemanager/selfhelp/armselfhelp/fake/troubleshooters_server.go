@@ -147,7 +147,7 @@ func (t *TroubleshootersServerTransport) dispatchContinue(req *http.Request) (*h
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }
@@ -220,7 +220,7 @@ func (t *TroubleshootersServerTransport) dispatchEnd(req *http.Request) (*http.R
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }
@@ -289,7 +289,7 @@ func (t *TroubleshootersServerTransport) dispatchRestart(req *http.Request) (*ht
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }

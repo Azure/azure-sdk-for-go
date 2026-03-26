@@ -89,7 +89,7 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 	if err != nil {
 		panic(err)
 	}
-	req.Header["x-abstraction-identifier"] = []string{"CustomDefaultMatcher"}
+	req.Header["X-Abstraction-Identifier"] = []string{"CustomDefaultMatcher"}
 	if t != nil {
 		req.Header[IDHeader] = []string{GetRecordingId(t)}
 	}

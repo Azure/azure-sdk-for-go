@@ -113,7 +113,7 @@ func (client *AssessedMachinesClient) getCreateRequest(ctx context.Context, reso
 // getHandleResponse handles the Get response.
 func (client *AssessedMachinesClient) getHandleResponse(resp *http.Response) (AssessedMachinesClientGetResponse, error) {
 	result := AssessedMachinesClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessedMachine); err != nil {
@@ -195,7 +195,7 @@ func (client *AssessedMachinesClient) listByAssessmentCreateRequest(ctx context.
 // listByAssessmentHandleResponse handles the ListByAssessment response.
 func (client *AssessedMachinesClient) listByAssessmentHandleResponse(resp *http.Response) (AssessedMachinesClientListByAssessmentResponse, error) {
 	result := AssessedMachinesClientListByAssessmentResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessedMachineResultList); err != nil {

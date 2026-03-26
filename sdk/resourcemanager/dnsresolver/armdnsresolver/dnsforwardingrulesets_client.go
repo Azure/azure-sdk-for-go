@@ -115,10 +115,10 @@ func (client *DNSForwardingRulesetsClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["if-none-match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -202,7 +202,7 @@ func (client *DNSForwardingRulesetsClient) deleteCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	return req, nil
 }
@@ -536,7 +536,7 @@ func (client *DNSForwardingRulesetsClient) updateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["if-match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -99,10 +99,10 @@ func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(c
 // locationOperationStatusHandleResponse handles the LocationOperationStatus response.
 func (client *MicrosoftStorageSyncClient) locationOperationStatusHandleResponse(resp *http.Response) (MicrosoftStorageSyncClientLocationOperationStatusResponse, error) {
 	result := MicrosoftStorageSyncClientLocationOperationStatusResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationOperationStatus); err != nil {

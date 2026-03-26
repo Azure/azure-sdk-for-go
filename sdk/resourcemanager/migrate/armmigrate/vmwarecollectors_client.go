@@ -109,7 +109,7 @@ func (client *VMwareCollectorsClient) createCreateRequest(ctx context.Context, r
 // createHandleResponse handles the Create response.
 func (client *VMwareCollectorsClient) createHandleResponse(resp *http.Response) (VMwareCollectorsClientCreateResponse, error) {
 	result := VMwareCollectorsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMwareCollector); err != nil {
@@ -181,7 +181,7 @@ func (client *VMwareCollectorsClient) deleteCreateRequest(ctx context.Context, r
 // deleteHandleResponse handles the Delete response.
 func (client *VMwareCollectorsClient) deleteHandleResponse(resp *http.Response) (VMwareCollectorsClientDeleteResponse, error) {
 	result := VMwareCollectorsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -250,7 +250,7 @@ func (client *VMwareCollectorsClient) getCreateRequest(ctx context.Context, reso
 // getHandleResponse handles the Get response.
 func (client *VMwareCollectorsClient) getHandleResponse(resp *http.Response) (VMwareCollectorsClientGetResponse, error) {
 	result := VMwareCollectorsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMwareCollector); err != nil {
@@ -319,7 +319,7 @@ func (client *VMwareCollectorsClient) listByProjectCreateRequest(ctx context.Con
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *VMwareCollectorsClient) listByProjectHandleResponse(resp *http.Response) (VMwareCollectorsClientListByProjectResponse, error) {
 	result := VMwareCollectorsClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMwareCollectorList); err != nil {

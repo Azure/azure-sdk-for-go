@@ -160,7 +160,7 @@ func (w *WorkspacePurgeServerTransport) dispatchPurge(req *http.Request) (*http.
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSStatusLocation; val != nil {
-		resp.Header.Set("x-ms-status-location", *val)
+		resp.Header.Set("X-Ms-Status-Location", *val)
 	}
 	return resp, nil
 }

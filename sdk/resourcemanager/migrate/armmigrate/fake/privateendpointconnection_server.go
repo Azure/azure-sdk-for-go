@@ -117,7 +117,7 @@ func (p *PrivateEndpointConnectionServerTransport) dispatchDelete(req *http.Requ
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -157,7 +157,7 @@ func (p *PrivateEndpointConnectionServerTransport) dispatchGet(req *http.Request
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -193,7 +193,7 @@ func (p *PrivateEndpointConnectionServerTransport) dispatchListByProject(req *ht
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -243,7 +243,7 @@ func (p *PrivateEndpointConnectionServerTransport) dispatchUpdate(req *http.Requ
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

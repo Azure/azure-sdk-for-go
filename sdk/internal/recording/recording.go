@@ -668,7 +668,7 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	resp.Request.URL.Host = origHost
 	// if the response is a recording mismatch error from the proxy, return
 	// its message as a simple error that prints legibly in test output
-	if er := resp.Header.Get("x-request-mismatch-error"); er != "" {
+	if er := resp.Header.Get("X-Request-Mismatch-Error"); er != "" {
 		if msg, e := base64.StdEncoding.DecodeString(er); e == nil {
 			err = errors.New(string(msg))
 		}

@@ -5444,7 +5444,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 	response, err := fClient.GetProperties(ctxWithRespFile, GetPropertiesOpts)
 	_require.NoError(err)
 	_require.NotNil(response)
-	_require.NotNil(respFromCtxFile.Header.Get("x-ms-encryption-key-sha256"))
+	_require.NotNil(respFromCtxFile.Header.Get("X-Ms-Encryption-Key-Sha256"))
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, response.EncryptionKeySHA256)
 	}

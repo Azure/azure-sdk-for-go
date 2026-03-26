@@ -122,7 +122,7 @@ func (client *AssessmentsClient) createCreateRequest(ctx context.Context, resour
 // createHandleResponse handles the Create response.
 func (client *AssessmentsClient) createHandleResponse(resp *http.Response) (AssessmentsClientCreateResponse, error) {
 	result := AssessmentsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assessment); err != nil {
@@ -202,7 +202,7 @@ func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resour
 // deleteHandleResponse handles the Delete response.
 func (client *AssessmentsClient) deleteHandleResponse(resp *http.Response) (AssessmentsClientDeleteResponse, error) {
 	result := AssessmentsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -277,7 +277,7 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceG
 // getHandleResponse handles the Get response.
 func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (AssessmentsClientGetResponse, error) {
 	result := AssessmentsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assessment); err != nil {
@@ -355,7 +355,7 @@ func (client *AssessmentsClient) getReportDownloadURLCreateRequest(ctx context.C
 // getReportDownloadURLHandleResponse handles the GetReportDownloadURL response.
 func (client *AssessmentsClient) getReportDownloadURLHandleResponse(resp *http.Response) (AssessmentsClientGetReportDownloadURLResponse, error) {
 	result := AssessmentsClientGetReportDownloadURLResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DownloadURL); err != nil {
@@ -430,7 +430,7 @@ func (client *AssessmentsClient) listByGroupCreateRequest(ctx context.Context, r
 // listByGroupHandleResponse handles the ListByGroup response.
 func (client *AssessmentsClient) listByGroupHandleResponse(resp *http.Response) (AssessmentsClientListByGroupResponse, error) {
 	result := AssessmentsClientListByGroupResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResultList); err != nil {
@@ -500,7 +500,7 @@ func (client *AssessmentsClient) listByProjectCreateRequest(ctx context.Context,
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *AssessmentsClient) listByProjectHandleResponse(resp *http.Response) (AssessmentsClientListByProjectResponse, error) {
 	result := AssessmentsClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResultList); err != nil {

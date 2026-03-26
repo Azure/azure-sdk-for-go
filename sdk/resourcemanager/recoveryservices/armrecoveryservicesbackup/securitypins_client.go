@@ -92,7 +92,7 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
-		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+		req.Raw().Header["X-Ms-Authorization-Auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}
 	if options != nil && options.Parameters != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

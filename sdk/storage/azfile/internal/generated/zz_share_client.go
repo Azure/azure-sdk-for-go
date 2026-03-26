@@ -69,17 +69,17 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, durati
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-lease-action"] = []string{"acquire"}
-	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(duration), 10)}
+	req.Raw().Header["X-Ms-Lease-Action"] = []string{"acquire"}
+	req.Raw().Header["X-Ms-Lease-Duration"] = []string{strconv.FormatInt(int64(duration), 10)}
 	if options != nil && options.ProposedLeaseID != nil {
-		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+		req.Raw().Header["X-Ms-Proposed-Lease-Id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -88,7 +88,7 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, durati
 // acquireLeaseHandleResponse handles the AcquireLease response.
 func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (ShareClientAcquireLeaseResponse, error) {
 	result := ShareClientAcquireLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -108,13 +108,13 @@ func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (Shar
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -161,19 +161,19 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-lease-action"] = []string{"break"}
+	req.Raw().Header["X-Ms-Lease-Action"] = []string{"break"}
 	if options != nil && options.BreakPeriod != nil {
-		req.Raw().Header["x-ms-lease-break-period"] = []string{strconv.FormatInt(int64(*options.BreakPeriod), 10)}
+		req.Raw().Header["X-Ms-Lease-Break-Period"] = []string{strconv.FormatInt(int64(*options.BreakPeriod), 10)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -182,7 +182,7 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 // breakLeaseHandleResponse handles the BreakLease response.
 func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareClientBreakLeaseResponse, error) {
 	result := ShareClientBreakLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -202,10 +202,10 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Time"); val != "" {
 		leaseTime32, err := strconv.ParseInt(val, 10, 32)
 		leaseTime := int32(leaseTime32)
 		if err != nil {
@@ -213,10 +213,10 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.LeaseTime = &leaseTime
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -263,17 +263,17 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-lease-action"] = []string{"change"}
-	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
+	req.Raw().Header["X-Ms-Lease-Action"] = []string{"change"}
+	req.Raw().Header["X-Ms-Lease-Id"] = []string{leaseID}
 	if options != nil && options.ProposedLeaseID != nil {
-		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+		req.Raw().Header["X-Ms-Proposed-Lease-Id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 // changeLeaseHandleResponse handles the ChangeLease response.
 func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (ShareClientChangeLeaseResponse, error) {
 	result := ShareClientChangeLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -302,13 +302,13 @@ func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (Share
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -353,46 +353,46 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
 	if options != nil && options.Quota != nil {
-		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
+		req.Raw().Header["X-Ms-Share-Quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}
 	if options != nil && options.AccessTier != nil {
-		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.AccessTier)}
+		req.Raw().Header["X-Ms-Access-Tier"] = []string{string(*options.AccessTier)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.EnabledProtocols != nil {
-		req.Raw().Header["x-ms-enabled-protocols"] = []string{*options.EnabledProtocols}
+		req.Raw().Header["X-Ms-Enabled-Protocols"] = []string{*options.EnabledProtocols}
 	}
 	if options != nil && options.RootSquash != nil {
-		req.Raw().Header["x-ms-root-squash"] = []string{string(*options.RootSquash)}
+		req.Raw().Header["X-Ms-Root-Squash"] = []string{string(*options.RootSquash)}
 	}
 	if options != nil && options.EnableSnapshotVirtualDirectoryAccess != nil {
-		req.Raw().Header["x-ms-enable-snapshot-virtual-directory-access"] = []string{strconv.FormatBool(*options.EnableSnapshotVirtualDirectoryAccess)}
+		req.Raw().Header["X-Ms-Enable-Snapshot-Virtual-Directory-Access"] = []string{strconv.FormatBool(*options.EnableSnapshotVirtualDirectoryAccess)}
 	}
 	if options != nil && options.PaidBurstingEnabled != nil {
-		req.Raw().Header["x-ms-share-paid-bursting-enabled"] = []string{strconv.FormatBool(*options.PaidBurstingEnabled)}
+		req.Raw().Header["X-Ms-Share-Paid-Bursting-Enabled"] = []string{strconv.FormatBool(*options.PaidBurstingEnabled)}
 	}
 	if options != nil && options.PaidBurstingMaxBandwidthMibps != nil {
-		req.Raw().Header["x-ms-share-paid-bursting-max-bandwidth-mibps"] = []string{strconv.FormatInt(*options.PaidBurstingMaxBandwidthMibps, 10)}
+		req.Raw().Header["X-Ms-Share-Paid-Bursting-Max-Bandwidth-Mibps"] = []string{strconv.FormatInt(*options.PaidBurstingMaxBandwidthMibps, 10)}
 	}
 	if options != nil && options.PaidBurstingMaxIops != nil {
-		req.Raw().Header["x-ms-share-paid-bursting-max-iops"] = []string{strconv.FormatInt(*options.PaidBurstingMaxIops, 10)}
+		req.Raw().Header["X-Ms-Share-Paid-Bursting-Max-Iops"] = []string{strconv.FormatInt(*options.PaidBurstingMaxIops, 10)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	if options != nil && options.ShareProvisionedIops != nil {
-		req.Raw().Header["x-ms-share-provisioned-iops"] = []string{strconv.FormatInt(*options.ShareProvisionedIops, 10)}
+		req.Raw().Header["X-Ms-Share-Provisioned-Iops"] = []string{strconv.FormatInt(*options.ShareProvisionedIops, 10)}
 	}
 	if options != nil && options.ShareProvisionedBandwidthMibps != nil {
-		req.Raw().Header["x-ms-share-provisioned-bandwidth-mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
+		req.Raw().Header["X-Ms-Share-Provisioned-Bandwidth-Mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
 	}
 	if options != nil && options.EnableSMBDirectoryLease != nil {
-		req.Raw().Header["x-ms-enable-smb-directory-lease"] = []string{strconv.FormatBool(*options.EnableSMBDirectoryLease)}
+		req.Raw().Header["X-Ms-Enable-Smb-Directory-Lease"] = []string{strconv.FormatBool(*options.EnableSMBDirectoryLease)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -418,45 +418,45 @@ func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClien
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		shareIncludedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.ShareIncludedBurstIops = &shareIncludedBurstIops
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		shareProvisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.ShareProvisionedBandwidthMibps = &shareProvisionedBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		shareProvisionedIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.ShareProvisionedIops = &shareProvisionedIops
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -499,9 +499,9 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if err := runtime.MarshalAsJSON(req, sharePermission); err != nil {
@@ -520,13 +520,13 @@ func (client *ShareClient) createPermissionHandleResponse(resp *http.Response) (
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -571,13 +571,13 @@ func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, opti
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -603,13 +603,13 @@ func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-snapshot"); val != "" {
+	if val := resp.Header.Get("X-Ms-Snapshot"); val != "" {
 		result.Snapshot = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -655,15 +655,15 @@ func (client *ShareClient) deleteCreateRequest(ctx context.Context, options *Sha
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.DeleteSnapshots != nil {
-		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*options.DeleteSnapshots)}
+		req.Raw().Header["X-Ms-Delete-Snapshots"] = []string{string(*options.DeleteSnapshots)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -679,20 +679,20 @@ func (client *ShareClient) deleteHandleResponse(resp *http.Response) (ShareClien
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
-	if val := resp.Header.Get("x-ms-file-share-snapshot-usage-bytes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Share-Snapshot-Usage-Bytes"); val != "" {
 		xMSFileShareSnapshotUsageBytes, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientDeleteResponse{}, err
 		}
 		result.FileShareSnapshotUsageBytes = &xMSFileShareSnapshotUsageBytes
 	}
-	if val := resp.Header.Get("x-ms-file-share-usage-bytes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Share-Usage-Bytes"); val != "" {
 		xMSFileShareUsageBytes, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientDeleteResponse{}, err
@@ -739,12 +739,12 @@ func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -770,10 +770,10 @@ func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (S
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result); err != nil {
@@ -819,13 +819,13 @@ func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, fileP
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-file-permission-key"] = []string{filePermissionKey}
+	req.Raw().Header["X-Ms-File-Permission-Key"] = []string{filePermissionKey}
 	if options != nil && options.FilePermissionFormat != nil {
-		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
+		req.Raw().Header["X-Ms-File-Permission-Format"] = []string{string(*options.FilePermissionFormat)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -841,10 +841,10 @@ func (client *ShareClient) getPermissionHandleResponse(resp *http.Response) (Sha
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharePermission); err != nil {
@@ -893,12 +893,12 @@ func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -907,17 +907,17 @@ func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, optio
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (ShareClientGetPropertiesResponse, error) {
 	result := ShareClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-access-tier"); val != "" {
+	if val := resp.Header.Get("X-Ms-Access-Tier"); val != "" {
 		result.AccessTier = &val
 	}
-	if val := resp.Header.Get("x-ms-access-tier-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Access-Tier-Change-Time"); val != "" {
 		accessTierChangeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.AccessTierChangeTime = &accessTierChangeTime
 	}
-	if val := resp.Header.Get("x-ms-access-tier-transition-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Access-Tier-Transition-State"); val != "" {
 		result.AccessTierTransitionState = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -930,24 +930,24 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-enable-smb-directory-lease"); val != "" {
+	if val := resp.Header.Get("X-Ms-Enable-Smb-Directory-Lease"); val != "" {
 		enableSmbDirectoryLease, err := strconv.ParseBool(val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.EnableSMBDirectoryLease = &enableSmbDirectoryLease
 	}
-	if val := resp.Header.Get("x-ms-enable-snapshot-virtual-directory-access"); val != "" {
+	if val := resp.Header.Get("X-Ms-Enable-Snapshot-Virtual-Directory-Access"); val != "" {
 		enableSnapshotVirtualDirectoryAccess, err := strconv.ParseBool(val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.EnableSnapshotVirtualDirectoryAccess = &enableSnapshotVirtualDirectoryAccess
 	}
-	if val := resp.Header.Get("x-ms-enabled-protocols"); val != "" {
+	if val := resp.Header.Get("X-Ms-Enabled-Protocols"); val != "" {
 		result.EnabledProtocols = &val
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
@@ -961,16 +961,16 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-State"); val != "" {
 		result.LeaseState = (*LeaseStateType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Status"); val != "" {
 		result.LeaseStatus = (*LeaseStatusType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
@@ -985,49 +985,49 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Bandwidth-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedBandwidthDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedBandwidthDowngradeTime = &nextAllowedProvisionedBandwidthDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-iops-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Iops-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedIopsDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedIopsDowngradeTime = &nextAllowedProvisionedIopsDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-quota-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Quota-Downgrade-Time"); val != "" {
 		nextAllowedQuotaDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-paid-bursting-enabled"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Paid-Bursting-Enabled"); val != "" {
 		paidBurstingEnabled, err := strconv.ParseBool(val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.PaidBurstingEnabled = &paidBurstingEnabled
 	}
-	if val := resp.Header.Get("x-ms-share-paid-bursting-max-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Paid-Bursting-Max-Bandwidth-Mibps"); val != "" {
 		paidBurstingMaxBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.PaidBurstingMaxBandwidthMibps = &paidBurstingMaxBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-paid-bursting-max-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Paid-Bursting-Max-Iops"); val != "" {
 		paidBurstingMaxIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.PaidBurstingMaxIops = &paidBurstingMaxIops
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		provisionedBandwidthMiBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedBandwidthMiBps := int32(provisionedBandwidthMiBps32)
 		if err != nil {
@@ -1035,7 +1035,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedBandwidthMiBps = &provisionedBandwidthMiBps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-egress-mbps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Egress-Mbps"); val != "" {
 		provisionedEgressMBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedEgressMBps := int32(provisionedEgressMBps32)
 		if err != nil {
@@ -1043,7 +1043,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedEgressMBps = &provisionedEgressMBps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-ingress-mbps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Ingress-Mbps"); val != "" {
 		provisionedIngressMBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedIngressMBps := int32(provisionedIngressMBps32)
 		if err != nil {
@@ -1051,7 +1051,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedIngressMBps = &provisionedIngressMBps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		provisionedIops32, err := strconv.ParseInt(val, 10, 32)
 		provisionedIops := int32(provisionedIops32)
 		if err != nil {
@@ -1059,7 +1059,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedIops = &provisionedIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota32, err := strconv.ParseInt(val, 10, 32)
 		quota := int32(quota32)
 		if err != nil {
@@ -1067,13 +1067,13 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-root-squash"); val != "" {
+	if val := resp.Header.Get("X-Ms-Root-Squash"); val != "" {
 		result.RootSquash = (*ShareRootSquash)(&val)
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1116,12 +1116,12 @@ func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1147,10 +1147,10 @@ func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (Sha
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ShareStats); err != nil {
@@ -1200,14 +1200,14 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
-	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Lease-Action"] = []string{"release"}
+	req.Raw().Header["X-Ms-Lease-Id"] = []string{leaseID}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1216,7 +1216,7 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 // releaseLeaseHandleResponse handles the ReleaseLease response.
 func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (ShareClientReleaseLeaseResponse, error) {
 	result := ShareClientReleaseLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1236,10 +1236,10 @@ func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (Shar
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1286,14 +1286,14 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
-	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Lease-Action"] = []string{"renew"}
+	req.Raw().Header["X-Ms-Lease-Id"] = []string{leaseID}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1302,7 +1302,7 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 // renewLeaseHandleResponse handles the RenewLease response.
 func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareClientRenewLeaseResponse, error) {
 	result := ShareClientRenewLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1322,13 +1322,13 @@ func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1370,18 +1370,18 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.DeletedShareName != nil {
-		req.Raw().Header["x-ms-deleted-share-name"] = []string{*options.DeletedShareName}
+		req.Raw().Header["X-Ms-Deleted-Share-Name"] = []string{*options.DeletedShareName}
 	}
 	if options != nil && options.DeletedShareVersion != nil {
-		req.Raw().Header["x-ms-deleted-share-version"] = []string{*options.DeletedShareVersion}
+		req.Raw().Header["X-Ms-Deleted-Share-Version"] = []string{*options.DeletedShareVersion}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1390,7 +1390,7 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 // restoreHandleResponse handles the Restore response.
 func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClientRestoreResponse, error) {
 	result := ShareClientRestoreResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1403,7 +1403,7 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
@@ -1417,38 +1417,38 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		provisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.ProvisionedBandwidthMibps = &provisionedBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		provisionedIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.ProvisionedIops = &provisionedIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1491,12 +1491,12 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	type wrapper struct {
@@ -1532,10 +1532,10 @@ func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (S
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1581,16 +1581,16 @@ func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+				req.Raw().Header["X-Ms-Meta-"+k] = []string{*v}
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1616,10 +1616,10 @@ func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (Share
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1662,42 +1662,42 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.Quota != nil {
-		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
+		req.Raw().Header["X-Ms-Share-Quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}
 	if options != nil && options.AccessTier != nil {
-		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.AccessTier)}
+		req.Raw().Header["X-Ms-Access-Tier"] = []string{string(*options.AccessTier)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.RootSquash != nil {
-		req.Raw().Header["x-ms-root-squash"] = []string{string(*options.RootSquash)}
+		req.Raw().Header["X-Ms-Root-Squash"] = []string{string(*options.RootSquash)}
 	}
 	if options != nil && options.EnableSnapshotVirtualDirectoryAccess != nil {
-		req.Raw().Header["x-ms-enable-snapshot-virtual-directory-access"] = []string{strconv.FormatBool(*options.EnableSnapshotVirtualDirectoryAccess)}
+		req.Raw().Header["X-Ms-Enable-Snapshot-Virtual-Directory-Access"] = []string{strconv.FormatBool(*options.EnableSnapshotVirtualDirectoryAccess)}
 	}
 	if options != nil && options.PaidBurstingEnabled != nil {
-		req.Raw().Header["x-ms-share-paid-bursting-enabled"] = []string{strconv.FormatBool(*options.PaidBurstingEnabled)}
+		req.Raw().Header["X-Ms-Share-Paid-Bursting-Enabled"] = []string{strconv.FormatBool(*options.PaidBurstingEnabled)}
 	}
 	if options != nil && options.PaidBurstingMaxBandwidthMibps != nil {
-		req.Raw().Header["x-ms-share-paid-bursting-max-bandwidth-mibps"] = []string{strconv.FormatInt(*options.PaidBurstingMaxBandwidthMibps, 10)}
+		req.Raw().Header["X-Ms-Share-Paid-Bursting-Max-Bandwidth-Mibps"] = []string{strconv.FormatInt(*options.PaidBurstingMaxBandwidthMibps, 10)}
 	}
 	if options != nil && options.PaidBurstingMaxIops != nil {
-		req.Raw().Header["x-ms-share-paid-bursting-max-iops"] = []string{strconv.FormatInt(*options.PaidBurstingMaxIops, 10)}
+		req.Raw().Header["X-Ms-Share-Paid-Bursting-Max-Iops"] = []string{strconv.FormatInt(*options.PaidBurstingMaxIops, 10)}
 	}
 	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+		req.Raw().Header["X-Ms-File-Request-Intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	if options != nil && options.ShareProvisionedIops != nil {
-		req.Raw().Header["x-ms-share-provisioned-iops"] = []string{strconv.FormatInt(*options.ShareProvisionedIops, 10)}
+		req.Raw().Header["X-Ms-Share-Provisioned-Iops"] = []string{strconv.FormatInt(*options.ShareProvisionedIops, 10)}
 	}
 	if options != nil && options.ShareProvisionedBandwidthMibps != nil {
-		req.Raw().Header["x-ms-share-provisioned-bandwidth-mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
+		req.Raw().Header["X-Ms-Share-Provisioned-Bandwidth-Mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
 	}
 	if options != nil && options.EnableSMBDirectoryLease != nil {
-		req.Raw().Header["x-ms-enable-smb-directory-lease"] = []string{strconv.FormatBool(*options.EnableSMBDirectoryLease)}
+		req.Raw().Header["X-Ms-Enable-Smb-Directory-Lease"] = []string{strconv.FormatBool(*options.EnableSMBDirectoryLease)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1716,7 +1716,7 @@ func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
@@ -1730,59 +1730,59 @@ func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Bandwidth-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedBandwidthDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedBandwidthDowngradeTime = &nextAllowedProvisionedBandwidthDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-iops-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Iops-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedIopsDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedIopsDowngradeTime = &nextAllowedProvisionedIopsDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-quota-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Quota-Downgrade-Time"); val != "" {
 		nextAllowedQuotaDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		provisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.ProvisionedBandwidthMibps = &provisionedBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		provisionedIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.ProvisionedIops = &provisionedIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

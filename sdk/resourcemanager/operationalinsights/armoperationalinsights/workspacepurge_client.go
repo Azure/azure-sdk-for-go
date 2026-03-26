@@ -179,7 +179,7 @@ func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, reso
 // purgeHandleResponse handles the Purge response.
 func (client *WorkspacePurgeClient) purgeHandleResponse(resp *http.Response) (WorkspacePurgeClientPurgeResponse, error) {
 	result := WorkspacePurgeClientPurgeResponse{}
-	if val := resp.Header.Get("x-ms-status-location"); val != "" {
+	if val := resp.Header.Get("X-Ms-Status-Location"); val != "" {
 		result.XMSStatusLocation = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspacePurgeResponse); err != nil {

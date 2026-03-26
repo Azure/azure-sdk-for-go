@@ -250,7 +250,7 @@ func TestRequestValidFail(t *testing.T) {
 	}
 	req.Raw().Header = http.Header{}
 	// the string "null\0"
-	req.Raw().Header.Add("invalid", string([]byte{0x6e, 0x75, 0x6c, 0x6c, 0x0}))
+	req.Raw().Header.Add("Invalid", string([]byte{0x6e, 0x75, 0x6c, 0x6c, 0x0}))
 	resp, err = p.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")

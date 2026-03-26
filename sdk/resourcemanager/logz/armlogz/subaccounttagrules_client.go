@@ -188,7 +188,7 @@ func (client *SubAccountTagRulesClient) deleteCreateRequest(ctx context.Context,
 // deleteHandleResponse handles the Delete response.
 func (client *SubAccountTagRulesClient) deleteHandleResponse(resp *http.Response) (SubAccountTagRulesClientDeleteResponse, error) {
 	result := SubAccountTagRulesClientDeleteResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil

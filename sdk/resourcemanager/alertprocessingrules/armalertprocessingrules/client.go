@@ -102,7 +102,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientCreateOrUpdateResponse, error) {
 	result := ClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertProcessingRule); err != nil {
@@ -168,7 +168,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 // deleteHandleResponse handles the Delete response.
 func (client *Client) deleteHandleResponse(resp *http.Response) (ClientDeleteResponse, error) {
 	result := ClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	return result, nil
@@ -232,7 +232,7 @@ func (client *Client) getByNameCreateRequest(ctx context.Context, resourceGroupN
 // getByNameHandleResponse handles the GetByName response.
 func (client *Client) getByNameHandleResponse(resp *http.Response) (ClientGetByNameResponse, error) {
 	result := ClientGetByNameResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertProcessingRule); err != nil {
@@ -295,7 +295,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (ClientListByResourceGroupResponse, error) {
 	result := ClientListByResourceGroupResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
@@ -352,7 +352,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, _ *Cl
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (ClientListBySubscriptionResponse, error) {
 	result := ClientListBySubscriptionResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
@@ -424,7 +424,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 // updateHandleResponse handles the Update response.
 func (client *Client) updateHandleResponse(resp *http.Response) (ClientUpdateResponse, error) {
 	result := ClientUpdateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertProcessingRule); err != nil {

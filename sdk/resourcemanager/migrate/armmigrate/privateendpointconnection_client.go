@@ -104,7 +104,7 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 // deleteHandleResponse handles the Delete response.
 func (client *PrivateEndpointConnectionClient) deleteHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientDeleteResponse, error) {
 	result := PrivateEndpointConnectionClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -175,7 +175,7 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 // getHandleResponse handles the Get response.
 func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetResponse, error) {
 	result := PrivateEndpointConnectionClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
@@ -244,7 +244,7 @@ func (client *PrivateEndpointConnectionClient) listByProjectCreateRequest(ctx co
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *PrivateEndpointConnectionClient) listByProjectHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientListByProjectResponse, error) {
 	result := PrivateEndpointConnectionClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
@@ -323,7 +323,7 @@ func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.C
 // updateHandleResponse handles the Update response.
 func (client *PrivateEndpointConnectionClient) updateHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientUpdateResponse, error) {
 	result := PrivateEndpointConnectionClientUpdateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {

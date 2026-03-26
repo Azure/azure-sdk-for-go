@@ -67,7 +67,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("X-Ms-Version", "2019-02-02")
 	req.Raw().Header.Set("DataServiceVersion", "3.0")
 	req.Raw().Header.Set("Accept", string(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata))
 

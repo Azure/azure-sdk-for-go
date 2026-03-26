@@ -64,7 +64,7 @@ func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.T
 			// We don't know the scope or tenant ID because we haven't seen a challenge yet. We elicit one now by sending
 			// the request without authorization, first removing its body, if any. authorizeOnChallenge will reattach the
 			// body, authorize the request, and send it again.
-			rb := reqBody{body, req.Raw().Header.Get("content-type")}
+			rb := reqBody{body, req.Raw().Header.Get("Content-Type")}
 			req.SetOperationValue(rb)
 			if err := req.SetBody(nil, ""); err != nil {
 				return err

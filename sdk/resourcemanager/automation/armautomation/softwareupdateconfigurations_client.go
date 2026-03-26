@@ -100,7 +100,7 @@ func (client *SoftwareUpdateConfigurationsClient) createCreateRequest(ctx contex
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -175,7 +175,7 @@ func (client *SoftwareUpdateConfigurationsClient) deleteCreateRequest(ctx contex
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +239,7 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameCreateRequest(ctx con
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,7 +310,7 @@ func (client *SoftwareUpdateConfigurationsClient) listCreateRequest(ctx context.
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

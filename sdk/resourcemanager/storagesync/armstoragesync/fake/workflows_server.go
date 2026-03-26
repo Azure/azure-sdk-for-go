@@ -114,10 +114,10 @@ func (w *WorkflowsServerTransport) dispatchAbort(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("x-ms-correlation-request-id", *val)
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -157,10 +157,10 @@ func (w *WorkflowsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("x-ms-correlation-request-id", *val)
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

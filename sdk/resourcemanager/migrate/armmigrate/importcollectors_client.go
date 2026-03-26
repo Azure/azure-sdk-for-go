@@ -109,7 +109,7 @@ func (client *ImportCollectorsClient) createCreateRequest(ctx context.Context, r
 // createHandleResponse handles the Create response.
 func (client *ImportCollectorsClient) createHandleResponse(resp *http.Response) (ImportCollectorsClientCreateResponse, error) {
 	result := ImportCollectorsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImportCollector); err != nil {
@@ -181,7 +181,7 @@ func (client *ImportCollectorsClient) deleteCreateRequest(ctx context.Context, r
 // deleteHandleResponse handles the Delete response.
 func (client *ImportCollectorsClient) deleteHandleResponse(resp *http.Response) (ImportCollectorsClientDeleteResponse, error) {
 	result := ImportCollectorsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -250,7 +250,7 @@ func (client *ImportCollectorsClient) getCreateRequest(ctx context.Context, reso
 // getHandleResponse handles the Get response.
 func (client *ImportCollectorsClient) getHandleResponse(resp *http.Response) (ImportCollectorsClientGetResponse, error) {
 	result := ImportCollectorsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImportCollector); err != nil {
@@ -319,7 +319,7 @@ func (client *ImportCollectorsClient) listByProjectCreateRequest(ctx context.Con
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *ImportCollectorsClient) listByProjectHandleResponse(resp *http.Response) (ImportCollectorsClientListByProjectResponse, error) {
 	result := ImportCollectorsClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImportCollectorList); err != nil {

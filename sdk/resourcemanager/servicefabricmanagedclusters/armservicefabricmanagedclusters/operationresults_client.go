@@ -98,7 +98,7 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, loca
 // getHandleResponse handles the Get response.
 func (client *OperationResultsClient) getHandleResponse(resp *http.Response) (OperationResultsClientGetResponse, error) {
 	result := OperationResultsClientGetResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil

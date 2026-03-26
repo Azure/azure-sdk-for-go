@@ -78,39 +78,39 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(pathHTTPHeaders.TransactionalContentHash)}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.TransactionalContentCRC64 != nil {
-		req.Raw().Header["x-ms-content-crc64"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentCRC64)}
+		req.Raw().Header["X-Ms-Content-Crc64"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentCRC64)}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
+		req.Raw().Header["X-Ms-Encryption-Algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
-		req.Raw().Header["x-ms-encryption-key"] = []string{*cpkInfo.EncryptionKey}
+		req.Raw().Header["X-Ms-Encryption-Key"] = []string{*cpkInfo.EncryptionKey}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySHA256 != nil {
-		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
+		req.Raw().Header["X-Ms-Encryption-Key-Sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if options != nil && options.LeaseAction != nil {
-		req.Raw().Header["x-ms-lease-action"] = []string{string(*options.LeaseAction)}
+		req.Raw().Header["X-Ms-Lease-Action"] = []string{string(*options.LeaseAction)}
 	}
 	if options != nil && options.LeaseDuration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
+		req.Raw().Header["X-Ms-Lease-Duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.ProposedLeaseID != nil {
-		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+		req.Raw().Header["X-Ms-Proposed-Lease-Id"] = []string{*options.ProposedLeaseID}
 	}
 	if options != nil && options.StructuredBodyType != nil {
-		req.Raw().Header["x-ms-structured-body"] = []string{*options.StructuredBodyType}
+		req.Raw().Header["X-Ms-Structured-Body"] = []string{*options.StructuredBodyType}
 	}
 	if options != nil && options.StructuredContentLength != nil {
-		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
+		req.Raw().Header["X-Ms-Structured-Content-Length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if err := req.SetBody(body, "application/json"); err != nil {
 		return nil, err
 	}
@@ -120,10 +120,10 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 // appendDataHandleResponse handles the AppendData response.
 func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathClientAppendDataResponse, error) {
 	result := PathClientAppendDataResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+	if val := resp.Header.Get("X-Ms-Content-Crc64"); val != "" {
 		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return PathClientAppendDataResponse{}, err
@@ -147,30 +147,30 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientAppendDataResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
-	if val := resp.Header.Get("x-ms-lease-renewed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Renewed"); val != "" {
 		leaseRenewed, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientAppendDataResponse{}, err
 		}
 		result.LeaseRenewed = &leaseRenewed
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-structured-body"); val != "" {
+	if val := resp.Header.Get("X-Ms-Structured-Body"); val != "" {
 		result.StructuredBodyType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -245,87 +245,87 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.ACL != nil {
-		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
+		req.Raw().Header["X-Ms-Acl"] = []string{*options.ACL}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.CacheControl != nil {
-		req.Raw().Header["x-ms-cache-control"] = []string{*pathHTTPHeaders.CacheControl}
+		req.Raw().Header["X-Ms-Cache-Control"] = []string{*pathHTTPHeaders.CacheControl}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentDisposition != nil {
-		req.Raw().Header["x-ms-content-disposition"] = []string{*pathHTTPHeaders.ContentDisposition}
+		req.Raw().Header["X-Ms-Content-Disposition"] = []string{*pathHTTPHeaders.ContentDisposition}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentEncoding != nil {
-		req.Raw().Header["x-ms-content-encoding"] = []string{*pathHTTPHeaders.ContentEncoding}
+		req.Raw().Header["X-Ms-Content-Encoding"] = []string{*pathHTTPHeaders.ContentEncoding}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentLanguage != nil {
-		req.Raw().Header["x-ms-content-language"] = []string{*pathHTTPHeaders.ContentLanguage}
+		req.Raw().Header["X-Ms-Content-Language"] = []string{*pathHTTPHeaders.ContentLanguage}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*pathHTTPHeaders.ContentType}
+		req.Raw().Header["X-Ms-Content-Type"] = []string{*pathHTTPHeaders.ContentType}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
+		req.Raw().Header["X-Ms-Encryption-Algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	if options != nil && options.EncryptionContext != nil {
-		req.Raw().Header["x-ms-encryption-context"] = []string{*options.EncryptionContext}
+		req.Raw().Header["X-Ms-Encryption-Context"] = []string{*options.EncryptionContext}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
-		req.Raw().Header["x-ms-encryption-key"] = []string{*cpkInfo.EncryptionKey}
+		req.Raw().Header["X-Ms-Encryption-Key"] = []string{*cpkInfo.EncryptionKey}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySHA256 != nil {
-		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
+		req.Raw().Header["X-Ms-Encryption-Key-Sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if options != nil && options.ExpiryOptions != nil {
-		req.Raw().Header["x-ms-expiry-option"] = []string{string(*options.ExpiryOptions)}
+		req.Raw().Header["X-Ms-Expiry-Option"] = []string{string(*options.ExpiryOptions)}
 	}
 	if options != nil && options.ExpiresOn != nil {
-		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
+		req.Raw().Header["X-Ms-Expiry-Time"] = []string{*options.ExpiresOn}
 	}
 	if options != nil && options.Group != nil {
-		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+		req.Raw().Header["X-Ms-Group"] = []string{*options.Group}
 	}
 	if options != nil && options.LeaseDuration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
+		req.Raw().Header["X-Ms-Lease-Duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+		req.Raw().Header["X-Ms-Owner"] = []string{*options.Owner}
 	}
 	if options != nil && options.Permissions != nil {
-		req.Raw().Header["x-ms-permissions"] = []string{*options.Permissions}
+		req.Raw().Header["X-Ms-Permissions"] = []string{*options.Permissions}
 	}
 	if options != nil && options.Properties != nil {
-		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
+		req.Raw().Header["X-Ms-Properties"] = []string{*options.Properties}
 	}
 	if options != nil && options.ProposedLeaseID != nil {
-		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+		req.Raw().Header["X-Ms-Proposed-Lease-Id"] = []string{*options.ProposedLeaseID}
 	}
 	if options != nil && options.RenameSource != nil {
-		req.Raw().Header["x-ms-rename-source"] = []string{*options.RenameSource}
+		req.Raw().Header["X-Ms-Rename-Source"] = []string{*options.RenameSource}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatch != nil {
-		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
+		req.Raw().Header["X-Ms-Source-If-Match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{sourceModifiedAccessConditions.SourceIfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["X-Ms-Source-If-Modified-Since"] = []string{sourceModifiedAccessConditions.SourceIfModifiedSince.Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
-		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
+		req.Raw().Header["X-Ms-Source-If-None-Match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{sourceModifiedAccessConditions.SourceIfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["X-Ms-Source-If-Unmodified-Since"] = []string{sourceModifiedAccessConditions.SourceIfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.SourceLeaseID != nil {
-		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
+		req.Raw().Header["X-Ms-Source-Lease-Id"] = []string{*options.SourceLeaseID}
 	}
 	if options != nil && options.Umask != nil {
-		req.Raw().Header["x-ms-umask"] = []string{*options.Umask}
+		req.Raw().Header["X-Ms-Umask"] = []string{*options.Umask}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -339,7 +339,7 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -352,10 +352,10 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientCreateResponse{}, err
@@ -369,10 +369,10 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -440,19 +440,19 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // deleteHandleResponse handles the Delete response.
 func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientDeleteResponse, error) {
 	result := PathClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -462,22 +462,22 @@ func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientD
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-deletion-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Deletion-Id"); val != "" {
 		result.DeletionID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.XMSContinuation = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.XMSVersion = &val
 	}
 	return result, nil
@@ -549,55 +549,55 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.CacheControl != nil {
-		req.Raw().Header["x-ms-cache-control"] = []string{*pathHTTPHeaders.CacheControl}
+		req.Raw().Header["X-Ms-Cache-Control"] = []string{*pathHTTPHeaders.CacheControl}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentDisposition != nil {
-		req.Raw().Header["x-ms-content-disposition"] = []string{*pathHTTPHeaders.ContentDisposition}
+		req.Raw().Header["X-Ms-Content-Disposition"] = []string{*pathHTTPHeaders.ContentDisposition}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentEncoding != nil {
-		req.Raw().Header["x-ms-content-encoding"] = []string{*pathHTTPHeaders.ContentEncoding}
+		req.Raw().Header["X-Ms-Content-Encoding"] = []string{*pathHTTPHeaders.ContentEncoding}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentLanguage != nil {
-		req.Raw().Header["x-ms-content-language"] = []string{*pathHTTPHeaders.ContentLanguage}
+		req.Raw().Header["X-Ms-Content-Language"] = []string{*pathHTTPHeaders.ContentLanguage}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentMD5 != nil {
-		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(pathHTTPHeaders.ContentMD5)}
+		req.Raw().Header["X-Ms-Content-Md5"] = []string{base64.StdEncoding.EncodeToString(pathHTTPHeaders.ContentMD5)}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*pathHTTPHeaders.ContentType}
+		req.Raw().Header["X-Ms-Content-Type"] = []string{*pathHTTPHeaders.ContentType}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
+		req.Raw().Header["X-Ms-Encryption-Algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
-		req.Raw().Header["x-ms-encryption-key"] = []string{*cpkInfo.EncryptionKey}
+		req.Raw().Header["X-Ms-Encryption-Key"] = []string{*cpkInfo.EncryptionKey}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySHA256 != nil {
-		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
+		req.Raw().Header["X-Ms-Encryption-Key-Sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if options != nil && options.LeaseAction != nil {
-		req.Raw().Header["x-ms-lease-action"] = []string{string(*options.LeaseAction)}
+		req.Raw().Header["X-Ms-Lease-Action"] = []string{string(*options.LeaseAction)}
 	}
 	if options != nil && options.LeaseDuration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
+		req.Raw().Header["X-Ms-Lease-Duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.ProposedLeaseID != nil {
-		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+		req.Raw().Header["X-Ms-Proposed-Lease-Id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // flushDataHandleResponse handles the FlushData response.
 func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClientFlushDataResponse, error) {
 	result := PathClientFlushDataResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -617,10 +617,10 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientFlushDataResponse{}, err
@@ -634,17 +634,17 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-renewed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Renewed"); val != "" {
 		leaseRenewed, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientFlushDataResponse{}, err
 		}
 		result.LeaseRenewed = &leaseRenewed
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -711,19 +711,19 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (PathClientGetPropertiesResponse, error) {
 	result := PathClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-acl"); val != "" {
+	if val := resp.Header.Get("X-Ms-Acl"); val != "" {
 		result.ACL = &val
 	}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
@@ -757,7 +757,7 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
-	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Creation-Time"); val != "" {
 		creationTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return PathClientGetPropertiesResponse{}, err
@@ -774,26 +774,26 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-context"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Context"); val != "" {
 		result.EncryptionContext = &val
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Scope"); val != "" {
 		result.EncryptionScope = &val
 	}
-	if val := resp.Header.Get("x-ms-expiry-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Expiry-Time"); val != "" {
 		expiresOn, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return PathClientGetPropertiesResponse{}, err
 		}
 		result.ExpiresOn = &expiresOn
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientGetPropertiesResponse{}, err
@@ -807,31 +807,31 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Duration"); val != "" {
 		result.LeaseDuration = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-State"); val != "" {
 		result.LeaseState = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Status"); val != "" {
 		result.LeaseStatus = &val
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-permissions"); val != "" {
+	if val := resp.Header.Get("X-Ms-Permissions"); val != "" {
 		result.Permissions = &val
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-resource-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-Resource-Type"); val != "" {
 		result.ResourceType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -899,20 +899,20 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, xmsLeaseAction
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-lease-action"] = []string{string(xmsLeaseAction)}
+	req.Raw().Header["X-Ms-Lease-Action"] = []string{string(xmsLeaseAction)}
 	if options != nil && options.XMSLeaseBreakPeriod != nil {
-		req.Raw().Header["x-ms-lease-break-period"] = []string{strconv.FormatInt(int64(*options.XMSLeaseBreakPeriod), 10)}
+		req.Raw().Header["X-Ms-Lease-Break-Period"] = []string{strconv.FormatInt(int64(*options.XMSLeaseBreakPeriod), 10)}
 	}
-	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(client.xmsLeaseDuration), 10)}
+	req.Raw().Header["X-Ms-Lease-Duration"] = []string{strconv.FormatInt(int64(client.xmsLeaseDuration), 10)}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.ProposedLeaseID != nil {
-		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+		req.Raw().Header["X-Ms-Proposed-Lease-Id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -936,16 +936,16 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Time"); val != "" {
 		result.LeaseTime = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1009,24 +1009,24 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 		req.Raw().Header["Range"] = []string{*options.Range}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
+		req.Raw().Header["X-Ms-Encryption-Algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
-		req.Raw().Header["x-ms-encryption-key"] = []string{*cpkInfo.EncryptionKey}
+		req.Raw().Header["X-Ms-Encryption-Key"] = []string{*cpkInfo.EncryptionKey}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKeySHA256 != nil {
-		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
+		req.Raw().Header["X-Ms-Encryption-Key-Sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.XMSRangeGetContentMD5 != nil {
-		req.Raw().Header["x-ms-range-get-content-md5"] = []string{strconv.FormatBool(*options.XMSRangeGetContentMD5)}
+		req.Raw().Header["X-Ms-Range-Get-Content-Md5"] = []string{strconv.FormatBool(*options.XMSRangeGetContentMD5)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -1074,10 +1074,10 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientReadResponse{}, err
@@ -1091,28 +1091,28 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Duration"); val != "" {
 		result.LeaseDuration = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-State"); val != "" {
 		result.LeaseState = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Status"); val != "" {
 		result.LeaseStatus = &val
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-resource-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-Resource-Type"); val != "" {
 		result.ResourceType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
-	if val := resp.Header.Get("x-ms-content-md5"); val != "" {
+	if val := resp.Header.Get("X-Ms-Content-Md5"); val != "" {
 		result.XMSContentMD5 = &val
 	}
 	return result, nil
@@ -1170,31 +1170,31 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.ACL != nil {
-		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
+		req.Raw().Header["X-Ms-Acl"] = []string{*options.ACL}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.Group != nil {
-		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+		req.Raw().Header["X-Ms-Group"] = []string{*options.Group}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+		req.Raw().Header["X-Ms-Owner"] = []string{*options.Owner}
 	}
 	if options != nil && options.Permissions != nil {
-		req.Raw().Header["x-ms-permissions"] = []string{*options.Permissions}
+		req.Raw().Header["X-Ms-Permissions"] = []string{*options.Permissions}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // setAccessControlHandleResponse handles the SetAccessControl response.
 func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (PathClientSetAccessControlResponse, error) {
 	result := PathClientSetAccessControlResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1214,10 +1214,10 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1274,22 +1274,22 @@ func (client *PathClient) SetAccessControlRecursiveCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ACL != nil {
-		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
+		req.Raw().Header["X-Ms-Acl"] = []string{*options.ACL}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // SetAccessControlRecursiveHandleResponse handles the SetAccessControlRecursive response.
 func (client *PathClient) SetAccessControlRecursiveHandleResponse(resp *http.Response) (PathClientSetAccessControlRecursiveResponse, error) {
 	result := PathClientSetAccessControlRecursiveResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1299,10 +1299,10 @@ func (client *PathClient) SetAccessControlRecursiveHandleResponse(resp *http.Res
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetAccessControlRecursiveResponse); err != nil {
@@ -1349,20 +1349,20 @@ func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-expiry-option"] = []string{string(expiryOptions)}
+	req.Raw().Header["X-Ms-Expiry-Option"] = []string{string(expiryOptions)}
 	if options != nil && options.ExpiresOn != nil {
-		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
+		req.Raw().Header["X-Ms-Expiry-Time"] = []string{*options.ExpiresOn}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // setExpiryHandleResponse handles the SetExpiry response.
 func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClientSetExpiryResponse, error) {
 	result := PathClientSetExpiryResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1382,10 +1382,10 @@ func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1428,19 +1428,19 @@ func (client *PathClient) undeleteCreateRequest(ctx context.Context, options *Pa
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.UndeleteSource != nil {
-		req.Raw().Header["x-ms-undelete-source"] = []string{*options.UndeleteSource}
+		req.Raw().Header["X-Ms-Undelete-Source"] = []string{*options.UndeleteSource}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
 // undeleteHandleResponse handles the Undelete response.
 func (client *PathClient) undeleteHandleResponse(resp *http.Response) (PathClientUndeleteResponse, error) {
 	result := PathClientUndeleteResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1450,13 +1450,13 @@ func (client *PathClient) undeleteHandleResponse(resp *http.Response) (PathClien
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-resource-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-Resource-Type"); val != "" {
 		result.ResourceType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1552,51 +1552,51 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.ACL != nil {
-		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
+		req.Raw().Header["X-Ms-Acl"] = []string{*options.ACL}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.CacheControl != nil {
-		req.Raw().Header["x-ms-cache-control"] = []string{*pathHTTPHeaders.CacheControl}
+		req.Raw().Header["X-Ms-Cache-Control"] = []string{*pathHTTPHeaders.CacheControl}
 	}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentDisposition != nil {
-		req.Raw().Header["x-ms-content-disposition"] = []string{*pathHTTPHeaders.ContentDisposition}
+		req.Raw().Header["X-Ms-Content-Disposition"] = []string{*pathHTTPHeaders.ContentDisposition}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentEncoding != nil {
-		req.Raw().Header["x-ms-content-encoding"] = []string{*pathHTTPHeaders.ContentEncoding}
+		req.Raw().Header["X-Ms-Content-Encoding"] = []string{*pathHTTPHeaders.ContentEncoding}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentLanguage != nil {
-		req.Raw().Header["x-ms-content-language"] = []string{*pathHTTPHeaders.ContentLanguage}
+		req.Raw().Header["X-Ms-Content-Language"] = []string{*pathHTTPHeaders.ContentLanguage}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentMD5 != nil {
-		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(pathHTTPHeaders.ContentMD5)}
+		req.Raw().Header["X-Ms-Content-Md5"] = []string{base64.StdEncoding.EncodeToString(pathHTTPHeaders.ContentMD5)}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.ContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*pathHTTPHeaders.ContentType}
+		req.Raw().Header["X-Ms-Content-Type"] = []string{*pathHTTPHeaders.ContentType}
 	}
 	if options != nil && options.Group != nil {
-		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+		req.Raw().Header["X-Ms-Group"] = []string{*options.Group}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		req.Raw().Header["X-Ms-Lease-Id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+		req.Raw().Header["X-Ms-Owner"] = []string{*options.Owner}
 	}
 	if options != nil && options.Permissions != nil {
-		req.Raw().Header["x-ms-permissions"] = []string{*options.Permissions}
+		req.Raw().Header["X-Ms-Permissions"] = []string{*options.Permissions}
 	}
 	if options != nil && options.Properties != nil {
-		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
+		req.Raw().Header["X-Ms-Properties"] = []string{*options.Properties}
 	}
 	if options != nil && options.StructuredBodyType != nil {
-		req.Raw().Header["x-ms-structured-body"] = []string{*options.StructuredBodyType}
+		req.Raw().Header["X-Ms-Structured-Body"] = []string{*options.StructuredBodyType}
 	}
 	if options != nil && options.StructuredContentLength != nil {
-		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
+		req.Raw().Header["X-Ms-Structured-Content-Length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
 	}
@@ -1654,19 +1654,19 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-structured-body"); val != "" {
+	if val := resp.Header.Get("X-Ms-Structured-Body"); val != "" {
 		result.StructuredBodyType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.XMSContinuation = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetAccessControlRecursiveResponse); err != nil {

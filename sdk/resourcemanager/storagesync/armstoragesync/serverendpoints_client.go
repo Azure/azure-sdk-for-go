@@ -284,10 +284,10 @@ func (client *ServerEndpointsClient) getCreateRequest(ctx context.Context, resou
 // getHandleResponse handles the Get response.
 func (client *ServerEndpointsClient) getHandleResponse(resp *http.Response) (ServerEndpointsClientGetResponse, error) {
 	result := ServerEndpointsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerEndpoint); err != nil {
@@ -364,10 +364,10 @@ func (client *ServerEndpointsClient) listBySyncGroupHandleResponse(resp *http.Re
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerEndpointArray); err != nil {

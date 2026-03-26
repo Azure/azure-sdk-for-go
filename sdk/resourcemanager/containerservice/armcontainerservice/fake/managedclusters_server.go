@@ -523,7 +523,7 @@ func (m *ManagedClustersServerTransport) dispatchGetCommandResult(req *http.Requ
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }

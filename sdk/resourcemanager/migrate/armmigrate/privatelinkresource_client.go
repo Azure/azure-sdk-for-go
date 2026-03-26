@@ -104,7 +104,7 @@ func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, r
 // getHandleResponse handles the Get response.
 func (client *PrivateLinkResourceClient) getHandleResponse(resp *http.Response) (PrivateLinkResourceClientGetResponse, error) {
 	result := PrivateLinkResourceClientGetResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
@@ -173,7 +173,7 @@ func (client *PrivateLinkResourceClient) listByProjectCreateRequest(ctx context.
 // listByProjectHandleResponse handles the ListByProject response.
 func (client *PrivateLinkResourceClient) listByProjectHandleResponse(resp *http.Response) (PrivateLinkResourceClientListByProjectResponse, error) {
 	result := PrivateLinkResourceClientListByProjectResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceCollection); err != nil {

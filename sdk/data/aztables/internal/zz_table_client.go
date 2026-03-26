@@ -63,9 +63,9 @@ func (client *TableClient) createCreateRequest(ctx context.Context, tablePropert
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.ResponsePreference != nil {
@@ -81,7 +81,7 @@ func (client *TableClient) createCreateRequest(ctx context.Context, tablePropert
 // createHandleResponse handles the Create response.
 func (client *TableClient) createHandleResponse(resp *http.Response) (TableClientCreateResponse, error) {
 	result := TableClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -94,10 +94,10 @@ func (client *TableClient) createHandleResponse(resp *http.Response) (TableClien
 	if val := resp.Header.Get("Preference-Applied"); val != "" {
 		result.PreferenceApplied = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableResponse); err != nil {
@@ -141,9 +141,9 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -152,7 +152,7 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 // deleteHandleResponse handles the Delete response.
 func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClientDeleteResponse, error) {
 	result := TableClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -162,10 +162,10 @@ func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClien
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -224,9 +224,9 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table 
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -237,7 +237,7 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table 
 // deleteEntityHandleResponse handles the DeleteEntity response.
 func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (TableClientDeleteEntityResponse, error) {
 	result := TableClientDeleteEntityResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -247,10 +247,10 @@ func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (Tabl
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -298,9 +298,9 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 	}
 	reqQP.Set("comp", "acl")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -309,7 +309,7 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 // getAccessPolicyHandleResponse handles the GetAccessPolicy response.
 func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (TableClientGetAccessPolicyResponse, error) {
 	result := TableClientGetAccessPolicyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -319,10 +319,10 @@ func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (T
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result); err != nil {
@@ -375,9 +375,9 @@ func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table 
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.ResponsePreference != nil {
@@ -396,7 +396,7 @@ func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table 
 // insertEntityHandleResponse handles the InsertEntity response.
 func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (TableClientInsertEntityResponse, error) {
 	result := TableClientInsertEntityResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
@@ -415,10 +415,10 @@ func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (Tabl
 	if val := resp.Header.Get("Preference-Applied"); val != "" {
 		result.PreferenceApplied = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
@@ -478,9 +478,9 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table s
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.IfMatch != nil {
@@ -499,7 +499,7 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table s
 // mergeEntityHandleResponse handles the MergeEntity response.
 func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (TableClientMergeEntityResponse, error) {
 	result := TableClientMergeEntityResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -512,10 +512,10 @@ func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (Table
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -569,9 +569,9 @@ func (client *TableClient) queryCreateRequest(ctx context.Context, options *Tabl
 		reqQP.Set("NextTableName", *options.NextTableName)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
@@ -581,7 +581,7 @@ func (client *TableClient) queryCreateRequest(ctx context.Context, options *Tabl
 // queryHandleResponse handles the Query response.
 func (client *TableClient) queryHandleResponse(resp *http.Response) (TableClientQueryResponse, error) {
 	result := TableClientQueryResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -591,13 +591,13 @@ func (client *TableClient) queryHandleResponse(resp *http.Response) (TableClient
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation-NextTableName"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation-Nexttablename"); val != "" {
 		result.XMSContinuationNextTableName = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableQueryResponse); err != nil {
@@ -665,9 +665,9 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table
 		reqQP.Set("NextRowKey", *options.NextRowKey)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
@@ -677,7 +677,7 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table
 // queryEntitiesHandleResponse handles the QueryEntities response.
 func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (TableClientQueryEntitiesResponse, error) {
 	result := TableClientQueryEntitiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -687,16 +687,16 @@ func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (Tab
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation-NextPartitionKey"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation-Nextpartitionkey"); val != "" {
 		result.XMSContinuationNextPartitionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation-NextRowKey"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation-Nextrowkey"); val != "" {
 		result.XMSContinuationNextRowKey = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableEntityQueryResponse); err != nil {
@@ -763,9 +763,9 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
@@ -775,7 +775,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 // queryEntityWithPartitionAndRowKeyHandleResponse handles the QueryEntityWithPartitionAndRowKey response.
 func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp *http.Response) (TableClientQueryEntityWithPartitionAndRowKeyResponse, error) {
 	result := TableClientQueryEntityWithPartitionAndRowKeyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -788,16 +788,16 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp 
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation-NextPartitionKey"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation-Nextpartitionkey"); val != "" {
 		result.XMSContinuationNextPartitionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation-NextRowKey"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation-Nextrowkey"); val != "" {
 		result.XMSContinuationNextRowKey = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
@@ -847,9 +847,9 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 	}
 	reqQP.Set("comp", "acl")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	type wrapper struct {
@@ -868,7 +868,7 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
 func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (TableClientSetAccessPolicyResponse, error) {
 	result := TableClientSetAccessPolicyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -878,10 +878,10 @@ func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (T
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -938,9 +938,9 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table 
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.IfMatch != nil {
@@ -959,7 +959,7 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table 
 // updateEntityHandleResponse handles the UpdateEntity response.
 func (client *TableClient) updateEntityHandleResponse(resp *http.Response) (TableClientUpdateEntityResponse, error) {
 	result := TableClientUpdateEntityResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -972,10 +972,10 @@ func (client *TableClient) updateEntityHandleResponse(resp *http.Response) (Tabl
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

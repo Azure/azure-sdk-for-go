@@ -86,7 +86,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityInput); err != nil {
@@ -181,7 +181,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -241,7 +241,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -299,7 +299,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -362,7 +362,7 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -420,7 +420,7 @@ func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	return req, nil
 }
@@ -488,7 +488,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

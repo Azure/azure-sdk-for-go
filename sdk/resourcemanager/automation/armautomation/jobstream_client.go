@@ -103,7 +103,7 @@ func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resou
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		req.Raw().Header["Clientrequestid"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

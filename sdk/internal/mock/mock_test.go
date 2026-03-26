@@ -216,7 +216,7 @@ func TestComplexResponse(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	if h := resp.Header.Get("some"); h != "value" {
+	if h := resp.Header.Get("Some"); h != "value" {
 		t.Fatalf("unexpected header value %s", h)
 	}
 	r, err := io.ReadAll(resp.Body)
@@ -250,7 +250,7 @@ func TestComplexResponseTLS(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	if h := resp.Header.Get("some"); h != "value" {
+	if h := resp.Header.Get("Some"); h != "value" {
 		t.Fatalf("unexpected header value %s", h)
 	}
 	r, err := io.ReadAll(resp.Body)
@@ -288,7 +288,7 @@ func TestTLSServerConfig(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	if h := resp.Header.Get("some"); h != "value" {
+	if h := resp.Header.Get("Some"); h != "value" {
 		t.Fatalf("unexpected header value %s", h)
 	}
 	r, err := io.ReadAll(resp.Body)

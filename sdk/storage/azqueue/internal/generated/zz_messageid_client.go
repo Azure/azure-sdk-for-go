@@ -67,9 +67,9 @@ func (client *MessageIDClient) deleteCreateRequest(ctx context.Context, popRecei
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -78,10 +78,10 @@ func (client *MessageIDClient) deleteCreateRequest(ctx context.Context, popRecei
 // deleteHandleResponse handles the Delete response.
 func (client *MessageIDClient) deleteHandleResponse(resp *http.Response) (MessageIDClientDeleteResponse, error) {
 	result := MessageIDClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -135,9 +135,9 @@ func (client *MessageIDClient) updateCreateRequest(ctx context.Context, popRecei
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["X-Ms-Version"] = []string{"2026-02-06"}
 	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+		req.Raw().Header["X-Ms-Client-Request-Id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, runtime.MarshalAsXML(req, queueMessage)
@@ -146,10 +146,10 @@ func (client *MessageIDClient) updateCreateRequest(ctx context.Context, popRecei
 // updateHandleResponse handles the Update response.
 func (client *MessageIDClient) updateHandleResponse(resp *http.Response) (MessageIDClientUpdateResponse, error) {
 	result := MessageIDClientUpdateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -159,10 +159,10 @@ func (client *MessageIDClient) updateHandleResponse(resp *http.Response) (Messag
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-popreceipt"); val != "" {
+	if val := resp.Header.Get("X-Ms-Popreceipt"); val != "" {
 		result.PopReceipt = &val
 	}
-	if val := resp.Header.Get("x-ms-time-next-visible"); val != "" {
+	if val := resp.Header.Get("X-Ms-Time-Next-Visible"); val != "" {
 		timeNextVisible, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return MessageIDClientUpdateResponse{}, err

@@ -150,7 +150,7 @@ func (p *ProjectsServerTransport) dispatchAssessmentOptions(req *http.Request) (
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -234,7 +234,7 @@ func (p *ProjectsServerTransport) dispatchCreate(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -270,7 +270,7 @@ func (p *ProjectsServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -306,7 +306,7 @@ func (p *ProjectsServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -422,7 +422,7 @@ func (p *ProjectsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

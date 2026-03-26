@@ -1,0 +1,4 @@
+directory: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/PolicyInsights
+commit: 263e1b86824984fd7c265e38695ad22f0dc18a21
+repo: i-specs
+additionalDirectories: 

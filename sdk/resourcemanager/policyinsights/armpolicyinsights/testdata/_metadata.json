@@ -1,0 +1,7 @@
+{
+  "apiVersions": {
+    "PolicyInsightsApi": "2024-10-01",
+    "PolicyTrackedResourcesApi": "2018-07-01-preview"
+  },
+  "emitterVersion": "0.10.3"
+}

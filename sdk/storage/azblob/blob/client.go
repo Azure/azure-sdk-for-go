@@ -368,6 +368,9 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	if o == nil {
+		o = &DownloadStreamOptions{}
+	}
 	dr, err := b.generated().Download(ctx, o.format())
 	if err != nil {
 		return DownloadStreamResponse{}, err

@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.AppLink": "2025-08-01-preview"
+  },
+  "emitterVersion": "0.10.3"
+}

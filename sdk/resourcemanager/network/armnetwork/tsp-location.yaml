@@ -1,0 +1,4 @@
+directory: specification/network/resource-manager/Microsoft.Network/Network
+commit: b6b363c26a30c1a80802753cffb632fa767239dc
+repo: i-specs
+additionalDirectories: 

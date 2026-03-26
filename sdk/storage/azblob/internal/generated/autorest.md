@@ -389,17 +389,6 @@ directive:
       replace(/SignedTid\s+\*string/g, `SignedTID *string`);
 ```
 
-### Fixing Typo with StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed
-
-``` yaml
-directive:
-- from: zz_constants.go
-  where: $
-  transform: >-
-    return $.
-      replace(/IncrementalCopyOfEralierVersionSnapshotNotAllowed/g, "IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
-```
-
 ### Fix up x-ms-content-crc64 header response name
 
 ``` yaml

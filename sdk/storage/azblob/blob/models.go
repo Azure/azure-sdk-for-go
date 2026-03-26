@@ -40,6 +40,10 @@ type CPKInfo = generated.CPKInfo
 // CPKScopeInfo contains a group of parameters for client provided encryption scope.
 type CPKScopeInfo = generated.CPKScopeInfo
 
+// SourceCPKInfo contains a group of parameters for the AppendBlobClient.AppendBlockFromURL,
+// BlockBlobClient.UploadBlobFromURL, BlockBlobClient.StageBlockFromURL and PageBlobClient.UploadPagesFromURL methods.
+type SourceCPKInfo = generated.SourceCPKInfo
+
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
 

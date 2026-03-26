@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (2026-03-19)
+## 1.2.0-beta.2 (2026-03-26)
 ### Features Added
 
 - New value `ResourceOperationTypeCreate`, `ResourceOperationTypeDelete` added to enum type `ResourceOperationType`

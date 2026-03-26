@@ -1,6 +1,6 @@
-# Azure Appnetwork Module for Go
+# Azure Kubernetes Application Network Module for Go
 
-The `armappnetwork` module provides operations for working with Azure Appnetwork.
+The `armappnetwork` module provides operations for working with Azure Kubernetes Application Network.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/appnetwork/armappnetwork)
 
@@ -15,7 +15,7 @@ The `armappnetwork` module provides operations for working with Azure Appnetwork
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Appnetwork module:
+Install the Azure Kubernetes Application Network module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appnetwork/armappnetwork
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appnetwork/armappne
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Appnetwork.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Kubernetes Application Network.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Appnetwork module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Kubernetes Application Network module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armappnetwork.NewClientFactory(<subscription ID>, cred, nil)

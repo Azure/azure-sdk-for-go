@@ -763,7 +763,7 @@ func (s *PageBlobRecordedTestsSuite) TestIncrementalCopyErrorCode() {
 
 	_, err = dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshot1Resp.Snapshot, nil)
 	_require.Error(err)
-	_require.Contains(err.Error(), bloberror.IncrementalCopyOfEarlierSnapshotNotAllowed)
+	_require.True(bloberror.HasCode(err, bloberror.IncrementalCopyOfEarlierSnapshotNotAllowed))
 }
 func (s *PageBlobRecordedTestsSuite) TestResizePageBlob() {
 	_require := require.New(s.T())

@@ -135,8 +135,8 @@ func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 					},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 	}
 
@@ -173,8 +173,8 @@ func TestGetLayout_SinglePageNoLayout(t *testing.T) {
 					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 	}
 
@@ -211,8 +211,8 @@ func TestGetLayout_MultiplePages(t *testing.T) {
 					},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 		{
 			BlobLayout: generated.BlobLayout{
@@ -228,8 +228,8 @@ func TestGetLayout_MultiplePages(t *testing.T) {
 					},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 	}
 

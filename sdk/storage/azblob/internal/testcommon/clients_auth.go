@@ -8,14 +8,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -95,10 +92,10 @@ var SpecialCharBlobTagsMap = map[string]string{
 }
 
 func init() {
-	log.SetListener(func(event log.Event, msg string) {
-		fmt.Printf("[%s] %s\n", event, msg)
-	})
-	log.SetEvents(log.EventRequest, log.EventResponse)
+	//log.SetListener(func(event log.Event, msg string) {
+	//	fmt.Printf("[%s] %s\n", event, msg)
+	//})
+	//log.SetEvents(log.EventRequest, log.EventResponse)
 }
 
 func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
@@ -106,13 +103,13 @@ func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 
 	// To enable Fiddler for live debugging, uncomment the block below.
 	// NOTE: This bypasses test recording - only use for live debugging!
-	proxyURL, _ := url.Parse("http://127.0.0.1:8888")
-	opts.Transport = &http.Client{
-		Transport: &http.Transport{
-			Proxy: http.ProxyURL(proxyURL),
-		},
-	}
-	return
+	//proxyURL, _ := url.Parse("http://127.0.0.1:8080")
+	//opts.Transport = &http.Client{
+	//	Transport: &http.Transport{
+	//		Proxy: http.ProxyURL(proxyURL),
+	//	},
+	//}
+	//return
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)

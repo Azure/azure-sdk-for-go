@@ -11,21 +11,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-type CtxLayoutEndpointKey struct{}
+type ctxLayoutEndpointKey struct{}
 
 func WithLayoutEndpoint(ctx context.Context, endpoint string) context.Context {
 	if endpoint == "" {
 		return ctx
 	}
-	return context.WithValue(ctx, CtxLayoutEndpointKey{}, endpoint)
+	return context.WithValue(ctx, ctxLayoutEndpointKey{}, endpoint)
 }
 
-type LayoutPolicy struct {
+type layoutPolicy struct {
 }
 
-func (l LayoutPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (l layoutPolicy) Do(req *policy.Request) (*http.Response, error) {
 	// Check if the layout endpoint is set in the context
-	if layoutEndpoint := req.Raw().Context().Value(CtxLayoutEndpointKey{}); layoutEndpoint != nil && layoutEndpoint != "" {
+	if layoutEndpoint := req.Raw().Context().Value(ctxLayoutEndpointKey{}); layoutEndpoint != nil && layoutEndpoint != "" {
 		// Read the request endpoint (account) and set the Host header to the endpoint if not already set.
 		req.Raw().Host = req.Raw().URL.Host
 
@@ -42,5 +42,5 @@ func (l LayoutPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func NewLayoutPolicy() policy.Policy {
-	return LayoutPolicy{}
+	return layoutPolicy{}
 }

@@ -4107,7 +4107,6 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 			BlockSize:   int64(4 * 1024 * 1024), // 4 MiB block size to ensure multiple pages
 			Concurrency: 3,
 			Metadata:    testcommon.BasicMetadata,
-			Tags:        testcommon.BasicBlobTagsMap,
 			HTTPHeaders: &testcommon.BasicHeaders,
 		})
 
@@ -4593,38 +4592,61 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKFalse() {
 	}
 }
 
-func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKScope() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
+// TODO : This should work when this feature is public preview, but I can't test this with the preprod account.
+//func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKScope() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	_require.NoError(err)
+//
+//	containerName := testcommon.GenerateContainerName(testName)
+//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//
+//	blobName := testcommon.GenerateBlobName(testName)
+//	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+//
+//	// Upload blob with CPK
+//	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+//		CPKScopeInfo: to.Ptr(testcommon.GetCPKScopeInfo(s.T())),
+//	})
+//	_require.NoError(err)
+//
+//	pager := bbClient.GetLayoutPager(nil)
+//	_require.NotNil(pager)
+//
+//	for pager.More() {
+//		_, err = pager.NextPage(context.Background())
+//		_require.NoError(err)
+//	}
+//}
 
-	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+type hostMismatchCheckPolicy struct {
+	t        *testing.T
+	_require *require.Assertions
+}
 
-	blobName := testcommon.GenerateBlobName(testName)
-	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+func (p *hostMismatchCheckPolicy) Do(req *policy.Request) (*http.Response, error) {
+	urlHost := req.Raw().URL.Host
+	headerHost := req.Raw().Host
 
-	// Upload blob with CPK
-	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
-		CPKScopeInfo: to.Ptr(testcommon.GetCPKScopeInfo(s.T())),
-	})
-	_require.NoError(err)
-
-	pager := bbClient.GetLayoutPager(nil)
-	_require.NotNil(pager)
-
-	for pager.More() {
-		_, err = pager.NextPage(context.Background())
-		_require.NoError(err)
+	// Assert that Host header is set and different from URL host
+	// Check if this is a blob download
+	if req.Raw().Method == http.MethodGet && req.Raw().URL.RawQuery == "" && headerHost == urlHost {
+		p._require.NotEqual(urlHost, headerHost, "URL Host and Host header should be different")
 	}
+
+	return req.Next()
 }
 
 func (s *BlobUnrecordedTestsSuite) TestDownloadBufferWithLayoutAwareRouting() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, &service.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{&hostMismatchCheckPolicy{t: s.T(), _require: _require}},
+		},
+	})
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

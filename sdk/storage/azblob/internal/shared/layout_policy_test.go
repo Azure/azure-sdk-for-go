@@ -20,7 +20,7 @@ func TestWithLayoutEndpoint(t *testing.T) {
 
 	ctxWithEndpoint := WithLayoutEndpoint(ctx, endpoint)
 
-	value := ctxWithEndpoint.Value(CtxLayoutEndpointKey{})
+	value := ctxWithEndpoint.Value(ctxLayoutEndpointKey{})
 	require.NotNil(t, value)
 	require.Equal(t, endpoint, value.(string))
 }
@@ -30,16 +30,16 @@ func TestWithLayoutEndpointEmptyString(t *testing.T) {
 
 	ctxWithEndpoint := WithLayoutEndpoint(ctx, "")
 
-	value := ctxWithEndpoint.Value(CtxLayoutEndpointKey{})
+	value := ctxWithEndpoint.Value(ctxLayoutEndpointKey{})
 	require.Nil(t, value)
 }
 
-func TestLayoutPolicyWithLayoutEndpointSet(t *testing.T) {
+func TestLayoutPolicyWithLayoutEndpoint(t *testing.T) {
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(200))
 
-	layoutEndpoint := "layout.blob.core.windows.net"
+	layoutHost := "layout.blob.core.windows.net:443"
 	originalHost := "original.blob.core.windows.net"
 
 	p := NewLayoutPolicy()
@@ -48,7 +48,7 @@ func TestLayoutPolicyWithLayoutEndpointSet(t *testing.T) {
 		&policy.ClientOptions{Transport: srv},
 	)
 
-	ctx := WithLayoutEndpoint(context.Background(), layoutEndpoint)
+	ctx := WithLayoutEndpoint(context.Background(), "https://"+layoutHost)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, "https://"+originalHost+"/container/blob")
 	require.NoError(t, err)
 
@@ -59,10 +59,54 @@ func TestLayoutPolicyWithLayoutEndpointSet(t *testing.T) {
 	// After policy execution, the Host header should be set to original host
 	require.Equal(t, originalHost, req.Raw().Host)
 	// The URL host should be changed to layout endpoint
-	require.Equal(t, layoutEndpoint, req.Raw().URL.Host)
+	require.Equal(t, layoutHost, req.Raw().URL.Host)
 }
 
-func TestLayoutPolicyWithoutLayoutEndpointSet(t *testing.T) {
+func TestLayoutPolicyWithLayoutEndpointEmpty(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	originalHost := "original.blob.core.windows.net"
+
+	p := NewLayoutPolicy()
+	pl := runtime.NewPipeline("", "",
+		runtime.PipelineOptions{PerCall: []policy.Policy{p}},
+		&policy.ClientOptions{Transport: srv},
+	)
+
+	// Manually set empty string in context (bypassing WithLayoutEndpoint)
+	ctx := context.WithValue(context.Background(), ctxLayoutEndpointKey{}, "")
+	req, err := runtime.NewRequest(ctx, http.MethodGet, "https://"+originalHost+"/container/blob")
+	require.NoError(t, err)
+
+	_, err = pl.Do(req)
+	require.NoError(t, err)
+
+	// URL host should remain unchanged when endpoint is empty
+	require.Equal(t, originalHost, req.Raw().URL.Host)
+}
+
+func TestLayoutPolicyWithLayoutEndpointInvalid(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+
+	p := NewLayoutPolicy()
+	pl := runtime.NewPipeline("", "",
+		runtime.PipelineOptions{PerCall: []policy.Policy{p}},
+		&policy.ClientOptions{Transport: srv},
+	)
+
+	// Use an invalid URL that will fail parsing
+	ctx := context.WithValue(context.Background(), ctxLayoutEndpointKey{}, "://invalid-url")
+	req, err := runtime.NewRequest(ctx, http.MethodGet, "https://original.blob.core.windows.net/container/blob")
+	require.NoError(t, err)
+
+	_, err = pl.Do(req)
+	require.Error(t, err)
+}
+
+func TestLayoutPolicyWithoutLayoutEndpoint(t *testing.T) {
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(200))
@@ -92,6 +136,6 @@ func TestLayoutPolicyWithoutLayoutEndpointSet(t *testing.T) {
 func TestNewLayoutPolicy(t *testing.T) {
 	p := NewLayoutPolicy()
 	require.NotNil(t, p)
-	_, ok := p.(LayoutPolicy)
+	_, ok := p.(layoutPolicy)
 	require.True(t, ok)
 }

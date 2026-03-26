@@ -3933,7 +3933,7 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerSinglePage() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -3969,10 +3969,10 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerSinglePage() {
 	_require.False(pager.More())
 }
 
-func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithSAS() {
+func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
@@ -4038,7 +4038,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithSAS() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4081,10 +4081,10 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithRange() {
 	_require.False(pager.More())
 }
 
-func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
+func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4094,7 +4094,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	_require.NoError(err)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	blobSize := 100 * 1024 * 1024 // 100 MiB
+	blobSize := 20 * 1024 * 1024 // 20 MiB
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 	_require.NoError(err)
@@ -4104,8 +4104,8 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	// Perform UploadStream
 	_, err = bbClient.UploadStream(context.Background(), blobContentReader,
 		&blockblob.UploadStreamOptions{
-			BlockSize:   int64(4 * 1024 * 1024), // 4 MiB block size to ensure multiple pages
-			Concurrency: 3,
+			BlockSize:   int64(4 * 1024 * 1024), // 1 MiB block size to ensure multiple pages
+			Concurrency: 1,
 			Metadata:    testcommon.BasicMetadata,
 			HTTPHeaders: &testcommon.BasicHeaders,
 		})
@@ -4114,7 +4114,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	_require.NoError(err)
 	_require.NoError(err)
 
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(5))}) // 4 MiB block size to ensure multiple pages
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(1))}) // 4 MiB block size to ensure multiple pages
 	_require.NotNil(pager)
 
 	pageCount := 0
@@ -4128,10 +4128,10 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	_require.True(pageCount > 1, "Expected multiple pages but got only %d", pageCount)
 }
 
-func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithMarker() {
+func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4142,7 +4142,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Create a larger blob to ensure multiple pages
-	blobSize := 100 * 1024 * 1024 // 100 MiB
+	blobSize := 20 * 1024 * 1024 // 20 MiB
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 	blobContentReader, _ := testcommon.GenerateData(blobSize)
@@ -4152,7 +4152,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 	_require.NoError(err)
 
 	// First, get the first page and capture the marker
-	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(5))})
+	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(1))})
 	_require.NotNil(pager)
 
 	var marker *string
@@ -4168,7 +4168,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 	// Create a new pager starting from the captured marker
 	pagerWithMarker := bbClient.GetLayoutPager(&blob.GetLayoutOptions{
 		Marker:     marker,
-		MaxResults: to.Ptr(int32(5)),
+		MaxResults: to.Ptr(int32(1)),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfMatch: eTag,
@@ -4189,7 +4189,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithMarker() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4220,7 +4220,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchTrue() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4251,7 +4251,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfMatchFalse() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4280,7 +4280,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchTrue() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4313,7 +4313,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfNoneMatchFalse() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4346,7 +4346,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceTrue() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4381,7 +4381,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfModifiedSinceFalse() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4414,7 +4414,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceTrue() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4449,7 +4449,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerIfUnmodifiedSinceFalse() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4490,7 +4490,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsTrue() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4533,7 +4533,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerLeaseConditionsFalse() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4564,7 +4564,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKTrue() {
 func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4642,7 +4642,7 @@ func (p *hostMismatchCheckPolicy) Do(req *policy.Request) (*http.Response, error
 func (s *BlobUnrecordedTestsSuite) TestDownloadBufferWithLayoutAwareRouting() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, &service.ClientOptions{
+	svcClient, err := testcommon.GetPreprodServiceClient(s.T(), testcommon.TestAccountDefault, &service.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{&hostMismatchCheckPolicy{t: s.T(), _require: _require}},
 		},

@@ -1,5 +1,72 @@
 # Release History
 
+## 10.0.0 (2026-03-26)
+### Breaking Changes
+
+- Function `*IpamPoolsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, body IpamPoolUpdate, options *IpamPoolsClientUpdateOptions)`
+- Function `*PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibilityByResourceGroup` parameter(s) have been changed from `(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions)` to `(ctx context.Context, location string, resourceGroupName string, body CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions)`
+- Function `*StaticCidrsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, body StaticCidr, options *StaticCidrsClientCreateOptions)`
+- Function `*VerifierWorkspacesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, body VerifierWorkspaceUpdate, options *VerifierWorkspacesClientUpdateOptions)`
+- Type of `AdminPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `AdminRuleCollectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `DefaultAdminPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `EffectiveNetworkSecurityGroup.TagMap` has been changed from `*string` to `map[string][]*string`
+- Type of `IpamPoolProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `ManagedServiceIdentity.UserAssignedIdentities` has been changed from `map[string]*Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties` to `map[string]*ManagedServiceIdentityUserAssignedIdentities`
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `ReachabilityAnalysisIntentProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `ReachabilityAnalysisRunProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `SecurityAdminConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `ServiceGatewayPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `StaticCidrProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `VerifierWorkspaceProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- `ProvisioningStateCanceled`, `ProvisioningStateCreating` from enum `ProvisioningState` has been removed
+- Enum `ConnectionMonitorSourceStatus` has been removed
+- Enum `ConnectionState` has been removed
+- Enum `EvaluationState` has been removed
+- Enum `HubVirtualNetworkConnectionStatus` has been removed
+- Enum `NetworkOperationStatus` has been removed
+- Enum `TunnelConnectionStatus` has been removed
+- Struct `AzureAsyncOperationResult` has been removed
+- Struct `ChildResource` has been removed
+- Struct `CommonErrorAdditionalInfo` has been removed
+- Struct `CommonErrorDetail` has been removed
+- Struct `CommonErrorResponse` has been removed
+- Struct `CommonProxyResource` has been removed
+- Struct `CommonResource` has been removed
+- Struct `CommonTrackedResource` has been removed
+- Struct `Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties` has been removed
+- Struct `ConnectionMonitorQueryResult` has been removed
+- Struct `ConnectionStateSnapshot` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `PatchRouteFilter` has been removed
+- Struct `PatchRouteFilterRule` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceSet` has been removed
+- Struct `SecurityPerimeterProxyResource` has been removed
+- Struct `SecurityPerimeterResource` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `VPNSiteID` has been removed
+- Field `Body` of struct `IpamPoolsClientUpdateOptions` has been removed
+- Field `Body` of struct `StaticCidrsClientCreateOptions` has been removed
+- Field `Body` of struct `VerifierWorkspacesClientUpdateOptions` has been removed
+
+### Features Added
+
+- New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateCreating`, `ResourceProvisioningStateDeleting`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`, `ResourceProvisioningStateUpdating`
+- New struct `ManagedServiceIdentityUserAssignedIdentities`
+- New struct `NoContentResponse`
+- New field `NextLink` in struct `ConnectionMonitorListResult`
+- New field `RetryAfter` in struct `GroupsClientCreateOrUpdateResponse`
+- New field `NextLink` in struct `PacketCaptureListResult`
+- New anonymous field `NoContentResponse` in struct `ServiceGatewaysClientUpdateAddressLocationsResponse`
+- New anonymous field `NoContentResponse` in struct `ServiceGatewaysClientUpdateServicesResponse`
+- New field `NextLink` in struct `WatcherListResult`
+
+
 ## 9.0.0 (2026-02-19)
 ### Breaking Changes
 

@@ -16,8 +16,11 @@ import (
 
 // ServerFactory is a fake server for instances of the armserialconsole.ClientFactory type.
 type ServerFactory struct {
+	// MicrosoftSerialConsoleServer contains the fakes for client MicrosoftSerialConsoleClient
 	MicrosoftSerialConsoleServer MicrosoftSerialConsoleServer
-	SerialPortsServer            SerialPortsServer
+
+	// SerialPortsServer contains the fakes for client SerialPortsClient
+	SerialPortsServer SerialPortsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

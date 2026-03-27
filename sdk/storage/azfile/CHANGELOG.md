@@ -3,6 +3,8 @@
 ## 1.5.5-beta.1 (Unreleased)
 
 ### Features Added
+* Added support for service version 2026-04-06.
+* Added support for Files Provisioned V2 Guardrails.
 
 ### Breaking Changes
 

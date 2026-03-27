@@ -28,6 +28,7 @@ type layoutState struct {
 	ctx context.Context
 }
 
+// getLayout gets the layout of the blob.
 func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layout, time.Time, error) {
 	layoutRanges := make([]layoutRange, 0)
 

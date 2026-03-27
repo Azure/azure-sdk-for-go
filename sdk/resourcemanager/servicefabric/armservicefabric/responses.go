@@ -180,3 +180,15 @@ type ServicesClientUpdateResponse struct {
 	// The service resource.
 	ServiceResource
 }
+
+// UnsupportedVMSizesClientGetResponse contains the response from method UnsupportedVMSizesClient.Get.
+type UnsupportedVMSizesClientGetResponse struct {
+	// Describes a VM Sizes.
+	VMSizeResource
+}
+
+// UnsupportedVMSizesClientListResponse contains the response from method UnsupportedVMSizesClient.NewListPager.
+type UnsupportedVMSizesClientListResponse struct {
+	// Describes the result of the request to list VM Sizes for Service Fabric Clusters.
+	VMSizesResult
+}

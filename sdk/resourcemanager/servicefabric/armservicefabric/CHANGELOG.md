@@ -1,5 +1,21 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-03-27)
+### Features Added
+
+- New function `*ClientFactory.NewUnsupportedVMSizesClient() *UnsupportedVMSizesClient`
+- New function `NewUnsupportedVMSizesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UnsupportedVMSizesClient, error)`
+- New function `*UnsupportedVMSizesClient.Get(ctx context.Context, location string, vmSize string, options *UnsupportedVMSizesClientGetOptions) (UnsupportedVMSizesClientGetResponse, error)`
+- New function `*UnsupportedVMSizesClient.NewListPager(location string, options *UnsupportedVMSizesClientListOptions) *runtime.Pager[UnsupportedVMSizesClientListResponse]`
+- New struct `VMSize`
+- New struct `VMSizeResource`
+- New struct `VMSizesResult`
+- New field `EnableHTTPGatewayExclusiveAuthMode` in struct `ClusterProperties`
+- New field `EnableHTTPGatewayExclusiveAuthMode` in struct `ClusterPropertiesUpdateParameters`
+- New field `HTTPGatewayTokenAuthEndpointPort` in struct `NodeTypeDescription`
+- New field `MinInstanceCount`, `MinInstancePercentage` in struct `StatelessServiceProperties`
+
+
 ## 2.0.0 (2023-12-22)
 ### Breaking Changes
 

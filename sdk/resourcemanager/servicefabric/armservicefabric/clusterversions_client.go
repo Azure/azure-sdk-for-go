@@ -27,7 +27,7 @@ type ClusterVersionsClient struct {
 // NewClusterVersionsClient creates a new instance of ClusterVersionsClient with the specified values.
 //   - subscriptionID - The customer subscription identifier.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,8 +43,8 @@ func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCred
 // Get - Gets information about an available Service Fabric cluster code version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
-//   - location - The location for the cluster code versions. This is different from cluster location.
+// Generated from API version 2023-11-01-preview
+//   - location - The location parameter.
 //   - clusterVersion - The cluster code version.
 //   - options - ClusterVersionsClientGetOptions contains the optional parameters for the ClusterVersionsClient.Get method.
 func (client *ClusterVersionsClient) Get(ctx context.Context, location string, clusterVersion string, options *ClusterVersionsClientGetOptions) (ClusterVersionsClientGetResponse, error) {
@@ -70,7 +70,7 @@ func (client *ClusterVersionsClient) Get(ctx context.Context, location string, c
 }
 
 // getCreateRequest creates the Get request.
-func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, location string, clusterVersion string, options *ClusterVersionsClientGetOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, location string, clusterVersion string, _ *ClusterVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions/{clusterVersion}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -89,7 +89,7 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -107,8 +107,8 @@ func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (Clu
 // GetByEnvironment - Gets information about an available Service Fabric cluster code version by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
-//   - location - The location for the cluster code versions. This is different from cluster location.
+// Generated from API version 2023-11-01-preview
+//   - location - The location parameter.
 //   - environment - The operating system of the cluster. The default means all.
 //   - clusterVersion - The cluster code version.
 //   - options - ClusterVersionsClientGetByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.GetByEnvironment
@@ -136,7 +136,7 @@ func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, locat
 }
 
 // getByEnvironmentCreateRequest creates the GetByEnvironment request.
-func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, clusterVersion string, options *ClusterVersionsClientGetByEnvironmentOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, clusterVersion string, _ *ClusterVersionsClientGetByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions/{clusterVersion}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -159,7 +159,7 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,8 +177,8 @@ func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.R
 // List - Gets all available code versions for Service Fabric cluster resources by location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
-//   - location - The location for the cluster code versions. This is different from cluster location.
+// Generated from API version 2023-11-01-preview
+//   - location - The location parameter.
 //   - options - ClusterVersionsClientListOptions contains the optional parameters for the ClusterVersionsClient.List method.
 func (client *ClusterVersionsClient) List(ctx context.Context, location string, options *ClusterVersionsClientListOptions) (ClusterVersionsClientListResponse, error) {
 	var err error
@@ -203,7 +203,7 @@ func (client *ClusterVersionsClient) List(ctx context.Context, location string, 
 }
 
 // listCreateRequest creates the List request.
-func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, location string, options *ClusterVersionsClientListOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, location string, _ *ClusterVersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -218,7 +218,7 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -236,8 +236,8 @@ func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (Cl
 // ListByEnvironment - Gets all available code versions for Service Fabric cluster resources by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
-//   - location - The location for the cluster code versions. This is different from cluster location.
+// Generated from API version 2023-11-01-preview
+//   - location - The location parameter.
 //   - environment - The operating system of the cluster. The default means all.
 //   - options - ClusterVersionsClientListByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.ListByEnvironment
 //     method.
@@ -264,7 +264,7 @@ func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, loca
 }
 
 // listByEnvironmentCreateRequest creates the ListByEnvironment request.
-func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, options *ClusterVersionsClientListByEnvironmentOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.Context, location string, environment ClusterVersionsEnvironment, _ *ClusterVersionsClientListByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -283,7 +283,7 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

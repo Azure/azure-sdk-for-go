@@ -8,14 +8,14 @@ package armservicefabric
 // ApplicationTypeVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationTypeVersionsClient.BeginCreateOrUpdate
 // method.
 type ApplicationTypeVersionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationTypeVersionsClientBeginDeleteOptions contains the optional parameters for the ApplicationTypeVersionsClient.BeginDelete
 // method.
 type ApplicationTypeVersionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -32,7 +32,7 @@ type ApplicationTypeVersionsClientListOptions struct {
 
 // ApplicationTypesClientBeginDeleteOptions contains the optional parameters for the ApplicationTypesClient.BeginDelete method.
 type ApplicationTypesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -55,19 +55,19 @@ type ApplicationTypesClientListOptions struct {
 // ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
 // method.
 type ApplicationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete method.
 type ApplicationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate method.
 type ApplicationsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -105,13 +105,13 @@ type ClusterVersionsClientListOptions struct {
 
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
 type ClustersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
 type ClustersClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -150,19 +150,19 @@ type OperationsClientListOptions struct {
 
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
 type ServicesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
 type ServicesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
 type ServicesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -173,5 +173,15 @@ type ServicesClientGetOptions struct {
 
 // ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 type ServicesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UnsupportedVMSizesClientGetOptions contains the optional parameters for the UnsupportedVMSizesClient.Get method.
+type UnsupportedVMSizesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UnsupportedVMSizesClientListOptions contains the optional parameters for the UnsupportedVMSizesClient.NewListPager method.
+type UnsupportedVMSizesClientListOptions struct {
 	// placeholder for future optional parameters
 }

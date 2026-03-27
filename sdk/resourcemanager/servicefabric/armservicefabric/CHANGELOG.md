@@ -1,5 +1,32 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-03-27)
+### Breaking Changes
+
+- Type of `SystemData.CreatedByType` has been changed from `*string` to `*CreatedByType`
+- Type of `SystemData.LastModifiedByType` has been changed from `*string` to `*CreatedByType`
+- Struct `ErrorModel` has been removed
+- Struct `ErrorModelError` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ServiceResourcePropertiesBase` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New function `*ClientFactory.NewUnsupportedVMSizesClient() *UnsupportedVMSizesClient`
+- New function `NewUnsupportedVMSizesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UnsupportedVMSizesClient, error)`
+- New function `*UnsupportedVMSizesClient.Get(ctx context.Context, location string, vmSize string, options *UnsupportedVMSizesClientGetOptions) (UnsupportedVMSizesClientGetResponse, error)`
+- New function `*UnsupportedVMSizesClient.NewListPager(location string, options *UnsupportedVMSizesClientListOptions) *runtime.Pager[UnsupportedVMSizesClientListResponse]`
+- New struct `VMSize`
+- New struct `VMSizeResource`
+- New struct `VMSizesResult`
+- New field `EnableHTTPGatewayExclusiveAuthMode` in struct `ClusterProperties`
+- New field `EnableHTTPGatewayExclusiveAuthMode` in struct `ClusterPropertiesUpdateParameters`
+- New field `HTTPGatewayTokenAuthEndpointPort` in struct `NodeTypeDescription`
+- New field `MinInstanceCount`, `MinInstancePercentage` in struct `StatelessServiceProperties`
+
+
 ## 2.0.0 (2023-12-22)
 ### Breaking Changes
 

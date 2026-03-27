@@ -1,0 +1,4 @@
+directory: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/ServiceFabric
+commit: c69b3d32e8d0360123db465e521343fbad6c75bf
+repo: i-specs
+additionalDirectories: 

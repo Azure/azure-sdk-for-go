@@ -5,6 +5,7 @@
 ### Features Added
 * Added support for service version 2026-04-06.
 * Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`.This replaces `IncrementalCopyOfEralierVersionSnapshotNotAllowed` which has been deprecated.
+* Added support for missing SKU name values.
 
 ### Breaking Changes
 

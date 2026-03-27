@@ -132,6 +132,22 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 
 	return serviceClient, err
 }
+func GetPreprodServiceClient(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
+	if options == nil {
+		options = &service.ClientOptions{}
+	}
+
+	SetClientOptions(t, &options.ClientOptions)
+
+	cred, err := GetGenericSharedKeyCredential(accountType)
+	if err != nil {
+		return nil, err
+	}
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".blob.preprod.core.windows.net/", cred, options)
+
+	return serviceClient, err
+}
 
 func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.ClientOptions) (*service.Client, error) {
 	if options == nil {

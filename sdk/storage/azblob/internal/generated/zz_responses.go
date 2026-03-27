@@ -415,6 +415,9 @@ type BlobClientDownloadResponse struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
+	// DownloadHint contains the information returned from the x-ms-download-hint header response.
+	DownloadHint *string
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
@@ -510,6 +513,176 @@ type BlobClientGetAccountInfoResponse struct {
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
+}
+
+// BlobClientGetLayoutResponse contains the response from method BlobClient.GetLayout.
+type BlobClientGetLayoutResponse struct {
+	BlobLayout
+
+	// AcceptRanges contains the information returned from the Accept-Ranges header response.
+	AcceptRanges *string
+
+	// AccessTier contains the information returned from the x-ms-access-tier header response.
+	AccessTier *string
+
+	// AccessTierChangeTime contains the information returned from the x-ms-access-tier-change-time header response.
+	AccessTierChangeTime *time.Time
+
+	// AccessTierInferred contains the information returned from the x-ms-access-tier-inferred header response.
+	AccessTierInferred *bool
+
+	// ArchiveStatus contains the information returned from the x-ms-archive-status header response.
+	ArchiveStatus *string
+
+	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
+	BlobCommittedBlockCount *int32
+
+	// BlobContentEncoding contains the information returned from the x-ms-blob-content-encoding header response.
+	BlobContentEncoding *string
+
+	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
+	BlobContentLength *int64
+
+	// BlobContentMD5 contains the information returned from the x-ms-blob-content-md5 header response.
+	BlobContentMD5 []byte
+
+	// BlobContentType contains the information returned from the x-ms-blob-content-type header response.
+	BlobContentType *string
+
+	// BlobCreationTime contains the information returned from the x-ms-blob-creation-time header response.
+	BlobCreationTime *time.Time
+
+	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
+	BlobSequenceNumber *int64
+
+	// BlobType contains the information returned from the x-ms-blob-type header response.
+	BlobType *BlobType
+
+	// CacheControl contains the information returned from the Cache-Control header response.
+	CacheControl *string
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentDisposition contains the information returned from the Content-Disposition header response.
+	ContentDisposition *string
+
+	// ContentEncoding contains the information returned from the Content-Encoding header response.
+	ContentEncoding *string
+
+	// ContentLanguage contains the information returned from the Content-Language header response.
+	ContentLanguage *string
+
+	// ContentLength contains the information returned from the Content-Length header response.
+	ContentLength *int64
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string
+
+	// CopyCompletionTime contains the information returned from the x-ms-copy-completion-time header response.
+	CopyCompletionTime *time.Time
+
+	// CopyID contains the information returned from the x-ms-copy-id header response.
+	CopyID *string
+
+	// CopyProgress contains the information returned from the x-ms-copy-progress header response.
+	CopyProgress *string
+
+	// CopySource contains the information returned from the x-ms-copy-source header response.
+	CopySource *string
+
+	// CopyStatus contains the information returned from the x-ms-copy-status header response.
+	CopyStatus *CopyStatusType
+
+	// CopyStatusDescription contains the information returned from the x-ms-copy-status-description header response.
+	CopyStatusDescription *string
+
+	// CreationTime contains the information returned from the x-ms-creation-time header response.
+	CreationTime *time.Time
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// DestinationSnapshot contains the information returned from the x-ms-copy-destination-snapshot header response.
+	DestinationSnapshot *string
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// ExpiresOn contains the information returned from the x-ms-expiry-time header response.
+	ExpiresOn *time.Time
+
+	// ImmutabilityPolicyExpiresOn contains the information returned from the x-ms-immutability-policy-until-date header response.
+	ImmutabilityPolicyExpiresOn *time.Time
+
+	// ImmutabilityPolicyMode contains the information returned from the x-ms-immutability-policy-mode header response.
+	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+
+	// IsCurrentVersion contains the information returned from the x-ms-is-current-version header response.
+	IsCurrentVersion *bool
+
+	// IsIncrementalCopy contains the information returned from the x-ms-incremental-copy header response.
+	IsIncrementalCopy *bool
+
+	// IsSealed contains the information returned from the x-ms-blob-sealed header response.
+	IsSealed *bool
+
+	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastAccessed contains the information returned from the x-ms-last-access-time header response.
+	LastAccessed *time.Time
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
+	LeaseDuration *LeaseDurationType
+
+	// LeaseState contains the information returned from the x-ms-lease-state header response.
+	LeaseState *LeaseStateType
+
+	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
+	LeaseStatus *LeaseStatusType
+
+	// LegalHold contains the information returned from the x-ms-legal-hold header response.
+	LegalHold *bool
+
+	// Metadata contains the information returned from the x-ms-meta header response.
+	Metadata map[string]*string
+
+	// ObjectReplicationPolicyID contains the information returned from the x-ms-or-policy-id header response.
+	ObjectReplicationPolicyID *string
+
+	// ObjectReplicationRules contains the information returned from the x-ms-or header response.
+	ObjectReplicationRules map[string]*string
+
+	// RehydratePriority contains the information returned from the x-ms-rehydrate-priority header response.
+	RehydratePriority *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// SmartAccessTier contains the information returned from the x-ms-smart-access-tier header response.
+	SmartAccessTier *string
+
+	// TagCount contains the information returned from the x-ms-tag-count header response.
+	TagCount *int64
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// VersionID contains the information returned from the x-ms-version-id header response.
+	VersionID *string
 }
 
 // BlobClientGetPropertiesResponse contains the response from method BlobClient.GetProperties.
@@ -651,6 +824,9 @@ type BlobClientGetPropertiesResponse struct {
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// SmartAccessTier contains the information returned from the x-ms-smart-access-tier header response.
+	SmartAccessTier *string
 
 	// TagCount contains the information returned from the x-ms-tag-count header response.
 	TagCount *int64

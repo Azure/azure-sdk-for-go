@@ -269,7 +269,7 @@ func createMockPager(responses []GetLayoutResponse, err error) *runtime.Pager[Ge
 	index := 0
 	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
 		More: func(resp GetLayoutResponse) bool {
-			return resp.BlobLayout.NextMarker != nil && *resp.BlobLayout.NextMarker != ""
+			return resp.NextMarker != nil && *resp.NextMarker != ""
 		},
 		Fetcher: func(ctx context.Context, current *GetLayoutResponse) (GetLayoutResponse, error) {
 			if err != nil {

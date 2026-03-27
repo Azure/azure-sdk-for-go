@@ -16,67 +16,66 @@ import (
 	"strings"
 )
 
-// NamespaceDevicesClient contains the methods for the NamespaceDevices group.
-// Don't use this type directly, use NewNamespaceDevicesClient() instead.
-type NamespaceDevicesClient struct {
+// CredentialsClient contains the methods for the Credentials group.
+// Don't use this type directly, use NewCredentialsClient() instead.
+type CredentialsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewNamespaceDevicesClient creates a new instance of NamespaceDevicesClient with the specified values.
+// NewCredentialsClient creates a new instance of CredentialsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewNamespaceDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespaceDevicesClient, error) {
+func NewCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CredentialsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &NamespaceDevicesClient{
+	client := &CredentialsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrReplace - Create a NamespaceDevice
+// BeginCreateOrUpdate - Create a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - deviceName - The name of the device.
 //   - resource - Resource create parameters.
-//   - options - NamespaceDevicesClientBeginCreateOrReplaceOptions contains the optional parameters for the NamespaceDevicesClient.BeginCreateOrReplace
+//   - options - CredentialsClientBeginCreateOrUpdateOptions contains the optional parameters for the CredentialsClient.BeginCreateOrUpdate
 //     method.
-func (client *NamespaceDevicesClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, resource NamespaceDevice, options *NamespaceDevicesClientBeginCreateOrReplaceOptions) (*runtime.Poller[NamespaceDevicesClientCreateOrReplaceResponse], error) {
+func (client *CredentialsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resource Credential, options *CredentialsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CredentialsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrReplace(ctx, resourceGroupName, namespaceName, deviceName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, namespaceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDevicesClientCreateOrReplaceResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDevicesClientCreateOrReplaceResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrReplace - Create a NamespaceDevice
+// CreateOrUpdate - Create a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
-func (client *NamespaceDevicesClient) createOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, resource NamespaceDevice, options *NamespaceDevicesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
+func (client *CredentialsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resource Credential, options *CredentialsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NamespaceDevicesClient.BeginCreateOrReplace"
+	const operationName = "CredentialsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, namespaceName, deviceName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -91,9 +90,9 @@ func (client *NamespaceDevicesClient) createOrReplace(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrReplaceCreateRequest creates the CreateOrReplace request.
-func (client *NamespaceDevicesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, resource NamespaceDevice, _ *NamespaceDevicesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}"
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *CredentialsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resource Credential, _ *CredentialsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,10 +105,6 @@ func (client *NamespaceDevicesClient) createOrReplaceCreateRequest(ctx context.C
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -125,43 +120,41 @@ func (client *NamespaceDevicesClient) createOrReplaceCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginDelete - Delete a NamespaceDevice
+// BeginDelete - Delete a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - deviceName - The name of the device.
-//   - options - NamespaceDevicesClientBeginDeleteOptions contains the optional parameters for the NamespaceDevicesClient.BeginDelete
-//     method.
-func (client *NamespaceDevicesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, options *NamespaceDevicesClientBeginDeleteOptions) (*runtime.Poller[NamespaceDevicesClientDeleteResponse], error) {
+//   - options - CredentialsClientBeginDeleteOptions contains the optional parameters for the CredentialsClient.BeginDelete method.
+func (client *CredentialsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginDeleteOptions) (*runtime.Poller[CredentialsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, deviceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDevicesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDevicesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a NamespaceDevice
+// Delete - Delete a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
-func (client *NamespaceDevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, options *NamespaceDevicesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CredentialsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NamespaceDevicesClient.BeginDelete"
+	const operationName = "CredentialsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, deviceName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -177,8 +170,8 @@ func (client *NamespaceDevicesClient) deleteOperation(ctx context.Context, resou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NamespaceDevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, _ *NamespaceDevicesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}"
+func (client *CredentialsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *CredentialsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -191,10 +184,6 @@ func (client *NamespaceDevicesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -205,39 +194,38 @@ func (client *NamespaceDevicesClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// Get - Get a NamespaceDevice
+// Get - Get a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - deviceName - The name of the device.
-//   - options - NamespaceDevicesClientGetOptions contains the optional parameters for the NamespaceDevicesClient.Get method.
-func (client *NamespaceDevicesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, options *NamespaceDevicesClientGetOptions) (NamespaceDevicesClientGetResponse, error) {
+//   - options - CredentialsClientGetOptions contains the optional parameters for the CredentialsClient.Get method.
+func (client *CredentialsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientGetOptions) (CredentialsClientGetResponse, error) {
 	var err error
-	const operationName = "NamespaceDevicesClient.Get"
+	const operationName = "CredentialsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, deviceName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
-		return NamespaceDevicesClientGetResponse{}, err
+		return CredentialsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return NamespaceDevicesClientGetResponse{}, err
+		return CredentialsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return NamespaceDevicesClientGetResponse{}, err
+		return CredentialsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *NamespaceDevicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, _ *NamespaceDevicesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}"
+func (client *CredentialsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *CredentialsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -250,10 +238,6 @@ func (client *NamespaceDevicesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -266,28 +250,28 @@ func (client *NamespaceDevicesClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *NamespaceDevicesClient) getHandleResponse(resp *http.Response) (NamespaceDevicesClientGetResponse, error) {
-	result := NamespaceDevicesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceDevice); err != nil {
-		return NamespaceDevicesClientGetResponse{}, err
+func (client *CredentialsClient) getHandleResponse(resp *http.Response) (CredentialsClientGetResponse, error) {
+	result := CredentialsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
+		return CredentialsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List NamespaceDevice resources by Namespace
+// NewListByResourceGroupPager - List Credential resources by Namespace
 //
 // Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - options - NamespaceDevicesClientListByResourceGroupOptions contains the optional parameters for the NamespaceDevicesClient.NewListByResourceGroupPager
+//   - options - CredentialsClientListByResourceGroupOptions contains the optional parameters for the CredentialsClient.NewListByResourceGroupPager
 //     method.
-func (client *NamespaceDevicesClient) NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *NamespaceDevicesClientListByResourceGroupOptions) *runtime.Pager[NamespaceDevicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NamespaceDevicesClientListByResourceGroupResponse]{
-		More: func(page NamespaceDevicesClientListByResourceGroupResponse) bool {
+func (client *CredentialsClient) NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *CredentialsClientListByResourceGroupOptions) *runtime.Pager[CredentialsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CredentialsClientListByResourceGroupResponse]{
+		More: func(page CredentialsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NamespaceDevicesClientListByResourceGroupResponse) (NamespaceDevicesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDevicesClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *CredentialsClientListByResourceGroupResponse) (CredentialsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CredentialsClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -296,7 +280,7 @@ func (client *NamespaceDevicesClient) NewListByResourceGroupPager(resourceGroupN
 				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, namespaceName, options)
 			}, nil)
 			if err != nil {
-				return NamespaceDevicesClientListByResourceGroupResponse{}, err
+				return CredentialsClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -305,8 +289,8 @@ func (client *NamespaceDevicesClient) NewListByResourceGroupPager(resourceGroupN
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespaceDevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespaceDevicesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices"
+func (client *CredentialsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *CredentialsClientListByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -331,52 +315,50 @@ func (client *NamespaceDevicesClient) listByResourceGroupCreateRequest(ctx conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NamespaceDevicesClient) listByResourceGroupHandleResponse(resp *http.Response) (NamespaceDevicesClientListByResourceGroupResponse, error) {
-	result := NamespaceDevicesClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceDeviceListResult); err != nil {
-		return NamespaceDevicesClientListByResourceGroupResponse{}, err
+func (client *CredentialsClient) listByResourceGroupHandleResponse(resp *http.Response) (CredentialsClientListByResourceGroupResponse, error) {
+	result := CredentialsClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialListResult); err != nil {
+		return CredentialsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginRevoke - A long-running resource action.
+// BeginSynchronize - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - deviceName - The name of the device.
-//   - body - The content of the action request
-//   - options - NamespaceDevicesClientBeginRevokeOptions contains the optional parameters for the NamespaceDevicesClient.BeginRevoke
+//   - options - CredentialsClientBeginSynchronizeOptions contains the optional parameters for the CredentialsClient.BeginSynchronize
 //     method.
-func (client *NamespaceDevicesClient) BeginRevoke(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, options *NamespaceDevicesClientBeginRevokeOptions) (*runtime.Poller[NamespaceDevicesClientRevokeResponse], error) {
+func (client *CredentialsClient) BeginSynchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*runtime.Poller[CredentialsClientSynchronizeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.revoke(ctx, resourceGroupName, namespaceName, deviceName, body, options)
+		resp, err := client.synchronize(ctx, resourceGroupName, namespaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDevicesClientRevokeResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientSynchronizeResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDevicesClientRevokeResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientSynchronizeResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Revoke - A long-running resource action.
+// Synchronize - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
-func (client *NamespaceDevicesClient) revoke(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, options *NamespaceDevicesClientBeginRevokeOptions) (*http.Response, error) {
+func (client *CredentialsClient) synchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NamespaceDevicesClient.BeginRevoke"
+	const operationName = "CredentialsClient.BeginSynchronize"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.revokeCreateRequest(ctx, resourceGroupName, namespaceName, deviceName, body, options)
+	req, err := client.synchronizeCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -384,16 +366,16 @@ func (client *NamespaceDevicesClient) revoke(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
 	return httpResp, nil
 }
 
-// revokeCreateRequest creates the Revoke request.
-func (client *NamespaceDevicesClient) revokeCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, _ *NamespaceDevicesClientBeginRevokeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}/revoke"
+// synchronizeCreateRequest creates the Synchronize request.
+func (client *CredentialsClient) synchronizeCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *CredentialsClientBeginSynchronizeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/synchronize"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -406,10 +388,6 @@ func (client *NamespaceDevicesClient) revokeCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -417,52 +395,45 @@ func (client *NamespaceDevicesClient) revokeCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
-// BeginUpdate - Update a NamespaceDevice
+// BeginUpdate - Update a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - deviceName - The name of the device.
 //   - properties - The resource properties to be updated.
-//   - options - NamespaceDevicesClientBeginUpdateOptions contains the optional parameters for the NamespaceDevicesClient.BeginUpdate
-//     method.
-func (client *NamespaceDevicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, properties NamespaceDeviceUpdate, options *NamespaceDevicesClientBeginUpdateOptions) (*runtime.Poller[NamespaceDevicesClientUpdateResponse], error) {
+//   - options - CredentialsClientBeginUpdateOptions contains the optional parameters for the CredentialsClient.BeginUpdate method.
+func (client *CredentialsClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*runtime.Poller[CredentialsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, namespaceName, deviceName, properties, options)
+		resp, err := client.update(ctx, resourceGroupName, namespaceName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDevicesClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDevicesClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Update a NamespaceDevice
+// Update - Update a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01-preview
-func (client *NamespaceDevicesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, properties NamespaceDeviceUpdate, options *NamespaceDevicesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *CredentialsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NamespaceDevicesClient.BeginUpdate"
+	const operationName = "CredentialsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, deviceName, properties, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -478,8 +449,8 @@ func (client *NamespaceDevicesClient) update(ctx context.Context, resourceGroupN
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NamespaceDevicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, properties NamespaceDeviceUpdate, _ *NamespaceDevicesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}"
+func (client *CredentialsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, _ *CredentialsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -492,10 +463,6 @@ func (client *NamespaceDevicesClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

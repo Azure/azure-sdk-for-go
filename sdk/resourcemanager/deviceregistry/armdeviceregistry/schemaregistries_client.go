@@ -42,7 +42,7 @@ func NewSchemaRegistriesClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrReplace - Create a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaRegistryName - Schema registry name parameter.
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *SchemaRegistriesClient) BeginCreateOrReplace(ctx context.Context, 
 // CreateOrReplace - Create a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 func (client *SchemaRegistriesClient) createOrReplace(ctx context.Context, resourceGroupName string, schemaRegistryName string, resource SchemaRegistry, options *SchemaRegistriesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemaRegistriesClient.BeginCreateOrReplace"
@@ -110,7 +110,7 @@ func (client *SchemaRegistriesClient) createOrReplaceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *SchemaRegistriesClient) createOrReplaceCreateRequest(ctx context.C
 // BeginDelete - Delete a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaRegistryName - Schema registry name parameter.
 //   - options - SchemaRegistriesClientBeginDeleteOptions contains the optional parameters for the SchemaRegistriesClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *SchemaRegistriesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Delete a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 func (client *SchemaRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaRegistryName string, options *SchemaRegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemaRegistriesClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *SchemaRegistriesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -198,7 +198,7 @@ func (client *SchemaRegistriesClient) deleteCreateRequest(ctx context.Context, r
 // Get - Get a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaRegistryName - Schema registry name parameter.
 //   - options - SchemaRegistriesClientGetOptions contains the optional parameters for the SchemaRegistriesClient.Get method.
@@ -244,7 +244,7 @@ func (client *SchemaRegistriesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +261,7 @@ func (client *SchemaRegistriesClient) getHandleResponse(resp *http.Response) (Sc
 
 // NewListByResourceGroupPager - List SchemaRegistry resources by resource group
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SchemaRegistriesClientListByResourceGroupOptions contains the optional parameters for the SchemaRegistriesClient.NewListByResourceGroupPager
 //     method.
@@ -304,7 +304,7 @@ func (client *SchemaRegistriesClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *SchemaRegistriesClient) listByResourceGroupHandleResponse(resp *ht
 
 // NewListBySubscriptionPager - List SchemaRegistry resources by subscription ID
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - options - SchemaRegistriesClientListBySubscriptionOptions contains the optional parameters for the SchemaRegistriesClient.NewListBySubscriptionPager
 //     method.
 func (client *SchemaRegistriesClient) NewListBySubscriptionPager(options *SchemaRegistriesClientListBySubscriptionOptions) *runtime.Pager[SchemaRegistriesClientListBySubscriptionResponse] {
@@ -359,7 +359,7 @@ func (client *SchemaRegistriesClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,7 +377,7 @@ func (client *SchemaRegistriesClient) listBySubscriptionHandleResponse(resp *htt
 // BeginUpdate - Update a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaRegistryName - Schema registry name parameter.
 //   - properties - The resource properties to be updated.
@@ -403,7 +403,7 @@ func (client *SchemaRegistriesClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Update a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 func (client *SchemaRegistriesClient) update(ctx context.Context, resourceGroupName string, schemaRegistryName string, properties SchemaRegistryUpdate, options *SchemaRegistriesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemaRegistriesClient.BeginUpdate"
@@ -445,7 +445,7 @@ func (client *SchemaRegistriesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

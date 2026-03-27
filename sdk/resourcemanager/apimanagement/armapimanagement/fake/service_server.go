@@ -66,6 +66,10 @@ type ServiceServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginMigrateToStv2 func(ctx context.Context, resourceGroupName string, serviceName string, options *armapimanagement.ServiceClientBeginMigrateToStv2Options) (resp azfake.PollerResponder[armapimanagement.ServiceClientMigrateToStv2Response], errResp azfake.ErrorResponder)
 
+	// BeginRefreshHostnames is the fake for method ServiceClient.BeginRefreshHostnames
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRefreshHostnames func(ctx context.Context, resourceGroupName string, serviceName string, options *armapimanagement.ServiceClientBeginRefreshHostnamesOptions) (resp azfake.PollerResponder[armapimanagement.ServiceClientRefreshHostnamesResponse], errResp azfake.ErrorResponder)
+
 	// BeginRestore is the fake for method ServiceClient.BeginRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestore func(ctx context.Context, resourceGroupName string, serviceName string, parameters armapimanagement.ServiceBackupRestoreParameters, options *armapimanagement.ServiceClientBeginRestoreOptions) (resp azfake.PollerResponder[armapimanagement.ServiceClientRestoreResponse], errResp azfake.ErrorResponder)
@@ -88,6 +92,7 @@ func NewServiceServerTransport(srv *ServiceServer) *ServiceServerTransport {
 		newListPager:                          newTracker[azfake.PagerResponder[armapimanagement.ServiceClientListResponse]](),
 		newListByResourceGroupPager:           newTracker[azfake.PagerResponder[armapimanagement.ServiceClientListByResourceGroupResponse]](),
 		beginMigrateToStv2:                    newTracker[azfake.PollerResponder[armapimanagement.ServiceClientMigrateToStv2Response]](),
+		beginRefreshHostnames:                 newTracker[azfake.PollerResponder[armapimanagement.ServiceClientRefreshHostnamesResponse]](),
 		beginRestore:                          newTracker[azfake.PollerResponder[armapimanagement.ServiceClientRestoreResponse]](),
 		beginUpdate:                           newTracker[azfake.PollerResponder[armapimanagement.ServiceClientUpdateResponse]](),
 	}
@@ -104,6 +109,7 @@ type ServiceServerTransport struct {
 	newListPager                          *tracker[azfake.PagerResponder[armapimanagement.ServiceClientListResponse]]
 	newListByResourceGroupPager           *tracker[azfake.PagerResponder[armapimanagement.ServiceClientListByResourceGroupResponse]]
 	beginMigrateToStv2                    *tracker[azfake.PollerResponder[armapimanagement.ServiceClientMigrateToStv2Response]]
+	beginRefreshHostnames                 *tracker[azfake.PollerResponder[armapimanagement.ServiceClientRefreshHostnamesResponse]]
 	beginRestore                          *tracker[azfake.PollerResponder[armapimanagement.ServiceClientRestoreResponse]]
 	beginUpdate                           *tracker[azfake.PollerResponder[armapimanagement.ServiceClientUpdateResponse]]
 }
@@ -153,6 +159,8 @@ func (s *ServiceServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "ServiceClient.BeginMigrateToStv2":
 				res.resp, res.err = s.dispatchBeginMigrateToStv2(req)
+			case "ServiceClient.BeginRefreshHostnames":
+				res.resp, res.err = s.dispatchBeginRefreshHostnames(req)
 			case "ServiceClient.BeginRestore":
 				res.resp, res.err = s.dispatchBeginRestore(req)
 			case "ServiceClient.BeginUpdate":
@@ -185,7 +193,7 @@ func (s *ServiceServerTransport) dispatchBeginApplyNetworkConfigurationUpdates(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applynetworkconfigurationupdates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armapimanagement.ServiceApplyNetworkConfigurationParameters](req)
@@ -239,7 +247,7 @@ func (s *ServiceServerTransport) dispatchBeginBackup(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armapimanagement.ServiceBackupRestoreParameters](req)
@@ -285,7 +293,7 @@ func (s *ServiceServerTransport) dispatchCheckNameAvailability(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armapimanagement.ServiceCheckNameAvailabilityParameters](req)
@@ -316,7 +324,7 @@ func (s *ServiceServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armapimanagement.ServiceResource](req)
@@ -364,7 +372,7 @@ func (s *ServiceServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -406,7 +414,7 @@ func (s *ServiceServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -439,7 +447,7 @@ func (s *ServiceServerTransport) dispatchGetDomainOwnershipIdentifier(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/getDomainOwnershipIdentifier`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := s.srv.GetDomainOwnershipIdentifier(req.Context(), nil)
@@ -464,7 +472,7 @@ func (s *ServiceServerTransport) dispatchGetSsoToken(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getssotoken`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -499,7 +507,7 @@ func (s *ServiceServerTransport) dispatchNewListPager(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := s.srv.NewListPager(nil)
@@ -532,7 +540,7 @@ func (s *ServiceServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -569,7 +577,7 @@ func (s *ServiceServerTransport) dispatchBeginMigrateToStv2(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrateToStv2`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armapimanagement.MigrateToStv2Contract](req)
@@ -614,6 +622,50 @@ func (s *ServiceServerTransport) dispatchBeginMigrateToStv2(req *http.Request) (
 	return resp, nil
 }
 
+func (s *ServiceServerTransport) dispatchBeginRefreshHostnames(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRefreshHostnames == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshHostnames not implemented")}
+	}
+	beginRefreshHostnames := s.beginRefreshHostnames.get(req)
+	if beginRefreshHostnames == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshHostnames`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRefreshHostnames(req.Context(), resourceGroupNameParam, serviceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefreshHostnames = &respr
+		s.beginRefreshHostnames.add(req, beginRefreshHostnames)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefreshHostnames, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginRefreshHostnames.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefreshHostnames) {
+		s.beginRefreshHostnames.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *ServiceServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginRestore == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
@@ -623,7 +675,7 @@ func (s *ServiceServerTransport) dispatchBeginRestore(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armapimanagement.ServiceBackupRestoreParameters](req)
@@ -671,7 +723,7 @@ func (s *ServiceServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armapimanagement.ServiceUpdateParameters](req)

@@ -27,7 +27,7 @@ type GatewaySKUsClient struct {
 // NewGatewaySKUsClient creates a new instance of GatewaySKUsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGatewaySKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewaySKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewGatewaySKUsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // NewListAvailableSKUsPager - Gets all available SKU for a given API Management gateway
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - gatewayName - The name of the API Management gateway.
 //   - options - GatewaySKUsClientListAvailableSKUsOptions contains the optional parameters for the GatewaySKUsClient.NewListAvailableSKUsPager
@@ -90,7 +90,7 @@ func (client *GatewaySKUsClient) listAvailableSKUsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

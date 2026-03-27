@@ -27,7 +27,7 @@ type AvailableSKUsClient struct {
 // NewAvailableSKUsClient creates a new instance of AvailableSKUsClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailableSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableSKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewAvailableSKUsClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListPager - List all the available Skus and information related to them.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - options - AvailableSKUsClientListOptions contains the optional parameters for the AvailableSKUsClient.NewListPager method.
 func (client *AvailableSKUsClient) NewListPager(options *AvailableSKUsClientListOptions) *runtime.Pager[AvailableSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailableSKUsClientListResponse]{
@@ -68,7 +68,7 @@ func (client *AvailableSKUsClient) NewListPager(options *AvailableSKUsClientList
 }
 
 // listCreateRequest creates the List request.
-func (client *AvailableSKUsClient) listCreateRequest(ctx context.Context, options *AvailableSKUsClientListOptions) (*policy.Request, error) {
+func (client *AvailableSKUsClient) listCreateRequest(ctx context.Context, _ *AvailableSKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +79,7 @@ func (client *AvailableSKUsClient) listCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

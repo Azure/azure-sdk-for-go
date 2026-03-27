@@ -5,27 +5,10 @@
 
 package armdataboxedge
 
-import "encoding/json"
-
 // AddonsClientCreateOrUpdateResponse contains the response from method AddonsClient.BeginCreateOrUpdate.
 type AddonsClientCreateOrUpdateResponse struct {
 	// Role Addon
 	AddonClassification
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AddonsClientCreateOrUpdateResponse.
-func (a AddonsClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(a.AddonClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AddonsClientCreateOrUpdateResponse.
-func (a *AddonsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalAddonClassification(data)
-	if err != nil {
-		return err
-	}
-	a.AddonClassification = res
-	return nil
 }
 
 // AddonsClientDeleteResponse contains the response from method AddonsClient.BeginDelete.
@@ -37,16 +20,6 @@ type AddonsClientDeleteResponse struct {
 type AddonsClientGetResponse struct {
 	// Role Addon
 	AddonClassification
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AddonsClientGetResponse.
-func (a *AddonsClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalAddonClassification(data)
-	if err != nil {
-		return err
-	}
-	a.AddonClassification = res
-	return nil
 }
 
 // AddonsClientListByRoleResponse contains the response from method AddonsClient.NewListByRolePager.
@@ -332,21 +305,6 @@ type RolesClientCreateOrUpdateResponse struct {
 	RoleClassification
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RolesClientCreateOrUpdateResponse.
-func (r RolesClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(r.RoleClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RolesClientCreateOrUpdateResponse.
-func (r *RolesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalRoleClassification(data)
-	if err != nil {
-		return err
-	}
-	r.RoleClassification = res
-	return nil
-}
-
 // RolesClientDeleteResponse contains the response from method RolesClient.BeginDelete.
 type RolesClientDeleteResponse struct {
 	// placeholder for future response values
@@ -356,16 +314,6 @@ type RolesClientDeleteResponse struct {
 type RolesClientGetResponse struct {
 	// Compute role.
 	RoleClassification
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RolesClientGetResponse.
-func (r *RolesClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalRoleClassification(data)
-	if err != nil {
-		return err
-	}
-	r.RoleClassification = res
-	return nil
 }
 
 // RolesClientListByDataBoxEdgeDeviceResponse contains the response from method RolesClient.NewListByDataBoxEdgeDevicePager.
@@ -459,21 +407,6 @@ type TriggersClientCreateOrUpdateResponse struct {
 	TriggerClassification
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TriggersClientCreateOrUpdateResponse.
-func (t TriggersClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.TriggerClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TriggersClientCreateOrUpdateResponse.
-func (t *TriggersClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalTriggerClassification(data)
-	if err != nil {
-		return err
-	}
-	t.TriggerClassification = res
-	return nil
-}
-
 // TriggersClientDeleteResponse contains the response from method TriggersClient.BeginDelete.
 type TriggersClientDeleteResponse struct {
 	// placeholder for future response values
@@ -483,16 +416,6 @@ type TriggersClientDeleteResponse struct {
 type TriggersClientGetResponse struct {
 	// Trigger details.
 	TriggerClassification
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TriggersClientGetResponse.
-func (t *TriggersClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalTriggerClassification(data)
-	if err != nil {
-		return err
-	}
-	t.TriggerClassification = res
-	return nil
 }
 
 // TriggersClientListByDataBoxEdgeDeviceResponse contains the response from method TriggersClient.NewListByDataBoxEdgeDevicePager.

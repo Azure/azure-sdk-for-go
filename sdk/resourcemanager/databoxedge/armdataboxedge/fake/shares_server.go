@@ -38,7 +38,7 @@ type SharesServer struct {
 	NewListByDataBoxEdgeDevicePager func(deviceName string, resourceGroupName string, options *armdataboxedge.SharesClientListByDataBoxEdgeDeviceOptions) (resp azfake.PagerResponder[armdataboxedge.SharesClientListByDataBoxEdgeDeviceResponse])
 
 	// BeginRefresh is the fake for method SharesClient.BeginRefresh
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRefresh func(ctx context.Context, deviceName string, name string, resourceGroupName string, options *armdataboxedge.SharesClientBeginRefreshOptions) (resp azfake.PollerResponder[armdataboxedge.SharesClientRefreshResponse], errResp azfake.ErrorResponder)
 }
 
@@ -73,29 +73,48 @@ func (s *SharesServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SharesClient.BeginCreateOrUpdate":
-		resp, err = s.dispatchBeginCreateOrUpdate(req)
-	case "SharesClient.BeginDelete":
-		resp, err = s.dispatchBeginDelete(req)
-	case "SharesClient.Get":
-		resp, err = s.dispatchGet(req)
-	case "SharesClient.NewListByDataBoxEdgeDevicePager":
-		resp, err = s.dispatchNewListByDataBoxEdgeDevicePager(req)
-	case "SharesClient.BeginRefresh":
-		resp, err = s.dispatchBeginRefresh(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SharesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if sharesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = sharesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SharesClient.BeginCreateOrUpdate":
+				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
+			case "SharesClient.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SharesClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SharesClient.NewListByDataBoxEdgeDevicePager":
+				res.resp, res.err = s.dispatchNewListByDataBoxEdgeDevicePager(req)
+			case "SharesClient.BeginRefresh":
+				res.resp, res.err = s.dispatchBeginRefresh(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SharesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -107,7 +126,7 @@ func (s *SharesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/shares/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdataboxedge.Share](req)
@@ -159,7 +178,7 @@ func (s *SharesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/shares/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -205,7 +224,7 @@ func (s *SharesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/shares/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -244,7 +263,7 @@ func (s *SharesServerTransport) dispatchNewListByDataBoxEdgeDevicePager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/shares`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -285,7 +304,7 @@ func (s *SharesServerTransport) dispatchBeginRefresh(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/shares/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refresh`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -313,13 +332,19 @@ func (s *SharesServerTransport) dispatchBeginRefresh(req *http.Request) (*http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginRefresh.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRefresh) {
 		s.beginRefresh.remove(req)
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SharesServerTransport
+var sharesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

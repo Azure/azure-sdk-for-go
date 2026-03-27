@@ -27,7 +27,7 @@ type OrdersClient struct {
 // NewOrdersClient creates a new instance of OrdersClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOrdersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OrdersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewOrdersClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreateOrUpdate - Creates or updates an order.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The order details of a device.
 //   - resourceGroupName - The resource group name.
 //   - order - The order to be created or updated.
@@ -69,7 +69,7 @@ func (client *OrdersClient) BeginCreateOrUpdate(ctx context.Context, deviceName 
 // CreateOrUpdate - Creates or updates an order.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *OrdersClient) createOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrdersClient.BeginCreateOrUpdate"
@@ -92,7 +92,7 @@ func (client *OrdersClient) createOrUpdate(ctx context.Context, deviceName strin
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, order Order, _ *OrdersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -111,7 +111,7 @@ func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, dev
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, order); err != nil {
@@ -123,7 +123,7 @@ func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, dev
 // BeginDelete - Deletes the order related to the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - OrdersClientBeginDeleteOptions contains the optional parameters for the OrdersClient.BeginDelete method.
@@ -147,7 +147,7 @@ func (client *OrdersClient) BeginDelete(ctx context.Context, deviceName string, 
 // Delete - Deletes the order related to the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *OrdersClient) deleteOperation(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrdersClient.BeginDelete"
@@ -170,7 +170,7 @@ func (client *OrdersClient) deleteOperation(ctx context.Context, deviceName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *OrdersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -189,7 +189,7 @@ func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +198,7 @@ func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName 
 // Get - Gets a specific order by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - OrdersClientGetOptions contains the optional parameters for the OrdersClient.Get method.
@@ -225,7 +225,7 @@ func (client *OrdersClient) Get(ctx context.Context, deviceName string, resource
 }
 
 // getCreateRequest creates the Get request.
-func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientGetOptions) (*policy.Request, error) {
+func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *OrdersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -244,7 +244,7 @@ func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +261,7 @@ func (client *OrdersClient) getHandleResponse(resp *http.Response) (OrdersClient
 
 // NewListByDataBoxEdgeDevicePager - Lists all the orders related to a Data Box Edge/Data Box Gateway device.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - OrdersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the OrdersClient.NewListByDataBoxEdgeDevicePager
@@ -290,7 +290,7 @@ func (client *OrdersClient) NewListByDataBoxEdgeDevicePager(deviceName string, r
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *OrdersClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -309,7 +309,7 @@ func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +327,7 @@ func (client *OrdersClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Res
 // ListDCAccessCode - Gets the DCAccess Code
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name
 //   - resourceGroupName - The resource group name.
 //   - options - OrdersClientListDCAccessCodeOptions contains the optional parameters for the OrdersClient.ListDCAccessCode method.
@@ -354,7 +354,7 @@ func (client *OrdersClient) ListDCAccessCode(ctx context.Context, deviceName str
 }
 
 // listDCAccessCodeCreateRequest creates the ListDCAccessCode request.
-func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientListDCAccessCodeOptions) (*policy.Request, error) {
+func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *OrdersClientListDCAccessCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default/listDCAccessCode"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -373,7 +373,7 @@ func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

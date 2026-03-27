@@ -16,28 +16,71 @@ import (
 
 // ServerFactory is a fake server for instances of the armdataboxedge.ClientFactory type.
 type ServerFactory struct {
-	AddonsServer                    AddonsServer
-	AlertsServer                    AlertsServer
-	AvailableSKUsServer             AvailableSKUsServer
-	BandwidthSchedulesServer        BandwidthSchedulesServer
-	ContainersServer                ContainersServer
-	DeviceCapacityCheckServer       DeviceCapacityCheckServer
-	DeviceCapacityInfoServer        DeviceCapacityInfoServer
-	DevicesServer                   DevicesServer
-	DiagnosticSettingsServer        DiagnosticSettingsServer
-	JobsServer                      JobsServer
-	MonitoringConfigServer          MonitoringConfigServer
-	NodesServer                     NodesServer
-	OperationsServer                OperationsServer
-	OperationsStatusServer          OperationsStatusServer
-	OrdersServer                    OrdersServer
-	RolesServer                     RolesServer
-	SharesServer                    SharesServer
+	// AddonsServer contains the fakes for client AddonsClient
+	AddonsServer AddonsServer
+
+	// AlertsServer contains the fakes for client AlertsClient
+	AlertsServer AlertsServer
+
+	// AvailableSKUsServer contains the fakes for client AvailableSKUsClient
+	AvailableSKUsServer AvailableSKUsServer
+
+	// BandwidthSchedulesServer contains the fakes for client BandwidthSchedulesClient
+	BandwidthSchedulesServer BandwidthSchedulesServer
+
+	// ContainersServer contains the fakes for client ContainersClient
+	ContainersServer ContainersServer
+
+	// DeviceCapacityCheckServer contains the fakes for client DeviceCapacityCheckClient
+	DeviceCapacityCheckServer DeviceCapacityCheckServer
+
+	// DeviceCapacityInfoServer contains the fakes for client DeviceCapacityInfoClient
+	DeviceCapacityInfoServer DeviceCapacityInfoServer
+
+	// DevicesServer contains the fakes for client DevicesClient
+	DevicesServer DevicesServer
+
+	// DiagnosticSettingsServer contains the fakes for client DiagnosticSettingsClient
+	DiagnosticSettingsServer DiagnosticSettingsServer
+
+	// JobsServer contains the fakes for client JobsClient
+	JobsServer JobsServer
+
+	// MonitoringConfigServer contains the fakes for client MonitoringConfigClient
+	MonitoringConfigServer MonitoringConfigServer
+
+	// NodesServer contains the fakes for client NodesClient
+	NodesServer NodesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// OperationsStatusServer contains the fakes for client OperationsStatusClient
+	OperationsStatusServer OperationsStatusServer
+
+	// OrdersServer contains the fakes for client OrdersClient
+	OrdersServer OrdersServer
+
+	// RolesServer contains the fakes for client RolesClient
+	RolesServer RolesServer
+
+	// SharesServer contains the fakes for client SharesClient
+	SharesServer SharesServer
+
+	// StorageAccountCredentialsServer contains the fakes for client StorageAccountCredentialsClient
 	StorageAccountCredentialsServer StorageAccountCredentialsServer
-	StorageAccountsServer           StorageAccountsServer
-	SupportPackagesServer           SupportPackagesServer
-	TriggersServer                  TriggersServer
-	UsersServer                     UsersServer
+
+	// StorageAccountsServer contains the fakes for client StorageAccountsClient
+	StorageAccountsServer StorageAccountsServer
+
+	// SupportPackagesServer contains the fakes for client SupportPackagesClient
+	SupportPackagesServer SupportPackagesServer
+
+	// TriggersServer contains the fakes for client TriggersClient
+	TriggersServer TriggersServer
+
+	// UsersServer contains the fakes for client UsersClient
+	UsersServer UsersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

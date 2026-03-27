@@ -8,7 +8,7 @@ package armdataboxedge
 import "encoding/json"
 
 func unmarshalAddonClassification(rawMsg json.RawMessage) (AddonClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -31,7 +31,7 @@ func unmarshalAddonClassification(rawMsg json.RawMessage) (AddonClassification, 
 }
 
 func unmarshalAddonClassificationArray(rawMsg json.RawMessage) ([]AddonClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -50,7 +50,7 @@ func unmarshalAddonClassificationArray(rawMsg json.RawMessage) ([]AddonClassific
 }
 
 func unmarshalRoleClassification(rawMsg json.RawMessage) (RoleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -77,7 +77,7 @@ func unmarshalRoleClassification(rawMsg json.RawMessage) (RoleClassification, er
 }
 
 func unmarshalRoleClassificationArray(rawMsg json.RawMessage) ([]RoleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -96,7 +96,7 @@ func unmarshalRoleClassificationArray(rawMsg json.RawMessage) ([]RoleClassificat
 }
 
 func unmarshalTriggerClassification(rawMsg json.RawMessage) (TriggerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -119,7 +119,7 @@ func unmarshalTriggerClassification(rawMsg json.RawMessage) (TriggerClassificati
 }
 
 func unmarshalTriggerClassificationArray(rawMsg json.RawMessage) ([]TriggerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

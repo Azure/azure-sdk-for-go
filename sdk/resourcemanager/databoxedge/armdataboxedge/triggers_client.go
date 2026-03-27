@@ -27,7 +27,7 @@ type TriggersClient struct {
 // NewTriggersClient creates a new instance of TriggersClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Creates or updates a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - Creates or updates a trigger
 //   - name - The trigger name.
 //   - resourceGroupName - The resource group name.
@@ -70,7 +70,7 @@ func (client *TriggersClient) BeginCreateOrUpdate(ctx context.Context, deviceNam
 // CreateOrUpdate - Creates or updates a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *TriggersClient) createOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, trigger TriggerClassification, options *TriggersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *TriggersClient) createOrUpdate(ctx context.Context, deviceName str
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, trigger TriggerClassification, options *TriggersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, trigger TriggerClassification, _ *TriggersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -116,7 +116,7 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, trigger); err != nil {
@@ -128,7 +128,7 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, d
 // BeginDelete - Deletes the trigger on the gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The trigger name.
 //   - resourceGroupName - The resource group name.
@@ -153,7 +153,7 @@ func (client *TriggersClient) BeginDelete(ctx context.Context, deviceName string
 // Delete - Deletes the trigger on the gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *TriggersClient) deleteOperation(ctx context.Context, deviceName string, name string, resourceGroupName string, options *TriggersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginDelete"
@@ -176,7 +176,7 @@ func (client *TriggersClient) deleteOperation(ctx context.Context, deviceName st
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TriggersClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *TriggersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *TriggersClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *TriggersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -199,7 +199,7 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, deviceNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -208,7 +208,7 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, deviceNam
 // Get - Get a specific trigger by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The trigger name.
 //   - resourceGroupName - The resource group name.
@@ -236,7 +236,7 @@ func (client *TriggersClient) Get(ctx context.Context, deviceName string, name s
 }
 
 // getCreateRequest creates the Get request.
-func (client *TriggersClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *TriggersClientGetOptions) (*policy.Request, error) {
+func (client *TriggersClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *TriggersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -259,7 +259,7 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, deviceName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 
 // NewListByDataBoxEdgeDevicePager - Lists all the triggers configured in the device.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - TriggersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the TriggersClient.NewListByDataBoxEdgeDevicePager
@@ -324,10 +324,10 @@ func (client *TriggersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,7 +27,7 @@ type AddonsClient struct {
 // NewAddonsClient creates a new instance of AddonsClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAddonsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AddonsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAddonsClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreateOrUpdate - Create or update a addon.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - addonName - The addon name.
@@ -71,7 +71,7 @@ func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, deviceName 
 // CreateOrUpdate - Create or update a addon.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *AddonsClient) createOrUpdate(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, addon AddonClassification, options *AddonsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddonsClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *AddonsClient) createOrUpdate(ctx context.Context, deviceName strin
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, addon AddonClassification, options *AddonsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, addon AddonClassification, _ *AddonsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/addons/{addonName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -121,7 +121,7 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, dev
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, addon); err != nil {
@@ -133,7 +133,7 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, dev
 // BeginDelete - Deletes the addon on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - addonName - The addon name.
@@ -159,7 +159,7 @@ func (client *AddonsClient) BeginDelete(ctx context.Context, deviceName string, 
 // Delete - Deletes the addon on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *AddonsClient) deleteOperation(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, options *AddonsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddonsClient.BeginDelete"
@@ -182,7 +182,7 @@ func (client *AddonsClient) deleteOperation(ctx context.Context, deviceName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AddonsClient) deleteCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, options *AddonsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AddonsClient) deleteCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, _ *AddonsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/addons/{addonName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -209,7 +209,7 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, deviceName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,7 +218,7 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, deviceName 
 // Get - Gets a specific addon by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - addonName - The addon name.
@@ -247,7 +247,7 @@ func (client *AddonsClient) Get(ctx context.Context, deviceName string, roleName
 }
 
 // getCreateRequest creates the Get request.
-func (client *AddonsClient) getCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, options *AddonsClientGetOptions) (*policy.Request, error) {
+func (client *AddonsClient) getCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, _ *AddonsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/addons/{addonName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -274,7 +274,7 @@ func (client *AddonsClient) getCreateRequest(ctx context.Context, deviceName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +291,7 @@ func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsClient
 
 // NewListByRolePager - Lists all the addons configured in the role.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - resourceGroupName - The resource group name.
@@ -320,7 +320,7 @@ func (client *AddonsClient) NewListByRolePager(deviceName string, roleName strin
 }
 
 // listByRoleCreateRequest creates the ListByRole request.
-func (client *AddonsClient) listByRoleCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, options *AddonsClientListByRoleOptions) (*policy.Request, error) {
+func (client *AddonsClient) listByRoleCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, _ *AddonsClientListByRoleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/addons"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -343,7 +343,7 @@ func (client *AddonsClient) listByRoleCreateRequest(ctx context.Context, deviceN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,7 +27,7 @@ type DiagnosticSettingsClient struct {
 // NewDiagnosticSettingsClient creates a new instance of DiagnosticSettingsClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDiagnosticSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewDiagnosticSettingsClient(subscriptionID string, credential azcore.TokenC
 // Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsOptions contains the optional parameters for
@@ -72,7 +72,7 @@ func (client *DiagnosticSettingsClient) GetDiagnosticProactiveLogCollectionSetti
 }
 
 // getDiagnosticProactiveLogCollectionSettingsCreateRequest creates the GetDiagnosticProactiveLogCollectionSettings request.
-func (client *DiagnosticSettingsClient) getDiagnosticProactiveLogCollectionSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsOptions) (*policy.Request, error) {
+func (client *DiagnosticSettingsClient) getDiagnosticProactiveLogCollectionSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/diagnosticProactiveLogCollectionSettings/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -91,7 +91,7 @@ func (client *DiagnosticSettingsClient) getDiagnosticProactiveLogCollectionSetti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *DiagnosticSettingsClient) getDiagnosticProactiveLogCollectionSetti
 // Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsOptions contains the optional parameters for the DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings
@@ -138,7 +138,7 @@ func (client *DiagnosticSettingsClient) GetDiagnosticRemoteSupportSettings(ctx c
 }
 
 // getDiagnosticRemoteSupportSettingsCreateRequest creates the GetDiagnosticRemoteSupportSettings request.
-func (client *DiagnosticSettingsClient) getDiagnosticRemoteSupportSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsOptions) (*policy.Request, error) {
+func (client *DiagnosticSettingsClient) getDiagnosticRemoteSupportSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/diagnosticRemoteSupportSettings/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -157,7 +157,7 @@ func (client *DiagnosticSettingsClient) getDiagnosticRemoteSupportSettingsCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,7 +176,7 @@ func (client *DiagnosticSettingsClient) getDiagnosticRemoteSupportSettingsHandle
 // Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - proactiveLogCollectionSettings - The proactive log collection settings.
@@ -203,7 +203,7 @@ func (client *DiagnosticSettingsClient) BeginUpdateDiagnosticProactiveLogCollect
 // Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *DiagnosticSettingsClient) updateDiagnosticProactiveLogCollectionSettings(ctx context.Context, deviceName string, resourceGroupName string, proactiveLogCollectionSettings DiagnosticProactiveLogCollectionSettings, options *DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings"
@@ -226,7 +226,7 @@ func (client *DiagnosticSettingsClient) updateDiagnosticProactiveLogCollectionSe
 }
 
 // updateDiagnosticProactiveLogCollectionSettingsCreateRequest creates the UpdateDiagnosticProactiveLogCollectionSettings request.
-func (client *DiagnosticSettingsClient) updateDiagnosticProactiveLogCollectionSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, proactiveLogCollectionSettings DiagnosticProactiveLogCollectionSettings, options *DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions) (*policy.Request, error) {
+func (client *DiagnosticSettingsClient) updateDiagnosticProactiveLogCollectionSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, proactiveLogCollectionSettings DiagnosticProactiveLogCollectionSettings, _ *DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/diagnosticProactiveLogCollectionSettings/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -245,7 +245,7 @@ func (client *DiagnosticSettingsClient) updateDiagnosticProactiveLogCollectionSe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, proactiveLogCollectionSettings); err != nil {
@@ -258,7 +258,7 @@ func (client *DiagnosticSettingsClient) updateDiagnosticProactiveLogCollectionSe
 // Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - diagnosticRemoteSupportSettings - The diagnostic remote support settings.
@@ -285,7 +285,7 @@ func (client *DiagnosticSettingsClient) BeginUpdateDiagnosticRemoteSupportSettin
 // device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *DiagnosticSettingsClient) updateDiagnosticRemoteSupportSettings(ctx context.Context, deviceName string, resourceGroupName string, diagnosticRemoteSupportSettings DiagnosticRemoteSupportSettings, options *DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings"
@@ -308,7 +308,7 @@ func (client *DiagnosticSettingsClient) updateDiagnosticRemoteSupportSettings(ct
 }
 
 // updateDiagnosticRemoteSupportSettingsCreateRequest creates the UpdateDiagnosticRemoteSupportSettings request.
-func (client *DiagnosticSettingsClient) updateDiagnosticRemoteSupportSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, diagnosticRemoteSupportSettings DiagnosticRemoteSupportSettings, options *DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions) (*policy.Request, error) {
+func (client *DiagnosticSettingsClient) updateDiagnosticRemoteSupportSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, diagnosticRemoteSupportSettings DiagnosticRemoteSupportSettings, _ *DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/diagnosticRemoteSupportSettings/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -327,7 +327,7 @@ func (client *DiagnosticSettingsClient) updateDiagnosticRemoteSupportSettingsCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, diagnosticRemoteSupportSettings); err != nil {

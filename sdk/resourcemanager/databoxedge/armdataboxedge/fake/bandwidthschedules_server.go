@@ -67,27 +67,46 @@ func (b *BandwidthSchedulesServerTransport) Do(req *http.Request) (*http.Respons
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return b.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "BandwidthSchedulesClient.BeginCreateOrUpdate":
-		resp, err = b.dispatchBeginCreateOrUpdate(req)
-	case "BandwidthSchedulesClient.BeginDelete":
-		resp, err = b.dispatchBeginDelete(req)
-	case "BandwidthSchedulesClient.Get":
-		resp, err = b.dispatchGet(req)
-	case "BandwidthSchedulesClient.NewListByDataBoxEdgeDevicePager":
-		resp, err = b.dispatchNewListByDataBoxEdgeDevicePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (b *BandwidthSchedulesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if bandwidthSchedulesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = bandwidthSchedulesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "BandwidthSchedulesClient.BeginCreateOrUpdate":
+				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
+			case "BandwidthSchedulesClient.BeginDelete":
+				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BandwidthSchedulesClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BandwidthSchedulesClient.NewListByDataBoxEdgeDevicePager":
+				res.resp, res.err = b.dispatchNewListByDataBoxEdgeDevicePager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (b *BandwidthSchedulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -99,7 +118,7 @@ func (b *BandwidthSchedulesServerTransport) dispatchBeginCreateOrUpdate(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bandwidthSchedules/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdataboxedge.BandwidthSchedule](req)
@@ -151,7 +170,7 @@ func (b *BandwidthSchedulesServerTransport) dispatchBeginDelete(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bandwidthSchedules/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -197,7 +216,7 @@ func (b *BandwidthSchedulesServerTransport) dispatchGet(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bandwidthSchedules/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -236,7 +255,7 @@ func (b *BandwidthSchedulesServerTransport) dispatchNewListByDataBoxEdgeDevicePa
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bandwidthSchedules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -266,4 +285,10 @@ func (b *BandwidthSchedulesServerTransport) dispatchNewListByDataBoxEdgeDevicePa
 		b.newListByDataBoxEdgeDevicePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to BandwidthSchedulesServerTransport
+var bandwidthSchedulesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

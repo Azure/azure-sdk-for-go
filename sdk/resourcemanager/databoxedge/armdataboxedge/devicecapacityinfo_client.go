@@ -27,7 +27,7 @@ type DeviceCapacityInfoClient struct {
 // NewDeviceCapacityInfoClient creates a new instance of DeviceCapacityInfoClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeviceCapacityInfoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeviceCapacityInfoClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDeviceCapacityInfoClient(subscriptionID string, credential azcore.TokenC
 // GetDeviceCapacityInfo - Gets the properties of the specified device capacity info.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The resource group name.
 //   - deviceName - The device name.
 //   - options - DeviceCapacityInfoClientGetDeviceCapacityInfoOptions contains the optional parameters for the DeviceCapacityInfoClient.GetDeviceCapacityInfo
@@ -71,7 +71,7 @@ func (client *DeviceCapacityInfoClient) GetDeviceCapacityInfo(ctx context.Contex
 }
 
 // getDeviceCapacityInfoCreateRequest creates the GetDeviceCapacityInfo request.
-func (client *DeviceCapacityInfoClient) getDeviceCapacityInfoCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *DeviceCapacityInfoClientGetDeviceCapacityInfoOptions) (*policy.Request, error) {
+func (client *DeviceCapacityInfoClient) getDeviceCapacityInfoCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, _ *DeviceCapacityInfoClientGetDeviceCapacityInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/deviceCapacityInfo/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +90,7 @@ func (client *DeviceCapacityInfoClient) getDeviceCapacityInfoCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

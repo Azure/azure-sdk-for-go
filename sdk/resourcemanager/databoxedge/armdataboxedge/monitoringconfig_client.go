@@ -27,7 +27,7 @@ type MonitoringConfigClient struct {
 // NewMonitoringConfigClient creates a new instance of MonitoringConfigClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMonitoringConfigClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitoringConfigClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewMonitoringConfigClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Creates a new metric configuration or updates an existing one for a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - resourceGroupName - The resource group name.
@@ -70,7 +70,7 @@ func (client *MonitoringConfigClient) BeginCreateOrUpdate(ctx context.Context, d
 // CreateOrUpdate - Creates a new metric configuration or updates an existing one for a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *MonitoringConfigClient) createOrUpdate(ctx context.Context, deviceName string, roleName string, resourceGroupName string, monitoringMetricConfiguration MonitoringMetricConfiguration, options *MonitoringConfigClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoringConfigClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *MonitoringConfigClient) createOrUpdate(ctx context.Context, device
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MonitoringConfigClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, monitoringMetricConfiguration MonitoringMetricConfiguration, options *MonitoringConfigClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *MonitoringConfigClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, monitoringMetricConfiguration MonitoringMetricConfiguration, _ *MonitoringConfigClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -116,7 +116,7 @@ func (client *MonitoringConfigClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, monitoringMetricConfiguration); err != nil {
@@ -128,7 +128,7 @@ func (client *MonitoringConfigClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - deletes a new metric configuration for a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - resourceGroupName - The resource group name.
@@ -154,7 +154,7 @@ func (client *MonitoringConfigClient) BeginDelete(ctx context.Context, deviceNam
 // Delete - deletes a new metric configuration for a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *MonitoringConfigClient) deleteOperation(ctx context.Context, deviceName string, roleName string, resourceGroupName string, options *MonitoringConfigClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoringConfigClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *MonitoringConfigClient) deleteOperation(ctx context.Context, devic
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MonitoringConfigClient) deleteCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, options *MonitoringConfigClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *MonitoringConfigClient) deleteCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, _ *MonitoringConfigClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -200,7 +200,7 @@ func (client *MonitoringConfigClient) deleteCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *MonitoringConfigClient) deleteCreateRequest(ctx context.Context, d
 // Get - Gets a metric configuration of a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - resourceGroupName - The resource group name.
@@ -237,7 +237,7 @@ func (client *MonitoringConfigClient) Get(ctx context.Context, deviceName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *MonitoringConfigClient) getCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, options *MonitoringConfigClientGetOptions) (*policy.Request, error) {
+func (client *MonitoringConfigClient) getCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, _ *MonitoringConfigClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -260,7 +260,7 @@ func (client *MonitoringConfigClient) getCreateRequest(ctx context.Context, devi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *MonitoringConfigClient) getHandleResponse(resp *http.Response) (Mo
 
 // NewListPager - Lists metric configurations in a role.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - roleName - The role name.
 //   - resourceGroupName - The resource group name.
@@ -307,7 +307,7 @@ func (client *MonitoringConfigClient) NewListPager(deviceName string, roleName s
 }
 
 // listCreateRequest creates the List request.
-func (client *MonitoringConfigClient) listCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, options *MonitoringConfigClientListOptions) (*policy.Request, error) {
+func (client *MonitoringConfigClient) listCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, _ *MonitoringConfigClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -330,7 +330,7 @@ func (client *MonitoringConfigClient) listCreateRequest(ctx context.Context, dev
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

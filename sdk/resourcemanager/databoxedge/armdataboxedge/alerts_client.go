@@ -27,7 +27,7 @@ type AlertsClient struct {
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, o
 // Get - Gets an alert by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The alert name.
 //   - resourceGroupName - The resource group name.
@@ -71,7 +71,7 @@ func (client *AlertsClient) Get(ctx context.Context, deviceName string, name str
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertsClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *AlertsClientGetOptions) (*policy.Request, error) {
+func (client *AlertsClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *AlertsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/alerts/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -94,7 +94,7 @@ func (client *AlertsClient) getCreateRequest(ctx context.Context, deviceName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *AlertsClient) getHandleResponse(resp *http.Response) (AlertsClient
 
 // NewListByDataBoxEdgeDevicePager - Gets all the alerts for a Data Box Edge/Data Box Gateway device.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - AlertsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the AlertsClient.NewListByDataBoxEdgeDevicePager
@@ -140,7 +140,7 @@ func (client *AlertsClient) NewListByDataBoxEdgeDevicePager(deviceName string, r
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *AlertsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *AlertsClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+func (client *AlertsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *AlertsClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/alerts"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -159,7 +159,7 @@ func (client *AlertsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

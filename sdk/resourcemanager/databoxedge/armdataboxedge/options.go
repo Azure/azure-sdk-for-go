@@ -7,13 +7,13 @@ package armdataboxedge
 
 // AddonsClientBeginCreateOrUpdateOptions contains the optional parameters for the AddonsClient.BeginCreateOrUpdate method.
 type AddonsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AddonsClientBeginDeleteOptions contains the optional parameters for the AddonsClient.BeginDelete method.
 type AddonsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -46,14 +46,14 @@ type AvailableSKUsClientListOptions struct {
 // BandwidthSchedulesClientBeginCreateOrUpdateOptions contains the optional parameters for the BandwidthSchedulesClient.BeginCreateOrUpdate
 // method.
 type BandwidthSchedulesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // BandwidthSchedulesClientBeginDeleteOptions contains the optional parameters for the BandwidthSchedulesClient.BeginDelete
 // method.
 type BandwidthSchedulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -71,19 +71,19 @@ type BandwidthSchedulesClientListByDataBoxEdgeDeviceOptions struct {
 // ContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainersClient.BeginCreateOrUpdate
 // method.
 type ContainersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ContainersClientBeginDeleteOptions contains the optional parameters for the ContainersClient.BeginDelete method.
 type ContainersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ContainersClientBeginRefreshOptions contains the optional parameters for the ContainersClient.BeginRefresh method.
 type ContainersClientBeginRefreshOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -104,7 +104,7 @@ type DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions struc
 	// The capacity name.
 	CapacityName *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -117,31 +117,31 @@ type DeviceCapacityInfoClientGetDeviceCapacityInfoOptions struct {
 // DevicesClientBeginCreateOrUpdateSecuritySettingsOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdateSecuritySettings
 // method.
 type DevicesClientBeginCreateOrUpdateSecuritySettingsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
 type DevicesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevicesClientBeginDownloadUpdatesOptions contains the optional parameters for the DevicesClient.BeginDownloadUpdates method.
 type DevicesClientBeginDownloadUpdatesOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevicesClientBeginInstallUpdatesOptions contains the optional parameters for the DevicesClient.BeginInstallUpdates method.
 type DevicesClientBeginInstallUpdatesOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevicesClientBeginScanForUpdatesOptions contains the optional parameters for the DevicesClient.BeginScanForUpdates method.
 type DevicesClientBeginScanForUpdatesOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -211,14 +211,14 @@ type DevicesClientUploadCertificateOptions struct {
 // DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions contains the optional parameters for
 // the DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings method.
 type DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions contains the optional parameters for the DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings
 // method.
 type DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -242,13 +242,13 @@ type JobsClientGetOptions struct {
 // MonitoringConfigClientBeginCreateOrUpdateOptions contains the optional parameters for the MonitoringConfigClient.BeginCreateOrUpdate
 // method.
 type MonitoringConfigClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // MonitoringConfigClientBeginDeleteOptions contains the optional parameters for the MonitoringConfigClient.BeginDelete method.
 type MonitoringConfigClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -280,13 +280,13 @@ type OperationsStatusClientGetOptions struct {
 
 // OrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the OrdersClient.BeginCreateOrUpdate method.
 type OrdersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // OrdersClientBeginDeleteOptions contains the optional parameters for the OrdersClient.BeginDelete method.
 type OrdersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -308,13 +308,13 @@ type OrdersClientListDCAccessCodeOptions struct {
 
 // RolesClientBeginCreateOrUpdateOptions contains the optional parameters for the RolesClient.BeginCreateOrUpdate method.
 type RolesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RolesClientBeginDeleteOptions contains the optional parameters for the RolesClient.BeginDelete method.
 type RolesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -331,19 +331,19 @@ type RolesClientListByDataBoxEdgeDeviceOptions struct {
 
 // SharesClientBeginCreateOrUpdateOptions contains the optional parameters for the SharesClient.BeginCreateOrUpdate method.
 type SharesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SharesClientBeginDeleteOptions contains the optional parameters for the SharesClient.BeginDelete method.
 type SharesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SharesClientBeginRefreshOptions contains the optional parameters for the SharesClient.BeginRefresh method.
 type SharesClientBeginRefreshOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -361,14 +361,14 @@ type SharesClientListByDataBoxEdgeDeviceOptions struct {
 // StorageAccountCredentialsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountCredentialsClient.BeginCreateOrUpdate
 // method.
 type StorageAccountCredentialsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // StorageAccountCredentialsClientBeginDeleteOptions contains the optional parameters for the StorageAccountCredentialsClient.BeginDelete
 // method.
 type StorageAccountCredentialsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -387,13 +387,13 @@ type StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions struct {
 // StorageAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountsClient.BeginCreateOrUpdate
 // method.
 type StorageAccountsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // StorageAccountsClientBeginDeleteOptions contains the optional parameters for the StorageAccountsClient.BeginDelete method.
 type StorageAccountsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -411,19 +411,19 @@ type StorageAccountsClientListByDataBoxEdgeDeviceOptions struct {
 // SupportPackagesClientBeginTriggerSupportPackageOptions contains the optional parameters for the SupportPackagesClient.BeginTriggerSupportPackage
 // method.
 type SupportPackagesClientBeginTriggerSupportPackageOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // TriggersClientBeginCreateOrUpdateOptions contains the optional parameters for the TriggersClient.BeginCreateOrUpdate method.
 type TriggersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // TriggersClientBeginDeleteOptions contains the optional parameters for the TriggersClient.BeginDelete method.
 type TriggersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -441,13 +441,13 @@ type TriggersClientListByDataBoxEdgeDeviceOptions struct {
 
 // UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate method.
 type UsersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
 type UsersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

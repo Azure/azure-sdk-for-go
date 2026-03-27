@@ -27,7 +27,7 @@ type SupportPackagesClient struct {
 // NewSupportPackagesClient creates a new instance of SupportPackagesClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSupportPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SupportPackagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSupportPackagesClient(subscriptionID string, credential azcore.TokenCred
 // BeginTriggerSupportPackage - Triggers support package on the device
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - triggerSupportPackageRequest - The trigger support package request object
@@ -69,7 +69,7 @@ func (client *SupportPackagesClient) BeginTriggerSupportPackage(ctx context.Cont
 // TriggerSupportPackage - Triggers support package on the device
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *SupportPackagesClient) triggerSupportPackage(ctx context.Context, deviceName string, resourceGroupName string, triggerSupportPackageRequest TriggerSupportPackageRequest, options *SupportPackagesClientBeginTriggerSupportPackageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SupportPackagesClient.BeginTriggerSupportPackage"
@@ -92,7 +92,7 @@ func (client *SupportPackagesClient) triggerSupportPackage(ctx context.Context, 
 }
 
 // triggerSupportPackageCreateRequest creates the TriggerSupportPackage request.
-func (client *SupportPackagesClient) triggerSupportPackageCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, triggerSupportPackageRequest TriggerSupportPackageRequest, options *SupportPackagesClientBeginTriggerSupportPackageOptions) (*policy.Request, error) {
+func (client *SupportPackagesClient) triggerSupportPackageCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, triggerSupportPackageRequest TriggerSupportPackageRequest, _ *SupportPackagesClientBeginTriggerSupportPackageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggerSupportPackage"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -111,7 +111,7 @@ func (client *SupportPackagesClient) triggerSupportPackageCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, triggerSupportPackageRequest); err != nil {

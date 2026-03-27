@@ -27,7 +27,7 @@ type RolesClient struct {
 // NewRolesClient creates a new instance of RolesClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RolesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewRolesClient(subscriptionID string, credential azcore.TokenCredential, op
 // BeginCreateOrUpdate - Create or update a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The role name.
 //   - resourceGroupName - The resource group name.
@@ -70,7 +70,7 @@ func (client *RolesClient) BeginCreateOrUpdate(ctx context.Context, deviceName s
 // CreateOrUpdate - Create or update a role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *RolesClient) createOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, role RoleClassification, options *RolesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RolesClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *RolesClient) createOrUpdate(ctx context.Context, deviceName string
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RolesClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, role RoleClassification, options *RolesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RolesClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, role RoleClassification, _ *RolesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -116,7 +116,7 @@ func (client *RolesClient) createOrUpdateCreateRequest(ctx context.Context, devi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, role); err != nil {
@@ -128,7 +128,7 @@ func (client *RolesClient) createOrUpdateCreateRequest(ctx context.Context, devi
 // BeginDelete - Deletes the role on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The role name.
 //   - resourceGroupName - The resource group name.
@@ -153,7 +153,7 @@ func (client *RolesClient) BeginDelete(ctx context.Context, deviceName string, n
 // Delete - Deletes the role on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *RolesClient) deleteOperation(ctx context.Context, deviceName string, name string, resourceGroupName string, options *RolesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RolesClient.BeginDelete"
@@ -176,7 +176,7 @@ func (client *RolesClient) deleteOperation(ctx context.Context, deviceName strin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RolesClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *RolesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RolesClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *RolesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -199,7 +199,7 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, deviceName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -208,7 +208,7 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, deviceName s
 // Get - Gets a specific role by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The role name.
 //   - resourceGroupName - The resource group name.
@@ -236,7 +236,7 @@ func (client *RolesClient) Get(ctx context.Context, deviceName string, name stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *RolesClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *RolesClientGetOptions) (*policy.Request, error) {
+func (client *RolesClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *RolesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -259,7 +259,7 @@ func (client *RolesClient) getCreateRequest(ctx context.Context, deviceName stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *RolesClient) getHandleResponse(resp *http.Response) (RolesClientGe
 
 // NewListByDataBoxEdgeDevicePager - Lists all the roles configured in a Data Box Edge/Data Box Gateway device.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - RolesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the RolesClient.NewListByDataBoxEdgeDevicePager
@@ -305,7 +305,7 @@ func (client *RolesClient) NewListByDataBoxEdgeDevicePager(deviceName string, re
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *RolesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *RolesClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+func (client *RolesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *RolesClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -324,7 +324,7 @@ func (client *RolesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

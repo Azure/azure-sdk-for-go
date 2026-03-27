@@ -5,11 +5,6 @@
 
 package armdataboxedge
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
-	moduleVersion = "v1.2.0"
-)
-
 // AccessLevel - Access level allowed for this remote application type
 type AccessLevel string
 

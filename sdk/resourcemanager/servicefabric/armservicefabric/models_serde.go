@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
 )
 
@@ -1218,6 +1219,7 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "clusterId", c.ClusterID)
 	populate(objectMap, "clusterState", c.ClusterState)
 	populate(objectMap, "diagnosticsStorageAccountConfig", c.DiagnosticsStorageAccountConfig)
+	populate(objectMap, "enableHttpGatewayExclusiveAuthMode", c.EnableHTTPGatewayExclusiveAuthMode)
 	populate(objectMap, "eventStoreServiceEnabled", c.EventStoreServiceEnabled)
 	populate(objectMap, "fabricSettings", c.FabricSettings)
 	populate(objectMap, "infrastructureServiceManager", c.InfrastructureServiceManager)
@@ -1287,6 +1289,9 @@ func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "diagnosticsStorageAccountConfig":
 			err = unpopulate(val, "DiagnosticsStorageAccountConfig", &c.DiagnosticsStorageAccountConfig)
+			delete(rawMsg, key)
+		case "enableHttpGatewayExclusiveAuthMode":
+			err = unpopulate(val, "EnableHTTPGatewayExclusiveAuthMode", &c.EnableHTTPGatewayExclusiveAuthMode)
 			delete(rawMsg, key)
 		case "eventStoreServiceEnabled":
 			err = unpopulate(val, "EventStoreServiceEnabled", &c.EventStoreServiceEnabled)
@@ -1363,6 +1368,7 @@ func (c ClusterPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "clientCertificateCommonNames", c.ClientCertificateCommonNames)
 	populate(objectMap, "clientCertificateThumbprints", c.ClientCertificateThumbprints)
 	populate(objectMap, "clusterCodeVersion", c.ClusterCodeVersion)
+	populate(objectMap, "enableHttpGatewayExclusiveAuthMode", c.EnableHTTPGatewayExclusiveAuthMode)
 	populate(objectMap, "eventStoreServiceEnabled", c.EventStoreServiceEnabled)
 	populate(objectMap, "fabricSettings", c.FabricSettings)
 	populate(objectMap, "infrastructureServiceManager", c.InfrastructureServiceManager)
@@ -1410,6 +1416,9 @@ func (c *ClusterPropertiesUpdateParameters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "clusterCodeVersion":
 			err = unpopulate(val, "ClusterCodeVersion", &c.ClusterCodeVersion)
+			delete(rawMsg, key)
+		case "enableHttpGatewayExclusiveAuthMode":
+			err = unpopulate(val, "EnableHTTPGatewayExclusiveAuthMode", &c.EnableHTTPGatewayExclusiveAuthMode)
 			delete(rawMsg, key)
 		case "eventStoreServiceEnabled":
 			err = unpopulate(val, "EventStoreServiceEnabled", &c.EventStoreServiceEnabled)
@@ -1847,6 +1856,7 @@ func (n NodeTypeDescription) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "durabilityLevel", n.DurabilityLevel)
 	populate(objectMap, "ephemeralPorts", n.EphemeralPorts)
 	populate(objectMap, "httpGatewayEndpointPort", n.HTTPGatewayEndpointPort)
+	populate(objectMap, "httpGatewayTokenAuthEndpointPort", n.HTTPGatewayTokenAuthEndpointPort)
 	populate(objectMap, "isPrimary", n.IsPrimary)
 	populate(objectMap, "isStateless", n.IsStateless)
 	populate(objectMap, "multipleAvailabilityZones", n.MultipleAvailabilityZones)
@@ -1883,6 +1893,9 @@ func (n *NodeTypeDescription) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "httpGatewayEndpointPort":
 			err = unpopulate(val, "HTTPGatewayEndpointPort", &n.HTTPGatewayEndpointPort)
+			delete(rawMsg, key)
+		case "httpGatewayTokenAuthEndpointPort":
+			err = unpopulate(val, "HTTPGatewayTokenAuthEndpointPort", &n.HTTPGatewayTokenAuthEndpointPort)
 			delete(rawMsg, key)
 		case "isPrimary":
 			err = unpopulate(val, "IsPrimary", &n.IsPrimary)
@@ -2955,6 +2968,10 @@ func (s StatelessServiceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "defaultMoveCost", s.DefaultMoveCost)
 	populate(objectMap, "instanceCloseDelayDuration", s.InstanceCloseDelayDuration)
 	populate(objectMap, "instanceCount", s.InstanceCount)
+	populate(objectMap, "minInstanceCount", s.MinInstanceCount)
+	populateByteArray(objectMap, "minInstancePercentage", s.MinInstancePercentage, func() any {
+		return runtime.EncodeByteArray(s.MinInstancePercentage, runtime.Base64StdFormat)
+	})
 	populate(objectMap, "partitionDescription", s.PartitionDescription)
 	populate(objectMap, "placementConstraints", s.PlacementConstraints)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
@@ -2987,6 +3004,14 @@ func (s *StatelessServiceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "instanceCount":
 			err = unpopulate(val, "InstanceCount", &s.InstanceCount)
+			delete(rawMsg, key)
+		case "minInstanceCount":
+			err = unpopulate(val, "MinInstanceCount", &s.MinInstanceCount)
+			delete(rawMsg, key)
+		case "minInstancePercentage":
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &s.MinInstancePercentage, runtime.Base64StdFormat)
+			}
 			delete(rawMsg, key)
 		case "partitionDescription":
 			s.PartitionDescription, err = unmarshalPartitionSchemeDescriptionClassification(val)
@@ -3249,6 +3274,103 @@ func (u *UserAssignedIdentity) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type VMSize.
+func (v VMSize) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "size", v.Size)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMSize.
+func (v *VMSize) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "size":
+			err = unpopulate(val, "Size", &v.Size)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMSizeResource.
+func (v VMSizeResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMSizeResource.
+func (v *VMSizeResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &v.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &v.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &v.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMSizesResult.
+func (v VMSizesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", v.NextLink)
+	populate(objectMap, "value", v.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMSizesResult.
+func (v *VMSizesResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &v.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &v.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -3259,8 +3381,18 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateByteArray[T any](m map[string]any, k string, b []T, convert func() any) {
+	if azcore.IsNullValue(b) {
+		m[k] = nil
+	} else if len(b) == 0 {
+		return
+	} else {
+		m[k] = convert()
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

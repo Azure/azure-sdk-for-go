@@ -27,7 +27,7 @@ type ServicesClient struct {
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
 //   - subscriptionID - The customer subscription identifier.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServicesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or update a Service Fabric service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -71,7 +71,7 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update a Service Fabric service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource, options *ServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource, _ *ServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -121,7 +121,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,7 +133,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a Service Fabric service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -159,7 +159,7 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a Service Fabric service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginDelete"
@@ -182,7 +182,7 @@ func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, options *ServicesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, _ *ServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -209,7 +209,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +219,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 // resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -248,7 +248,7 @@ func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, options *ServicesClientGetOptions) (*policy.Request, error) {
+func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, _ *ServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -275,7 +275,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -293,7 +293,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 // NewListPager - Gets all service resources created or in the process of being created in the Service Fabric application
 // resource.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -322,7 +322,7 @@ func (client *ServicesClient) NewListPager(resourceGroupName string, clusterName
 }
 
 // listCreateRequest creates the List request.
-func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ServicesClientListOptions) (*policy.Request, error) {
+func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, _ *ServicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -345,7 +345,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -363,7 +363,7 @@ func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesC
 // BeginUpdate - Update a Service Fabric service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -390,7 +390,7 @@ func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Update a Service Fabric service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 func (client *ServicesClient) update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResourceUpdate, options *ServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginUpdate"
@@ -413,7 +413,7 @@ func (client *ServicesClient) update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResourceUpdate, options *ServicesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResourceUpdate, _ *ServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -440,7 +440,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

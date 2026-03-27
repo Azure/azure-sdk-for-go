@@ -5,11 +5,6 @@
 
 package armservicefabric
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
-	moduleVersion = "v2.0.0"
-)
-
 // AddOnFeatures - Available cluster add-on features
 type AddOnFeatures string
 

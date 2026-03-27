@@ -140,6 +140,29 @@ type DatabasesClientUpgradeDBRedisVersionResponse struct {
 	// placeholder for future response values
 }
 
+// MigrationClientCancelResponse contains the response from method MigrationClient.BeginCancel.
+type MigrationClientCancelResponse struct {
+	// placeholder for future response values
+}
+
+// MigrationClientGetResponse contains the response from method MigrationClient.Get.
+type MigrationClientGetResponse struct {
+	// Describes the current migration operation on a Redis Enterprise cluster.
+	Migration
+}
+
+// MigrationClientListResponse contains the response from method MigrationClient.NewListPager.
+type MigrationClientListResponse struct {
+	// The response of a list-all migrations.
+	MigrationList
+}
+
+// MigrationClientStartResponse contains the response from method MigrationClient.BeginStart.
+type MigrationClientStartResponse struct {
+	// Describes the current migration operation on a Redis Enterprise cluster.
+	Migration
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -159,24 +182,24 @@ type PrivateEndpointConnectionsClientDeleteResponse struct {
 
 // PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
 type PrivateEndpointConnectionsClientGetResponse struct {
-	// The Private Endpoint Connection resource.
+	// The private endpoint connection resource.
 	PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
-	// List of private endpoint connection associated with the specified storage account
+	// The response of a PrivateEndpointConnection list operation.
 	PrivateEndpointConnectionListResult
 }
 
 // PrivateEndpointConnectionsClientPutResponse contains the response from method PrivateEndpointConnectionsClient.BeginPut.
 type PrivateEndpointConnectionsClientPutResponse struct {
-	// The Private Endpoint Connection resource.
+	// The private endpoint connection resource.
 	PrivateEndpointConnection
 }
 
 // PrivateLinkResourcesClientListByClusterResponse contains the response from method PrivateLinkResourcesClient.NewListByClusterPager.
 type PrivateLinkResourcesClientListByClusterResponse struct {
-	// A list of private link resources
+	// A list of private link resources.
 	PrivateLinkResourceListResult
 }

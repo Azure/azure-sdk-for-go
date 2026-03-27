@@ -9,7 +9,9 @@ package armredisenterprise
 type AccessKeyType string
 
 const (
-	AccessKeyTypePrimary   AccessKeyType = "Primary"
+	// AccessKeyTypePrimary - Primary
+	AccessKeyTypePrimary AccessKeyType = "Primary"
+	// AccessKeyTypeSecondary - Secondary
 	AccessKeyTypeSecondary AccessKeyType = "Secondary"
 )
 
@@ -26,8 +28,10 @@ func PossibleAccessKeyTypeValues() []AccessKeyType {
 type AccessKeysAuthentication string
 
 const (
+	// AccessKeysAuthenticationDisabled - Disabled
 	AccessKeysAuthenticationDisabled AccessKeysAuthentication = "Disabled"
-	AccessKeysAuthenticationEnabled  AccessKeysAuthentication = "Enabled"
+	// AccessKeysAuthenticationEnabled - Enabled
+	AccessKeysAuthenticationEnabled AccessKeysAuthentication = "Enabled"
 )
 
 // PossibleAccessKeysAuthenticationValues returns the possible values for the AccessKeysAuthentication const type.
@@ -57,8 +61,10 @@ func PossibleActionTypeValues() []ActionType {
 type AofFrequency string
 
 const (
+	// AofFrequencyAlways - always
 	AofFrequencyAlways AofFrequency = "always"
-	AofFrequencyOneS   AofFrequency = "1s"
+	// AofFrequencyOneS - 1s
+	AofFrequencyOneS AofFrequency = "1s"
 )
 
 // PossibleAofFrequencyValues returns the possible values for the AofFrequency const type.
@@ -99,8 +105,10 @@ func PossibleClusteringPolicyValues() []ClusteringPolicy {
 type CmkIdentityType string
 
 const (
+	// CmkIdentityTypeSystemAssignedIdentity - systemAssignedIdentity
 	CmkIdentityTypeSystemAssignedIdentity CmkIdentityType = "systemAssignedIdentity"
-	CmkIdentityTypeUserAssignedIdentity   CmkIdentityType = "userAssignedIdentity"
+	// CmkIdentityTypeUserAssignedIdentity - userAssignedIdentity
+	CmkIdentityTypeUserAssignedIdentity CmkIdentityType = "userAssignedIdentity"
 )
 
 // PossibleCmkIdentityTypeValues returns the possible values for the CmkIdentityType const type.
@@ -135,7 +143,9 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DeferUpgradeSetting string
 
 const (
-	DeferUpgradeSettingDeferred    DeferUpgradeSetting = "Deferred"
+	// DeferUpgradeSettingDeferred - Deferred
+	DeferUpgradeSettingDeferred DeferUpgradeSetting = "Deferred"
+	// DeferUpgradeSettingNotDeferred - NotDeferred
 	DeferUpgradeSettingNotDeferred DeferUpgradeSetting = "NotDeferred"
 )
 
@@ -151,14 +161,22 @@ func PossibleDeferUpgradeSettingValues() []DeferUpgradeSetting {
 type EvictionPolicy string
 
 const (
-	EvictionPolicyAllKeysLFU     EvictionPolicy = "AllKeysLFU"
-	EvictionPolicyAllKeysLRU     EvictionPolicy = "AllKeysLRU"
-	EvictionPolicyAllKeysRandom  EvictionPolicy = "AllKeysRandom"
-	EvictionPolicyNoEviction     EvictionPolicy = "NoEviction"
-	EvictionPolicyVolatileLFU    EvictionPolicy = "VolatileLFU"
-	EvictionPolicyVolatileLRU    EvictionPolicy = "VolatileLRU"
+	// EvictionPolicyAllKeysLFU - AllKeysLFU
+	EvictionPolicyAllKeysLFU EvictionPolicy = "AllKeysLFU"
+	// EvictionPolicyAllKeysLRU - AllKeysLRU
+	EvictionPolicyAllKeysLRU EvictionPolicy = "AllKeysLRU"
+	// EvictionPolicyAllKeysRandom - AllKeysRandom
+	EvictionPolicyAllKeysRandom EvictionPolicy = "AllKeysRandom"
+	// EvictionPolicyNoEviction - NoEviction
+	EvictionPolicyNoEviction EvictionPolicy = "NoEviction"
+	// EvictionPolicyVolatileLFU - VolatileLFU
+	EvictionPolicyVolatileLFU EvictionPolicy = "VolatileLFU"
+	// EvictionPolicyVolatileLRU - VolatileLRU
+	EvictionPolicyVolatileLRU EvictionPolicy = "VolatileLRU"
+	// EvictionPolicyVolatileRandom - VolatileRandom
 	EvictionPolicyVolatileRandom EvictionPolicy = "VolatileRandom"
-	EvictionPolicyVolatileTTL    EvictionPolicy = "VolatileTTL"
+	// EvictionPolicyVolatileTTL - VolatileTTL
+	EvictionPolicyVolatileTTL EvictionPolicy = "VolatileTTL"
 )
 
 // PossibleEvictionPolicyValues returns the possible values for the EvictionPolicy const type.
@@ -180,8 +198,10 @@ func PossibleEvictionPolicyValues() []EvictionPolicy {
 type HighAvailability string
 
 const (
+	// HighAvailabilityDisabled - Disabled
 	HighAvailabilityDisabled HighAvailability = "Disabled"
-	HighAvailabilityEnabled  HighAvailability = "Enabled"
+	// HighAvailabilityEnabled - Enabled
+	HighAvailabilityEnabled HighAvailability = "Enabled"
 )
 
 // PossibleHighAvailabilityValues returns the possible values for the HighAvailability const type.
@@ -196,7 +216,9 @@ func PossibleHighAvailabilityValues() []HighAvailability {
 type Kind string
 
 const (
+	// KindV1 - v1
 	KindV1 Kind = "v1"
+	// KindV2 - v2
 	KindV2 Kind = "v2"
 )
 
@@ -212,11 +234,16 @@ func PossibleKindValues() []Kind {
 type LinkState string
 
 const (
-	LinkStateLinkFailed   LinkState = "LinkFailed"
-	LinkStateLinked       LinkState = "Linked"
-	LinkStateLinking      LinkState = "Linking"
+	// LinkStateLinkFailed - LinkFailed
+	LinkStateLinkFailed LinkState = "LinkFailed"
+	// LinkStateLinked - Linked
+	LinkStateLinked LinkState = "Linked"
+	// LinkStateLinking - Linking
+	LinkStateLinking LinkState = "Linking"
+	// LinkStateUnlinkFailed - UnlinkFailed
 	LinkStateUnlinkFailed LinkState = "UnlinkFailed"
-	LinkStateUnlinking    LinkState = "Unlinking"
+	// LinkStateUnlinking - Unlinking
+	LinkStateUnlinking LinkState = "Unlinking"
 )
 
 // PossibleLinkStateValues returns the possible values for the LinkState const type.
@@ -230,13 +257,54 @@ func PossibleLinkStateValues() []LinkState {
 	}
 }
 
+// MaintenanceDayOfWeek - Day of week. Required when the maintenance window type is 'Weekly'.
+type MaintenanceDayOfWeek string
+
+const (
+	MaintenanceDayOfWeekFriday    MaintenanceDayOfWeek = "Friday"
+	MaintenanceDayOfWeekMonday    MaintenanceDayOfWeek = "Monday"
+	MaintenanceDayOfWeekSaturday  MaintenanceDayOfWeek = "Saturday"
+	MaintenanceDayOfWeekSunday    MaintenanceDayOfWeek = "Sunday"
+	MaintenanceDayOfWeekThursday  MaintenanceDayOfWeek = "Thursday"
+	MaintenanceDayOfWeekTuesday   MaintenanceDayOfWeek = "Tuesday"
+	MaintenanceDayOfWeekWednesday MaintenanceDayOfWeek = "Wednesday"
+)
+
+// PossibleMaintenanceDayOfWeekValues returns the possible values for the MaintenanceDayOfWeek const type.
+func PossibleMaintenanceDayOfWeekValues() []MaintenanceDayOfWeek {
+	return []MaintenanceDayOfWeek{
+		MaintenanceDayOfWeekFriday,
+		MaintenanceDayOfWeekMonday,
+		MaintenanceDayOfWeekSaturday,
+		MaintenanceDayOfWeekSunday,
+		MaintenanceDayOfWeekThursday,
+		MaintenanceDayOfWeekTuesday,
+		MaintenanceDayOfWeekWednesday,
+	}
+}
+
+// MaintenanceWindowType - Maintenance window type.
+type MaintenanceWindowType string
+
+const (
+	// MaintenanceWindowTypeWeekly - Weekly maintenance window.
+	MaintenanceWindowTypeWeekly MaintenanceWindowType = "Weekly"
+)
+
+// PossibleMaintenanceWindowTypeValues returns the possible values for the MaintenanceWindowType const type.
+func PossibleMaintenanceWindowTypeValues() []MaintenanceWindowType {
+	return []MaintenanceWindowType{
+		MaintenanceWindowTypeWeekly,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
 const (
 	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
 	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
 	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
 )
 
@@ -247,6 +315,40 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// MigrationProvisioningState - Current provisioning status
+type MigrationProvisioningState string
+
+const (
+	// MigrationProvisioningStateAccepted - The request has been accepted and the migration operation is being initialized.
+	MigrationProvisioningStateAccepted MigrationProvisioningState = "Accepted"
+	// MigrationProvisioningStateCancelled - The migration operation has been cancelled.
+	MigrationProvisioningStateCancelled MigrationProvisioningState = "Cancelled"
+	// MigrationProvisioningStateCancelling - The migration operation is being cancelled.
+	MigrationProvisioningStateCancelling MigrationProvisioningState = "Cancelling"
+	// MigrationProvisioningStateFailed - The migration operation has failed.
+	MigrationProvisioningStateFailed MigrationProvisioningState = "Failed"
+	// MigrationProvisioningStateInProgress - The migration operation is in progress.
+	MigrationProvisioningStateInProgress MigrationProvisioningState = "InProgress"
+	// MigrationProvisioningStateReadyForDNSSwitch - The migration operation has completed transferring data and is ready for
+	// DNS switch.
+	MigrationProvisioningStateReadyForDNSSwitch MigrationProvisioningState = "ReadyForDnsSwitch"
+	// MigrationProvisioningStateSucceeded - The migration operation has completed successfully.
+	MigrationProvisioningStateSucceeded MigrationProvisioningState = "Succeeded"
+)
+
+// PossibleMigrationProvisioningStateValues returns the possible values for the MigrationProvisioningState const type.
+func PossibleMigrationProvisioningStateValues() []MigrationProvisioningState {
+	return []MigrationProvisioningState{
+		MigrationProvisioningStateAccepted,
+		MigrationProvisioningStateCancelled,
+		MigrationProvisioningStateCancelling,
+		MigrationProvisioningStateFailed,
+		MigrationProvisioningStateInProgress,
+		MigrationProvisioningStateReadyForDNSSwitch,
+		MigrationProvisioningStateSucceeded,
 	}
 }
 
@@ -311,7 +413,9 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type Protocol string
 
 const (
+	// ProtocolEncrypted - Encrypted
 	ProtocolEncrypted Protocol = "Encrypted"
+	// ProtocolPlaintext - Plaintext
 	ProtocolPlaintext Protocol = "Plaintext"
 )
 
@@ -327,12 +431,18 @@ func PossibleProtocolValues() []Protocol {
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
+	// ProvisioningStateCanceled - Canceled
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreating - Creating
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting - Deleting
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed - Failed
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateSucceeded - Succeeded
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating  ProvisioningState = "Updating"
+	// ProvisioningStateUpdating - Updating
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -353,8 +463,10 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type PublicNetworkAccess string
 
 const (
+	// PublicNetworkAccessDisabled - Disabled
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	// PublicNetworkAccessEnabled - Enabled
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -369,8 +481,11 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 type RdbFrequency string
 
 const (
-	RdbFrequencyOneH    RdbFrequency = "1h"
-	RdbFrequencySixH    RdbFrequency = "6h"
+	// RdbFrequencyOneH - 1h
+	RdbFrequencyOneH RdbFrequency = "1h"
+	// RdbFrequencySixH - 6h
+	RdbFrequencySixH RdbFrequency = "6h"
+	// RdbFrequencyTwelveH - 12h
 	RdbFrequencyTwelveH RdbFrequency = "12h"
 )
 
@@ -408,21 +523,36 @@ func PossibleRedundancyModeValues() []RedundancyMode {
 type ResourceState string
 
 const (
-	ResourceStateCreateFailed  ResourceState = "CreateFailed"
-	ResourceStateCreating      ResourceState = "Creating"
-	ResourceStateDeleteFailed  ResourceState = "DeleteFailed"
-	ResourceStateDeleting      ResourceState = "Deleting"
+	// ResourceStateCreateFailed - CreateFailed
+	ResourceStateCreateFailed ResourceState = "CreateFailed"
+	// ResourceStateCreating - Creating
+	ResourceStateCreating ResourceState = "Creating"
+	// ResourceStateDeleteFailed - DeleteFailed
+	ResourceStateDeleteFailed ResourceState = "DeleteFailed"
+	// ResourceStateDeleting - Deleting
+	ResourceStateDeleting ResourceState = "Deleting"
+	// ResourceStateDisableFailed - DisableFailed
 	ResourceStateDisableFailed ResourceState = "DisableFailed"
-	ResourceStateDisabled      ResourceState = "Disabled"
-	ResourceStateDisabling     ResourceState = "Disabling"
-	ResourceStateEnableFailed  ResourceState = "EnableFailed"
-	ResourceStateEnabling      ResourceState = "Enabling"
-	ResourceStateMoving        ResourceState = "Moving"
-	ResourceStateRunning       ResourceState = "Running"
-	ResourceStateScaling       ResourceState = "Scaling"
+	// ResourceStateDisabled - Disabled
+	ResourceStateDisabled ResourceState = "Disabled"
+	// ResourceStateDisabling - Disabling
+	ResourceStateDisabling ResourceState = "Disabling"
+	// ResourceStateEnableFailed - EnableFailed
+	ResourceStateEnableFailed ResourceState = "EnableFailed"
+	// ResourceStateEnabling - Enabling
+	ResourceStateEnabling ResourceState = "Enabling"
+	// ResourceStateMoving - Moving
+	ResourceStateMoving ResourceState = "Moving"
+	// ResourceStateRunning - Running
+	ResourceStateRunning ResourceState = "Running"
+	// ResourceStateScaling - Scaling
+	ResourceStateScaling ResourceState = "Scaling"
+	// ResourceStateScalingFailed - ScalingFailed
 	ResourceStateScalingFailed ResourceState = "ScalingFailed"
-	ResourceStateUpdateFailed  ResourceState = "UpdateFailed"
-	ResourceStateUpdating      ResourceState = "Updating"
+	// ResourceStateUpdateFailed - UpdateFailed
+	ResourceStateUpdateFailed ResourceState = "UpdateFailed"
+	// ResourceStateUpdating - Updating
+	ResourceStateUpdating ResourceState = "Updating"
 )
 
 // PossibleResourceStateValues returns the possible values for the ResourceState const type.
@@ -452,61 +582,116 @@ func PossibleResourceStateValues() []ResourceState {
 type SKUName string
 
 const (
-	SKUNameBalancedB0           SKUName = "Balanced_B0"
-	SKUNameBalancedB1           SKUName = "Balanced_B1"
-	SKUNameBalancedB10          SKUName = "Balanced_B10"
-	SKUNameBalancedB100         SKUName = "Balanced_B100"
-	SKUNameBalancedB1000        SKUName = "Balanced_B1000"
-	SKUNameBalancedB150         SKUName = "Balanced_B150"
-	SKUNameBalancedB20          SKUName = "Balanced_B20"
-	SKUNameBalancedB250         SKUName = "Balanced_B250"
-	SKUNameBalancedB3           SKUName = "Balanced_B3"
-	SKUNameBalancedB350         SKUName = "Balanced_B350"
-	SKUNameBalancedB5           SKUName = "Balanced_B5"
-	SKUNameBalancedB50          SKUName = "Balanced_B50"
-	SKUNameBalancedB500         SKUName = "Balanced_B500"
-	SKUNameBalancedB700         SKUName = "Balanced_B700"
-	SKUNameComputeOptimizedX10  SKUName = "ComputeOptimized_X10"
+	// SKUNameBalancedB0 - Balanced_B0
+	SKUNameBalancedB0 SKUName = "Balanced_B0"
+	// SKUNameBalancedB1 - Balanced_B1
+	SKUNameBalancedB1 SKUName = "Balanced_B1"
+	// SKUNameBalancedB10 - Balanced_B10
+	SKUNameBalancedB10 SKUName = "Balanced_B10"
+	// SKUNameBalancedB100 - Balanced_B100
+	SKUNameBalancedB100 SKUName = "Balanced_B100"
+	// SKUNameBalancedB1000 - Balanced_B1000
+	SKUNameBalancedB1000 SKUName = "Balanced_B1000"
+	// SKUNameBalancedB150 - Balanced_B150
+	SKUNameBalancedB150 SKUName = "Balanced_B150"
+	// SKUNameBalancedB20 - Balanced_B20
+	SKUNameBalancedB20 SKUName = "Balanced_B20"
+	// SKUNameBalancedB250 - Balanced_B250
+	SKUNameBalancedB250 SKUName = "Balanced_B250"
+	// SKUNameBalancedB3 - Balanced_B3
+	SKUNameBalancedB3 SKUName = "Balanced_B3"
+	// SKUNameBalancedB350 - Balanced_B350
+	SKUNameBalancedB350 SKUName = "Balanced_B350"
+	// SKUNameBalancedB5 - Balanced_B5
+	SKUNameBalancedB5 SKUName = "Balanced_B5"
+	// SKUNameBalancedB50 - Balanced_B50
+	SKUNameBalancedB50 SKUName = "Balanced_B50"
+	// SKUNameBalancedB500 - Balanced_B500
+	SKUNameBalancedB500 SKUName = "Balanced_B500"
+	// SKUNameBalancedB700 - Balanced_B700
+	SKUNameBalancedB700 SKUName = "Balanced_B700"
+	// SKUNameComputeOptimizedX10 - ComputeOptimized_X10
+	SKUNameComputeOptimizedX10 SKUName = "ComputeOptimized_X10"
+	// SKUNameComputeOptimizedX100 - ComputeOptimized_X100
 	SKUNameComputeOptimizedX100 SKUName = "ComputeOptimized_X100"
+	// SKUNameComputeOptimizedX150 - ComputeOptimized_X150
 	SKUNameComputeOptimizedX150 SKUName = "ComputeOptimized_X150"
-	SKUNameComputeOptimizedX20  SKUName = "ComputeOptimized_X20"
+	// SKUNameComputeOptimizedX20 - ComputeOptimized_X20
+	SKUNameComputeOptimizedX20 SKUName = "ComputeOptimized_X20"
+	// SKUNameComputeOptimizedX250 - ComputeOptimized_X250
 	SKUNameComputeOptimizedX250 SKUName = "ComputeOptimized_X250"
-	SKUNameComputeOptimizedX3   SKUName = "ComputeOptimized_X3"
+	// SKUNameComputeOptimizedX3 - ComputeOptimized_X3
+	SKUNameComputeOptimizedX3 SKUName = "ComputeOptimized_X3"
+	// SKUNameComputeOptimizedX350 - ComputeOptimized_X350
 	SKUNameComputeOptimizedX350 SKUName = "ComputeOptimized_X350"
-	SKUNameComputeOptimizedX5   SKUName = "ComputeOptimized_X5"
-	SKUNameComputeOptimizedX50  SKUName = "ComputeOptimized_X50"
+	// SKUNameComputeOptimizedX5 - ComputeOptimized_X5
+	SKUNameComputeOptimizedX5 SKUName = "ComputeOptimized_X5"
+	// SKUNameComputeOptimizedX50 - ComputeOptimized_X50
+	SKUNameComputeOptimizedX50 SKUName = "ComputeOptimized_X50"
+	// SKUNameComputeOptimizedX500 - ComputeOptimized_X500
 	SKUNameComputeOptimizedX500 SKUName = "ComputeOptimized_X500"
+	// SKUNameComputeOptimizedX700 - ComputeOptimized_X700
 	SKUNameComputeOptimizedX700 SKUName = "ComputeOptimized_X700"
-	SKUNameEnterpriseE1         SKUName = "Enterprise_E1"
-	SKUNameEnterpriseE10        SKUName = "Enterprise_E10"
-	SKUNameEnterpriseE100       SKUName = "Enterprise_E100"
-	SKUNameEnterpriseE20        SKUName = "Enterprise_E20"
-	SKUNameEnterpriseE200       SKUName = "Enterprise_E200"
-	SKUNameEnterpriseE400       SKUName = "Enterprise_E400"
-	SKUNameEnterpriseE5         SKUName = "Enterprise_E5"
-	SKUNameEnterpriseE50        SKUName = "Enterprise_E50"
+	// SKUNameEnterpriseE1 - Enterprise_E1
+	SKUNameEnterpriseE1 SKUName = "Enterprise_E1"
+	// SKUNameEnterpriseE10 - Enterprise_E10
+	SKUNameEnterpriseE10 SKUName = "Enterprise_E10"
+	// SKUNameEnterpriseE100 - Enterprise_E100
+	SKUNameEnterpriseE100 SKUName = "Enterprise_E100"
+	// SKUNameEnterpriseE20 - Enterprise_E20
+	SKUNameEnterpriseE20 SKUName = "Enterprise_E20"
+	// SKUNameEnterpriseE200 - Enterprise_E200
+	SKUNameEnterpriseE200 SKUName = "Enterprise_E200"
+	// SKUNameEnterpriseE400 - Enterprise_E400
+	SKUNameEnterpriseE400 SKUName = "Enterprise_E400"
+	// SKUNameEnterpriseE5 - Enterprise_E5
+	SKUNameEnterpriseE5 SKUName = "Enterprise_E5"
+	// SKUNameEnterpriseE50 - Enterprise_E50
+	SKUNameEnterpriseE50 SKUName = "Enterprise_E50"
+	// SKUNameEnterpriseFlashF1500 - EnterpriseFlash_F1500
 	SKUNameEnterpriseFlashF1500 SKUName = "EnterpriseFlash_F1500"
-	SKUNameEnterpriseFlashF300  SKUName = "EnterpriseFlash_F300"
-	SKUNameEnterpriseFlashF700  SKUName = "EnterpriseFlash_F700"
-	SKUNameFlashOptimizedA1000  SKUName = "FlashOptimized_A1000"
-	SKUNameFlashOptimizedA1500  SKUName = "FlashOptimized_A1500"
-	SKUNameFlashOptimizedA2000  SKUName = "FlashOptimized_A2000"
-	SKUNameFlashOptimizedA250   SKUName = "FlashOptimized_A250"
-	SKUNameFlashOptimizedA4500  SKUName = "FlashOptimized_A4500"
-	SKUNameFlashOptimizedA500   SKUName = "FlashOptimized_A500"
-	SKUNameFlashOptimizedA700   SKUName = "FlashOptimized_A700"
-	SKUNameMemoryOptimizedM10   SKUName = "MemoryOptimized_M10"
-	SKUNameMemoryOptimizedM100  SKUName = "MemoryOptimized_M100"
+	// SKUNameEnterpriseFlashF300 - EnterpriseFlash_F300
+	SKUNameEnterpriseFlashF300 SKUName = "EnterpriseFlash_F300"
+	// SKUNameEnterpriseFlashF700 - EnterpriseFlash_F700
+	SKUNameEnterpriseFlashF700 SKUName = "EnterpriseFlash_F700"
+	// SKUNameFlashOptimizedA1000 - FlashOptimized_A1000
+	SKUNameFlashOptimizedA1000 SKUName = "FlashOptimized_A1000"
+	// SKUNameFlashOptimizedA1500 - FlashOptimized_A1500
+	SKUNameFlashOptimizedA1500 SKUName = "FlashOptimized_A1500"
+	// SKUNameFlashOptimizedA2000 - FlashOptimized_A2000
+	SKUNameFlashOptimizedA2000 SKUName = "FlashOptimized_A2000"
+	// SKUNameFlashOptimizedA250 - FlashOptimized_A250
+	SKUNameFlashOptimizedA250 SKUName = "FlashOptimized_A250"
+	// SKUNameFlashOptimizedA4500 - FlashOptimized_A4500
+	SKUNameFlashOptimizedA4500 SKUName = "FlashOptimized_A4500"
+	// SKUNameFlashOptimizedA500 - FlashOptimized_A500
+	SKUNameFlashOptimizedA500 SKUName = "FlashOptimized_A500"
+	// SKUNameFlashOptimizedA700 - FlashOptimized_A700
+	SKUNameFlashOptimizedA700 SKUName = "FlashOptimized_A700"
+	// SKUNameMemoryOptimizedM10 - MemoryOptimized_M10
+	SKUNameMemoryOptimizedM10 SKUName = "MemoryOptimized_M10"
+	// SKUNameMemoryOptimizedM100 - MemoryOptimized_M100
+	SKUNameMemoryOptimizedM100 SKUName = "MemoryOptimized_M100"
+	// SKUNameMemoryOptimizedM1000 - MemoryOptimized_M1000
 	SKUNameMemoryOptimizedM1000 SKUName = "MemoryOptimized_M1000"
-	SKUNameMemoryOptimizedM150  SKUName = "MemoryOptimized_M150"
+	// SKUNameMemoryOptimizedM150 - MemoryOptimized_M150
+	SKUNameMemoryOptimizedM150 SKUName = "MemoryOptimized_M150"
+	// SKUNameMemoryOptimizedM1500 - MemoryOptimized_M1500
 	SKUNameMemoryOptimizedM1500 SKUName = "MemoryOptimized_M1500"
-	SKUNameMemoryOptimizedM20   SKUName = "MemoryOptimized_M20"
+	// SKUNameMemoryOptimizedM20 - MemoryOptimized_M20
+	SKUNameMemoryOptimizedM20 SKUName = "MemoryOptimized_M20"
+	// SKUNameMemoryOptimizedM2000 - MemoryOptimized_M2000
 	SKUNameMemoryOptimizedM2000 SKUName = "MemoryOptimized_M2000"
-	SKUNameMemoryOptimizedM250  SKUName = "MemoryOptimized_M250"
-	SKUNameMemoryOptimizedM350  SKUName = "MemoryOptimized_M350"
-	SKUNameMemoryOptimizedM50   SKUName = "MemoryOptimized_M50"
-	SKUNameMemoryOptimizedM500  SKUName = "MemoryOptimized_M500"
-	SKUNameMemoryOptimizedM700  SKUName = "MemoryOptimized_M700"
+	// SKUNameMemoryOptimizedM250 - MemoryOptimized_M250
+	SKUNameMemoryOptimizedM250 SKUName = "MemoryOptimized_M250"
+	// SKUNameMemoryOptimizedM350 - MemoryOptimized_M350
+	SKUNameMemoryOptimizedM350 SKUName = "MemoryOptimized_M350"
+	// SKUNameMemoryOptimizedM50 - MemoryOptimized_M50
+	SKUNameMemoryOptimizedM50 SKUName = "MemoryOptimized_M50"
+	// SKUNameMemoryOptimizedM500 - MemoryOptimized_M500
+	SKUNameMemoryOptimizedM500 SKUName = "MemoryOptimized_M500"
+	// SKUNameMemoryOptimizedM700 - MemoryOptimized_M700
+	SKUNameMemoryOptimizedM700 SKUName = "MemoryOptimized_M700"
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
@@ -570,14 +755,32 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
+// SourceType - Describes the source of the migration operation.
+type SourceType string
+
+const (
+	// SourceTypeAzureCacheForRedis - Migration from Azure Cache for Redis to Redis Enterprise.
+	SourceTypeAzureCacheForRedis SourceType = "AzureCacheForRedis"
+)
+
+// PossibleSourceTypeValues returns the possible values for the SourceType const type.
+func PossibleSourceTypeValues() []SourceType {
+	return []SourceType{
+		SourceTypeAzureCacheForRedis,
+	}
+}
+
 // TLSVersion - The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future.
 // Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are
 // mentioned only for the sake of consistency with old API versions.
 type TLSVersion string
 
 const (
+	// TLSVersionOne0 - 1.0
 	TLSVersionOne0 TLSVersion = "1.0"
+	// TLSVersionOne1 - 1.1
 	TLSVersionOne1 TLSVersion = "1.1"
+	// TLSVersionOne2 - 1.2
 	TLSVersionOne2 TLSVersion = "1.2"
 )
 

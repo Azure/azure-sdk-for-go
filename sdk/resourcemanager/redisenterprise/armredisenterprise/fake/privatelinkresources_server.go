@@ -11,7 +11,8 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -108,6 +109,9 @@ func (p *PrivateLinkResourcesServerTransport) dispatchNewListByClusterPager(req 
 		resp := p.srv.NewListByClusterPager(resourceGroupNameParam, clusterNameParam, nil)
 		newListByClusterPager = &resp
 		p.newListByClusterPager.add(req, newListByClusterPager)
+		server.PagerResponderInjectNextLinks(newListByClusterPager, req, func(page *armredisenterprise.PrivateLinkResourcesClientListByClusterResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newListByClusterPager, req)
 	if err != nil {

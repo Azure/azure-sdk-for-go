@@ -1,5 +1,21 @@
 # Release History
 
+## 1.3.0-beta.1 (2026-03-27)
+### Features Added
+
+- New enum type `PublicNetworkAccessType` with values `PublicNetworkAccessTypeDisabled`, `PublicNetworkAccessTypeEnabled`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.ListByProvider(ctx context.Context, resourceGroupName string, providerName string, options *PrivateLinkResourcesClientListByProviderOptions) (PrivateLinkResourcesClientListByProviderResponse, error)`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `ServicePatchSpecificParams`
+- New field `PublicNetworkAccess` in struct `ServiceCreationSpecificParams`
+- New field `Properties` in struct `ServicePatchParams`
+- New field `PublicNetworkAccess` in struct `StatusResult`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

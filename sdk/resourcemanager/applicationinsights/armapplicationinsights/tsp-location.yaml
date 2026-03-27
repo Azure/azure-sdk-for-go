@@ -1,0 +1,4 @@
+directory: specification/applicationinsights/resource-manager/Microsoft.Insights/ApplicationInsights
+commit: aeecea06b93d9fb00e0147276edc1b6e9de1b3e6
+repo: i-specs
+additionalDirectories: 

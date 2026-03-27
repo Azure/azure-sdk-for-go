@@ -5,11 +5,6 @@
 
 package armapplicationinsights
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
-	moduleVersion = "v2.0.0-beta.3"
-)
-
 // ApplicationType - Type of application being monitored.
 type ApplicationType string
 

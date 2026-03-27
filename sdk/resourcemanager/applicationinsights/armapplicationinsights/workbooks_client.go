@@ -28,7 +28,7 @@ type WorkbooksClient struct {
 // NewWorkbooksClient creates a new instance of WorkbooksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkbooksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkbooksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

@@ -25,10 +25,9 @@ type AssignmentsVMSSClient struct {
 }
 
 // NewAssignmentsVMSSClient creates a new instance of AssignmentsVMSSClient with the specified values.
-//   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-//     the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssignmentsVMSSClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsVMSSClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,11 +40,85 @@ func NewAssignmentsVMSSClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
+// CreateOrUpdate - Creates an association between a VMSS and guest configuration
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmssName - The name of the virtual machine scale set.
+//   - name - The guest configuration assignment name.
+//   - parameters - Parameters supplied to the create or update guest configuration assignment.
+//   - options - AssignmentsVMSSClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsVMSSClient.CreateOrUpdate
+//     method.
+func (client *AssignmentsVMSSClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmssName string, name string, parameters Assignment, options *AssignmentsVMSSClientCreateOrUpdateOptions) (AssignmentsVMSSClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "AssignmentsVMSSClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmssName, name, parameters, options)
+	if err != nil {
+		return AssignmentsVMSSClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AssignmentsVMSSClientCreateOrUpdateResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return AssignmentsVMSSClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *AssignmentsVMSSClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, parameters Assignment, _ *AssignmentsVMSSClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{name}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmssName == "" {
+		return nil, errors.New("parameter vmssName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmssName}", url.PathEscape(vmssName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-05")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *AssignmentsVMSSClient) createOrUpdateHandleResponse(resp *http.Response) (AssignmentsVMSSClientCreateOrUpdateResponse, error) {
+	result := AssignmentsVMSSClientCreateOrUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
+		return AssignmentsVMSSClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
+}
+
 // Delete - Delete a guest configuration assignment for VMSS
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmssName - The name of the virtual machine scale set.
 //   - name - The guest configuration assignment name.
 //   - options - AssignmentsVMSSClientDeleteOptions contains the optional parameters for the AssignmentsVMSSClient.Delete method.
@@ -72,7 +145,7 @@ func (client *AssignmentsVMSSClient) Delete(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssignmentsVMSSClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, options *AssignmentsVMSSClientDeleteOptions) (*policy.Request, error) {
+func (client *AssignmentsVMSSClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, _ *AssignmentsVMSSClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +168,7 @@ func (client *AssignmentsVMSSClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,8 +186,8 @@ func (client *AssignmentsVMSSClient) deleteHandleResponse(resp *http.Response) (
 // Get - Get information about a guest configuration assignment for VMSS
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmssName - The name of the virtual machine scale set.
 //   - name - The guest configuration assignment name.
 //   - options - AssignmentsVMSSClientGetOptions contains the optional parameters for the AssignmentsVMSSClient.Get method.
@@ -141,7 +214,7 @@ func (client *AssignmentsVMSSClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssignmentsVMSSClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, options *AssignmentsVMSSClientGetOptions) (*policy.Request, error) {
+func (client *AssignmentsVMSSClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, _ *AssignmentsVMSSClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -164,7 +237,7 @@ func (client *AssignmentsVMSSClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,28 +254,27 @@ func (client *AssignmentsVMSSClient) getHandleResponse(resp *http.Response) (Ass
 
 // NewListPager - List all guest configuration assignments for VMSS.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmssName - The name of the virtual machine scale set.
 //   - options - AssignmentsVMSSClientListOptions contains the optional parameters for the AssignmentsVMSSClient.NewListPager
 //     method.
 func (client *AssignmentsVMSSClient) NewListPager(resourceGroupName string, vmssName string, options *AssignmentsVMSSClientListOptions) *runtime.Pager[AssignmentsVMSSClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsVMSSClientListResponse]{
 		More: func(page AssignmentsVMSSClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsVMSSClientListResponse) (AssignmentsVMSSClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsVMSSClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, resourceGroupName, vmssName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, vmssName, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsVMSSClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsVMSSClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsVMSSClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -211,16 +283,16 @@ func (client *AssignmentsVMSSClient) NewListPager(resourceGroupName string, vmss
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentsVMSSClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, options *AssignmentsVMSSClientListOptions) (*policy.Request, error) {
+func (client *AssignmentsVMSSClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, _ *AssignmentsVMSSClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if vmssName == "" {
 		return nil, errors.New("parameter vmssName cannot be empty")
 	}
@@ -230,7 +302,7 @@ func (client *AssignmentsVMSSClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

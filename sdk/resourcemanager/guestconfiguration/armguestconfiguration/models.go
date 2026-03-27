@@ -9,11 +9,11 @@ import "time"
 
 // Assignment - Guest configuration assignment is an association between a machine and guest configuration.
 type Assignment struct {
+	// REQUIRED; The guest configuration assignment name.
+	Name *string
+
 	// Region where the VM is located.
 	Location *string
-
-	// Name of the guest configuration assignment.
-	Name *string
 
 	// Properties of the Guest configuration assignment.
 	Properties *AssignmentProperties
@@ -39,6 +39,8 @@ type AssignmentInfo struct {
 
 // AssignmentList - The response of the list guest configuration assignment operation.
 type AssignmentList struct {
+	NextLink *string
+
 	// Result of the list guest configuration assignment operation.
 	Value []*Assignment
 }
@@ -118,6 +120,8 @@ type AssignmentReportDetails struct {
 
 // AssignmentReportList - List of guest configuration assignment reports.
 type AssignmentReportList struct {
+	NextLink *string
+
 	// List of reports for the guest configuration. Report contains information such as compliance status, reason and more.
 	Value []*AssignmentReport
 }
@@ -250,7 +254,7 @@ type ConfigurationSetting struct {
 	RefreshFrequencyMins *float32
 }
 
-// ErrorResponse - Error response of an operation failure
+// ErrorResponse - Error response of an operation failure.
 type ErrorResponse struct {
 	Error *ErrorResponseError
 }
@@ -280,6 +284,9 @@ type Navigation struct {
 	// Combined hash of the guest configuration package and configuration parameters.
 	ContentHash *string
 
+	// Managed identity with storage access of the guest configuration package and configuration parameters.
+	ContentManagedIdentity *string
+
 	// Uri of the storage where guest configuration package is uploaded.
 	ContentURI *string
 
@@ -302,37 +309,38 @@ type Navigation struct {
 	ContentType *string
 }
 
-// Operation - GuestConfiguration REST API operation
+// Operation - GuestConfiguration REST API operation.
 type Operation struct {
-	// Provider, Resource, Operation and description values.
+	// Provider, Resource, Operation, and description values.
 	Display *OperationDisplay
 
-	// Operation name: For ex. providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/write or read
+	// Operation name: For example, providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/write or read.
 	Name *string
 
-	// Provider, Resource, Operation and description values.
+	// Additional properties of the operation.
 	Properties *OperationProperties
 }
 
-// OperationDisplay - Provider, Resource, Operation and description values.
+// OperationDisplay - Provider, Resource, Operation, and description values.
 type OperationDisplay struct {
-	// Description about operation.
+	// Description about the operation.
 	Description *string
 
 	// Operation type: Read, write, delete, etc.
 	Operation *string
 
-	// Service provider: Microsoft.GuestConfiguration
+	// Service provider: Microsoft.GuestConfiguration.
 	Provider *string
 
-	// Resource on which the operation is performed: For ex.
+	// Resource on which the operation is performed.
 	Resource *string
 }
 
-// OperationList - The response model for the list of Automation operations
+// OperationList - The response model for the list of Automation operations.
 type OperationList struct {
-	// List of Automation operations supported by the Automation resource provider.
-	Value []*Operation
+	// REQUIRED; List of Automation operations supported by the Automation resource provider.
+	Value    []*Operation
+	NextLink *string
 }
 
 // OperationProperties - Provider, Resource, Operation and description values.
@@ -343,26 +351,11 @@ type OperationProperties struct {
 
 // ProxyResource - ARM proxy resource.
 type ProxyResource struct {
-	// Region where the VM is located.
-	Location *string
-
-	// Name of the guest configuration assignment.
+	// REQUIRED; The guest configuration assignment name.
 	Name *string
 
-	// READ-ONLY; ARM resource id of the guest configuration assignment.
-	ID *string
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// Resource - The core properties of ARM resources
-type Resource struct {
 	// Region where the VM is located.
 	Location *string
-
-	// Name of the guest configuration assignment.
-	Name *string
 
 	// READ-ONLY; ARM resource id of the guest configuration assignment.
 	ID *string

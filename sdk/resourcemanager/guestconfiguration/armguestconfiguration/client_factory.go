@@ -14,65 +14,92 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-//     the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewAssignmentReportsClient creates a new instance of AssignmentReportsClient.
 func (c *ClientFactory) NewAssignmentReportsClient() *AssignmentReportsClient {
-	subClient, _ := NewAssignmentReportsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AssignmentReportsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewAssignmentReportsVMSSClient creates a new instance of AssignmentReportsVMSSClient.
 func (c *ClientFactory) NewAssignmentReportsVMSSClient() *AssignmentReportsVMSSClient {
-	subClient, _ := NewAssignmentReportsVMSSClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AssignmentReportsVMSSClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewAssignmentsClient creates a new instance of AssignmentsClient.
 func (c *ClientFactory) NewAssignmentsClient() *AssignmentsClient {
-	subClient, _ := NewAssignmentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AssignmentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewAssignmentsVMSSClient creates a new instance of AssignmentsVMSSClient.
 func (c *ClientFactory) NewAssignmentsVMSSClient() *AssignmentsVMSSClient {
-	subClient, _ := NewAssignmentsVMSSClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AssignmentsVMSSClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewConnectedVMwarevSphereAssignmentsClient creates a new instance of ConnectedVMwarevSphereAssignmentsClient.
+func (c *ClientFactory) NewConnectedVMwarevSphereAssignmentsClient() *ConnectedVMwarevSphereAssignmentsClient {
+	return &ConnectedVMwarevSphereAssignmentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewConnectedVMwarevSphereAssignmentsReportsClient creates a new instance of ConnectedVMwarevSphereAssignmentsReportsClient.
+func (c *ClientFactory) NewConnectedVMwarevSphereAssignmentsReportsClient() *ConnectedVMwarevSphereAssignmentsReportsClient {
+	return &ConnectedVMwarevSphereAssignmentsReportsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewHCRPAssignmentReportsClient creates a new instance of HCRPAssignmentReportsClient.
 func (c *ClientFactory) NewHCRPAssignmentReportsClient() *HCRPAssignmentReportsClient {
-	subClient, _ := NewHCRPAssignmentReportsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &HCRPAssignmentReportsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewHCRPAssignmentsClient creates a new instance of HCRPAssignmentsClient.
 func (c *ClientFactory) NewHCRPAssignmentsClient() *HCRPAssignmentsClient {
-	subClient, _ := NewHCRPAssignmentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &HCRPAssignmentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }

@@ -25,10 +25,9 @@ type AssignmentReportsClient struct {
 }
 
 // NewAssignmentReportsClient creates a new instance of AssignmentReportsClient with the specified values.
-//   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-//     the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssignmentReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentReportsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,19 +43,19 @@ func NewAssignmentReportsClient(subscriptionID string, credential azcore.TokenCr
 // Get - Get a report for the guest configuration assignment, by reportId.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmName - The name of the virtual machine.
 //   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - reportID - The GUID for the guest configuration assignment report.
-//   - vmName - The name of the virtual machine.
 //   - options - AssignmentReportsClientGetOptions contains the optional parameters for the AssignmentReportsClient.Get method.
-func (client *AssignmentReportsClient) Get(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, vmName string, options *AssignmentReportsClientGetOptions) (AssignmentReportsClientGetResponse, error) {
+func (client *AssignmentReportsClient) Get(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, reportID string, options *AssignmentReportsClientGetOptions) (AssignmentReportsClientGetResponse, error) {
 	var err error
 	const operationName = "AssignmentReportsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, guestConfigurationAssignmentName, reportID, vmName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, guestConfigurationAssignmentName, reportID, options)
 	if err != nil {
 		return AssignmentReportsClientGetResponse{}, err
 	}
@@ -73,12 +72,20 @@ func (client *AssignmentReportsClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssignmentReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, vmName string, options *AssignmentReportsClientGetOptions) (*policy.Request, error) {
+func (client *AssignmentReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, reportID string, _ *AssignmentReportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports/{reportId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmName == "" {
+		return nil, errors.New("parameter vmName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
 	if guestConfigurationAssignmentName == "" {
 		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
 	}
@@ -87,20 +94,12 @@ func (client *AssignmentReportsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter reportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportId}", url.PathEscape(reportID))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vmName == "" {
-		return nil, errors.New("parameter vmName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,18 +117,18 @@ func (client *AssignmentReportsClient) getHandleResponse(resp *http.Response) (A
 // List - List all reports for the guest configuration assignment, latest report first.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
-//   - guestConfigurationAssignmentName - The guest configuration assignment name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
+//   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - options - AssignmentReportsClientListOptions contains the optional parameters for the AssignmentReportsClient.List method.
-func (client *AssignmentReportsClient) List(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *AssignmentReportsClientListOptions) (AssignmentReportsClientListResponse, error) {
+func (client *AssignmentReportsClient) List(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, options *AssignmentReportsClientListOptions) (AssignmentReportsClientListResponse, error) {
 	var err error
 	const operationName = "AssignmentReportsClient.List"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, resourceGroupName, guestConfigurationAssignmentName, vmName, options)
+	req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, guestConfigurationAssignmentName, options)
 	if err != nil {
 		return AssignmentReportsClientListResponse{}, err
 	}
@@ -146,30 +145,30 @@ func (client *AssignmentReportsClient) List(ctx context.Context, resourceGroupNa
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *AssignmentReportsClientListOptions) (*policy.Request, error) {
+func (client *AssignmentReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, _ *AssignmentReportsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if guestConfigurationAssignmentName == "" {
-		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if vmName == "" {
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	if guestConfigurationAssignmentName == "" {
+		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

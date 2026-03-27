@@ -16,13 +16,32 @@ import (
 
 // ServerFactory is a fake server for instances of the armguestconfiguration.ClientFactory type.
 type ServerFactory struct {
-	AssignmentReportsServer     AssignmentReportsServer
+	// AssignmentReportsServer contains the fakes for client AssignmentReportsClient
+	AssignmentReportsServer AssignmentReportsServer
+
+	// AssignmentReportsVMSSServer contains the fakes for client AssignmentReportsVMSSClient
 	AssignmentReportsVMSSServer AssignmentReportsVMSSServer
-	AssignmentsServer           AssignmentsServer
-	AssignmentsVMSSServer       AssignmentsVMSSServer
+
+	// AssignmentsServer contains the fakes for client AssignmentsClient
+	AssignmentsServer AssignmentsServer
+
+	// AssignmentsVMSSServer contains the fakes for client AssignmentsVMSSClient
+	AssignmentsVMSSServer AssignmentsVMSSServer
+
+	// ConnectedVMwarevSphereAssignmentsServer contains the fakes for client ConnectedVMwarevSphereAssignmentsClient
+	ConnectedVMwarevSphereAssignmentsServer ConnectedVMwarevSphereAssignmentsServer
+
+	// ConnectedVMwarevSphereAssignmentsReportsServer contains the fakes for client ConnectedVMwarevSphereAssignmentsReportsClient
+	ConnectedVMwarevSphereAssignmentsReportsServer ConnectedVMwarevSphereAssignmentsReportsServer
+
+	// HCRPAssignmentReportsServer contains the fakes for client HCRPAssignmentReportsClient
 	HCRPAssignmentReportsServer HCRPAssignmentReportsServer
-	HCRPAssignmentsServer       HCRPAssignmentsServer
-	OperationsServer            OperationsServer
+
+	// HCRPAssignmentsServer contains the fakes for client HCRPAssignmentsClient
+	HCRPAssignmentsServer HCRPAssignmentsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -37,15 +56,17 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armguestconfiguration.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                           *ServerFactory
-	trMu                          sync.Mutex
-	trAssignmentReportsServer     *AssignmentReportsServerTransport
-	trAssignmentReportsVMSSServer *AssignmentReportsVMSSServerTransport
-	trAssignmentsServer           *AssignmentsServerTransport
-	trAssignmentsVMSSServer       *AssignmentsVMSSServerTransport
-	trHCRPAssignmentReportsServer *HCRPAssignmentReportsServerTransport
-	trHCRPAssignmentsServer       *HCRPAssignmentsServerTransport
-	trOperationsServer            *OperationsServerTransport
+	srv                                              *ServerFactory
+	trMu                                             sync.Mutex
+	trAssignmentReportsServer                        *AssignmentReportsServerTransport
+	trAssignmentReportsVMSSServer                    *AssignmentReportsVMSSServerTransport
+	trAssignmentsServer                              *AssignmentsServerTransport
+	trAssignmentsVMSSServer                          *AssignmentsVMSSServerTransport
+	trConnectedVMwarevSphereAssignmentsServer        *ConnectedVMwarevSphereAssignmentsServerTransport
+	trConnectedVMwarevSphereAssignmentsReportsServer *ConnectedVMwarevSphereAssignmentsReportsServerTransport
+	trHCRPAssignmentReportsServer                    *HCRPAssignmentReportsServerTransport
+	trHCRPAssignmentsServer                          *HCRPAssignmentsServerTransport
+	trOperationsServer                               *OperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -79,6 +100,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAssignmentsVMSSServerTransport(&s.srv.AssignmentsVMSSServer)
 		})
 		resp, err = s.trAssignmentsVMSSServer.Do(req)
+	case "ConnectedVMwarevSphereAssignmentsClient":
+		initServer(s, &s.trConnectedVMwarevSphereAssignmentsServer, func() *ConnectedVMwarevSphereAssignmentsServerTransport {
+			return NewConnectedVMwarevSphereAssignmentsServerTransport(&s.srv.ConnectedVMwarevSphereAssignmentsServer)
+		})
+		resp, err = s.trConnectedVMwarevSphereAssignmentsServer.Do(req)
+	case "ConnectedVMwarevSphereAssignmentsReportsClient":
+		initServer(s, &s.trConnectedVMwarevSphereAssignmentsReportsServer, func() *ConnectedVMwarevSphereAssignmentsReportsServerTransport {
+			return NewConnectedVMwarevSphereAssignmentsReportsServerTransport(&s.srv.ConnectedVMwarevSphereAssignmentsReportsServer)
+		})
+		resp, err = s.trConnectedVMwarevSphereAssignmentsReportsServer.Do(req)
 	case "HCRPAssignmentReportsClient":
 		initServer(s, &s.trHCRPAssignmentReportsServer, func() *HCRPAssignmentReportsServerTransport {
 			return NewHCRPAssignmentReportsServerTransport(&s.srv.HCRPAssignmentReportsServer)

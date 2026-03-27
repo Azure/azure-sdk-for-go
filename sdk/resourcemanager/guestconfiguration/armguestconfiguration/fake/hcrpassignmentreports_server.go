@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,11 +22,11 @@ import (
 type HCRPAssignmentReportsServer struct {
 	// Get is the fake for method HCRPAssignmentReportsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, machineName string, options *armguestconfiguration.HCRPAssignmentReportsClientGetOptions) (resp azfake.Responder[armguestconfiguration.HCRPAssignmentReportsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, machineName string, guestConfigurationAssignmentName string, reportID string, options *armguestconfiguration.HCRPAssignmentReportsClientGetOptions) (resp azfake.Responder[armguestconfiguration.HCRPAssignmentReportsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// List is the fake for method HCRPAssignmentReportsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	List func(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, options *armguestconfiguration.HCRPAssignmentReportsClientListOptions) (resp azfake.Responder[armguestconfiguration.HCRPAssignmentReportsClientListResponse], errResp azfake.ErrorResponder)
+	List func(ctx context.Context, resourceGroupName string, machineName string, guestConfigurationAssignmentName string, options *armguestconfiguration.HCRPAssignmentReportsClientListOptions) (resp azfake.Responder[armguestconfiguration.HCRPAssignmentReportsClientListResponse], errResp azfake.ErrorResponder)
 }
 
 // NewHCRPAssignmentReportsServerTransport creates a new instance of HCRPAssignmentReportsServerTransport with the provided implementation.
@@ -50,23 +50,42 @@ func (h *HCRPAssignmentReportsServerTransport) Do(req *http.Request) (*http.Resp
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return h.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "HCRPAssignmentReportsClient.Get":
-		resp, err = h.dispatchGet(req)
-	case "HCRPAssignmentReportsClient.List":
-		resp, err = h.dispatchList(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (h *HCRPAssignmentReportsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if hcrpAssignmentReportsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = hcrpAssignmentReportsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "HCRPAssignmentReportsClient.Get":
+				res.resp, res.err = h.dispatchGet(req)
+			case "HCRPAssignmentReportsClient.List":
+				res.resp, res.err = h.dispatchList(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (h *HCRPAssignmentReportsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -76,10 +95,14 @@ func (h *HCRPAssignmentReportsServerTransport) dispatchGet(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/machines/(?P<machineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<guestConfigurationAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports/(?P<reportId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	machineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("machineName")])
 	if err != nil {
 		return nil, err
 	}
@@ -91,11 +114,7 @@ func (h *HCRPAssignmentReportsServerTransport) dispatchGet(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	machineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("machineName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := h.srv.Get(req.Context(), resourceGroupNameParam, guestConfigurationAssignmentNameParam, reportIDParam, machineNameParam, nil)
+	respr, errRespr := h.srv.Get(req.Context(), resourceGroupNameParam, machineNameParam, guestConfigurationAssignmentNameParam, reportIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -117,14 +136,10 @@ func (h *HCRPAssignmentReportsServerTransport) dispatchList(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/machines/(?P<machineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<guestConfigurationAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +147,11 @@ func (h *HCRPAssignmentReportsServerTransport) dispatchList(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := h.srv.List(req.Context(), resourceGroupNameParam, guestConfigurationAssignmentNameParam, machineNameParam, nil)
+	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := h.srv.List(req.Context(), resourceGroupNameParam, machineNameParam, guestConfigurationAssignmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -145,4 +164,10 @@ func (h *HCRPAssignmentReportsServerTransport) dispatchList(req *http.Request) (
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to HCRPAssignmentReportsServerTransport
+var hcrpAssignmentReportsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

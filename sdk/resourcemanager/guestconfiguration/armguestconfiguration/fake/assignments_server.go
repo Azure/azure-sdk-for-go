@@ -12,7 +12,8 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,15 +23,15 @@ import (
 type AssignmentsServer struct {
 	// CreateOrUpdate is the fake for method AssignmentsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, guestConfigurationAssignmentName string, resourceGroupName string, vmName string, parameters armguestconfiguration.Assignment, options *armguestconfiguration.AssignmentsClientCreateOrUpdateOptions) (resp azfake.Responder[armguestconfiguration.AssignmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, parameters armguestconfiguration.Assignment, options *armguestconfiguration.AssignmentsClientCreateOrUpdateOptions) (resp azfake.Responder[armguestconfiguration.AssignmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method AssignmentsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK
-	Delete func(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *armguestconfiguration.AssignmentsClientDeleteOptions) (resp azfake.Responder[armguestconfiguration.AssignmentsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, options *armguestconfiguration.AssignmentsClientDeleteOptions) (resp azfake.Responder[armguestconfiguration.AssignmentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AssignmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *armguestconfiguration.AssignmentsClientGetOptions) (resp azfake.Responder[armguestconfiguration.AssignmentsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, options *armguestconfiguration.AssignmentsClientGetOptions) (resp azfake.Responder[armguestconfiguration.AssignmentsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method AssignmentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -74,31 +75,50 @@ func (a *AssignmentsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AssignmentsClient.CreateOrUpdate":
-		resp, err = a.dispatchCreateOrUpdate(req)
-	case "AssignmentsClient.Delete":
-		resp, err = a.dispatchDelete(req)
-	case "AssignmentsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AssignmentsClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	case "AssignmentsClient.NewRGListPager":
-		resp, err = a.dispatchNewRGListPager(req)
-	case "AssignmentsClient.NewSubscriptionListPager":
-		resp, err = a.dispatchNewSubscriptionListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if assignmentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = assignmentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AssignmentsClient.CreateOrUpdate":
+				res.resp, res.err = a.dispatchCreateOrUpdate(req)
+			case "AssignmentsClient.Delete":
+				res.resp, res.err = a.dispatchDelete(req)
+			case "AssignmentsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AssignmentsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AssignmentsClient.NewRGListPager":
+				res.resp, res.err = a.dispatchNewRGListPager(req)
+			case "AssignmentsClient.NewSubscriptionListPager":
+				res.resp, res.err = a.dispatchNewSubscriptionListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AssignmentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -108,14 +128,10 @@ func (a *AssignmentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<guestConfigurationAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armguestconfiguration.Assignment](req)
-	if err != nil {
-		return nil, err
-	}
-	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +143,11 @@ func (a *AssignmentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), guestConfigurationAssignmentNameParam, resourceGroupNameParam, vmNameParam, body, nil)
+	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, vmNameParam, guestConfigurationAssignmentNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -149,14 +169,10 @@ func (a *AssignmentsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<guestConfigurationAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +180,11 @@ func (a *AssignmentsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Delete(req.Context(), resourceGroupNameParam, guestConfigurationAssignmentNameParam, vmNameParam, nil)
+	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Delete(req.Context(), resourceGroupNameParam, vmNameParam, guestConfigurationAssignmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -186,14 +206,10 @@ func (a *AssignmentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<guestConfigurationAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +217,11 @@ func (a *AssignmentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, guestConfigurationAssignmentNameParam, vmNameParam, nil)
+	guestConfigurationAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("guestConfigurationAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, vmNameParam, guestConfigurationAssignmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -225,7 +245,7 @@ func (a *AssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -239,6 +259,9 @@ func (a *AssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		resp := a.srv.NewListPager(resourceGroupNameParam, vmNameParam, nil)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armguestconfiguration.AssignmentsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
@@ -263,7 +286,7 @@ func (a *AssignmentsServerTransport) dispatchNewRGListPager(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -273,6 +296,9 @@ func (a *AssignmentsServerTransport) dispatchNewRGListPager(req *http.Request) (
 		resp := a.srv.NewRGListPager(resourceGroupNameParam, nil)
 		newRGListPager = &resp
 		a.newRGListPager.add(req, newRGListPager)
+		server.PagerResponderInjectNextLinks(newRGListPager, req, func(page *armguestconfiguration.AssignmentsClientRGListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newRGListPager, req)
 	if err != nil {
@@ -297,12 +323,15 @@ func (a *AssignmentsServerTransport) dispatchNewSubscriptionListPager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewSubscriptionListPager(nil)
 		newSubscriptionListPager = &resp
 		a.newSubscriptionListPager.add(req, newSubscriptionListPager)
+		server.PagerResponderInjectNextLinks(newSubscriptionListPager, req, func(page *armguestconfiguration.AssignmentsClientSubscriptionListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newSubscriptionListPager, req)
 	if err != nil {
@@ -316,4 +345,10 @@ func (a *AssignmentsServerTransport) dispatchNewSubscriptionListPager(req *http.
 		a.newSubscriptionListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AssignmentsServerTransport
+var assignmentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

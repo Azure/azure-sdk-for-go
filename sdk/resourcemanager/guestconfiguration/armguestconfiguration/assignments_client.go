@@ -25,10 +25,9 @@ type AssignmentsClient struct {
 }
 
 // NewAssignmentsClient creates a new instance of AssignmentsClient with the specified values.
-//   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-//     the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,20 +43,20 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 // CreateOrUpdate - Creates an association between a VM and guest configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
-//   - guestConfigurationAssignmentName - Name of the guest configuration assignment.
-//   - resourceGroupName - The resource group name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
+//   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - parameters - Parameters supplied to the create or update guest configuration assignment.
 //   - options - AssignmentsClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsClient.CreateOrUpdate
 //     method.
-func (client *AssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, resourceGroupName string, vmName string, parameters Assignment, options *AssignmentsClientCreateOrUpdateOptions) (AssignmentsClientCreateOrUpdateResponse, error) {
+func (client *AssignmentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, parameters Assignment, options *AssignmentsClientCreateOrUpdateOptions) (AssignmentsClientCreateOrUpdateResponse, error) {
 	var err error
 	const operationName = "AssignmentsClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, guestConfigurationAssignmentName, resourceGroupName, vmName, parameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmName, guestConfigurationAssignmentName, parameters, options)
 	if err != nil {
 		return AssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -74,12 +73,8 @@ func (client *AssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfig
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, guestConfigurationAssignmentName string, resourceGroupName string, vmName string, parameters Assignment, options *AssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, parameters Assignment, _ *AssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
-	if guestConfigurationAssignmentName == "" {
-		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -92,12 +87,16 @@ func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	if guestConfigurationAssignmentName == "" {
+		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,18 +117,18 @@ func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Respons
 // Delete - Delete a guest configuration assignment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
-//   - guestConfigurationAssignmentName - Name of the guest configuration assignment
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
+//   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - options - AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
-func (client *AssignmentsClient) Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *AssignmentsClientDeleteOptions) (AssignmentsClientDeleteResponse, error) {
+func (client *AssignmentsClient) Delete(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, options *AssignmentsClientDeleteOptions) (AssignmentsClientDeleteResponse, error) {
 	var err error
 	const operationName = "AssignmentsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, guestConfigurationAssignmentName, vmName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmName, guestConfigurationAssignmentName, options)
 	if err != nil {
 		return AssignmentsClientDeleteResponse{}, err
 	}
@@ -145,30 +144,30 @@ func (client *AssignmentsClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *AssignmentsClientDeleteOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, _ *AssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if guestConfigurationAssignmentName == "" {
-		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if vmName == "" {
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	if guestConfigurationAssignmentName == "" {
+		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,18 +176,18 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Get information about a guest configuration assignment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
-//   - guestConfigurationAssignmentName - The guest configuration assignment name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
+//   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - options - AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
-func (client *AssignmentsClient) Get(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *AssignmentsClientGetOptions) (AssignmentsClientGetResponse, error) {
+func (client *AssignmentsClient) Get(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, options *AssignmentsClientGetOptions) (AssignmentsClientGetResponse, error) {
 	var err error
 	const operationName = "AssignmentsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, guestConfigurationAssignmentName, vmName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, guestConfigurationAssignmentName, options)
 	if err != nil {
 		return AssignmentsClientGetResponse{}, err
 	}
@@ -205,30 +204,30 @@ func (client *AssignmentsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *AssignmentsClientGetOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, _ *AssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if guestConfigurationAssignmentName == "" {
-		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if vmName == "" {
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	if guestConfigurationAssignmentName == "" {
+		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,27 +244,26 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 
 // NewListPager - List all guest configuration assignments for a virtual machine.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
 func (client *AssignmentsClient) NewListPager(resourceGroupName string, vmName string, options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
 		More: func(page AssignmentsClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsClientListResponse) (AssignmentsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, vmName, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -274,16 +272,16 @@ func (client *AssignmentsClient) NewListPager(resourceGroupName string, vmName s
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *AssignmentsClientListOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *AssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if vmName == "" {
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
@@ -293,7 +291,7 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,26 +308,25 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 
 // NewRGListPager - List all guest configuration assignments for a resource group.
 //
-// Generated from API version 2022-01-25
-//   - resourceGroupName - The resource group name.
+// Generated from API version 2024-04-05
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AssignmentsClientRGListOptions contains the optional parameters for the AssignmentsClient.NewRGListPager method.
 func (client *AssignmentsClient) NewRGListPager(resourceGroupName string, options *AssignmentsClientRGListOptions) *runtime.Pager[AssignmentsClientRGListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientRGListResponse]{
 		More: func(page AssignmentsClientRGListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsClientRGListResponse) (AssignmentsClientRGListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewRGListPager")
-			req, err := client.rgListCreateRequest(ctx, resourceGroupName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.rgListCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsClientRGListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientRGListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsClientRGListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.rgListHandleResponse(resp)
 		},
@@ -338,7 +335,7 @@ func (client *AssignmentsClient) NewRGListPager(resourceGroupName string, option
 }
 
 // rgListCreateRequest creates the RGList request.
-func (client *AssignmentsClient) rgListCreateRequest(ctx context.Context, resourceGroupName string, options *AssignmentsClientRGListOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) rgListCreateRequest(ctx context.Context, resourceGroupName string, _ *AssignmentsClientRGListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -353,7 +350,7 @@ func (client *AssignmentsClient) rgListCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -370,26 +367,25 @@ func (client *AssignmentsClient) rgListHandleResponse(resp *http.Response) (Assi
 
 // NewSubscriptionListPager - List all guest configuration assignments for a subscription.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - options - AssignmentsClientSubscriptionListOptions contains the optional parameters for the AssignmentsClient.NewSubscriptionListPager
 //     method.
 func (client *AssignmentsClient) NewSubscriptionListPager(options *AssignmentsClientSubscriptionListOptions) *runtime.Pager[AssignmentsClientSubscriptionListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientSubscriptionListResponse]{
 		More: func(page AssignmentsClientSubscriptionListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsClientSubscriptionListResponse) (AssignmentsClientSubscriptionListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewSubscriptionListPager")
-			req, err := client.subscriptionListCreateRequest(ctx, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.subscriptionListCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsClientSubscriptionListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientSubscriptionListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsClientSubscriptionListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.subscriptionListHandleResponse(resp)
 		},
@@ -398,7 +394,7 @@ func (client *AssignmentsClient) NewSubscriptionListPager(options *AssignmentsCl
 }
 
 // subscriptionListCreateRequest creates the SubscriptionList request.
-func (client *AssignmentsClient) subscriptionListCreateRequest(ctx context.Context, options *AssignmentsClientSubscriptionListOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) subscriptionListCreateRequest(ctx context.Context, _ *AssignmentsClientSubscriptionListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -409,7 +405,7 @@ func (client *AssignmentsClient) subscriptionListCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

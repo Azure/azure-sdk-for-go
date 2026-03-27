@@ -42,16 +42,16 @@ func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layo
 		if eTag == nil {
 			eTag = resp.ETag
 		}
-		if resp.BlobLayout.Endpoints == nil || resp.BlobLayout.Endpoints.Endpoint == nil || len(resp.BlobLayout.Endpoints.Endpoint) == 0 ||
-			resp.BlobLayout.Ranges == nil || resp.BlobLayout.Ranges.Range == nil || len(resp.BlobLayout.Ranges.Range) == 0 {
+		if resp.Endpoints == nil || resp.Endpoints.Endpoint == nil || len(resp.Endpoints.Endpoint) == 0 ||
+			resp.Ranges == nil || resp.Ranges.Range == nil || len(resp.Ranges.Range) == 0 {
 			// No layout means we can download the whole blob from the primary endpoint.
 			return layout{contentLength: contentLength, eTag: eTag}, time.Time{}, nil
 		}
-		endpoints := make([]string, len(resp.BlobLayout.Endpoints.Endpoint))
-		for _, ep := range resp.BlobLayout.Endpoints.Endpoint {
+		endpoints := make([]string, len(resp.Endpoints.Endpoint))
+		for _, ep := range resp.Endpoints.Endpoint {
 			endpoints[*ep.Index] = *ep.Value
 		}
-		for _, r := range resp.BlobLayout.Ranges.Range {
+		for _, r := range resp.Ranges.Range {
 			lr := layoutRange{
 				start:    *r.Start,
 				end:      *r.End,

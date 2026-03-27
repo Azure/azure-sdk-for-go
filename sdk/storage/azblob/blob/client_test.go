@@ -4592,34 +4592,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKFalse() {
 	}
 }
 
-// TODO : This should work when this feature is public preview, but I can't test this with the preprod account.
-//func (s *BlobRecordedTestsSuite) TestGetLayoutPagerCPKScope() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-//	_require.NoError(err)
-//
-//	containerName := testcommon.GenerateContainerName(testName)
-//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-//
-//	blobName := testcommon.GenerateBlobName(testName)
-//	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
-//
-//	// Upload blob with CPK
-//	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
-//		CPKScopeInfo: to.Ptr(testcommon.GetCPKScopeInfo(s.T())),
-//	})
-//	_require.NoError(err)
-//
-//	pager := bbClient.GetLayoutPager(nil)
-//	_require.NotNil(pager)
-//
-//	for pager.More() {
-//		_, err = pager.NextPage(context.Background())
-//		_require.NoError(err)
-//	}
-//}
+// TODO : GetLayout CpkScope Test, Tags test
 
 type hostMismatchCheckPolicy struct {
 	t        *testing.T

@@ -91,13 +91,6 @@ var SpecialCharBlobTagsMap = map[string]string{
 	"go":              "written in golang",
 }
 
-func init() {
-	//log.SetListener(func(event log.Event, msg string) {
-	//	fmt.Printf("[%s] %s\n", event, msg)
-	//})
-	//log.SetEvents(log.EventRequest, log.EventResponse)
-}
-
 func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
 

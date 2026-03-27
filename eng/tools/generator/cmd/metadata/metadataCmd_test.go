@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -29,12 +30,15 @@ func repoRoot(t *testing.T) string {
 }
 
 // copyTemplate copies a template file from the repo's template/typespec directory into destDir.
+// It normalizes line endings to \n to ensure consistent behavior across platforms.
 func copyTemplate(t *testing.T, root, name, destDir string) {
 	t.Helper()
 	src := filepath.Join(root, "eng", "tools", "generator", "template", "typespec", name)
 	data, err := os.ReadFile(src)
 	require.NoError(t, err)
-	require.NoError(t, os.WriteFile(filepath.Join(destDir, name), data, 0644))
+	// Normalize line endings to \n for consistent cross-platform behavior
+	normalized := strings.ReplaceAll(string(data), "\r\n", "\n")
+	require.NoError(t, os.WriteFile(filepath.Join(destDir, name), []byte(normalized), 0644))
 }
 
 func TestInferPackageTitle(t *testing.T) {

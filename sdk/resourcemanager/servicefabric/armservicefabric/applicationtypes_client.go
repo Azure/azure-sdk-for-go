@@ -27,7 +27,7 @@ type ApplicationTypesClient struct {
 // NewApplicationTypesClient creates a new instance of ApplicationTypesClient with the specified values.
 //   - subscriptionID - The customer subscription identifier.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationTypesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewApplicationTypesClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Create or update a Service Fabric application type name resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationTypeName - The name of the application type name resource.
@@ -73,7 +73,7 @@ func (client *ApplicationTypesClient) CreateOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, parameters ApplicationTypeResource, options *ApplicationTypesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, parameters ApplicationTypeResource, _ *ApplicationTypesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,7 +96,7 @@ func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -117,7 +117,7 @@ func (client *ApplicationTypesClient) createOrUpdateHandleResponse(resp *http.Re
 // BeginDelete - Delete a Service Fabric application type name resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationTypeName - The name of the application type name resource.
@@ -143,7 +143,7 @@ func (client *ApplicationTypesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Delete a Service Fabric application type name resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 func (client *ApplicationTypesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationTypesClient.BeginDelete"
@@ -166,7 +166,7 @@ func (client *ApplicationTypesClient) deleteOperation(ctx context.Context, resou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, _ *ApplicationTypesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -189,7 +189,7 @@ func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +199,7 @@ func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, r
 // cluster resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - applicationTypeName - The name of the application type name resource.
@@ -227,7 +227,7 @@ func (client *ApplicationTypesClient) Get(ctx context.Context, resourceGroupName
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientGetOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, _ *ApplicationTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,7 +250,7 @@ func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -268,7 +268,7 @@ func (client *ApplicationTypesClient) getHandleResponse(resp *http.Response) (Ap
 // NewListPager - Gets all application type name resources created or in the process of being created in the Service Fabric
 // cluster resource.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - options - ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.NewListPager
@@ -297,7 +297,7 @@ func (client *ApplicationTypesClient) NewListPager(resourceGroupName string, clu
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationTypesClientListOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ApplicationTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -316,7 +316,7 @@ func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

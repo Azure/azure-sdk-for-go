@@ -570,6 +570,11 @@ type ClusterProperties struct {
 	// The storage account information for storing Service Fabric diagnostic logs.
 	DiagnosticsStorageAccountConfig *DiagnosticsStorageAccountConfig
 
+	// If true, token-based authentication is not allowed on the HttpGatewayEndpoint. This is required to support TLS versions
+	// 1.3 and above. If token-based authentication is used,
+	// HttpGatewayTokenAuthEndpointPort must be defined.
+	EnableHTTPGatewayExclusiveAuthMode *bool
+
 	// Indicates if the event store service is enabled.
 	EventStoreServiceEnabled *bool
 
@@ -689,6 +694,11 @@ type ClusterPropertiesUpdateParameters struct {
 	// ClusterVersion API [https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list]. To get the list of available
 	// version for existing clusters use availableClusterVersions.
 	ClusterCodeVersion *string
+
+	// If true, token-based authentication is not allowed on the HttpGatewayEndpoint. This is required to support TLS versions
+	// 1.3 and above. If token-based authentication is used,
+	// HttpGatewayTokenAuthEndpointPort must be defined.
+	EnableHTTPGatewayExclusiveAuthMode *bool
 
 	// Indicates if the event store service is enabled.
 	EventStoreServiceEnabled *bool
@@ -952,6 +962,9 @@ type NodeTypeDescription struct {
 	// The range of ephemeral ports that nodes in this node type should be configured with.
 	EphemeralPorts *EndpointRangeDescription
 
+	// The port used for token-auth based HTTPS connections to the cluster. Cannot be set to the same port as HttpGatewayEndpoint.
+	HTTPGatewayTokenAuthEndpointPort *int32
+
 	// Indicates if the node type can only host Stateless workloads.
 	IsStateless *bool
 
@@ -1192,8 +1205,10 @@ type ServiceResourceProperties struct {
 	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
 	PlacementConstraints *string
 
-	// Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of service
-	// name.
+	// Dns name used for the service. If this is specified, then the DNS name can be used to return the IP addresses of service
+	// endpoints for application layer protocols (e.g., HTTP). When updating
+	// serviceDnsName, old name may be temporarily resolvable. However, rely on new name. When removing serviceDnsName, removed
+	// name may temporarily be resolvable. Do not rely on the name being unresolvable.
 	ServiceDNSName *string
 
 	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
@@ -1371,8 +1386,10 @@ type StatefulServiceProperties struct {
 	// The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format (hh:mm:ss.s).
 	ReplicaRestartWaitDuration *time.Time
 
-	// Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of service
-	// name.
+	// Dns name used for the service. If this is specified, then the DNS name can be used to return the IP addresses of service
+	// endpoints for application layer protocols (e.g., HTTP). When updating
+	// serviceDnsName, old name may be temporarily resolvable. However, rely on new name. When removing serviceDnsName, removed
+	// name may temporarily be resolvable. Do not rely on the name being unresolvable.
 	ServiceDNSName *string
 
 	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
@@ -1486,6 +1503,20 @@ type StatelessServiceProperties struct {
 	// The instance count.
 	InstanceCount *int32
 
+	// MinInstanceCount is the minimum number of instances that must be up to meet the EnsureAvailability safety check during
+	// operations like upgrade or deactivate node. The actual number that is used is
+	// max( MinInstanceCount, ceil( MinInstancePercentage/100.0 * InstanceCount) ). Note, if InstanceCount is set to -1, during
+	// MinInstanceCount computation -1 is first converted into the number of nodes on
+	// which the instances are allowed to be placed according to the placement constraints on the service.
+	MinInstanceCount *int32
+
+	// MinInstancePercentage is the minimum percentage of InstanceCount that must be up to meet the EnsureAvailability safety
+	// check during operations like upgrade or deactivate node. The actual number that
+	// is used is max( MinInstanceCount, ceil( MinInstancePercentage/100.0 * InstanceCount) ). Note, if InstanceCount is set to
+	// -1, during MinInstancePercentage computation, -1 is first converted into the
+	// number of nodes on which the instances are allowed to be placed according to the placement constraints on the service.
+	MinInstancePercentage []byte
+
 	// Describes how the service is partitioned.
 	PartitionDescription PartitionSchemeDescriptionClassification
 
@@ -1494,8 +1525,10 @@ type StatelessServiceProperties struct {
 	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
 	PlacementConstraints *string
 
-	// Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of service
-	// name.
+	// Dns name used for the service. If this is specified, then the DNS name can be used to return the IP addresses of service
+	// endpoints for application layer protocols (e.g., HTTP). When updating
+	// serviceDnsName, old name may be temporarily resolvable. However, rely on new name. When removing serviceDnsName, removed
+	// name may temporarily be resolvable. Do not rely on the name being unresolvable.
 	ServiceDNSName *string
 
 	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
@@ -1546,8 +1579,8 @@ type StatelessServiceUpdateProperties struct {
 	// the delay starts prior to closing the instance. This delay enables existing
 	// requests to drain gracefully before the instance actually goes down
 	// (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-	// It is first interpreted as
-	// a string representing an ISO 8601 duration. It is represented in ISO 8601 format (hh:mm:ss.s).
+	// It is represented in ISO
+	// 8601 format (hh:mm:ss.s).
 	InstanceCloseDelayDuration *string
 
 	// The instance count.
@@ -1638,4 +1671,34 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
+}
+
+// VMSize - VM Sizes properties.
+type VMSize struct {
+	// READ-ONLY; VM Size name.
+	Size *string
+}
+
+// VMSizeResource - Describes a VM Sizes.
+type VMSizeResource struct {
+	// READ-ONLY; VM Size id.
+	ID *string
+
+	// READ-ONLY; VM Size name.
+	Name *string
+
+	// READ-ONLY; VM Size properties.
+	Properties *VMSize
+
+	// READ-ONLY; VM Size type.
+	Type *string
+}
+
+// VMSizesResult - Describes the result of the request to list VM Sizes for Service Fabric Clusters.
+type VMSizesResult struct {
+	// List of VM Sizes for Service Fabric Clusters.
+	Value []*VMSizeResource
+
+	// READ-ONLY; URL to get the next set of VM Sizes if there are any.
+	NextLink *string
 }

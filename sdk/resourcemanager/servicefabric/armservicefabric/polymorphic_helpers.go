@@ -8,7 +8,7 @@ package armservicefabric
 import "encoding/json"
 
 func unmarshalPartitionSchemeDescriptionClassification(rawMsg json.RawMessage) (PartitionSchemeDescriptionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -33,7 +33,7 @@ func unmarshalPartitionSchemeDescriptionClassification(rawMsg json.RawMessage) (
 }
 
 func unmarshalServicePlacementPolicyDescriptionClassification(rawMsg json.RawMessage) (ServicePlacementPolicyDescriptionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -52,7 +52,7 @@ func unmarshalServicePlacementPolicyDescriptionClassification(rawMsg json.RawMes
 }
 
 func unmarshalServicePlacementPolicyDescriptionClassificationArray(rawMsg json.RawMessage) ([]ServicePlacementPolicyDescriptionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -71,7 +71,7 @@ func unmarshalServicePlacementPolicyDescriptionClassificationArray(rawMsg json.R
 }
 
 func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (ServiceResourcePropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -94,7 +94,7 @@ func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (S
 }
 
 func unmarshalServiceResourceUpdatePropertiesClassification(rawMsg json.RawMessage) (ServiceResourceUpdatePropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

@@ -16,13 +16,29 @@ import (
 
 // ServerFactory is a fake server for instances of the armservicefabric.ClientFactory type.
 type ServerFactory struct {
+	// ApplicationTypeVersionsServer contains the fakes for client ApplicationTypeVersionsClient
 	ApplicationTypeVersionsServer ApplicationTypeVersionsServer
-	ApplicationTypesServer        ApplicationTypesServer
-	ApplicationsServer            ApplicationsServer
-	ClusterVersionsServer         ClusterVersionsServer
-	ClustersServer                ClustersServer
-	OperationsServer              OperationsServer
-	ServicesServer                ServicesServer
+
+	// ApplicationTypesServer contains the fakes for client ApplicationTypesClient
+	ApplicationTypesServer ApplicationTypesServer
+
+	// ApplicationsServer contains the fakes for client ApplicationsClient
+	ApplicationsServer ApplicationsServer
+
+	// ClusterVersionsServer contains the fakes for client ClusterVersionsClient
+	ClusterVersionsServer ClusterVersionsServer
+
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// ServicesServer contains the fakes for client ServicesClient
+	ServicesServer ServicesServer
+
+	// UnsupportedVMSizesServer contains the fakes for client UnsupportedVMSizesClient
+	UnsupportedVMSizesServer UnsupportedVMSizesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -46,6 +62,7 @@ type ServerFactoryTransport struct {
 	trClustersServer                *ClustersServerTransport
 	trOperationsServer              *OperationsServerTransport
 	trServicesServer                *ServicesServerTransport
+	trUnsupportedVMSizesServer      *UnsupportedVMSizesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -88,6 +105,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
+	case "UnsupportedVMSizesClient":
+		initServer(s, &s.trUnsupportedVMSizesServer, func() *UnsupportedVMSizesServerTransport {
+			return NewUnsupportedVMSizesServerTransport(&s.srv.UnsupportedVMSizesServer)
+		})
+		resp, err = s.trUnsupportedVMSizesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

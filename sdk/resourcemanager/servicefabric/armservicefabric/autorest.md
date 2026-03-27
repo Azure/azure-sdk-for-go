@@ -4,10 +4,11 @@
 
 ``` yaml
 azure-arm: true
+tag: package-2023-11-preview
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/servicefabric/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/servicefabric/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/de8103ff8e94ea51c56bb22094ded5d2dfc45a6a/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/ServiceFabric/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/de8103ff8e94ea51c56bb22094ded5d2dfc45a6a/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/ServiceFabric/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 2.0.0
-tag: package-2021-06
+module-version: 2.1.0-beta.1
+
 ```

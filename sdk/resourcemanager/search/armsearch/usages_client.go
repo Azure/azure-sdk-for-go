@@ -7,14 +7,13 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // UsagesClient contains the methods for the Usages group.
@@ -42,8 +41,8 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListBySubscriptionPager - Get a list of all Azure AI Search quota usages across the subscription.
 //
-// Generated from API version 2025-05-01
-//   - location - The location name.
+// Generated from API version 2026-03-01-preview
+//   - location - The name of the Azure region.
 //   - options - UsagesClientListBySubscriptionOptions contains the optional parameters for the UsagesClient.NewListBySubscriptionPager
 //     method.
 func (client *UsagesClient) NewListBySubscriptionPager(location string, options *UsagesClientListBySubscriptionOptions) *runtime.Pager[UsagesClientListBySubscriptionResponse] {
@@ -85,7 +84,7 @@ func (client *UsagesClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {

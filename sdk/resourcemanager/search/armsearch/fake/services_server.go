@@ -8,15 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // ServicesServer is a fake server for instances of the armsearch.ServicesClient type.
@@ -30,7 +29,7 @@ type ServicesServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, searchServiceName string, resource armsearch.Service, options *armsearch.ServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsearch.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method ServicesClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent, http.StatusNotFound
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, searchServiceName string, options *armsearch.ServicesClientDeleteOptions) (resp azfake.Responder[armsearch.ServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ServicesClient.Get
@@ -256,8 +255,8 @@ func (s *ServicesServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {

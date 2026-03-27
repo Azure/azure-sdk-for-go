@@ -26,6 +26,7 @@ func NewFileClient(endpoint string, allowTrailingDot *bool, fileRequestIntent *S
 		internal:               azClient,
 		endpoint:               endpoint,
 		allowTrailingDot:       allowTrailingDot,
+		version:                ServiceVersion,
 		fileRequestIntent:      fileRequestIntent,
 		allowSourceTrailingDot: allowSourceTrailingDot,
 	}

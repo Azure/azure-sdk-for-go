@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/storage/azblob",
-  "Tag": "go/storage/azblob_912aae5596"
+  "Tag": "go/storage/azblob_4a50aec10a"
 }

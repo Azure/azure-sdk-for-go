@@ -28,7 +28,7 @@ type WorkspaceLoggerClient struct {
 // NewWorkspaceLoggerClient creates a new instance of WorkspaceLoggerClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceLoggerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceLoggerClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewWorkspaceLoggerClient(subscriptionID string, credential azcore.TokenCred
 // CreateOrUpdate - Creates or Updates a logger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -102,7 +102,7 @@ func (client *WorkspaceLoggerClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -129,7 +129,7 @@ func (client *WorkspaceLoggerClient) createOrUpdateHandleResponse(resp *http.Res
 // Delete - Deletes the specified logger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -186,7 +186,7 @@ func (client *WorkspaceLoggerClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -196,7 +196,7 @@ func (client *WorkspaceLoggerClient) deleteCreateRequest(ctx context.Context, re
 // Get - Gets the details of the logger specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -252,7 +252,7 @@ func (client *WorkspaceLoggerClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -272,7 +272,7 @@ func (client *WorkspaceLoggerClient) getHandleResponse(resp *http.Response) (Wor
 
 // GetEntityTag - Gets the entity state (Etag) version of the logger specified by its identifier.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -329,7 +329,7 @@ func (client *WorkspaceLoggerClient) getEntityTagCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -346,7 +346,7 @@ func (client *WorkspaceLoggerClient) getEntityTagHandleResponse(resp *http.Respo
 
 // NewListByWorkspacePager - Lists a collection of loggers in the specified workspace.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -408,7 +408,7 @@ func (client *WorkspaceLoggerClient) listByWorkspaceCreateRequest(ctx context.Co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -426,7 +426,7 @@ func (client *WorkspaceLoggerClient) listByWorkspaceHandleResponse(resp *http.Re
 // Update - Updates an existing logger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -485,7 +485,7 @@ func (client *WorkspaceLoggerClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}

@@ -28,7 +28,7 @@ type WorkspaceNamedValueClient struct {
 // NewWorkspaceNamedValueClient creates a new instance of WorkspaceNamedValueClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceNamedValueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceNamedValueClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewWorkspaceNamedValueClient(subscriptionID string, credential azcore.Token
 // BeginCreateOrUpdate - Creates or updates named value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -73,7 +73,7 @@ func (client *WorkspaceNamedValueClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Creates or updates named value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 func (client *WorkspaceNamedValueClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, namedValueID string, parameters NamedValueCreateContract, options *WorkspaceNamedValueClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspaceNamedValueClient.BeginCreateOrUpdate"
@@ -123,7 +123,7 @@ func (client *WorkspaceNamedValueClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -138,7 +138,7 @@ func (client *WorkspaceNamedValueClient) createOrUpdateCreateRequest(ctx context
 // Delete - Deletes specific named value from the workspace in an API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -196,7 +196,7 @@ func (client *WorkspaceNamedValueClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -206,7 +206,7 @@ func (client *WorkspaceNamedValueClient) deleteCreateRequest(ctx context.Context
 // Get - Gets the details of the named value specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -262,7 +262,7 @@ func (client *WorkspaceNamedValueClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *WorkspaceNamedValueClient) getHandleResponse(resp *http.Response) 
 
 // GetEntityTag - Gets the entity state (Etag) version of the named value specified by its identifier.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -339,7 +339,7 @@ func (client *WorkspaceNamedValueClient) getEntityTagCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -356,7 +356,7 @@ func (client *WorkspaceNamedValueClient) getEntityTagHandleResponse(resp *http.R
 
 // NewListByServicePager - Lists a collection of named values defined within a workspace in a service instance.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -418,7 +418,7 @@ func (client *WorkspaceNamedValueClient) listByServiceCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	if options != nil && options.IsKeyVaultRefreshFailed != nil {
 		reqQP.Set("isKeyVaultRefreshFailed", string(*options.IsKeyVaultRefreshFailed))
 	}
@@ -439,7 +439,7 @@ func (client *WorkspaceNamedValueClient) listByServiceHandleResponse(resp *http.
 // ListValue - Gets the secret of the named value specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -496,7 +496,7 @@ func (client *WorkspaceNamedValueClient) listValueCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -517,7 +517,7 @@ func (client *WorkspaceNamedValueClient) listValueHandleResponse(resp *http.Resp
 // BeginRefreshSecret - Refresh the secret of the named value specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -545,7 +545,7 @@ func (client *WorkspaceNamedValueClient) BeginRefreshSecret(ctx context.Context,
 // RefreshSecret - Refresh the secret of the named value specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 func (client *WorkspaceNamedValueClient) refreshSecret(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, namedValueID string, options *WorkspaceNamedValueClientBeginRefreshSecretOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspaceNamedValueClient.BeginRefreshSecret"
@@ -595,7 +595,7 @@ func (client *WorkspaceNamedValueClient) refreshSecretCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -604,7 +604,7 @@ func (client *WorkspaceNamedValueClient) refreshSecretCreateRequest(ctx context.
 // BeginUpdate - Updates the specific named value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -635,7 +635,7 @@ func (client *WorkspaceNamedValueClient) BeginUpdate(ctx context.Context, resour
 // Update - Updates the specific named value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 func (client *WorkspaceNamedValueClient) update(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, namedValueID string, ifMatch string, parameters NamedValueUpdateParameters, options *WorkspaceNamedValueClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspaceNamedValueClient.BeginUpdate"
@@ -685,7 +685,7 @@ func (client *WorkspaceNamedValueClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}

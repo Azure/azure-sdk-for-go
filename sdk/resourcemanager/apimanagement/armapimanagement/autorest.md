@@ -4,10 +4,11 @@
 
 ``` yaml
 azure-arm: true
+tag: package-preview-2025-03-01-preview
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/cae4dfe61e44bc4a40dc577d0948c1474c7b39c8/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/cae4dfe61e44bc4a40dc577d0948c1474c7b39c8/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 3.0.0
-tag: package-2024-05
+module-version: 3.1.0-beta.1
+
 ```

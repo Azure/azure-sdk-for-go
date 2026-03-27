@@ -63,27 +63,46 @@ func (m *ManagementGroupSubscriptionsServerTransport) Do(req *http.Request) (*ht
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return m.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ManagementGroupSubscriptionsClient.Create":
-		resp, err = m.dispatchCreate(req)
-	case "ManagementGroupSubscriptionsClient.Delete":
-		resp, err = m.dispatchDelete(req)
-	case "ManagementGroupSubscriptionsClient.GetSubscription":
-		resp, err = m.dispatchGetSubscription(req)
-	case "ManagementGroupSubscriptionsClient.NewGetSubscriptionsUnderManagementGroupPager":
-		resp, err = m.dispatchNewGetSubscriptionsUnderManagementGroupPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (m *ManagementGroupSubscriptionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if managementGroupSubscriptionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = managementGroupSubscriptionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ManagementGroupSubscriptionsClient.Create":
+				res.resp, res.err = m.dispatchCreate(req)
+			case "ManagementGroupSubscriptionsClient.Delete":
+				res.resp, res.err = m.dispatchDelete(req)
+			case "ManagementGroupSubscriptionsClient.GetSubscription":
+				res.resp, res.err = m.dispatchGetSubscription(req)
+			case "ManagementGroupSubscriptionsClient.NewGetSubscriptionsUnderManagementGroupPager":
+				res.resp, res.err = m.dispatchNewGetSubscriptionsUnderManagementGroupPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (m *ManagementGroupSubscriptionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -93,7 +112,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchCreate(req *http.R
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
@@ -133,7 +152,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchDelete(req *http.R
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
@@ -173,7 +192,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchGetSubscription(re
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
@@ -215,7 +234,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchNewGetSubscription
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -253,4 +272,10 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchNewGetSubscription
 		m.newGetSubscriptionsUnderManagementGroupPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ManagementGroupSubscriptionsServerTransport
+var managementGroupSubscriptionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

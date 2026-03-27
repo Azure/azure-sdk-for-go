@@ -27,11 +27,12 @@ type AzureAsyncOperationResults struct {
 
 // CheckNameAvailabilityRequest - Management group name availability check parameters.
 type CheckNameAvailabilityRequest struct {
+	// CONSTANT; fully qualified resource type which includes provider namespace
+	// Field has constant value "Microsoft.Management/managementGroups", any specified value is ignored.
+	Type *string
+
 	// the name to check for availability
 	Name *string
-
-	// fully qualified resource type which includes provider namespace
-	Type *string
 }
 
 // CheckNameAvailabilityResult - Describes the result of the request to check management group name availability.

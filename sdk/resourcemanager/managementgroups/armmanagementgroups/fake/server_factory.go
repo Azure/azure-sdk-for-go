@@ -16,12 +16,23 @@ import (
 
 // ServerFactory is a fake server for instances of the armmanagementgroups.ClientFactory type.
 type ServerFactory struct {
-	APIServer                          APIServer
-	Server                             Server
-	EntitiesServer                     EntitiesServer
-	HierarchySettingsServer            HierarchySettingsServer
+	// APIServer contains the fakes for client APIClient
+	APIServer APIServer
+
+	// Server contains the fakes for client Client
+	Server Server
+
+	// EntitiesServer contains the fakes for client EntitiesClient
+	EntitiesServer EntitiesServer
+
+	// HierarchySettingsServer contains the fakes for client HierarchySettingsClient
+	HierarchySettingsServer HierarchySettingsServer
+
+	// ManagementGroupSubscriptionsServer contains the fakes for client ManagementGroupSubscriptionsClient
 	ManagementGroupSubscriptionsServer ManagementGroupSubscriptionsServer
-	OperationsServer                   OperationsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

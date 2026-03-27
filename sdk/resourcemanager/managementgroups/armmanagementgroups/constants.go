@@ -5,11 +5,6 @@
 
 package armmanagementgroups
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups"
-	moduleVersion = "v1.2.0"
-)
-
 type EntitySearchType string
 
 const (

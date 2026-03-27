@@ -62,29 +62,48 @@ func (h *HierarchySettingsServerTransport) Do(req *http.Request) (*http.Response
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return h.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "HierarchySettingsClient.CreateOrUpdate":
-		resp, err = h.dispatchCreateOrUpdate(req)
-	case "HierarchySettingsClient.Delete":
-		resp, err = h.dispatchDelete(req)
-	case "HierarchySettingsClient.Get":
-		resp, err = h.dispatchGet(req)
-	case "HierarchySettingsClient.List":
-		resp, err = h.dispatchList(req)
-	case "HierarchySettingsClient.Update":
-		resp, err = h.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (h *HierarchySettingsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if hierarchySettingsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = hierarchySettingsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "HierarchySettingsClient.CreateOrUpdate":
+				res.resp, res.err = h.dispatchCreateOrUpdate(req)
+			case "HierarchySettingsClient.Delete":
+				res.resp, res.err = h.dispatchDelete(req)
+			case "HierarchySettingsClient.Get":
+				res.resp, res.err = h.dispatchGet(req)
+			case "HierarchySettingsClient.List":
+				res.resp, res.err = h.dispatchList(req)
+			case "HierarchySettingsClient.Update":
+				res.resp, res.err = h.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (h *HierarchySettingsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -94,7 +113,7 @@ func (h *HierarchySettingsServerTransport) dispatchCreateOrUpdate(req *http.Requ
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/settings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagementgroups.CreateOrUpdateSettingsRequest](req)
@@ -127,7 +146,7 @@ func (h *HierarchySettingsServerTransport) dispatchDelete(req *http.Request) (*h
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/settings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
@@ -156,7 +175,7 @@ func (h *HierarchySettingsServerTransport) dispatchGet(req *http.Request) (*http
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/settings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
@@ -185,7 +204,7 @@ func (h *HierarchySettingsServerTransport) dispatchList(req *http.Request) (*htt
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/settings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
@@ -214,7 +233,7 @@ func (h *HierarchySettingsServerTransport) dispatchUpdate(req *http.Request) (*h
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/settings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagementgroups.CreateOrUpdateSettingsRequest](req)
@@ -238,4 +257,10 @@ func (h *HierarchySettingsServerTransport) dispatchUpdate(req *http.Request) (*h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to HierarchySettingsServerTransport
+var hierarchySettingsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

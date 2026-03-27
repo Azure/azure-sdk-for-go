@@ -52,25 +52,44 @@ func (a *APIServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "APIClient.CheckNameAvailability":
-		resp, err = a.dispatchCheckNameAvailability(req)
-	case "APIClient.StartTenantBackfill":
-		resp, err = a.dispatchStartTenantBackfill(req)
-	case "APIClient.TenantBackfillStatus":
-		resp, err = a.dispatchTenantBackfillStatus(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *APIServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if apiServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = apiServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "APIClient.CheckNameAvailability":
+				res.resp, res.err = a.dispatchCheckNameAvailability(req)
+			case "APIClient.StartTenantBackfill":
+				res.resp, res.err = a.dispatchStartTenantBackfill(req)
+			case "APIClient.TenantBackfillStatus":
+				res.resp, res.err = a.dispatchTenantBackfillStatus(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *APIServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
@@ -132,4 +151,10 @@ func (a *APIServerTransport) dispatchTenantBackfillStatus(req *http.Request) (*h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to APIServerTransport
+var apiServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -25,7 +25,7 @@ type ClientBeginCreateOrUpdateOptions struct {
 	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
 	CacheControl *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -34,7 +34,7 @@ type ClientBeginDeleteOptions struct {
 	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
 	CacheControl *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

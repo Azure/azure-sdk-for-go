@@ -27,7 +27,7 @@ type ServerlessEndpointsClient struct {
 // NewServerlessEndpointsClient creates a new instance of ServerlessEndpointsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServerlessEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerlessEndpointsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewServerlessEndpointsClient(subscriptionID string, credential azcore.Token
 // BeginCreateOrUpdate - Create or update Serverless Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Serverless Endpoint name.
@@ -71,7 +71,7 @@ func (client *ServerlessEndpointsClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Create or update Serverless Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *ServerlessEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ServerlessEndpoint, options *ServerlessEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerlessEndpointsClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *ServerlessEndpointsClient) createOrUpdate(ctx context.Context, res
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerlessEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ServerlessEndpoint, options *ServerlessEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerlessEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ServerlessEndpoint, _ *ServerlessEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *ServerlessEndpointsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -129,7 +129,7 @@ func (client *ServerlessEndpointsClient) createOrUpdateCreateRequest(ctx context
 // BeginDelete - Delete Serverless Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Serverless Endpoint name.
@@ -156,7 +156,7 @@ func (client *ServerlessEndpointsClient) BeginDelete(ctx context.Context, resour
 // Delete - Delete Serverless Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *ServerlessEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ServerlessEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerlessEndpointsClient.BeginDelete"
@@ -179,7 +179,7 @@ func (client *ServerlessEndpointsClient) deleteOperation(ctx context.Context, re
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerlessEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ServerlessEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServerlessEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ServerlessEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,7 +202,7 @@ func (client *ServerlessEndpointsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *ServerlessEndpointsClient) deleteCreateRequest(ctx context.Context
 // Get - Get Serverless Endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Serverless Endpoint name.
@@ -239,7 +239,7 @@ func (client *ServerlessEndpointsClient) Get(ctx context.Context, resourceGroupN
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerlessEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ServerlessEndpointsClientGetOptions) (*policy.Request, error) {
+func (client *ServerlessEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ServerlessEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -262,7 +262,7 @@ func (client *ServerlessEndpointsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +279,7 @@ func (client *ServerlessEndpointsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - List Serverless Endpoints.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - options - ServerlessEndpointsClientListOptions contains the optional parameters for the ServerlessEndpointsClient.NewListPager
@@ -330,7 +330,7 @@ func (client *ServerlessEndpointsClient) listCreateRequest(ctx context.Context, 
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -348,7 +348,7 @@ func (client *ServerlessEndpointsClient) listHandleResponse(resp *http.Response)
 // ListKeys - List EndpointAuthKeys for an Endpoint using Key-based authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Serverless Endpoint name.
@@ -377,7 +377,7 @@ func (client *ServerlessEndpointsClient) ListKeys(ctx context.Context, resourceG
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *ServerlessEndpointsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ServerlessEndpointsClientListKeysOptions) (*policy.Request, error) {
+func (client *ServerlessEndpointsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ServerlessEndpointsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -400,7 +400,7 @@ func (client *ServerlessEndpointsClient) listKeysCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -418,7 +418,7 @@ func (client *ServerlessEndpointsClient) listKeysHandleResponse(resp *http.Respo
 // BeginRegenerateKeys - Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Serverless Endpoint name.
@@ -446,7 +446,7 @@ func (client *ServerlessEndpointsClient) BeginRegenerateKeys(ctx context.Context
 // RegenerateKeys - Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *ServerlessEndpointsClient) regenerateKeys(ctx context.Context, resourceGroupName string, workspaceName string, name string, body RegenerateEndpointKeysRequest, options *ServerlessEndpointsClientBeginRegenerateKeysOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerlessEndpointsClient.BeginRegenerateKeys"
@@ -469,7 +469,7 @@ func (client *ServerlessEndpointsClient) regenerateKeys(ctx context.Context, res
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *ServerlessEndpointsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body RegenerateEndpointKeysRequest, options *ServerlessEndpointsClientBeginRegenerateKeysOptions) (*policy.Request, error) {
+func (client *ServerlessEndpointsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body RegenerateEndpointKeysRequest, _ *ServerlessEndpointsClientBeginRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}/regenerateKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -492,7 +492,7 @@ func (client *ServerlessEndpointsClient) regenerateKeysCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -504,7 +504,7 @@ func (client *ServerlessEndpointsClient) regenerateKeysCreateRequest(ctx context
 // BeginUpdate - Update Serverless Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Serverless Endpoint name.
@@ -531,7 +531,7 @@ func (client *ServerlessEndpointsClient) BeginUpdate(ctx context.Context, resour
 // Update - Update Serverless Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *ServerlessEndpointsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, name string, body PartialMinimalTrackedResourceWithSKUAndIdentity, options *ServerlessEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerlessEndpointsClient.BeginUpdate"
@@ -554,7 +554,7 @@ func (client *ServerlessEndpointsClient) update(ctx context.Context, resourceGro
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServerlessEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body PartialMinimalTrackedResourceWithSKUAndIdentity, options *ServerlessEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ServerlessEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body PartialMinimalTrackedResourceWithSKUAndIdentity, _ *ServerlessEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -577,7 +577,7 @@ func (client *ServerlessEndpointsClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -27,7 +27,7 @@ type QuotasClient struct {
 // NewQuotasClient creates a new instance of QuotasClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotasClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - Gets the currently assigned Workspace Quotas based on VMFamily.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - location - The location for which resource usage is queried.
 //   - options - QuotasClientListOptions contains the optional parameters for the QuotasClient.NewListPager method.
 func (client *QuotasClient) NewListPager(location string, options *QuotasClientListOptions) *runtime.Pager[QuotasClientListResponse] {
@@ -69,7 +69,7 @@ func (client *QuotasClient) NewListPager(location string, options *QuotasClientL
 }
 
 // listCreateRequest creates the List request.
-func (client *QuotasClient) listCreateRequest(ctx context.Context, location string, options *QuotasClientListOptions) (*policy.Request, error) {
+func (client *QuotasClient) listCreateRequest(ctx context.Context, location string, _ *QuotasClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/quotas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -84,7 +84,7 @@ func (client *QuotasClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -102,7 +102,7 @@ func (client *QuotasClient) listHandleResponse(resp *http.Response) (QuotasClien
 // Update - Update quota for each VM family in workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - location - The location for update quota is queried.
 //   - parameters - Quota update parameters.
 //   - options - QuotasClientUpdateOptions contains the optional parameters for the QuotasClient.Update method.
@@ -129,7 +129,7 @@ func (client *QuotasClient) Update(ctx context.Context, location string, paramet
 }
 
 // updateCreateRequest creates the Update request.
-func (client *QuotasClient) updateCreateRequest(ctx context.Context, location string, parameters QuotaUpdateParameters, options *QuotasClientUpdateOptions) (*policy.Request, error) {
+func (client *QuotasClient) updateCreateRequest(ctx context.Context, location string, parameters QuotaUpdateParameters, _ *QuotasClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/updateQuotas"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -144,7 +144,7 @@ func (client *QuotasClient) updateCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -28,7 +28,7 @@ type FeaturesClient struct {
 // NewFeaturesClient creates a new instance of FeaturesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FeaturesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewFeaturesClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Get feature.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - featuresetName - Feature set name. This is case-sensitive.
@@ -74,7 +74,7 @@ func (client *FeaturesClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *FeaturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, featuresetName string, featuresetVersion string, featureName string, options *FeaturesClientGetOptions) (*policy.Request, error) {
+func (client *FeaturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, featuresetName string, featuresetVersion string, featureName string, _ *FeaturesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{featuresetName}/versions/{featuresetVersion}/features/{featureName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -105,7 +105,7 @@ func (client *FeaturesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -122,7 +122,7 @@ func (client *FeaturesClient) getHandleResponse(resp *http.Response) (FeaturesCl
 
 // NewListPager - List Features.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - featuresetName - Featureset name. This is case-sensitive.
@@ -182,7 +182,7 @@ func (client *FeaturesClient) listCreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	if options != nil && options.Description != nil {
 		reqQP.Set("description", *options.Description)
 	}

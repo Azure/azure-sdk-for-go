@@ -28,7 +28,7 @@ type RegistryDataVersionsClient struct {
 // NewRegistryDataVersionsClient creates a new instance of RegistryDataVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegistryDataVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryDataVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewRegistryDataVersionsClient(subscriptionID string, credential azcore.Toke
 // CreateOrGetStartPendingUpload - Generate a storage location and credential for the client to upload a data asset to.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - name - Data asset name. This is case-sensitive.
@@ -75,7 +75,7 @@ func (client *RegistryDataVersionsClient) CreateOrGetStartPendingUpload(ctx cont
 }
 
 // createOrGetStartPendingUploadCreateRequest creates the CreateOrGetStartPendingUpload request.
-func (client *RegistryDataVersionsClient) createOrGetStartPendingUploadCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body PendingUploadRequestDto, options *RegistryDataVersionsClientCreateOrGetStartPendingUploadOptions) (*policy.Request, error) {
+func (client *RegistryDataVersionsClient) createOrGetStartPendingUploadCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body PendingUploadRequestDto, _ *RegistryDataVersionsClientCreateOrGetStartPendingUploadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/data/{name}/versions/{version}/startPendingUpload"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +102,7 @@ func (client *RegistryDataVersionsClient) createOrGetStartPendingUploadCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -123,7 +123,7 @@ func (client *RegistryDataVersionsClient) createOrGetStartPendingUploadHandleRes
 // BeginCreateOrUpdate - Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - name - Container name.
@@ -152,7 +152,7 @@ func (client *RegistryDataVersionsClient) BeginCreateOrUpdate(ctx context.Contex
 // CreateOrUpdate - Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *RegistryDataVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body DataVersionBase, options *RegistryDataVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryDataVersionsClient.BeginCreateOrUpdate"
@@ -175,7 +175,7 @@ func (client *RegistryDataVersionsClient) createOrUpdate(ctx context.Context, re
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RegistryDataVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body DataVersionBase, options *RegistryDataVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RegistryDataVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body DataVersionBase, _ *RegistryDataVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/data/{name}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,7 +202,7 @@ func (client *RegistryDataVersionsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -214,7 +214,7 @@ func (client *RegistryDataVersionsClient) createOrUpdateCreateRequest(ctx contex
 // BeginDelete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - name - Container name.
@@ -242,7 +242,7 @@ func (client *RegistryDataVersionsClient) BeginDelete(ctx context.Context, resou
 // Delete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *RegistryDataVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, name string, version string, options *RegistryDataVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryDataVersionsClient.BeginDelete"
@@ -265,7 +265,7 @@ func (client *RegistryDataVersionsClient) deleteOperation(ctx context.Context, r
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RegistryDataVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, options *RegistryDataVersionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RegistryDataVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, _ *RegistryDataVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/data/{name}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -292,7 +292,7 @@ func (client *RegistryDataVersionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +301,7 @@ func (client *RegistryDataVersionsClient) deleteCreateRequest(ctx context.Contex
 // Get - Get version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - name - Container name.
@@ -331,7 +331,7 @@ func (client *RegistryDataVersionsClient) Get(ctx context.Context, resourceGroup
 }
 
 // getCreateRequest creates the Get request.
-func (client *RegistryDataVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, options *RegistryDataVersionsClientGetOptions) (*policy.Request, error) {
+func (client *RegistryDataVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, _ *RegistryDataVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/data/{name}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -358,7 +358,7 @@ func (client *RegistryDataVersionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,7 +375,7 @@ func (client *RegistryDataVersionsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - List data versions in the data container
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - name - Data container's name
@@ -440,7 +440,7 @@ func (client *RegistryDataVersionsClient) listCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	if options != nil && options.ListViewType != nil {
 		reqQP.Set("listViewType", string(*options.ListViewType))
 	}

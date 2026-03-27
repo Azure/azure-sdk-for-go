@@ -27,7 +27,7 @@ type WorkspaceFeaturesClient struct {
 // NewWorkspaceFeaturesClient creates a new instance of WorkspaceFeaturesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceFeaturesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewWorkspaceFeaturesClient(subscriptionID string, credential azcore.TokenCr
 
 // NewListPager - Lists all enabled features for a workspace
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - options - WorkspaceFeaturesClientListOptions contains the optional parameters for the WorkspaceFeaturesClient.NewListPager
@@ -71,7 +71,7 @@ func (client *WorkspaceFeaturesClient) NewListPager(resourceGroupName string, wo
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceFeaturesClientListOptions) (*policy.Request, error) {
+func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspaceFeaturesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/features"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +90,7 @@ func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

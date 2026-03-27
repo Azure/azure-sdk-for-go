@@ -63,6 +63,23 @@ type BatchEndpointsClientUpdateResponse struct {
 	BatchEndpoint
 }
 
+// CapabilityHostsClientCreateOrUpdateResponse contains the response from method CapabilityHostsClient.BeginCreateOrUpdate.
+type CapabilityHostsClientCreateOrUpdateResponse struct {
+	// Azure Resource Manager resource envelope.
+	CapabilityHost
+}
+
+// CapabilityHostsClientDeleteResponse contains the response from method CapabilityHostsClient.BeginDelete.
+type CapabilityHostsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CapabilityHostsClientGetResponse contains the response from method CapabilityHostsClient.Get.
+type CapabilityHostsClientGetResponse struct {
+	// Azure Resource Manager resource envelope.
+	CapabilityHost
+}
+
 // CodeContainersClientCreateOrUpdateResponse contains the response from method CodeContainersClient.CreateOrUpdate.
 type CodeContainersClientCreateOrUpdateResponse struct {
 	// Azure Resource Manager resource envelope.
@@ -181,6 +198,12 @@ type ComputeClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ComputeClientGetAllowedResizeSizesResponse contains the response from method ComputeClient.GetAllowedResizeSizes.
+type ComputeClientGetAllowedResizeSizesResponse struct {
+	// The List Virtual Machine size operation response.
+	VirtualMachineSizeListResult
+}
+
 // ComputeClientGetResponse contains the response from method ComputeClient.Get.
 type ComputeClientGetResponse struct {
 	// Machine Learning compute object wrapped into ARM resource envelope.
@@ -193,16 +216,6 @@ type ComputeClientListKeysResponse struct {
 	ComputeSecretsClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComputeClientListKeysResponse.
-func (c *ComputeClientListKeysResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalComputeSecretsClassification(data)
-	if err != nil {
-		return err
-	}
-	c.ComputeSecretsClassification = res
-	return nil
-}
-
 // ComputeClientListNodesResponse contains the response from method ComputeClient.NewListNodesPager.
 type ComputeClientListNodesResponse struct {
 	// Result of AmlCompute Nodes
@@ -213,6 +226,11 @@ type ComputeClientListNodesResponse struct {
 type ComputeClientListResponse struct {
 	// Paginated list of Machine Learning compute objects wrapped in ARM resource envelope.
 	PaginatedComputeResourcesList
+}
+
+// ComputeClientResizeResponse contains the response from method ComputeClient.BeginResize.
+type ComputeClientResizeResponse struct {
+	// placeholder for future response values
 }
 
 // ComputeClientRestartResponse contains the response from method ComputeClient.BeginRestart.
@@ -230,10 +248,129 @@ type ComputeClientStopResponse struct {
 	// placeholder for future response values
 }
 
+// ComputeClientUpdateCustomServicesResponse contains the response from method ComputeClient.UpdateCustomServices.
+type ComputeClientUpdateCustomServicesResponse struct {
+	// placeholder for future response values
+}
+
+// ComputeClientUpdateDataMountsResponse contains the response from method ComputeClient.UpdateDataMounts.
+type ComputeClientUpdateDataMountsResponse struct {
+	// placeholder for future response values
+}
+
+// ComputeClientUpdateIdleShutdownSettingResponse contains the response from method ComputeClient.UpdateIdleShutdownSetting.
+type ComputeClientUpdateIdleShutdownSettingResponse struct {
+	// placeholder for future response values
+}
+
 // ComputeClientUpdateResponse contains the response from method ComputeClient.BeginUpdate.
 type ComputeClientUpdateResponse struct {
 	// Machine Learning compute object wrapped into ARM resource envelope.
 	ComputeResource
+}
+
+// ConnectionClientCreateOrUpdateDeploymentResponse contains the response from method ConnectionClient.BeginCreateOrUpdateDeployment.
+type ConnectionClientCreateOrUpdateDeploymentResponse struct {
+	EndpointDeploymentResourcePropertiesBasicResource
+}
+
+// ConnectionClientDeleteDeploymentResponse contains the response from method ConnectionClient.BeginDeleteDeployment.
+type ConnectionClientDeleteDeploymentResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectionClientGetAllModelsResponse contains the response from method ConnectionClient.GetAllModels.
+type ConnectionClientGetAllModelsResponse struct {
+	EndpointModels
+}
+
+// ConnectionClientGetDeploymentResponse contains the response from method ConnectionClient.GetDeployment.
+type ConnectionClientGetDeploymentResponse struct {
+	EndpointDeploymentResourcePropertiesBasicResource
+}
+
+// ConnectionClientGetModelsResponse contains the response from method ConnectionClient.NewGetModelsPager.
+type ConnectionClientGetModelsResponse struct {
+	EndpointModels
+}
+
+// ConnectionClientListDeploymentsResponse contains the response from method ConnectionClient.NewListDeploymentsPager.
+type ConnectionClientListDeploymentsResponse struct {
+	EndpointDeploymentResourcePropertiesBasicResourceArmPaginatedResult
+}
+
+// ConnectionRaiBlocklistClientCreateResponse contains the response from method ConnectionRaiBlocklistClient.BeginCreate.
+type ConnectionRaiBlocklistClientCreateResponse struct {
+	RaiBlocklistPropertiesBasicResource
+}
+
+// ConnectionRaiBlocklistClientDeleteResponse contains the response from method ConnectionRaiBlocklistClient.BeginDelete.
+type ConnectionRaiBlocklistClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectionRaiBlocklistClientGetResponse contains the response from method ConnectionRaiBlocklistClient.Get.
+type ConnectionRaiBlocklistClientGetResponse struct {
+	RaiBlocklistPropertiesBasicResource
+}
+
+// ConnectionRaiBlocklistItemClientAddBulkResponse contains the response from method ConnectionRaiBlocklistItemClient.BeginAddBulk.
+type ConnectionRaiBlocklistItemClientAddBulkResponse struct {
+	// Array of RaiBlocklistItemPropertiesBasicResource
+	RaiBlocklistItemPropertiesBasicResourceArray []*RaiBlocklistItemPropertiesBasicResource
+}
+
+// ConnectionRaiBlocklistItemClientCreateResponse contains the response from method ConnectionRaiBlocklistItemClient.BeginCreate.
+type ConnectionRaiBlocklistItemClientCreateResponse struct {
+	RaiBlocklistItemPropertiesBasicResource
+}
+
+// ConnectionRaiBlocklistItemClientDeleteBulkResponse contains the response from method ConnectionRaiBlocklistItemClient.BeginDeleteBulk.
+type ConnectionRaiBlocklistItemClientDeleteBulkResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectionRaiBlocklistItemClientDeleteResponse contains the response from method ConnectionRaiBlocklistItemClient.BeginDelete.
+type ConnectionRaiBlocklistItemClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectionRaiBlocklistItemClientGetResponse contains the response from method ConnectionRaiBlocklistItemClient.Get.
+type ConnectionRaiBlocklistItemClientGetResponse struct {
+	RaiBlocklistItemPropertiesBasicResource
+}
+
+// ConnectionRaiBlocklistItemsClientListResponse contains the response from method ConnectionRaiBlocklistItemsClient.NewListPager.
+type ConnectionRaiBlocklistItemsClientListResponse struct {
+	RaiBlocklistItemPropertiesBasicResourceArmPaginatedResult
+}
+
+// ConnectionRaiBlocklistsClientListResponse contains the response from method ConnectionRaiBlocklistsClient.NewListPager.
+type ConnectionRaiBlocklistsClientListResponse struct {
+	RaiBlocklistPropertiesBasicResourceArmPaginatedResult
+}
+
+// ConnectionRaiPoliciesClientListResponse contains the response from method ConnectionRaiPoliciesClient.NewListPager.
+type ConnectionRaiPoliciesClientListResponse struct {
+	// Azure OpenAI Content Filters resource list.
+	RaiPolicyPropertiesBasicResourceArmPaginatedResult
+}
+
+// ConnectionRaiPolicyClientCreateResponse contains the response from method ConnectionRaiPolicyClient.BeginCreate.
+type ConnectionRaiPolicyClientCreateResponse struct {
+	// Azure OpenAI Content Filters resource.
+	RaiPolicyPropertiesBasicResource
+}
+
+// ConnectionRaiPolicyClientDeleteResponse contains the response from method ConnectionRaiPolicyClient.BeginDelete.
+type ConnectionRaiPolicyClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectionRaiPolicyClientGetResponse contains the response from method ConnectionRaiPolicyClient.Get.
+type ConnectionRaiPolicyClientGetResponse struct {
+	// Azure OpenAI Content Filters resource.
+	RaiPolicyPropertiesBasicResource
 }
 
 // DataContainersClientCreateOrUpdateResponse contains the response from method DataContainersClient.CreateOrUpdate.
@@ -316,14 +453,59 @@ type DatastoresClientListSecretsResponse struct {
 	DatastoreSecretsClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatastoresClientListSecretsResponse.
-func (d *DatastoresClientListSecretsResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalDatastoreSecretsClassification(data)
-	if err != nil {
-		return err
-	}
-	d.DatastoreSecretsClassification = res
-	return nil
+// EndpointClientCreateOrUpdateResponse contains the response from method EndpointClient.BeginCreateOrUpdate.
+type EndpointClientCreateOrUpdateResponse struct {
+	EndpointResourcePropertiesBasicResource
+}
+
+// EndpointClientGetModelsResponse contains the response from method EndpointClient.NewGetModelsPager.
+type EndpointClientGetModelsResponse struct {
+	EndpointModels
+}
+
+// EndpointClientGetResponse contains the response from method EndpointClient.Get.
+type EndpointClientGetResponse struct {
+	EndpointResourcePropertiesBasicResource
+}
+
+// EndpointClientListKeysResponse contains the response from method EndpointClient.ListKeys.
+type EndpointClientListKeysResponse struct {
+	EndpointKeys
+}
+
+// EndpointClientListResponse contains the response from method EndpointClient.NewListPager.
+type EndpointClientListResponse struct {
+	EndpointResourcePropertiesBasicResourceArmPaginatedResult
+}
+
+// EndpointClientRegenerateKeysResponse contains the response from method EndpointClient.RegenerateKeys.
+type EndpointClientRegenerateKeysResponse struct {
+	AccountAPIKeys
+}
+
+// EndpointDeploymentClientCreateOrUpdateResponse contains the response from method EndpointDeploymentClient.BeginCreateOrUpdate.
+type EndpointDeploymentClientCreateOrUpdateResponse struct {
+	EndpointDeploymentResourcePropertiesBasicResource
+}
+
+// EndpointDeploymentClientDeleteResponse contains the response from method EndpointDeploymentClient.BeginDelete.
+type EndpointDeploymentClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EndpointDeploymentClientGetInWorkspaceResponse contains the response from method EndpointDeploymentClient.NewGetInWorkspacePager.
+type EndpointDeploymentClientGetInWorkspaceResponse struct {
+	EndpointDeploymentResourcePropertiesBasicResourceArmPaginatedResult
+}
+
+// EndpointDeploymentClientGetResponse contains the response from method EndpointDeploymentClient.Get.
+type EndpointDeploymentClientGetResponse struct {
+	EndpointDeploymentResourcePropertiesBasicResource
+}
+
+// EndpointDeploymentClientListResponse contains the response from method EndpointDeploymentClient.NewListPager.
+type EndpointDeploymentClientListResponse struct {
+	EndpointDeploymentResourcePropertiesBasicResourceArmPaginatedResult
 }
 
 // EnvironmentContainersClientCreateOrUpdateResponse contains the response from method EnvironmentContainersClient.CreateOrUpdate.
@@ -487,6 +669,112 @@ type FeaturestoreEntityVersionsClientListResponse struct {
 	FeaturestoreEntityVersionResourceArmPaginatedResult
 }
 
+// InferenceEndpointsClientCreateOrUpdateResponse contains the response from method InferenceEndpointsClient.BeginCreateOrUpdate.
+type InferenceEndpointsClientCreateOrUpdateResponse struct {
+	InferenceEndpoint
+}
+
+// InferenceEndpointsClientDeleteResponse contains the response from method InferenceEndpointsClient.BeginDelete.
+type InferenceEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// InferenceEndpointsClientGetResponse contains the response from method InferenceEndpointsClient.Get.
+type InferenceEndpointsClientGetResponse struct {
+	InferenceEndpoint
+}
+
+// InferenceEndpointsClientListResponse contains the response from method InferenceEndpointsClient.NewListPager.
+type InferenceEndpointsClientListResponse struct {
+	// A paginated list of InferenceEndpoint entities.
+	InferenceEndpointTrackedResourceArmPaginatedResult
+}
+
+// InferenceEndpointsClientUpdateResponse contains the response from method InferenceEndpointsClient.BeginUpdate.
+type InferenceEndpointsClientUpdateResponse struct {
+	InferenceEndpoint
+}
+
+// InferenceGroupsClientCreateOrUpdateResponse contains the response from method InferenceGroupsClient.BeginCreateOrUpdate.
+type InferenceGroupsClientCreateOrUpdateResponse struct {
+	InferenceGroup
+}
+
+// InferenceGroupsClientDeleteResponse contains the response from method InferenceGroupsClient.BeginDelete.
+type InferenceGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// InferenceGroupsClientGetDeltaModelsStatusAsyncResponse contains the response from method InferenceGroupsClient.GetDeltaModelsStatusAsync.
+type InferenceGroupsClientGetDeltaModelsStatusAsyncResponse struct {
+	// Contract returning to user the delta models.
+	DeltaModelStatusResponse
+}
+
+// InferenceGroupsClientGetResponse contains the response from method InferenceGroupsClient.Get.
+type InferenceGroupsClientGetResponse struct {
+	InferenceGroup
+}
+
+// InferenceGroupsClientGetStatusResponse contains the response from method InferenceGroupsClient.GetStatus.
+type InferenceGroupsClientGetStatusResponse struct {
+	GroupStatus
+}
+
+// InferenceGroupsClientListDeltaModelsAsyncResponse contains the response from method InferenceGroupsClient.NewListDeltaModelsAsyncPager.
+type InferenceGroupsClientListDeltaModelsAsyncResponse struct {
+	// A paginated list of String entities.
+	StringArmPaginatedResult
+}
+
+// InferenceGroupsClientListResponse contains the response from method InferenceGroupsClient.NewListPager.
+type InferenceGroupsClientListResponse struct {
+	// A paginated list of InferenceGroup entities.
+	InferenceGroupTrackedResourceArmPaginatedResult
+}
+
+// InferenceGroupsClientListSKUsResponse contains the response from method InferenceGroupsClient.NewListSKUsPager.
+type InferenceGroupsClientListSKUsResponse struct {
+	// A paginated list of SkuResource entities.
+	SKUResourceArmPaginatedResult
+}
+
+// InferenceGroupsClientModifyDeltaModelsAsyncResponse contains the response from method InferenceGroupsClient.BeginModifyDeltaModelsAsync.
+type InferenceGroupsClientModifyDeltaModelsAsyncResponse struct {
+	// placeholder for future response values
+}
+
+// InferenceGroupsClientUpdateResponse contains the response from method InferenceGroupsClient.BeginUpdate.
+type InferenceGroupsClientUpdateResponse struct {
+	InferenceGroup
+}
+
+// InferencePoolsClientCreateOrUpdateResponse contains the response from method InferencePoolsClient.BeginCreateOrUpdate.
+type InferencePoolsClientCreateOrUpdateResponse struct {
+	InferencePool
+}
+
+// InferencePoolsClientDeleteResponse contains the response from method InferencePoolsClient.BeginDelete.
+type InferencePoolsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// InferencePoolsClientGetResponse contains the response from method InferencePoolsClient.Get.
+type InferencePoolsClientGetResponse struct {
+	InferencePool
+}
+
+// InferencePoolsClientListResponse contains the response from method InferencePoolsClient.NewListPager.
+type InferencePoolsClientListResponse struct {
+	// A paginated list of InferencePool entities.
+	InferencePoolTrackedResourceArmPaginatedResult
+}
+
+// InferencePoolsClientUpdateResponse contains the response from method InferencePoolsClient.BeginUpdate.
+type InferencePoolsClientUpdateResponse struct {
+	InferencePool
+}
+
 // JobsClientCancelResponse contains the response from method JobsClient.BeginCancel.
 type JobsClientCancelResponse struct {
 	// placeholder for future response values
@@ -521,9 +809,29 @@ type ManagedNetworkProvisionsClientProvisionManagedNetworkResponse struct {
 	ManagedNetworkProvisionStatus
 }
 
+// ManagedNetworkSettingsClientGetResponse contains the response from method ManagedNetworkSettingsClient.Get.
+type ManagedNetworkSettingsClientGetResponse struct {
+	ManagedNetworkSettingsPropertiesBasicResource
+}
+
+// ManagedNetworkSettingsClientListResponse contains the response from method ManagedNetworkSettingsClient.NewListPager.
+type ManagedNetworkSettingsClientListResponse struct {
+	// List of managed networks of a machine learning workspace.
+	ManagedNetworkListResult
+}
+
+// ManagedNetworkSettingsClientPatchResponse contains the response from method ManagedNetworkSettingsClient.BeginPatch.
+type ManagedNetworkSettingsClientPatchResponse struct {
+	ManagedNetworkSettingsPropertiesBasicResource
+}
+
+// ManagedNetworkSettingsClientPutResponse contains the response from method ManagedNetworkSettingsClient.BeginPut.
+type ManagedNetworkSettingsClientPutResponse struct {
+	ManagedNetworkSettingsPropertiesBasicResource
+}
+
 // ManagedNetworkSettingsRuleClientCreateOrUpdateResponse contains the response from method ManagedNetworkSettingsRuleClient.BeginCreateOrUpdate.
 type ManagedNetworkSettingsRuleClientCreateOrUpdateResponse struct {
-	// Outbound Rule Basic Resource for the managed network of a machine learning workspace.
 	OutboundRuleBasicResource
 }
 
@@ -534,7 +842,6 @@ type ManagedNetworkSettingsRuleClientDeleteResponse struct {
 
 // ManagedNetworkSettingsRuleClientGetResponse contains the response from method ManagedNetworkSettingsRuleClient.Get.
 type ManagedNetworkSettingsRuleClientGetResponse struct {
-	// Outbound Rule Basic Resource for the managed network of a machine learning workspace.
 	OutboundRuleBasicResource
 }
 
@@ -704,6 +1011,50 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// OutboundRuleClientCreateOrUpdateResponse contains the response from method OutboundRuleClient.BeginCreateOrUpdate.
+type OutboundRuleClientCreateOrUpdateResponse struct {
+	OutboundRuleBasicResource
+}
+
+// OutboundRuleClientDeleteResponse contains the response from method OutboundRuleClient.BeginDelete.
+type OutboundRuleClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// OutboundRuleClientGetResponse contains the response from method OutboundRuleClient.Get.
+type OutboundRuleClientGetResponse struct {
+	OutboundRuleBasicResource
+}
+
+// OutboundRuleClientListResponse contains the response from method OutboundRuleClient.NewListPager.
+type OutboundRuleClientListResponse struct {
+	// List of outbound rules for the managed network of a machine learning workspace.
+	OutboundRuleListResult
+}
+
+// OutboundRulesClientPostResponse contains the response from method OutboundRulesClient.BeginPost.
+type OutboundRulesClientPostResponse struct {
+	// List of outbound rules for the managed network of a machine learning workspace.
+	OutboundRuleListResult
+}
+
+// PTUQuotaClientGetAvailableResponse contains the response from method PTUQuotaClient.GetAvailable.
+type PTUQuotaClientGetAvailableResponse struct {
+	AvailableQuota
+}
+
+// PTUQuotaClientListAvailableResponse contains the response from method PTUQuotaClient.NewListAvailablePager.
+type PTUQuotaClientListAvailableResponse struct {
+	// A paginated list of AvailableQuota entities.
+	AvailableQuotaArmPaginatedResult
+}
+
+// PTUQuotaClientListResponse contains the response from method PTUQuotaClient.NewListPager.
+type PTUQuotaClientListResponse struct {
+	// A paginated list of UsageAndQuotaDetails entities.
+	UsageAndQuotaDetailsArmPaginatedResult
+}
+
 // PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
 type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	// The Private Endpoint Connection resource.
@@ -727,7 +1078,7 @@ type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
 type PrivateLinkResourcesClientListResponse struct {
 	// A list of private link resources
 	PrivateLinkResourceListResult
@@ -743,6 +1094,29 @@ type QuotasClientListResponse struct {
 type QuotasClientUpdateResponse struct {
 	// The result of update workspace quota.
 	UpdateWorkspaceQuotasResult
+}
+
+// RaiPoliciesClientListResponse contains the response from method RaiPoliciesClient.NewListPager.
+type RaiPoliciesClientListResponse struct {
+	// Azure OpenAI Content Filters resource list.
+	RaiPolicyPropertiesBasicResourceArmPaginatedResult
+}
+
+// RaiPolicyClientCreateResponse contains the response from method RaiPolicyClient.BeginCreate.
+type RaiPolicyClientCreateResponse struct {
+	// Azure OpenAI Content Filters resource.
+	RaiPolicyPropertiesBasicResource
+}
+
+// RaiPolicyClientDeleteResponse contains the response from method RaiPolicyClient.BeginDelete.
+type RaiPolicyClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RaiPolicyClientGetResponse contains the response from method RaiPolicyClient.Get.
+type RaiPolicyClientGetResponse struct {
+	// Azure OpenAI Content Filters resource.
+	RaiPolicyPropertiesBasicResource
 }
 
 // RegistriesClientCreateOrUpdateResponse contains the response from method RegistriesClient.BeginCreateOrUpdate.
@@ -1128,6 +1502,16 @@ type WorkspaceConnectionsClientListResponse struct {
 
 // WorkspaceConnectionsClientListSecretsResponse contains the response from method WorkspaceConnectionsClient.ListSecrets.
 type WorkspaceConnectionsClientListSecretsResponse struct {
+	WorkspaceConnectionPropertiesV2BasicResource
+}
+
+// WorkspaceConnectionsClientTestConnectionResponse contains the response from method WorkspaceConnectionsClient.BeginTestConnection.
+type WorkspaceConnectionsClientTestConnectionResponse struct {
+	// placeholder for future response values
+}
+
+// WorkspaceConnectionsClientUpdateResponse contains the response from method WorkspaceConnectionsClient.Update.
+type WorkspaceConnectionsClientUpdateResponse struct {
 	WorkspaceConnectionPropertiesV2BasicResource
 }
 

@@ -86,17 +86,63 @@ func TestProcessMetadata_MgmtPlaneNewPackage(t *testing.T) {
 	require.Contains(t, result.CreatedFiles, "ci.yml")
 	require.Contains(t, result.CreatedFiles, "README.md")
 
-	// Verify ci.yml was created
+	// Verify ci.yml content matches the rendered template
 	ciContent, err := os.ReadFile(filepath.Join(packageDir, "ci.yml"))
 	require.NoError(t, err)
-	require.Contains(t, string(ciContent), "sdk/resourcemanager/compute/armcompute/")
-	require.Contains(t, string(ciContent), "ServiceDirectory: 'resourcemanager/compute/armcompute'")
+	ciStr := string(ciContent)
+	// Verify trigger paths
+	require.Contains(t, ciStr, "- sdk/resourcemanager/compute/armcompute/")
+	// Verify ServiceDirectory
+	require.Contains(t, ciStr, "ServiceDirectory: 'resourcemanager/compute/armcompute'")
+	// Verify extends template reference
+	require.Contains(t, ciStr, "template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml")
+	// Verify the full rendered ci.yml matches expected output
+	expectedCI := `# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/resourcemanager/compute/armcompute/
 
-	// Verify README.md was created
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/resourcemanager/compute/armcompute/
+
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'resourcemanager/compute/armcompute'
+`
+	require.Equal(t, expectedCI, ciStr)
+
+	// Verify README.md content matches the rendered template
 	readmeContent, err := os.ReadFile(filepath.Join(packageDir, "README.md"))
 	require.NoError(t, err)
-	require.Contains(t, string(readmeContent), "Azure Compute Module for Go")
-	require.Contains(t, string(readmeContent), "armcompute")
+	readmeStr := string(readmeContent)
+	// Verify title
+	require.Contains(t, readmeStr, "# Azure Compute Module for Go")
+	// Verify module description
+	require.Contains(t, readmeStr, "The `armcompute` module provides operations for working with Azure Compute.")
+	// Verify source code link
+	require.Contains(t, readmeStr, "[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/compute/armcompute)")
+	// Verify go get command
+	require.Contains(t, readmeStr, "go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute")
+	// Verify client factory references package name
+	require.Contains(t, readmeStr, "armcompute.NewClientFactory")
+	// Verify issue label
+	require.Contains(t, readmeStr, "assign the `Compute` label")
 }
 
 func TestProcessMetadata_DataPlaneNewPackage(t *testing.T) {
@@ -130,11 +176,46 @@ func TestProcessMetadata_DataPlaneNewPackage(t *testing.T) {
 		require.NotEqual(t, "README.md", f)
 	}
 
-	// Verify ci.yml was created
+	// Verify ci.yml content matches the rendered template
 	ciContent, err := os.ReadFile(filepath.Join(packageDir, "ci.yml"))
 	require.NoError(t, err)
-	require.Contains(t, string(ciContent), "sdk/monitor/ingestion/azlogs/")
-	require.Contains(t, string(ciContent), "ServiceDirectory: 'monitor/ingestion/azlogs'")
+	ciStr := string(ciContent)
+	// Verify trigger paths with three-layer data plane path
+	require.Contains(t, ciStr, "- sdk/monitor/ingestion/azlogs/")
+	// Verify ServiceDirectory
+	require.Contains(t, ciStr, "ServiceDirectory: 'monitor/ingestion/azlogs'")
+	// Verify extends template reference
+	require.Contains(t, ciStr, "template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml")
+	// Verify the full rendered ci.yml matches expected output
+	expectedCI := `# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/monitor/ingestion/azlogs/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/monitor/ingestion/azlogs/
+
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'monitor/ingestion/azlogs'
+`
+	require.Equal(t, expectedCI, ciStr)
 }
 
 func TestProcessMetadata_ExistingFiles(t *testing.T) {

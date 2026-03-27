@@ -4,11 +4,11 @@
 
 ``` yaml
 azure-arm: true
+tag: package-flexibleserver-2024-12-01-preview
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/e26b89bcbec9eed5026c01416e481408b2a1ca1a/specification/mysql/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/e26b89bcbec9eed5026c01416e481408b2a1ca1a/specification/mysql/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/8dbe725fc8ce4873c0848071151de4bdf7bc0af8/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/8dbe725fc8ce4873c0848071151de4bdf7bc0af8/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 2.0.0-beta.4
-package-flexibleservers: true
-tag: package-flexibleserver-2024-10-01-preview
+module-version: 2.0.0-beta.5
+
 ```

@@ -27,7 +27,7 @@ type OperationResultsClient struct {
 // NewOperationResultsClient creates a new instance of OperationResultsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,9 +43,9 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 // Get - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - locationName - The name of the location.
-//   - operationID - The operation Id.
+//   - operationID - The ID of an ongoing async operation.
 //   - options - OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
 func (client *OperationResultsClient) Get(ctx context.Context, locationName string, operationID string, options *OperationResultsClientGetOptions) (OperationResultsClientGetResponse, error) {
 	var err error
@@ -70,7 +70,7 @@ func (client *OperationResultsClient) Get(ctx context.Context, locationName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationResultsClient) getCreateRequest(ctx context.Context, locationName string, operationID string, options *OperationResultsClientGetOptions) (*policy.Request, error) {
+func (client *OperationResultsClient) getCreateRequest(ctx context.Context, locationName string, operationID string, _ *OperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +89,7 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

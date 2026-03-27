@@ -27,7 +27,7 @@ type LongRunningBackupsClient struct {
 // NewLongRunningBackupsClient creates a new instance of LongRunningBackupsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLongRunningBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LongRunningBackupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewLongRunningBackupsClient(subscriptionID string, credential azcore.TokenC
 // Get - Get backup for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -71,7 +71,7 @@ func (client *LongRunningBackupsClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *LongRunningBackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *LongRunningBackupsClientGetOptions) (*policy.Request, error) {
+func (client *LongRunningBackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, _ *LongRunningBackupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backupsV2/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +94,7 @@ func (client *LongRunningBackupsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *LongRunningBackupsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - List all the backups for a given server.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - LongRunningBackupsClientListOptions contains the optional parameters for the LongRunningBackupsClient.NewListPager
@@ -140,7 +140,7 @@ func (client *LongRunningBackupsClient) NewListPager(resourceGroupName string, s
 }
 
 // listCreateRequest creates the List request.
-func (client *LongRunningBackupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *LongRunningBackupsClientListOptions) (*policy.Request, error) {
+func (client *LongRunningBackupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *LongRunningBackupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backupsV2"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -159,7 +159,7 @@ func (client *LongRunningBackupsClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

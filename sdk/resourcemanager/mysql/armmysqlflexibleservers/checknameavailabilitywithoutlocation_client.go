@@ -27,7 +27,7 @@ type CheckNameAvailabilityWithoutLocationClient struct {
 // NewCheckNameAvailabilityWithoutLocationClient creates a new instance of CheckNameAvailabilityWithoutLocationClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCheckNameAvailabilityWithoutLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityWithoutLocationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewCheckNameAvailabilityWithoutLocationClient(subscriptionID string, creden
 // Execute - Check the availability of name for server
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - nameAvailabilityRequest - The required parameters for checking if server name is available.
 //   - options - CheckNameAvailabilityWithoutLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithoutLocationClient.Execute
 //     method.
@@ -70,7 +70,7 @@ func (client *CheckNameAvailabilityWithoutLocationClient) Execute(ctx context.Co
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityWithoutLocationClientExecuteOptions) (*policy.Request, error) {
+func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, _ *CheckNameAvailabilityWithoutLocationClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +81,7 @@ func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

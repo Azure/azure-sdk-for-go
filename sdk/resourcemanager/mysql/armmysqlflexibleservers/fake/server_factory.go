@@ -16,29 +16,80 @@ import (
 
 // ServerFactory is a fake server for instances of the armmysqlflexibleservers.ClientFactory type.
 type ServerFactory struct {
-	AdvancedThreatProtectionSettingsServer     AdvancedThreatProtectionSettingsServer
-	AzureADAdministratorsServer                AzureADAdministratorsServer
-	BackupAndExportServer                      BackupAndExportServer
-	BackupsServer                              BackupsServer
-	CheckNameAvailabilityServer                CheckNameAvailabilityServer
+	// AdvancedThreatProtectionSettingsServer contains the fakes for client AdvancedThreatProtectionSettingsClient
+	AdvancedThreatProtectionSettingsServer AdvancedThreatProtectionSettingsServer
+
+	// AzureADAdministratorsServer contains the fakes for client AzureADAdministratorsClient
+	AzureADAdministratorsServer AzureADAdministratorsServer
+
+	// BackupAndExportServer contains the fakes for client BackupAndExportClient
+	BackupAndExportServer BackupAndExportServer
+
+	// BackupsServer contains the fakes for client BackupsClient
+	BackupsServer BackupsServer
+
+	// CheckNameAvailabilityServer contains the fakes for client CheckNameAvailabilityClient
+	CheckNameAvailabilityServer CheckNameAvailabilityServer
+
+	// CheckNameAvailabilityWithoutLocationServer contains the fakes for client CheckNameAvailabilityWithoutLocationClient
 	CheckNameAvailabilityWithoutLocationServer CheckNameAvailabilityWithoutLocationServer
-	CheckVirtualNetworkSubnetUsageServer       CheckVirtualNetworkSubnetUsageServer
-	ConfigurationsServer                       ConfigurationsServer
-	DatabasesServer                            DatabasesServer
-	FirewallRulesServer                        FirewallRulesServer
-	GetPrivateDNSZoneSuffixServer              GetPrivateDNSZoneSuffixServer
-	LocationBasedCapabilitiesServer            LocationBasedCapabilitiesServer
-	LocationBasedCapabilitySetServer           LocationBasedCapabilitySetServer
-	LogFilesServer                             LogFilesServer
-	LongRunningBackupServer                    LongRunningBackupServer
-	LongRunningBackupsServer                   LongRunningBackupsServer
-	MaintenancesServer                         MaintenancesServer
-	OperationProgressServer                    OperationProgressServer
-	OperationResultsServer                     OperationResultsServer
-	OperationsServer                           OperationsServer
-	ReplicasServer                             ReplicasServer
-	ServersServer                              ServersServer
-	ServersMigrationServer                     ServersMigrationServer
+
+	// CheckVirtualNetworkSubnetUsageServer contains the fakes for client CheckVirtualNetworkSubnetUsageClient
+	CheckVirtualNetworkSubnetUsageServer CheckVirtualNetworkSubnetUsageServer
+
+	// ConfigurationsServer contains the fakes for client ConfigurationsClient
+	ConfigurationsServer ConfigurationsServer
+
+	// DatabasesServer contains the fakes for client DatabasesClient
+	DatabasesServer DatabasesServer
+
+	// FirewallRulesServer contains the fakes for client FirewallRulesClient
+	FirewallRulesServer FirewallRulesServer
+
+	// GetPrivateDNSZoneSuffixServer contains the fakes for client GetPrivateDNSZoneSuffixClient
+	GetPrivateDNSZoneSuffixServer GetPrivateDNSZoneSuffixServer
+
+	// LocationBasedCapabilitiesServer contains the fakes for client LocationBasedCapabilitiesClient
+	LocationBasedCapabilitiesServer LocationBasedCapabilitiesServer
+
+	// LocationBasedCapabilitySetServer contains the fakes for client LocationBasedCapabilitySetClient
+	LocationBasedCapabilitySetServer LocationBasedCapabilitySetServer
+
+	// LogFilesServer contains the fakes for client LogFilesClient
+	LogFilesServer LogFilesServer
+
+	// LongRunningBackupServer contains the fakes for client LongRunningBackupClient
+	LongRunningBackupServer LongRunningBackupServer
+
+	// LongRunningBackupsServer contains the fakes for client LongRunningBackupsClient
+	LongRunningBackupsServer LongRunningBackupsServer
+
+	// MaintenancesServer contains the fakes for client MaintenancesClient
+	MaintenancesServer MaintenancesServer
+
+	// OperationProgressServer contains the fakes for client OperationProgressClient
+	OperationProgressServer OperationProgressServer
+
+	// OperationResultsServer contains the fakes for client OperationResultsClient
+	OperationResultsServer OperationResultsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// ReplicasServer contains the fakes for client ReplicasClient
+	ReplicasServer ReplicasServer
+
+	// ServersServer contains the fakes for client ServersClient
+	ServersServer ServersServer
+
+	// ServersMigrationServer contains the fakes for client ServersMigrationClient
+	ServersMigrationServer ServersMigrationServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -75,6 +126,8 @@ type ServerFactoryTransport struct {
 	trOperationProgressServer                    *OperationProgressServerTransport
 	trOperationResultsServer                     *OperationResultsServerTransport
 	trOperationsServer                           *OperationsServerTransport
+	trPrivateEndpointConnectionsServer           *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                 *PrivateLinkResourcesServerTransport
 	trReplicasServer                             *ReplicasServerTransport
 	trServersServer                              *ServersServerTransport
 	trServersMigrationServer                     *ServersMigrationServerTransport
@@ -183,6 +236,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PrivateEndpointConnectionsClient":
+		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
+	case "PrivateLinkResourcesClient":
+		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
+		})
+		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "ReplicasClient":
 		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
 		resp, err = s.trReplicasServer.Do(req)

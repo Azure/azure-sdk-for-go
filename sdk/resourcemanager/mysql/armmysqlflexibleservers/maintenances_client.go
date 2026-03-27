@@ -27,7 +27,7 @@ type MaintenancesClient struct {
 // NewMaintenancesClient creates a new instance of MaintenancesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMaintenancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewMaintenancesClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListPager - List maintenances.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - MaintenancesClientListOptions contains the optional parameters for the MaintenancesClient.NewListPager method.
@@ -70,7 +70,7 @@ func (client *MaintenancesClient) NewListPager(resourceGroupName string, serverN
 }
 
 // listCreateRequest creates the List request.
-func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *MaintenancesClientListOptions) (*policy.Request, error) {
+func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *MaintenancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/maintenances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +89,7 @@ func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -107,7 +107,7 @@ func (client *MaintenancesClient) listHandleResponse(resp *http.Response) (Maint
 // Read - Read maintenance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - maintenanceName - The name of the maintenance.
@@ -135,7 +135,7 @@ func (client *MaintenancesClient) Read(ctx context.Context, resourceGroupName st
 }
 
 // readCreateRequest creates the Read request.
-func (client *MaintenancesClient) readCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, options *MaintenancesClientReadOptions) (*policy.Request, error) {
+func (client *MaintenancesClient) readCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, _ *MaintenancesClientReadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/maintenances/{maintenanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -158,7 +158,7 @@ func (client *MaintenancesClient) readCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,7 +176,7 @@ func (client *MaintenancesClient) readHandleResponse(resp *http.Response) (Maint
 // BeginUpdate - Update maintenances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - maintenanceName - The name of the maintenance.
@@ -202,7 +202,7 @@ func (client *MaintenancesClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Update maintenances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 func (client *MaintenancesClient) update(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, options *MaintenancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaintenancesClient.BeginUpdate"
@@ -248,7 +248,7 @@ func (client *MaintenancesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {

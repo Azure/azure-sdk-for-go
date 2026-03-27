@@ -27,7 +27,7 @@ type ServersMigrationClient struct {
 // NewServersMigrationClient creates a new instance of ServersMigrationClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServersMigrationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServersMigrationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewServersMigrationClient(subscriptionID string, credential azcore.TokenCre
 // BeginCutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServersMigrationClientBeginCutoverMigrationOptions contains the optional parameters for the ServersMigrationClient.BeginCutoverMigration
@@ -69,7 +69,7 @@ func (client *ServersMigrationClient) BeginCutoverMigration(ctx context.Context,
 // CutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 func (client *ServersMigrationClient) cutoverMigration(ctx context.Context, resourceGroupName string, serverName string, options *ServersMigrationClientBeginCutoverMigrationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServersMigrationClient.BeginCutoverMigration"
@@ -92,7 +92,7 @@ func (client *ServersMigrationClient) cutoverMigration(ctx context.Context, reso
 }
 
 // cutoverMigrationCreateRequest creates the CutoverMigration request.
-func (client *ServersMigrationClient) cutoverMigrationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersMigrationClientBeginCutoverMigrationOptions) (*policy.Request, error) {
+func (client *ServersMigrationClient) cutoverMigrationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *ServersMigrationClientBeginCutoverMigrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/cutoverMigration"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -111,7 +111,7 @@ func (client *ServersMigrationClient) cutoverMigrationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

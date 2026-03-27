@@ -22,7 +22,7 @@ type GetPrivateDNSZoneSuffixClient struct {
 
 // NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GetPrivateDNSZoneSuffixClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,7 +37,7 @@ func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options
 // Execute - Get private DNS zone suffix in the cloud.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - options - GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
 //     method.
 func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, options *GetPrivateDNSZoneSuffixClientExecuteOptions) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
@@ -63,14 +63,14 @@ func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, option
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Context, options *GetPrivateDNSZoneSuffixClientExecuteOptions) (*policy.Request, error) {
+func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Context, _ *GetPrivateDNSZoneSuffixClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DBforMySQL/getPrivateDnsZoneSuffix"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

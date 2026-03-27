@@ -1,5 +1,27 @@
 # Release History
 
+## 2.0.0-beta.5 (2026-03-27)
+### Features Added
+
+- New enum type `BatchOfMaintenance` with values `BatchOfMaintenanceBatch1`, `BatchOfMaintenanceBatch2`, `BatchOfMaintenanceDefault`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *PrivateEndpointConnectionsClientListByServerOptions) (PrivateEndpointConnectionsClientListByServerResponse, error)`
+- New function `NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.Get(ctx context.Context, resourceGroupName string, serverName string, groupName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error)`
+- New function `*PrivateLinkResourcesClient.ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *PrivateLinkResourcesClientListByServerOptions) (PrivateLinkResourcesClientListByServerResponse, error)`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `TagsObject`
+- New field `BatchOfMaintenance` in struct `MaintenanceWindow`
+
+
 ## 2.0.0-beta.4 (2025-02-27)
 ### Features Added
 

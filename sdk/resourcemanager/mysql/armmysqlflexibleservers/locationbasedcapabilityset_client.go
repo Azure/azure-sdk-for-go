@@ -27,7 +27,7 @@ type LocationBasedCapabilitySetClient struct {
 // NewLocationBasedCapabilitySetClient creates a new instance of LocationBasedCapabilitySetClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationBasedCapabilitySetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationBasedCapabilitySetClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewLocationBasedCapabilitySetClient(subscriptionID string, credential azcor
 // Get - Get capabilities at specified location in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - locationName - The name of the location.
 //   - capabilitySetName - Name of capability set
 //   - options - LocationBasedCapabilitySetClientGetOptions contains the optional parameters for the LocationBasedCapabilitySetClient.Get
@@ -71,7 +71,7 @@ func (client *LocationBasedCapabilitySetClient) Get(ctx context.Context, locatio
 }
 
 // getCreateRequest creates the Get request.
-func (client *LocationBasedCapabilitySetClient) getCreateRequest(ctx context.Context, locationName string, capabilitySetName string, options *LocationBasedCapabilitySetClientGetOptions) (*policy.Request, error) {
+func (client *LocationBasedCapabilitySetClient) getCreateRequest(ctx context.Context, locationName string, capabilitySetName string, _ *LocationBasedCapabilitySetClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/capabilitySets/{capabilitySetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +90,7 @@ func (client *LocationBasedCapabilitySetClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -107,7 +107,7 @@ func (client *LocationBasedCapabilitySetClient) getHandleResponse(resp *http.Res
 
 // NewListPager - Get capabilities at specified location in a given subscription.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - locationName - The name of the location.
 //   - options - LocationBasedCapabilitySetClientListOptions contains the optional parameters for the LocationBasedCapabilitySetClient.NewListPager
 //     method.
@@ -135,7 +135,7 @@ func (client *LocationBasedCapabilitySetClient) NewListPager(locationName string
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationBasedCapabilitySetClient) listCreateRequest(ctx context.Context, locationName string, options *LocationBasedCapabilitySetClientListOptions) (*policy.Request, error) {
+func (client *LocationBasedCapabilitySetClient) listCreateRequest(ctx context.Context, locationName string, _ *LocationBasedCapabilitySetClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/capabilitySets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +150,7 @@ func (client *LocationBasedCapabilitySetClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -5,11 +5,6 @@
 
 package armmysqlflexibleservers
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
-	moduleVersion = "v2.0.0-beta.4"
-)
-
 type AdministratorName string
 
 const (
@@ -113,6 +108,24 @@ const (
 func PossibleBackupTypeValues() []BackupType {
 	return []BackupType{
 		BackupTypeFULL,
+	}
+}
+
+// BatchOfMaintenance - The batch of maintenance when enabled the custom managed maintenance window of a server.
+type BatchOfMaintenance string
+
+const (
+	BatchOfMaintenanceBatch1  BatchOfMaintenance = "Batch1"
+	BatchOfMaintenanceBatch2  BatchOfMaintenance = "Batch2"
+	BatchOfMaintenanceDefault BatchOfMaintenance = "Default"
+)
+
+// PossibleBatchOfMaintenanceValues returns the possible values for the BatchOfMaintenance const type.
+func PossibleBatchOfMaintenanceValues() []BatchOfMaintenance {
+	return []BatchOfMaintenance{
+		BatchOfMaintenanceBatch1,
+		BatchOfMaintenanceBatch2,
+		BatchOfMaintenanceDefault,
 	}
 }
 

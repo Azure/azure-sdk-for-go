@@ -27,7 +27,7 @@ type AdvancedThreatProtectionSettingsClient struct {
 // NewAdvancedThreatProtectionSettingsClient creates a new instance of AdvancedThreatProtectionSettingsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAdvancedThreatProtectionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdvancedThreatProtectionSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAdvancedThreatProtectionSettingsClient(subscriptionID string, credential
 // Get - Get a server's Advanced Threat Protection state
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -72,7 +72,7 @@ func (client *AdvancedThreatProtectionSettingsClient) Get(ctx context.Context, r
 }
 
 // getCreateRequest creates the Get request.
-func (client *AdvancedThreatProtectionSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, options *AdvancedThreatProtectionSettingsClientGetOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, _ *AdvancedThreatProtectionSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -95,7 +95,7 @@ func (client *AdvancedThreatProtectionSettingsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *AdvancedThreatProtectionSettingsClient) getHandleResponse(resp *ht
 
 // NewListPager - Gets a list of server's Advanced Threat Protection states.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - AdvancedThreatProtectionSettingsClientListOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.NewListPager
@@ -141,7 +141,7 @@ func (client *AdvancedThreatProtectionSettingsClient) NewListPager(resourceGroup
 }
 
 // listCreateRequest creates the List request.
-func (client *AdvancedThreatProtectionSettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *AdvancedThreatProtectionSettingsClientListOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionSettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *AdvancedThreatProtectionSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -160,7 +160,7 @@ func (client *AdvancedThreatProtectionSettingsClient) listCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *AdvancedThreatProtectionSettingsClient) listHandleResponse(resp *h
 // BeginUpdate - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -206,7 +206,7 @@ func (client *AdvancedThreatProtectionSettingsClient) BeginUpdate(ctx context.Co
 // Update - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 func (client *AdvancedThreatProtectionSettingsClient) update(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, options *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdate"
@@ -229,7 +229,7 @@ func (client *AdvancedThreatProtectionSettingsClient) update(ctx context.Context
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, options *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, _ *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -252,7 +252,7 @@ func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -264,7 +264,7 @@ func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx co
 // BeginUpdatePut - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -292,7 +292,7 @@ func (client *AdvancedThreatProtectionSettingsClient) BeginUpdatePut(ctx context
 // UpdatePut - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2024-12-01-preview
 func (client *AdvancedThreatProtectionSettingsClient) updatePut(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, options *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdatePut"
@@ -315,7 +315,7 @@ func (client *AdvancedThreatProtectionSettingsClient) updatePut(ctx context.Cont
 }
 
 // updatePutCreateRequest creates the UpdatePut request.
-func (client *AdvancedThreatProtectionSettingsClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, options *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionSettingsClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, _ *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -338,7 +338,7 @@ func (client *AdvancedThreatProtectionSettingsClient) updatePutCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

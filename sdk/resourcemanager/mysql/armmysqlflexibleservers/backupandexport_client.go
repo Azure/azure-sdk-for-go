@@ -27,7 +27,7 @@ type BackupAndExportClient struct {
 // NewBackupAndExportClient creates a new instance of BackupAndExportClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupAndExportClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupAndExportClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewBackupAndExportClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreate - Exports the backup of the given server by creating a backup if not existing.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - The required parameters for creating and exporting backup of the given server.
@@ -70,7 +70,7 @@ func (client *BackupAndExportClient) BeginCreate(ctx context.Context, resourceGr
 // Create - Exports the backup of the given server by creating a backup if not existing.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 func (client *BackupAndExportClient) create(ctx context.Context, resourceGroupName string, serverName string, parameters BackupAndExportRequest, options *BackupAndExportClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupAndExportClient.BeginCreate"
@@ -93,7 +93,7 @@ func (client *BackupAndExportClient) create(ctx context.Context, resourceGroupNa
 }
 
 // createCreateRequest creates the Create request.
-func (client *BackupAndExportClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters BackupAndExportRequest, options *BackupAndExportClientBeginCreateOptions) (*policy.Request, error) {
+func (client *BackupAndExportClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters BackupAndExportRequest, _ *BackupAndExportClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backupAndExport"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -112,7 +112,7 @@ func (client *BackupAndExportClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,7 +124,7 @@ func (client *BackupAndExportClient) createCreateRequest(ctx context.Context, re
 // ValidateBackup - Validates if backup can be performed for given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - BackupAndExportClientValidateBackupOptions contains the optional parameters for the BackupAndExportClient.ValidateBackup
@@ -152,7 +152,7 @@ func (client *BackupAndExportClient) ValidateBackup(ctx context.Context, resourc
 }
 
 // validateBackupCreateRequest creates the ValidateBackup request.
-func (client *BackupAndExportClient) validateBackupCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *BackupAndExportClientValidateBackupOptions) (*policy.Request, error) {
+func (client *BackupAndExportClient) validateBackupCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *BackupAndExportClientValidateBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/validateBackup"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -171,7 +171,7 @@ func (client *BackupAndExportClient) validateBackupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

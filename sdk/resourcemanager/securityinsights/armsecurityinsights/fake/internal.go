@@ -13,6 +13,11 @@ import (
 	"sync"
 )
 
+type result struct {
+	resp *http.Response
+	err  error
+}
+
 type nonRetriableError struct {
 	error
 }
@@ -46,14 +51,6 @@ func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error)
 		return nil, err
 	}
 	return &t, err
-}
-
-func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
-	t, err := parse(v)
-	if err != nil {
-		return *new(T), err
-	}
-	return t, err
 }
 
 func readRequestBody(req *http.Request) ([]byte, error) {

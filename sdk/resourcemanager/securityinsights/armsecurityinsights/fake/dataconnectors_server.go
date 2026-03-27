@@ -21,10 +21,6 @@ import (
 
 // DataConnectorsServer is a fake server for instances of the armsecurityinsights.DataConnectorsClient type.
 type DataConnectorsServer struct {
-	// Connect is the fake for method DataConnectorsClient.Connect
-	// HTTP status codes to indicate success: http.StatusOK
-	Connect func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, connectBody armsecurityinsights.DataConnectorConnectBody, options *armsecurityinsights.DataConnectorsClientConnectOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientConnectResponse], errResp azfake.ErrorResponder)
-
 	// CreateOrUpdate is the fake for method DataConnectorsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, dataConnector armsecurityinsights.DataConnectorClassification, options *armsecurityinsights.DataConnectorsClientCreateOrUpdateOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,10 +28,6 @@ type DataConnectorsServer struct {
 	// Delete is the fake for method DataConnectorsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *armsecurityinsights.DataConnectorsClientDeleteOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// Disconnect is the fake for method DataConnectorsClient.Disconnect
-	// HTTP status codes to indicate success: http.StatusOK
-	Disconnect func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *armsecurityinsights.DataConnectorsClientDisconnectOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientDisconnectResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DataConnectorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,72 +63,46 @@ func (d *DataConnectorsServerTransport) Do(req *http.Request) (*http.Response, e
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
-
-	switch method {
-	case "DataConnectorsClient.Connect":
-		resp, err = d.dispatchConnect(req)
-	case "DataConnectorsClient.CreateOrUpdate":
-		resp, err = d.dispatchCreateOrUpdate(req)
-	case "DataConnectorsClient.Delete":
-		resp, err = d.dispatchDelete(req)
-	case "DataConnectorsClient.Disconnect":
-		resp, err = d.dispatchDisconnect(req)
-	case "DataConnectorsClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DataConnectorsClient.NewListPager":
-		resp, err = d.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	return d.dispatchToMethodFake(req, method)
 }
 
-func (d *DataConnectorsServerTransport) dispatchConnect(req *http.Request) (*http.Response, error) {
-	if d.srv.Connect == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Connect not implemented")}
+func (d *DataConnectorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if dataConnectorsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = dataConnectorsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DataConnectorsClient.CreateOrUpdate":
+				res.resp, res.err = d.dispatchCreateOrUpdate(req)
+			case "DataConnectorsClient.Delete":
+				res.resp, res.err = d.dispatchDelete(req)
+			case "DataConnectorsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DataConnectorsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors/(?P<dataConnectorId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connect`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.DataConnectorConnectBody](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	dataConnectorIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataConnectorId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Connect(req.Context(), resourceGroupNameParam, workspaceNameParam, dataConnectorIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DataConnectorsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -146,7 +112,7 @@ func (d *DataConnectorsServerTransport) dispatchCreateOrUpdate(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors/(?P<dataConnectorId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	raw, err := readRequestBody(req)
@@ -191,7 +157,7 @@ func (d *DataConnectorsServerTransport) dispatchDelete(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors/(?P<dataConnectorId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -221,43 +187,6 @@ func (d *DataConnectorsServerTransport) dispatchDelete(req *http.Request) (*http
 	return resp, nil
 }
 
-func (d *DataConnectorsServerTransport) dispatchDisconnect(req *http.Request) (*http.Response, error) {
-	if d.srv.Disconnect == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Disconnect not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors/(?P<dataConnectorId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disconnect`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	dataConnectorIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataConnectorId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Disconnect(req.Context(), resourceGroupNameParam, workspaceNameParam, dataConnectorIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (d *DataConnectorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -265,7 +194,7 @@ func (d *DataConnectorsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors/(?P<dataConnectorId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -304,7 +233,7 @@ func (d *DataConnectorsServerTransport) dispatchNewListPager(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -334,4 +263,10 @@ func (d *DataConnectorsServerTransport) dispatchNewListPager(req *http.Request) 
 		d.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DataConnectorsServerTransport
+var dataConnectorsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

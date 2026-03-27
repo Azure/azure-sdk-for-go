@@ -63,27 +63,46 @@ func (p *PeerAsnsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PeerAsnsClient.CreateOrUpdate":
-		resp, err = p.dispatchCreateOrUpdate(req)
-	case "PeerAsnsClient.Delete":
-		resp, err = p.dispatchDelete(req)
-	case "PeerAsnsClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "PeerAsnsClient.NewListBySubscriptionPager":
-		resp, err = p.dispatchNewListBySubscriptionPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PeerAsnsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if peerAsnsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = peerAsnsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PeerAsnsClient.CreateOrUpdate":
+				res.resp, res.err = p.dispatchCreateOrUpdate(req)
+			case "PeerAsnsClient.Delete":
+				res.resp, res.err = p.dispatchDelete(req)
+			case "PeerAsnsClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PeerAsnsClient.NewListBySubscriptionPager":
+				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PeerAsnsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -93,7 +112,7 @@ func (p *PeerAsnsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peerAsns/(?P<peerAsnName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpeering.PeerAsn](req)
@@ -126,7 +145,7 @@ func (p *PeerAsnsServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peerAsns/(?P<peerAsnName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	peerAsnNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peerAsnName")])
@@ -155,7 +174,7 @@ func (p *PeerAsnsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peerAsns/(?P<peerAsnName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	peerAsnNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peerAsnName")])
@@ -186,7 +205,7 @@ func (p *PeerAsnsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peerAsns`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListBySubscriptionPager(nil)
@@ -208,4 +227,10 @@ func (p *PeerAsnsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 		p.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PeerAsnsServerTransport
+var peerAsnsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -27,7 +27,7 @@ type CdnPeeringPrefixesClient struct {
 // NewCdnPeeringPrefixesClient creates a new instance of CdnPeeringPrefixesClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CdnPeeringPrefixesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenC
 
 // NewListPager - Lists all of the advertised prefixes for the specified peering location
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - peeringLocation - The peering location.
 //   - options - CdnPeeringPrefixesClientListOptions contains the optional parameters for the CdnPeeringPrefixesClient.NewListPager
 //     method.
@@ -70,7 +70,7 @@ func (client *CdnPeeringPrefixesClient) NewListPager(peeringLocation string, opt
 }
 
 // listCreateRequest creates the List request.
-func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, peeringLocation string, options *CdnPeeringPrefixesClientListOptions) (*policy.Request, error) {
+func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, peeringLocation string, _ *CdnPeeringPrefixesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/cdnPeeringPrefixes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,8 +81,8 @@ func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-05-01")
 	reqQP.Set("peeringLocation", peeringLocation)
-	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

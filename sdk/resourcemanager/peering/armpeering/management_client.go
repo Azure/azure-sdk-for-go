@@ -27,7 +27,7 @@ type ManagementClient struct {
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // CheckServiceProviderAvailability - Checks if the peering service provider is present within 1000 miles of customer's location
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - checkServiceProviderAvailabilityInput - The CheckServiceProviderAvailabilityInput indicating customer location and service
 //     provider.
 //   - options - ManagementClientCheckServiceProviderAvailabilityOptions contains the optional parameters for the ManagementClient.CheckServiceProviderAvailability
@@ -71,7 +71,7 @@ func (client *ManagementClient) CheckServiceProviderAvailability(ctx context.Con
 }
 
 // checkServiceProviderAvailabilityCreateRequest creates the CheckServiceProviderAvailability request.
-func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ctx context.Context, checkServiceProviderAvailabilityInput CheckServiceProviderAvailabilityInput, options *ManagementClientCheckServiceProviderAvailabilityOptions) (*policy.Request, error) {
+func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ctx context.Context, checkServiceProviderAvailabilityInput CheckServiceProviderAvailabilityInput, _ *ManagementClientCheckServiceProviderAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/checkServiceProviderAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +82,7 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkServiceProviderAvailabilityInput); err != nil {

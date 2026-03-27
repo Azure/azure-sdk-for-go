@@ -27,7 +27,7 @@ type LocationsClient struct {
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // NewListPager - Lists all of the available peering locations for the specified kind of peering.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - kind - The kind of the peering.
 //   - options - LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
 func (client *LocationsClient) NewListPager(kind PeeringLocationsKind, options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
@@ -80,11 +80,11 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, kind Peeri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("kind", string(kind))
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DirectPeeringType != nil {
 		reqQP.Set("directPeeringType", string(*options.DirectPeeringType))
 	}
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("kind", string(kind))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

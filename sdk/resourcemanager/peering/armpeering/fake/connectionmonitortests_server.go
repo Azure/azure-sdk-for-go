@@ -63,27 +63,46 @@ func (c *ConnectionMonitorTestsServerTransport) Do(req *http.Request) (*http.Res
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ConnectionMonitorTestsClient.CreateOrUpdate":
-		resp, err = c.dispatchCreateOrUpdate(req)
-	case "ConnectionMonitorTestsClient.Delete":
-		resp, err = c.dispatchDelete(req)
-	case "ConnectionMonitorTestsClient.Get":
-		resp, err = c.dispatchGet(req)
-	case "ConnectionMonitorTestsClient.NewListByPeeringServicePager":
-		resp, err = c.dispatchNewListByPeeringServicePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *ConnectionMonitorTestsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if connectionMonitorTestsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = connectionMonitorTestsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ConnectionMonitorTestsClient.CreateOrUpdate":
+				res.resp, res.err = c.dispatchCreateOrUpdate(req)
+			case "ConnectionMonitorTestsClient.Delete":
+				res.resp, res.err = c.dispatchDelete(req)
+			case "ConnectionMonitorTestsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ConnectionMonitorTestsClient.NewListByPeeringServicePager":
+				res.resp, res.err = c.dispatchNewListByPeeringServicePager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *ConnectionMonitorTestsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -93,7 +112,7 @@ func (c *ConnectionMonitorTestsServerTransport) dispatchCreateOrUpdate(req *http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peeringServices/(?P<peeringServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionMonitorTests/(?P<connectionMonitorTestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpeering.ConnectionMonitorTest](req)
@@ -134,7 +153,7 @@ func (c *ConnectionMonitorTestsServerTransport) dispatchDelete(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peeringServices/(?P<peeringServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionMonitorTests/(?P<connectionMonitorTestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -171,7 +190,7 @@ func (c *ConnectionMonitorTestsServerTransport) dispatchGet(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peeringServices/(?P<peeringServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionMonitorTests/(?P<connectionMonitorTestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -210,7 +229,7 @@ func (c *ConnectionMonitorTestsServerTransport) dispatchNewListByPeeringServiceP
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peeringServices/(?P<peeringServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionMonitorTests`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -240,4 +259,10 @@ func (c *ConnectionMonitorTestsServerTransport) dispatchNewListByPeeringServiceP
 		c.newListByPeeringServicePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ConnectionMonitorTestsServerTransport
+var connectionMonitorTestsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

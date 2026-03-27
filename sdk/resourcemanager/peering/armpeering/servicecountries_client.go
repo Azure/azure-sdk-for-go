@@ -27,7 +27,7 @@ type ServiceCountriesClient struct {
 // NewServiceCountriesClient creates a new instance of ServiceCountriesClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceCountriesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListPager - Lists all of the available countries for peering service.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - options - ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.NewListPager
 //     method.
 func (client *ServiceCountriesClient) NewListPager(options *ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse] {
@@ -69,7 +69,7 @@ func (client *ServiceCountriesClient) NewListPager(options *ServiceCountriesClie
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, options *ServiceCountriesClientListOptions) (*policy.Request, error) {
+func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, _ *ServiceCountriesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -80,7 +80,7 @@ func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -30,7 +30,7 @@ type ConnectionMonitorTestsClientGetResponse struct {
 
 // ConnectionMonitorTestsClientListByPeeringServiceResponse contains the response from method ConnectionMonitorTestsClient.NewListByPeeringServicePager.
 type ConnectionMonitorTestsClientListByPeeringServiceResponse struct {
-	// The paginated list of [T].
+	// The paginated list of Connection Monitor Tests.
 	ConnectionMonitorTestListResult
 }
 
@@ -194,6 +194,18 @@ type RegisteredPrefixesClientGetResponse struct {
 type RegisteredPrefixesClientListByPeeringResponse struct {
 	// The paginated list of peering registered prefixes.
 	RegisteredPrefixListResult
+}
+
+// RegisteredPrefixesClientValidateResponse contains the response from method RegisteredPrefixesClient.Validate.
+type RegisteredPrefixesClientValidateResponse struct {
+	// The customer's prefix that is registered by the peering service provider.
+	RegisteredPrefix
+}
+
+// RpUnbilledPrefixesClientListResponse contains the response from method RpUnbilledPrefixesClient.NewListPager.
+type RpUnbilledPrefixesClientListResponse struct {
+	// The paginated list of RP unbilled prefixes.
+	RpUnbilledPrefixListResult
 }
 
 // ServiceCountriesClientListResponse contains the response from method ServiceCountriesClient.NewListPager.

@@ -375,6 +375,45 @@ func (c *ConnectionMonitorTestProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ConnectivityProbe.
+func (c ConnectivityProbe) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "azureRegion", c.AzureRegion)
+	populate(objectMap, "endpoint", c.Endpoint)
+	populate(objectMap, "prefixesToAccesslist", c.PrefixesToAccesslist)
+	populate(objectMap, "protocol", c.Protocol)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConnectivityProbe.
+func (c *ConnectivityProbe) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "azureRegion":
+			err = unpopulate(val, "AzureRegion", &c.AzureRegion)
+			delete(rawMsg, key)
+		case "endpoint":
+			err = unpopulate(val, "Endpoint", &c.Endpoint)
+			delete(rawMsg, key)
+		case "prefixesToAccesslist":
+			err = unpopulate(val, "PrefixesToAccesslist", &c.PrefixesToAccesslist)
+			delete(rawMsg, key)
+		case "protocol":
+			err = unpopulate(val, "Protocol", &c.Protocol)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ContactDetail.
 func (c ContactDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1329,6 +1368,7 @@ func (p *Peering) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Properties.
 func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "connectivityProbes", p.ConnectivityProbes)
 	populate(objectMap, "direct", p.Direct)
 	populate(objectMap, "exchange", p.Exchange)
 	populate(objectMap, "peeringLocation", p.PeeringLocation)
@@ -1345,6 +1385,9 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "connectivityProbes":
+			err = unpopulate(val, "ConnectivityProbes", &p.ConnectivityProbes)
+			delete(rawMsg, key)
 		case "direct":
 			err = unpopulate(val, "Direct", &p.Direct)
 			delete(rawMsg, key)
@@ -1788,6 +1831,72 @@ func (r *ResourceTags) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "tags":
 			err = unpopulate(val, "Tags", &r.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RpUnbilledPrefix.
+func (r RpUnbilledPrefix) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "azureRegion", r.AzureRegion)
+	populate(objectMap, "peerAsn", r.PeerAsn)
+	populate(objectMap, "prefix", r.Prefix)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RpUnbilledPrefix.
+func (r *RpUnbilledPrefix) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "azureRegion":
+			err = unpopulate(val, "AzureRegion", &r.AzureRegion)
+			delete(rawMsg, key)
+		case "peerAsn":
+			err = unpopulate(val, "PeerAsn", &r.PeerAsn)
+			delete(rawMsg, key)
+		case "prefix":
+			err = unpopulate(val, "Prefix", &r.Prefix)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RpUnbilledPrefixListResult.
+func (r RpUnbilledPrefixListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RpUnbilledPrefixListResult.
+func (r *RpUnbilledPrefixListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &r.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &r.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2493,7 +2602,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

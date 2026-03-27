@@ -27,7 +27,7 @@ type LookingGlassClient struct {
 // NewLookingGlassClient creates a new instance of LookingGlassClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLookingGlassClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LookingGlassClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewLookingGlassClient(subscriptionID string, credential azcore.TokenCredent
 // Invoke - Run looking glass functionality
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - command - The command to be executed: ping, traceroute, bgpRoute.
 //   - sourceType - The type of the source: Edge site or Azure Region.
 //   - sourceLocation - The location of the source.
@@ -72,7 +72,7 @@ func (client *LookingGlassClient) Invoke(ctx context.Context, command LookingGla
 }
 
 // invokeCreateRequest creates the Invoke request.
-func (client *LookingGlassClient) invokeCreateRequest(ctx context.Context, command LookingGlassCommand, sourceType LookingGlassSourceType, sourceLocation string, destinationIP string, options *LookingGlassClientInvokeOptions) (*policy.Request, error) {
+func (client *LookingGlassClient) invokeCreateRequest(ctx context.Context, command LookingGlassCommand, sourceType LookingGlassSourceType, sourceLocation string, destinationIP string, _ *LookingGlassClientInvokeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/lookingGlass"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,11 +83,11 @@ func (client *LookingGlassClient) invokeCreateRequest(ctx context.Context, comma
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-05-01")
 	reqQP.Set("command", string(command))
-	reqQP.Set("sourceType", string(sourceType))
-	reqQP.Set("sourceLocation", sourceLocation)
 	reqQP.Set("destinationIP", destinationIP)
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("sourceLocation", sourceLocation)
+	reqQP.Set("sourceType", string(sourceType))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

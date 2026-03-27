@@ -27,7 +27,7 @@ type ServiceLocationsClient struct {
 // NewServiceLocationsClient creates a new instance of ServiceLocationsClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServiceLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceLocationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewServiceLocationsClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListPager - Lists all of the available locations for peering service.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - options - ServiceLocationsClientListOptions contains the optional parameters for the ServiceLocationsClient.NewListPager
 //     method.
 func (client *ServiceLocationsClient) NewListPager(options *ServiceLocationsClientListOptions) *runtime.Pager[ServiceLocationsClientListResponse] {
@@ -80,10 +80,10 @@ func (client *ServiceLocationsClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
-	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

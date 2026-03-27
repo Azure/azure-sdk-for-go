@@ -27,7 +27,7 @@ type PrefixesClient struct {
 // NewPrefixesClient creates a new instance of PrefixesClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrefixesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewPrefixesClient(subscriptionID string, credential azcore.TokenCredential,
 // service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - prefixName - The name of the prefix.
@@ -73,7 +73,7 @@ func (client *PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrefixesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix, options *PrefixesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrefixesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix, _ *PrefixesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -96,7 +96,7 @@ func (client *PrefixesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, peeringServicePrefix); err != nil {
@@ -117,7 +117,7 @@ func (client *PrefixesClient) createOrUpdateHandleResponse(resp *http.Response) 
 // Delete - Deletes an existing prefix with the specified name under the given subscription, resource group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - prefixName - The name of the prefix.
@@ -144,7 +144,7 @@ func (client *PrefixesClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrefixesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, options *PrefixesClientDeleteOptions) (*policy.Request, error) {
+func (client *PrefixesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, _ *PrefixesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -167,7 +167,7 @@ func (client *PrefixesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,7 +176,7 @@ func (client *PrefixesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - prefixName - The name of the prefix.
@@ -230,7 +230,7 @@ func (client *PrefixesClient) getCreateRequest(ctx context.Context, resourceGrou
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,7 +247,7 @@ func (client *PrefixesClient) getHandleResponse(resp *http.Response) (PrefixesCl
 
 // NewListByPeeringServicePager - Lists all prefixes under the given subscription, resource group and peering service.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - options - PrefixesClientListByPeeringServiceOptions contains the optional parameters for the PrefixesClient.NewListByPeeringServicePager
@@ -298,7 +298,7 @@ func (client *PrefixesClient) listByPeeringServiceCreateRequest(ctx context.Cont
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,7 +27,7 @@ type PeeringsClient struct {
 // NewPeeringsClient creates a new instance of PeeringsClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PeeringsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential,
 // and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringName - The name of the peering.
 //   - peering - The properties needed to create or update a peering.
@@ -72,7 +72,7 @@ func (client *PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, peering Peering, options *PeeringsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, peering Peering, _ *PeeringsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -91,7 +91,7 @@ func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, peering); err != nil {
@@ -112,7 +112,7 @@ func (client *PeeringsClient) createOrUpdateHandleResponse(resp *http.Response) 
 // Delete - Deletes an existing peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringName - The name of the peering.
 //   - options - PeeringsClientDeleteOptions contains the optional parameters for the PeeringsClient.Delete method.
@@ -138,7 +138,7 @@ func (client *PeeringsClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsClientDeleteOptions) (*policy.Request, error) {
+func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, _ *PeeringsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -157,7 +157,7 @@ func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,7 +166,7 @@ func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets an existing peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringName - The name of the peering.
 //   - options - PeeringsClientGetOptions contains the optional parameters for the PeeringsClient.Get method.
@@ -193,7 +193,7 @@ func (client *PeeringsClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsClientGetOptions) (*policy.Request, error) {
+func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, _ *PeeringsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -212,7 +212,7 @@ func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,7 +229,7 @@ func (client *PeeringsClient) getHandleResponse(resp *http.Response) (PeeringsCl
 
 // NewListByResourceGroupPager - Lists all of the peerings under the given subscription and resource group.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - PeeringsClientListByResourceGroupOptions contains the optional parameters for the PeeringsClient.NewListByResourceGroupPager
 //     method.
@@ -257,7 +257,7 @@ func (client *PeeringsClient) NewListByResourceGroupPager(resourceGroupName stri
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PeeringsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PeeringsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -272,7 +272,7 @@ func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -289,7 +289,7 @@ func (client *PeeringsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Lists all of the peerings under the given subscription.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - options - PeeringsClientListBySubscriptionOptions contains the optional parameters for the PeeringsClient.NewListBySubscriptionPager
 //     method.
 func (client *PeeringsClient) NewListBySubscriptionPager(options *PeeringsClientListBySubscriptionOptions) *runtime.Pager[PeeringsClientListBySubscriptionResponse] {
@@ -316,7 +316,7 @@ func (client *PeeringsClient) NewListBySubscriptionPager(options *PeeringsClient
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PeeringsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PeeringsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -327,7 +327,7 @@ func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,7 +345,7 @@ func (client *PeeringsClient) listBySubscriptionHandleResponse(resp *http.Respon
 // Update - Updates tags for a peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringName - The name of the peering.
 //   - tags - The resource tags.
@@ -373,7 +373,7 @@ func (client *PeeringsClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags, options *PeeringsClientUpdateOptions) (*policy.Request, error) {
+func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags, _ *PeeringsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -392,7 +392,7 @@ func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tags); err != nil {

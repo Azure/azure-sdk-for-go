@@ -27,7 +27,7 @@ type ConnectionMonitorTestsClient struct {
 // NewConnectionMonitorTestsClient creates a new instance of ConnectionMonitorTestsClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectionMonitorTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionMonitorTestsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewConnectionMonitorTestsClient(subscriptionID string, credential azcore.To
 // group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -74,7 +74,7 @@ func (client *ConnectionMonitorTestsClient) CreateOrUpdate(ctx context.Context, 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectionMonitorTestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, connectionMonitorTestName string, connectionMonitorTest ConnectionMonitorTest, options *ConnectionMonitorTestsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ConnectionMonitorTestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, connectionMonitorTestName string, connectionMonitorTest ConnectionMonitorTest, _ *ConnectionMonitorTestsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/connectionMonitorTests/{connectionMonitorTestName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +97,7 @@ func (client *ConnectionMonitorTestsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionMonitorTest); err != nil {
@@ -119,7 +119,7 @@ func (client *ConnectionMonitorTestsClient) createOrUpdateHandleResponse(resp *h
 // and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -147,7 +147,7 @@ func (client *ConnectionMonitorTestsClient) Delete(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ConnectionMonitorTestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, connectionMonitorTestName string, options *ConnectionMonitorTestsClientDeleteOptions) (*policy.Request, error) {
+func (client *ConnectionMonitorTestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, connectionMonitorTestName string, _ *ConnectionMonitorTestsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/connectionMonitorTests/{connectionMonitorTestName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,7 +170,7 @@ func (client *ConnectionMonitorTestsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +180,7 @@ func (client *ConnectionMonitorTestsClient) deleteCreateRequest(ctx context.Cont
 // peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -209,7 +209,7 @@ func (client *ConnectionMonitorTestsClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConnectionMonitorTestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, connectionMonitorTestName string, options *ConnectionMonitorTestsClientGetOptions) (*policy.Request, error) {
+func (client *ConnectionMonitorTestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, connectionMonitorTestName string, _ *ConnectionMonitorTestsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/connectionMonitorTests/{connectionMonitorTestName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -232,7 +232,7 @@ func (client *ConnectionMonitorTestsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +250,7 @@ func (client *ConnectionMonitorTestsClient) getHandleResponse(resp *http.Respons
 // NewListByPeeringServicePager - Lists all connection monitor tests under the given subscription, resource group and peering
 // service.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringServiceName - The name of the peering service.
 //   - options - ConnectionMonitorTestsClientListByPeeringServiceOptions contains the optional parameters for the ConnectionMonitorTestsClient.NewListByPeeringServicePager
@@ -279,7 +279,7 @@ func (client *ConnectionMonitorTestsClient) NewListByPeeringServicePager(resourc
 }
 
 // listByPeeringServiceCreateRequest creates the ListByPeeringService request.
-func (client *ConnectionMonitorTestsClient) listByPeeringServiceCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, options *ConnectionMonitorTestsClientListByPeeringServiceOptions) (*policy.Request, error) {
+func (client *ConnectionMonitorTestsClient) listByPeeringServiceCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, _ *ConnectionMonitorTestsClientListByPeeringServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/connectionMonitorTests"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -298,7 +298,7 @@ func (client *ConnectionMonitorTestsClient) listByPeeringServiceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

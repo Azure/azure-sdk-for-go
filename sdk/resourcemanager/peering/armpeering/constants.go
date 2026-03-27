@@ -5,11 +5,6 @@
 
 package armpeering
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
-	moduleVersion = "v1.2.0"
-)
-
 // Command - Invoked command
 type Command string
 
@@ -34,11 +29,14 @@ type ConnectionState string
 const (
 	ConnectionStateActive                ConnectionState = "Active"
 	ConnectionStateApproved              ConnectionState = "Approved"
+	ConnectionStateExternalBlocker       ConnectionState = "ExternalBlocker"
 	ConnectionStateNone                  ConnectionState = "None"
 	ConnectionStatePendingApproval       ConnectionState = "PendingApproval"
 	ConnectionStateProvisioningCompleted ConnectionState = "ProvisioningCompleted"
 	ConnectionStateProvisioningFailed    ConnectionState = "ProvisioningFailed"
 	ConnectionStateProvisioningStarted   ConnectionState = "ProvisioningStarted"
+	ConnectionStateTypeChangeInProgress  ConnectionState = "TypeChangeInProgress"
+	ConnectionStateTypeChangeRequested   ConnectionState = "TypeChangeRequested"
 	ConnectionStateValidating            ConnectionState = "Validating"
 )
 
@@ -47,11 +45,14 @@ func PossibleConnectionStateValues() []ConnectionState {
 	return []ConnectionState{
 		ConnectionStateActive,
 		ConnectionStateApproved,
+		ConnectionStateExternalBlocker,
 		ConnectionStateNone,
 		ConnectionStatePendingApproval,
 		ConnectionStateProvisioningCompleted,
 		ConnectionStateProvisioningFailed,
 		ConnectionStateProvisioningStarted,
+		ConnectionStateTypeChangeInProgress,
+		ConnectionStateTypeChangeRequested,
 		ConnectionStateValidating,
 	}
 }
@@ -66,6 +67,7 @@ const (
 	DirectPeeringTypeInternal             DirectPeeringType = "Internal"
 	DirectPeeringTypeIx                   DirectPeeringType = "Ix"
 	DirectPeeringTypeIxRs                 DirectPeeringType = "IxRs"
+	DirectPeeringTypePeerProp             DirectPeeringType = "PeerProp"
 	DirectPeeringTypeTransit              DirectPeeringType = "Transit"
 	DirectPeeringTypeVoice                DirectPeeringType = "Voice"
 )
@@ -79,6 +81,7 @@ func PossibleDirectPeeringTypeValues() []DirectPeeringType {
 		DirectPeeringTypeInternal,
 		DirectPeeringTypeIx,
 		DirectPeeringTypeIxRs,
+		DirectPeeringTypePeerProp,
 		DirectPeeringTypeTransit,
 		DirectPeeringTypeVoice,
 	}
@@ -205,6 +208,7 @@ const (
 	PeeringLocationsDirectPeeringTypeInternal             PeeringLocationsDirectPeeringType = "Internal"
 	PeeringLocationsDirectPeeringTypeIx                   PeeringLocationsDirectPeeringType = "Ix"
 	PeeringLocationsDirectPeeringTypeIxRs                 PeeringLocationsDirectPeeringType = "IxRs"
+	PeeringLocationsDirectPeeringTypePeerProp             PeeringLocationsDirectPeeringType = "PeerProp"
 	PeeringLocationsDirectPeeringTypeTransit              PeeringLocationsDirectPeeringType = "Transit"
 	PeeringLocationsDirectPeeringTypeVoice                PeeringLocationsDirectPeeringType = "Voice"
 )
@@ -218,6 +222,7 @@ func PossiblePeeringLocationsDirectPeeringTypeValues() []PeeringLocationsDirectP
 		PeeringLocationsDirectPeeringTypeInternal,
 		PeeringLocationsDirectPeeringTypeIx,
 		PeeringLocationsDirectPeeringTypeIxRs,
+		PeeringLocationsDirectPeeringTypePeerProp,
 		PeeringLocationsDirectPeeringTypeTransit,
 		PeeringLocationsDirectPeeringTypeVoice,
 	}
@@ -264,10 +269,29 @@ func PossiblePrefixValidationStateValues() []PrefixValidationState {
 	}
 }
 
+// Protocol - The protocol of the traffic that will be sent for the connectivity probe.
+type Protocol string
+
+const (
+	ProtocolICMP Protocol = "ICMP"
+	ProtocolNone Protocol = "None"
+	ProtocolTCP  Protocol = "TCP"
+)
+
+// PossibleProtocolValues returns the possible values for the Protocol const type.
+func PossibleProtocolValues() []Protocol {
+	return []Protocol{
+		ProtocolICMP,
+		ProtocolNone,
+		ProtocolTCP,
+	}
+}
+
 // ProvisioningState - The provisioning state of the resource.
 type ProvisioningState string
 
 const (
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
 	ProvisioningStateDeleting  ProvisioningState = "Deleting"
 	ProvisioningStateFailed    ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
@@ -277,6 +301,7 @@ const (
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
+		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,

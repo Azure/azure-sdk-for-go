@@ -118,12 +118,12 @@ type ConnectionMonitorTest struct {
 	Type *string
 }
 
-// ConnectionMonitorTestListResult - The paginated list of [T].
+// ConnectionMonitorTestListResult - The paginated list of Connection Monitor Tests.
 type ConnectionMonitorTestListResult struct {
-	// The link to fetch the next page of [T].
+	// The link to fetch the next page of Connection Monitor Tests.
 	NextLink *string
 
-	// The list of [T].
+	// The list of Connection Monitor Tests.
 	Value []*ConnectionMonitorTest
 }
 
@@ -149,6 +149,26 @@ type ConnectionMonitorTestProperties struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+}
+
+// ConnectivityProbe - Represents a connectivity probe, a configuration peers can add to direct and exchange peerings to create
+// ping tests. These ping tests will allow us to generate availability, jitter, and latency data
+// for traffic (using ICMP or TCP) from Azure to an endpoint IP address given by the customer. This data will be emitted such
+// that the peer can view these metrics in the Azure portal in the Connectivity
+// probe blade of their peering.
+type ConnectivityProbe struct {
+	// The Azure region where traffic will originate from for the connectivity probe.
+	AzureRegion *string
+
+	// The endpoint IP address where traffic will be sent to from Azure for the connectivity probe.
+	Endpoint *string
+
+	// The protocol of the traffic that will be sent for the connectivity probe.
+	Protocol *Protocol
+
+	// READ-ONLY; Set to contain the prefixes that agents in Azure will send traffic from. For peers to allow into their network
+	// the connectivity probe traffic can reach their endpoint for the connectivity probe.
+	PrefixesToAccesslist []*string
 }
 
 // ContactDetail - The contact detail class.
@@ -510,6 +530,9 @@ type Peering struct {
 
 // Properties - The properties that define connectivity to the Microsoft Cloud Edge.
 type Properties struct {
+	// The connectivity probes associated with the peering.
+	ConnectivityProbes []*ConnectivityProbe
+
 	// The properties that define a direct peering.
 	Direct *PropertiesDirect
 
@@ -674,6 +697,27 @@ type Resource struct {
 type ResourceTags struct {
 	// Gets or sets the tags, a dictionary of descriptors arm object
 	Tags map[string]*string
+}
+
+// RpUnbilledPrefix - The Routing Preference unbilled prefix
+type RpUnbilledPrefix struct {
+	// READ-ONLY; The Azure region.
+	AzureRegion *string
+
+	// READ-ONLY; The peer ASN.
+	PeerAsn *int32
+
+	// READ-ONLY; The prefix.
+	Prefix *string
+}
+
+// RpUnbilledPrefixListResult - The paginated list of RP unbilled prefixes.
+type RpUnbilledPrefixListResult struct {
+	// The link to fetch the next page of RP unbilled prefixes.
+	NextLink *string
+
+	// The list of RP unbilled prefixes.
+	Value []*RpUnbilledPrefix
 }
 
 // SKU - The SKU that defines the tier and kind of the peering.

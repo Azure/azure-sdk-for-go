@@ -27,7 +27,7 @@ type ReceivedRoutesClient struct {
 // NewReceivedRoutesClient creates a new instance of ReceivedRoutesClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReceivedRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReceivedRoutesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewReceivedRoutesClient(subscriptionID string, credential azcore.TokenCrede
 // NewListByPeeringPager - Lists the prefixes received over the specified peering under the given subscription and resource
 // group.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - peeringName - The name of the peering.
 //   - options - ReceivedRoutesClientListByPeeringOptions contains the optional parameters for the ReceivedRoutesClient.NewListByPeeringPager
@@ -91,22 +91,22 @@ func (client *ReceivedRoutesClient) listByPeeringCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Prefix != nil {
-		reqQP.Set("prefix", *options.Prefix)
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
 	}
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.AsPath != nil {
 		reqQP.Set("asPath", *options.AsPath)
 	}
 	if options != nil && options.OriginAsValidationState != nil {
 		reqQP.Set("originAsValidationState", *options.OriginAsValidationState)
 	}
+	if options != nil && options.Prefix != nil {
+		reqQP.Set("prefix", *options.Prefix)
+	}
 	if options != nil && options.RpkiValidationState != nil {
 		reqQP.Set("rpkiValidationState", *options.RpkiValidationState)
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

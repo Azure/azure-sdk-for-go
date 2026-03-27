@@ -37,6 +37,9 @@ type ConnectionMonitorTestsClientListByPeeringServiceOptions struct {
 type LegacyPeeringsClientListOptions struct {
 	// The ASN number associated with a legacy peering.
 	Asn *int32
+
+	// The direct peering type.
+	DirectPeeringType *DirectPeeringType
 }
 
 // LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
@@ -198,6 +201,17 @@ type RegisteredPrefixesClientGetOptions struct {
 // method.
 type RegisteredPrefixesClientListByPeeringOptions struct {
 	// placeholder for future optional parameters
+}
+
+// RegisteredPrefixesClientValidateOptions contains the optional parameters for the RegisteredPrefixesClient.Validate method.
+type RegisteredPrefixesClientValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RpUnbilledPrefixesClientListOptions contains the optional parameters for the RpUnbilledPrefixesClient.NewListPager method.
+type RpUnbilledPrefixesClientListOptions struct {
+	// Flag to enable consolidation prefixes
+	Consolidate *bool
 }
 
 // ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.NewListPager method.

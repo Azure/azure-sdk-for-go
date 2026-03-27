@@ -16,23 +16,59 @@ import (
 
 // ServerFactory is a fake server for instances of the armpeering.ClientFactory type.
 type ServerFactory struct {
-	CdnPeeringPrefixesServer     CdnPeeringPrefixesServer
+	// CdnPeeringPrefixesServer contains the fakes for client CdnPeeringPrefixesClient
+	CdnPeeringPrefixesServer CdnPeeringPrefixesServer
+
+	// ConnectionMonitorTestsServer contains the fakes for client ConnectionMonitorTestsClient
 	ConnectionMonitorTestsServer ConnectionMonitorTestsServer
-	LegacyPeeringsServer         LegacyPeeringsServer
-	LocationsServer              LocationsServer
-	LookingGlassServer           LookingGlassServer
-	ManagementServer             ManagementServer
-	OperationsServer             OperationsServer
-	PeerAsnsServer               PeerAsnsServer
-	PeeringsServer               PeeringsServer
-	PrefixesServer               PrefixesServer
-	ReceivedRoutesServer         ReceivedRoutesServer
-	RegisteredAsnsServer         RegisteredAsnsServer
-	RegisteredPrefixesServer     RegisteredPrefixesServer
-	ServiceCountriesServer       ServiceCountriesServer
-	ServiceLocationsServer       ServiceLocationsServer
-	ServiceProvidersServer       ServiceProvidersServer
-	ServicesServer               ServicesServer
+
+	// LegacyPeeringsServer contains the fakes for client LegacyPeeringsClient
+	LegacyPeeringsServer LegacyPeeringsServer
+
+	// LocationsServer contains the fakes for client LocationsClient
+	LocationsServer LocationsServer
+
+	// LookingGlassServer contains the fakes for client LookingGlassClient
+	LookingGlassServer LookingGlassServer
+
+	// ManagementServer contains the fakes for client ManagementClient
+	ManagementServer ManagementServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PeerAsnsServer contains the fakes for client PeerAsnsClient
+	PeerAsnsServer PeerAsnsServer
+
+	// PeeringsServer contains the fakes for client PeeringsClient
+	PeeringsServer PeeringsServer
+
+	// PrefixesServer contains the fakes for client PrefixesClient
+	PrefixesServer PrefixesServer
+
+	// ReceivedRoutesServer contains the fakes for client ReceivedRoutesClient
+	ReceivedRoutesServer ReceivedRoutesServer
+
+	// RegisteredAsnsServer contains the fakes for client RegisteredAsnsClient
+	RegisteredAsnsServer RegisteredAsnsServer
+
+	// RegisteredPrefixesServer contains the fakes for client RegisteredPrefixesClient
+	RegisteredPrefixesServer RegisteredPrefixesServer
+
+	// RpUnbilledPrefixesServer contains the fakes for client RpUnbilledPrefixesClient
+	RpUnbilledPrefixesServer RpUnbilledPrefixesServer
+
+	// ServiceCountriesServer contains the fakes for client ServiceCountriesClient
+	ServiceCountriesServer ServiceCountriesServer
+
+	// ServiceLocationsServer contains the fakes for client ServiceLocationsClient
+	ServiceLocationsServer ServiceLocationsServer
+
+	// ServiceProvidersServer contains the fakes for client ServiceProvidersClient
+	ServiceProvidersServer ServiceProvidersServer
+
+	// ServicesServer contains the fakes for client ServicesClient
+	ServicesServer ServicesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -62,6 +98,7 @@ type ServerFactoryTransport struct {
 	trReceivedRoutesServer         *ReceivedRoutesServerTransport
 	trRegisteredAsnsServer         *RegisteredAsnsServerTransport
 	trRegisteredPrefixesServer     *RegisteredPrefixesServerTransport
+	trRpUnbilledPrefixesServer     *RpUnbilledPrefixesServerTransport
 	trServiceCountriesServer       *ServiceCountriesServerTransport
 	trServiceLocationsServer       *ServiceLocationsServerTransport
 	trServiceProvidersServer       *ServiceProvidersServerTransport
@@ -132,6 +169,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRegisteredPrefixesServerTransport(&s.srv.RegisteredPrefixesServer)
 		})
 		resp, err = s.trRegisteredPrefixesServer.Do(req)
+	case "RpUnbilledPrefixesClient":
+		initServer(s, &s.trRpUnbilledPrefixesServer, func() *RpUnbilledPrefixesServerTransport {
+			return NewRpUnbilledPrefixesServerTransport(&s.srv.RpUnbilledPrefixesServer)
+		})
+		resp, err = s.trRpUnbilledPrefixesServer.Do(req)
 	case "ServiceCountriesClient":
 		initServer(s, &s.trServiceCountriesServer, func() *ServiceCountriesServerTransport {
 			return NewServiceCountriesServerTransport(&s.srv.ServiceCountriesServer)

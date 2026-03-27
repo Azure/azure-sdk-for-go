@@ -27,7 +27,7 @@ type ServiceProvidersClient struct {
 // NewServiceProvidersClient creates a new instance of ServiceProvidersClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServiceProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceProvidersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewServiceProvidersClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListPager - Lists all of the available peering service locations for the specified kind of peering.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - options - ServiceProvidersClientListOptions contains the optional parameters for the ServiceProvidersClient.NewListPager
 //     method.
 func (client *ServiceProvidersClient) NewListPager(options *ServiceProvidersClientListOptions) *runtime.Pager[ServiceProvidersClientListResponse] {
@@ -69,7 +69,7 @@ func (client *ServiceProvidersClient) NewListPager(options *ServiceProvidersClie
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceProvidersClient) listCreateRequest(ctx context.Context, options *ServiceProvidersClientListOptions) (*policy.Request, error) {
+func (client *ServiceProvidersClient) listCreateRequest(ctx context.Context, _ *ServiceProvidersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -80,7 +80,7 @@ func (client *ServiceProvidersClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

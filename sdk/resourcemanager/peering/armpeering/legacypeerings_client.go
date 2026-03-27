@@ -28,7 +28,7 @@ type LegacyPeeringsClient struct {
 // NewLegacyPeeringsClient creates a new instance of LegacyPeeringsClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LegacyPeeringsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListPager - Lists all of the legacy peerings under the given subscription matching the specified kind and location.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2025-05-01
 //   - peeringLocation - The location of the peering.
 //   - kind - The kind of the peering.
 //   - options - LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.NewListPager method.
@@ -82,12 +82,15 @@ func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("peeringLocation", peeringLocation)
-	reqQP.Set("kind", string(kind))
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.Asn != nil {
 		reqQP.Set("asn", strconv.FormatInt(int64(*options.Asn), 10))
 	}
-	reqQP.Set("api-version", "2022-01-01")
+	if options != nil && options.DirectPeeringType != nil {
+		reqQP.Set("directPeeringType", string(*options.DirectPeeringType))
+	}
+	reqQP.Set("kind", string(kind))
+	reqQP.Set("peeringLocation", peeringLocation)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

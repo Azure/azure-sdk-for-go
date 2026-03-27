@@ -9,12 +9,13 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/661ae882e3b2a17c67ddae4e2bba36ddf3a3acc7/specification/peering/resource-manager/Microsoft.Peering/Peering/stable/2025-05-01/examples/ListCdnPeeringPrefixes.json
-func ExampleCdnPeeringPrefixesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/661ae882e3b2a17c67ddae4e2bba36ddf3a3acc7/specification/peering/resource-manager/Microsoft.Peering/Peering/stable/2025-05-01/examples/ListRpUnbilledPrefixes.json
+func ExampleRpUnbilledPrefixesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -24,7 +25,7 @@ func ExampleCdnPeeringPrefixesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCdnPeeringPrefixesClient().NewListPager("peeringLocation0", nil)
+	pager := clientFactory.NewRpUnbilledPrefixesClient().NewListPager("rgName", "peeringName", &armpeering.RpUnbilledPrefixesClientListOptions{Consolidate: to.Ptr(true)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -35,19 +36,12 @@ func ExampleCdnPeeringPrefixesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.CdnPeeringPrefixListResult = armpeering.CdnPeeringPrefixListResult{
-		// 	Value: []*armpeering.CdnPeeringPrefix{
+		// page.RpUnbilledPrefixListResult = armpeering.RpUnbilledPrefixListResult{
+		// 	Value: []*armpeering.RpUnbilledPrefix{
 		// 		{
-		// 			Name: to.Ptr("CdnPrefix_192_168_1_0_24"),
-		// 			Type: to.Ptr("Microsoft.Peering/cdnPeeringPrefixes"),
-		// 			ID: to.Ptr("/subscriptions/subId/providers/Microsoft.Peering/cdnPeeringPrefixes/CdnPrefix_192_168_1_0_24"),
-		// 			Properties: &armpeering.CdnPeeringPrefixProperties{
-		// 				AzureRegion: to.Ptr("West Central US"),
-		// 				AzureService: to.Ptr("AzureCompute"),
-		// 				BgpCommunity: to.Ptr("0000:0000"),
-		// 				IsPrimaryRegion: to.Ptr(false),
-		// 				Prefix: to.Ptr("192.168.1.0/24"),
-		// 			},
+		// 			AzureRegion: to.Ptr("West US"),
+		// 			PeerAsn: to.Ptr[int32](65000),
+		// 			Prefix: to.Ptr("192.168.1.0/24"),
 		// 	}},
 		// }
 	}

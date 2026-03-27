@@ -62,8 +62,16 @@ Examples:
 			packagePath := args[0]
 
 			// Validate package path
-			if err := validatePackagePath(packagePath); err != nil {
+			if err := utils.ValidatePackagePath(packagePath); err != nil {
 				return fmt.Errorf("package path validation error: %v", err)
+			}
+
+			// Check if directory contains version.go file
+			versionGoPath := filepath.Join(packagePath, "version.go")
+			if _, err := os.Stat(versionGoPath); os.IsNotExist(err) {
+				return fmt.Errorf("package path validation error: package path '%s' does not contain a version.go file", packagePath)
+			} else if err != nil {
+				return fmt.Errorf("package path validation error: failed to check for version.go file: %v", err)
 			}
 
 			// Get SDK root path
@@ -111,24 +119,6 @@ Examples:
 	versionCmd.Flags().StringVar(&sdkVersion, "sdkversion", "", "Specific SDK version to set (e.g., 1.2.0 or 1.2.0-beta.1)")
 
 	return versionCmd
-}
-
-// validatePackagePath validates that the provided package path exists, contains
-// a go.mod file, and additionally contains a version.go file
-func validatePackagePath(packagePath string) error {
-	if err := utils.ValidatePackagePath(packagePath); err != nil {
-		return err
-	}
-
-	// Check if directory contains version.go file
-	versionGoPath := filepath.Join(packagePath, "version.go")
-	if _, err := os.Stat(versionGoPath); os.IsNotExist(err) {
-		return fmt.Errorf("package path '%s' does not contain a version.go file", packagePath)
-	} else if err != nil {
-		return fmt.Errorf("failed to check for version.go file: %v", err)
-	}
-
-	return nil
 }
 
 // processVersionUpdate processes the version update for the given package

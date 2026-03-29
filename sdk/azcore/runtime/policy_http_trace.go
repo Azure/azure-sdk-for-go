@@ -9,8 +9,6 @@ import (
 	"net/http"
 	"strings"
 
-	"go.opentelemetry.io/otel/propagation"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -79,8 +77,7 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 		}()
 
 		req = req.WithContext(ctx)
-		// Propagate W3C Trace Context headers (traceparent/tracestate) into the outgoing request.
-		propagation.TraceContext{}.Inject(ctx, propagation.HeaderCarrier(req.Raw().Header))
+		tracer.InjectHeaders(ctx, req.Raw().Header)
 	}
 	resp, err = req.Next()
 	return

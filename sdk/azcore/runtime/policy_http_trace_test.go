@@ -14,8 +14,6 @@ import (
 	"strings"
 	"testing"
 
-	"go.opentelemetry.io/otel/trace"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
@@ -300,22 +298,23 @@ func TestStartSpanWithKind(t *testing.T) {
 	require.True(t, endCalled)
 }
 
-func TestHTTPTracePolicyInjectsW3CTraceContextHeaders(t *testing.T) {
-	// Enable tracing so the policy executes the tracing path.
-	tr := tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
-		return ctx, tracing.NewSpan(tracing.SpanImpl{})
-	}, nil)
+func TestHTTPTracePolicyCallsTracerInjectHeaders(t *testing.T) {
+	const sentinel = "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01"
 
-	// Create a context that already contains a valid OTel SpanContext.
-	sc := trace.NewSpanContext(trace.SpanContextConfig{
-		TraceID:    trace.TraceID{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-		SpanID:     trace.SpanID{1, 2, 3, 4, 5, 6, 7, 8},
-		TraceFlags: trace.FlagsSampled,
-		Remote:     true,
-	})
-	ctx := trace.ContextWithSpanContext(context.Background(), sc)
-	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tr)
+	var injectorCalled bool
+	tr := tracing.NewTracer(
+		func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+			return ctx, tracing.NewSpan(tracing.SpanImpl{})
+		},
+		&tracing.TracerOptions{
+			InjectHeaders: func(ctx context.Context, header http.Header) {
+				injectorCalled = true
+				header.Set("traceparent", sentinel)
+			},
+		},
+	)
 
+	ctx := context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr)
 	cap := &captureTransport{}
 	pl := exported.NewPipeline(cap, newHTTPTracePolicy(nil))
 
@@ -325,7 +324,6 @@ func TestHTTPTracePolicyInjectsW3CTraceContextHeaders(t *testing.T) {
 	_, err = pl.Do(req)
 	require.NoError(t, err)
 
-	tp := cap.hdr.Get("traceparent")
-	require.NotEmpty(t, tp, "expected traceparent header to be injected")
-	require.True(t, strings.HasPrefix(tp, "00-"), "traceparent should start with version 00-")
+	require.True(t, injectorCalled, "policy must call tracer.InjectHeaders")
+	require.Equal(t, sentinel, cap.hdr.Get("traceparent"))
 }

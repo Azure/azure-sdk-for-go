@@ -117,7 +117,7 @@ func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroup
 func (client *PoolClient) createHandleResponse(resp *http.Response) (PoolClientCreateResponse, error) {
 	result := PoolClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientCreateResponse{}, err
@@ -272,7 +272,7 @@ func (client *PoolClient) disableAutoScaleCreateRequest(ctx context.Context, res
 func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response) (PoolClientDisableAutoScaleResponse, error) {
 	result := PoolClientDisableAutoScaleResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientDisableAutoScaleResponse{}, err
@@ -346,7 +346,7 @@ func (client *PoolClient) getCreateRequest(ctx context.Context, resourceGroupNam
 func (client *PoolClient) getHandleResponse(resp *http.Response) (PoolClientGetResponse, error) {
 	result := PoolClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientGetResponse{}, err
@@ -502,7 +502,7 @@ func (client *PoolClient) stopResizeCreateRequest(ctx context.Context, resourceG
 func (client *PoolClient) stopResizeHandleResponse(resp *http.Response) (PoolClientStopResizeResponse, error) {
 	result := PoolClientStopResizeResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientStopResizeResponse{}, err
@@ -585,7 +585,7 @@ func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroup
 func (client *PoolClient) updateHandleResponse(resp *http.Response) (PoolClientUpdateResponse, error) {
 	result := PoolClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientUpdateResponse{}, err

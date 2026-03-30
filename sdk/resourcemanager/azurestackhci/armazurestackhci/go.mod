@@ -1,6 +1,6 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0

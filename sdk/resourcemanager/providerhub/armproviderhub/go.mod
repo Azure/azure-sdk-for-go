@@ -1,10 +1,11 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3 v3.0.0-20260327220323-f6de492ce7bd
 )
 
 require (

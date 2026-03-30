@@ -1,6 +1,6 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0
@@ -8,6 +8,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3 v3.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.2.0
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2 v2.0.0-beta.1
 	github.com/stretchr/testify v1.11.1
 )
 

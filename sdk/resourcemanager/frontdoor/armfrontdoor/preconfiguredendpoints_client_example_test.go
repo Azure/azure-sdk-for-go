@@ -6,10 +6,9 @@ package armfrontdoor_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
+	"log"
 )
 
 // Generated from example definition: 2025-10-01/NetworkExperimentGetPreconfiguredEndpoints.json

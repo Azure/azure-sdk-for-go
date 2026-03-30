@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Help": "2024-03-01-preview"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.4"
 }

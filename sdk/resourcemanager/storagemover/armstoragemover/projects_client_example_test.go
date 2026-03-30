@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/Projects_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01/Projects_CreateOrUpdate.json
 func ExampleProjectsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleProjectsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Projects_Delete.json
+// Generated from example definition: 2025-12-01/Projects_Delete.json
 func ExampleProjectsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleProjectsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Projects_Get.json
+// Generated from example definition: 2025-12-01/Projects_Get.json
 func ExampleProjectsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleProjectsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Projects_List.json
+// Generated from example definition: 2025-12-01/Projects_List.json
 func ExampleProjectsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleProjectsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/Projects_Update.json
+// Generated from example definition: 2025-12-01/Projects_Update.json
 func ExampleProjectsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

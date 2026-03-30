@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/Agents_CreateOrUpdate_MaximumSet.json
+// Generated from example definition: 2025-12-01/Agents_CreateOrUpdate_MaximumSet.json
 func ExampleAgentsClient_CreateOrUpdate_agentsCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleAgentsClient_CreateOrUpdate_agentsCreateOrUpdateMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Agents_CreateOrUpdate_MinimumSet.json
+// Generated from example definition: 2025-12-01/Agents_CreateOrUpdate_MinimumSet.json
 func ExampleAgentsClient_CreateOrUpdate_agentsCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleAgentsClient_CreateOrUpdate_agentsCreateOrUpdateMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Agents_CreateOrUpdate_UploadLimitSchedule_Overnight.json
+// Generated from example definition: 2025-12-01/Agents_CreateOrUpdate_UploadLimitSchedule_Overnight.json
 func ExampleAgentsClient_CreateOrUpdate_agentsCreateOrUpdateWithOvernightUploadLimitSchedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleAgentsClient_CreateOrUpdate_agentsCreateOrUpdateWithOvernightUploadL
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Agents_Delete.json
+// Generated from example definition: 2025-12-01/Agents_Delete.json
 func ExampleAgentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleAgentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Agents_Get_MaximumSet.json
+// Generated from example definition: 2025-12-01/Agents_Get_MaximumSet.json
 func ExampleAgentsClient_Get_agentsGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,7 +390,7 @@ func ExampleAgentsClient_Get_agentsGetMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Agents_Get_MinimumSet.json
+// Generated from example definition: 2025-12-01/Agents_Get_MinimumSet.json
 func ExampleAgentsClient_Get_agentsGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,7 +438,7 @@ func ExampleAgentsClient_Get_agentsGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Agents_List_MaximumSet.json
+// Generated from example definition: 2025-12-01/Agents_List_MaximumSet.json
 func ExampleAgentsClient_NewListPager_agentsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,7 +590,7 @@ func ExampleAgentsClient_NewListPager_agentsListMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/Agents_List_MinimumSet.json
+// Generated from example definition: 2025-12-01/Agents_List_MinimumSet.json
 func ExampleAgentsClient_NewListPager_agentsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -621,7 +621,7 @@ func ExampleAgentsClient_NewListPager_agentsListMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/Agents_Update.json
+// Generated from example definition: 2025-12-01/Agents_Update.json
 func ExampleAgentsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -33,6 +33,29 @@ type AgentsClientUpdateResponse struct {
 	Agent
 }
 
+// ConnectionsClientCreateOrUpdateResponse contains the response from method ConnectionsClient.CreateOrUpdate.
+type ConnectionsClientCreateOrUpdateResponse struct {
+	// The Connection resource.
+	Connection
+}
+
+// ConnectionsClientDeleteResponse contains the response from method ConnectionsClient.BeginDelete.
+type ConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectionsClientGetResponse contains the response from method ConnectionsClient.Get.
+type ConnectionsClientGetResponse struct {
+	// The Connection resource.
+	Connection
+}
+
+// ConnectionsClientListResponse contains the response from method ConnectionsClient.NewListPager.
+type ConnectionsClientListResponse struct {
+	// List of Connections.
+	ConnectionList
+}
+
 // EndpointsClientCreateOrUpdateResponse contains the response from method EndpointsClient.CreateOrUpdate.
 type EndpointsClientCreateOrUpdateResponse struct {
 	// The Endpoint resource, which contains information about file sources and targets.

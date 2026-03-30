@@ -7,14 +7,13 @@ package fake
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
+	"net/http"
+	"regexp"
 )
 
 // ManagedRuleSetsServer is a fake server for instances of the armfrontdoor.ManagedRuleSetsClient type.

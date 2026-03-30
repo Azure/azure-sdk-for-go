@@ -6,10 +6,9 @@ package armextensions_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armextensions"
+	"log"
 )
 
 // Generated from example definition: 2024-11-01/GetExtensionAsyncOperationStatus.json

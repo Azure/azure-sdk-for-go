@@ -2,5 +2,5 @@
   "apiVersions": {
     "Nginx.NginxPlus": "2025-11-01"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.4"
 }

@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.ProviderHub": "2024-09-01"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.4"
 }

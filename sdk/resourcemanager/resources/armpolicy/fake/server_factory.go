@@ -70,28 +70,28 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AssignmentsClient":
-		initServer(s, &s.trAssignmentsServer, func() *AssignmentsServerTransport { return NewAssignmentsServerTransport(&s.srv.AssignmentsServer) })
+		initServer(&s.trMu, &s.trAssignmentsServer, func() *AssignmentsServerTransport { return NewAssignmentsServerTransport(&s.srv.AssignmentsServer) })
 		resp, err = s.trAssignmentsServer.Do(req)
 	case "DefinitionVersionsClient":
-		initServer(s, &s.trDefinitionVersionsServer, func() *DefinitionVersionsServerTransport {
+		initServer(&s.trMu, &s.trDefinitionVersionsServer, func() *DefinitionVersionsServerTransport {
 			return NewDefinitionVersionsServerTransport(&s.srv.DefinitionVersionsServer)
 		})
 		resp, err = s.trDefinitionVersionsServer.Do(req)
 	case "DefinitionsClient":
-		initServer(s, &s.trDefinitionsServer, func() *DefinitionsServerTransport { return NewDefinitionsServerTransport(&s.srv.DefinitionsServer) })
+		initServer(&s.trMu, &s.trDefinitionsServer, func() *DefinitionsServerTransport { return NewDefinitionsServerTransport(&s.srv.DefinitionsServer) })
 		resp, err = s.trDefinitionsServer.Do(req)
 	case "SetDefinitionVersionsClient":
-		initServer(s, &s.trSetDefinitionVersionsServer, func() *SetDefinitionVersionsServerTransport {
+		initServer(&s.trMu, &s.trSetDefinitionVersionsServer, func() *SetDefinitionVersionsServerTransport {
 			return NewSetDefinitionVersionsServerTransport(&s.srv.SetDefinitionVersionsServer)
 		})
 		resp, err = s.trSetDefinitionVersionsServer.Do(req)
 	case "SetDefinitionsClient":
-		initServer(s, &s.trSetDefinitionsServer, func() *SetDefinitionsServerTransport {
+		initServer(&s.trMu, &s.trSetDefinitionsServer, func() *SetDefinitionsServerTransport {
 			return NewSetDefinitionsServerTransport(&s.srv.SetDefinitionsServer)
 		})
 		resp, err = s.trSetDefinitionsServer.Do(req)
 	case "TokensClient":
-		initServer(s, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
+		initServer(&s.trMu, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
 		resp, err = s.trTokensServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -102,12 +102,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

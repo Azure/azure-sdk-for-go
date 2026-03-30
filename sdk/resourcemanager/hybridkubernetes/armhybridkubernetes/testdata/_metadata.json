@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Kubernetes": "2024-12-01-preview"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.4"
 }

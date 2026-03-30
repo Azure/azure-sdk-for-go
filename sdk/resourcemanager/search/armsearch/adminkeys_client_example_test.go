@@ -6,10 +6,9 @@ package armsearch_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
+	"log"
 )
 
 // Generated from example definition: 2025-05-01/SearchGetAdminKeys.json

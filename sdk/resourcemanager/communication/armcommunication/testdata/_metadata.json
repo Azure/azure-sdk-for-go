@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Communication": "2025-09-01"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.4"
 }

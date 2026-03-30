@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Network": "2024-06-01"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.4"
 }

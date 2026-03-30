@@ -110,22 +110,6 @@ func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	return enc.EncodeElement(aux, start)
 }
 
-// MarshalXML implements the xml.Marshaller interface for type BlobItem.
-func (b BlobItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	start.Name.Local = "Blob"
-	type alias BlobItem
-	aux := &struct {
-		*alias
-		Metadata   additionalProperties `xml:"Metadata"`
-		OrMetadata additionalProperties `xml:"OrMetadata"`
-	}{
-		alias: (*alias)(&b),
-	}
-	aux.Metadata = (additionalProperties)(b.Metadata)
-	aux.OrMetadata = (additionalProperties)(b.OrMetadata)
-	return enc.EncodeElement(aux, start)
-}
-
 // MarshalXML implements the xml.Marshaller interface for type BlobProperties.
 func (b BlobProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "Properties"
@@ -306,6 +290,22 @@ func (c ContainerItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) erro
 	}
 	aux.Metadata = (additionalProperties)(c.Metadata)
 	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type ContainerItem.
+func (c *ContainerItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias ContainerItem
+	aux := &struct {
+		*alias
+		Metadata additionalProperties `xml:"Metadata"`
+	}{
+		alias: (*alias)(c),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	c.Metadata = (map[string]*string)(aux.Metadata)
+	return nil
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ContainerProperties.

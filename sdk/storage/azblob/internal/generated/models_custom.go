@@ -116,6 +116,22 @@ func (b *BlobPrefix) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) erro
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlobItem.
+func (b BlobItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Blob"
+	type alias BlobItem
+	aux := &struct {
+		*alias
+		Metadata   additionalProperties `xml:"Metadata"`
+		OrMetadata additionalProperties `xml:"OrMetadata"`
+	}{
+		alias: (*alias)(&b),
+	}
+	aux.Metadata = (additionalProperties)(b.Metadata)
+	aux.OrMetadata = (additionalProperties)(b.OrMetadata)
+	return enc.EncodeElement(aux, start)
+}
+
 // UnmarshalXML implements the xml.Unmarshaller interface for type BlobItem.
 func (b *BlobItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias BlobItem

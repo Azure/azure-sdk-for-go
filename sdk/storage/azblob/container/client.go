@@ -218,15 +218,17 @@ func (c *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions)
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
 func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
-	if o.ContainerACL != nil {
-		for _, c := range o.ContainerACL {
+	var containerACL []*SignedIdentifier
+	if o != nil && o.ContainerACL != nil {
+		containerACL = o.ContainerACL
+		for _, c := range containerACL {
 			err := formatTime(c)
 			if err != nil {
 				return SetAccessPolicyResponse{}, err
 			}
 		}
 	}
-	return c.generated().SetAccessPolicy(ctx, o.ContainerACL, o.format())
+	return c.generated().SetAccessPolicy(ctx, containerACL, o.format())
 }
 
 // GetAccountInfo provides account level information

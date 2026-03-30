@@ -216,3 +216,10 @@ func BeforeTest(t *testing.T, suite string, test string) {
 func AfterTest(t *testing.T, suite string, test string) {
 	require.NoError(t, recording.Stop(t, nil))
 }
+
+func Sleep(d time.Duration) {
+	recordMode := recording.GetRecordMode()
+	if recordMode != recording.PlaybackMode {
+		time.Sleep(d)
+	}
+}

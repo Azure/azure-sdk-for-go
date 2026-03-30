@@ -2166,7 +2166,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NoError(err)
 	_require.NotNil(createResp.VersionID)
-	time.Sleep(10 * time.Second)
+	testcommon.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -2820,7 +2820,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	testcommon.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -2831,7 +2831,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	testcommon.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -2877,7 +2877,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	testcommon.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -2888,7 +2888,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	testcommon.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -2951,7 +2951,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToNow() {
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	testcommon.Sleep(time.Second * 10)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -2984,7 +2984,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	testcommon.Sleep(time.Second * 10)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -3019,7 +3019,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 	_require.NotNil(resp.ExpiresOn)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp.ExpiresOn.UTC().Format(http.TimeFormat))
 
-	time.Sleep(time.Second * 10)
+	testcommon.Sleep(time.Second * 10)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -3541,7 +3541,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
 
 	_, err = abClient.SetTags(context.Background(), tagsMap, nil)
 	_require.NoError(err)
-	time.Sleep(10 * time.Second)
+	testcommon.Sleep(10 * time.Second)
 
 	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
 	_require.NoError(err)
@@ -3579,7 +3579,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, nil)
 	_require.Error(err)
-	time.Sleep(10 * time.Second)
+	testcommon.Sleep(10 * time.Second)
 
 	// add lease conditions
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{

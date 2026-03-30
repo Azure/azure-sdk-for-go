@@ -1935,21 +1935,18 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
 	_require.NoError(err)
 
+	// This is a dummy tenant ID
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
 	now := time.Now().UTC()
 	start := now.Add(-5 * time.Minute)
 	expiry := now.Add(5 * time.Minute)
 	info := service.KeyInfo{
-		Start:  to.Ptr(start.Format(time.RFC3339)),
-		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+		Start:            to.Ptr(start.Format(time.RFC3339)),
+		Expiry:           to.Ptr(expiry.Format(time.RFC3339)),
+		DelegatedUserTid: to.Ptr(dummyTenantID),
 	}
 
-	// This is a dummy tenant ID
-	dummyTenantID := "00000000-0000-0000-0000-000000000000"
-	opts := service.GetUserDelegationCredentialOptions{
-		DelegatedUserTenantId: to.Ptr(dummyTenantID),
-	}
-
-	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, &opts)
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }

@@ -21,8 +21,6 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions = base.ClientOptions
 
-const serviceVersion = "2026-04-06"
-
 // QueueClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
 type QueueClient base.CompositeClient[generated.QueueClient, generated.MessagesClient]
 
@@ -181,7 +179,7 @@ func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptio
 func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
 	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), serviceVersion, q.queueClient().Pipeline())
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), generated.ServiceVersion, q.queueClient().Pipeline())
 	resp, err := messageClient.Update(ctx, popReceipt, message, opts)
 	return resp, err
 }
@@ -190,7 +188,7 @@ func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popRe
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-message2.
 func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, popReceipt string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
 	opts := o.format()
-	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), serviceVersion, q.queueClient().Pipeline())
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), generated.ServiceVersion, q.queueClient().Pipeline())
 	resp, err := messageClient.Delete(ctx, popReceipt, opts)
 	return resp, err
 }

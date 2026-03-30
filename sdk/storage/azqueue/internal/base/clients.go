@@ -13,8 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
 )
 
-const serviceVersion = "2026-04-06"
-
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions struct {
 	azcore.ClientOptions
@@ -51,15 +49,15 @@ func GetAudience(clOpts *ClientOptions) string {
 }
 func NewServiceClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
 	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(queueURL, serviceVersion, pipeline),
+		inner:     generated.NewServiceClient(queueURL, generated.ServiceVersion, pipeline),
 		sharedKey: sharedKey,
 	}
 }
 
 func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
 	return &CompositeClient[generated.QueueClient, generated.MessagesClient]{
-		innerT:    generated.NewQueueClient(queueURL, serviceVersion, pipeline),
-		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), serviceVersion, pipeline),
+		innerT:    generated.NewQueueClient(queueURL, generated.ServiceVersion, pipeline),
+		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), generated.ServiceVersion, pipeline),
 		sharedKey: sharedKey,
 	}
 }

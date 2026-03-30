@@ -7,14 +7,13 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // QueryKeysClient contains the methods for the QueryKeys group.
@@ -43,7 +42,7 @@ func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential
 // Create - Generates a new query key for the specified search service. You can create up to 50 query keys per service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - name - The name of the new query API key.
@@ -94,7 +93,7 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
@@ -114,9 +113,13 @@ func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryK
 
 // Delete - Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
 // a query key is to delete and then recreate it.
+// Returns 200 (OK) on successful deletion, 204 (No Content) if the service exists but the query keys not found, or 404 (Not
+// Found) if the service is not found.
+// NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in future
+// versions and avoid new dependencies on the 404 response.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - key - The query key to be deleted. Query keys are identified by value, not by name.
@@ -166,7 +169,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -176,7 +179,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 
 // NewListBySearchServicePager - Returns the list of query API keys for the given Azure AI Search service.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - options - QueryKeysClientListBySearchServiceOptions contains the optional parameters for the QueryKeysClient.NewListBySearchServicePager
@@ -224,7 +227,7 @@ func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {

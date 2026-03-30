@@ -450,7 +450,10 @@ func TestOutContentType(t *testing.T) {
 	vaultURL := "https://fakevault.vault.azure.net"
 	var verifyOutContentType = func(req *http.Request) bool {
 		octVal := req.URL.Query().Get("outContentType")
-		require.Equal(t, string(azsecrets.ContentTypePEM), octVal)
+		if octVal != string(azsecrets.ContentTypePEM) {
+			t.Errorf("unexpected outContentType: got %q, want %q", octVal, azsecrets.ContentTypePEM)
+			return false
+		}
 		return true
 	}
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())

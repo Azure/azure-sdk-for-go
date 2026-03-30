@@ -2,6 +2,10 @@
 
 ## 0.4.8 (Unreleased)
 
+### Features Added
+
+- Added `metadata` command to create required metadata files (ci.yml, README.md) for packages in inner loop scenarios.
+
 ### Bugs Fixed
 
 - Fixed wrong version calculation logic for previous version with breaking changes.

@@ -8,16 +8,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling/v2"
 	"net/http"
 	"net/url"
 	"regexp"
 	"strconv"
 	"time"
+
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling/v2"
 )
 
 // AccountsServer is a fake server for instances of the armbilling.AccountsClient type.
@@ -198,11 +199,15 @@ func (a *AccountsServerTransport) dispatchBeginCancelPaymentTerms(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
+		parameters, err := time.Parse(time.RFC3339Nano, body)
+		if err != nil {
+			return nil, err
+		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginCancelPaymentTerms(req.Context(), billingAccountNameParam, time.Time(body), nil)
+		respr, errRespr := a.srv.BeginCancelPaymentTerms(req.Context(), billingAccountNameParam, parameters, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

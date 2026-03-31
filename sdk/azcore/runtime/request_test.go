@@ -221,6 +221,16 @@ func TestJoinPaths(t *testing.T) {
 			expected: "https://fakestorage.blob.core.windows.net/path1/path2?comp=snapshot",
 		},
 		{
+			root:     "https://fakestorage.blob.core.windows.net?qp1=abc&qp2=def",
+			paths:    []string{"?comp=snapshot"},
+			expected: "https://fakestorage.blob.core.windows.net?comp=snapshot&qp1=abc&qp2=def",
+		},
+		{
+			root:     "https://fakestorage.blob.core.windows.net/?qp1=abc&qp2=def",
+			paths:    []string{"?comp=snapshot"},
+			expected: "https://fakestorage.blob.core.windows.net/?comp=snapshot&qp1=abc&qp2=def",
+		},
+		{
 			root:     "https://fakestorage.blob.core.windows.net/",
 			paths:    []string{"?restype=service&comp=properties"},
 			expected: "https://fakestorage.blob.core.windows.net/?restype=service&comp=properties",

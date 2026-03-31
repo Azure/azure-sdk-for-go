@@ -235,6 +235,46 @@ func TestJoinPaths(t *testing.T) {
 			paths:    []string{"?restype=service&comp=properties"},
 			expected: "https://fakestorage.blob.core.windows.net/?restype=service&comp=properties",
 		},
+		{
+			root:     "http://test.contoso.com",
+			paths:    []string{"path/one?q=1"},
+			expected: "http://test.contoso.com/path/one?q=1",
+		},
+		{
+			root:     "http://test.contoso.com?qp1=abc",
+			paths:    []string{"?comp=snapshot&qp2=def"},
+			expected: "http://test.contoso.com?comp=snapshot&qp2=def&qp1=abc",
+		},
+		{
+			root:     "http://test.contoso.com",
+			paths:    []string{"path"},
+			expected: "http://test.contoso.com/path",
+		},
+		{
+			root:     "http://test.contoso.com/",
+			paths:    []string{"/path"},
+			expected: "http://test.contoso.com/path",
+		},
+		{
+			root:     "http://test.contoso.com",
+			paths:    []string{},
+			expected: "http://test.contoso.com",
+		},
+		{
+			root:     "http://test.contoso.com/base?existing=1",
+			paths:    []string{"?new=2"},
+			expected: "http://test.contoso.com/base?new=2&existing=1",
+		},
+		{
+			root:     "http://test.contoso.com",
+			paths:    []string{"api/v1.0", "resource"},
+			expected: "http://test.contoso.com/api/v1.0/resource",
+		},
+		{
+			root:     "http://test.contoso.com",
+			paths:    nil,
+			expected: "http://test.contoso.com",
+		},
 	}
 
 	for _, tt := range tests {

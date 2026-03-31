@@ -79,31 +79,50 @@ func (d *DataControllersServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DataControllersClient.BeginDeleteDataController":
-		resp, err = d.dispatchBeginDeleteDataController(req)
-	case "DataControllersClient.GetDataController":
-		resp, err = d.dispatchGetDataController(req)
-	case "DataControllersClient.NewListInGroupPager":
-		resp, err = d.dispatchNewListInGroupPager(req)
-	case "DataControllersClient.NewListInSubscriptionPager":
-		resp, err = d.dispatchNewListInSubscriptionPager(req)
-	case "DataControllersClient.BeginPatchDataController":
-		resp, err = d.dispatchBeginPatchDataController(req)
-	case "DataControllersClient.BeginPutDataController":
-		resp, err = d.dispatchBeginPutDataController(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DataControllersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if dataControllersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = dataControllersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DataControllersClient.BeginDeleteDataController":
+				res.resp, res.err = d.dispatchBeginDeleteDataController(req)
+			case "DataControllersClient.GetDataController":
+				res.resp, res.err = d.dispatchGetDataController(req)
+			case "DataControllersClient.NewListInGroupPager":
+				res.resp, res.err = d.dispatchNewListInGroupPager(req)
+			case "DataControllersClient.NewListInSubscriptionPager":
+				res.resp, res.err = d.dispatchNewListInSubscriptionPager(req)
+			case "DataControllersClient.BeginPatchDataController":
+				res.resp, res.err = d.dispatchBeginPatchDataController(req)
+			case "DataControllersClient.BeginPutDataController":
+				res.resp, res.err = d.dispatchBeginPutDataController(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DataControllersServerTransport) dispatchBeginDeleteDataController(req *http.Request) (*http.Response, error) {
@@ -115,7 +134,7 @@ func (d *DataControllersServerTransport) dispatchBeginDeleteDataController(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureArcData/dataControllers/(?P<dataControllerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -157,7 +176,7 @@ func (d *DataControllersServerTransport) dispatchGetDataController(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureArcData/dataControllers/(?P<dataControllerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -192,7 +211,7 @@ func (d *DataControllersServerTransport) dispatchNewListInGroupPager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureArcData/dataControllers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -229,7 +248,7 @@ func (d *DataControllersServerTransport) dispatchNewListInSubscriptionPager(req 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureArcData/dataControllers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListInSubscriptionPager(nil)
@@ -262,7 +281,7 @@ func (d *DataControllersServerTransport) dispatchBeginPatchDataController(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureArcData/dataControllers/(?P<dataControllerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armazurearcdata.DataControllerUpdate](req)
@@ -310,7 +329,7 @@ func (d *DataControllersServerTransport) dispatchBeginPutDataController(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureArcData/dataControllers/(?P<dataControllerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armazurearcdata.DataControllerResource](req)
@@ -347,4 +366,10 @@ func (d *DataControllersServerTransport) dispatchBeginPutDataController(req *htt
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DataControllersServerTransport
+var dataControllersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

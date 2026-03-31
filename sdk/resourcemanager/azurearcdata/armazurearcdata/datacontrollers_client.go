@@ -27,7 +27,7 @@ type DataControllersClient struct {
 // NewDataControllersClient creates a new instance of DataControllersClient with the specified values.
 //   - subscriptionID - The ID of the Azure subscription
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataControllersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataControllersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDataControllersClient(subscriptionID string, credential azcore.TokenCred
 // BeginDeleteDataController - Deletes a dataController resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - options - DataControllersClientBeginDeleteDataControllerOptions contains the optional parameters for the DataControllersClient.BeginDeleteDataController
@@ -68,7 +68,7 @@ func (client *DataControllersClient) BeginDeleteDataController(ctx context.Conte
 // DeleteDataController - Deletes a dataController resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 func (client *DataControllersClient) deleteDataController(ctx context.Context, resourceGroupName string, dataControllerName string, options *DataControllersClientBeginDeleteDataControllerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataControllersClient.BeginDeleteDataController"
@@ -91,7 +91,7 @@ func (client *DataControllersClient) deleteDataController(ctx context.Context, r
 }
 
 // deleteDataControllerCreateRequest creates the DeleteDataController request.
-func (client *DataControllersClient) deleteDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, options *DataControllersClientBeginDeleteDataControllerOptions) (*policy.Request, error) {
+func (client *DataControllersClient) deleteDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, _ *DataControllersClientBeginDeleteDataControllerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -110,7 +110,7 @@ func (client *DataControllersClient) deleteDataControllerCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,7 +119,7 @@ func (client *DataControllersClient) deleteDataControllerCreateRequest(ctx conte
 // GetDataController - Retrieves a dataController resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - options - DataControllersClientGetDataControllerOptions contains the optional parameters for the DataControllersClient.GetDataController
@@ -147,7 +147,7 @@ func (client *DataControllersClient) GetDataController(ctx context.Context, reso
 }
 
 // getDataControllerCreateRequest creates the GetDataController request.
-func (client *DataControllersClient) getDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, options *DataControllersClientGetDataControllerOptions) (*policy.Request, error) {
+func (client *DataControllersClient) getDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, _ *DataControllersClientGetDataControllerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -166,7 +166,7 @@ func (client *DataControllersClient) getDataControllerCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *DataControllersClient) getDataControllerHandleResponse(resp *http.
 
 // NewListInGroupPager - List dataController resources in the resource group
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - options - DataControllersClientListInGroupOptions contains the optional parameters for the DataControllersClient.NewListInGroupPager
 //     method.
@@ -211,7 +211,7 @@ func (client *DataControllersClient) NewListInGroupPager(resourceGroupName strin
 }
 
 // listInGroupCreateRequest creates the ListInGroup request.
-func (client *DataControllersClient) listInGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DataControllersClientListInGroupOptions) (*policy.Request, error) {
+func (client *DataControllersClient) listInGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *DataControllersClientListInGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +226,7 @@ func (client *DataControllersClient) listInGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,7 +243,7 @@ func (client *DataControllersClient) listInGroupHandleResponse(resp *http.Respon
 
 // NewListInSubscriptionPager - List dataController resources in the subscription
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - options - DataControllersClientListInSubscriptionOptions contains the optional parameters for the DataControllersClient.NewListInSubscriptionPager
 //     method.
 func (client *DataControllersClient) NewListInSubscriptionPager(options *DataControllersClientListInSubscriptionOptions) *runtime.Pager[DataControllersClientListInSubscriptionResponse] {
@@ -270,7 +270,7 @@ func (client *DataControllersClient) NewListInSubscriptionPager(options *DataCon
 }
 
 // listInSubscriptionCreateRequest creates the ListInSubscription request.
-func (client *DataControllersClient) listInSubscriptionCreateRequest(ctx context.Context, options *DataControllersClientListInSubscriptionOptions) (*policy.Request, error) {
+func (client *DataControllersClient) listInSubscriptionCreateRequest(ctx context.Context, _ *DataControllersClientListInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/dataControllers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -281,7 +281,7 @@ func (client *DataControllersClient) listInSubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +299,7 @@ func (client *DataControllersClient) listInSubscriptionHandleResponse(resp *http
 // BeginPatchDataController - Updates a dataController resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - dataControllerResource - The update data controller resource
@@ -326,7 +326,7 @@ func (client *DataControllersClient) BeginPatchDataController(ctx context.Contex
 // PatchDataController - Updates a dataController resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 func (client *DataControllersClient) patchDataController(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerUpdate, options *DataControllersClientBeginPatchDataControllerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataControllersClient.BeginPatchDataController"
@@ -349,7 +349,7 @@ func (client *DataControllersClient) patchDataController(ctx context.Context, re
 }
 
 // patchDataControllerCreateRequest creates the PatchDataController request.
-func (client *DataControllersClient) patchDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerUpdate, options *DataControllersClientBeginPatchDataControllerOptions) (*policy.Request, error) {
+func (client *DataControllersClient) patchDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerUpdate, _ *DataControllersClientBeginPatchDataControllerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -368,7 +368,7 @@ func (client *DataControllersClient) patchDataControllerCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, dataControllerResource); err != nil {
@@ -380,7 +380,7 @@ func (client *DataControllersClient) patchDataControllerCreateRequest(ctx contex
 // BeginPutDataController - Creates or replaces a dataController resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - dataControllerResource - desc
@@ -407,7 +407,7 @@ func (client *DataControllersClient) BeginPutDataController(ctx context.Context,
 // PutDataController - Creates or replaces a dataController resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 func (client *DataControllersClient) putDataController(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerResource, options *DataControllersClientBeginPutDataControllerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataControllersClient.BeginPutDataController"
@@ -430,7 +430,7 @@ func (client *DataControllersClient) putDataController(ctx context.Context, reso
 }
 
 // putDataControllerCreateRequest creates the PutDataController request.
-func (client *DataControllersClient) putDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerResource, options *DataControllersClientBeginPutDataControllerOptions) (*policy.Request, error) {
+func (client *DataControllersClient) putDataControllerCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerResource, _ *DataControllersClientBeginPutDataControllerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -449,7 +449,7 @@ func (client *DataControllersClient) putDataControllerCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, dataControllerResource); err != nil {

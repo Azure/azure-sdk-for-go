@@ -27,7 +27,7 @@ type ActiveDirectoryConnectorsClient struct {
 // NewActiveDirectoryConnectorsClient creates a new instance of ActiveDirectoryConnectorsClient with the specified values.
 //   - subscriptionID - The ID of the Azure subscription
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewActiveDirectoryConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActiveDirectoryConnectorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewActiveDirectoryConnectorsClient(subscriptionID string, credential azcore
 // BeginCreate - Creates or replaces an Active Directory connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - activeDirectoryConnectorName - The name of the Active Directory connector instance
@@ -71,7 +71,7 @@ func (client *ActiveDirectoryConnectorsClient) BeginCreate(ctx context.Context, 
 // Create - Creates or replaces an Active Directory connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 func (client *ActiveDirectoryConnectorsClient) create(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, activeDirectoryConnectorResource ActiveDirectoryConnectorResource, options *ActiveDirectoryConnectorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ActiveDirectoryConnectorsClient.BeginCreate"
@@ -94,7 +94,7 @@ func (client *ActiveDirectoryConnectorsClient) create(ctx context.Context, resou
 }
 
 // createCreateRequest creates the Create request.
-func (client *ActiveDirectoryConnectorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, activeDirectoryConnectorResource ActiveDirectoryConnectorResource, options *ActiveDirectoryConnectorsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *ActiveDirectoryConnectorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, activeDirectoryConnectorResource ActiveDirectoryConnectorResource, _ *ActiveDirectoryConnectorsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}/activeDirectoryConnectors/{activeDirectoryConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *ActiveDirectoryConnectorsClient) createCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, activeDirectoryConnectorResource); err != nil {
@@ -129,7 +129,7 @@ func (client *ActiveDirectoryConnectorsClient) createCreateRequest(ctx context.C
 // BeginDelete - Deletes an Active Directory connector resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - activeDirectoryConnectorName - The name of the Active Directory connector instance
@@ -155,7 +155,7 @@ func (client *ActiveDirectoryConnectorsClient) BeginDelete(ctx context.Context, 
 // Delete - Deletes an Active Directory connector resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 func (client *ActiveDirectoryConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, options *ActiveDirectoryConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ActiveDirectoryConnectorsClient.BeginDelete"
@@ -178,7 +178,7 @@ func (client *ActiveDirectoryConnectorsClient) deleteOperation(ctx context.Conte
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ActiveDirectoryConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, options *ActiveDirectoryConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ActiveDirectoryConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, _ *ActiveDirectoryConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}/activeDirectoryConnectors/{activeDirectoryConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,7 +201,7 @@ func (client *ActiveDirectoryConnectorsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +210,7 @@ func (client *ActiveDirectoryConnectorsClient) deleteCreateRequest(ctx context.C
 // Get - Retrieves an Active Directory connector resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - activeDirectoryConnectorName - The name of the Active Directory connector instance
@@ -239,7 +239,7 @@ func (client *ActiveDirectoryConnectorsClient) Get(ctx context.Context, resource
 }
 
 // getCreateRequest creates the Get request.
-func (client *ActiveDirectoryConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, options *ActiveDirectoryConnectorsClientGetOptions) (*policy.Request, error) {
+func (client *ActiveDirectoryConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, _ *ActiveDirectoryConnectorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}/activeDirectoryConnectors/{activeDirectoryConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -262,7 +262,7 @@ func (client *ActiveDirectoryConnectorsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +279,7 @@ func (client *ActiveDirectoryConnectorsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - List the active directory connectors associated with the given data controller.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - dataControllerName - The name of the data controller
 //   - options - ActiveDirectoryConnectorsClientListOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.NewListPager
@@ -308,7 +308,7 @@ func (client *ActiveDirectoryConnectorsClient) NewListPager(resourceGroupName st
 }
 
 // listCreateRequest creates the List request.
-func (client *ActiveDirectoryConnectorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, options *ActiveDirectoryConnectorsClientListOptions) (*policy.Request, error) {
+func (client *ActiveDirectoryConnectorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, dataControllerName string, _ *ActiveDirectoryConnectorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}/activeDirectoryConnectors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -327,7 +327,7 @@ func (client *ActiveDirectoryConnectorsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

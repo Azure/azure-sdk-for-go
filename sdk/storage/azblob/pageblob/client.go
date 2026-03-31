@@ -158,6 +158,11 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, conte
 		return UploadPagesResponse{}, err
 	}
 
+	var httpRange string
+	if contentRange.Offset != 0 && contentRange.Count != 0 {
+		httpRange = *exported.FormatHTTPRange(contentRange)
+	}
+
 	opts := options.format()
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, opts)
@@ -166,7 +171,7 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, conte
 		}
 	}
 
-	return pb.generated().UploadPages(ctx, body, count, *exported.FormatHTTPRange(contentRange), opts)
+	return pb.generated().UploadPages(ctx, body, count, httpRange, opts)
 }
 
 // UploadPagesFromURL copies 1 or more pages from a source URL to the page blob.

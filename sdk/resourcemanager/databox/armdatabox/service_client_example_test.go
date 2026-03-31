@@ -6,10 +6,11 @@ package armdatabox_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v3"
-	"log"
 )
 
 // Generated from example definition: 2025-07-01/AvailableSkusPost.json
@@ -446,7 +447,7 @@ func ExampleServiceClient_ValidateAddress() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceClient().ValidateAddress(ctx, "westus", &armdatabox.ValidateAddress{
+	res, err := clientFactory.NewServiceClient().ValidateAddress(ctx, "westus", armdatabox.ValidateAddress{
 		DeviceType: to.Ptr(armdatabox.SKUNameDataBox),
 		Model:      to.Ptr(armdatabox.ModelNameDataBox),
 		ShippingAddress: &armdatabox.ShippingAddress{

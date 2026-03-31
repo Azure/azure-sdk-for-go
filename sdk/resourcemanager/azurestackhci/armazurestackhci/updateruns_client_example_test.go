@@ -6,15 +6,14 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/DeleteUpdateRuns.json
+// Generated from example definition: 2026-02-01/DeleteUpdateRuns.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +39,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GetUpdateRuns.json
+// Generated from example definition: 2026-02-01/GetUpdateRuns.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +91,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListUpdateRuns.json
+// Generated from example definition: 2026-02-01/ListUpdateRuns.json
 func ExampleUpdateRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +152,7 @@ func ExampleUpdateRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/PutUpdateRuns.json
+// Generated from example definition: 2026-02-01/PutUpdateRuns.json
 func ExampleUpdateRunsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

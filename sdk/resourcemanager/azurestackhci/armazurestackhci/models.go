@@ -128,30 +128,6 @@ type AssemblyInfoPayload struct {
 	URL *string
 }
 
-type ChangeRingRequest struct {
-	Properties *ChangeRingRequestProperties
-}
-
-type ChangeRingRequestProperties struct {
-	// The target ring for the cluster.
-	TargetRing *string
-}
-
-// CheckUpdatesRequest - Request body for the check updates action on update summaries.
-type CheckUpdatesRequest struct {
-	// Name of update
-	UpdateName *string
-}
-
-// ClaimDeviceRequest - Request for claiming devices of the pool.
-type ClaimDeviceRequest struct {
-	// REQUIRED; List of resource ids of the devices to be modified
-	Devices []*string
-
-	// Resource Id of group device belongs to.
-	ClaimedBy *string
-}
-
 // Cluster details.
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -159,9 +135,6 @@ type Cluster struct {
 
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
-
-	// This property identifies the purpose of the Cluster deployment. For example, a valid value is AzureLocal
-	Kind *string
 
 	// Cluster properties.
 	Properties *ClusterProperties
@@ -203,63 +176,6 @@ type ClusterIdentityResponseProperties struct {
 	AADServicePrincipalObjectID *string
 	AADTenantID                 *string
 }
-
-// ClusterJob - Cluster Jobs resource
-type ClusterJob struct {
-	// The resource-specific properties for this resource.
-	Properties ClusterJobPropertiesClassification
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ClusterJobListResult - List of Cluster Job resources for the HCI cluster.
-type ClusterJobListResult struct {
-	// REQUIRED; The ClusterJob items on this page
-	Value []*ClusterJob
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ClusterJobProperties - Cluster Job properties
-type ClusterJobProperties struct {
-	// REQUIRED; Job Type to support polymorphic resource.
-	JobType *HciJobType
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Reported properties for job
-	ReportedProperties *JobReportedProperties
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Cluster job.
-	Status *JobStatus
-}
-
-// GetClusterJobProperties implements the ClusterJobPropertiesClassification interface for type ClusterJobProperties.
-func (c *ClusterJobProperties) GetClusterJobProperties() *ClusterJobProperties { return c }
 
 // ClusterList - List of clusters.
 type ClusterList struct {
@@ -389,9 +305,6 @@ type ClusterProperties struct {
 	// READ-ONLY; Supported Storage Type for HCI Cluster
 	ClusterPattern *ClusterPattern
 
-	// READ-ONLY; Represents the Confidential Virtual Machine (CVM) support intent and current status for the cluster resource.
-	ConfidentialVMProperties *ConfidentialVMProperties
-
 	// READ-ONLY; Overall connectivity status for the cluster resource. Indicates whether the cluster is connected to Azure, partially
 	// connected, or has not recently communicated.
 	ConnectivityStatus *ConnectivityStatus
@@ -423,12 +336,6 @@ type ClusterProperties struct {
 
 	// READ-ONLY; Object id of RP Service Principal
 	ResourceProviderObjectID *string
-
-	// READ-ONLY; The ring to which this cluster belongs to.
-	Ring *string
-
-	// READ-ONLY; Software Defined Networking Properties of the cluster
-	SdnProperties *ClusterSdnProperties
 
 	// READ-ONLY; Region specific DataPath Endpoint of the cluster.
 	ServiceEndpoint *string
@@ -483,74 +390,6 @@ type ClusterReportedProperties struct {
 
 	// READ-ONLY; Capabilities supported by the cluster.
 	SupportedCapabilities []*string
-}
-
-// ClusterSdnProperties - Represents the Software Defined Networking (SDN) configuration state of the Azure Stack HCI cluster.
-type ClusterSdnProperties struct {
-	// READ-ONLY; Represents the API address for the SDN deployment.
-	SdnAPIAddress *string
-
-	// READ-ONLY; The fully qualified domain name (FQDN) associated with the SDN deployment. This value is propagated from the
-	// Device Management Extension to the cluster resource. It is typically in the format `<sdnPrefix>-nc.<domain>` when SDN is
-	// enabled. May be null or absent in unsupported or disabled states.
-	SdnDomainName *string
-
-	// READ-ONLY; Indicates whether Software Defined Networking (SDN) integration should be enabled or disabled for this deployment.
-	SdnIntegrationIntent *SdnIntegrationIntent
-
-	// READ-ONLY; Indicates the current Software Defined Networking (SDN) status of the resource, which may be an individual device
-	// or a cluster.
-	SdnStatus *SdnStatus
-}
-
-// ConfidentialVMProfile - Represents the Confidential Virtual Machine (CVM) configuration status for an edge device. It includes
-// the current IGVM support state and detailed component-level status information.
-type ConfidentialVMProfile struct {
-	// Provides detailed status entries for IGVM-related components, including deployment status, compatibility checks, and error
-	// diagnostics.
-	StatusDetails []*IgvmStatusDetail
-
-	// READ-ONLY; Indicates whether Independent Guest Virtual Machine (IGVM) support is available on the device. This will be
-	// 'Enabled' if the device supports CVMs, 'Disabled' if not, and 'Unknown' if the status cannot be determined.
-	IgvmStatus *IgvmStatus
-}
-
-// ConfidentialVMProperties - Represents the Confidential Virtual Machine (CVM) support intent and current status for the
-// cluster resource.
-type ConfidentialVMProperties struct {
-	// READ-ONLY; Captures the customer's intent to enable or disable CVM support on the cluster, either during initial deployment
-	// (Day-0) or at a later stage (Day-N).
-	ConfidentialVMIntent *ConfidentialVMIntent
-
-	// READ-ONLY; Captures the current status of CVM support on the cluster.
-	ConfidentialVMStatus *ConfidentialVMStatus
-
-	// READ-ONLY; Additional context about CVM support on the cluster, such as reasons for partial enablement or hardware constraints.
-	ConfidentialVMStatusSummary *string
-}
-
-// ContentPayload - Represents details of a specific update content payload.
-type ContentPayload struct {
-	// Represents the file name of a update payload.
-	FileName *string
-
-	// Represents the group of a update payload.
-	Group *string
-
-	// Represents hash of a update payload.
-	Hash *string
-
-	// Represents hash algorithm of a update payload.
-	HashAlgorithm *string
-
-	// Represents identifier of a update payload.
-	Identifier *string
-
-	// Represents size in bytes of a update payload.
-	PackageSizeInBytes *string
-
-	// Represents url of a update payload.
-	URL *string
 }
 
 // DNSZones - Details of the DNS Zones to be configured.
@@ -880,165 +719,6 @@ type DeviceConfiguration struct {
 	NicDetails []*NicDetail
 }
 
-// DeviceDetail - Device details.
-type DeviceDetail struct {
-	// Resource Id of the device.
-	DeviceResourceID *string
-
-	// READ-ONLY; Resource Id of group device belongs to.
-	ClaimedBy *string
-}
-
-// DevicePool details.
-type DevicePool struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// The resource-specific properties for this resource.
-	Properties *DevicePoolProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// DevicePoolListResult - The response of a DevicePool list operation.
-type DevicePoolListResult struct {
-	// REQUIRED; The DevicePool items on this page
-	Value []*DevicePool
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// DevicePoolPatch - Properties for patching Device Pool.
-type DevicePoolPatch struct {
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// DevicePoolProperties - Properties for device pool.
-type DevicePoolProperties struct {
-	// Custom Location Name for the pool, default: <DevicePoolName>-CL
-	CustomLocationName *string
-
-	// List of machines in device pool.
-	Devices []*DeviceDetail
-
-	// Managed resource group name for the pool
-	ManagedResourceGroup *string
-
-	// READ-ONLY; Unique, immutable resource id.
-	CloudID *string
-
-	// READ-ONLY; Custom Location Resource Id for the pool
-	CustomLocationResourceID *string
-
-	// READ-ONLY; operation status details for device pool.
-	OperationDetails []*OperationDetail
-
-	// READ-ONLY; The provisioning state of a resource.
-	ProvisioningState *ProvisioningState
-}
-
-// DownloadOsJobProperties - Represents the properties of Download Os job.
-type DownloadOsJobProperties struct {
-	// REQUIRED; Download OS request.
-	DownloadRequest *DownloadRequest
-
-	// CONSTANT; Job Type to support polymorphic resource.
-	// Field has constant value EdgeMachineJobTypeDownloadOs, any specified value is ignored.
-	JobType *EdgeMachineJobType
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// Reported Properties for Download Os job
-	ReportedProperties *ProvisionOsReportedProperties
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; error details.
-	Error *ErrorDetail
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Edge device job.
-	Status *JobStatus
-}
-
-// GetEdgeMachineJobProperties implements the EdgeMachineJobPropertiesClassification interface for type DownloadOsJobProperties.
-func (d *DownloadOsJobProperties) GetEdgeMachineJobProperties() *EdgeMachineJobProperties {
-	return &EdgeMachineJobProperties{
-		DeploymentMode:    d.DeploymentMode,
-		EndTimeUTC:        d.EndTimeUTC,
-		Error:             d.Error,
-		JobID:             d.JobID,
-		JobType:           d.JobType,
-		ProvisioningState: d.ProvisioningState,
-		StartTimeUTC:      d.StartTimeUTC,
-		Status:            d.Status,
-	}
-}
-
-// DownloadOsProfile - Operating system profile.
-type DownloadOsProfile struct {
-	// GPG Public Key used for package verification
-	GpgPubKey *string
-
-	// Hash of the OS package downloaded
-	ImageHash *string
-
-	// Location of the operating system image.
-	OSImageLocation *string
-
-	// Name of the operating system.
-	OSName *string
-
-	// Type of the operating system.
-	OSType *string
-
-	// Version of the operating system.
-	OSVersion *string
-
-	// Validated Solution Recipe version to be used for the job
-	VsrVersion *string
-}
-
-// DownloadRequest - Download Request properties
-type DownloadRequest struct {
-	// REQUIRED; Operating system profile.
-	OSProfile *DownloadOsProfile
-
-	// REQUIRED; Target operating system to support polymorphic resource.
-	Target *ProvisioningOsType
-}
-
 // EceActionStatus - The ECE action plan deployment status for AzureStackHCI Cluster.
 type EceActionStatus struct {
 	// READ-ONLY; Status of ECE action AzureStackHCI Cluster Deployment.
@@ -1129,429 +809,6 @@ type EdgeDeviceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
-}
-
-// EdgeMachine details.
-type EdgeMachine struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// The resource-specific properties for this resource.
-	Properties *EdgeMachineProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// EdgeMachineCollectLogJobProperties - Properties for pausing a server in the cluster.
-type EdgeMachineCollectLogJobProperties struct {
-	// REQUIRED; From date for log collection.
-	FromDate *time.Time
-
-	// CONSTANT; ClusterJob Type to support polymorphic resource.
-	// Field has constant value EdgeMachineJobTypeCollectLog, any specified value is ignored.
-	JobType *EdgeMachineJobType
-
-	// REQUIRED; To date for log collection.
-	ToDate *time.Time
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; error details.
-	Error *ErrorDetail
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; To date for log collection.
-	LastLogGenerated *time.Time
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; log collection job reported properties.
-	ReportedProperties *EdgeMachineCollectLogJobReportedProperties
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Edge device job.
-	Status *JobStatus
-}
-
-// GetEdgeMachineJobProperties implements the EdgeMachineJobPropertiesClassification interface for type EdgeMachineCollectLogJobProperties.
-func (e *EdgeMachineCollectLogJobProperties) GetEdgeMachineJobProperties() *EdgeMachineJobProperties {
-	return &EdgeMachineJobProperties{
-		DeploymentMode:    e.DeploymentMode,
-		EndTimeUTC:        e.EndTimeUTC,
-		Error:             e.Error,
-		JobID:             e.JobID,
-		JobType:           e.JobType,
-		ProvisioningState: e.ProvisioningState,
-		StartTimeUTC:      e.StartTimeUTC,
-		Status:            e.Status,
-	}
-}
-
-// EdgeMachineCollectLogJobReportedProperties - Represents the reported properties of a log collection job.
-type EdgeMachineCollectLogJobReportedProperties struct {
-	// READ-ONLY; Deployment status of job.
-	DeploymentStatus *EceActionStatus
-
-	// READ-ONLY; Details of the log collection session.
-	LogCollectionSessionDetails []*LogCollectionJobSession
-
-	// READ-ONLY; The percentage of the job that is complete.
-	PercentComplete *int32
-
-	// READ-ONLY; Validation status of job.
-	ValidationStatus *EceActionStatus
-}
-
-// EdgeMachineJob - Cluster Jobs resource
-type EdgeMachineJob struct {
-	// The resource-specific properties for this resource.
-	Properties EdgeMachineJobPropertiesClassification
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// EdgeMachineJobListResult - The response of a EdgeMachineJob list operation.
-type EdgeMachineJobListResult struct {
-	// REQUIRED; The EdgeMachineJob items on this page
-	Value []*EdgeMachineJob
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// EdgeMachineJobProperties - EdgeMachine Job properties
-type EdgeMachineJobProperties struct {
-	// REQUIRED; Job Type to support polymorphic resource.
-	JobType *EdgeMachineJobType
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; error details.
-	Error *ErrorDetail
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Edge device job.
-	Status *JobStatus
-}
-
-// GetEdgeMachineJobProperties implements the EdgeMachineJobPropertiesClassification interface for type EdgeMachineJobProperties.
-func (e *EdgeMachineJobProperties) GetEdgeMachineJobProperties() *EdgeMachineJobProperties { return e }
-
-// EdgeMachineListResult - The response of a EdgeMachine list operation.
-type EdgeMachineListResult struct {
-	// REQUIRED; The EdgeMachine items on this page
-	Value []*EdgeMachine
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// EdgeMachineNetworkProfile - NetworkProfile of edge machine.
-type EdgeMachineNetworkProfile struct {
-	// READ-ONLY; List of Network Interface Card (NIC) Details of edge machine.
-	NicDetails []*EdgeMachineNicDetail
-
-	// READ-ONLY; List of switch Details of edge machine.
-	SwitchDetails []*SwitchDetail
-}
-
-// EdgeMachineNicDetail - Network Interface Card (NIC) Details of edge machine.
-type EdgeMachineNicDetail struct {
-	// READ-ONLY; Adapter Name of NIC
-	AdapterName *string
-
-	// READ-ONLY; Component Id of NIC
-	ComponentID *string
-
-	// READ-ONLY; DNS Servers for NIC
-	DNSServers []*string
-
-	// READ-ONLY; Default Gateway of NIC
-	DefaultGateway *string
-
-	// READ-ONLY; Default Isolation of Management NIC
-	DefaultIsolationID *string
-
-	// READ-ONLY; Driver Version of NIC
-	DriverVersion *string
-
-	// READ-ONLY; Interface Description of NIC
-	InterfaceDescription *string
-
-	// READ-ONLY; Subnet Mask of NIC
-	Ip4Address *string
-
-	// READ-ONLY; MAC address information of NIC.
-	MacAddress *string
-
-	// READ-ONLY; The status of NIC, up, disconnected.
-	NicStatus *string
-
-	// READ-ONLY; The type of NIC, physical, virtual, management.
-	NicType *string
-
-	// READ-ONLY; Describes the RDMA capability of the network adapter.
-	RdmaCapability *RdmaCapability
-
-	// READ-ONLY; The slot attached to the NIC.
-	Slot *string
-
-	// READ-ONLY; Subnet Mask of NIC
-	SubnetMask *string
-
-	// READ-ONLY; The switch attached to the NIC, if any.
-	SwitchName *string
-
-	// READ-ONLY; The VLAN ID of the physical NIC.
-	VlanID *string
-}
-
-// EdgeMachinePatch - Model for patching edge machine.
-type EdgeMachinePatch struct {
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// EdgeMachineProperties - Properties for edge machine.
-type EdgeMachineProperties struct {
-	// Link to Arc Gateway ARM resource Id
-	ArcGatewayResourceID *string
-
-	// Optional property to create arc machine in custom resource group.
-	ArcMachineResourceGroupID *string
-
-	// Arc machine instance resource id.
-	ArcMachineResourceID *string
-
-	// Edge Machine type.
-	EdgeMachineKind *EdgeMachineKind
-
-	// Ownership voucher details for provisioned machine.
-	OwnershipVoucherDetails *OwnershipVoucherDetails
-
-	// Details for device provisioning.
-	ProvisioningDetails *ProvisioningDetails
-
-	// Service fetches common configuration from site.
-	SiteDetails *SiteDetails
-
-	// READ-ONLY; Tracks the ID of the consuming resource, setting the machine as in-use.
-	ClaimedBy *string
-
-	// READ-ONLY; Unique, immutable resource id.
-	CloudID *string
-
-	// READ-ONLY; machine connectivity status
-	ConnectivityStatus *EdgeMachineConnectivityStatus
-
-	// READ-ONLY; A machine can only be assigned to single device pool
-	DevicePoolResourceID *string
-
-	// READ-ONLY; Last time data updated to service.
-	LastSyncTimestamp *time.Time
-
-	// READ-ONLY; OS configuration status details
-	MachineState *EdgeMachineState
-
-	// READ-ONLY; operation status details for edge machine.
-	OperationDetails []*OperationDetail
-
-	// READ-ONLY; The provisioning state of a resource.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Reported properties for edge machine.
-	ReportedProperties *EdgeMachineReportedProperties
-}
-
-// EdgeMachineRemoteSupportJobProperties - Properties for adding a server in the cluster.
-type EdgeMachineRemoteSupportJobProperties struct {
-	// REQUIRED; Remote support access level.
-	AccessLevel *RemoteSupportAccessLevel
-
-	// REQUIRED; Remote support expiration timestamp.
-	ExpirationTimestamp *time.Time
-
-	// CONSTANT; Job Type to support polymorphic resource.
-	// Field has constant value EdgeMachineJobTypeRemoteSupport, any specified value is ignored.
-	JobType *EdgeMachineJobType
-
-	// REQUIRED; Remote support type.
-	Type *RemoteSupportType
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; error details.
-	Error *ErrorDetail
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; log collection job reported properties.
-	ReportedProperties *EdgeMachineRemoteSupportJobReportedProperties
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Edge device job.
-	Status *JobStatus
-}
-
-// GetEdgeMachineJobProperties implements the EdgeMachineJobPropertiesClassification interface for type EdgeMachineRemoteSupportJobProperties.
-func (e *EdgeMachineRemoteSupportJobProperties) GetEdgeMachineJobProperties() *EdgeMachineJobProperties {
-	return &EdgeMachineJobProperties{
-		DeploymentMode:    e.DeploymentMode,
-		EndTimeUTC:        e.EndTimeUTC,
-		Error:             e.Error,
-		JobID:             e.JobID,
-		JobType:           e.JobType,
-		ProvisioningState: e.ProvisioningState,
-		StartTimeUTC:      e.StartTimeUTC,
-		Status:            e.Status,
-	}
-}
-
-// EdgeMachineRemoteSupportJobReportedProperties - Represents the reported properties of a remote support job.
-type EdgeMachineRemoteSupportJobReportedProperties struct {
-	// READ-ONLY; Deployment status of job.
-	DeploymentStatus *EceActionStatus
-
-	// READ-ONLY; Optional settings for configuring the node for remote support.
-	NodeSettings *EdgeMachineRemoteSupportNodeSettings
-
-	// READ-ONLY; The percentage of the job that is complete.
-	PercentComplete *int32
-
-	// READ-ONLY; Details of the remote support session.
-	SessionDetails []*RemoteSupportSession
-
-	// READ-ONLY; Validation status of job.
-	ValidationStatus *EceActionStatus
-}
-
-// EdgeMachineRemoteSupportNodeSettings - Represents the settings of a remote support node.
-type EdgeMachineRemoteSupportNodeSettings struct {
-	// READ-ONLY; The error message, if any, from the last connection attempt.
-	ConnectionErrorMessage *string
-
-	// READ-ONLY; The current connection status of the remote support session.
-	ConnectionStatus *string
-
-	// READ-ONLY; The timestamp when the node settings were created, in UTC.
-	CreatedAt *time.Time
-
-	// READ-ONLY; The state of the remote support node.
-	State *string
-
-	// READ-ONLY; The timestamp when the node settings were last updated, in UTC.
-	UpdatedAt *time.Time
-}
-
-// EdgeMachineReportedProperties - Reported properties for edge machine.
-type EdgeMachineReportedProperties struct {
-	// READ-ONLY; Extension details for edge machine.
-	ExtensionProfile *ExtensionProfile
-
-	// READ-ONLY; Hardware related information for edge machine.
-	HardwareProfile *HardwareProfile
-
-	// READ-ONLY; Last time data reported.
-	LastUpdated *time.Time
-
-	// READ-ONLY; Network details for edge machine.
-	NetworkProfile *EdgeMachineNetworkProfile
-
-	// READ-ONLY; OS Properties for edge machine.
-	OSProfile *OsProfile
-
-	// READ-ONLY; Solution builder extension (SBE) deployment package information.
-	SbeDeploymentPackageInfo *SbeDeploymentPackageInfo
-
-	// READ-ONLY; Storage related information for edge machine.
-	StorageProfile *StorageProfile
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
 }
 
 // Extension - Details of a particular extension in HCI Cluster.
@@ -1702,30 +959,6 @@ type ExtensionUpgradeParameters struct {
 	TargetVersion *string
 }
 
-// HardwareProfile - Hardware profile for the machine
-type HardwareProfile struct {
-	// READ-ONLY; Number of cpu cores in the machine
-	CPUCores *int64
-
-	// READ-ONLY; Number of cpu sockets in the machine
-	CPUSockets *int64
-
-	// READ-ONLY; manufacturer info of the machine
-	Manufacturer *string
-
-	// READ-ONLY; Memory capacity of the machine
-	MemoryCapacityInGb *int64
-
-	// READ-ONLY; Model info of the machine
-	Model *string
-
-	// READ-ONLY; Process type of the machine
-	ProcessorType *string
-
-	// READ-ONLY; Serial number of the machine
-	SerialNumber *string
-}
-
 // HciCollectLogJobProperties - Represents the properties of an HCI Collect Log job.
 type HciCollectLogJobProperties struct {
 	// REQUIRED; From date for log collection.
@@ -1773,100 +1006,6 @@ func (h *HciCollectLogJobProperties) GetHciEdgeDeviceJobProperties() *HciEdgeDev
 		ProvisioningState: h.ProvisioningState,
 		StartTimeUTC:      h.StartTimeUTC,
 		Status:            h.Status,
-	}
-}
-
-// HciConfigureCvmJobProperties - Defines the customer's intent for updating confidential VM properties
-type HciConfigureCvmJobProperties struct {
-	// REQUIRED; Defines the customer's intent for updating confidential VM properties
-	ConfidentialVMIntent *ConfidentialVMIntent
-
-	// CONSTANT; ClusterJob Type to support polymorphic resource.
-	// Field has constant value HciJobTypeConfigureCVM, any specified value is ignored.
-	JobType *HciJobType
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Reported properties for job
-	ReportedProperties *JobReportedProperties
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Cluster job.
-	Status *JobStatus
-}
-
-// GetClusterJobProperties implements the ClusterJobPropertiesClassification interface for type HciConfigureCvmJobProperties.
-func (h *HciConfigureCvmJobProperties) GetClusterJobProperties() *ClusterJobProperties {
-	return &ClusterJobProperties{
-		DeploymentMode:     h.DeploymentMode,
-		EndTimeUTC:         h.EndTimeUTC,
-		JobID:              h.JobID,
-		JobType:            h.JobType,
-		ProvisioningState:  h.ProvisioningState,
-		ReportedProperties: h.ReportedProperties,
-		StartTimeUTC:       h.StartTimeUTC,
-		Status:             h.Status,
-	}
-}
-
-// HciConfigureSdnIntegrationJobProperties - Properties for configuring SDN integration intent for the cluster.
-type HciConfigureSdnIntegrationJobProperties struct {
-	// CONSTANT; ClusterJob Type to support polymorphic resource.
-	// Field has constant value HciJobTypeConfigureSdnIntegration, any specified value is ignored.
-	JobType *HciJobType
-
-	// REQUIRED; Defines the customer's intent for configuring SDN integration
-	SdnIntegrationIntent *SdnIntegrationIntent
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// A string identifier used to construct the Network Controller (NC) REST resource name. This prefix helps group and distinguish
-	// SDN-managed network components and must follow specific formatting rules.
-	SdnPrefix *string
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Reported properties for job
-	ReportedProperties *JobReportedProperties
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Cluster job.
-	Status *JobStatus
-}
-
-// GetClusterJobProperties implements the ClusterJobPropertiesClassification interface for type HciConfigureSdnIntegrationJobProperties.
-func (h *HciConfigureSdnIntegrationJobProperties) GetClusterJobProperties() *ClusterJobProperties {
-	return &ClusterJobProperties{
-		DeploymentMode:     h.DeploymentMode,
-		EndTimeUTC:         h.EndTimeUTC,
-		JobID:              h.JobID,
-		JobType:            h.JobType,
-		ProvisioningState:  h.ProvisioningState,
-		ReportedProperties: h.ReportedProperties,
-		StartTimeUTC:       h.StartTimeUTC,
-		Status:             h.Status,
 	}
 }
 
@@ -2138,9 +1277,6 @@ type HciNetworkProfile struct {
 	// READ-ONLY; List of NIC Details of device.
 	NicDetails []*HciNicDetail
 
-	// READ-ONLY; oftware Defined Networking Properties of the cluster
-	SdnProperties *SdnProperties
-
 	// READ-ONLY; List of switch details for edge device.
 	SwitchDetails []*SwitchDetail
 }
@@ -2257,9 +1393,6 @@ func (h *HciRemoteSupportJobProperties) GetHciEdgeDeviceJobProperties() *HciEdge
 
 // HciReportedProperties - The device Configuration for HCI device.
 type HciReportedProperties struct {
-	// READ-ONLY; CVM support details for edge device.
-	ConfidentialVMProfile *ConfidentialVMProfile
-
 	// READ-ONLY; edge device state.
 	DeviceState *DeviceState
 
@@ -2268,9 +1401,6 @@ type HciReportedProperties struct {
 
 	// READ-ONLY; Hci device hardware specific information.
 	HardwareProfile *HciHardwareProfile
-
-	// READ-ONLY; Most recent edge device sync timestamp in UTC.
-	LastSyncTimestamp *time.Time
 
 	// READ-ONLY; HCI device network information.
 	NetworkProfile *HciNetworkProfile
@@ -2297,15 +1427,6 @@ type HciValidationFailureDetail struct {
 	Exception *string
 }
 
-// IPAddressRange - IP address range configuration.
-type IPAddressRange struct {
-	// REQUIRED; End IP address.
-	EndIP *string
-
-	// REQUIRED; Start IP address.
-	StartIP *string
-}
-
 // IPPools - The dnsServers of a device.
 type IPPools struct {
 	// Ending IP address for the management network. A minimum of six free, contiguous IPv4 addresses (excluding your host IPs)
@@ -2315,15 +1436,6 @@ type IPPools struct {
 	// Starting IP address for the management network. A minimum of six free, contiguous IPv4 addresses (excluding your host IPs)
 	// are needed for infrastructure services such as clustering.
 	StartingAddress *string
-}
-
-// IgvmStatusDetail - Provides component-level status information related to IGVM enablement on the device.
-type IgvmStatusDetail struct {
-	// READ-ONLY; A machine-readable status code indicating the result or condition of a specific IGVM-related check or operation.
-	Code *string
-
-	// READ-ONLY; A human-readable message providing context or explanation for the associated status code.
-	Message *string
 }
 
 // InfrastructureNetwork - The InfrastructureNetwork of a AzureStackHCI Cluster.
@@ -2362,51 +1474,6 @@ type IsolatedVMAttestationConfiguration struct {
 
 	// READ-ONLY; Region specific endpoint for relying party service.
 	RelyingPartyServiceEndpoint *string
-}
-
-// JobReportedProperties - Reported Properties for job triggered from cloud.
-type JobReportedProperties struct {
-	// READ-ONLY; Deployment status of job.
-	DeploymentStatus *EceActionStatus
-
-	// READ-ONLY; The percentage of the job that is complete.
-	PercentComplete *int32
-
-	// READ-ONLY; Validation status of job.
-	ValidationStatus *EceActionStatus
-}
-
-// KubernetesVersion - Represents a kubernetes version resource.
-type KubernetesVersion struct {
-	// The resource-specific properties for this resource.
-	Properties *KubernetesVersionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// KubernetesVersionListResult - The response of a KubernetesVersion list operation.
-type KubernetesVersionListResult struct {
-	// REQUIRED; The KubernetesVersion items on this page
-	Value []*KubernetesVersion
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// KubernetesVersionProperties - Represents properties of a kubernetes version.
-type KubernetesVersionProperties struct {
-	// REQUIRED; Represents kubernetes version.
-	Version *string
 }
 
 // LocalAvailabilityZones - Local Availability Zone information for HCI cluster
@@ -2540,42 +1607,6 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
-// NetworkAdapter - Network adapter configuration.
-type NetworkAdapter struct {
-	// REQUIRED; Type of IP assignment.
-	IPAssignmentType *IPAssignmentType
-
-	// Adapter Name.
-	AdapterName *string
-
-	// Array of DNS addresses.
-	DNSAddressArray []*string
-
-	// Gateway id.
-	Gateway *string
-
-	// IP address.
-	IPAddress *string
-
-	// IP address range.
-	IPAddressRange *IPAddressRange
-
-	// MAC address.
-	MacAddress *string
-
-	// Subnet mask.
-	SubnetMask *string
-
-	// VLAN ID for the network setup.
-	VlanID *string
-}
-
-// NetworkConfiguration - Network configuration.
-type NetworkConfiguration struct {
-	// List of network adapters.
-	NetworkAdapters []*NetworkAdapter
-}
-
 // NetworkController - network controller config for SDN Integration to deploy AzureStackHCI Cluster.
 type NetworkController struct {
 	// macAddressPoolStart of network controller used for SDN Integration.
@@ -2676,24 +1707,6 @@ type OfferProperties struct {
 	ProvisioningState *string
 }
 
-// OnboardingConfiguration - Onboarding configuration.
-type OnboardingConfiguration struct {
-	// Azure Arc virtual machine ID.
-	ArcVirtualMachineID *string
-
-	// Location of the resource.
-	Location *string
-
-	// Resource ID.
-	ResourceID *string
-
-	// Tenant ID of the resource.
-	TenantID *string
-
-	// Type of the onboarding resource to support polymorphic resource.
-	Type *OnboardingResourceType
-}
-
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -2715,30 +1728,6 @@ type Operation struct {
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
 	Origin *Origin
-}
-
-// OperationDetail - operation detail.
-type OperationDetail struct {
-	// READ-ONLY; operation description.
-	Description *string
-
-	// READ-ONLY; error details.
-	Error *ErrorDetail
-
-	// READ-ONLY; operation id.
-	ID *string
-
-	// READ-ONLY; operation name.
-	Name *string
-
-	// READ-ONLY; operation resource id.
-	ResourceID *string
-
-	// READ-ONLY; operation status.
-	Status *string
-
-	// READ-ONLY; operation type.
-	Type *string
 }
 
 // OperationDisplay - Localized display information for an operation.
@@ -2773,138 +1762,6 @@ type OperationListResult struct {
 type OptionalServices struct {
 	// The name of custom location.
 	CustomLocation *string
-}
-
-// OsImage - Represents a os image resource.
-type OsImage struct {
-	// The resource-specific properties for this resource.
-	Properties *OsImageProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// OsImageListResult - The response of a OsImage list operation.
-type OsImageListResult struct {
-	// REQUIRED; The OsImage items on this page
-	Value []*OsImage
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OsImageProperties - Represents properties of a os image resource.
-type OsImageProperties struct {
-	// Represents composed image iso hash of a os image.
-	ComposedImageIsoHash *string
-
-	// Represents composed image iso download url of a os image.
-	ComposedImageIsoURL *string
-
-	// Represents composed image version of a os image.
-	ComposedImageVersion *string
-
-	// Represents validated solution recipe version of a os image.
-	ValidatedSolutionRecipeVersion *string
-}
-
-// OsProfile - OS configurations for HCI device.
-type OsProfile struct {
-	// READ-ONLY; Version of assembly present on device
-	AssemblyVersion *string
-
-	// READ-ONLY; OS Base Image Version
-	BaseImageVersion *string
-
-	// READ-ONLY; The boot type of the device. e.g. UEFI, Legacy etc
-	BootType *string
-
-	// READ-ONLY; OS Build Number
-	BuildNumber *string
-
-	// READ-ONLY; OS Image Version
-	ImageVersion *string
-
-	// READ-ONLY; OS SKU (e.g., “ Microsoft Azure Linux ROE“, “Azure Stack HCI", "Microsoft Azure Linux 3.0")
-	OSSKU *string
-
-	// READ-ONLY; OS type (“windows", “linux”)
-	OSType *string
-
-	// READ-ONLY; OS Version
-	OSVersion *string
-}
-
-// OsProvisionProfile - Operating system profile.
-type OsProvisionProfile struct {
-	// GPG Public Key used for package verification
-	GpgPubKey *string
-
-	// Hash of the OS package downloaded
-	ImageHash *string
-
-	// Location of the operating system image.
-	OSImageLocation *string
-
-	// Name of the operating system.
-	OSName *string
-
-	// Type of the operating system.
-	OSType *string
-
-	// Version of the operating system.
-	OSVersion *string
-
-	// Operation sub type of OS Provisioning
-	OperationType *OSOperationType
-
-	// Validated Solution Recipe version to be used for the job
-	VsrVersion *string
-}
-
-// OwnershipVoucherDetails - Details for ownership voucher.
-type OwnershipVoucherDetails struct {
-	// REQUIRED; Owner key type
-	OwnerKeyType *OwnerKeyType
-
-	// REQUIRED; Ownership voucher in base64 encoded format
-	OwnershipVoucher *string
-}
-
-// OwnershipVoucherValidationDetails - Ownership Voucher Validation Details
-type OwnershipVoucherValidationDetails struct {
-	// Azure Machine Id of the Ownership voucher
-	AzureMachineID *string
-
-	// Error details if the validation failed.
-	Error *ErrorDetail
-
-	// FDO guid of the Ownership Voucher.
-	ID *string
-
-	// Name of the manufacturer.
-	Manufacturer *string
-
-	// Name of the model.
-	ModelName *string
-
-	// Serial number of the device.
-	SerialNumber *string
-
-	// The ownership voucher validation status.
-	ValidationStatus *OwnershipVoucherValidationStatus
-
-	// Version of the Ownership Voucher format
-	Version *string
 }
 
 // PackageVersionInfo - Current version of each updatable component.
@@ -2988,66 +1845,6 @@ type PhysicalNodes struct {
 	Name *string
 }
 
-// PlatformPayload - Represents details of a specific platform update payload.
-type PlatformPayload struct {
-	// Represents hash of a platform update payload.
-	PayloadHash *string
-
-	// Represents identifier of a platform update payload.
-	PayloadIdentifier *string
-
-	// Represents size in bytes of a platform update payload.
-	PayloadPackageSizeInBytes *string
-
-	// Represents url of a platform update payload.
-	PayloadURL *string
-}
-
-// PlatformUpdate - Represents a platform update resource.
-type PlatformUpdate struct {
-	// The resource-specific properties for this resource.
-	Properties *PlatformUpdateProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PlatformUpdateDetails - Represents details of a specific platform update.
-type PlatformUpdateDetails struct {
-	// REQUIRED; Represents the platform payloads of a platform update.
-	PlatformPayloads []*PlatformPayload
-
-	// Represents version of a platform update.
-	PlatformVersion *string
-
-	// Represents validated solution recipe version of a platform update.
-	ValidatedSolutionRecipeVersion *string
-}
-
-// PlatformUpdateListResult - The response of a PlatformUpdate list operation.
-type PlatformUpdateListResult struct {
-	// REQUIRED; The PlatformUpdate items on this page
-	Value []*PlatformUpdate
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PlatformUpdateProperties - Represents properties of a platform update resource.
-type PlatformUpdateProperties struct {
-	// REQUIRED; Represents applicable platform updates.
-	PlatformUpdateDetails []*PlatformUpdateDetails
-}
-
 type PrecheckResult struct {
 	// Property bag of key value pairs for additional information.
 	AdditionalData *string
@@ -3106,129 +1903,6 @@ type PrecheckResultTags struct {
 	Value *string
 }
 
-// ProvisionOsJobProperties - Represents the properties of an Azure Linux restricted operating environment Provision Os job.
-type ProvisionOsJobProperties struct {
-	// CONSTANT; Job Type to support polymorphic resource.
-	// Field has constant value EdgeMachineJobTypeProvisionOs, any specified value is ignored.
-	JobType *EdgeMachineJobType
-
-	// REQUIRED; Os Provisioning request.
-	ProvisioningRequest *ProvisioningRequest
-
-	// Deployment mode to trigger job.
-	DeploymentMode *DeploymentMode
-
-	// Reported Properties for Provision Os job
-	ReportedProperties *ProvisionOsReportedProperties
-
-	// READ-ONLY; The UTC date and time at which the job completed.
-	EndTimeUTC *time.Time
-
-	// READ-ONLY; error details.
-	Error *ErrorDetail
-
-	// READ-ONLY; Unique, immutable job id.
-	JobID *string
-
-	// READ-ONLY; Job provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The UTC date and time at which the job started.
-	StartTimeUTC *time.Time
-
-	// READ-ONLY; Status of Edge device job.
-	Status *JobStatus
-}
-
-// GetEdgeMachineJobProperties implements the EdgeMachineJobPropertiesClassification interface for type ProvisionOsJobProperties.
-func (p *ProvisionOsJobProperties) GetEdgeMachineJobProperties() *EdgeMachineJobProperties {
-	return &EdgeMachineJobProperties{
-		DeploymentMode:    p.DeploymentMode,
-		EndTimeUTC:        p.EndTimeUTC,
-		Error:             p.Error,
-		JobID:             p.JobID,
-		JobType:           p.JobType,
-		ProvisioningState: p.ProvisioningState,
-		StartTimeUTC:      p.StartTimeUTC,
-		Status:            p.Status,
-	}
-}
-
-// ProvisionOsReportedProperties - Reported Properties for Provision Os job
-type ProvisionOsReportedProperties struct {
-	// READ-ONLY; Deployment status of job.
-	DeploymentStatus *EceActionStatus
-
-	// READ-ONLY; The percentage of the job that is complete.
-	PercentComplete *int32
-
-	// READ-ONLY; Validation status of job.
-	ValidationStatus *EceActionStatus
-}
-
-// ProvisioningDetails - Details for device provisioning.
-type ProvisioningDetails struct {
-	// REQUIRED; Operating system profile.
-	OSProfile *OsProvisionProfile
-
-	// User configuration.
-	UserDetails []*UserDetails
-}
-
-// ProvisioningRequest - Represents a provisioning request.
-type ProvisioningRequest struct {
-	// REQUIRED; Operating system profile.
-	OSProfile *OsProvisionProfile
-
-	// REQUIRED; Target operating system to support polymorphic resource.
-	Target *ProvisioningOsType
-
-	// Base64 encoded custom configuration for CAPI to use
-	CustomConfiguration *string
-
-	// Device configuration.
-	DeviceConfiguration *TargetDeviceConfiguration
-
-	// Onboarding configuration.
-	OnboardingConfiguration *OnboardingConfiguration
-
-	// User configuration.
-	UserDetails []*UserDetails
-}
-
-// Publisher details.
-type Publisher struct {
-	// Publisher properties.
-	Properties *PublisherProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PublisherList - List of Publisher proxy resources for the HCI cluster.
-type PublisherList struct {
-	// REQUIRED; The Publisher items on this page
-	Value []*Publisher
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PublisherProperties - Publisher properties.
-type PublisherProperties struct {
-	// READ-ONLY; Provisioning State
-	ProvisioningState *string
-}
-
 // QosPolicyOverrides - The QoSPolicyOverrides of a cluster.
 type QosPolicyOverrides struct {
 	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
@@ -3254,12 +1928,6 @@ type ReconcileArcSettingsRequest struct {
 // ReconcileArcSettingsRequestProperties - List of Arc Nodes in the cluster
 type ReconcileArcSettingsRequestProperties struct {
 	ClusterNodes []*string
-}
-
-// ReleaseDeviceRequest - Request for releasing devices of the pool.
-type ReleaseDeviceRequest struct {
-	// REQUIRED; List of resource ids of the devices to be modified
-	Devices []*string
 }
 
 // RemoteSupportJobNodeSettings - Represents the settings of a remote support node.
@@ -3515,21 +2183,6 @@ type SdnIntegration struct {
 	NetworkController *NetworkController
 }
 
-// SdnProperties - Represents the Software Defined Networking (SDN) configuration state.
-type SdnProperties struct {
-	// READ-ONLY; Represents the API address for the SDN deployment.
-	SdnAPIAddress *string
-
-	// READ-ONLY; The fully qualified domain name (FQDN) associated with the SDN deployment. This value is propagated from the
-	// Device Management Extension to the cluster resource. It is typically in the format `<sdnPrefix>-nc.<domain>` when SDN is
-	// enabled. May be null or absent in unsupported or disabled states.
-	SdnDomainName *string
-
-	// READ-ONLY; Indicates the current Software Defined Networking (SDN) status of the resource, which may be an individual device
-	// or a cluster.
-	SdnStatus *SdnStatus
-}
-
 // SecretsLocationDetails - Secrets location details
 type SecretsLocationDetails struct {
 	// REQUIRED; secrets location
@@ -3618,15 +2271,6 @@ type ServiceConfiguration struct {
 	ServiceName *ServiceName
 }
 
-// SiteDetails - Site Details consists of common configurations.
-type SiteDetails struct {
-	// REQUIRED; Site resource Id to be set during Edge Machine resource creation.
-	SiteResourceID *string
-
-	// Edge Device configuration received from site common configuration.
-	DeviceConfiguration *TargetDeviceConfiguration
-}
-
 type SoftwareAssuranceChangeRequest struct {
 	Properties *SoftwareAssuranceChangeRequestProperties
 }
@@ -3687,18 +2331,6 @@ type Storage struct {
 	ConfigurationMode *string
 }
 
-// StorageConfiguration - Storage configuration.
-type StorageConfiguration struct {
-	// Partition size.
-	PartitionSize *string
-}
-
-// StorageProfile of edge machine.
-type StorageProfile struct {
-	// READ-ONLY; Number of storage disks in the device with $CanPool as true.
-	PoolableDisksCount *int64
-}
-
 // SwitchDetail - List of switch details for edge device.
 type SwitchDetail struct {
 	// READ-ONLY; This represents extensions installed on virtualSwitch.
@@ -3744,36 +2376,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// TargetDeviceConfiguration - Device configuration.
-type TargetDeviceConfiguration struct {
-	// Hostname of the device.
-	HostName *string
-
-	// Network configuration.
-	Network *NetworkConfiguration
-
-	// Storage configuration.
-	Storage *StorageConfiguration
-
-	// Time configuration.
-	Time *TimeConfiguration
-
-	// Web proxy configuration.
-	WebProxy *WebProxyConfiguration
-}
-
-// TimeConfiguration - Time configuration.
-type TimeConfiguration struct {
-	// Primary NTP server.
-	PrimaryTimeServer *string
-
-	// Secondary NTP server.
-	SecondaryTimeServer *string
-
-	// Time zone.
-	TimeZone *string
-}
-
 // Update details
 type Update struct {
 	// The geo-location where the resource lives
@@ -3793,39 +2395,6 @@ type Update struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// UpdateContent - Represents a update content.
-type UpdateContent struct {
-	// The resource-specific properties for this resource.
-	Properties *UpdateContentProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// UpdateContentListResult - The response of a UpdateContent list operation.
-type UpdateContentListResult struct {
-	// REQUIRED; The UpdateContent items on this page
-	Value []*UpdateContent
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// UpdateContentProperties - Represents properties of a update content resource.
-type UpdateContentProperties struct {
-	// REQUIRED; Represents the payloads of a update content resource.
-	UpdatePayloads []*ContentPayload
 }
 
 // UpdateList - List of Updates
@@ -4075,33 +2644,6 @@ type UserAssignedIdentity struct {
 	PrincipalID *string
 }
 
-// UserDetails - User configuration.
-type UserDetails struct {
-	// REQUIRED; Type of the secret used for authentication.
-	SecretType *SecretType
-
-	// REQUIRED; Name of the user.
-	UserName *string
-
-	// SSH Public Key for the user.
-	SSHPubKey []*string
-
-	// Location of the secret used for authentication.
-	SecretLocation *string
-}
-
-// ValidateOwnershipVouchersRequest - Validate Ownership Voucher Request
-type ValidateOwnershipVouchersRequest struct {
-	// REQUIRED; Ownership Voucher Details.
-	OwnershipVoucherDetails []*OwnershipVoucherDetails
-}
-
-// ValidateOwnershipVouchersResponse - Validate Ownership Voucher Response
-type ValidateOwnershipVouchersResponse struct {
-	// REQUIRED; Ownership Voucher Validation Details.
-	OwnershipVoucherValidationDetails []*OwnershipVoucherValidationDetails
-}
-
 // ValidateRequest - The validate request for Edge Device.
 type ValidateRequest struct {
 	// REQUIRED; Node Ids against which, current node has to be validated.
@@ -4264,16 +2806,4 @@ type ValidatedSolutionRecipeProperties struct {
 
 	// Represents the signature of the recipe, to be used for ensuring its integrity.
 	Signature *string
-}
-
-// WebProxyConfiguration - Web proxy configuration.
-type WebProxyConfiguration struct {
-	// Bypass list for the web proxy.
-	BypassList []*string
-
-	// Connection URI of the web proxy.
-	ConnectionURI *string
-
-	// Port of the web proxy.
-	Port *string
 }

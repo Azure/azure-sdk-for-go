@@ -4,12 +4,13 @@
 package base
 
 import (
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
-	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -48,15 +49,15 @@ func GetAudience(clOpts *ClientOptions) string {
 }
 func NewServiceClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
 	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(queueURL, pipeline),
+		inner:     generated.NewServiceClient(queueURL, generated.ServiceVersion, pipeline),
 		sharedKey: sharedKey,
 	}
 }
 
 func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
 	return &CompositeClient[generated.QueueClient, generated.MessagesClient]{
-		innerT:    generated.NewQueueClient(queueURL, pipeline),
-		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), pipeline),
+		innerT:    generated.NewQueueClient(queueURL, generated.ServiceVersion, pipeline),
+		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), generated.ServiceVersion, pipeline),
 		sharedKey: sharedKey,
 	}
 }

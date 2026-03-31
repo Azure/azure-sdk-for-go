@@ -148,6 +148,11 @@ func (v SignatureValues) SignWithUserDelegation(userDelegationCredential *UserDe
 	udk := exported.GetUDKParams(userDelegationCredential)
 	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
 
+	var signedDelegatedUserTenantId string
+	if udk.SignedDelegatedUserTid != nil {
+		signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
+	}
+
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
@@ -162,7 +167,7 @@ func (v SignatureValues) SignWithUserDelegation(userDelegationCredential *UserDe
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
-		"",
+		signedDelegatedUserTenantId,
 		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
@@ -211,6 +216,7 @@ func (v SignatureValues) SignWithUserDelegation(userDelegationCredential *UserDe
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
+	p.signedDelegatedUserTenantId = signedDelegatedUserTenantId
 
 	return p, nil
 }

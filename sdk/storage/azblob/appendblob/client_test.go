@@ -33,6 +33,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
@@ -3918,4 +3919,43 @@ func getOIDFromCredential(ctx context.Context, cred azcore.TokenCredential) (str
 		return "", fmt.Errorf("empty oid claim")
 	}
 	return oid, nil
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTenantId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	now := time.Now().UTC().Add(-time.Minute)
+	expiry := now.Add(30 * time.Minute)
+	serviceCode := "b"
+	version := sas.Version
+	oid := "00000000-0000-0000-0000-000000000000"
+	tid := "11111111-1111-1111-1111-111111111111"
+	skdutid := "22222222-2222-2222-2222-222222222222"
+	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
+
+	udk := exported.UserDelegationKey{
+		SignedStart:            &now,
+		SignedExpiry:           &expiry,
+		SignedService:          &serviceCode,
+		SignedVersion:          &version,
+		SignedOID:              &oid,
+		SignedTID:              &tid,
+		SignedDelegatedUserTid: &skdutid,
+		Value:                  val,
+	}
+	udc := exported.NewUserDelegationCredential("testaccount", udk)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	sv := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     now,
+		ExpiryTime:    expiry,
+		Permissions:   (&sas.BlobPermissions{Read: true, Create: true, Write: true}).String(),
+		ContainerName: containerName,
+	}
+	qp, err := sv.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	enc := qp.Encode()
+	_require.Contains(enc, "skdutid="+skdutid)
 }

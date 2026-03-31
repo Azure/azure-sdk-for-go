@@ -4,13 +4,16 @@
 package service
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
-	"time"
 )
+
+type SessionOptions = exported.SessionOptions
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential

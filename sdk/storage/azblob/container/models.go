@@ -431,3 +431,7 @@ func (o *FilterBlobsOptions) format() *generated.ContainerClientFilterBlobsOptio
 		Maxresults: o.MaxResults,
 	}
 }
+
+type CreateSessionConfiguration = generated.CreateSessionConfiguration
+
+type CreateSessionOptions = generated.ContainerClientCreateSessionOptions

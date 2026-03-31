@@ -1263,7 +1263,7 @@ func (client *BlobClient) getAccountInfoCreateRequest(ctx context.Context, optio
 }
 
 // getAccountInfoHandleResponse handles the GetAccountInfo response.
-func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (BlobClientGetAccountInfoResponse, error) {
+func (client *BlobClient)  getAccountInfoHandleResponse(resp *http.Response) (BlobClientGetAccountInfoResponse, error) {
 	result := BlobClientGetAccountInfoResponse{}
 	if val := resp.Header.Get("x-ms-account-kind"); val != "" {
 		result.AccountKind = (*AccountKind)(&val)

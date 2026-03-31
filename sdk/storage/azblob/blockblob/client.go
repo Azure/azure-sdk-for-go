@@ -192,7 +192,7 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 func (bb *Client) UploadBlobFromURL(ctx context.Context, copySource string, options *UploadBlobFromURLOptions) (UploadBlobFromURLResponse, error) {
 	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions := options.format()
 
-	resp, err := bb.generated().PutBlobFromURL(ctx, int64(0), copySource, opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions)
+	resp, err := bb.generated().PutBlobFromURL(ctx, int64(0), copySource, opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions, nil)
 
 	return resp, err
 }
@@ -227,7 +227,7 @@ func (bb *Client) StageBlockFromURL(ctx context.Context, base64BlockID string, s
 	stageBlockFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions := options.format()
 
 	resp, err := bb.generated().StageBlockFromURL(ctx, base64BlockID, 0, sourceURL, stageBlockFromURLOptions,
-		cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions)
+		cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions, nil)
 
 	return resp, err
 }

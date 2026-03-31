@@ -36,7 +36,6 @@ type SignatureValues struct {
 	UnauthorizedObjectID        string // suoid
 	CorrelationID               string // scid
 	SignedDelegatedUserObjectID string // sduoid
-	SignedDelegatedUserTenantId string // skdutid
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
@@ -217,9 +216,7 @@ func (v SignatureValues) SignWithUserDelegation(userDelegationCredential *UserDe
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
-	if udk.SignedDelegatedUserTid != nil {
-		p.signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
-	}
+	p.signedDelegatedUserTenantId = signedDelegatedUserTenantId
 
 	return p, nil
 }

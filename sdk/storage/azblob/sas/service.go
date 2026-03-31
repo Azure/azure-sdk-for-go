@@ -39,7 +39,6 @@ type BlobSignatureValues struct {
 	CorrelationID               string // scid
 	EncryptionScope             string `param:"ses"`
 	SignedDelegatedUserObjectID string // sduoid
-	SignedDelegatedUserTenantId string // skdutid
 }
 
 func getDirectoryDepth(path string) string {
@@ -194,10 +193,12 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 	udk := exported.GetUDKParams(userDelegationCredential)
 
 	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
+
 	var signedDelegatedUserTenantId string
 	if udk.SignedDelegatedUserTid != nil {
 		signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
 	}
+
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
@@ -267,9 +268,7 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
-	if udk.SignedDelegatedUserTid != nil {
-		p.signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
-	}
+	p.signedDelegatedUserTenantId = signedDelegatedUserTenantId
 
 	return p, nil
 }

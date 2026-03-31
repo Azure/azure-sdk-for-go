@@ -30,16 +30,17 @@ type DatalakeSignatureValues struct {
 	FilePath string
 	// Not nil for a directory SAS (ie sr=d)
 	// Use "" to create a FileSystem SAS
-	DirectoryPath        string
-	CacheControl         string // rscc
-	ContentDisposition   string // rscd
-	ContentEncoding      string // rsce
-	ContentLanguage      string // rscl
-	ContentType          string // rsct
-	AuthorizedObjectID   string // saoid
-	UnauthorizedObjectID string // suoid
-	CorrelationID        string // scid
-	EncryptionScope      string `param:"ses"`
+	DirectoryPath               string
+	CacheControl                string // rscc
+	ContentDisposition          string // rscd
+	ContentEncoding             string // rsce
+	ContentLanguage             string // rscl
+	ContentType                 string // rsct
+	AuthorizedObjectID          string // saoid
+	UnauthorizedObjectID        string // suoid
+	CorrelationID               string // scid
+	EncryptionScope             string `param:"ses"`
+	SignedDelegatedUserObjectID string // sduoid
 }
 
 // TODO: add snapshot and versioning support in the future
@@ -178,6 +179,11 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 
 	udkStart, udkExpiry := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry)
 
+	var signedDelegatedUserTenantId string
+	if udk.SignedDelegatedUserTid != nil {
+		signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
+	}
+
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
@@ -192,8 +198,8 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
-		"", // Placeholder for SignedKeyDelegatedUserTenantId (future field)
-		"", // Placeholder for SignedDelegatedUserObjectID (future field)
+		signedDelegatedUserTenantId,
+		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
@@ -223,17 +229,18 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		encryptionScope: v.EncryptionScope,
 
 		// Container/Blob-specific SAS parameters
-		resource:             resource,
-		identifier:           v.Identifier,
-		cacheControl:         v.CacheControl,
-		contentDisposition:   v.ContentDisposition,
-		contentEncoding:      v.ContentEncoding,
-		contentLanguage:      v.ContentLanguage,
-		contentType:          v.ContentType,
-		signedDirectoryDepth: getDirectoryDepth(v.DirectoryPath),
-		authorizedObjectID:   v.AuthorizedObjectID,
-		unauthorizedObjectID: v.UnauthorizedObjectID,
-		correlationID:        v.CorrelationID,
+		resource:                    resource,
+		identifier:                  v.Identifier,
+		cacheControl:                v.CacheControl,
+		contentDisposition:          v.ContentDisposition,
+		contentEncoding:             v.ContentEncoding,
+		contentLanguage:             v.ContentLanguage,
+		contentType:                 v.ContentType,
+		signedDirectoryDepth:        getDirectoryDepth(v.DirectoryPath),
+		authorizedObjectID:          v.AuthorizedObjectID,
+		unauthorizedObjectID:        v.UnauthorizedObjectID,
+		correlationID:               v.CorrelationID,
+		signedDelegatedUserObjectID: v.SignedDelegatedUserObjectID,
 		// Calculated SAS signature
 		signature: signature,
 	}
@@ -245,6 +252,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
+	p.signedDelegatedUserTenantId = signedDelegatedUserTenantId
 
 	return p, nil
 }

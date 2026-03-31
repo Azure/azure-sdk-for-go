@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -59,6 +60,23 @@ func TestNamespacesTestSuite(t *testing.T) {
 	suite.Run(t, new(NamespacesTestSuite))
 }
 
+func (testsuite *NamespacesTestSuite) waitForNamespaceReady() {
+	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+
+	deadline := time.Now().Add(2 * time.Minute)
+	for time.Now().Before(deadline) {
+		resp, err := namespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
+		testsuite.Require().NoError(err)
+		if resp.Properties == nil || resp.Properties.ProvisioningState == nil || *resp.Properties.ProvisioningState != "Updating" {
+			return
+		}
+		time.Sleep(10 * time.Second)
+	}
+
+	testsuite.T().Fatal("timed out waiting for relay namespace to leave Updating state")
+}
+
 func (testsuite *NamespacesTestSuite) Prepare() {
 	var err error
 	// From step Namespaces_CreateOrUpdate
@@ -106,6 +124,7 @@ func (testsuite *NamespacesTestSuite) TestNamespaces() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
+	testsuite.waitForNamespaceReady()
 
 	// From step Namespaces_List
 	fmt.Println("Call operation: Namespaces_List")
@@ -135,6 +154,7 @@ func (testsuite *NamespacesTestSuite) TestNamespaces() {
 func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
+	testsuite.waitForNamespaceReady()
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
 		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -311,6 +331,7 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 // Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}
 func (testsuite *NamespacesTestSuite) TestNamespacesAuthorization() {
 	var err error
+	testsuite.waitForNamespaceReady()
 	// From step Namespaces_CreateOrUpdateAuthorizationRule
 	fmt.Println("Call operation: Namespaces_CreateOrUpdateAuthorizationRule")
 	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -359,6 +380,7 @@ func (testsuite *NamespacesTestSuite) TestNamespacesAuthorization() {
 // Microsoft.Relay/namespaces/{namespaceName}/networkRuleSets/default
 func (testsuite *NamespacesTestSuite) TestNamespacesNetworkRuleSet() {
 	var err error
+	testsuite.waitForNamespaceReady()
 	// From step Namespaces_CreateOrUpdateNetworkRuleSet
 	fmt.Println("Call operation: Namespaces_CreateOrUpdateNetworkRuleSet")
 	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)

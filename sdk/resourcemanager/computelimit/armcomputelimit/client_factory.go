@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewFeaturesClient creates a new instance of FeaturesClient.
+func (c *ClientFactory) NewFeaturesClient() *FeaturesClient {
+	return &FeaturesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewGuestSubscriptionsClient creates a new instance of GuestSubscriptionsClient.
 func (c *ClientFactory) NewGuestSubscriptionsClient() *GuestSubscriptionsClient {
 	return &GuestSubscriptionsClient{

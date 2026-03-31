@@ -6,6 +6,69 @@ package armcomputelimit
 
 import "time"
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// Feature - Compute limit feature.
+type Feature struct {
+	// The resource-specific properties for this resource.
+	Properties *FeatureProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FeatureListResult - The response of a Feature list operation.
+type FeatureListResult struct {
+	// REQUIRED; The Feature items on this page
+	Value []*Feature
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// FeatureProperties - Properties of the compute limit feature.
+type FeatureProperties struct {
+	// The current state of the feature (for example, Enabled, Disabled).
+	State *FeatureState
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}
+
 // GuestSubscription - Guest subscription that consumes shared compute limits.
 type GuestSubscription struct {
 	// The resource-specific properties for this resource.
@@ -97,6 +160,36 @@ type OperationListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetail
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float64
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
 }
 
 // SharedLimit - Compute limits shared by the subscription.

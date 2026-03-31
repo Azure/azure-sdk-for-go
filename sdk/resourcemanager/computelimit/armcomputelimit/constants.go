@@ -43,6 +43,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// FeatureState - The allowed states for a compute limit feature.
+type FeatureState string
+
+const (
+	// FeatureStateDisabled - The feature is disabled.
+	FeatureStateDisabled FeatureState = "Disabled"
+	// FeatureStateEnabled - The feature is enabled.
+	FeatureStateEnabled FeatureState = "Enabled"
+)
+
+// PossibleFeatureStateValues returns the possible values for the FeatureState const type.
+func PossibleFeatureStateValues() []FeatureState {
+	return []FeatureState{
+		FeatureStateDisabled,
+		FeatureStateEnabled,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string

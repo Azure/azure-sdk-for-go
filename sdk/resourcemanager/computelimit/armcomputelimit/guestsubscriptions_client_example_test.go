@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_Create.json
+// Generated from example definition: 2026-03-20/GuestSubscriptions_Create.json
 func ExampleGuestSubscriptionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleGuestSubscriptionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_Delete.json
+// Generated from example definition: 2026-03-20/GuestSubscriptions_Delete.json
 func ExampleGuestSubscriptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleGuestSubscriptionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_Get.json
+// Generated from example definition: 2026-03-20/GuestSubscriptions_Get.json
 func ExampleGuestSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleGuestSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_List.json
+// Generated from example definition: 2026-03-20/GuestSubscriptions_List.json
 func ExampleGuestSubscriptionsClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

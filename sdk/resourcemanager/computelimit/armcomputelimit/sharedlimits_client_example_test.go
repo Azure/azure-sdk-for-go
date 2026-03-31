@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-15/SharedLimits_Create.json
+// Generated from example definition: 2026-03-20/SharedLimits_Create.json
 func ExampleSharedLimitsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleSharedLimitsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/SharedLimits_Delete.json
+// Generated from example definition: 2026-03-20/SharedLimits_Delete.json
 func ExampleSharedLimitsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleSharedLimitsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/SharedLimits_Get.json
+// Generated from example definition: 2026-03-20/SharedLimits_Get.json
 func ExampleSharedLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleSharedLimitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/SharedLimits_List.json
+// Generated from example definition: 2026-03-20/SharedLimits_List.json
 func ExampleSharedLimitsClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

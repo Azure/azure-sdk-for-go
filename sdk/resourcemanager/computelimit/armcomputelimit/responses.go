@@ -4,6 +4,24 @@
 
 package armcomputelimit
 
+// FeaturesClientEnableResponse contains the response from method FeaturesClient.BeginEnable.
+type FeaturesClientEnableResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// FeaturesClientGetResponse contains the response from method FeaturesClient.Get.
+type FeaturesClientGetResponse struct {
+	// Compute limit feature.
+	Feature
+}
+
+// FeaturesClientListBySubscriptionLocationResourceResponse contains the response from method FeaturesClient.NewListBySubscriptionLocationResourcePager.
+type FeaturesClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a Feature list operation.
+	FeatureListResult
+}
+
 // GuestSubscriptionsClientCreateResponse contains the response from method GuestSubscriptionsClient.Create.
 type GuestSubscriptionsClientCreateResponse struct {
 	// Guest subscription that consumes shared compute limits.

@@ -27,7 +27,7 @@ type UsageModelsClient struct {
 // NewUsageModelsClient creates a new instance of UsageModelsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUsageModelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsageModelsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewUsageModelsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // NewListPager - Get the list of cache usage models available to this subscription.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - options - UsageModelsClientListOptions contains the optional parameters for the UsageModelsClient.NewListPager method.
 func (client *UsageModelsClient) NewListPager(options *UsageModelsClientListOptions) *runtime.Pager[UsageModelsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsageModelsClientListResponse]{
@@ -79,7 +79,7 @@ func (client *UsageModelsClient) listCreateRequest(ctx context.Context, _ *Usage
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

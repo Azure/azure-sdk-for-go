@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/CheckFilePathAvailability.json
+// Generated from example definition: 2025-12-15-preview/CheckFilePathAvailability.json
 func ExampleResourceClient_CheckFilePathAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,7 +24,7 @@ func ExampleResourceClient_CheckFilePathAvailability() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewResourceClient().CheckFilePathAvailability(ctx, "eastus", armnetapp.FilePathAvailabilityRequest{
-		Name:     to.Ptr("my-exact-filepth"),
+		Name:     to.Ptr("my-exact-filepath"),
 		SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	}, nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleResourceClient_CheckFilePathAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CheckNameAvailability.json
+// Generated from example definition: 2025-12-15-preview/CheckNameAvailability.json
 func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleResourceClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CheckQuotaAvailability.json
+// Generated from example definition: 2025-12-15-preview/CheckQuotaAvailability.json
 func ExampleResourceClient_CheckQuotaAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleResourceClient_CheckQuotaAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/NetworkSiblingSet_Query.json
+// Generated from example definition: 2025-12-15-preview/NetworkSiblingSet_Query.json
 func ExampleResourceClient_QueryNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleResourceClient_QueryNetworkSiblingSet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/RegionInfo.json
+// Generated from example definition: 2025-12-15-preview/RegionInfo.json
 func ExampleResourceClient_QueryRegionInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleResourceClient_QueryRegionInfo() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/NetworkSiblingSet_Update.json
+// Generated from example definition: 2025-12-15-preview/NetworkSiblingSet_Update.json
 func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

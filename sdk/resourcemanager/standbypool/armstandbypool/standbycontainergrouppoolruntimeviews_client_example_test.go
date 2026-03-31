@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/StandbyContainerGroupPoolRuntimeViews_Get.json
+// Generated from example definition: 2025-10-01/StandbyContainerGroupPoolRuntimeViews_Get.json
 func ExampleStandbyContainerGroupPoolRuntimeViewsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleStandbyContainerGroupPoolRuntimeViewsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.json
+// Generated from example definition: 2025-10-01/StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.json
 func ExampleStandbyContainerGroupPoolRuntimeViewsClient_NewListByStandbyPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

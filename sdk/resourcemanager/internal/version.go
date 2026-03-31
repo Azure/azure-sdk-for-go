@@ -8,5 +8,5 @@ const (
 	Module = "internal"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v3.1.1"
+	Version = "v3.1.2-beta.1"
 )

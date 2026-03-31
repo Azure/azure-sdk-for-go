@@ -42,7 +42,7 @@ func NewElasticVolumesClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Create or update the specified volume within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -70,7 +70,7 @@ func (client *ElasticVolumesClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create or update the specified volume within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticVolumesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ElasticVolume, options *ElasticVolumesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticVolumesClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *ElasticVolumesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *ElasticVolumesClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Delete the specified Elastic Volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -160,7 +160,7 @@ func (client *ElasticVolumesClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Delete the specified Elastic Volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticVolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *ElasticVolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticVolumesClient.BeginDelete"
@@ -210,7 +210,7 @@ func (client *ElasticVolumesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -218,7 +218,7 @@ func (client *ElasticVolumesClient) deleteCreateRequest(ctx context.Context, res
 // Get - Get the details of the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -274,7 +274,7 @@ func (client *ElasticVolumesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +291,7 @@ func (client *ElasticVolumesClient) getHandleResponse(resp *http.Response) (Elas
 
 // NewListByElasticPoolPager - List all Elastic Volumes within the Elastic Capacity Pool
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -344,7 +344,7 @@ func (client *ElasticVolumesClient) listByElasticPoolCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -362,7 +362,7 @@ func (client *ElasticVolumesClient) listByElasticPoolHandleResponse(resp *http.R
 // BeginRevert - Revert an Elastic Volume to the snapshot specified in the body
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -390,7 +390,7 @@ func (client *ElasticVolumesClient) BeginRevert(ctx context.Context, resourceGro
 // Revert - Revert an Elastic Volume to the snapshot specified in the body
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticVolumesClient) revert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ElasticVolumeRevert, options *ElasticVolumesClientBeginRevertOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticVolumesClient.BeginRevert"
@@ -440,7 +440,7 @@ func (client *ElasticVolumesClient) revertCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -453,7 +453,7 @@ func (client *ElasticVolumesClient) revertCreateRequest(ctx context.Context, res
 // BeginUpdate - Patch the specified elastic volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -481,7 +481,7 @@ func (client *ElasticVolumesClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Patch the specified elastic volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticVolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ElasticVolumeUpdate, options *ElasticVolumesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticVolumesClient.BeginUpdate"
@@ -531,7 +531,7 @@ func (client *ElasticVolumesClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

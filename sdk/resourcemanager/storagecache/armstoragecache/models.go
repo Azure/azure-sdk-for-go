@@ -241,6 +241,13 @@ type AmlFilesystemProperties struct {
 	// READ-ONLY; Client information for the AML file system.
 	ClientInfo *AmlFilesystemClientInfo
 
+	// READ-ONLY; The unique identifier of the AML file system cluster.
+	ClusterUUID *string
+
+	// READ-ONLY; The current storage capacity of the AML file system, in TiB. This reflects the actual capacity including any
+	// expansions.
+	CurrentStorageCapacityTiB *float32
+
 	// READ-ONLY; Health of the AML file system.
 	Health *AmlFilesystemHealth
 
@@ -1004,6 +1011,82 @@ type Condition struct {
 
 	// READ-ONLY; The time when the condition was raised.
 	Timestamp *time.Time
+}
+
+// ExpansionJob - An expansion job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+type ExpansionJob struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of the expansion job.
+	Properties *ExpansionJobProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExpansionJobProperties - Properties of the expansion job.
+type ExpansionJobProperties struct {
+	// The new storage capacity in TiB for the AML file system after expansion. This must be a multiple of the Sku step size,
+	// and greater than the current storage capacity of the AML file system.
+	NewStorageCapacityTiB *float32
+
+	// READ-ONLY; ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+	ProvisioningState *ExpansionJobPropertiesProvisioningState
+
+	// READ-ONLY; The status of the expansion job.
+	Status *ExpansionJobPropertiesStatus
+}
+
+// ExpansionJobPropertiesStatus - The status of the expansion job.
+type ExpansionJobPropertiesStatus struct {
+	// READ-ONLY; The time (in UTC) when the expansion job completed. Only populated when job reaches a terminal state.
+	CompletionTimeUTC *time.Time
+
+	// READ-ONLY; The percentage of expansion job completion.
+	PercentComplete *float32
+
+	// READ-ONLY; The time (in UTC) the expansion job started.
+	StartTimeUTC *time.Time
+
+	// READ-ONLY; The operational state of the expansion job. InProgress indicates the expansion is still running. Completed indicates
+	// expansion finished successfully. Failed means the expansion was unable to complete
+	// due to a fatal error. Deleting indicates the expansion is being rolled back.
+	State *ExpansionJobStatusType
+
+	// READ-ONLY; Server-defined status code for expansion job.
+	StatusCode *string
+
+	// READ-ONLY; Server-defined status message for expansion job.
+	StatusMessage *string
+}
+
+// ExpansionJobUpdate - An expansion job update instance.
+type ExpansionJobUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ExpansionJobsListResult - Result of the request to list expansion jobs. It contains a list of expansion jobs and a URL
+// link to get the next set of results.
+type ExpansionJobsListResult struct {
+	// URL to get the next set of expansion job list results, if there are any.
+	NextLink *string
+
+	// List of expansion jobs.
+	Value []*ExpansionJob
 }
 
 // ImportJob - An import job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md

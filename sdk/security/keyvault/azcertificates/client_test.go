@@ -733,5 +733,21 @@ func TestSubjectAlternativeNames(t *testing.T) {
 	require.NotNil(t, getResp.Policy)
 	require.NotNil(t, getResp.Policy.X509CertificateProperties)
 	require.NotNil(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
-	testSerde(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
+
+	sans := getResp.Policy.X509CertificateProperties.SubjectAlternativeNames
+	require.Equal(t, 2, len(sans.DNSNames))
+	require.Equal(t, to.Ptr("localhost"), sans.DNSNames[0])
+	require.Equal(t, to.Ptr("example.com"), sans.DNSNames[1])
+	require.Equal(t, 1, len(sans.Emails))
+	require.Equal(t, to.Ptr("admin@example.com"), sans.Emails[0])
+	require.Equal(t, 2, len(sans.IPAddresses))
+	require.Equal(t, to.Ptr("192.168.1.1"), sans.IPAddresses[0])
+	require.Equal(t, to.Ptr("2001:0db8::1"), sans.IPAddresses[1])
+	require.Equal(t, 2, len(sans.URIs))
+	require.Equal(t, to.Ptr("https://example.com"), sans.URIs[0])
+	require.Equal(t, to.Ptr("https://test.com/path"), sans.URIs[1])
+	require.Equal(t, 1, len(sans.UserPrincipalNames))
+	require.Equal(t, to.Ptr("user@domain.com"), sans.UserPrincipalNames[0])
+
+	testSerde(t, sans)
 }

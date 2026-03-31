@@ -5,7 +5,7 @@
 //go:generate autorest  ./autorest.md
 //go:generate rm -f options.go openai_client.go responses.go
 //go:generate go mod tidy
-//go:generate goimports -w .
+//go:generate gofmt -w .
 
 // running the tests that check that generation went the way we expected to.
 //go:go test -v ./internal

@@ -42,7 +42,7 @@ func NewActiveDirectoryConfigsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create or update the specified active directory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activeDirectoryConfigName - The name of the ActiveDirectoryConfig
 //   - body - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *ActiveDirectoryConfigsClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Create or update the specified active directory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ActiveDirectoryConfigsClient) createOrUpdate(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, body ActiveDirectoryConfig, options *ActiveDirectoryConfigsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ActiveDirectoryConfigsClient.BeginCreateOrUpdate"
@@ -110,7 +110,7 @@ func (client *ActiveDirectoryConfigsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *ActiveDirectoryConfigsClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete the specified Active Directory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activeDirectoryConfigName - The name of the ActiveDirectoryConfig
 //   - options - ActiveDirectoryConfigsClientBeginDeleteOptions contains the optional parameters for the ActiveDirectoryConfigsClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *ActiveDirectoryConfigsClient) BeginDelete(ctx context.Context, res
 // Delete - Delete the specified Active Directory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ActiveDirectoryConfigsClient) deleteOperation(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, options *ActiveDirectoryConfigsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ActiveDirectoryConfigsClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *ActiveDirectoryConfigsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -198,7 +198,7 @@ func (client *ActiveDirectoryConfigsClient) deleteCreateRequest(ctx context.Cont
 // Get - Get the details of the specified active directory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activeDirectoryConfigName - The name of the ActiveDirectoryConfig
 //   - options - ActiveDirectoryConfigsClientGetOptions contains the optional parameters for the ActiveDirectoryConfigsClient.Get
@@ -245,7 +245,7 @@ func (client *ActiveDirectoryConfigsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *ActiveDirectoryConfigsClient) getHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - List all active directory configurations within the resource group.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ActiveDirectoryConfigsClientListByResourceGroupOptions contains the optional parameters for the ActiveDirectoryConfigsClient.NewListByResourceGroupPager
 //     method.
@@ -305,7 +305,7 @@ func (client *ActiveDirectoryConfigsClient) listByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +322,7 @@ func (client *ActiveDirectoryConfigsClient) listByResourceGroupHandleResponse(re
 
 // NewListBySubscriptionPager - List all active directory configurations within the subscription
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - options - ActiveDirectoryConfigsClientListBySubscriptionOptions contains the optional parameters for the ActiveDirectoryConfigsClient.NewListBySubscriptionPager
 //     method.
 func (client *ActiveDirectoryConfigsClient) NewListBySubscriptionPager(options *ActiveDirectoryConfigsClientListBySubscriptionOptions) *runtime.Pager[ActiveDirectoryConfigsClientListBySubscriptionResponse] {
@@ -360,7 +360,7 @@ func (client *ActiveDirectoryConfigsClient) listBySubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +378,7 @@ func (client *ActiveDirectoryConfigsClient) listBySubscriptionHandleResponse(res
 // BeginUpdate - Patch the specified active directory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activeDirectoryConfigName - The name of the ActiveDirectoryConfig
 //   - body - The resource properties to be updated.
@@ -404,7 +404,7 @@ func (client *ActiveDirectoryConfigsClient) BeginUpdate(ctx context.Context, res
 // Update - Patch the specified active directory configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ActiveDirectoryConfigsClient) update(ctx context.Context, resourceGroupName string, activeDirectoryConfigName string, body ActiveDirectoryConfigUpdate, options *ActiveDirectoryConfigsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ActiveDirectoryConfigsClient.BeginUpdate"
@@ -446,7 +446,7 @@ func (client *ActiveDirectoryConfigsClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

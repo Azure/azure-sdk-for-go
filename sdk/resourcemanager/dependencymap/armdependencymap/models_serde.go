@@ -8,14 +8,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type DateTimeFilter.
 func (d DateTimeFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "endDateTimeUtc", d.EndDateTimeUTC)
-	populateDateTimeRFC3339(objectMap, "startDateTimeUtc", d.StartDateTimeUTC)
+	populateTime[datetime.RFC3339](objectMap, "endDateTimeUtc", d.EndDateTimeUTC)
+	populateTime[datetime.RFC3339](objectMap, "startDateTimeUtc", d.StartDateTimeUTC)
 	return json.Marshal(objectMap)
 }
 
@@ -29,10 +31,10 @@ func (d *DateTimeFilter) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endDateTimeUtc":
-			err = unpopulateDateTimeRFC3339(val, "EndDateTimeUTC", &d.EndDateTimeUTC)
+			err = unpopulateTime[datetime.RFC3339](val, "EndDateTimeUTC", &d.EndDateTimeUTC)
 			delete(rawMsg, key)
 		case "startDateTimeUtc":
-			err = unpopulateDateTimeRFC3339(val, "StartDateTimeUTC", &d.StartDateTimeUTC)
+			err = unpopulateTime[datetime.RFC3339](val, "StartDateTimeUTC", &d.StartDateTimeUTC)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -290,12 +292,12 @@ func (e *ExportDependenciesAdditionalInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExportDependenciesOperationResult.
 func (e ExportDependenciesOperationResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "endTime", e.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", e.EndTime)
 	populate(objectMap, "error", e.Error)
 	populate(objectMap, "id", e.ID)
 	populate(objectMap, "name", e.Name)
 	populate(objectMap, "properties", e.Properties)
-	populateDateTimeRFC3339(objectMap, "startTime", e.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", e.StartTime)
 	populate(objectMap, "status", e.Status)
 	return json.Marshal(objectMap)
 }
@@ -310,7 +312,7 @@ func (e *ExportDependenciesOperationResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateDateTimeRFC3339(val, "EndTime", &e.EndTime)
+			err = unpopulateTime[datetime.RFC3339](val, "EndTime", &e.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &e.Error)
@@ -325,7 +327,7 @@ func (e *ExportDependenciesOperationResult) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Properties", &e.Properties)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateDateTimeRFC3339(val, "StartTime", &e.StartTime)
+			err = unpopulateTime[datetime.RFC3339](val, "StartTime", &e.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &e.Status)
@@ -823,10 +825,10 @@ func (p *ProcessNameFilter) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -842,7 +844,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -851,7 +853,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
@@ -908,6 +910,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func populateAny(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -926,4 +939,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

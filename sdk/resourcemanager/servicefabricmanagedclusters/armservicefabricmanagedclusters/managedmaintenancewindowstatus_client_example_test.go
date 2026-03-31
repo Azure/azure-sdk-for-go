@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01-preview/ManagedMaintenanceWindowStatusGet_example.json
+// Generated from example definition: 2026-02-01/ManagedMaintenanceWindowStatusGet_example.json
 func ExampleManagedMaintenanceWindowStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

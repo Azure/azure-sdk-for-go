@@ -102,20 +102,17 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
 	_require.NoError(err)
 
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
 	now := time.Now().UTC()
 	start := now.Add(-5 * time.Minute)
 	expiry := now.Add(5 * time.Minute)
 	info := service.KeyInfo{
-		Start:  to.Ptr(start.Format(time.RFC3339)),
-		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+		Start:            to.Ptr(start.Format(time.RFC3339)),
+		Expiry:           to.Ptr(expiry.Format(time.RFC3339)),
+		DelegatedUserTid: to.Ptr(dummyTenantID),
 	}
 
-	dummyTenantID := "00000000-0000-0000-0000-000000000000"
-	opts := service.GetUserDelegationCredentialOptions{
-		DelegatedUserTenantId: to.Ptr(dummyTenantID),
-	}
-
-	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, &opts)
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	if err != nil {
 		testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
 	}

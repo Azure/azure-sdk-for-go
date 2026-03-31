@@ -23,8 +23,7 @@ type DeleteFileSystemOptions = filesystem.DeleteOptions
 
 // GetUserDelegationCredentialOptions contains optional parameters for GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct {
-	// The delegated user tenant id in Azure AD
-	DelegatedUserTenantId *string
+	// placeholder for future options
 }
 
 func (o *GetUserDelegationCredentialOptions) format() *generated_blob.ServiceClientGetUserDelegationKeyOptions {

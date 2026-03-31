@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/DisconnectedOperations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/DisconnectedOperations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,6 +27,18 @@ func ExampleClient_BeginCreateOrUpdate() {
 		Properties: &armdisconnectedoperations.DisconnectedOperationProperties{
 			BillingModel:     to.Ptr(armdisconnectedoperations.BillingModelCapacity),
 			ConnectionIntent: to.Ptr(armdisconnectedoperations.ConnectionIntentDisconnected),
+			BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
+				AutoRenew:     to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+				BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
+				Current: &armdisconnectedoperations.BillingPeriod{
+					Cores:        to.Ptr[int32](12),
+					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
+				},
+			},
+			BenefitPlans: &armdisconnectedoperations.BenefitPlans{
+				AzureHybridWindowsServerBenefit: to.Ptr(armdisconnectedoperations.BenefitPlanStatusEnabled),
+				WindowsServerVMCount:            to.Ptr[int32](5),
+			},
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -53,6 +65,25 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			ConnectionStatus: to.Ptr(armdisconnectedoperations.ConnectionStatusDisconnected),
 	// 			RegistrationStatus: to.Ptr(armdisconnectedoperations.RegistrationStatusRegistered),
 	// 			DeviceVersion: to.Ptr("1.0.0"),
+	// 			BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
+	// 				AutoRenew: to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+	// 				BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
+	// 				Current: &armdisconnectedoperations.BillingPeriod{
+	// 					Cores: to.Ptr[int32](12),
+	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 				},
+	// 				Upcoming: &armdisconnectedoperations.BillingPeriod{
+	// 					Cores: to.Ptr[int32](12),
+	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 				},
+	// 			},
+	// 			BenefitPlans: &armdisconnectedoperations.BenefitPlans{
+	// 				AzureHybridWindowsServerBenefit: to.Ptr(armdisconnectedoperations.BenefitPlanStatusEnabled),
+	// 				WindowsServerVMCount: to.Ptr[int32](5),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
@@ -73,7 +104,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/DisconnectedOperations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/DisconnectedOperations_Delete_MaximumSet_Gen.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +125,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/DisconnectedOperations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/DisconnectedOperations_Get_MaximumSet_Gen.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,6 +153,25 @@ func ExampleClient_Get() {
 	// 			ConnectionStatus: to.Ptr(armdisconnectedoperations.ConnectionStatusDisconnected),
 	// 			RegistrationStatus: to.Ptr(armdisconnectedoperations.RegistrationStatusRegistered),
 	// 			DeviceVersion: to.Ptr("1.0.0"),
+	// 			BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
+	// 				AutoRenew: to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+	// 				BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
+	// 				Current: &armdisconnectedoperations.BillingPeriod{
+	// 					Cores: to.Ptr[int32](12),
+	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 				},
+	// 				Upcoming: &armdisconnectedoperations.BillingPeriod{
+	// 					Cores: to.Ptr[int32](12),
+	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 				},
+	// 			},
+	// 			BenefitPlans: &armdisconnectedoperations.BenefitPlans{
+	// 				AzureHybridWindowsServerBenefit: to.Ptr(armdisconnectedoperations.BenefitPlanStatusEnabled),
+	// 				WindowsServerVMCount: to.Ptr[int32](5),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
@@ -142,7 +192,7 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/DisconnectedOperations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/DisconnectedOperations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,6 +226,25 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 					ConnectionStatus: to.Ptr(armdisconnectedoperations.ConnectionStatusDisconnected),
 		// 					RegistrationStatus: to.Ptr(armdisconnectedoperations.RegistrationStatusRegistered),
 		// 					DeviceVersion: to.Ptr("1.0.0"),
+		// 					BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
+		// 						AutoRenew: to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+		// 						BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
+		// 						Current: &armdisconnectedoperations.BillingPeriod{
+		// 							Cores: to.Ptr[int32](12),
+		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+		// 						},
+		// 						Upcoming: &armdisconnectedoperations.BillingPeriod{
+		// 							Cores: to.Ptr[int32](12),
+		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+		// 						},
+		// 					},
+		// 					BenefitPlans: &armdisconnectedoperations.BenefitPlans{
+		// 						AzureHybridWindowsServerBenefit: to.Ptr(armdisconnectedoperations.BenefitPlanStatusEnabled),
+		// 						WindowsServerVMCount: to.Ptr[int32](5),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key1": to.Ptr("value1"),
@@ -200,7 +269,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/DisconnectedOperations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/DisconnectedOperations_ListBySubscription_MaximumSet_Gen.json
 func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,6 +303,25 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 					ConnectionStatus: to.Ptr(armdisconnectedoperations.ConnectionStatusDisconnected),
 		// 					RegistrationStatus: to.Ptr(armdisconnectedoperations.RegistrationStatusRegistered),
 		// 					DeviceVersion: to.Ptr("1.0.0"),
+		// 					BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
+		// 						AutoRenew: to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+		// 						BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
+		// 						Current: &armdisconnectedoperations.BillingPeriod{
+		// 							Cores: to.Ptr[int32](12),
+		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+		// 						},
+		// 						Upcoming: &armdisconnectedoperations.BillingPeriod{
+		// 							Cores: to.Ptr[int32](12),
+		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+		// 						},
+		// 					},
+		// 					BenefitPlans: &armdisconnectedoperations.BenefitPlans{
+		// 						AzureHybridWindowsServerBenefit: to.Ptr(armdisconnectedoperations.BenefitPlanStatusEnabled),
+		// 						WindowsServerVMCount: to.Ptr[int32](5),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key1": to.Ptr("value1"),
@@ -258,7 +346,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/DisconnectedOperations_ListDeploymentManifest_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/DisconnectedOperations_ListDeploymentManifest_MaximumSet_Gen.json
 func ExampleClient_ListDeploymentManifest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,11 +373,30 @@ func ExampleClient_ListDeploymentManifest() {
 	// 		BillingModel: to.Ptr(armdisconnectedoperations.BillingModelCapacity),
 	// 		ConnectionIntent: to.Ptr(armdisconnectedoperations.ConnectionIntentConnected),
 	// 		Cloud: to.Ptr("Public"),
+	// 		BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
+	// 			AutoRenew: to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+	// 			BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
+	// 			Current: &armdisconnectedoperations.BillingPeriod{
+	// 				Cores: to.Ptr[int32](12),
+	// 				PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
+	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
+	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 			},
+	// 			Upcoming: &armdisconnectedoperations.BillingPeriod{
+	// 				Cores: to.Ptr[int32](12),
+	// 				PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
+	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 			},
+	// 		},
+	// 		BenefitPlans: &armdisconnectedoperations.BenefitPlans{
+	// 			AzureHybridWindowsServerBenefit: to.Ptr(armdisconnectedoperations.BenefitPlanStatusEnabled),
+	// 			WindowsServerVMCount: to.Ptr[int32](5),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/DisconnectedOperations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/DisconnectedOperations_Update_MaximumSet_Gen.json
 func ExampleClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,6 +433,25 @@ func ExampleClient_Update() {
 	// 			ConnectionStatus: to.Ptr(armdisconnectedoperations.ConnectionStatusDisconnected),
 	// 			RegistrationStatus: to.Ptr(armdisconnectedoperations.RegistrationStatusRegistered),
 	// 			DeviceVersion: to.Ptr("2.0.0"),
+	// 			BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
+	// 				AutoRenew: to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+	// 				BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
+	// 				Current: &armdisconnectedoperations.BillingPeriod{
+	// 					Cores: to.Ptr[int32](12),
+	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 				},
+	// 				Upcoming: &armdisconnectedoperations.BillingPeriod{
+	// 					Cores: to.Ptr[int32](12),
+	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 				},
+	// 			},
+	// 			BenefitPlans: &armdisconnectedoperations.BenefitPlans{
+	// 				AzureHybridWindowsServerBenefit: to.Ptr(armdisconnectedoperations.BenefitPlanStatusEnabled),
+	// 				WindowsServerVMCount: to.Ptr[int32](5),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),

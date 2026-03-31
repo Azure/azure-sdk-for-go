@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/ManagedHsm_deletePrivateEndpointConnection.json
+// Generated from example definition: 2026-02-01/ManagedHsm_deletePrivateEndpointConnection.json
 func ExampleMHSMPrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_getPrivateEndpointConnection.json
+// Generated from example definition: 2026-02-01/ManagedHsm_getPrivateEndpointConnection.json
 func ExampleMHSMPrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_ListPrivateEndpointConnectionsByResource.json
+// Generated from example definition: 2026-02-01/ManagedHsm_ListPrivateEndpointConnectionsByResource.json
 func ExampleMHSMPrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_NewListByResourcePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_putPrivateEndpointConnection.json
+// Generated from example definition: 2026-02-01/ManagedHsm_putPrivateEndpointConnection.json
 func ExampleMHSMPrivateEndpointConnectionsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

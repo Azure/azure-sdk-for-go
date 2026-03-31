@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_ChangeZone.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_ChangeZone.json
 func ExampleElasticCapacityPoolsClient_BeginChangeZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleElasticCapacityPoolsClient_BeginChangeZone() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_CheckVolumeFilePathAvailability.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_CheckVolumeFilePathAvailability.json
 func ExampleElasticCapacityPoolsClient_CheckVolumeFilePathAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleElasticCapacityPoolsClient_CheckVolumeFilePathAvailability() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewElasticCapacityPoolsClient().CheckVolumeFilePathAvailability(ctx, "myRG", "account1", "pool1", armnetapp.CheckElasticVolumeFilePathAvailabilityRequest{
-		FilePath: to.Ptr("my-exact-filepth"),
+		FilePath: to.Ptr("my-exact-filepath"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -82,7 +82,7 @@ func ExampleElasticCapacityPoolsClient_CheckVolumeFilePathAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_CreateOrUpdate.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_CreateOrUpdate.json
 func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsC
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_CreateOrUpdateCMK.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_CreateOrUpdateCMK.json
 func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsCreateOrUpdateCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsC
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_Delete.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_Delete.json
 func ExampleElasticCapacityPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleElasticCapacityPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_Get.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_Get.json
 func ExampleElasticCapacityPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleElasticCapacityPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_ListByElasticAccount.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_ListByElasticAccount.json
 func ExampleElasticCapacityPoolsClient_NewListByElasticAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,7 +334,7 @@ func ExampleElasticCapacityPoolsClient_NewListByElasticAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticCapacityPools_Update.json
+// Generated from example definition: 2025-12-15-preview/ElasticCapacityPools_Update.json
 func ExampleElasticCapacityPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

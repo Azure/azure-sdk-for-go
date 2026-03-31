@@ -11,6 +11,7 @@ type AmlFilesystemHealthStateType string
 const (
 	AmlFilesystemHealthStateTypeAvailable     AmlFilesystemHealthStateType = "Available"
 	AmlFilesystemHealthStateTypeDegraded      AmlFilesystemHealthStateType = "Degraded"
+	AmlFilesystemHealthStateTypeExpanding     AmlFilesystemHealthStateType = "Expanding"
 	AmlFilesystemHealthStateTypeMaintenance   AmlFilesystemHealthStateType = "Maintenance"
 	AmlFilesystemHealthStateTypeTransitioning AmlFilesystemHealthStateType = "Transitioning"
 	AmlFilesystemHealthStateTypeUnavailable   AmlFilesystemHealthStateType = "Unavailable"
@@ -21,6 +22,7 @@ func PossibleAmlFilesystemHealthStateTypeValues() []AmlFilesystemHealthStateType
 	return []AmlFilesystemHealthStateType{
 		AmlFilesystemHealthStateTypeAvailable,
 		AmlFilesystemHealthStateTypeDegraded,
+		AmlFilesystemHealthStateTypeExpanding,
 		AmlFilesystemHealthStateTypeMaintenance,
 		AmlFilesystemHealthStateTypeTransitioning,
 		AmlFilesystemHealthStateTypeUnavailable,
@@ -344,6 +346,54 @@ func PossibleDomainJoinedTypeValues() []DomainJoinedType {
 		DomainJoinedTypeError,
 		DomainJoinedTypeNo,
 		DomainJoinedTypeYes,
+	}
+}
+
+// ExpansionJobPropertiesProvisioningState - ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+type ExpansionJobPropertiesProvisioningState string
+
+const (
+	ExpansionJobPropertiesProvisioningStateCanceled  ExpansionJobPropertiesProvisioningState = "Canceled"
+	ExpansionJobPropertiesProvisioningStateCreating  ExpansionJobPropertiesProvisioningState = "Creating"
+	ExpansionJobPropertiesProvisioningStateDeleting  ExpansionJobPropertiesProvisioningState = "Deleting"
+	ExpansionJobPropertiesProvisioningStateFailed    ExpansionJobPropertiesProvisioningState = "Failed"
+	ExpansionJobPropertiesProvisioningStateSucceeded ExpansionJobPropertiesProvisioningState = "Succeeded"
+	ExpansionJobPropertiesProvisioningStateUpdating  ExpansionJobPropertiesProvisioningState = "Updating"
+)
+
+// PossibleExpansionJobPropertiesProvisioningStateValues returns the possible values for the ExpansionJobPropertiesProvisioningState const type.
+func PossibleExpansionJobPropertiesProvisioningStateValues() []ExpansionJobPropertiesProvisioningState {
+	return []ExpansionJobPropertiesProvisioningState{
+		ExpansionJobPropertiesProvisioningStateCanceled,
+		ExpansionJobPropertiesProvisioningStateCreating,
+		ExpansionJobPropertiesProvisioningStateDeleting,
+		ExpansionJobPropertiesProvisioningStateFailed,
+		ExpansionJobPropertiesProvisioningStateSucceeded,
+		ExpansionJobPropertiesProvisioningStateUpdating,
+	}
+}
+
+// ExpansionJobStatusType - The operational state of the expansion job. InProgress indicates the expansion is still running.
+// Completed indicates expansion finished successfully. Failed means the expansion was unable to complete
+// due to a fatal error. Deleting indicates the expansion is being rolled back.
+type ExpansionJobStatusType string
+
+const (
+	ExpansionJobStatusTypeCompleted   ExpansionJobStatusType = "Completed"
+	ExpansionJobStatusTypeDeleting    ExpansionJobStatusType = "Deleting"
+	ExpansionJobStatusTypeFailed      ExpansionJobStatusType = "Failed"
+	ExpansionJobStatusTypeInProgress  ExpansionJobStatusType = "InProgress"
+	ExpansionJobStatusTypeRollingBack ExpansionJobStatusType = "RollingBack"
+)
+
+// PossibleExpansionJobStatusTypeValues returns the possible values for the ExpansionJobStatusType const type.
+func PossibleExpansionJobStatusTypeValues() []ExpansionJobStatusType {
+	return []ExpansionJobStatusType{
+		ExpansionJobStatusTypeCompleted,
+		ExpansionJobStatusTypeDeleting,
+		ExpansionJobStatusTypeFailed,
+		ExpansionJobStatusTypeInProgress,
+		ExpansionJobStatusTypeRollingBack,
 	}
 }
 

@@ -1,5 +1,32 @@
 # Release History
 
+## 1.1.0 (2026-03-09)
+### Features Added
+
+- New enum type `PrivateEndpointConnectionProvisioningState` with values `PrivateEndpointConnectionProvisioningStateCreating`, `PrivateEndpointConnectionProvisioningStateDeleting`, `PrivateEndpointConnectionProvisioningStateFailed`, `PrivateEndpointConnectionProvisioningStateSucceeded`
+- New enum type `PrivateEndpointServiceConnectionStatus` with values `PrivateEndpointServiceConnectionStatusApproved`, `PrivateEndpointServiceConnectionStatusPending`, `PrivateEndpointServiceConnectionStatusRejected`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New function `*SchedulersClient.BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *SchedulersClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*runtime.Poller[SchedulersClientCreateOrUpdatePrivateEndpointConnectionResponse], error)`
+- New function `*SchedulersClient.BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, options *SchedulersClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[SchedulersClientDeletePrivateEndpointConnectionResponse], error)`
+- New function `*SchedulersClient.GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, options *SchedulersClientGetPrivateEndpointConnectionOptions) (SchedulersClientGetPrivateEndpointConnectionResponse, error)`
+- New function `*SchedulersClient.GetPrivateLink(ctx context.Context, resourceGroupName string, schedulerName string, privateLinkResourceName string, options *SchedulersClientGetPrivateLinkOptions) (SchedulersClientGetPrivateLinkResponse, error)`
+- New function `*SchedulersClient.NewListPrivateEndpointConnectionsPager(resourceGroupName string, schedulerName string, options *SchedulersClientListPrivateEndpointConnectionsOptions) *runtime.Pager[SchedulersClientListPrivateEndpointConnectionsResponse]`
+- New function `*SchedulersClient.NewListPrivateLinksPager(resourceGroupName string, schedulerName string, options *SchedulersClientListPrivateLinksOptions) *runtime.Pager[SchedulersClientListPrivateLinksResponse]`
+- New function `*SchedulersClient.BeginUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*runtime.Poller[SchedulersClientUpdatePrivateEndpointConnectionResponse], error)`
+- New struct `OptionalPropertiesUpdateableProperties`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateEndpointConnectionUpdate`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `SchedulerPrivateLinkResource`
+- New struct `SchedulerPrivateLinkResourceListResult`
+- New field `PrivateEndpointConnections`, `PublicNetworkAccess` in struct `SchedulerProperties`
+- New field `PublicNetworkAccess` in struct `SchedulerPropertiesUpdate`
+
+
 ## 1.0.0 (2025-09-26)
 ### Breaking Changes
 

@@ -65,6 +65,51 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	// PrivateEndpointConnectionProvisioningStateCreating - Connection is being created
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	// PrivateEndpointConnectionProvisioningStateDeleting - Connection is being deleted
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	// PrivateEndpointConnectionProvisioningStateFailed - Connection provisioning has failed
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	// PrivateEndpointConnectionProvisioningStateSucceeded - Connection has been provisioned
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	// PrivateEndpointServiceConnectionStatusApproved - Connection approved
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	// PrivateEndpointServiceConnectionStatusPending - Connection waiting for approval or rejection
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
+	// PrivateEndpointServiceConnectionStatusRejected - Connection Rejected
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
 // ProvisioningState - The status of the current operation
 type ProvisioningState string
 
@@ -95,6 +140,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateProvisioning,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
+	}
+}
+
+// PublicNetworkAccess - State of the public network access.
+type PublicNetworkAccess string
+
+const (
+	// PublicNetworkAccessDisabled - The public network access is disabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled - The public network access is enabled
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
 	}
 }
 

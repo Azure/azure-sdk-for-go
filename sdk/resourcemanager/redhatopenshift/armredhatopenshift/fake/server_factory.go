@@ -16,13 +16,20 @@ import (
 
 // ServerFactory is a fake server for instances of the armredhatopenshift.ClientFactory type.
 type ServerFactory struct {
-	MachinePoolsServer          MachinePoolsServer
-	OpenShiftClustersServer     OpenShiftClustersServer
-	OpenShiftVersionsServer     OpenShiftVersionsServer
-	OperationsServer            OperationsServer
-	SecretsServer               SecretsServer
-	SyncIdentityProvidersServer SyncIdentityProvidersServer
-	SyncSetsServer              SyncSetsServer
+	// OpenShiftClustersServer contains the fakes for client OpenShiftClustersClient
+	OpenShiftClustersServer OpenShiftClustersServer
+
+	// OpenShiftVersionsServer contains the fakes for client OpenShiftVersionsClient
+	OpenShiftVersionsServer OpenShiftVersionsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PlatformWorkloadIdentityRoleSetServer contains the fakes for client PlatformWorkloadIdentityRoleSetClient
+	PlatformWorkloadIdentityRoleSetServer PlatformWorkloadIdentityRoleSetServer
+
+	// PlatformWorkloadIdentityRoleSetsServer contains the fakes for client PlatformWorkloadIdentityRoleSetsClient
+	PlatformWorkloadIdentityRoleSetsServer PlatformWorkloadIdentityRoleSetsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -37,15 +44,13 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armredhatopenshift.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                           *ServerFactory
-	trMu                          sync.Mutex
-	trMachinePoolsServer          *MachinePoolsServerTransport
-	trOpenShiftClustersServer     *OpenShiftClustersServerTransport
-	trOpenShiftVersionsServer     *OpenShiftVersionsServerTransport
-	trOperationsServer            *OperationsServerTransport
-	trSecretsServer               *SecretsServerTransport
-	trSyncIdentityProvidersServer *SyncIdentityProvidersServerTransport
-	trSyncSetsServer              *SyncSetsServerTransport
+	srv                                      *ServerFactory
+	trMu                                     sync.Mutex
+	trOpenShiftClustersServer                *OpenShiftClustersServerTransport
+	trOpenShiftVersionsServer                *OpenShiftVersionsServerTransport
+	trOperationsServer                       *OperationsServerTransport
+	trPlatformWorkloadIdentityRoleSetServer  *PlatformWorkloadIdentityRoleSetServerTransport
+	trPlatformWorkloadIdentityRoleSetsServer *PlatformWorkloadIdentityRoleSetsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -61,9 +66,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "MachinePoolsClient":
-		initServer(s, &s.trMachinePoolsServer, func() *MachinePoolsServerTransport { return NewMachinePoolsServerTransport(&s.srv.MachinePoolsServer) })
-		resp, err = s.trMachinePoolsServer.Do(req)
 	case "OpenShiftClustersClient":
 		initServer(s, &s.trOpenShiftClustersServer, func() *OpenShiftClustersServerTransport {
 			return NewOpenShiftClustersServerTransport(&s.srv.OpenShiftClustersServer)
@@ -77,17 +79,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "SecretsClient":
-		initServer(s, &s.trSecretsServer, func() *SecretsServerTransport { return NewSecretsServerTransport(&s.srv.SecretsServer) })
-		resp, err = s.trSecretsServer.Do(req)
-	case "SyncIdentityProvidersClient":
-		initServer(s, &s.trSyncIdentityProvidersServer, func() *SyncIdentityProvidersServerTransport {
-			return NewSyncIdentityProvidersServerTransport(&s.srv.SyncIdentityProvidersServer)
+	case "PlatformWorkloadIdentityRoleSetClient":
+		initServer(s, &s.trPlatformWorkloadIdentityRoleSetServer, func() *PlatformWorkloadIdentityRoleSetServerTransport {
+			return NewPlatformWorkloadIdentityRoleSetServerTransport(&s.srv.PlatformWorkloadIdentityRoleSetServer)
 		})
-		resp, err = s.trSyncIdentityProvidersServer.Do(req)
-	case "SyncSetsClient":
-		initServer(s, &s.trSyncSetsServer, func() *SyncSetsServerTransport { return NewSyncSetsServerTransport(&s.srv.SyncSetsServer) })
-		resp, err = s.trSyncSetsServer.Do(req)
+		resp, err = s.trPlatformWorkloadIdentityRoleSetServer.Do(req)
+	case "PlatformWorkloadIdentityRoleSetsClient":
+		initServer(s, &s.trPlatformWorkloadIdentityRoleSetsServer, func() *PlatformWorkloadIdentityRoleSetsServerTransport {
+			return NewPlatformWorkloadIdentityRoleSetsServerTransport(&s.srv.PlatformWorkloadIdentityRoleSetsServer)
+		})
+		resp, err = s.trPlatformWorkloadIdentityRoleSetsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

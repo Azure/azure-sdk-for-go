@@ -7,8 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
@@ -62,7 +60,7 @@ Examples:
 			packagePath := args[0]
 
 			// Validate package path
-			if err := validatePackagePath(packagePath); err != nil {
+			if err := utils.ValidatePackagePath(packagePath); err != nil {
 				return fmt.Errorf("package path validation error: %v", err)
 			}
 
@@ -113,23 +111,6 @@ Examples:
 	changelogCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
 
 	return changelogCmd
-}
-
-// validatePackagePath validates that the provided package path exists and contains a go.mod file
-func validatePackagePath(packagePath string) error {
-	if info, err := os.Stat(packagePath); err != nil || !info.IsDir() {
-		return fmt.Errorf("package path '%s' does not exist or is not a directory", packagePath)
-	}
-
-	// Check if directory contains go.mod file
-	goModPath := filepath.Join(packagePath, "go.mod")
-	if _, err := os.Stat(goModPath); os.IsNotExist(err) {
-		return fmt.Errorf("package path '%s' does not contain a go.mod file", packagePath)
-	} else if err != nil {
-		return fmt.Errorf("failed to check for go.mod file: %v", err)
-	}
-
-	return nil
 }
 
 // processChangelog processes the changelog for the given package

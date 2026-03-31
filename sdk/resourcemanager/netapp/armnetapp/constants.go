@@ -1350,6 +1350,30 @@ func PossibleQosTypeValues() []QosType {
 	}
 }
 
+// QuotaType - Type of quota
+type QuotaType string
+
+const (
+	// QuotaTypeDefaultGroupQuota - Default group quota
+	QuotaTypeDefaultGroupQuota QuotaType = "DefaultGroupQuota"
+	// QuotaTypeDefaultUserQuota - Default user quota
+	QuotaTypeDefaultUserQuota QuotaType = "DefaultUserQuota"
+	// QuotaTypeIndividualGroupQuota - Individual group quota
+	QuotaTypeIndividualGroupQuota QuotaType = "IndividualGroupQuota"
+	// QuotaTypeIndividualUserQuota - Individual user quota
+	QuotaTypeIndividualUserQuota QuotaType = "IndividualUserQuota"
+)
+
+// PossibleQuotaTypeValues returns the possible values for the QuotaType const type.
+func PossibleQuotaTypeValues() []QuotaType {
+	return []QuotaType{
+		QuotaTypeDefaultGroupQuota,
+		QuotaTypeDefaultUserQuota,
+		QuotaTypeIndividualGroupQuota,
+		QuotaTypeIndividualUserQuota,
+	}
+}
+
 // RansomwareReportSeverity - Severity of the Advanced Ransomware Protection (ARP) report
 type RansomwareReportSeverity string
 
@@ -1637,30 +1661,6 @@ func PossibleSnapshotUsageValues() []SnapshotUsage {
 	return []SnapshotUsage{
 		SnapshotUsageCreateNewSnapshot,
 		SnapshotUsageUseExistingSnapshot,
-	}
-}
-
-// Type - Type of quota
-type Type string
-
-const (
-	// TypeDefaultGroupQuota - Default group quota
-	TypeDefaultGroupQuota Type = "DefaultGroupQuota"
-	// TypeDefaultUserQuota - Default user quota
-	TypeDefaultUserQuota Type = "DefaultUserQuota"
-	// TypeIndividualGroupQuota - Individual group quota
-	TypeIndividualGroupQuota Type = "IndividualGroupQuota"
-	// TypeIndividualUserQuota - Individual user quota
-	TypeIndividualUserQuota Type = "IndividualUserQuota"
-)
-
-// PossibleTypeValues returns the possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{
-		TypeDefaultGroupQuota,
-		TypeDefaultUserQuota,
-		TypeIndividualGroupQuota,
-		TypeIndividualUserQuota,
 	}
 }
 

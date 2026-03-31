@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
 )
 
 // PartitionKey represents a logical partition key value.
@@ -100,4 +102,28 @@ func (pk *PartitionKey) toJsonString() (string, error) {
 
 	fmt.Fprint(&completeJson, "]")
 	return completeJson.String(), nil
+}
+
+// computeEffectivePartitionKey computes the effective partition key hash for
+// this partition key value.
+func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, version int) epk.EffectivePartitionKey {
+	values := make([]interface{}, len(pk.values))
+	copy(values, pk.values)
+
+	// Empty values → undefined partition key
+	if len(values) == 0 {
+		values = []interface{}{epk.UndefinedMarker{}}
+	}
+
+	var epkStr string
+	switch {
+	case version == 1:
+		epkStr = epk.ComputeV1(values)
+	case kind == PartitionKeyKindMultiHash:
+		epkStr = epk.ComputeV2MultiHash(values)
+	default:
+		epkStr = epk.ComputeV2Hash(values)
+	}
+
+	return epk.EffectivePartitionKey{EPK: epkStr}
 }

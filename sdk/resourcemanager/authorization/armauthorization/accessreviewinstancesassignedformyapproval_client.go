@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// AccessReviewInstancesAssignedForMyApprovalClient contains the methods for the AccessReviewInstancesAssignedForMyApproval group.
+// AccessReviewInstancesAssignedForMyApprovalClient contains the methods for the AccessReviewInstancesAssignedForMyApproval
+// group.
 // Don't use this type directly, use NewAccessReviewInstancesAssignedForMyApprovalClient() instead.
 type AccessReviewInstancesAssignedForMyApprovalClient struct {
 	internal *arm.Client
@@ -25,7 +26,7 @@ type AccessReviewInstancesAssignedForMyApprovalClient struct {
 
 // NewAccessReviewInstancesAssignedForMyApprovalClient creates a new instance of AccessReviewInstancesAssignedForMyApprovalClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstancesAssignedForMyApprovalClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstancesAssignedForMyApprovalClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +69,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) GetByID(ctx cont
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")

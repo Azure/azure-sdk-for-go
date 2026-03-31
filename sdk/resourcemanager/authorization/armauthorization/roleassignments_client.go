@@ -27,7 +27,7 @@ type RoleAssignmentsClient struct {
 // NewRoleAssignmentsClient creates a new instance of RoleAssignmentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -74,7 +74,7 @@ func (client *RoleAssignmentsClient) Create(ctx context.Context, scope string, r
 }
 
 // createCreateRequest creates the Create request.
-func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, _ *RoleAssignmentsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
@@ -134,7 +134,7 @@ func (client *RoleAssignmentsClient) CreateByID(ctx context.Context, roleAssignm
 }
 
 // createByIDCreateRequest creates the CreateByID request.
-func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateByIDOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, _ *RoleAssignmentsClientCreateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

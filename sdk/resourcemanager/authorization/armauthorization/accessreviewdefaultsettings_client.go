@@ -27,7 +27,7 @@ type AccessReviewDefaultSettingsClient struct {
 // NewAccessReviewDefaultSettingsClient creates a new instance of AccessReviewDefaultSettingsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewDefaultSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewDefaultSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *AccessReviewDefaultSettingsClient) Get(ctx context.Context, option
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, options *AccessReviewDefaultSettingsClientGetOptions) (*policy.Request, error) {
+func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, _ *AccessReviewDefaultSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -125,7 +125,7 @@ func (client *AccessReviewDefaultSettingsClient) Put(ctx context.Context, proper
 }
 
 // putCreateRequest creates the Put request.
-func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, properties AccessReviewScheduleSettings, options *AccessReviewDefaultSettingsClientPutOptions) (*policy.Request, error) {
+func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, properties AccessReviewScheduleSettings, _ *AccessReviewDefaultSettingsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

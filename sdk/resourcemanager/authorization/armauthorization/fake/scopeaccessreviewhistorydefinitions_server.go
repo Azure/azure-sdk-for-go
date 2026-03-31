@@ -55,23 +55,42 @@ func (s *ScopeAccessReviewHistoryDefinitionsServerTransport) Do(req *http.Reques
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ScopeAccessReviewHistoryDefinitionsClient.GetByID":
-		resp, err = s.dispatchGetByID(req)
-	case "ScopeAccessReviewHistoryDefinitionsClient.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *ScopeAccessReviewHistoryDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if scopeAccessReviewHistoryDefinitionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = scopeAccessReviewHistoryDefinitionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ScopeAccessReviewHistoryDefinitionsClient.GetByID":
+				res.resp, res.err = s.dispatchGetByID(req)
+			case "ScopeAccessReviewHistoryDefinitionsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *ScopeAccessReviewHistoryDefinitionsServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
@@ -81,7 +100,7 @@ func (s *ScopeAccessReviewHistoryDefinitionsServerTransport) dispatchGetByID(req
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewHistoryDefinitions/(?P<historyDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -116,7 +135,7 @@ func (s *ScopeAccessReviewHistoryDefinitionsServerTransport) dispatchNewListPage
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewHistoryDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -154,4 +173,10 @@ func (s *ScopeAccessReviewHistoryDefinitionsServerTransport) dispatchNewListPage
 		s.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ScopeAccessReviewHistoryDefinitionsServerTransport
+var scopeAccessReviewHistoryDefinitionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

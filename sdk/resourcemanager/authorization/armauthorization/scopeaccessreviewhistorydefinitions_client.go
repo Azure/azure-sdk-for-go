@@ -25,7 +25,7 @@ type ScopeAccessReviewHistoryDefinitionsClient struct {
 
 // NewScopeAccessReviewHistoryDefinitionsClient creates a new instance of ScopeAccessReviewHistoryDefinitionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewHistoryDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewHistoryDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +68,7 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) GetByID(ctx context.Con
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *ScopeAccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, historyDefinitionID string, options *ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, historyDefinitionID string, _ *ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

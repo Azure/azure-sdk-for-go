@@ -23,7 +23,7 @@ type AlertDefinitionsClient struct {
 
 // NewAlertDefinitionsClient creates a new instance of AlertDefinitionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *AlertDefinitionsClient) Get(ctx context.Context, scope string, ale
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertDefinitionsClient) getCreateRequest(ctx context.Context, scope string, alertDefinitionID string, options *AlertDefinitionsClientGetOptions) (*policy.Request, error) {
+func (client *AlertDefinitionsClient) getCreateRequest(ctx context.Context, scope string, alertDefinitionID string, _ *AlertDefinitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertDefinitions/{alertDefinitionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertDefinitionId}", alertDefinitionID)
@@ -124,7 +124,7 @@ func (client *AlertDefinitionsClient) NewListForScopePager(scope string, options
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *AlertDefinitionsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *AlertDefinitionsClientListForScopeOptions) (*policy.Request, error) {
+func (client *AlertDefinitionsClient) listForScopeCreateRequest(ctx context.Context, scope string, _ *AlertDefinitionsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

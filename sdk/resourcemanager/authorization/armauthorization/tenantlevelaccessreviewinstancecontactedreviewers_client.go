@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// TenantLevelAccessReviewInstanceContactedReviewersClient contains the methods for the TenantLevelAccessReviewInstanceContactedReviewers group.
+// TenantLevelAccessReviewInstanceContactedReviewersClient contains the methods for the TenantLevelAccessReviewInstanceContactedReviewers
+// group.
 // Don't use this type directly, use NewTenantLevelAccessReviewInstanceContactedReviewersClient() instead.
 type TenantLevelAccessReviewInstanceContactedReviewersClient struct {
 	internal *arm.Client
@@ -25,7 +26,7 @@ type TenantLevelAccessReviewInstanceContactedReviewersClient struct {
 
 // NewTenantLevelAccessReviewInstanceContactedReviewersClient creates a new instance of TenantLevelAccessReviewInstanceContactedReviewersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTenantLevelAccessReviewInstanceContactedReviewersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantLevelAccessReviewInstanceContactedReviewersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +69,7 @@ func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) NewListPa
 }
 
 // listCreateRequest creates the List request.
-func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
+func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/contactedReviewers"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")

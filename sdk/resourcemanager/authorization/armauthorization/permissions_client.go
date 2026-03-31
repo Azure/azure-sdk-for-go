@@ -27,7 +27,7 @@ type PermissionsClient struct {
 // NewPermissionsClient creates a new instance of PermissionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PermissionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -74,7 +74,7 @@ func (client *PermissionsClient) NewListForResourcePager(resourceGroupName strin
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
-func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsClientListForResourceOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, _ *PermissionsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,7 +141,7 @@ func (client *PermissionsClient) NewListForResourceGroupPager(resourceGroupName 
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PermissionsClientListForResourceGroupOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PermissionsClientListForResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -27,7 +27,7 @@ type AccessReviewHistoryDefinitionClient struct {
 // NewAccessReviewHistoryDefinitionClient creates a new instance of AccessReviewHistoryDefinitionClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewHistoryDefinitionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewHistoryDefinitionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *AccessReviewHistoryDefinitionClient) Create(ctx context.Context, h
 }
 
 // createCreateRequest creates the Create request.
-func (client *AccessReviewHistoryDefinitionClient) createCreateRequest(ctx context.Context, historyDefinitionID string, properties AccessReviewHistoryDefinitionProperties, options *AccessReviewHistoryDefinitionClientCreateOptions) (*policy.Request, error) {
+func (client *AccessReviewHistoryDefinitionClient) createCreateRequest(ctx context.Context, historyDefinitionID string, properties AccessReviewHistoryDefinitionProperties, _ *AccessReviewHistoryDefinitionClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,7 +133,7 @@ func (client *AccessReviewHistoryDefinitionClient) DeleteByID(ctx context.Contex
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *AccessReviewHistoryDefinitionClient) deleteByIDCreateRequest(ctx context.Context, historyDefinitionID string, options *AccessReviewHistoryDefinitionClientDeleteByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewHistoryDefinitionClient) deleteByIDCreateRequest(ctx context.Context, historyDefinitionID string, _ *AccessReviewHistoryDefinitionClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

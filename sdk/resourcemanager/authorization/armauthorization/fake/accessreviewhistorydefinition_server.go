@@ -50,23 +50,42 @@ func (a *AccessReviewHistoryDefinitionServerTransport) Do(req *http.Request) (*h
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AccessReviewHistoryDefinitionClient.Create":
-		resp, err = a.dispatchCreate(req)
-	case "AccessReviewHistoryDefinitionClient.DeleteByID":
-		resp, err = a.dispatchDeleteByID(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AccessReviewHistoryDefinitionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if accessReviewHistoryDefinitionServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = accessReviewHistoryDefinitionServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AccessReviewHistoryDefinitionClient.Create":
+				res.resp, res.err = a.dispatchCreate(req)
+			case "AccessReviewHistoryDefinitionClient.DeleteByID":
+				res.resp, res.err = a.dispatchDeleteByID(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AccessReviewHistoryDefinitionServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -76,7 +95,7 @@ func (a *AccessReviewHistoryDefinitionServerTransport) dispatchCreate(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewHistoryDefinitions/(?P<historyDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.AccessReviewHistoryDefinitionProperties](req)
@@ -109,7 +128,7 @@ func (a *AccessReviewHistoryDefinitionServerTransport) dispatchDeleteByID(req *h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewHistoryDefinitions/(?P<historyDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	historyDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("historyDefinitionId")])
@@ -129,4 +148,10 @@ func (a *AccessReviewHistoryDefinitionServerTransport) dispatchDeleteByID(req *h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AccessReviewHistoryDefinitionServerTransport
+var accessReviewHistoryDefinitionServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

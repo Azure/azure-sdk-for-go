@@ -27,7 +27,7 @@ type AccessReviewInstanceClient struct {
 // NewAccessReviewInstanceClient creates a new instance of AccessReviewInstanceClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstanceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *AccessReviewInstanceClient) AcceptRecommendations(ctx context.Cont
 }
 
 // acceptRecommendationsCreateRequest creates the AcceptRecommendations request.
-func (client *AccessReviewInstanceClient) acceptRecommendationsCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceClientAcceptRecommendationsOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceClient) acceptRecommendationsCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstanceClientAcceptRecommendationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/acceptRecommendations"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -121,7 +121,7 @@ func (client *AccessReviewInstanceClient) ApplyDecisions(ctx context.Context, sc
 }
 
 // applyDecisionsCreateRequest creates the ApplyDecisions request.
-func (client *AccessReviewInstanceClient) applyDecisionsCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceClientApplyDecisionsOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceClient) applyDecisionsCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstanceClientApplyDecisionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/applyDecisions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -176,7 +176,7 @@ func (client *AccessReviewInstanceClient) ResetDecisions(ctx context.Context, sc
 }
 
 // resetDecisionsCreateRequest creates the ResetDecisions request.
-func (client *AccessReviewInstanceClient) resetDecisionsCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceClientResetDecisionsOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceClient) resetDecisionsCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstanceClientResetDecisionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/resetDecisions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -231,7 +231,7 @@ func (client *AccessReviewInstanceClient) SendReminders(ctx context.Context, sch
 }
 
 // sendRemindersCreateRequest creates the SendReminders request.
-func (client *AccessReviewInstanceClient) sendRemindersCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceClientSendRemindersOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceClient) sendRemindersCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstanceClientSendRemindersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/sendReminders"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -286,7 +286,7 @@ func (client *AccessReviewInstanceClient) Stop(ctx context.Context, scheduleDefi
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *AccessReviewInstanceClient) stopCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceClientStopOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceClient) stopCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstanceClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

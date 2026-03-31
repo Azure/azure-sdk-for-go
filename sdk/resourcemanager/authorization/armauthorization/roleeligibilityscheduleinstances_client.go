@@ -25,7 +25,7 @@ type RoleEligibilityScheduleInstancesClient struct {
 
 // NewRoleEligibilityScheduleInstancesClient creates a new instance of RoleEligibilityScheduleInstancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoleEligibilityScheduleInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleEligibilityScheduleInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewRoleEligibilityScheduleInstancesClient(credential azcore.TokenCredential
 // Get - Gets the specified role eligibility schedule instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01-preview
+// Generated from API version 2024-09-01-preview
 //   - scope - The scope of the role eligibility schedules.
 //   - roleEligibilityScheduleInstanceName - The name (hash of schedule name + time) of the role eligibility schedule to get.
 //   - options - RoleEligibilityScheduleInstancesClientGetOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.Get
@@ -68,7 +68,7 @@ func (client *RoleEligibilityScheduleInstancesClient) Get(ctx context.Context, s
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleEligibilityScheduleInstancesClient) getCreateRequest(ctx context.Context, scope string, roleEligibilityScheduleInstanceName string, options *RoleEligibilityScheduleInstancesClientGetOptions) (*policy.Request, error) {
+func (client *RoleEligibilityScheduleInstancesClient) getCreateRequest(ctx context.Context, scope string, roleEligibilityScheduleInstanceName string, _ *RoleEligibilityScheduleInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleInstances/{roleEligibilityScheduleInstanceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleEligibilityScheduleInstanceName == "" {
@@ -80,7 +80,7 @@ func (client *RoleEligibilityScheduleInstancesClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -97,7 +97,7 @@ func (client *RoleEligibilityScheduleInstancesClient) getHandleResponse(resp *ht
 
 // NewListForScopePager - Gets role eligibility schedule instances of a role eligibility schedule.
 //
-// Generated from API version 2020-10-01-preview
+// Generated from API version 2024-09-01-preview
 //   - scope - The scope of the role eligibility schedule.
 //   - options - RoleEligibilityScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.NewListForScopePager
 //     method.
@@ -136,7 +136,7 @@ func (client *RoleEligibilityScheduleInstancesClient) listForScopeCreateRequest(
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

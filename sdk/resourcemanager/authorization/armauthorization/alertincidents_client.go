@@ -23,7 +23,7 @@ type AlertIncidentsClient struct {
 
 // NewAlertIncidentsClient creates a new instance of AlertIncidentsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertIncidentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertIncidentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *AlertIncidentsClient) Get(ctx context.Context, scope string, alert
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertIncidentsClient) getCreateRequest(ctx context.Context, scope string, alertID string, alertIncidentID string, options *AlertIncidentsClientGetOptions) (*policy.Request, error) {
+func (client *AlertIncidentsClient) getCreateRequest(ctx context.Context, scope string, alertID string, alertIncidentID string, _ *AlertIncidentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/{alertId}/alertIncidents/{alertIncidentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)
@@ -127,7 +127,7 @@ func (client *AlertIncidentsClient) NewListForScopePager(scope string, alertID s
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *AlertIncidentsClient) listForScopeCreateRequest(ctx context.Context, scope string, alertID string, options *AlertIncidentsClientListForScopeOptions) (*policy.Request, error) {
+func (client *AlertIncidentsClient) listForScopeCreateRequest(ctx context.Context, scope string, alertID string, _ *AlertIncidentsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/{alertId}/alertIncidents"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)
@@ -182,7 +182,7 @@ func (client *AlertIncidentsClient) Remediate(ctx context.Context, scope string,
 }
 
 // remediateCreateRequest creates the Remediate request.
-func (client *AlertIncidentsClient) remediateCreateRequest(ctx context.Context, scope string, alertID string, alertIncidentID string, options *AlertIncidentsClientRemediateOptions) (*policy.Request, error) {
+func (client *AlertIncidentsClient) remediateCreateRequest(ctx context.Context, scope string, alertID string, alertIncidentID string, _ *AlertIncidentsClientRemediateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/{alertId}/alertIncidents/{alertIncidentId}/remediate"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)

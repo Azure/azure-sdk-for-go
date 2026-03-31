@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// ScopeAccessReviewHistoryDefinitionInstanceClient contains the methods for the ScopeAccessReviewHistoryDefinitionInstance group.
+// ScopeAccessReviewHistoryDefinitionInstanceClient contains the methods for the ScopeAccessReviewHistoryDefinitionInstance
+// group.
 // Don't use this type directly, use NewScopeAccessReviewHistoryDefinitionInstanceClient() instead.
 type ScopeAccessReviewHistoryDefinitionInstanceClient struct {
 	internal *arm.Client
@@ -25,7 +26,7 @@ type ScopeAccessReviewHistoryDefinitionInstanceClient struct {
 
 // NewScopeAccessReviewHistoryDefinitionInstanceClient creates a new instance of ScopeAccessReviewHistoryDefinitionInstanceClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewHistoryDefinitionInstanceClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewHistoryDefinitionInstanceClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +71,7 @@ func (client *ScopeAccessReviewHistoryDefinitionInstanceClient) GenerateDownload
 }
 
 // generateDownloadURICreateRequest creates the GenerateDownloadURI request.
-func (client *ScopeAccessReviewHistoryDefinitionInstanceClient) generateDownloadURICreateRequest(ctx context.Context, scope string, historyDefinitionID string, instanceID string, options *ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewHistoryDefinitionInstanceClient) generateDownloadURICreateRequest(ctx context.Context, scope string, historyDefinitionID string, instanceID string, _ *ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}/instances/{instanceId}/generateDownloadUri"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

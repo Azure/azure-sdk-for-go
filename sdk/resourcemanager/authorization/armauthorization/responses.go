@@ -252,10 +252,38 @@ type AlertsClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
+// AttributeNamespacesClientCreateResponse contains the response from method AttributeNamespacesClient.Create.
+type AttributeNamespacesClientCreateResponse struct {
+	// An attribute namespace resource.
+	AttributeNamespace
+}
+
+// AttributeNamespacesClientDeleteResponse contains the response from method AttributeNamespacesClient.Delete.
+type AttributeNamespacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AttributeNamespacesClientGetResponse contains the response from method AttributeNamespacesClient.Get.
+type AttributeNamespacesClientGetResponse struct {
+	// An attribute namespace resource.
+	AttributeNamespace
+}
+
 // ClassicAdministratorsClientListResponse contains the response from method ClassicAdministratorsClient.NewListPager.
 type ClassicAdministratorsClientListResponse struct {
 	// ClassicAdministrator list result information.
 	ClassicAdministratorListResult
+}
+
+// DenyAssignmentsClientCreateOrUpdateResponse contains the response from method DenyAssignmentsClient.CreateOrUpdate.
+type DenyAssignmentsClientCreateOrUpdateResponse struct {
+	// Deny Assignment
+	DenyAssignment
+}
+
+// DenyAssignmentsClientDeleteResponse contains the response from method DenyAssignmentsClient.Delete.
+type DenyAssignmentsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
 // DenyAssignmentsClientGetByIDResponse contains the response from method DenyAssignmentsClient.GetByID.

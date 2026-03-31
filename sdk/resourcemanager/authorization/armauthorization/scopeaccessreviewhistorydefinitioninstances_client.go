@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// ScopeAccessReviewHistoryDefinitionInstancesClient contains the methods for the ScopeAccessReviewHistoryDefinitionInstances group.
+// ScopeAccessReviewHistoryDefinitionInstancesClient contains the methods for the ScopeAccessReviewHistoryDefinitionInstances
+// group.
 // Don't use this type directly, use NewScopeAccessReviewHistoryDefinitionInstancesClient() instead.
 type ScopeAccessReviewHistoryDefinitionInstancesClient struct {
 	internal *arm.Client
@@ -25,7 +26,7 @@ type ScopeAccessReviewHistoryDefinitionInstancesClient struct {
 
 // NewScopeAccessReviewHistoryDefinitionInstancesClient creates a new instance of ScopeAccessReviewHistoryDefinitionInstancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewHistoryDefinitionInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewHistoryDefinitionInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +69,7 @@ func (client *ScopeAccessReviewHistoryDefinitionInstancesClient) NewListPager(sc
 }
 
 // listCreateRequest creates the List request.
-func (client *ScopeAccessReviewHistoryDefinitionInstancesClient) listCreateRequest(ctx context.Context, scope string, historyDefinitionID string, options *ScopeAccessReviewHistoryDefinitionInstancesClientListOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewHistoryDefinitionInstancesClient) listCreateRequest(ctx context.Context, scope string, historyDefinitionID string, _ *ScopeAccessReviewHistoryDefinitionInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}/instances"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

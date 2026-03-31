@@ -22,7 +22,7 @@ type GlobalAdministratorClient struct {
 
 // NewGlobalAdministratorClient creates a new instance of GlobalAdministratorClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGlobalAdministratorClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalAdministratorClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -62,7 +62,7 @@ func (client *GlobalAdministratorClient) ElevateAccess(ctx context.Context, opti
 }
 
 // elevateAccessCreateRequest creates the ElevateAccess request.
-func (client *GlobalAdministratorClient) elevateAccessCreateRequest(ctx context.Context, options *GlobalAdministratorClientElevateAccessOptions) (*policy.Request, error) {
+func (client *GlobalAdministratorClient) elevateAccessCreateRequest(ctx context.Context, _ *GlobalAdministratorClientElevateAccessOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/elevateAccess"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

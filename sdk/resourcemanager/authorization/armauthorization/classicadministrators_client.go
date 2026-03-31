@@ -27,7 +27,7 @@ type ClassicAdministratorsClient struct {
 // NewClassicAdministratorsClient creates a new instance of ClassicAdministratorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClassicAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClassicAdministratorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *ClassicAdministratorsClient) NewListPager(options *ClassicAdminist
 }
 
 // listCreateRequest creates the List request.
-func (client *ClassicAdministratorsClient) listCreateRequest(ctx context.Context, options *ClassicAdministratorsClientListOptions) (*policy.Request, error) {
+func (client *ClassicAdministratorsClient) listCreateRequest(ctx context.Context, _ *ClassicAdministratorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

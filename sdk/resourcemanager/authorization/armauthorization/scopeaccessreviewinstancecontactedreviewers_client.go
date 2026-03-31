@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// ScopeAccessReviewInstanceContactedReviewersClient contains the methods for the ScopeAccessReviewInstanceContactedReviewers group.
+// ScopeAccessReviewInstanceContactedReviewersClient contains the methods for the ScopeAccessReviewInstanceContactedReviewers
+// group.
 // Don't use this type directly, use NewScopeAccessReviewInstanceContactedReviewersClient() instead.
 type ScopeAccessReviewInstanceContactedReviewersClient struct {
 	internal *arm.Client
@@ -25,7 +26,7 @@ type ScopeAccessReviewInstanceContactedReviewersClient struct {
 
 // NewScopeAccessReviewInstanceContactedReviewersClient creates a new instance of ScopeAccessReviewInstanceContactedReviewersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewInstanceContactedReviewersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewInstanceContactedReviewersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +70,7 @@ func (client *ScopeAccessReviewInstanceContactedReviewersClient) NewListPager(sc
 }
 
 // listCreateRequest creates the List request.
-func (client *ScopeAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/contactedReviewers"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

@@ -27,7 +27,7 @@ type AccessReviewInstancesClient struct {
 // NewAccessReviewInstancesClient creates a new instance of AccessReviewInstancesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *AccessReviewInstancesClient) Create(ctx context.Context, scheduleD
 }
 
 // createCreateRequest creates the Create request.
-func (client *AccessReviewInstancesClient) createCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, options *AccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesClient) createCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, _ *AccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +140,7 @@ func (client *AccessReviewInstancesClient) GetByID(ctx context.Context, schedule
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

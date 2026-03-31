@@ -47,7 +47,7 @@ type AlertIncidentPropertiesClassification interface {
 // Call the interface's GetRoleManagementPolicyRule() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *RoleManagementPolicyApprovalRule, *RoleManagementPolicyAuthenticationContextRule, *RoleManagementPolicyEnablementRule,
-// - *RoleManagementPolicyExpirationRule, *RoleManagementPolicyNotificationRule, *RoleManagementPolicyRule
+// - *RoleManagementPolicyExpirationRule, *RoleManagementPolicyNotificationRule, *RoleManagementPolicyPimOnlyModeRule, *RoleManagementPolicyRule
 type RoleManagementPolicyRuleClassification interface {
 	// GetRoleManagementPolicyRule returns the RoleManagementPolicyRule content of the underlying type.
 	GetRoleManagementPolicyRule() *RoleManagementPolicyRule

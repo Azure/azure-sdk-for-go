@@ -27,7 +27,7 @@ type AccessReviewHistoryDefinitionsClient struct {
 // NewAccessReviewHistoryDefinitionsClient creates a new instance of AccessReviewHistoryDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewHistoryDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewHistoryDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *AccessReviewHistoryDefinitionsClient) GetByID(ctx context.Context,
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, historyDefinitionID string, options *AccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, historyDefinitionID string, _ *AccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

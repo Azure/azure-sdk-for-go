@@ -27,7 +27,7 @@ type AccessReviewScheduleDefinitionsClient struct {
 // NewAccessReviewScheduleDefinitionsClient creates a new instance of AccessReviewScheduleDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewScheduleDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *AccessReviewScheduleDefinitionsClient) CreateOrUpdateByID(ctx cont
 }
 
 // createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
-func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, options *AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, _ *AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,7 +133,7 @@ func (client *AccessReviewScheduleDefinitionsClient) DeleteByID(ctx context.Cont
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *AccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, _ *AccessReviewScheduleDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -184,7 +184,7 @@ func (client *AccessReviewScheduleDefinitionsClient) GetByID(ctx context.Context
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, _ *AccessReviewScheduleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -303,7 +303,7 @@ func (client *AccessReviewScheduleDefinitionsClient) Stop(ctx context.Context, s
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *AccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientStopOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scheduleDefinitionID string, _ *AccessReviewScheduleDefinitionsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

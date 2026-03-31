@@ -23,7 +23,7 @@ type AlertConfigurationsClient struct {
 
 // NewAlertConfigurationsClient creates a new instance of AlertConfigurationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertConfigurationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *AlertConfigurationsClient) Get(ctx context.Context, scope string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertConfigurationsClient) getCreateRequest(ctx context.Context, scope string, alertID string, options *AlertConfigurationsClientGetOptions) (*policy.Request, error) {
+func (client *AlertConfigurationsClient) getCreateRequest(ctx context.Context, scope string, alertID string, _ *AlertConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertConfigurations/{alertId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)
@@ -124,7 +124,7 @@ func (client *AlertConfigurationsClient) NewListForScopePager(scope string, opti
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *AlertConfigurationsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *AlertConfigurationsClientListForScopeOptions) (*policy.Request, error) {
+func (client *AlertConfigurationsClient) listForScopeCreateRequest(ctx context.Context, scope string, _ *AlertConfigurationsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -178,7 +178,7 @@ func (client *AlertConfigurationsClient) Update(ctx context.Context, scope strin
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AlertConfigurationsClient) updateCreateRequest(ctx context.Context, scope string, alertID string, parameters AlertConfiguration, options *AlertConfigurationsClientUpdateOptions) (*policy.Request, error) {
+func (client *AlertConfigurationsClient) updateCreateRequest(ctx context.Context, scope string, alertID string, parameters AlertConfiguration, _ *AlertConfigurationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertConfigurations/{alertId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)

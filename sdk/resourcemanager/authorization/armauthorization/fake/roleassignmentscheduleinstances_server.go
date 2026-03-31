@@ -55,23 +55,42 @@ func (r *RoleAssignmentScheduleInstancesServerTransport) Do(req *http.Request) (
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleAssignmentScheduleInstancesClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleAssignmentScheduleInstancesClient.NewListForScopePager":
-		resp, err = r.dispatchNewListForScopePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleAssignmentScheduleInstancesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if roleAssignmentScheduleInstancesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = roleAssignmentScheduleInstancesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleAssignmentScheduleInstancesClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleAssignmentScheduleInstancesClient.NewListForScopePager":
+				res.resp, res.err = r.dispatchNewListForScopePager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleAssignmentScheduleInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -81,7 +100,7 @@ func (r *RoleAssignmentScheduleInstancesServerTransport) dispatchGet(req *http.R
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleInstances/(?P<roleAssignmentScheduleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -116,7 +135,7 @@ func (r *RoleAssignmentScheduleInstancesServerTransport) dispatchNewListForScope
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleInstances`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -154,4 +173,10 @@ func (r *RoleAssignmentScheduleInstancesServerTransport) dispatchNewListForScope
 		r.newListForScopePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleAssignmentScheduleInstancesServerTransport
+var roleAssignmentScheduleInstancesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

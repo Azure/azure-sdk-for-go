@@ -25,7 +25,7 @@ type ScopeAccessReviewInstanceClient struct {
 
 // NewScopeAccessReviewInstanceClient creates a new instance of ScopeAccessReviewInstanceClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewInstanceClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewInstanceClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +68,7 @@ func (client *ScopeAccessReviewInstanceClient) ApplyDecisions(ctx context.Contex
 }
 
 // applyDecisionsCreateRequest creates the ApplyDecisions request.
-func (client *ScopeAccessReviewInstanceClient) applyDecisionsCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceClientApplyDecisionsOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstanceClient) applyDecisionsCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstanceClientApplyDecisionsOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/applyDecisions"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -125,7 +125,7 @@ func (client *ScopeAccessReviewInstanceClient) RecordAllDecisions(ctx context.Co
 }
 
 // recordAllDecisionsCreateRequest creates the RecordAllDecisions request.
-func (client *ScopeAccessReviewInstanceClient) recordAllDecisionsCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, properties RecordAllDecisionsProperties, options *ScopeAccessReviewInstanceClientRecordAllDecisionsOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstanceClient) recordAllDecisionsCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, properties RecordAllDecisionsProperties, _ *ScopeAccessReviewInstanceClientRecordAllDecisionsOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/recordAllDecisions"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -184,7 +184,7 @@ func (client *ScopeAccessReviewInstanceClient) ResetDecisions(ctx context.Contex
 }
 
 // resetDecisionsCreateRequest creates the ResetDecisions request.
-func (client *ScopeAccessReviewInstanceClient) resetDecisionsCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceClientResetDecisionsOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstanceClient) resetDecisionsCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstanceClientResetDecisionsOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/resetDecisions"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -240,7 +240,7 @@ func (client *ScopeAccessReviewInstanceClient) SendReminders(ctx context.Context
 }
 
 // sendRemindersCreateRequest creates the SendReminders request.
-func (client *ScopeAccessReviewInstanceClient) sendRemindersCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceClientSendRemindersOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstanceClient) sendRemindersCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstanceClientSendRemindersOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/sendReminders"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -296,7 +296,7 @@ func (client *ScopeAccessReviewInstanceClient) Stop(ctx context.Context, scope s
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ScopeAccessReviewInstanceClient) stopCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceClientStopOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstanceClient) stopCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstanceClientStopOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/stop"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

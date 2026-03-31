@@ -50,21 +50,40 @@ func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) Do(re
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return t.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager":
-		resp, err = t.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if tenantLevelAccessReviewInstanceContactedReviewersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = tenantLevelAccessReviewInstanceContactedReviewersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -76,7 +95,7 @@ func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispa
 		const regexStr = `/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contactedReviewers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
@@ -106,4 +125,10 @@ func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispa
 		t.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to TenantLevelAccessReviewInstanceContactedReviewersServerTransport
+var tenantLevelAccessReviewInstanceContactedReviewersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

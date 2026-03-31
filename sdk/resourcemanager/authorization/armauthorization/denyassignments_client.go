@@ -27,7 +27,7 @@ type DenyAssignmentsClient struct {
 // NewDenyAssignmentsClient creates a new instance of DenyAssignmentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDenyAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DenyAssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,11 +40,120 @@ func NewDenyAssignmentsClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
+// CreateOrUpdate - Create or update a deny assignment by scope and name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01-preview
+//   - scope - The scope at which the operation is performed.
+//   - denyAssignmentID - The ID of the deny assignment to create. A new GUID should be used for each new deny assignment.
+//   - parameters - Parameters for the deny assignment.
+//   - options - DenyAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the DenyAssignmentsClient.CreateOrUpdate
+//     method.
+func (client *DenyAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, denyAssignmentID string, parameters DenyAssignment, options *DenyAssignmentsClientCreateOrUpdateOptions) (DenyAssignmentsClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "DenyAssignmentsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, scope, denyAssignmentID, parameters, options)
+	if err != nil {
+		return DenyAssignmentsClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DenyAssignmentsClientCreateOrUpdateResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return DenyAssignmentsClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *DenyAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, denyAssignmentID string, parameters DenyAssignment, _ *DenyAssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}"
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if denyAssignmentID == "" {
+		return nil, errors.New("parameter denyAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{denyAssignmentId}", url.PathEscape(denyAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *DenyAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (DenyAssignmentsClientCreateOrUpdateResponse, error) {
+	result := DenyAssignmentsClientCreateOrUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignment); err != nil {
+		return DenyAssignmentsClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
+}
+
+// Delete - Delete a deny assignment by scope and name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01-preview
+//   - scope - The scope at which the operation is performed.
+//   - denyAssignmentID - The ID of the deny assignment to delete.
+//   - options - DenyAssignmentsClientDeleteOptions contains the optional parameters for the DenyAssignmentsClient.Delete method.
+func (client *DenyAssignmentsClient) Delete(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsClientDeleteOptions) (DenyAssignmentsClientDeleteResponse, error) {
+	var err error
+	const operationName = "DenyAssignmentsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, scope, denyAssignmentID, options)
+	if err != nil {
+		return DenyAssignmentsClientDeleteResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DenyAssignmentsClientDeleteResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return DenyAssignmentsClientDeleteResponse{}, err
+	}
+	return DenyAssignmentsClientDeleteResponse{}, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *DenyAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, denyAssignmentID string, _ *DenyAssignmentsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}"
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if denyAssignmentID == "" {
+		return nil, errors.New("parameter denyAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{denyAssignmentId}", url.PathEscape(denyAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Get the specified deny assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
-//   - scope - The scope of the deny assignment.
+// Generated from API version 2024-07-01-preview
+//   - scope - The scope at which the operation is performed.
 //   - denyAssignmentID - The ID of the deny assignment to get.
 //   - options - DenyAssignmentsClientGetOptions contains the optional parameters for the DenyAssignmentsClient.Get method.
 func (client *DenyAssignmentsClient) Get(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsClientGetOptions) (DenyAssignmentsClientGetResponse, error) {
@@ -70,7 +179,7 @@ func (client *DenyAssignmentsClient) Get(ctx context.Context, scope string, deny
 }
 
 // getCreateRequest creates the Get request.
-func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsClientGetOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, denyAssignmentID string, _ *DenyAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if denyAssignmentID == "" {
@@ -82,7 +191,7 @@ func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +209,7 @@ func (client *DenyAssignmentsClient) getHandleResponse(resp *http.Response) (Den
 // GetByID - Gets a deny assignment by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2024-07-01-preview
 //   - denyAssignmentID - The fully qualified deny assignment ID. For example, use the format, /subscriptions/{guid}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}
 //     for subscription level deny assignments,
 //     or /providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId} for tenant level deny assignments.
@@ -128,7 +237,7 @@ func (client *DenyAssignmentsClient) GetByID(ctx context.Context, denyAssignment
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, denyAssignmentID string, options *DenyAssignmentsClientGetByIDOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, denyAssignmentID string, _ *DenyAssignmentsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{denyAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{denyAssignmentId}", denyAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -136,7 +245,7 @@ func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -153,7 +262,7 @@ func (client *DenyAssignmentsClient) getByIDHandleResponse(resp *http.Response) 
 
 // NewListPager - Gets all deny assignments for the subscription.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2024-07-01-preview
 //   - options - DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.NewListPager
 //     method.
 func (client *DenyAssignmentsClient) NewListPager(options *DenyAssignmentsClientListOptions) *runtime.Pager[DenyAssignmentsClientListResponse] {
@@ -191,10 +300,10 @@ func (client *DenyAssignmentsClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +320,7 @@ func (client *DenyAssignmentsClient) listHandleResponse(resp *http.Response) (De
 
 // NewListForResourcePager - Gets deny assignments for a resource.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2024-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - parentResourcePath - The parent resource identity.
@@ -244,7 +353,7 @@ func (client *DenyAssignmentsClient) NewListForResourcePager(resourceGroupName s
 
 // listForResourceCreateRequest creates the ListForResource request.
 func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *DenyAssignmentsClientListForResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/denyAssignments"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/denyAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -265,10 +374,10 @@ func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,7 +394,7 @@ func (client *DenyAssignmentsClient) listForResourceHandleResponse(resp *http.Re
 
 // NewListForResourceGroupPager - Gets deny assignments for a resource group.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2024-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.NewListForResourceGroupPager
 //     method.
@@ -328,10 +437,10 @@ func (client *DenyAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -348,8 +457,8 @@ func (client *DenyAssignmentsClient) listForResourceGroupHandleResponse(resp *ht
 
 // NewListForScopePager - Gets deny assignments for a scope.
 //
-// Generated from API version 2022-04-01
-//   - scope - The scope of the deny assignments.
+// Generated from API version 2024-07-01-preview
+//   - scope - The scope at which the operation is performed.
 //   - options - DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.NewListForScopePager
 //     method.
 func (client *DenyAssignmentsClient) NewListForScopePager(scope string, options *DenyAssignmentsClientListForScopeOptions) *runtime.Pager[DenyAssignmentsClientListForScopeResponse] {
@@ -384,10 +493,10 @@ func (client *DenyAssignmentsClient) listForScopeCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -23,7 +23,7 @@ type AlertOperationClient struct {
 
 // NewAlertOperationClient creates a new instance of AlertOperationClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertOperationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertOperationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -65,7 +65,7 @@ func (client *AlertOperationClient) Get(ctx context.Context, scope string, opera
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertOperationClient) getCreateRequest(ctx context.Context, scope string, operationID string, options *AlertOperationClientGetOptions) (*policy.Request, error) {
+func (client *AlertOperationClient) getCreateRequest(ctx context.Context, scope string, operationID string, _ *AlertOperationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertOperations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", operationID)

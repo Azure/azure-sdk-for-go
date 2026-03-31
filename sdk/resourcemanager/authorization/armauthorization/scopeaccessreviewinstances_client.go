@@ -25,7 +25,7 @@ type ScopeAccessReviewInstancesClient struct {
 
 // NewScopeAccessReviewInstancesClient creates a new instance of ScopeAccessReviewInstancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *ScopeAccessReviewInstancesClient) Create(ctx context.Context, scop
 }
 
 // createCreateRequest creates the Create request.
-func (client *ScopeAccessReviewInstancesClient) createCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, options *ScopeAccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstancesClient) createCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, _ *ScopeAccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -139,7 +139,7 @@ func (client *ScopeAccessReviewInstancesClient) GetByID(ctx context.Context, sco
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *ScopeAccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

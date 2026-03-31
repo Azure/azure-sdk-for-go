@@ -25,7 +25,7 @@ type ScopeAccessReviewScheduleDefinitionsClient struct {
 
 // NewScopeAccessReviewScheduleDefinitionsClient creates a new instance of ScopeAccessReviewScheduleDefinitionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewScheduleDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewScheduleDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) CreateOrUpdateByID(ctx
 }
 
 // createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, options *ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, _ *ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -132,7 +132,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) DeleteByID(ctx context
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, options *ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, _ *ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -184,7 +184,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) GetByID(ctx context.Co
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, options *ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, _ *ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -305,7 +305,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) Stop(ctx context.Conte
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, options *ScopeAccessReviewScheduleDefinitionsClientStopOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, _ *ScopeAccessReviewScheduleDefinitionsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/stop"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

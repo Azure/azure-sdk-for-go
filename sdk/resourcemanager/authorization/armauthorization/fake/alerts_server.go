@@ -30,11 +30,11 @@ type AlertsServer struct {
 	NewListForScopePager func(scope string, options *armauthorization.AlertsClientListForScopeOptions) (resp azfake.PagerResponder[armauthorization.AlertsClientListForScopeResponse])
 
 	// BeginRefresh is the fake for method AlertsClient.BeginRefresh
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRefresh func(ctx context.Context, scope string, alertID string, options *armauthorization.AlertsClientBeginRefreshOptions) (resp azfake.PollerResponder[armauthorization.AlertsClientRefreshResponse], errResp azfake.ErrorResponder)
 
 	// BeginRefreshAll is the fake for method AlertsClient.BeginRefreshAll
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRefreshAll func(ctx context.Context, scope string, options *armauthorization.AlertsClientBeginRefreshAllOptions) (resp azfake.PollerResponder[armauthorization.AlertsClientRefreshAllResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method AlertsClient.Update
@@ -71,29 +71,48 @@ func (a *AlertsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AlertsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AlertsClient.NewListForScopePager":
-		resp, err = a.dispatchNewListForScopePager(req)
-	case "AlertsClient.BeginRefresh":
-		resp, err = a.dispatchBeginRefresh(req)
-	case "AlertsClient.BeginRefreshAll":
-		resp, err = a.dispatchBeginRefreshAll(req)
-	case "AlertsClient.Update":
-		resp, err = a.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if alertsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = alertsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AlertsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AlertsClient.NewListForScopePager":
+				res.resp, res.err = a.dispatchNewListForScopePager(req)
+			case "AlertsClient.BeginRefresh":
+				res.resp, res.err = a.dispatchBeginRefresh(req)
+			case "AlertsClient.BeginRefreshAll":
+				res.resp, res.err = a.dispatchBeginRefreshAll(req)
+			case "AlertsClient.Update":
+				res.resp, res.err = a.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AlertsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -103,7 +122,7 @@ func (a *AlertsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -138,7 +157,7 @@ func (a *AlertsServerTransport) dispatchNewListForScopePager(req *http.Request) 
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -175,7 +194,7 @@ func (a *AlertsServerTransport) dispatchBeginRefresh(req *http.Request) (*http.R
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refresh`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -199,9 +218,9 @@ func (a *AlertsServerTransport) dispatchBeginRefresh(req *http.Request) (*http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginRefresh.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRefresh) {
 		a.beginRefresh.remove(req)
@@ -219,7 +238,7 @@ func (a *AlertsServerTransport) dispatchBeginRefreshAll(req *http.Request) (*htt
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlerts/refresh`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -239,9 +258,9 @@ func (a *AlertsServerTransport) dispatchBeginRefreshAll(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginRefreshAll.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRefreshAll) {
 		a.beginRefreshAll.remove(req)
@@ -257,7 +276,7 @@ func (a *AlertsServerTransport) dispatchUpdate(req *http.Request) (*http.Respons
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.Alert](req)
@@ -285,4 +304,10 @@ func (a *AlertsServerTransport) dispatchUpdate(req *http.Request) (*http.Respons
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AlertsServerTransport
+var alertsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

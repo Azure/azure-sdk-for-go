@@ -8,7 +8,7 @@ package armauthorization
 import "encoding/json"
 
 func unmarshalAccessReviewDecisionIdentityClassification(rawMsg json.RawMessage) (AccessReviewDecisionIdentityClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -31,7 +31,7 @@ func unmarshalAccessReviewDecisionIdentityClassification(rawMsg json.RawMessage)
 }
 
 func unmarshalAccessReviewDecisionInsightPropertiesClassification(rawMsg json.RawMessage) (AccessReviewDecisionInsightPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -52,7 +52,7 @@ func unmarshalAccessReviewDecisionInsightPropertiesClassification(rawMsg json.Ra
 }
 
 func unmarshalAlertConfigurationPropertiesClassification(rawMsg json.RawMessage) (AlertConfigurationPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -79,7 +79,7 @@ func unmarshalAlertConfigurationPropertiesClassification(rawMsg json.RawMessage)
 }
 
 func unmarshalAlertIncidentPropertiesClassification(rawMsg json.RawMessage) (AlertIncidentPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -106,7 +106,7 @@ func unmarshalAlertIncidentPropertiesClassification(rawMsg json.RawMessage) (Ale
 }
 
 func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (RoleManagementPolicyRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -125,6 +125,8 @@ func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (Ro
 		b = &RoleManagementPolicyExpirationRule{}
 	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule):
 		b = &RoleManagementPolicyNotificationRule{}
+	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyPimOnlyModeRule):
+		b = &RoleManagementPolicyPimOnlyModeRule{}
 	default:
 		b = &RoleManagementPolicyRule{}
 	}
@@ -135,7 +137,7 @@ func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (Ro
 }
 
 func unmarshalRoleManagementPolicyRuleClassificationArray(rawMsg json.RawMessage) ([]RoleManagementPolicyRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

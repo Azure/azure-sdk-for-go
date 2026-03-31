@@ -16,52 +16,146 @@ import (
 
 // ServerFactory is a fake server for instances of the armauthorization.ClientFactory type.
 type ServerFactory struct {
-	AccessReviewDefaultSettingsServer                          AccessReviewDefaultSettingsServer
-	AccessReviewHistoryDefinitionServer                        AccessReviewHistoryDefinitionServer
-	AccessReviewHistoryDefinitionInstanceServer                AccessReviewHistoryDefinitionInstanceServer
-	AccessReviewHistoryDefinitionInstancesServer               AccessReviewHistoryDefinitionInstancesServer
-	AccessReviewHistoryDefinitionsServer                       AccessReviewHistoryDefinitionsServer
-	AccessReviewInstanceServer                                 AccessReviewInstanceServer
-	AccessReviewInstanceContactedReviewersServer               AccessReviewInstanceContactedReviewersServer
-	AccessReviewInstanceDecisionsServer                        AccessReviewInstanceDecisionsServer
-	AccessReviewInstanceMyDecisionsServer                      AccessReviewInstanceMyDecisionsServer
-	AccessReviewInstancesAssignedForMyApprovalServer           AccessReviewInstancesAssignedForMyApprovalServer
-	AccessReviewInstancesServer                                AccessReviewInstancesServer
+	// AccessReviewDefaultSettingsServer contains the fakes for client AccessReviewDefaultSettingsClient
+	AccessReviewDefaultSettingsServer AccessReviewDefaultSettingsServer
+
+	// AccessReviewHistoryDefinitionServer contains the fakes for client AccessReviewHistoryDefinitionClient
+	AccessReviewHistoryDefinitionServer AccessReviewHistoryDefinitionServer
+
+	// AccessReviewHistoryDefinitionInstanceServer contains the fakes for client AccessReviewHistoryDefinitionInstanceClient
+	AccessReviewHistoryDefinitionInstanceServer AccessReviewHistoryDefinitionInstanceServer
+
+	// AccessReviewHistoryDefinitionInstancesServer contains the fakes for client AccessReviewHistoryDefinitionInstancesClient
+	AccessReviewHistoryDefinitionInstancesServer AccessReviewHistoryDefinitionInstancesServer
+
+	// AccessReviewHistoryDefinitionsServer contains the fakes for client AccessReviewHistoryDefinitionsClient
+	AccessReviewHistoryDefinitionsServer AccessReviewHistoryDefinitionsServer
+
+	// AccessReviewInstanceServer contains the fakes for client AccessReviewInstanceClient
+	AccessReviewInstanceServer AccessReviewInstanceServer
+
+	// AccessReviewInstanceContactedReviewersServer contains the fakes for client AccessReviewInstanceContactedReviewersClient
+	AccessReviewInstanceContactedReviewersServer AccessReviewInstanceContactedReviewersServer
+
+	// AccessReviewInstanceDecisionsServer contains the fakes for client AccessReviewInstanceDecisionsClient
+	AccessReviewInstanceDecisionsServer AccessReviewInstanceDecisionsServer
+
+	// AccessReviewInstanceMyDecisionsServer contains the fakes for client AccessReviewInstanceMyDecisionsClient
+	AccessReviewInstanceMyDecisionsServer AccessReviewInstanceMyDecisionsServer
+
+	// AccessReviewInstancesAssignedForMyApprovalServer contains the fakes for client AccessReviewInstancesAssignedForMyApprovalClient
+	AccessReviewInstancesAssignedForMyApprovalServer AccessReviewInstancesAssignedForMyApprovalServer
+
+	// AccessReviewInstancesServer contains the fakes for client AccessReviewInstancesClient
+	AccessReviewInstancesServer AccessReviewInstancesServer
+
+	// AccessReviewScheduleDefinitionsAssignedForMyApprovalServer contains the fakes for client AccessReviewScheduleDefinitionsAssignedForMyApprovalClient
 	AccessReviewScheduleDefinitionsAssignedForMyApprovalServer AccessReviewScheduleDefinitionsAssignedForMyApprovalServer
-	AccessReviewScheduleDefinitionsServer                      AccessReviewScheduleDefinitionsServer
-	AlertConfigurationsServer                                  AlertConfigurationsServer
-	AlertDefinitionsServer                                     AlertDefinitionsServer
-	AlertIncidentsServer                                       AlertIncidentsServer
-	AlertOperationServer                                       AlertOperationServer
-	AlertsServer                                               AlertsServer
-	ClassicAdministratorsServer                                ClassicAdministratorsServer
-	DenyAssignmentsServer                                      DenyAssignmentsServer
-	EligibleChildResourcesServer                               EligibleChildResourcesServer
-	GlobalAdministratorServer                                  GlobalAdministratorServer
-	OperationsServer                                           OperationsServer
-	PermissionsServer                                          PermissionsServer
-	ProviderOperationsMetadataServer                           ProviderOperationsMetadataServer
-	RoleAssignmentScheduleInstancesServer                      RoleAssignmentScheduleInstancesServer
-	RoleAssignmentScheduleRequestsServer                       RoleAssignmentScheduleRequestsServer
-	RoleAssignmentSchedulesServer                              RoleAssignmentSchedulesServer
-	RoleAssignmentsServer                                      RoleAssignmentsServer
-	RoleDefinitionsServer                                      RoleDefinitionsServer
-	RoleEligibilityScheduleInstancesServer                     RoleEligibilityScheduleInstancesServer
-	RoleEligibilityScheduleRequestsServer                      RoleEligibilityScheduleRequestsServer
-	RoleEligibilitySchedulesServer                             RoleEligibilitySchedulesServer
-	RoleManagementPoliciesServer                               RoleManagementPoliciesServer
-	RoleManagementPolicyAssignmentsServer                      RoleManagementPolicyAssignmentsServer
-	ScopeAccessReviewDefaultSettingsServer                     ScopeAccessReviewDefaultSettingsServer
-	ScopeAccessReviewHistoryDefinitionServer                   ScopeAccessReviewHistoryDefinitionServer
-	ScopeAccessReviewHistoryDefinitionInstanceServer           ScopeAccessReviewHistoryDefinitionInstanceServer
-	ScopeAccessReviewHistoryDefinitionInstancesServer          ScopeAccessReviewHistoryDefinitionInstancesServer
-	ScopeAccessReviewHistoryDefinitionsServer                  ScopeAccessReviewHistoryDefinitionsServer
-	ScopeAccessReviewInstanceServer                            ScopeAccessReviewInstanceServer
-	ScopeAccessReviewInstanceContactedReviewersServer          ScopeAccessReviewInstanceContactedReviewersServer
-	ScopeAccessReviewInstanceDecisionsServer                   ScopeAccessReviewInstanceDecisionsServer
-	ScopeAccessReviewInstancesServer                           ScopeAccessReviewInstancesServer
-	ScopeAccessReviewScheduleDefinitionsServer                 ScopeAccessReviewScheduleDefinitionsServer
-	TenantLevelAccessReviewInstanceContactedReviewersServer    TenantLevelAccessReviewInstanceContactedReviewersServer
+
+	// AccessReviewScheduleDefinitionsServer contains the fakes for client AccessReviewScheduleDefinitionsClient
+	AccessReviewScheduleDefinitionsServer AccessReviewScheduleDefinitionsServer
+
+	// AlertConfigurationsServer contains the fakes for client AlertConfigurationsClient
+	AlertConfigurationsServer AlertConfigurationsServer
+
+	// AlertDefinitionsServer contains the fakes for client AlertDefinitionsClient
+	AlertDefinitionsServer AlertDefinitionsServer
+
+	// AlertIncidentsServer contains the fakes for client AlertIncidentsClient
+	AlertIncidentsServer AlertIncidentsServer
+
+	// AlertOperationServer contains the fakes for client AlertOperationClient
+	AlertOperationServer AlertOperationServer
+
+	// AlertsServer contains the fakes for client AlertsClient
+	AlertsServer AlertsServer
+
+	// AttributeNamespacesServer contains the fakes for client AttributeNamespacesClient
+	AttributeNamespacesServer AttributeNamespacesServer
+
+	// ClassicAdministratorsServer contains the fakes for client ClassicAdministratorsClient
+	ClassicAdministratorsServer ClassicAdministratorsServer
+
+	// DenyAssignmentsServer contains the fakes for client DenyAssignmentsClient
+	DenyAssignmentsServer DenyAssignmentsServer
+
+	// EligibleChildResourcesServer contains the fakes for client EligibleChildResourcesClient
+	EligibleChildResourcesServer EligibleChildResourcesServer
+
+	// GlobalAdministratorServer contains the fakes for client GlobalAdministratorClient
+	GlobalAdministratorServer GlobalAdministratorServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PermissionsServer contains the fakes for client PermissionsClient
+	PermissionsServer PermissionsServer
+
+	// ProviderOperationsMetadataServer contains the fakes for client ProviderOperationsMetadataClient
+	ProviderOperationsMetadataServer ProviderOperationsMetadataServer
+
+	// RoleAssignmentScheduleInstancesServer contains the fakes for client RoleAssignmentScheduleInstancesClient
+	RoleAssignmentScheduleInstancesServer RoleAssignmentScheduleInstancesServer
+
+	// RoleAssignmentScheduleRequestsServer contains the fakes for client RoleAssignmentScheduleRequestsClient
+	RoleAssignmentScheduleRequestsServer RoleAssignmentScheduleRequestsServer
+
+	// RoleAssignmentSchedulesServer contains the fakes for client RoleAssignmentSchedulesClient
+	RoleAssignmentSchedulesServer RoleAssignmentSchedulesServer
+
+	// RoleAssignmentsServer contains the fakes for client RoleAssignmentsClient
+	RoleAssignmentsServer RoleAssignmentsServer
+
+	// RoleDefinitionsServer contains the fakes for client RoleDefinitionsClient
+	RoleDefinitionsServer RoleDefinitionsServer
+
+	// RoleEligibilityScheduleInstancesServer contains the fakes for client RoleEligibilityScheduleInstancesClient
+	RoleEligibilityScheduleInstancesServer RoleEligibilityScheduleInstancesServer
+
+	// RoleEligibilityScheduleRequestsServer contains the fakes for client RoleEligibilityScheduleRequestsClient
+	RoleEligibilityScheduleRequestsServer RoleEligibilityScheduleRequestsServer
+
+	// RoleEligibilitySchedulesServer contains the fakes for client RoleEligibilitySchedulesClient
+	RoleEligibilitySchedulesServer RoleEligibilitySchedulesServer
+
+	// RoleManagementPoliciesServer contains the fakes for client RoleManagementPoliciesClient
+	RoleManagementPoliciesServer RoleManagementPoliciesServer
+
+	// RoleManagementPolicyAssignmentsServer contains the fakes for client RoleManagementPolicyAssignmentsClient
+	RoleManagementPolicyAssignmentsServer RoleManagementPolicyAssignmentsServer
+
+	// ScopeAccessReviewDefaultSettingsServer contains the fakes for client ScopeAccessReviewDefaultSettingsClient
+	ScopeAccessReviewDefaultSettingsServer ScopeAccessReviewDefaultSettingsServer
+
+	// ScopeAccessReviewHistoryDefinitionServer contains the fakes for client ScopeAccessReviewHistoryDefinitionClient
+	ScopeAccessReviewHistoryDefinitionServer ScopeAccessReviewHistoryDefinitionServer
+
+	// ScopeAccessReviewHistoryDefinitionInstanceServer contains the fakes for client ScopeAccessReviewHistoryDefinitionInstanceClient
+	ScopeAccessReviewHistoryDefinitionInstanceServer ScopeAccessReviewHistoryDefinitionInstanceServer
+
+	// ScopeAccessReviewHistoryDefinitionInstancesServer contains the fakes for client ScopeAccessReviewHistoryDefinitionInstancesClient
+	ScopeAccessReviewHistoryDefinitionInstancesServer ScopeAccessReviewHistoryDefinitionInstancesServer
+
+	// ScopeAccessReviewHistoryDefinitionsServer contains the fakes for client ScopeAccessReviewHistoryDefinitionsClient
+	ScopeAccessReviewHistoryDefinitionsServer ScopeAccessReviewHistoryDefinitionsServer
+
+	// ScopeAccessReviewInstanceServer contains the fakes for client ScopeAccessReviewInstanceClient
+	ScopeAccessReviewInstanceServer ScopeAccessReviewInstanceServer
+
+	// ScopeAccessReviewInstanceContactedReviewersServer contains the fakes for client ScopeAccessReviewInstanceContactedReviewersClient
+	ScopeAccessReviewInstanceContactedReviewersServer ScopeAccessReviewInstanceContactedReviewersServer
+
+	// ScopeAccessReviewInstanceDecisionsServer contains the fakes for client ScopeAccessReviewInstanceDecisionsClient
+	ScopeAccessReviewInstanceDecisionsServer ScopeAccessReviewInstanceDecisionsServer
+
+	// ScopeAccessReviewInstancesServer contains the fakes for client ScopeAccessReviewInstancesClient
+	ScopeAccessReviewInstancesServer ScopeAccessReviewInstancesServer
+
+	// ScopeAccessReviewScheduleDefinitionsServer contains the fakes for client ScopeAccessReviewScheduleDefinitionsClient
+	ScopeAccessReviewScheduleDefinitionsServer ScopeAccessReviewScheduleDefinitionsServer
+
+	// TenantLevelAccessReviewInstanceContactedReviewersServer contains the fakes for client TenantLevelAccessReviewInstanceContactedReviewersClient
+	TenantLevelAccessReviewInstanceContactedReviewersServer TenantLevelAccessReviewInstanceContactedReviewersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -96,6 +190,7 @@ type ServerFactoryTransport struct {
 	trAlertIncidentsServer                                       *AlertIncidentsServerTransport
 	trAlertOperationServer                                       *AlertOperationServerTransport
 	trAlertsServer                                               *AlertsServerTransport
+	trAttributeNamespacesServer                                  *AttributeNamespacesServerTransport
 	trClassicAdministratorsServer                                *ClassicAdministratorsServerTransport
 	trDenyAssignmentsServer                                      *DenyAssignmentsServerTransport
 	trEligibleChildResourcesServer                               *EligibleChildResourcesServerTransport
@@ -227,6 +322,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AlertsClient":
 		initServer(s, &s.trAlertsServer, func() *AlertsServerTransport { return NewAlertsServerTransport(&s.srv.AlertsServer) })
 		resp, err = s.trAlertsServer.Do(req)
+	case "AttributeNamespacesClient":
+		initServer(s, &s.trAttributeNamespacesServer, func() *AttributeNamespacesServerTransport {
+			return NewAttributeNamespacesServerTransport(&s.srv.AttributeNamespacesServer)
+		})
+		resp, err = s.trAttributeNamespacesServer.Do(req)
 	case "ClassicAdministratorsClient":
 		initServer(s, &s.trClassicAdministratorsServer, func() *ClassicAdministratorsServerTransport {
 			return NewClassicAdministratorsServerTransport(&s.srv.ClassicAdministratorsServer)

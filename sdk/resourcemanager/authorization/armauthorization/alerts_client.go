@@ -23,7 +23,7 @@ type AlertsClient struct {
 
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *AlertsClient) Get(ctx context.Context, scope string, alertID strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertsClient) getCreateRequest(ctx context.Context, scope string, alertID string, options *AlertsClientGetOptions) (*policy.Request, error) {
+func (client *AlertsClient) getCreateRequest(ctx context.Context, scope string, alertID string, _ *AlertsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/{alertId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)
@@ -123,7 +123,7 @@ func (client *AlertsClient) NewListForScopePager(scope string, options *AlertsCl
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *AlertsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *AlertsClientListForScopeOptions) (*policy.Request, error) {
+func (client *AlertsClient) listForScopeCreateRequest(ctx context.Context, scope string, _ *AlertsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -197,7 +197,7 @@ func (client *AlertsClient) refresh(ctx context.Context, scope string, alertID s
 }
 
 // refreshCreateRequest creates the Refresh request.
-func (client *AlertsClient) refreshCreateRequest(ctx context.Context, scope string, alertID string, options *AlertsClientBeginRefreshOptions) (*policy.Request, error) {
+func (client *AlertsClient) refreshCreateRequest(ctx context.Context, scope string, alertID string, _ *AlertsClientBeginRefreshOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/{alertId}/refresh"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)
@@ -262,7 +262,7 @@ func (client *AlertsClient) refreshAll(ctx context.Context, scope string, option
 }
 
 // refreshAllCreateRequest creates the RefreshAll request.
-func (client *AlertsClient) refreshAllCreateRequest(ctx context.Context, scope string, options *AlertsClientBeginRefreshAllOptions) (*policy.Request, error) {
+func (client *AlertsClient) refreshAllCreateRequest(ctx context.Context, scope string, _ *AlertsClientBeginRefreshAllOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/refresh"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -306,7 +306,7 @@ func (client *AlertsClient) Update(ctx context.Context, scope string, alertID st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AlertsClient) updateCreateRequest(ctx context.Context, scope string, alertID string, parameters Alert, options *AlertsClientUpdateOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateCreateRequest(ctx context.Context, scope string, alertID string, parameters Alert, _ *AlertsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/{alertId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)

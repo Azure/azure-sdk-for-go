@@ -246,13 +246,13 @@ type AlertOperationClientGetOptions struct {
 
 // AlertsClientBeginRefreshAllOptions contains the optional parameters for the AlertsClient.BeginRefreshAll method.
 type AlertsClientBeginRefreshAllOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AlertsClientBeginRefreshOptions contains the optional parameters for the AlertsClient.BeginRefresh method.
 type AlertsClientBeginRefreshOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -271,9 +271,35 @@ type AlertsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AttributeNamespacesClientCreateOptions contains the optional parameters for the AttributeNamespacesClient.Create method.
+type AttributeNamespacesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttributeNamespacesClientDeleteOptions contains the optional parameters for the AttributeNamespacesClient.Delete method.
+type AttributeNamespacesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttributeNamespacesClientGetOptions contains the optional parameters for the AttributeNamespacesClient.Get method.
+type AttributeNamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.NewListPager
 // method.
 type ClassicAdministratorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DenyAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the DenyAssignmentsClient.CreateOrUpdate
+// method.
+type DenyAssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DenyAssignmentsClientDeleteOptions contains the optional parameters for the DenyAssignmentsClient.Delete method.
+type DenyAssignmentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -25,7 +25,7 @@ type AccessReviewInstanceMyDecisionsClient struct {
 
 // NewAccessReviewInstanceMyDecisionsClient creates a new instance of AccessReviewInstanceMyDecisionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceMyDecisionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) GetByID(ctx context.Context
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, options *AccessReviewInstanceMyDecisionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, _ *AccessReviewInstanceMyDecisionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions/{decisionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -202,7 +202,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) Patch(ctx context.Context, 
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, options *AccessReviewInstanceMyDecisionsClientPatchOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, _ *AccessReviewInstanceMyDecisionsClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions/{decisionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")

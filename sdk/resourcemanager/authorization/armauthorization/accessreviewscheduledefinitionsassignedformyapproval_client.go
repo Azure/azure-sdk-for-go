@@ -15,7 +15,8 @@ import (
 	"strings"
 )
 
-// AccessReviewScheduleDefinitionsAssignedForMyApprovalClient contains the methods for the AccessReviewScheduleDefinitionsAssignedForMyApproval group.
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalClient contains the methods for the AccessReviewScheduleDefinitionsAssignedForMyApproval
+// group.
 // Don't use this type directly, use NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient() instead.
 type AccessReviewScheduleDefinitionsAssignedForMyApprovalClient struct {
 	internal *arm.Client
@@ -23,7 +24,7 @@ type AccessReviewScheduleDefinitionsAssignedForMyApprovalClient struct {
 
 // NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient creates a new instance of AccessReviewScheduleDefinitionsAssignedForMyApprovalClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewScheduleDefinitionsAssignedForMyApprovalClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

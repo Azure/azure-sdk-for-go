@@ -5,11 +5,6 @@
 
 package armauthorization
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
-	moduleVersion = "v3.0.0-beta.2"
-)
-
 // AccessRecommendationType - The feature- generated recommendation shown to the reviewer.
 type AccessRecommendationType string
 
@@ -372,6 +367,26 @@ func PossibleAssignmentTypeValues() []AssignmentType {
 	}
 }
 
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
 // DecisionResourceType - The type of resource
 type DecisionResourceType string
 
@@ -420,6 +435,30 @@ func PossibleDefaultDecisionTypeValues() []DefaultDecisionType {
 	}
 }
 
+// DenyAssignmentEffect - The effect of the deny assignment. 'enforced' blocks access, 'audit' logs without blocking.
+type DenyAssignmentEffect string
+
+const (
+	DenyAssignmentEffectAudit    DenyAssignmentEffect = "audit"
+	DenyAssignmentEffectEnforced DenyAssignmentEffect = "enforced"
+)
+
+// PossibleDenyAssignmentEffectValues returns the possible values for the DenyAssignmentEffect const type.
+func PossibleDenyAssignmentEffectValues() []DenyAssignmentEffect {
+	return []DenyAssignmentEffect{
+		DenyAssignmentEffectAudit,
+		DenyAssignmentEffectEnforced,
+	}
+}
+
+// DenyAssignmentPrincipalType - The type of the principal such as user, group, servicePrincipal, etc.
+type DenyAssignmentPrincipalType string
+
+// PossibleDenyAssignmentPrincipalTypeValues returns the possible values for the DenyAssignmentPrincipalType const type.
+func PossibleDenyAssignmentPrincipalTypeValues() []DenyAssignmentPrincipalType {
+	return []DenyAssignmentPrincipalType{}
+}
+
 // EnablementRules - The type of enablement rule
 type EnablementRules string
 
@@ -435,6 +474,21 @@ func PossibleEnablementRulesValues() []EnablementRules {
 		EnablementRulesJustification,
 		EnablementRulesMultiFactorAuthentication,
 		EnablementRulesTicketing,
+	}
+}
+
+type ExcludedPrincipalTypes string
+
+const (
+	ExcludedPrincipalTypesServicePrincipalsAsRequestor ExcludedPrincipalTypes = "ServicePrincipalsAsRequestor"
+	ExcludedPrincipalTypesServicePrincipalsAsTarget    ExcludedPrincipalTypes = "ServicePrincipalsAsTarget"
+)
+
+// PossibleExcludedPrincipalTypesValues returns the possible values for the ExcludedPrincipalTypes const type.
+func PossibleExcludedPrincipalTypesValues() []ExcludedPrincipalTypes {
+	return []ExcludedPrincipalTypes{
+		ExcludedPrincipalTypesServicePrincipalsAsRequestor,
+		ExcludedPrincipalTypesServicePrincipalsAsTarget,
 	}
 }
 
@@ -485,6 +539,24 @@ func PossibleNotificationLevelValues() []NotificationLevel {
 		NotificationLevelAll,
 		NotificationLevelCritical,
 		NotificationLevelNone,
+	}
+}
+
+// PIMOnlyMode - Determines whether the setting is enabled, disabled or report only.
+type PIMOnlyMode string
+
+const (
+	PIMOnlyModeDisabled   PIMOnlyMode = "Disabled"
+	PIMOnlyModeEnabled    PIMOnlyMode = "Enabled"
+	PIMOnlyModeReportOnly PIMOnlyMode = "ReportOnly"
+)
+
+// PossiblePIMOnlyModeValues returns the possible values for the PIMOnlyMode const type.
+func PossiblePIMOnlyModeValues() []PIMOnlyMode {
+	return []PIMOnlyMode{
+		PIMOnlyModeDisabled,
+		PIMOnlyModeEnabled,
+		PIMOnlyModeReportOnly,
 	}
 }
 
@@ -583,6 +655,7 @@ const (
 	RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule            RoleManagementPolicyRuleType = "RoleManagementPolicyEnablementRule"
 	RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule            RoleManagementPolicyRuleType = "RoleManagementPolicyExpirationRule"
 	RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule          RoleManagementPolicyRuleType = "RoleManagementPolicyNotificationRule"
+	RoleManagementPolicyRuleTypeRoleManagementPolicyPimOnlyModeRule           RoleManagementPolicyRuleType = "RoleManagementPolicyPimOnlyModeRule"
 )
 
 // PossibleRoleManagementPolicyRuleTypeValues returns the possible values for the RoleManagementPolicyRuleType const type.
@@ -593,6 +666,7 @@ func PossibleRoleManagementPolicyRuleTypeValues() []RoleManagementPolicyRuleType
 		RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule,
 		RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule,
 		RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule,
+		RoleManagementPolicyRuleTypeRoleManagementPolicyPimOnlyModeRule,
 	}
 }
 
@@ -692,14 +766,16 @@ func PossibleTypeValues() []Type {
 type UserType string
 
 const (
-	UserTypeGroup UserType = "Group"
-	UserTypeUser  UserType = "User"
+	UserTypeGroup            UserType = "Group"
+	UserTypeServicePrincipal UserType = "ServicePrincipal"
+	UserTypeUser             UserType = "User"
 )
 
 // PossibleUserTypeValues returns the possible values for the UserType const type.
 func PossibleUserTypeValues() []UserType {
 	return []UserType{
 		UserTypeGroup,
+		UserTypeServicePrincipal,
 		UserTypeUser,
 	}
 }

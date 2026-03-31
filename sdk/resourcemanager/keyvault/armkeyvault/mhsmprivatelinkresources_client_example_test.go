@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/ManagedHsm_listPrivateLinkResources.json
+// Generated from example definition: 2026-02-01/ManagedHsm_listPrivateLinkResources.json
 func ExampleMHSMPrivateLinkResourcesClient_ListByMHSMResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

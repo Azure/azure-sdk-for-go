@@ -174,140 +174,140 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AccountsClient":
-		initServer(s, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
+		initServer(&s.trMu, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
 	case "ActiveDirectoryConfigsClient":
-		initServer(s, &s.trActiveDirectoryConfigsServer, func() *ActiveDirectoryConfigsServerTransport {
+		initServer(&s.trMu, &s.trActiveDirectoryConfigsServer, func() *ActiveDirectoryConfigsServerTransport {
 			return NewActiveDirectoryConfigsServerTransport(&s.srv.ActiveDirectoryConfigsServer)
 		})
 		resp, err = s.trActiveDirectoryConfigsServer.Do(req)
 	case "BackupPoliciesClient":
-		initServer(s, &s.trBackupPoliciesServer, func() *BackupPoliciesServerTransport {
+		initServer(&s.trMu, &s.trBackupPoliciesServer, func() *BackupPoliciesServerTransport {
 			return NewBackupPoliciesServerTransport(&s.srv.BackupPoliciesServer)
 		})
 		resp, err = s.trBackupPoliciesServer.Do(req)
 	case "BackupVaultsClient":
-		initServer(s, &s.trBackupVaultsServer, func() *BackupVaultsServerTransport { return NewBackupVaultsServerTransport(&s.srv.BackupVaultsServer) })
+		initServer(&s.trMu, &s.trBackupVaultsServer, func() *BackupVaultsServerTransport { return NewBackupVaultsServerTransport(&s.srv.BackupVaultsServer) })
 		resp, err = s.trBackupVaultsServer.Do(req)
 	case "BackupsClient":
-		initServer(s, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
+		initServer(&s.trMu, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
 		resp, err = s.trBackupsServer.Do(req)
 	case "BackupsUnderAccountClient":
-		initServer(s, &s.trBackupsUnderAccountServer, func() *BackupsUnderAccountServerTransport {
+		initServer(&s.trMu, &s.trBackupsUnderAccountServer, func() *BackupsUnderAccountServerTransport {
 			return NewBackupsUnderAccountServerTransport(&s.srv.BackupsUnderAccountServer)
 		})
 		resp, err = s.trBackupsUnderAccountServer.Do(req)
 	case "BackupsUnderBackupVaultClient":
-		initServer(s, &s.trBackupsUnderBackupVaultServer, func() *BackupsUnderBackupVaultServerTransport {
+		initServer(&s.trMu, &s.trBackupsUnderBackupVaultServer, func() *BackupsUnderBackupVaultServerTransport {
 			return NewBackupsUnderBackupVaultServerTransport(&s.srv.BackupsUnderBackupVaultServer)
 		})
 		resp, err = s.trBackupsUnderBackupVaultServer.Do(req)
 	case "BackupsUnderVolumeClient":
-		initServer(s, &s.trBackupsUnderVolumeServer, func() *BackupsUnderVolumeServerTransport {
+		initServer(&s.trMu, &s.trBackupsUnderVolumeServer, func() *BackupsUnderVolumeServerTransport {
 			return NewBackupsUnderVolumeServerTransport(&s.srv.BackupsUnderVolumeServer)
 		})
 		resp, err = s.trBackupsUnderVolumeServer.Do(req)
 	case "BucketsClient":
-		initServer(s, &s.trBucketsServer, func() *BucketsServerTransport { return NewBucketsServerTransport(&s.srv.BucketsServer) })
+		initServer(&s.trMu, &s.trBucketsServer, func() *BucketsServerTransport { return NewBucketsServerTransport(&s.srv.BucketsServer) })
 		resp, err = s.trBucketsServer.Do(req)
 	case "CachesClient":
-		initServer(s, &s.trCachesServer, func() *CachesServerTransport { return NewCachesServerTransport(&s.srv.CachesServer) })
+		initServer(&s.trMu, &s.trCachesServer, func() *CachesServerTransport { return NewCachesServerTransport(&s.srv.CachesServer) })
 		resp, err = s.trCachesServer.Do(req)
 	case "ElasticAccountsClient":
-		initServer(s, &s.trElasticAccountsServer, func() *ElasticAccountsServerTransport {
+		initServer(&s.trMu, &s.trElasticAccountsServer, func() *ElasticAccountsServerTransport {
 			return NewElasticAccountsServerTransport(&s.srv.ElasticAccountsServer)
 		})
 		resp, err = s.trElasticAccountsServer.Do(req)
 	case "ElasticBackupPoliciesClient":
-		initServer(s, &s.trElasticBackupPoliciesServer, func() *ElasticBackupPoliciesServerTransport {
+		initServer(&s.trMu, &s.trElasticBackupPoliciesServer, func() *ElasticBackupPoliciesServerTransport {
 			return NewElasticBackupPoliciesServerTransport(&s.srv.ElasticBackupPoliciesServer)
 		})
 		resp, err = s.trElasticBackupPoliciesServer.Do(req)
 	case "ElasticBackupVaultsClient":
-		initServer(s, &s.trElasticBackupVaultsServer, func() *ElasticBackupVaultsServerTransport {
+		initServer(&s.trMu, &s.trElasticBackupVaultsServer, func() *ElasticBackupVaultsServerTransport {
 			return NewElasticBackupVaultsServerTransport(&s.srv.ElasticBackupVaultsServer)
 		})
 		resp, err = s.trElasticBackupVaultsServer.Do(req)
 	case "ElasticBackupsClient":
-		initServer(s, &s.trElasticBackupsServer, func() *ElasticBackupsServerTransport {
+		initServer(&s.trMu, &s.trElasticBackupsServer, func() *ElasticBackupsServerTransport {
 			return NewElasticBackupsServerTransport(&s.srv.ElasticBackupsServer)
 		})
 		resp, err = s.trElasticBackupsServer.Do(req)
 	case "ElasticCapacityPoolsClient":
-		initServer(s, &s.trElasticCapacityPoolsServer, func() *ElasticCapacityPoolsServerTransport {
+		initServer(&s.trMu, &s.trElasticCapacityPoolsServer, func() *ElasticCapacityPoolsServerTransport {
 			return NewElasticCapacityPoolsServerTransport(&s.srv.ElasticCapacityPoolsServer)
 		})
 		resp, err = s.trElasticCapacityPoolsServer.Do(req)
 	case "ElasticSnapshotPoliciesClient":
-		initServer(s, &s.trElasticSnapshotPoliciesServer, func() *ElasticSnapshotPoliciesServerTransport {
+		initServer(&s.trMu, &s.trElasticSnapshotPoliciesServer, func() *ElasticSnapshotPoliciesServerTransport {
 			return NewElasticSnapshotPoliciesServerTransport(&s.srv.ElasticSnapshotPoliciesServer)
 		})
 		resp, err = s.trElasticSnapshotPoliciesServer.Do(req)
 	case "ElasticSnapshotsClient":
-		initServer(s, &s.trElasticSnapshotsServer, func() *ElasticSnapshotsServerTransport {
+		initServer(&s.trMu, &s.trElasticSnapshotsServer, func() *ElasticSnapshotsServerTransport {
 			return NewElasticSnapshotsServerTransport(&s.srv.ElasticSnapshotsServer)
 		})
 		resp, err = s.trElasticSnapshotsServer.Do(req)
 	case "ElasticVolumesClient":
-		initServer(s, &s.trElasticVolumesServer, func() *ElasticVolumesServerTransport {
+		initServer(&s.trMu, &s.trElasticVolumesServer, func() *ElasticVolumesServerTransport {
 			return NewElasticVolumesServerTransport(&s.srv.ElasticVolumesServer)
 		})
 		resp, err = s.trElasticVolumesServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PoolsClient":
-		initServer(s, &s.trPoolsServer, func() *PoolsServerTransport { return NewPoolsServerTransport(&s.srv.PoolsServer) })
+		initServer(&s.trMu, &s.trPoolsServer, func() *PoolsServerTransport { return NewPoolsServerTransport(&s.srv.PoolsServer) })
 		resp, err = s.trPoolsServer.Do(req)
 	case "RansomwareReportsClient":
-		initServer(s, &s.trRansomwareReportsServer, func() *RansomwareReportsServerTransport {
+		initServer(&s.trMu, &s.trRansomwareReportsServer, func() *RansomwareReportsServerTransport {
 			return NewRansomwareReportsServerTransport(&s.srv.RansomwareReportsServer)
 		})
 		resp, err = s.trRansomwareReportsServer.Do(req)
 	case "ResourceClient":
-		initServer(s, &s.trResourceServer, func() *ResourceServerTransport { return NewResourceServerTransport(&s.srv.ResourceServer) })
+		initServer(&s.trMu, &s.trResourceServer, func() *ResourceServerTransport { return NewResourceServerTransport(&s.srv.ResourceServer) })
 		resp, err = s.trResourceServer.Do(req)
 	case "ResourceQuotaLimitsAccountClient":
-		initServer(s, &s.trResourceQuotaLimitsAccountServer, func() *ResourceQuotaLimitsAccountServerTransport {
+		initServer(&s.trMu, &s.trResourceQuotaLimitsAccountServer, func() *ResourceQuotaLimitsAccountServerTransport {
 			return NewResourceQuotaLimitsAccountServerTransport(&s.srv.ResourceQuotaLimitsAccountServer)
 		})
 		resp, err = s.trResourceQuotaLimitsAccountServer.Do(req)
 	case "ResourceQuotaLimitsClient":
-		initServer(s, &s.trResourceQuotaLimitsServer, func() *ResourceQuotaLimitsServerTransport {
+		initServer(&s.trMu, &s.trResourceQuotaLimitsServer, func() *ResourceQuotaLimitsServerTransport {
 			return NewResourceQuotaLimitsServerTransport(&s.srv.ResourceQuotaLimitsServer)
 		})
 		resp, err = s.trResourceQuotaLimitsServer.Do(req)
 	case "ResourceRegionInfosClient":
-		initServer(s, &s.trResourceRegionInfosServer, func() *ResourceRegionInfosServerTransport {
+		initServer(&s.trMu, &s.trResourceRegionInfosServer, func() *ResourceRegionInfosServerTransport {
 			return NewResourceRegionInfosServerTransport(&s.srv.ResourceRegionInfosServer)
 		})
 		resp, err = s.trResourceRegionInfosServer.Do(req)
 	case "ResourceUsagesClient":
-		initServer(s, &s.trResourceUsagesServer, func() *ResourceUsagesServerTransport {
+		initServer(&s.trMu, &s.trResourceUsagesServer, func() *ResourceUsagesServerTransport {
 			return NewResourceUsagesServerTransport(&s.srv.ResourceUsagesServer)
 		})
 		resp, err = s.trResourceUsagesServer.Do(req)
 	case "SnapshotPoliciesClient":
-		initServer(s, &s.trSnapshotPoliciesServer, func() *SnapshotPoliciesServerTransport {
+		initServer(&s.trMu, &s.trSnapshotPoliciesServer, func() *SnapshotPoliciesServerTransport {
 			return NewSnapshotPoliciesServerTransport(&s.srv.SnapshotPoliciesServer)
 		})
 		resp, err = s.trSnapshotPoliciesServer.Do(req)
 	case "SnapshotsClient":
-		initServer(s, &s.trSnapshotsServer, func() *SnapshotsServerTransport { return NewSnapshotsServerTransport(&s.srv.SnapshotsServer) })
+		initServer(&s.trMu, &s.trSnapshotsServer, func() *SnapshotsServerTransport { return NewSnapshotsServerTransport(&s.srv.SnapshotsServer) })
 		resp, err = s.trSnapshotsServer.Do(req)
 	case "SubvolumesClient":
-		initServer(s, &s.trSubvolumesServer, func() *SubvolumesServerTransport { return NewSubvolumesServerTransport(&s.srv.SubvolumesServer) })
+		initServer(&s.trMu, &s.trSubvolumesServer, func() *SubvolumesServerTransport { return NewSubvolumesServerTransport(&s.srv.SubvolumesServer) })
 		resp, err = s.trSubvolumesServer.Do(req)
 	case "VolumeGroupsClient":
-		initServer(s, &s.trVolumeGroupsServer, func() *VolumeGroupsServerTransport { return NewVolumeGroupsServerTransport(&s.srv.VolumeGroupsServer) })
+		initServer(&s.trMu, &s.trVolumeGroupsServer, func() *VolumeGroupsServerTransport { return NewVolumeGroupsServerTransport(&s.srv.VolumeGroupsServer) })
 		resp, err = s.trVolumeGroupsServer.Do(req)
 	case "VolumeQuotaRulesClient":
-		initServer(s, &s.trVolumeQuotaRulesServer, func() *VolumeQuotaRulesServerTransport {
+		initServer(&s.trMu, &s.trVolumeQuotaRulesServer, func() *VolumeQuotaRulesServerTransport {
 			return NewVolumeQuotaRulesServerTransport(&s.srv.VolumeQuotaRulesServer)
 		})
 		resp, err = s.trVolumeQuotaRulesServer.Do(req)
 	case "VolumesClient":
-		initServer(s, &s.trVolumesServer, func() *VolumesServerTransport { return NewVolumesServerTransport(&s.srv.VolumesServer) })
+		initServer(&s.trMu, &s.trVolumesServer, func() *VolumesServerTransport { return NewVolumesServerTransport(&s.srv.VolumesServer) })
 		resp, err = s.trVolumesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -318,12 +318,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

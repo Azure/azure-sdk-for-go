@@ -288,6 +288,11 @@ type CachesClientPoolChangeResponse struct {
 	// placeholder for future response values
 }
 
+// CachesClientResetSmbPasswordResponse contains the response from method CachesClient.BeginResetSmbPassword.
+type CachesClientResetSmbPasswordResponse struct {
+	// placeholder for future response values
+}
+
 // CachesClientUpdateResponse contains the response from method CachesClient.BeginUpdate.
 type CachesClientUpdateResponse struct {
 	// Cache resource
@@ -908,8 +913,8 @@ type VolumesClientListGetGroupIDListForLdapUserResponse struct {
 
 // VolumesClientListQuotaReportResponse contains the response from method VolumesClient.BeginListQuotaReport.
 type VolumesClientListQuotaReportResponse struct {
-	// Quota Report for volume
-	ListQuotaReportResponse
+	// * Result of ListQuotaReportResponse
+	ListQuotaReportResult
 }
 
 // VolumesClientListReplicationsResponse contains the response from method VolumesClient.NewListReplicationsPager.

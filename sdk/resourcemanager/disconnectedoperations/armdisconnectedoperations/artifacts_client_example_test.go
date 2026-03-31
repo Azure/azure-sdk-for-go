@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/Artifacts_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Artifacts_Get_MaximumSet_Gen.json
 func ExampleArtifactsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleArtifactsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/Artifact_ListByParent_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Artifact_ListByParent_MaximumSet_Gen.json
 func ExampleArtifactsClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleArtifactsClient_NewListByParentPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/Artifact_ListDownloadUri_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Artifact_ListDownloadUri_MaximumSet_Gen.json
 func ExampleArtifactsClient_ListDownloadURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

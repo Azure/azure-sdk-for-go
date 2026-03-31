@@ -1,5 +1,26 @@
 # Release History
 
+## 4.2.0 (2026-03-13)
+### Features Added
+
+- New value `AmlFilesystemHealthStateTypeExpanding` added to enum type `AmlFilesystemHealthStateType`
+- New enum type `ExpansionJobPropertiesProvisioningState` with values `ExpansionJobPropertiesProvisioningStateCanceled`, `ExpansionJobPropertiesProvisioningStateCreating`, `ExpansionJobPropertiesProvisioningStateDeleting`, `ExpansionJobPropertiesProvisioningStateFailed`, `ExpansionJobPropertiesProvisioningStateSucceeded`, `ExpansionJobPropertiesProvisioningStateUpdating`
+- New enum type `ExpansionJobStatusType` with values `ExpansionJobStatusTypeCompleted`, `ExpansionJobStatusTypeDeleting`, `ExpansionJobStatusTypeFailed`, `ExpansionJobStatusTypeInProgress`, `ExpansionJobStatusTypeRollingBack`
+- New function `*ClientFactory.NewExpansionJobsClient() *ExpansionJobsClient`
+- New function `NewExpansionJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpansionJobsClient, error)`
+- New function `*ExpansionJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJob, options *ExpansionJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExpansionJobsClientCreateOrUpdateResponse], error)`
+- New function `*ExpansionJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *ExpansionJobsClientBeginDeleteOptions) (*runtime.Poller[ExpansionJobsClientDeleteResponse], error)`
+- New function `*ExpansionJobsClient.Get(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *ExpansionJobsClientGetOptions) (ExpansionJobsClientGetResponse, error)`
+- New function `*ExpansionJobsClient.NewListByAmlFilesystemPager(resourceGroupName string, amlFilesystemName string, options *ExpansionJobsClientListByAmlFilesystemOptions) *runtime.Pager[ExpansionJobsClientListByAmlFilesystemResponse]`
+- New function `*ExpansionJobsClient.BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, options *ExpansionJobsClientBeginUpdateOptions) (*runtime.Poller[ExpansionJobsClientUpdateResponse], error)`
+- New struct `ExpansionJob`
+- New struct `ExpansionJobProperties`
+- New struct `ExpansionJobPropertiesStatus`
+- New struct `ExpansionJobUpdate`
+- New struct `ExpansionJobsListResult`
+- New field `ClusterUUID`, `CurrentStorageCapacityTiB` in struct `AmlFilesystemProperties`
+
+
 ## 4.1.0 (2025-09-26)
 ### Features Added
 

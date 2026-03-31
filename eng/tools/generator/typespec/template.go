@@ -4,6 +4,7 @@
 package typespec
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -36,6 +37,31 @@ func ParseTypeSpecTemplates(templateDir, outputDir string, data map[string]any, 
 		if err = tpl.ExecuteTemplate(w, t.Name(), data); err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+// ParseSingleTemplate parses a single .tpl template file and writes the rendered output to outputPath.
+func ParseSingleTemplate(templatePath, outputPath string, data map[string]string) error {
+	templateContent, err := os.ReadFile(templatePath)
+	if err != nil {
+		return fmt.Errorf("failed to read template from '%s': %w", templatePath, err)
+	}
+
+	tpl, err := template.New(filepath.Base(templatePath)).Parse(string(templateContent))
+	if err != nil {
+		return fmt.Errorf("failed to parse template '%s': %w", templatePath, err)
+	}
+
+	f, err := os.Create(outputPath)
+	if err != nil {
+		return fmt.Errorf("failed to create output file '%s': %w", outputPath, err)
+	}
+	defer f.Close()
+
+	if err := tpl.Execute(f, data); err != nil {
+		return fmt.Errorf("failed to execute template '%s': %w", templatePath, err)
 	}
 
 	return nil

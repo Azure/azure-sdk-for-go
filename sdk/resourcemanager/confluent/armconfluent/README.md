@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Confluent module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent/v2
 ```
 
 ## Authorization

@@ -48,8 +48,22 @@ type SchedulersClientBeginCreateOrUpdateOptions struct {
 	ResumeToken string
 }
 
+// SchedulersClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for the SchedulersClient.BeginCreateOrUpdatePrivateEndpointConnection
+// method.
+type SchedulersClientBeginCreateOrUpdatePrivateEndpointConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // SchedulersClientBeginDeleteOptions contains the optional parameters for the SchedulersClient.BeginDelete method.
 type SchedulersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SchedulersClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the SchedulersClient.BeginDeletePrivateEndpointConnection
+// method.
+type SchedulersClientBeginDeletePrivateEndpointConnectionOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -60,8 +74,26 @@ type SchedulersClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
+// SchedulersClientBeginUpdatePrivateEndpointConnectionOptions contains the optional parameters for the SchedulersClient.BeginUpdatePrivateEndpointConnection
+// method.
+type SchedulersClientBeginUpdatePrivateEndpointConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // SchedulersClientGetOptions contains the optional parameters for the SchedulersClient.Get method.
 type SchedulersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchedulersClientGetPrivateEndpointConnectionOptions contains the optional parameters for the SchedulersClient.GetPrivateEndpointConnection
+// method.
+type SchedulersClientGetPrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchedulersClientGetPrivateLinkOptions contains the optional parameters for the SchedulersClient.GetPrivateLink method.
+type SchedulersClientGetPrivateLinkOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -74,6 +106,18 @@ type SchedulersClientListByResourceGroupOptions struct {
 // SchedulersClientListBySubscriptionOptions contains the optional parameters for the SchedulersClient.NewListBySubscriptionPager
 // method.
 type SchedulersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchedulersClientListPrivateEndpointConnectionsOptions contains the optional parameters for the SchedulersClient.NewListPrivateEndpointConnectionsPager
+// method.
+type SchedulersClientListPrivateEndpointConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchedulersClientListPrivateLinksOptions contains the optional parameters for the SchedulersClient.NewListPrivateLinksPager
+// method.
+type SchedulersClientListPrivateLinksOptions struct {
 	// placeholder for future optional parameters
 }
 

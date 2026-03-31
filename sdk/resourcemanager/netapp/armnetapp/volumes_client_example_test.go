@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Volumes_AuthorizeExternalReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_AuthorizeExternalReplication.json
 func ExampleVolumesClient_BeginAuthorizeExternalReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleVolumesClient_BeginAuthorizeExternalReplication() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_AuthorizeReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_AuthorizeReplication.json
 func ExampleVolumesClient_BeginAuthorizeReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleVolumesClient_BeginAuthorizeReplication() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_BreakFileLocks.json
+// Generated from example definition: 2025-12-15-preview/Volumes_BreakFileLocks.json
 func ExampleVolumesClient_BeginBreakFileLocks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleVolumesClient_BeginBreakFileLocks() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_BreakReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_BreakReplication.json
 func ExampleVolumesClient_BeginBreakReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleVolumesClient_BeginBreakReplication() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_CreateOrUpdate.json
+// Generated from example definition: 2025-12-15-preview/Volumes_CreateOrUpdate.json
 func ExampleVolumesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_Delete.json
+// Generated from example definition: 2025-12-15-preview/Volumes_Delete.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_DeleteReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_DeleteReplication.json
 func ExampleVolumesClient_BeginDeleteReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleVolumesClient_BeginDeleteReplication() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_FinalizeExternalReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_FinalizeExternalReplication.json
 func ExampleVolumesClient_BeginFinalizeExternalReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleVolumesClient_BeginFinalizeExternalReplication() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_FinalizeRelocation.json
+// Generated from example definition: 2025-12-15-preview/Volumes_FinalizeRelocation.json
 func ExampleVolumesClient_BeginFinalizeRelocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,14 +272,14 @@ func ExampleVolumesClient_BeginFinalizeRelocation() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ExtraLargeVolumes_Get.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ExtraLargeVolumes_Get.json
 func ExampleVolumesClient_Get_volumesExtralargeVolumeGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -292,7 +292,7 @@ func ExampleVolumesClient_Get_volumesExtralargeVolumeGet() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientGetResponse{
 	// 	Volume: &armnetapp.Volume{
-	// 		ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 	// 		Name: to.Ptr("account1/pool1/volume1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 	// 		Location: to.Ptr("eastus"),
@@ -317,7 +317,7 @@ func ExampleVolumesClient_Get_volumesExtralargeVolumeGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_Get.json
+// Generated from example definition: 2025-12-15-preview/Volumes_Get.json
 func ExampleVolumesClient_Get_volumesGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,14 +357,14 @@ func ExampleVolumesClient_Get_volumesGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ExtraLargeVolumes_List.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ExtraLargeVolumes_List.json
 func ExampleVolumesClient_NewListPager_volumesExtralargeVolumeList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -383,7 +383,7 @@ func ExampleVolumesClient_NewListPager_volumesExtralargeVolumeList() {
 		// 	VolumeList: armnetapp.VolumeList{
 		// 		Value: []*armnetapp.Volume{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 		// 				Name: to.Ptr("account1/pool1/volume1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 		// 				Location: to.Ptr("eastus"),
@@ -411,7 +411,7 @@ func ExampleVolumesClient_NewListPager_volumesExtralargeVolumeList() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_List.json
+// Generated from example definition: 2025-12-15-preview/Volumes_List.json
 func ExampleVolumesClient_NewListPager_volumesList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,7 +460,7 @@ func ExampleVolumesClient_NewListPager_volumesList() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/GroupIdListForLDAPUser.json
+// Generated from example definition: 2025-12-15-preview/GroupIdListForLDAPUser.json
 func ExampleVolumesClient_BeginListGetGroupIDListForLdapUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -494,7 +494,7 @@ func ExampleVolumesClient_BeginListGetGroupIDListForLdapUser() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ListQuotaReport.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ListQuotaReport.json
 func ExampleVolumesClient_BeginListQuotaReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -517,30 +517,32 @@ func ExampleVolumesClient_BeginListQuotaReport() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientListQuotaReportResponse{
-	// 	ListQuotaReportResponse: &armnetapp.ListQuotaReportResponse{
-	// 		Value: []*armnetapp.QuotaReport{
-	// 			{
-	// 				IsDerivedQuota: to.Ptr(false),
-	// 				PercentageUsed: to.Ptr[float32](5),
-	// 				QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
-	// 				QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
-	// 				QuotaTarget: to.Ptr("1013"),
-	// 				QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
-	// 			},
-	// 			{
-	// 				IsDerivedQuota: to.Ptr(false),
-	// 				PercentageUsed: to.Ptr[float32](5),
-	// 				QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
-	// 				QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
-	// 				QuotaTarget: to.Ptr("1012"),
-	// 				QuotaType: to.Ptr(armnetapp.TypeIndividualGroupQuota),
+	// 	ListQuotaReportResult: &armnetapp.ListQuotaReportResult{
+	// 		Properties: &armnetapp.ListQuotaReportResponse{
+	// 			QuotaReportRecords: []*armnetapp.QuotaReport{
+	// 				{
+	// 					IsDerivedQuota: to.Ptr(false),
+	// 					PercentageUsed: to.Ptr[float32](5),
+	// 					QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
+	// 					QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
+	// 					QuotaTarget: to.Ptr("1013"),
+	// 					QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
+	// 				},
+	// 				{
+	// 					IsDerivedQuota: to.Ptr(false),
+	// 					PercentageUsed: to.Ptr[float32](5),
+	// 					QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
+	// 					QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
+	// 					QuotaTarget: to.Ptr("1012"),
+	// 					QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualGroupQuota),
+	// 				},
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ListReplications.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ListReplications.json
 func ExampleVolumesClient_NewListReplicationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -582,7 +584,7 @@ func ExampleVolumesClient_NewListReplicationsPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_PeerExternalCluster.json
+// Generated from example definition: 2025-12-15-preview/Volumes_PeerExternalCluster.json
 func ExampleVolumesClient_BeginPeerExternalCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,7 +622,7 @@ func ExampleVolumesClient_BeginPeerExternalCluster() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_PerformReplicationTransfer.json
+// Generated from example definition: 2025-12-15-preview/Volumes_PerformReplicationTransfer.json
 func ExampleVolumesClient_BeginPerformReplicationTransfer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -641,7 +643,7 @@ func ExampleVolumesClient_BeginPerformReplicationTransfer() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_PoolChange.json
+// Generated from example definition: 2025-12-15-preview/Volumes_PoolChange.json
 func ExampleVolumesClient_BeginPoolChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -669,7 +671,7 @@ func ExampleVolumesClient_BeginPoolChange() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_PopulateAvailabilityZones.json
+// Generated from example definition: 2025-12-15-preview/Volumes_PopulateAvailabilityZones.json
 func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -713,7 +715,7 @@ func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ReInitializeReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ReInitializeReplication.json
 func ExampleVolumesClient_BeginReInitializeReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -739,7 +741,7 @@ func ExampleVolumesClient_BeginReInitializeReplication() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ReestablishReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ReestablishReplication.json
 func ExampleVolumesClient_BeginReestablishReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -762,7 +764,7 @@ func ExampleVolumesClient_BeginReestablishReplication() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_Relocate.json
+// Generated from example definition: 2025-12-15-preview/Volumes_Relocate.json
 func ExampleVolumesClient_BeginRelocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -789,7 +791,7 @@ func ExampleVolumesClient_BeginRelocate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ReplicationStatus.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ReplicationStatus.json
 func ExampleVolumesClient_ReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -818,7 +820,7 @@ func ExampleVolumesClient_ReplicationStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ResetCifsPassword.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ResetCifsPassword.json
 func ExampleVolumesClient_BeginResetCifsPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -839,7 +841,7 @@ func ExampleVolumesClient_BeginResetCifsPassword() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_ResyncReplication.json
+// Generated from example definition: 2025-12-15-preview/Volumes_ResyncReplication.json
 func ExampleVolumesClient_BeginResyncReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -865,7 +867,7 @@ func ExampleVolumesClient_BeginResyncReplication() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_Revert.json
+// Generated from example definition: 2025-12-15-preview/Volumes_Revert.json
 func ExampleVolumesClient_BeginRevert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -893,7 +895,7 @@ func ExampleVolumesClient_BeginRevert() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_RevertRelocation.json
+// Generated from example definition: 2025-12-15-preview/Volumes_RevertRelocation.json
 func ExampleVolumesClient_BeginRevertRelocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -919,7 +921,7 @@ func ExampleVolumesClient_BeginRevertRelocation() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_SplitClone.json
+// Generated from example definition: 2025-12-15-preview/Volumes_SplitClone.json
 func ExampleVolumesClient_BeginSplitCloneFromParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -965,7 +967,7 @@ func ExampleVolumesClient_BeginSplitCloneFromParent() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Volumes_Update.json
+// Generated from example definition: 2025-12-15-preview/Volumes_Update.json
 func ExampleVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

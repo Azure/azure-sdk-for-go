@@ -40,17 +40,9 @@ type NodeTypesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, options *armservicefabricmanagedclusters.NodeTypesClientGetOptions) (resp azfake.Responder[armservicefabricmanagedclusters.NodeTypesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// GetFaultSimulation is the fake for method NodeTypesClient.GetFaultSimulation
-	// HTTP status codes to indicate success: http.StatusOK
-	GetFaultSimulation func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.FaultSimulationIDContent, options *armservicefabricmanagedclusters.NodeTypesClientGetFaultSimulationOptions) (resp azfake.Responder[armservicefabricmanagedclusters.NodeTypesClientGetFaultSimulationResponse], errResp azfake.ErrorResponder)
-
 	// NewListByManagedClustersPager is the fake for method NodeTypesClient.NewListByManagedClustersPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByManagedClustersPager func(resourceGroupName string, clusterName string, options *armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersOptions) (resp azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersResponse])
-
-	// NewListFaultSimulationPager is the fake for method NodeTypesClient.NewListFaultSimulationPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListFaultSimulationPager func(resourceGroupName string, clusterName string, nodeTypeName string, options *armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationOptions) (resp azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationResponse])
 
 	// BeginRedeploy is the fake for method NodeTypesClient.BeginRedeploy
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -68,14 +60,6 @@ type NodeTypesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.NodeTypeActionParameters, options *armservicefabricmanagedclusters.NodeTypesClientBeginStartOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartResponse], errResp azfake.ErrorResponder)
 
-	// BeginStartFaultSimulation is the fake for method NodeTypesClient.BeginStartFaultSimulation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartFaultSimulation func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.FaultSimulationContentWrapper, options *armservicefabricmanagedclusters.NodeTypesClientBeginStartFaultSimulationOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartFaultSimulationResponse], errResp azfake.ErrorResponder)
-
-	// BeginStopFaultSimulation is the fake for method NodeTypesClient.BeginStopFaultSimulation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStopFaultSimulation func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.FaultSimulationIDContent, options *armservicefabricmanagedclusters.NodeTypesClientBeginStopFaultSimulationOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStopFaultSimulationResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdate is the fake for method NodeTypesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.NodeTypeUpdateParameters, options *armservicefabricmanagedclusters.NodeTypesClientBeginUpdateOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -92,13 +76,10 @@ func NewNodeTypesServerTransport(srv *NodeTypesServer) *NodeTypesServerTransport
 		beginDelete:                   newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientDeleteResponse]](),
 		beginDeleteNode:               newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientDeleteNodeResponse]](),
 		newListByManagedClustersPager: newTracker[azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersResponse]](),
-		newListFaultSimulationPager:   newTracker[azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationResponse]](),
 		beginRedeploy:                 newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRedeployResponse]](),
 		beginReimage:                  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageResponse]](),
 		beginRestart:                  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse]](),
 		beginStart:                    newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartResponse]](),
-		beginStartFaultSimulation:     newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartFaultSimulationResponse]](),
-		beginStopFaultSimulation:      newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStopFaultSimulationResponse]](),
 		beginUpdate:                   newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientUpdateResponse]](),
 	}
 }
@@ -112,13 +93,10 @@ type NodeTypesServerTransport struct {
 	beginDelete                   *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientDeleteResponse]]
 	beginDeleteNode               *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientDeleteNodeResponse]]
 	newListByManagedClustersPager *tracker[azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersResponse]]
-	newListFaultSimulationPager   *tracker[azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationResponse]]
 	beginRedeploy                 *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRedeployResponse]]
 	beginReimage                  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageResponse]]
 	beginRestart                  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse]]
 	beginStart                    *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartResponse]]
-	beginStartFaultSimulation     *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartFaultSimulationResponse]]
-	beginStopFaultSimulation      *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStopFaultSimulationResponse]]
 	beginUpdate                   *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientUpdateResponse]]
 }
 
@@ -155,12 +133,8 @@ func (n *NodeTypesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = n.dispatchBeginDeleteNode(req)
 			case "NodeTypesClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
-			case "NodeTypesClient.GetFaultSimulation":
-				res.resp, res.err = n.dispatchGetFaultSimulation(req)
 			case "NodeTypesClient.NewListByManagedClustersPager":
 				res.resp, res.err = n.dispatchNewListByManagedClustersPager(req)
-			case "NodeTypesClient.NewListFaultSimulationPager":
-				res.resp, res.err = n.dispatchNewListFaultSimulationPager(req)
 			case "NodeTypesClient.BeginRedeploy":
 				res.resp, res.err = n.dispatchBeginRedeploy(req)
 			case "NodeTypesClient.BeginReimage":
@@ -169,10 +143,6 @@ func (n *NodeTypesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = n.dispatchBeginRestart(req)
 			case "NodeTypesClient.BeginStart":
 				res.resp, res.err = n.dispatchBeginStart(req)
-			case "NodeTypesClient.BeginStartFaultSimulation":
-				res.resp, res.err = n.dispatchBeginStartFaultSimulation(req)
-			case "NodeTypesClient.BeginStopFaultSimulation":
-				res.resp, res.err = n.dispatchBeginStopFaultSimulation(req)
 			case "NodeTypesClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
@@ -435,47 +405,6 @@ func (n *NodeTypesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	return resp, nil
 }
 
-func (n *NodeTypesServerTransport) dispatchGetFaultSimulation(req *http.Request) (*http.Response, error) {
-	if n.srv.GetFaultSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetFaultSimulation not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodeTypes/(?P<nodeTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFaultSimulation`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.FaultSimulationIDContent](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	nodeTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodeTypeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.GetFaultSimulation(req.Context(), resourceGroupNameParam, clusterNameParam, nodeTypeNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FaultSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (n *NodeTypesServerTransport) dispatchNewListByManagedClustersPager(req *http.Request) (*http.Response, error) {
 	if n.srv.NewListByManagedClustersPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByManagedClustersPager not implemented")}
@@ -513,51 +442,6 @@ func (n *NodeTypesServerTransport) dispatchNewListByManagedClustersPager(req *ht
 	}
 	if !server.PagerResponderMore(newListByManagedClustersPager) {
 		n.newListByManagedClustersPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NodeTypesServerTransport) dispatchNewListFaultSimulationPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListFaultSimulationPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListFaultSimulationPager not implemented")}
-	}
-	newListFaultSimulationPager := n.newListFaultSimulationPager.get(req)
-	if newListFaultSimulationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodeTypes/(?P<nodeTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFaultSimulation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		nodeTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodeTypeName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListFaultSimulationPager(resourceGroupNameParam, clusterNameParam, nodeTypeNameParam, nil)
-		newListFaultSimulationPager = &resp
-		n.newListFaultSimulationPager.add(req, newListFaultSimulationPager)
-		server.PagerResponderInjectNextLinks(newListFaultSimulationPager, req, func(page *armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListFaultSimulationPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListFaultSimulationPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListFaultSimulationPager) {
-		n.newListFaultSimulationPager.remove(req)
 	}
 	return resp, nil
 }
@@ -765,110 +649,6 @@ func (n *NodeTypesServerTransport) dispatchBeginStart(req *http.Request) (*http.
 	}
 	if !server.PollerResponderMore(beginStart) {
 		n.beginStart.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (n *NodeTypesServerTransport) dispatchBeginStartFaultSimulation(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginStartFaultSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartFaultSimulation not implemented")}
-	}
-	beginStartFaultSimulation := n.beginStartFaultSimulation.get(req)
-	if beginStartFaultSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodeTypes/(?P<nodeTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startFaultSimulation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.FaultSimulationContentWrapper](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		nodeTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodeTypeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginStartFaultSimulation(req.Context(), resourceGroupNameParam, clusterNameParam, nodeTypeNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartFaultSimulation = &respr
-		n.beginStartFaultSimulation.add(req, beginStartFaultSimulation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartFaultSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginStartFaultSimulation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartFaultSimulation) {
-		n.beginStartFaultSimulation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (n *NodeTypesServerTransport) dispatchBeginStopFaultSimulation(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginStopFaultSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStopFaultSimulation not implemented")}
-	}
-	beginStopFaultSimulation := n.beginStopFaultSimulation.get(req)
-	if beginStopFaultSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodeTypes/(?P<nodeTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopFaultSimulation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.FaultSimulationIDContent](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		nodeTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodeTypeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginStopFaultSimulation(req.Context(), resourceGroupNameParam, clusterNameParam, nodeTypeNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStopFaultSimulation = &respr
-		n.beginStopFaultSimulation.add(req, beginStopFaultSimulation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStopFaultSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginStopFaultSimulation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStopFaultSimulation) {
-		n.beginStopFaultSimulation.remove(req)
 	}
 
 	return resp, nil

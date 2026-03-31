@@ -424,6 +424,7 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 	preferredStartPosition, err := p.getStartPosition(getCheckpoints, ownership)
 
 	if err != nil {
+		consumers.Delete(ownership.PartitionID)
 		return err
 	}
 

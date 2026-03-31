@@ -13,7 +13,7 @@ applyTo: '**/tsp-location.yaml'
 You can regen this client by running:
 
 1. cd to the directory containing this file, for example `cd sdk/location/azlocation`
-2. `go generate` in the root of the module. If there are any errors related to tsp-client, or tsp not being installed they probably follow the instructions in "Pre-requisites".
+2. Run `tsp-client update` in the root of the module. If there are any errors related to tsp-client, or tsp not being installed they probably need to follow the instructions in "Pre-requisites".
 3. Create Go examples (in examples*_test.go files) for the new methods.
 4. Update the CHANGELOG describing the features, bug fixes, or breaking changes in this client.
 

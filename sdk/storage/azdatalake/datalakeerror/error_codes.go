@@ -68,6 +68,7 @@ const (
 	PathArchived                        StorageErrorCode = "PathArchived"
 	PathBeingRehydrated                 StorageErrorCode = "PathBeingRehydrated"
 	PathImmutableDueToPolicy            StorageErrorCode = "PathImmutableDueToPolicy"
+	PathIsTooDeep                       StorageErrorCode = "PathIsTooDeep"
 	PathNotArchived                     StorageErrorCode = "PathNotArchived"
 	PathNotFound                        StorageErrorCode = "PathNotFound"
 	PathOverwritten                     StorageErrorCode = "PathOverwritten"

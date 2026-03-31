@@ -32,10 +32,6 @@ type ManagedClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armservicefabricmanagedclusters.ManagedClustersClientGetOptions) (resp azfake.Responder[armservicefabricmanagedclusters.ManagedClustersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// GetFaultSimulation is the fake for method ManagedClustersClient.GetFaultSimulation
-	// HTTP status codes to indicate success: http.StatusOK
-	GetFaultSimulation func(ctx context.Context, resourceGroupName string, clusterName string, parameters armservicefabricmanagedclusters.FaultSimulationIDContent, options *armservicefabricmanagedclusters.ManagedClustersClientGetFaultSimulationOptions) (resp azfake.Responder[armservicefabricmanagedclusters.ManagedClustersClientGetFaultSimulationResponse], errResp azfake.ErrorResponder)
-
 	// NewListByResourceGroupPager is the fake for method ManagedClustersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armservicefabricmanagedclusters.ManagedClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListByResourceGroupResponse])
@@ -43,18 +39,6 @@ type ManagedClustersServer struct {
 	// NewListBySubscriptionPager is the fake for method ManagedClustersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armservicefabricmanagedclusters.ManagedClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListBySubscriptionResponse])
-
-	// NewListFaultSimulationPager is the fake for method ManagedClustersClient.NewListFaultSimulationPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListFaultSimulationPager func(resourceGroupName string, clusterName string, options *armservicefabricmanagedclusters.ManagedClustersClientListFaultSimulationOptions) (resp azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListFaultSimulationResponse])
-
-	// BeginStartFaultSimulation is the fake for method ManagedClustersClient.BeginStartFaultSimulation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartFaultSimulation func(ctx context.Context, resourceGroupName string, clusterName string, parameters armservicefabricmanagedclusters.FaultSimulationContentWrapper, options *armservicefabricmanagedclusters.ManagedClustersClientBeginStartFaultSimulationOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientStartFaultSimulationResponse], errResp azfake.ErrorResponder)
-
-	// BeginStopFaultSimulation is the fake for method ManagedClustersClient.BeginStopFaultSimulation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStopFaultSimulation func(ctx context.Context, resourceGroupName string, clusterName string, parameters armservicefabricmanagedclusters.FaultSimulationIDContent, options *armservicefabricmanagedclusters.ManagedClustersClientBeginStopFaultSimulationOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientStopFaultSimulationResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method ManagedClustersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -71,9 +55,6 @@ func NewManagedClustersServerTransport(srv *ManagedClustersServer) *ManagedClust
 		beginDelete:                 newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListBySubscriptionResponse]](),
-		newListFaultSimulationPager: newTracker[azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListFaultSimulationResponse]](),
-		beginStartFaultSimulation:   newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientStartFaultSimulationResponse]](),
-		beginStopFaultSimulation:    newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientStopFaultSimulationResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientUpdateResponse]](),
 	}
 }
@@ -86,9 +67,6 @@ type ManagedClustersServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListBySubscriptionResponse]]
-	newListFaultSimulationPager *tracker[azfake.PagerResponder[armservicefabricmanagedclusters.ManagedClustersClientListFaultSimulationResponse]]
-	beginStartFaultSimulation   *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientStartFaultSimulationResponse]]
-	beginStopFaultSimulation    *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientStopFaultSimulationResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ManagedClustersClientUpdateResponse]]
 }
 
@@ -121,18 +99,10 @@ func (m *ManagedClustersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = m.dispatchBeginDelete(req)
 			case "ManagedClustersClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedClustersClient.GetFaultSimulation":
-				res.resp, res.err = m.dispatchGetFaultSimulation(req)
 			case "ManagedClustersClient.NewListByResourceGroupPager":
 				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
 			case "ManagedClustersClient.NewListBySubscriptionPager":
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
-			case "ManagedClustersClient.NewListFaultSimulationPager":
-				res.resp, res.err = m.dispatchNewListFaultSimulationPager(req)
-			case "ManagedClustersClient.BeginStartFaultSimulation":
-				res.resp, res.err = m.dispatchBeginStartFaultSimulation(req)
-			case "ManagedClustersClient.BeginStopFaultSimulation":
-				res.resp, res.err = m.dispatchBeginStopFaultSimulation(req)
 			case "ManagedClustersClient.BeginUpdate":
 				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
@@ -279,43 +249,6 @@ func (m *ManagedClustersServerTransport) dispatchGet(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (m *ManagedClustersServerTransport) dispatchGetFaultSimulation(req *http.Request) (*http.Response, error) {
-	if m.srv.GetFaultSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetFaultSimulation not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFaultSimulation`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.FaultSimulationIDContent](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.GetFaultSimulation(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FaultSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (m *ManagedClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -383,143 +316,6 @@ func (m *ManagedClustersServerTransport) dispatchNewListBySubscriptionPager(req 
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		m.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchNewListFaultSimulationPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListFaultSimulationPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListFaultSimulationPager not implemented")}
-	}
-	newListFaultSimulationPager := m.newListFaultSimulationPager.get(req)
-	if newListFaultSimulationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFaultSimulation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListFaultSimulationPager(resourceGroupNameParam, clusterNameParam, nil)
-		newListFaultSimulationPager = &resp
-		m.newListFaultSimulationPager.add(req, newListFaultSimulationPager)
-		server.PagerResponderInjectNextLinks(newListFaultSimulationPager, req, func(page *armservicefabricmanagedclusters.ManagedClustersClientListFaultSimulationResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListFaultSimulationPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListFaultSimulationPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListFaultSimulationPager) {
-		m.newListFaultSimulationPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchBeginStartFaultSimulation(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginStartFaultSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartFaultSimulation not implemented")}
-	}
-	beginStartFaultSimulation := m.beginStartFaultSimulation.get(req)
-	if beginStartFaultSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startFaultSimulation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.FaultSimulationContentWrapper](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginStartFaultSimulation(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartFaultSimulation = &respr
-		m.beginStartFaultSimulation.add(req, beginStartFaultSimulation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartFaultSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginStartFaultSimulation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartFaultSimulation) {
-		m.beginStartFaultSimulation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchBeginStopFaultSimulation(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginStopFaultSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStopFaultSimulation not implemented")}
-	}
-	beginStopFaultSimulation := m.beginStopFaultSimulation.get(req)
-	if beginStopFaultSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopFaultSimulation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.FaultSimulationIDContent](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginStopFaultSimulation(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStopFaultSimulation = &respr
-		m.beginStopFaultSimulation.add(req, beginStopFaultSimulation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStopFaultSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginStopFaultSimulation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStopFaultSimulation) {
-		m.beginStopFaultSimulation.remove(req)
-	}
-
 	return resp, nil
 }
 

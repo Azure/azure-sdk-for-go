@@ -69,7 +69,7 @@ type AccountPatch struct {
 	Location *string
 
 	// NetApp Account properties
-	Properties *AccountProperties
+	Properties *AccountPropertiesPatch
 
 	// Resource tags
 	Tags map[string]*string
@@ -92,6 +92,9 @@ type AccountProperties struct {
 	// Encryption settings
 	Encryption *AccountEncryption
 
+	// Entra ID configuration for the account.
+	EntraIDConfig *EntraIDConfig
+
 	// LDAP Configuration for the account.
 	LdapConfiguration *LdapConfiguration
 
@@ -107,6 +110,28 @@ type AccountProperties struct {
 
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *string
+}
+
+// AccountPropertiesPatch - NetApp account properties for PATCH operations
+type AccountPropertiesPatch struct {
+	// Active Directories
+	ActiveDirectories []*ActiveDirectory
+
+	// Encryption settings
+	Encryption *AccountEncryption
+
+	// Entra ID configuration for the account.
+	EntraIDConfig *EntraIDConfigPatch
+
+	// LDAP Configuration for the account.
+	LdapConfiguration *LdapConfigurationPatch
+
+	// MultiAD Status for the account
+	MultiAdStatus *MultiAdStatus
+
+	// Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and region and
+	// only affect non ldap NFSv4 volumes.
+	NfsV4IDDomain *string
 }
 
 // ActiveDirectory - Active Directory
@@ -695,9 +720,6 @@ type BucketPatchProperties struct {
 	// not both.
 	FileSystemUser *FileSystemUser
 
-	// The volume path mounted inside the bucket.
-	Path *string
-
 	// Access permissions for the bucket. Either ReadOnly or ReadWrite.
 	Permissions *BucketPatchPermissions
 
@@ -851,7 +873,7 @@ type CacheProperties struct {
 	EncryptionKeySource *EncryptionKeySource
 
 	// REQUIRED; The file path of the Cache.
-	Filepath *string
+	FilePath *string
 
 	// REQUIRED; Origin cluster information
 	OriginClusterInformation *OriginClusterInformation
@@ -1558,6 +1580,9 @@ type ElasticEncryptionConfiguration struct {
 
 // ElasticEncryptionIdentity - Identity used to authenticate with key vault.
 type ElasticEncryptionIdentity struct {
+	// ClientId of the multi-tenant Entra ID Application. Used to access cross-tenant keyvaults.
+	FederatedClientID *string
+
 	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type
 	// has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
 	UserAssignedIdentity *string
@@ -1973,7 +1998,7 @@ type ElasticVolumeUpdateProperties struct {
 
 // EncryptionIdentity - Identity used to authenticate with key vault.
 type EncryptionIdentity struct {
-	// ClientId of the multi-tenant AAD Application. Used to access cross-tenant keyvaults.
+	// ClientId of the multi-tenant Entra ID Application. Used to access cross-tenant keyvaults.
 	FederatedClientID *string
 
 	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type
@@ -1991,6 +2016,70 @@ type EncryptionTransitionRequest struct {
 
 	// REQUIRED; Identifier for the virtual network
 	VirtualNetworkID *string
+}
+
+// EntraIDAkvConfig - Using AKV config, certificate will be fetched, which will contain private key & public certificate,
+// that correspond to the public certificate which is uploaded on the application created by customer. This will be used further
+// for authentication.
+type EntraIDAkvConfig struct {
+	// REQUIRED; The Azure Key Vault URI where the Entra ID credentials are stored.
+	AzureKeyVaultURI *string
+
+	// REQUIRED; The name of the certificate in Azure Key Vault.
+	CertificateName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault.
+	UserAssignedIdentity *string
+}
+
+// EntraIDAkvConfigPatch - Using AKV config, certificate will be fetched, which will contain private key & public certificate,
+// that correspond to the public certificate which is uploaded on the application created by customer. This will be used further
+// for authentication.
+type EntraIDAkvConfigPatch struct {
+	// The Azure Key Vault URI where the Entra ID credentials are stored.
+	AzureKeyVaultURI *string
+
+	// The name of the certificate in Azure Key Vault.
+	CertificateName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault.
+	UserAssignedIdentity *string
+}
+
+// EntraIDConfig - Entra ID configuration for the account.
+type EntraIDConfig struct {
+	// REQUIRED; ApplicationId of the app created by customer to provide authentication and required API permissions for Microsoft
+	// Graph endpoint.
+	ApplicationID *string
+
+	// REQUIRED; Domain of the Active directory synced to Entra ID for hybrid identities.
+	Domain *string
+
+	// REQUIRED; Using ServerNamePrefix, FQDN (Fully Qualified Domain Name) will be generated for SMB share, using this FQDN,
+	// SMB Share will be mounted on Entra Joined VM.
+	ServerNamePrefix *string
+
+	// Using AKV config, certificate will be fetched, which will contain private key & public certificate, that correspond to
+	// the public certificate which is uploaded on the application created by customer. This will be used further for authentication.
+	EntraIDAkvConfig *EntraIDAkvConfig
+}
+
+// EntraIDConfigPatch - Entra ID Patch configuration for the account.
+type EntraIDConfigPatch struct {
+	// ApplicationId of the app created by customer to provide authentication and required API permissions for Microsoft Graph
+	// endpoint.
+	ApplicationID *string
+
+	// Domain of the Active directory synced to Entra ID for hybrid identities.
+	Domain *string
+
+	// Using AKV config, certificate will be fetched, which will contain private key & public certificate, that correspond to
+	// the public certificate which is uploaded on the application created by customer. This will be used further for authentication.
+	EntraIDAkvConfig *EntraIDAkvConfigPatch
+
+	// Using ServerNamePrefix, FQDN (Fully Qualified Domain Name) will be generated for SMB share, using this FQDN, SMB Share
+	// will be mounted on Entra Joined VM.
+	ServerNamePrefix *string
 }
 
 // ExportPolicyRule - Volume Export Policy Rule
@@ -2158,6 +2247,24 @@ type LdapConfiguration struct {
 	ServerCACertificate *string
 }
 
+// LdapConfigurationPatch - LDAP configuration for PATCH operations (no default values)
+type LdapConfigurationPatch struct {
+	// The CN host name used while generating the certificate, LDAP Over TLS requires the CN host name to create DNS host entry.
+	CertificateCNHost *string
+
+	// Name of the LDAP configuration domain
+	Domain *string
+
+	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
+	LdapOverTLS *bool
+
+	// List of LDAP server IP addresses (IPv4 only) for the LDAP domain.
+	LdapServers []*string
+
+	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
+	ServerCACertificate *string
+}
+
 // LdapSearchScopeOpt - LDAP search scope
 type LdapSearchScopeOpt struct {
 	// This specifies the group DN, which overrides the base DN for group lookups.
@@ -2173,7 +2280,13 @@ type LdapSearchScopeOpt struct {
 // ListQuotaReportResponse - Quota Report for volume
 type ListQuotaReportResponse struct {
 	// List of quota reports
-	Value []*QuotaReport
+	QuotaReportRecords []*QuotaReport
+}
+
+// ListQuotaReportResult - * Result of ListQuotaReportResponse
+type ListQuotaReportResult struct {
+	// Represents the properties of the ListQuotaReport.
+	Properties *ListQuotaReportResponse
 }
 
 // ListReplications - List Replications
@@ -2417,6 +2530,9 @@ type PeeringPassphrases struct {
 
 	// REQUIRED; The vserver peering command.
 	VserverPeeringCommand *string
+
+	// READ-ONLY; Warnings that are critical for the cluster peering and vserver peering processes.
+	CriticalWarning *string
 }
 
 // PlacementKeyValuePairs - Application specific parameters for the placement of volumes in the volume group
@@ -2446,7 +2562,8 @@ type PoolPatchProperties struct {
 	// The qos type of the pool
 	QosType *QosType
 
-	// Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of 1099511627776).
+	// Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or in 1TiB chunks (value must be
+	// multiple of 1099511627776).
 	Size *int64
 }
 
@@ -2455,7 +2572,8 @@ type PoolProperties struct {
 	// REQUIRED; The service level of the file system
 	ServiceLevel *ServiceLevel
 
-	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of 1099511627776).
+	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or in 1TiB chunks (value
+	// must be multiple of 1099511627776).
 	Size *int64
 
 	// If enabled (true) the pool can contain cool Access enabled volumes.
@@ -2525,7 +2643,28 @@ type QuotaReport struct {
 	QuotaTarget *string
 
 	// Type of quota
-	QuotaType *Type
+	QuotaType *QuotaType
+}
+
+// QuotaReportFilterRequest - Quota report filters. When filtering by quotaType or quotaTarget, both properties must be supplied
+// together. This constraint is enforced by the service/API at runtime, and requests violating this rule will return a validation
+// error. The usageThresholdPercentage filter is independent and can be used alone or in combination with quotaType and quotaTarget
+// to further refine results.
+type QuotaReportFilterRequest struct {
+	// UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running 'id' or 'getent' command
+	// for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>. If provided, quotaType
+	// must also be specified. The quotaType and quotaTarget properties are optional, but when filtering by quota target, quotaType
+	// and quotaTarget must be supplied together. Service/API will return an error if only one is provided.
+	QuotaTarget *string
+
+	// Type of quota. If provided, quotaTarget must also be specified. The quotaType and quotaTarget properties are optional,
+	// but when filtering by quota type, quotaType and quotaTarget must be supplied together. Service/API will return an error
+	// if only one is provided.
+	QuotaType *QuotaType
+
+	// The usageThresholdPercentage filter takes the usage threshold percentage and returns records where the usage is greater
+	// than or equal to the input value. This is an optional property.
+	UsageThresholdPercentage *int32
 }
 
 // RansomwareProtectionPatchSettings - Advanced Ransomware Protection reports (ARP) updatable settings
@@ -2698,14 +2837,14 @@ type RemotePath struct {
 
 // Replication properties
 type Replication struct {
-	// REQUIRED; The resource ID of the remote volume.
-	RemoteVolumeResourceID *string
-
 	// Indicates whether the local volume is the source or destination for the Volume Replication
 	EndpointType *EndpointType
 
 	// The remote region for the other end of the Volume Replication.
 	RemoteVolumeRegion *string
+
+	// The resource ID of the remote volume.
+	RemoteVolumeResourceID *string
 
 	// Schedule
 	ReplicationSchedule *ReplicationSchedule
@@ -2852,7 +2991,7 @@ type ServiceSpecification struct {
 // SmbSettings - SMB settings for the cache
 type SmbSettings struct {
 	// Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
-	SmbAccessBasedEnumerations *SmbAccessBasedEnumeration
+	SmbAccessBasedEnumeration *SmbAccessBasedEnumeration
 
 	// Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol cache.
 	SmbEncryption *SmbEncryptionState
@@ -3836,7 +3975,7 @@ type VolumeQuotaRulesProperties struct {
 	QuotaTarget *string
 
 	// Type of quota
-	QuotaType *Type
+	QuotaType *QuotaType
 
 	// READ-ONLY; Gets the status of the VolumeQuotaRule at the time the operation was called.
 	ProvisioningState *ProvisioningState

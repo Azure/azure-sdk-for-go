@@ -515,81 +515,6 @@ type ErrorModelError struct {
 	Message *string
 }
 
-// FaultSimulation - Fault simulation object with status.
-type FaultSimulation struct {
-	// Fault simulation details
-	Details *FaultSimulationDetails
-
-	// The end time of the fault simulation.
-	EndTime *time.Time
-
-	// unique identifier for the fault simulation.
-	SimulationID *string
-
-	// The start time of the fault simulation.
-	StartTime *time.Time
-
-	// Fault simulation status
-	Status *FaultSimulationStatus
-}
-
-// FaultSimulationConstraints - Constraints for Fault Simulation action.
-type FaultSimulationConstraints struct {
-	// The absolute expiration timestamp (UTC) after which this fault simulation should be stopped if it's still active.
-	ExpirationTime *time.Time
-}
-
-// FaultSimulationContent - Parameters for Fault Simulation action.
-type FaultSimulationContent struct {
-	// REQUIRED; The kind of fault to be simulated.
-	FaultKind *FaultKind
-
-	// Constraints for Fault Simulation action.
-	Constraints *FaultSimulationConstraints
-
-	// Force the action to go through without any check on the cluster.
-	Force *bool
-}
-
-// GetFaultSimulationContent implements the FaultSimulationContentClassification interface for type FaultSimulationContent.
-func (f *FaultSimulationContent) GetFaultSimulationContent() *FaultSimulationContent { return f }
-
-// FaultSimulationContentWrapper - Fault Simulation Request for Start action.
-type FaultSimulationContentWrapper struct {
-	// REQUIRED; Parameters for Fault Simulation start action.
-	Parameters FaultSimulationContentClassification
-}
-
-// FaultSimulationDetails - Details for Fault Simulation.
-type FaultSimulationDetails struct {
-	// unique identifier for the cluster resource.
-	ClusterID *string
-
-	// List of node type simulations associated with the cluster fault simulation.
-	NodeTypeFaultSimulation []*NodeTypeFaultSimulation
-
-	// unique identifier for the operation associated with the fault simulation.
-	OperationID *string
-
-	// Fault simulation parameters.
-	Parameters FaultSimulationContentClassification
-}
-
-// FaultSimulationIDContent - Parameters for Fault Simulation id.
-type FaultSimulationIDContent struct {
-	// REQUIRED; unique identifier for the fault simulation.
-	SimulationID *string
-}
-
-// FaultSimulationListResult - Fault simulation list results
-type FaultSimulationListResult struct {
-	// REQUIRED; The FaultSimulation items on this page
-	Value []*FaultSimulation
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // FrontendConfiguration - Describes the frontend configurations for the node type.
 type FrontendConfiguration struct {
 	// The resource Id of application gateway backend address pool. The format of the resource Id is '/subscriptions/<subscriptionId>/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}'.
@@ -872,6 +797,10 @@ type ManagedClusterProperties struct {
 	// Service endpoints for subnets in the cluster.
 	ServiceEndpoints []*ServiceEndpoint
 
+	// Determines whether to skip the assignment of the managed network security group (SF-NSG) to the cluster subnet when using
+	// a bring-your-own virtual network (BYOVNET) configuration. The default value is false.
+	SkipManagedNsgAssignment *bool
+
 	// If specified, the node types for the cluster are created in this subnet instead of the default VNet. The **networkSecurityRules**
 	// specified for the cluster are also applied to this subnet. This setting cannot be changed once the cluster is created.
 	SubnetID *string
@@ -1114,21 +1043,6 @@ type NodeTypeAvailableSKU struct {
 	SKU *NodeTypeSupportedSKU
 }
 
-// NodeTypeFaultSimulation - Node type fault simulation object with status.
-type NodeTypeFaultSimulation struct {
-	// Node type name.
-	NodeTypeName *string
-
-	// Current or latest asynchronous operation identifier on the node type.
-	OperationID *string
-
-	// Current or latest asynchronous operation status on the node type
-	OperationStatus *SfmcOperationStatus
-
-	// Fault simulation status
-	Status *FaultSimulationStatus
-}
-
 // NodeTypeListResult - The response of a NodeType list operation.
 type NodeTypeListResult struct {
 	// REQUIRED; The NodeType items on this page
@@ -1216,6 +1130,10 @@ type NodeTypeProperties struct {
 
 	// Specifies whether the node type should be overprovisioned. It is only allowed for stateless node types.
 	EnableOverProvisioning *bool
+
+	// Specifies whether the node type should use a resilient ephemeral OS disk when using a supported SKU size. A resilient ephemeral
+	// OS disk provides improved reliability for ephemeral OS disks by enabling full caching.
+	EnableResilientEphemeralOsDisk *bool
 
 	// The range of ephemeral ports that nodes in this node type should be configured with.
 	EphemeralPorts *EndpointRangeDescription
@@ -2379,29 +2297,4 @@ type VmssDataDisk struct {
 	// REQUIRED; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
 	// therefore must be unique for each data disk attached to a VM. Lun 0 is reserved for the service fabric data disk.
 	Lun *int32
-}
-
-// ZoneFaultSimulationContent - Parameters for Zone Fault Simulation action.
-type ZoneFaultSimulationContent struct {
-	// CONSTANT; The kind of fault simulation.
-	// Field has constant value FaultKindZone, any specified value is ignored.
-	FaultKind *FaultKind
-
-	// Constraints for Fault Simulation action.
-	Constraints *FaultSimulationConstraints
-
-	// Force the action to go through without any check on the cluster.
-	Force *bool
-
-	// Indicates the zones of the fault simulation.
-	Zones []*string
-}
-
-// GetFaultSimulationContent implements the FaultSimulationContentClassification interface for type ZoneFaultSimulationContent.
-func (z *ZoneFaultSimulationContent) GetFaultSimulationContent() *FaultSimulationContent {
-	return &FaultSimulationContent{
-		Constraints: z.Constraints,
-		FaultKind:   z.FaultKind,
-		Force:       z.Force,
-	}
 }

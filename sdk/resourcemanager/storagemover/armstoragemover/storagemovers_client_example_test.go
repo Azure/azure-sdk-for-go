@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/StorageMovers_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01/StorageMovers_CreateOrUpdate.json
 func ExampleStorageMoversClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleStorageMoversClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_Delete.json
+// Generated from example definition: 2025-12-01/StorageMovers_Delete.json
 func ExampleStorageMoversClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleStorageMoversClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_Get.json
+// Generated from example definition: 2025-12-01/StorageMovers_Get.json
 func ExampleStorageMoversClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleStorageMoversClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_List.json
+// Generated from example definition: 2025-12-01/StorageMovers_List.json
 func ExampleStorageMoversClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleStorageMoversClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_ListBySubscription.json
+// Generated from example definition: 2025-12-01/StorageMovers_ListBySubscription.json
 func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_Update.json
+// Generated from example definition: 2025-12-01/StorageMovers_Update.json
 func ExampleStorageMoversClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

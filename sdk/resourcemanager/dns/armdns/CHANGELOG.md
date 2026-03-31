@@ -1,5 +1,17 @@
 # Release History
 
+## 1.3.0-beta.2 (2026-03-16)
+### Breaking Changes
+
+- Struct `RecordSetUpdateParameters` has been removed
+- Struct `Resource` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `RecordSet`
+- New field `RetryAfter` in struct `RecordSetsClientCreateOrUpdateResponse`
+
+
 ## 1.3.0-beta.1 (2024-10-25)
 ### Features Added
 

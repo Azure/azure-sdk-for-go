@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -44,6 +44,10 @@ type CachesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPoolChange func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, body armnetapp.PoolChangeRequest, options *armnetapp.CachesClientBeginPoolChangeOptions) (resp azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse], errResp azfake.ErrorResponder)
 
+	// BeginResetSmbPassword is the fake for method CachesClient.BeginResetSmbPassword
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginResetSmbPassword func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *armnetapp.CachesClientBeginResetSmbPasswordOptions) (resp azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method CachesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, body armnetapp.CacheUpdate, options *armnetapp.CachesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.CachesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -59,6 +63,7 @@ func NewCachesServerTransport(srv *CachesServer) *CachesServerTransport {
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]](),
 		newListByCapacityPoolsPager: newTracker[azfake.PagerResponder[armnetapp.CachesClientListByCapacityPoolsResponse]](),
 		beginPoolChange:             newTracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]](),
+		beginResetSmbPassword:       newTracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]](),
 	}
 }
@@ -71,6 +76,7 @@ type CachesServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]]
 	newListByCapacityPoolsPager *tracker[azfake.PagerResponder[armnetapp.CachesClientListByCapacityPoolsResponse]]
 	beginPoolChange             *tracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]]
+	beginResetSmbPassword       *tracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]]
 }
 
@@ -109,6 +115,8 @@ func (c *CachesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = c.dispatchListPeeringPassphrases(req)
 			case "CachesClient.BeginPoolChange":
 				res.resp, res.err = c.dispatchBeginPoolChange(req)
+			case "CachesClient.BeginResetSmbPassword":
+				res.resp, res.err = c.dispatchBeginResetSmbPassword(req)
 			case "CachesClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
@@ -416,6 +424,58 @@ func (c *CachesServerTransport) dispatchBeginPoolChange(req *http.Request) (*htt
 	}
 	if !server.PollerResponderMore(beginPoolChange) {
 		c.beginPoolChange.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CachesServerTransport) dispatchBeginResetSmbPassword(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginResetSmbPassword == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResetSmbPassword not implemented")}
+	}
+	beginResetSmbPassword := c.beginResetSmbPassword.get(req)
+	if beginResetSmbPassword == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetSmbPassword`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		cacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginResetSmbPassword(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, cacheNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResetSmbPassword = &respr
+		c.beginResetSmbPassword.add(req, beginResetSmbPassword)
+	}
+
+	resp, err := server.PollerResponderNext(beginResetSmbPassword, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginResetSmbPassword.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResetSmbPassword) {
+		c.beginResetSmbPassword.remove(req)
 	}
 
 	return resp, nil

@@ -7,11 +7,11 @@ package armnetapp_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/ElasticSnapshots_CreateOrUpdate.json
+// Generated from example definition: 2025-12-15-preview/ElasticSnapshots_CreateOrUpdate.json
 func ExampleElasticSnapshotsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleElasticSnapshotsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticSnapshots_Delete.json
+// Generated from example definition: 2025-12-15-preview/ElasticSnapshots_Delete.json
 func ExampleElasticSnapshotsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleElasticSnapshotsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticSnapshots_Get.json
+// Generated from example definition: 2025-12-15-preview/ElasticSnapshots_Get.json
 func ExampleElasticSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleElasticSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticSnapshots_ListByElasticVolume.json
+// Generated from example definition: 2025-12-15-preview/ElasticSnapshots_ListByElasticVolume.json
 func ExampleElasticSnapshotsClient_NewListByElasticVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

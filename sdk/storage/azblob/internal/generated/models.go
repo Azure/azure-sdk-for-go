@@ -256,13 +256,13 @@ type BlockList struct {
 // BlockLookupList - The Block lookup list.
 type BlockLookupList struct {
 	// The committed blocks
-	Committed [][]byte `xml:"committed"`
+	Committed []*string `xml:"Committed"`
 
 	// The latest blocks
-	Latest []*string `xml:"latest"`
+	Latest []*string `xml:"Latest"`
 
 	// The uncommitted blocks
-	Uncommitted [][]byte `xml:"uncommitted"`
+	Uncommitted []*string `xml:"Uncommitted"`
 }
 
 // CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
@@ -542,13 +542,13 @@ type Metrics struct {
 // PageList - Represents a page list.
 type PageList struct {
 	// The clear ranges.
-	ClearRange []*ClearRange `xml:"clearRange"`
+	ClearRange []*ClearRange `xml:"ClearRange"`
 
 	// The next marker.
 	NextMarker *string `xml:"NextMarker"`
 
 	// The page ranges.
-	PageRange []*PageRange `xml:"pageRange"`
+	PageRange []*PageRange `xml:"PageRange"`
 }
 
 // PageRange - The page range.

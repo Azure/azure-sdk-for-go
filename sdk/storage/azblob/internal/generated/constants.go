@@ -355,9 +355,9 @@ type ImmutabilityPolicySetting string
 
 const (
 	// ImmutabilityPolicySettingLocked - The immutability policy is locked.
-	ImmutabilityPolicySettingLocked ImmutabilityPolicySetting = "locked"
+	ImmutabilityPolicySettingLocked ImmutabilityPolicySetting = "Locked"
 	// ImmutabilityPolicySettingUnlocked - The immutability policy is unlocked.
-	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = "unlocked"
+	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = "Unlocked"
 )
 
 // PossibleImmutabilityPolicySettingValues returns the possible values for the ImmutabilityPolicySetting const type.

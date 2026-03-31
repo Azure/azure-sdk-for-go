@@ -300,8 +300,12 @@ func (testsuite *AttestationTestSuite) TestOperations() {
 	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armattestation.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = operationsClient.List(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
+	operationsClientNewListPager := operationsClient.NewListPager(nil)
+	for operationsClientNewListPager.More() {
+		_, err := operationsClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
 }
 
 func (testsuite *AttestationTestSuite) Cleanup() {

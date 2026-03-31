@@ -123,6 +123,15 @@ stages:
               ReleaseSha: $(Build.SourceVersion)
               RepoId: Azure/azure-sdk-for-go
               WorkingDirectory: $(System.DefaultWorkingDirectory)
+          - template: /eng/common/pipelines/templates/steps/create-apireview.yml
+            parameters:
+              ArtifactPath: $(Pipeline.Workspace)
+              Artifacts: []
+              ConfigFileDir: $(Pipeline.Workspace)/PackageInfo
+              MarkPackageAsShipped: true
+              ArtifactName: PackageInfo
+              PackageName: sdk/${{parameters.ServiceDirectory}}
+              SourceRootPath: $(Build.SourcesDirectory)
           - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml
             parameters:
               ConfigFileDir: $(Pipeline.Workspace)/PackageInfo

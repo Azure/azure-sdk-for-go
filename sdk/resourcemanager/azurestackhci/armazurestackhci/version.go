@@ -6,5 +6,5 @@ package armazurestackhci
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
-	moduleVersion = "v3.0.0-beta.1"
+	moduleVersion = "v3.0.0"
 )

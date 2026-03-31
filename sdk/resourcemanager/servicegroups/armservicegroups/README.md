@@ -1,6 +1,6 @@
-# Azure Servicegroups Module for Go
+# Azure Service Groups Module for Go
 
-The `armservicegroups` module provides operations for working with Azure Servicegroups.
+The `armservicegroups` module provides operations for working with Azure Service Groups.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/servicegroups/armservicegroups)
 
@@ -15,7 +15,7 @@ The `armservicegroups` module provides operations for working with Azure Service
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Servicegroups module:
+Install the Azure Service Groups module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicegroups/armservicegroups
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicegroups/armse
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Servicegroups.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Service Groups.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Servicegroups module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Service Groups module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armservicegroups.NewClientFactory(cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Servicegroups` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Service Groups` label.
 
 # Contributing
 

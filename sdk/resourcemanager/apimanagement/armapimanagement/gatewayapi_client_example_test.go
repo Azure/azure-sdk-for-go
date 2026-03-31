@@ -90,12 +90,11 @@ func ExampleGatewayAPIClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGatewayAPIClient().CreateOrUpdate(ctx, "rg1", "apimService1", "gw1", "echo-api", &armapimanagement.GatewayAPIClientCreateOrUpdateOptions{Parameters: &armapimanagement.AssociationContract{
+	res, err := clientFactory.NewGatewayAPIClient().CreateOrUpdate(ctx, "rg1", "apimService1", "gw1", "echo-api", armapimanagement.AssociationContract{
 		Properties: &armapimanagement.AssociationContractProperties{
 			ProvisioningState: to.Ptr("created"),
 		},
-	},
-	})
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

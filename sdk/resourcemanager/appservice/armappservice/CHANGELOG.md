@@ -3,6 +3,7 @@
 ## 6.0.1 (2026-04-01)
 ### Other Changes
 
+- Regenerated with updated TypeSpec definitions that restore consistent operation tags across WebApps endpoints, ensuring all related operations are grouped into a single SDK package.
 
 ## 6.0.0 (2026-02-27)
 ### Breaking Changes

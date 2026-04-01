@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Resources": "2025-04-01"
+  },
+  "emitterVersion": "0.10.5"
+}

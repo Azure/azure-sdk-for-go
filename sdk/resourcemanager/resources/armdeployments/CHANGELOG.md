@@ -1,5 +1,17 @@
 # Release History
 
+## 2.0.0 (2026-04-01)
+### Breaking Changes
+
+- Struct `DeploymentExtendedFilter` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New struct `SystemData`
+- New field `SystemData` in struct `DeploymentExtended`
+
+
 ## 1.0.0 (2025-12-23)
 ### Other Changes
 

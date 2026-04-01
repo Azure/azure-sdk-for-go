@@ -87,6 +87,14 @@ func (c *ClientFactory) NewDeletedBackupInstancesClient() *DeletedBackupInstance
 	}
 }
 
+// NewDeletedBackupVaultsClient creates a new instance of DeletedBackupVaultsClient.
+func (c *ClientFactory) NewDeletedBackupVaultsClient() *DeletedBackupVaultsClient {
+	return &DeletedBackupVaultsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDppResourceGuardProxyClient creates a new instance of DppResourceGuardProxyClient.
 func (c *ClientFactory) NewDppResourceGuardProxyClient() *DppResourceGuardProxyClient {
 	return &DppResourceGuardProxyClient{

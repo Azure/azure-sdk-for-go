@@ -42,7 +42,7 @@ func NewDeletedBackupInstancesClient(subscriptionID string, credential azcore.To
 // Get - Gets a deleted backup instance with name in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - backupInstanceName - The name of the deleted backup instance
@@ -94,7 +94,7 @@ func (client *DeletedBackupInstancesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *DeletedBackupInstancesClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets deleted backup instances belonging to a backup vault
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - options - DeletedBackupInstancesClientListOptions contains the optional parameters for the DeletedBackupInstancesClient.NewListPager
@@ -159,7 +159,7 @@ func (client *DeletedBackupInstancesClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,7 +177,7 @@ func (client *DeletedBackupInstancesClient) listHandleResponse(resp *http.Respon
 // BeginUndelete - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - backupInstanceName - The name of the deleted backup instance
@@ -203,7 +203,7 @@ func (client *DeletedBackupInstancesClient) BeginUndelete(ctx context.Context, r
 // Undelete - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 func (client *DeletedBackupInstancesClient) undelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeletedBackupInstancesClient.BeginUndelete"
@@ -249,7 +249,7 @@ func (client *DeletedBackupInstancesClient) undeleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

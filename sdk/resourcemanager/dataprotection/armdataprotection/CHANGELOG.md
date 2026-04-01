@@ -1,5 +1,29 @@
 # Release History
 
+## 4.1.0-beta.1 (2026-04-01)
+### Features Added
+
+- New enum type `BlobBackupPatternType` with values `BlobBackupPatternTypePrefix`
+- New enum type `BlobBackupRuleMode` with values `BlobBackupRuleModeExclude`
+- New function `*AdlsBlobBackupDatasourceParametersForAutoProtection.GetBackupDatasourceParameters() *BackupDatasourceParameters`
+- New function `*BlobBackupAutoProtectionSettings.GetBlobBackupAutoProtectionSettings() *BlobBackupAutoProtectionSettings`
+- New function `*BlobBackupDatasourceParametersForAutoProtection.GetBackupDatasourceParameters() *BackupDatasourceParameters`
+- New function `*BlobBackupRuleBasedAutoProtectionSettings.GetBlobBackupAutoProtectionSettings() *BlobBackupAutoProtectionSettings`
+- New function `*ClientFactory.NewDeletedBackupVaultsClient() *DeletedBackupVaultsClient`
+- New function `NewDeletedBackupVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedBackupVaultsClient, error)`
+- New function `*DeletedBackupVaultsClient.Get(ctx context.Context, location string, deletedVaultName string, options *DeletedBackupVaultsClientGetOptions) (DeletedBackupVaultsClientGetResponse, error)`
+- New function `*DeletedBackupVaultsClient.NewListByLocationPager(location string, options *DeletedBackupVaultsClientListByLocationOptions) *runtime.Pager[DeletedBackupVaultsClientListByLocationResponse]`
+- New struct `AdlsBlobBackupDatasourceParametersForAutoProtection`
+- New struct `BlobBackupAutoProtectionRule`
+- New struct `BlobBackupDatasourceParametersForAutoProtection`
+- New struct `BlobBackupRuleBasedAutoProtectionSettings`
+- New struct `DeletedBackupVault`
+- New struct `DeletedBackupVaultResource`
+- New struct `DeletedBackupVaultResourceListResult`
+- New struct `ResourceDeletionInfo`
+- New field `XMSDeletedVaultID` in struct `BackupVaultsClientBeginCreateOrUpdateOptions`
+
+
 ## 4.0.0 (2025-10-13)
 ### Breaking Changes
 

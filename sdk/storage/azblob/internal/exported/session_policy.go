@@ -12,18 +12,20 @@ import (
 	"strings"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+const SessionExpiring = "session_expiring"
+const SessionRevoking = "session_revoking"
+
 type SessionCredentials = generated.SessionCredentials
 
 type Provider interface {
-	GetSessionCredentials(ctx context.Context, containerURL string) (SessionCredentials, error)
-	RefreshSessionCredentials(ctx context.Context, containerURL string) (SessionCredentials, error)
+	GetSessionCredentials(ctx context.Context, containerName string) (SessionCredentials, error)
+	ExpireSessionCredentials(containerName string)
 }
 
 type SessionPolicy struct {
@@ -61,45 +63,77 @@ func (p *SessionPolicy) Do(req *policy.Request) (*http.Response, error) {
 		// Get session token for the container and apply it to the request
 		sessionCreds, err := p.provider.GetSessionCredentials(req.Raw().Context(), containerName)
 		if err == nil {
-			var key, token string
-			if sessionCreds.SessionKey != nil {
-				key = *sessionCreds.SessionKey
+			resp, err := p.applySessionReq(req, sessionCreds)
+			// On successful response, read x-ms-auth-info header
+			if err == nil {
+				authInfo := getHeader(shared.HeaderXmsAuthInfo, resp.Header)
+				if strings.Contains(authInfo, SessionExpiring) || strings.Contains(authInfo, SessionRevoking) {
+					// asynchronously refresh session credentials and return
+					go func() {
+						_, _ = p.provider.GetSessionCredentials(req.Raw().Context(), containerName)
+					}()
+				}
+				return resp, nil
 			}
-			if sessionCreds.SessionToken != nil {
-				token = *sessionCreds.SessionToken
+			var respErr *azcore.ResponseError
+			if errors.As(err, &respErr) {
+				// fall back to bearer token if session operations are temporarily unavailable, otherwise return the error
+				if resp.StatusCode == http.StatusServiceUnavailable && respErr.ErrorCode == "SessionOperationsTemporarilyUnavailable" {
+					return p.bearerTokenPolicy.Do(req)
+				}
+				if resp.StatusCode == http.StatusUnauthorized {
+					// refresh and retry
+					p.provider.ExpireSessionCredentials(containerName)
+					// Get session token for the container and apply it to the request
+					sessionCreds, err = p.provider.GetSessionCredentials(req.Raw().Context(), containerName)
+					if err == nil {
+						return p.applySessionReq(req, sessionCreds)
+					} else if !errors.Is(err, ErrFallbackToBearer) {
+						return nil, err
+					}
+					return p.bearerTokenPolicy.Do(req)
+				}
 			}
-			cred, err := NewSharedKeyCredential(p.opts.AccountName, key)
-			if err != nil {
-				return nil, err
-			}
-
-			if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
-				req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-			}
-			stringToSign, err := cred.buildStringToSign(req.Raw())
-			if err != nil {
-				return nil, err
-			}
-			signature, err := cred.computeHMACSHA256(stringToSign)
-			if err != nil {
-				return nil, err
-			}
-			authHeader := strings.Join([]string{"Session ", token, ":", signature}, "")
-			req.Raw().Header.Set(shared.HeaderAuthorization, authHeader)
-
-			response, err := req.Next()
-			if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
-				// Service failed to authenticate request, log it
-				log.Write(azlog.EventResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
-			}
-
-		} else if !errors.Is(err, ErrFallbackToBearer) {
+			return resp, err
+		}
+		// If fetching the session credential fails (and we can't fall back to bearer token), fail the request
+		if !errors.Is(err, ErrFallbackToBearer) {
 			return nil, err
 		}
 	}
 
 	// Fall back to bearer token policy
 	return p.bearerTokenPolicy.Do(req)
+}
+
+func (p *SessionPolicy) applySessionReq(req *policy.Request, sessionCreds SessionCredentials) (*http.Response, error) {
+	var key, token string
+	if sessionCreds.SessionKey != nil {
+		key = *sessionCreds.SessionKey
+	}
+	if sessionCreds.SessionToken != nil {
+		token = *sessionCreds.SessionToken
+	}
+	cred, err := NewSharedKeyCredential(p.opts.AccountName, key)
+	if err != nil {
+		return nil, err
+	}
+
+	if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
+		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	}
+	stringToSign, err := cred.buildStringToSign(req.Raw())
+	if err != nil {
+		return nil, err
+	}
+	signature, err := cred.computeHMACSHA256(stringToSign)
+	if err != nil {
+		return nil, err
+	}
+	authHeader := strings.Join([]string{"Session ", token, ":", signature}, "")
+	req.Raw().Header.Set(shared.HeaderAuthorization, authHeader)
+
+	return req.Next()
 }
 
 // parseBlobURL parses a blob URL and returns the container name if it's a valid blob URL.

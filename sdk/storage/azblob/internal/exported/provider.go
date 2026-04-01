@@ -6,10 +6,11 @@ package exported
 import (
 	"context"
 	"errors"
-	"fmt"
+	"net/http"
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
@@ -53,7 +54,19 @@ func acquire(state SessionState) (creds generated.SessionCredentials, expiry tim
 	resp, err := state.client.CreateSession(state.ctx, generated.CreateSessionConfiguration{AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC)}, nil)
 	// Fall back to using bearer token if session is unable to be created
 	if err != nil {
-		return creds, expiry, fmt.Errorf("%w: %v", ErrFallbackToBearer, err)
+		var respErr *azcore.ResponseError
+		if errors.As(err, &respErr) {
+			if respErr.StatusCode >= 500 {
+				return creds, expiry, ErrFallbackToBearer
+			}
+			if respErr.StatusCode == http.StatusBadRequest && respErr.ErrorCode == "FeatureNotEnabled" {
+				return creds, expiry, ErrFallbackToBearer
+			}
+			if respErr.StatusCode == http.StatusForbidden {
+				return creds, expiry, ErrFallbackToBearer
+			}
+		}
+		return creds, expiry, err
 	}
 
 	if resp.Expiration != nil {
@@ -66,9 +79,6 @@ func acquire(state SessionState) (creds generated.SessionCredentials, expiry tim
 	return creds, expiry, err
 }
 
-// Get returns a valid session for the specified container.
-// If the cached session is for a different container or has expired, a new session is acquired.
-// Returns ErrFallbackToBearer if the container does not support sessions.
 func (sm *SingleContainerProvider) GetSessionCredentials(ctx context.Context, containerName string) (SessionCredentials, error) {
 	sm.mu.Lock()
 
@@ -87,22 +97,17 @@ func (sm *SingleContainerProvider) GetSessionCredentials(ctx context.Context, co
 
 }
 
-// Refresh forces acquisition of a new session for the specified container,
-// invalidating any cached session.
-func (sm *SingleContainerProvider) RefreshSessionCredentials(ctx context.Context, containerName string) (SessionCredentials, error) {
+func (sm *SingleContainerProvider) ExpireSessionCredentials(containerName string) {
 	sm.mu.Lock()
 
 	// If container name is set and matches, refresh session
 	if sm.containerName == containerName {
 		sm.mu.Unlock()
 		sm.resource.Expire()
-		return sm.resource.Get(SessionState{
-			client: sm.client,
-			ctx:    ctx,
-		})
+		return
 	}
 
 	// If container name is set and does not match, return error to fall back to bearer token
 	sm.mu.Unlock()
-	return SessionCredentials{}, ErrFallbackToBearer
+	return
 }

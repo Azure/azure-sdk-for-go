@@ -3549,6 +3549,16 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateSession() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	//proxyURL, err := url.Parse("http://127.0.0.1:8888")
+	//_require.NoError(err)
+	//
+	//transport := &http.Transport{
+	//	Proxy: http.ProxyURL(proxyURL),
+	//}
+	//
+	//options := &service.ClientOptions{}
+	//options.Transport = &http.Client{Transport: transport}
+
 	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
 	_require.NoError(err)
 

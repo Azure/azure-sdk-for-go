@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+type SessionMode = exported.SessionMode
 type SessionOptions = exported.SessionOptions
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.

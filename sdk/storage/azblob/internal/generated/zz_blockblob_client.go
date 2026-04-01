@@ -153,7 +153,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if err := runtime.MarshalAsXML(req, blocks); err != nil {
 		return nil, err
 	}
@@ -274,7 +274,7 @@ func (client *BlockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -484,7 +484,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -619,7 +619,7 @@ func (client *BlockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
 	}
@@ -784,7 +784,7 @@ func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -969,7 +969,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
 	}

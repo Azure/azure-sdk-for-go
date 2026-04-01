@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -37,6 +38,7 @@ const (
 	HeaderRange             = "Range"
 	HeaderXmsVersion        = "x-ms-version"
 	HeaderXmsRequestID      = "x-ms-request-id"
+	HeaderXmsAuthInfo       = "x-ms-auth-info"
 )
 
 const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5
@@ -265,4 +267,14 @@ func ReadAtLeast(r io.Reader, buf []byte, min int) (n int, err error) {
 		err = nil
 	}
 	return
+}
+
+// GetStatusCode returns the HTTP status code if the provided error is an *azcore.ResponseError, or 0 otherwise.
+func GetStatusCode(err error) int {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return 0
+	}
+
+	return respErr.StatusCode
 }

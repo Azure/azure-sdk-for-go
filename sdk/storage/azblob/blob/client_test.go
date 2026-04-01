@@ -3927,3 +3927,68 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 	}
 	_require.True(found, "Tag not found")
 }
+
+func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	//proxyURL, err := url.Parse("http://127.0.0.1:8888")
+	//_require.NoError(err)
+	//
+	//transport := &http.Transport{
+	//	Proxy: http.ProxyURL(proxyURL),
+	//}
+	//
+	//options := &service.ClientOptions{}
+	//options.Transport = &http.Client{Transport: transport}
+
+	// Create service client with TokenCredential
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	_require.NoError(err)
+
+	// Create container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create and upload blob
+	blobName := testcommon.GenerateBlobName(testName)
+	//blobURL := fmt.Sprintf("%s%s/%s", serviceURL, containerName, blobName)
+
+	// Upload data
+	uploadData := []byte("test data for session download")
+
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+	_require.NoError(err)
+
+	// Create blob client with TokenCredential
+	sessionSvcClient, err := service.NewClientWithSession(serviceURL, cred, service.SessionOptions{
+		Mode:          "singlecontainer",
+		ContainerName: containerName,
+		AccountName:   accountName,
+	}, nil)
+	_require.NoError(err)
+	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
+	sessionBlobClient := sessionContClient.NewBlobClient(blobName)
+
+	resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	err = resp.Body.Close()
+	_require.NoError(err)
+
+	_require.Equal(uploadData, downloadedData)
+}

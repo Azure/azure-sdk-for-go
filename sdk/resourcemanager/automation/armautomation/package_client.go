@@ -16,64 +16,64 @@ import (
 	"strings"
 )
 
-// Python2PackageClient contains the methods for the Python2Package group.
-// Don't use this type directly, use NewPython2PackageClient() instead.
-type Python2PackageClient struct {
+// PackageClient contains the methods for the Package group.
+// Don't use this type directly, use NewPackageClient() instead.
+type PackageClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewPython2PackageClient creates a new instance of Python2PackageClient with the specified values.
+// NewPackageClient creates a new instance of PackageClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewPython2PackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Python2PackageClient, error) {
+func NewPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PackageClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &Python2PackageClient{
+	client := &PackageClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Create or Update the python 2 package identified by package name.
+// CreateOrUpdate - Create or update the package identified by package name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - packageName - The python package name.
-//   - parameters - The create or update parameters for python package.
-//   - options - Python2PackageClientCreateOrUpdateOptions contains the optional parameters for the Python2PackageClient.CreateOrUpdate
-//     method.
-func (client *Python2PackageClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters PythonPackageCreateParameters, options *Python2PackageClientCreateOrUpdateOptions) (Python2PackageClientCreateOrUpdateResponse, error) {
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - packageName - The Package name.
+//   - parameters - The create or update parameters for Package.
+//   - options - PackageClientCreateOrUpdateOptions contains the optional parameters for the PackageClient.CreateOrUpdate method.
+func (client *PackageClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, parameters PackageCreateOrUpdateParameters, options *PackageClientCreateOrUpdateOptions) (PackageClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "Python2PackageClient.CreateOrUpdate"
+	const operationName = "PackageClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, packageName, parameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, packageName, parameters, options)
 	if err != nil {
-		return Python2PackageClientCreateOrUpdateResponse{}, err
+		return PackageClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return Python2PackageClientCreateOrUpdateResponse{}, err
+		return PackageClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return Python2PackageClientCreateOrUpdateResponse{}, err
+		return PackageClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *Python2PackageClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters PythonPackageCreateParameters, _ *Python2PackageClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/python2Packages/{packageName}"
+func (client *PackageClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, parameters PackageCreateOrUpdateParameters, _ *PackageClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -86,6 +86,10 @@ func (client *Python2PackageClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	if packageName == "" {
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
@@ -106,46 +110,47 @@ func (client *Python2PackageClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *Python2PackageClient) createOrUpdateHandleResponse(resp *http.Response) (Python2PackageClientCreateOrUpdateResponse, error) {
-	result := Python2PackageClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return Python2PackageClientCreateOrUpdateResponse{}, err
+func (client *PackageClient) createOrUpdateHandleResponse(resp *http.Response) (PackageClientCreateOrUpdateResponse, error) {
+	result := PackageClientCreateOrUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Package); err != nil {
+		return PackageClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Delete the python 2 package by name.
+// Delete - Delete the package by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - packageName - The python package name.
-//   - options - Python2PackageClientDeleteOptions contains the optional parameters for the Python2PackageClient.Delete method.
-func (client *Python2PackageClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, options *Python2PackageClientDeleteOptions) (Python2PackageClientDeleteResponse, error) {
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - packageName - The Package name.
+//   - options - PackageClientDeleteOptions contains the optional parameters for the PackageClient.Delete method.
+func (client *PackageClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, options *PackageClientDeleteOptions) (PackageClientDeleteResponse, error) {
 	var err error
-	const operationName = "Python2PackageClient.Delete"
+	const operationName = "PackageClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, packageName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, packageName, options)
 	if err != nil {
-		return Python2PackageClientDeleteResponse{}, err
+		return PackageClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return Python2PackageClientDeleteResponse{}, err
+		return PackageClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return Python2PackageClientDeleteResponse{}, err
+		return PackageClientDeleteResponse{}, err
 	}
-	return Python2PackageClientDeleteResponse{}, nil
+	return PackageClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *Python2PackageClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, _ *Python2PackageClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/python2Packages/{packageName}"
+func (client *PackageClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, _ *PackageClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -158,6 +163,10 @@ func (client *Python2PackageClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	if packageName == "" {
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
@@ -172,39 +181,40 @@ func (client *Python2PackageClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// Get - Retrieve the python 2 package identified by package name.
+// Get - Retrieve the Package identified by Package name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - packageName - The python package name.
-//   - options - Python2PackageClientGetOptions contains the optional parameters for the Python2PackageClient.Get method.
-func (client *Python2PackageClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, options *Python2PackageClientGetOptions) (Python2PackageClientGetResponse, error) {
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - packageName - The Package name.
+//   - options - PackageClientGetOptions contains the optional parameters for the PackageClient.Get method.
+func (client *PackageClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, options *PackageClientGetOptions) (PackageClientGetResponse, error) {
 	var err error
-	const operationName = "Python2PackageClient.Get"
+	const operationName = "PackageClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, packageName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, packageName, options)
 	if err != nil {
-		return Python2PackageClientGetResponse{}, err
+		return PackageClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return Python2PackageClientGetResponse{}, err
+		return PackageClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return Python2PackageClientGetResponse{}, err
+		return PackageClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *Python2PackageClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, _ *Python2PackageClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/python2Packages/{packageName}"
+func (client *PackageClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, _ *PackageClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -217,6 +227,10 @@ func (client *Python2PackageClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	if packageName == "" {
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
@@ -233,47 +247,48 @@ func (client *Python2PackageClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *Python2PackageClient) getHandleResponse(resp *http.Response) (Python2PackageClientGetResponse, error) {
-	result := Python2PackageClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return Python2PackageClientGetResponse{}, err
+func (client *PackageClient) getHandleResponse(resp *http.Response) (PackageClientGetResponse, error) {
+	result := PackageClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Package); err != nil {
+		return PackageClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByAutomationAccountPager - Retrieve a list of python 2 packages.
+// NewListByRuntimeEnvironmentPager - Retrieve the a list of Packages
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - options - Python2PackageClientListByAutomationAccountOptions contains the optional parameters for the Python2PackageClient.NewListByAutomationAccountPager
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - options - PackageClientListByRuntimeEnvironmentOptions contains the optional parameters for the PackageClient.NewListByRuntimeEnvironmentPager
 //     method.
-func (client *Python2PackageClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *Python2PackageClientListByAutomationAccountOptions) *runtime.Pager[Python2PackageClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PagingHandler[Python2PackageClientListByAutomationAccountResponse]{
-		More: func(page Python2PackageClientListByAutomationAccountResponse) bool {
+func (client *PackageClient) NewListByRuntimeEnvironmentPager(resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, options *PackageClientListByRuntimeEnvironmentOptions) *runtime.Pager[PackageClientListByRuntimeEnvironmentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PackageClientListByRuntimeEnvironmentResponse]{
+		More: func(page PackageClientListByRuntimeEnvironmentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *Python2PackageClientListByAutomationAccountResponse) (Python2PackageClientListByAutomationAccountResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Python2PackageClient.NewListByAutomationAccountPager")
+		Fetcher: func(ctx context.Context, page *PackageClientListByRuntimeEnvironmentResponse) (PackageClientListByRuntimeEnvironmentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PackageClient.NewListByRuntimeEnvironmentPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+				return client.listByRuntimeEnvironmentCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, options)
 			}, nil)
 			if err != nil {
-				return Python2PackageClientListByAutomationAccountResponse{}, err
+				return PackageClientListByRuntimeEnvironmentResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			return client.listByRuntimeEnvironmentHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *Python2PackageClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *Python2PackageClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/python2Packages"
+// listByRuntimeEnvironmentCreateRequest creates the ListByRuntimeEnvironment request.
+func (client *PackageClient) listByRuntimeEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, _ *PackageClientListByRuntimeEnvironmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}/packages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -286,6 +301,10 @@ func (client *Python2PackageClient) listByAutomationAccountCreateRequest(ctx con
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -297,49 +316,50 @@ func (client *Python2PackageClient) listByAutomationAccountCreateRequest(ctx con
 	return req, nil
 }
 
-// listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *Python2PackageClient) listByAutomationAccountHandleResponse(resp *http.Response) (Python2PackageClientListByAutomationAccountResponse, error) {
-	result := Python2PackageClientListByAutomationAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ModuleListResult); err != nil {
-		return Python2PackageClientListByAutomationAccountResponse{}, err
+// listByRuntimeEnvironmentHandleResponse handles the ListByRuntimeEnvironment response.
+func (client *PackageClient) listByRuntimeEnvironmentHandleResponse(resp *http.Response) (PackageClientListByRuntimeEnvironmentResponse, error) {
+	result := PackageClientListByRuntimeEnvironmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PackageListResult); err != nil {
+		return PackageClientListByRuntimeEnvironmentResponse{}, err
 	}
 	return result, nil
 }
 
-// Update - Update the python 2 package identified by package name.
+// Update - Update the Package identified by Package name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - packageName - The python package name.
-//   - parameters - The update parameters for python package.
-//   - options - Python2PackageClientUpdateOptions contains the optional parameters for the Python2PackageClient.Update method.
-func (client *Python2PackageClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters PythonPackageUpdateParameters, options *Python2PackageClientUpdateOptions) (Python2PackageClientUpdateResponse, error) {
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - packageName - The Package name.
+//   - parameters - The update parameters for Package.
+//   - options - PackageClientUpdateOptions contains the optional parameters for the PackageClient.Update method.
+func (client *PackageClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, parameters PackageUpdateParameters, options *PackageClientUpdateOptions) (PackageClientUpdateResponse, error) {
 	var err error
-	const operationName = "Python2PackageClient.Update"
+	const operationName = "PackageClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, packageName, parameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, packageName, parameters, options)
 	if err != nil {
-		return Python2PackageClientUpdateResponse{}, err
+		return PackageClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return Python2PackageClientUpdateResponse{}, err
+		return PackageClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return Python2PackageClientUpdateResponse{}, err
+		return PackageClientUpdateResponse{}, err
 	}
 	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *Python2PackageClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters PythonPackageUpdateParameters, _ *Python2PackageClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/python2Packages/{packageName}"
+func (client *PackageClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, packageName string, parameters PackageUpdateParameters, _ *PackageClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -352,6 +372,10 @@ func (client *Python2PackageClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	if packageName == "" {
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
@@ -372,10 +396,10 @@ func (client *Python2PackageClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *Python2PackageClient) updateHandleResponse(resp *http.Response) (Python2PackageClientUpdateResponse, error) {
-	result := Python2PackageClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return Python2PackageClientUpdateResponse{}, err
+func (client *PackageClient) updateHandleResponse(resp *http.Response) (PackageClientUpdateResponse, error) {
+	result := PackageClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Package); err != nil {
+		return PackageClientUpdateResponse{}, err
 	}
 	return result, nil
 }

@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Automation": "2024-10-23"
+  },
+  "emitterVersion": "0.10.4"
+}

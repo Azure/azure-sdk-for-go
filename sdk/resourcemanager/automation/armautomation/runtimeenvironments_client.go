@@ -16,64 +16,64 @@ import (
 	"strings"
 )
 
-// SourceControlClient contains the methods for the SourceControl group.
-// Don't use this type directly, use NewSourceControlClient() instead.
-type SourceControlClient struct {
+// RuntimeEnvironmentsClient contains the methods for the RuntimeEnvironments group.
+// Don't use this type directly, use NewRuntimeEnvironmentsClient() instead.
+type RuntimeEnvironmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSourceControlClient creates a new instance of SourceControlClient with the specified values.
+// NewRuntimeEnvironmentsClient creates a new instance of RuntimeEnvironmentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlClient, error) {
+func NewRuntimeEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RuntimeEnvironmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SourceControlClient{
+	client := &RuntimeEnvironmentsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Create a source control.
+// Create - Create or update Runtime Environment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - sourceControlName - The name of source control.
-//   - parameters - The parameters supplied to the create or update source control operation.
-//   - options - SourceControlClientCreateOrUpdateOptions contains the optional parameters for the SourceControlClient.CreateOrUpdate
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - parameters - Parameters supplied to the create the runtime environment.
+//   - options - RuntimeEnvironmentsClientCreateOptions contains the optional parameters for the RuntimeEnvironmentsClient.Create
 //     method.
-func (client *SourceControlClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, options *SourceControlClientCreateOrUpdateOptions) (SourceControlClientCreateOrUpdateResponse, error) {
+func (client *RuntimeEnvironmentsClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, parameters RuntimeEnvironment, options *RuntimeEnvironmentsClientCreateOptions) (RuntimeEnvironmentsClientCreateResponse, error) {
 	var err error
-	const operationName = "SourceControlClient.CreateOrUpdate"
+	const operationName = "RuntimeEnvironmentsClient.Create"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, parameters, options)
 	if err != nil {
-		return SourceControlClientCreateOrUpdateResponse{}, err
+		return RuntimeEnvironmentsClientCreateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SourceControlClientCreateOrUpdateResponse{}, err
+		return RuntimeEnvironmentsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientCreateOrUpdateResponse{}, err
+		return RuntimeEnvironmentsClientCreateResponse{}, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createHandleResponse(httpResp)
 	return resp, err
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, _ *SourceControlClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
+// createCreateRequest creates the Create request.
+func (client *RuntimeEnvironmentsClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, parameters RuntimeEnvironment, _ *RuntimeEnvironmentsClientCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -86,10 +86,10 @@ func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if sourceControlName == "" {
-		return nil, errors.New("parameter sourceControlName cannot be empty")
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceControlName}", url.PathEscape(sourceControlName))
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -105,47 +105,48 @@ func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SourceControlClient) createOrUpdateHandleResponse(resp *http.Response) (SourceControlClientCreateOrUpdateResponse, error) {
-	result := SourceControlClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SourceControlClientCreateOrUpdateResponse{}, err
+// createHandleResponse handles the Create response.
+func (client *RuntimeEnvironmentsClient) createHandleResponse(resp *http.Response) (RuntimeEnvironmentsClientCreateResponse, error) {
+	result := RuntimeEnvironmentsClientCreateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RuntimeEnvironment); err != nil {
+		return RuntimeEnvironmentsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Delete the source control.
+// Delete - Delete the Runtime Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - sourceControlName - The name of source control.
-//   - options - SourceControlClientDeleteOptions contains the optional parameters for the SourceControlClient.Delete method.
-func (client *SourceControlClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientDeleteOptions) (SourceControlClientDeleteResponse, error) {
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - options - RuntimeEnvironmentsClientDeleteOptions contains the optional parameters for the RuntimeEnvironmentsClient.Delete
+//     method.
+func (client *RuntimeEnvironmentsClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, options *RuntimeEnvironmentsClientDeleteOptions) (RuntimeEnvironmentsClientDeleteResponse, error) {
 	var err error
-	const operationName = "SourceControlClient.Delete"
+	const operationName = "RuntimeEnvironmentsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, options)
 	if err != nil {
-		return SourceControlClientDeleteResponse{}, err
+		return RuntimeEnvironmentsClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SourceControlClientDeleteResponse{}, err
+		return RuntimeEnvironmentsClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientDeleteResponse{}, err
+		return RuntimeEnvironmentsClientDeleteResponse{}, err
 	}
-	return SourceControlClientDeleteResponse{}, nil
+	return RuntimeEnvironmentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, _ *SourceControlClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
+func (client *RuntimeEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, _ *RuntimeEnvironmentsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -158,10 +159,10 @@ func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if sourceControlName == "" {
-		return nil, errors.New("parameter sourceControlName cannot be empty")
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceControlName}", url.PathEscape(sourceControlName))
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -172,39 +173,39 @@ func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// Get - Retrieve the source control identified by source control name.
+// Get - Get information about the Runtime Environment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - sourceControlName - The name of source control.
-//   - options - SourceControlClientGetOptions contains the optional parameters for the SourceControlClient.Get method.
-func (client *SourceControlClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientGetOptions) (SourceControlClientGetResponse, error) {
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - options - RuntimeEnvironmentsClientGetOptions contains the optional parameters for the RuntimeEnvironmentsClient.Get method.
+func (client *RuntimeEnvironmentsClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, options *RuntimeEnvironmentsClientGetOptions) (RuntimeEnvironmentsClientGetResponse, error) {
 	var err error
-	const operationName = "SourceControlClient.Get"
+	const operationName = "RuntimeEnvironmentsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, options)
 	if err != nil {
-		return SourceControlClientGetResponse{}, err
+		return RuntimeEnvironmentsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SourceControlClientGetResponse{}, err
+		return RuntimeEnvironmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientGetResponse{}, err
+		return RuntimeEnvironmentsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, _ *SourceControlClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
+func (client *RuntimeEnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, _ *RuntimeEnvironmentsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -217,10 +218,10 @@ func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if sourceControlName == "" {
-		return nil, errors.New("parameter sourceControlName cannot be empty")
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceControlName}", url.PathEscape(sourceControlName))
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -233,28 +234,28 @@ func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *SourceControlClient) getHandleResponse(resp *http.Response) (SourceControlClientGetResponse, error) {
-	result := SourceControlClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SourceControlClientGetResponse{}, err
+func (client *RuntimeEnvironmentsClient) getHandleResponse(resp *http.Response) (RuntimeEnvironmentsClientGetResponse, error) {
+	result := RuntimeEnvironmentsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RuntimeEnvironment); err != nil {
+		return RuntimeEnvironmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByAutomationAccountPager - Retrieve a list of source controls.
+// NewListByAutomationAccountPager - Retrieve a list of RuntimeEnvironments.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - options - SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.NewListByAutomationAccountPager
+//   - options - RuntimeEnvironmentsClientListByAutomationAccountOptions contains the optional parameters for the RuntimeEnvironmentsClient.NewListByAutomationAccountPager
 //     method.
-func (client *SourceControlClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) *runtime.Pager[SourceControlClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SourceControlClientListByAutomationAccountResponse]{
-		More: func(page SourceControlClientListByAutomationAccountResponse) bool {
+func (client *RuntimeEnvironmentsClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *RuntimeEnvironmentsClientListByAutomationAccountOptions) *runtime.Pager[RuntimeEnvironmentsClientListByAutomationAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RuntimeEnvironmentsClientListByAutomationAccountResponse]{
+		More: func(page RuntimeEnvironmentsClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SourceControlClientListByAutomationAccountResponse) (SourceControlClientListByAutomationAccountResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SourceControlClient.NewListByAutomationAccountPager")
+		Fetcher: func(ctx context.Context, page *RuntimeEnvironmentsClientListByAutomationAccountResponse) (RuntimeEnvironmentsClientListByAutomationAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RuntimeEnvironmentsClient.NewListByAutomationAccountPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -263,7 +264,7 @@ func (client *SourceControlClient) NewListByAutomationAccountPager(resourceGroup
 				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 			}, nil)
 			if err != nil {
-				return SourceControlClientListByAutomationAccountResponse{}, err
+				return RuntimeEnvironmentsClientListByAutomationAccountResponse{}, err
 			}
 			return client.listByAutomationAccountHandleResponse(resp)
 		},
@@ -272,8 +273,8 @@ func (client *SourceControlClient) NewListByAutomationAccountPager(resourceGroup
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls"
+func (client *RuntimeEnvironmentsClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *RuntimeEnvironmentsClientListByAutomationAccountOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -291,9 +292,6 @@ func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
 	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -301,48 +299,49 @@ func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx cont
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *SourceControlClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlClientListByAutomationAccountResponse, error) {
-	result := SourceControlClientListByAutomationAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlListResult); err != nil {
-		return SourceControlClientListByAutomationAccountResponse{}, err
+func (client *RuntimeEnvironmentsClient) listByAutomationAccountHandleResponse(resp *http.Response) (RuntimeEnvironmentsClientListByAutomationAccountResponse, error) {
+	result := RuntimeEnvironmentsClientListByAutomationAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RuntimeEnvironmentListResult); err != nil {
+		return RuntimeEnvironmentsClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// Update - Update a source control.
+// Update - Update an Runtime Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-23
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - automationAccountName - The name of the automation account.
-//   - sourceControlName - The name of source control.
-//   - parameters - The parameters supplied to the update source control operation.
-//   - options - SourceControlClientUpdateOptions contains the optional parameters for the SourceControlClient.Update method.
-func (client *SourceControlClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, options *SourceControlClientUpdateOptions) (SourceControlClientUpdateResponse, error) {
+//   - runtimeEnvironmentName - The name of the Runtime Environment.
+//   - parameters - Parameters supplied to the Runtime Environment
+//   - options - RuntimeEnvironmentsClientUpdateOptions contains the optional parameters for the RuntimeEnvironmentsClient.Update
+//     method.
+func (client *RuntimeEnvironmentsClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, parameters RuntimeEnvironmentUpdateParameters, options *RuntimeEnvironmentsClientUpdateOptions) (RuntimeEnvironmentsClientUpdateResponse, error) {
 	var err error
-	const operationName = "SourceControlClient.Update"
+	const operationName = "RuntimeEnvironmentsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, parameters, options)
 	if err != nil {
-		return SourceControlClientUpdateResponse{}, err
+		return RuntimeEnvironmentsClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SourceControlClientUpdateResponse{}, err
+		return RuntimeEnvironmentsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientUpdateResponse{}, err
+		return RuntimeEnvironmentsClientUpdateResponse{}, err
 	}
 	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SourceControlClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, _ *SourceControlClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
+func (client *RuntimeEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, parameters RuntimeEnvironmentUpdateParameters, _ *RuntimeEnvironmentsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -355,10 +354,10 @@ func (client *SourceControlClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if sourceControlName == "" {
-		return nil, errors.New("parameter sourceControlName cannot be empty")
+	if runtimeEnvironmentName == "" {
+		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceControlName}", url.PathEscape(sourceControlName))
+	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -375,10 +374,10 @@ func (client *SourceControlClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SourceControlClient) updateHandleResponse(resp *http.Response) (SourceControlClientUpdateResponse, error) {
-	result := SourceControlClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SourceControlClientUpdateResponse{}, err
+func (client *RuntimeEnvironmentsClient) updateHandleResponse(resp *http.Response) (RuntimeEnvironmentsClientUpdateResponse, error) {
+	result := RuntimeEnvironmentsClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RuntimeEnvironment); err != nil {
+		return RuntimeEnvironmentsClientUpdateResponse{}, err
 	}
 	return result, nil
 }

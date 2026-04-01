@@ -2568,6 +2568,13 @@ type ErrorProperties struct {
 	Message *string
 }
 
+// ErrorResponse - Error response indicates Logic service is not able to process the incoming request. The error property
+// contains the error details.
+type ErrorResponse struct {
+	// The error properties.
+	Error *ErrorProperties
+}
+
 // Experiments - Routing rules in production experiments.
 type Experiments struct {
 	// List of ramp-up rules.
@@ -6023,7 +6030,7 @@ type RetryHistory struct {
 	EndTime *time.Time
 
 	// Gets the error response.
-	Error *WorkflowErrorResponse
+	Error *ErrorResponse
 
 	// Gets the service request Id.
 	ServiceRequestID *string
@@ -9839,13 +9846,6 @@ type WorkflowEnvelopeProperties struct {
 
 	// Gets or sets workflow health.
 	Health *WorkflowHealth
-}
-
-// WorkflowErrorResponse - Error response indicates Logic service is not able to process the incoming request. The error property
-// contains the error details.
-type WorkflowErrorResponse struct {
-	// The error properties.
-	Error *ErrorProperties
 }
 
 // WorkflowHealth - Represents the workflow health.

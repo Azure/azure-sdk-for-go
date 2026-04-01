@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v7
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6
 
 go 1.24.0
 

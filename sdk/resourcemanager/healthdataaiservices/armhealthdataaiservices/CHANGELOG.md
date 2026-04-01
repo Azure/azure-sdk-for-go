@@ -1,5 +1,12 @@
 # Release History
 
+## 1.1.0 (Unreleased)
+
+### Breaking Changes
+
+- Removed `BeginUpdate` method from `DeidServicesClient`
+- Removed types `DeidUpdate`, `DeidPropertiesUpdate`, `ManagedServiceIdentityUpdate`
+
 ## 1.0.0 (2024-11-20)
 ### Breaking Changes
 

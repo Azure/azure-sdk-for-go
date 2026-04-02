@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -943,13 +944,15 @@ type customRequestHeadersAndQueryParametersPolicy struct {
 func (p *customRequestHeadersAndQueryParametersPolicy) Do(req *policy.Request) (*http.Response, error) {
 	rawReq := req.Raw()
 	for k, v := range p.headers {
-		rawReq.Header.Set(k, v)
+		rawReq.Header[k] = strings.Split(v, ",")
 	}
+
 	q := rawReq.URL.Query()
 	for k, v := range p.queryParams {
-		q.Set(k, v)
+		q[k] = strings.Split(v, ",")
 	}
 	rawReq.URL.RawQuery = q.Encode()
+
 	return req.Next()
 }
 

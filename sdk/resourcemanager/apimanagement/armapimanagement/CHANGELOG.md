@@ -1,5 +1,742 @@
 # Release History
 
+## 4.0.0-beta.1 (2026-03-19)
+### Breaking Changes
+
+- Function `*GatewayAPIClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiID string, options *GatewayAPIClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiID string, parameters AssociationContract, options *GatewayAPIClientCreateOrUpdateOptions)`
+- Type of `APIVersionSetContractDetails.VersioningScheme` has been changed from `*APIVersionSetContractDetailsVersioningScheme` to `*VersioningScheme`
+- Type of `GatewayConfigConnectionResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `GatewayResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `ServiceResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `WorkspaceLinksResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Enum `APIVersionSetContractDetailsVersioningScheme` has been removed
+- Enum `AsyncResolverStatus` has been removed
+- Struct `APIEntityBaseContract` has been removed
+- Struct `APIRevisionInfoContract` has been removed
+- Struct `APIVersionSetEntityBase` has been removed
+- Struct `ApimResource` has been removed
+- Struct `AuthorizationServerContractBaseProperties` has been removed
+- Struct `BackendBaseParameters` has been removed
+- Struct `BackendPool` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `GatewayBaseProperties` has been removed
+- Struct `IdentityProviderBaseParameters` has been removed
+- Struct `IssueContractBaseProperties` has been removed
+- Struct `NamedValueEntityBaseParameters` has been removed
+- Struct `OperationEntityBaseContract` has been removed
+- Struct `PolicyWithComplianceCollection` has been removed
+- Struct `PolicyWithComplianceContract` has been removed
+- Struct `PolicyWithComplianceContractProperties` has been removed
+- Struct `ProductEntityBaseParameters` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `QuotaCounterValueContract` has been removed
+- Struct `ResolverResultContract` has been removed
+- Struct `ResolverResultContractProperties` has been removed
+- Struct `ResolverResultLogItemContract` has been removed
+- Struct `Resource` has been removed
+- Struct `ServiceBaseProperties` has been removed
+- Struct `UserEntityBaseParameters` has been removed
+- Struct `WorkspaceLinksBaseProperties` has been removed
+- Field `ETag` of struct `APIClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIClientGetResponse` has been removed
+- Field `ETag` of struct `APIClientUpdateResponse` has been removed
+- Field `ETag` of struct `APIDiagnosticClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIDiagnosticClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIDiagnosticClientGetResponse` has been removed
+- Field `ETag` of struct `APIDiagnosticClientUpdateResponse` has been removed
+- Field `ETag` of struct `APIIssueAttachmentClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIIssueAttachmentClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIIssueAttachmentClientGetResponse` has been removed
+- Field `ETag` of struct `APIIssueClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIIssueClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIIssueClientGetResponse` has been removed
+- Field `ETag` of struct `APIIssueClientUpdateResponse` has been removed
+- Field `ETag` of struct `APIIssueCommentClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIIssueCommentClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIIssueCommentClientGetResponse` has been removed
+- Field `ETag` of struct `APIOperationClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIOperationClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIOperationClientGetResponse` has been removed
+- Field `ETag` of struct `APIOperationClientUpdateResponse` has been removed
+- Field `ETag` of struct `APIOperationPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIOperationPolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIOperationPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `APIPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIPolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `APIReleaseClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIReleaseClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIReleaseClientGetResponse` has been removed
+- Field `ETag` of struct `APIReleaseClientUpdateResponse` has been removed
+- Field `ETag` of struct `APISchemaClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APISchemaClientGetResponse` has been removed
+- Field `ETag` of struct `APITagDescriptionClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APITagDescriptionClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APITagDescriptionClientGetResponse` has been removed
+- Field `ETag` of struct `APIVersionSetClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `APIVersionSetClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `APIVersionSetClientGetResponse` has been removed
+- Field `ETag` of struct `APIVersionSetClientUpdateResponse` has been removed
+- Field `ETag` of struct `AuthorizationAccessPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `AuthorizationAccessPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `AuthorizationClientConfirmConsentCodeResponse` has been removed
+- Field `ETag` of struct `AuthorizationClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `AuthorizationClientGetResponse` has been removed
+- Field `ETag` of struct `AuthorizationLoginLinksClientPostResponse` has been removed
+- Field `ETag` of struct `AuthorizationProviderClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `AuthorizationProviderClientGetResponse` has been removed
+- Field `ETag` of struct `AuthorizationServerClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `AuthorizationServerClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `AuthorizationServerClientGetResponse` has been removed
+- Field `ETag` of struct `AuthorizationServerClientListSecretsResponse` has been removed
+- Field `ETag` of struct `AuthorizationServerClientUpdateResponse` has been removed
+- Field `ETag` of struct `BackendClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `BackendClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `BackendClientGetResponse` has been removed
+- Field `ETag` of struct `BackendClientUpdateResponse` has been removed
+- Field `ETag` of struct `CacheClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `CacheClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `CacheClientGetResponse` has been removed
+- Field `ETag` of struct `CacheClientUpdateResponse` has been removed
+- Field `ETag` of struct `CertificateClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `CertificateClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `CertificateClientGetResponse` has been removed
+- Field `ETag` of struct `CertificateClientRefreshSecretResponse` has been removed
+- Field `ETag` of struct `ContentItemClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `ContentItemClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `ContentItemClientGetResponse` has been removed
+- Field `ETag` of struct `ContentTypeClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `ContentTypeClientGetResponse` has been removed
+- Field `ETag` of struct `DelegationSettingsClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `DelegationSettingsClientGetResponse` has been removed
+- Field `ETag` of struct `DiagnosticClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `DiagnosticClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `DiagnosticClientGetResponse` has been removed
+- Field `ETag` of struct `DiagnosticClientUpdateResponse` has been removed
+- Field `ETag` of struct `DocumentationClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `DocumentationClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `DocumentationClientGetResponse` has been removed
+- Field `ETag` of struct `DocumentationClientUpdateResponse` has been removed
+- Field `ETag` of struct `EmailTemplateClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `EmailTemplateClientGetResponse` has been removed
+- Field `ETag` of struct `EmailTemplateClientUpdateResponse` has been removed
+- Field `Parameters` of struct `GatewayAPIClientCreateOrUpdateOptions` has been removed
+- Field `ETag` of struct `GatewayAPIClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GatewayCertificateAuthorityClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `GatewayCertificateAuthorityClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GatewayCertificateAuthorityClientGetResponse` has been removed
+- Field `ETag` of struct `GatewayClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `GatewayClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GatewayClientGetResponse` has been removed
+- Field `ETag` of struct `GatewayClientListKeysResponse` has been removed
+- Field `ETag` of struct `GatewayClientUpdateResponse` has been removed
+- Field `ETag` of struct `GatewayHostnameConfigurationClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `GatewayHostnameConfigurationClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GatewayHostnameConfigurationClientGetResponse` has been removed
+- Field `ETag` of struct `GlobalSchemaClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GlobalSchemaClientGetResponse` has been removed
+- Field `ETag` of struct `GraphQLAPIResolverClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `GraphQLAPIResolverClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GraphQLAPIResolverClientGetResponse` has been removed
+- Field `ETag` of struct `GraphQLAPIResolverClientUpdateResponse` has been removed
+- Field `ETag` of struct `GraphQLAPIResolverPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `GraphQLAPIResolverPolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GraphQLAPIResolverPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `GroupClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `GroupClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `GroupClientGetResponse` has been removed
+- Field `ETag` of struct `GroupClientUpdateResponse` has been removed
+- Field `ETag` of struct `IdentityProviderClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `IdentityProviderClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `IdentityProviderClientGetResponse` has been removed
+- Field `ETag` of struct `IdentityProviderClientListSecretsResponse` has been removed
+- Field `ETag` of struct `IdentityProviderClientUpdateResponse` has been removed
+- Field `ETag` of struct `IssueClientGetResponse` has been removed
+- Field `ETag` of struct `LoggerClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `LoggerClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `LoggerClientGetResponse` has been removed
+- Field `ETag` of struct `LoggerClientUpdateResponse` has been removed
+- Field `ETag` of struct `NamedValueClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `NamedValueClientGetResponse` has been removed
+- Field `ETag` of struct `NamedValueClientListValueResponse` has been removed
+- Field `ETag` of struct `OpenIDConnectProviderClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `OpenIDConnectProviderClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `OpenIDConnectProviderClientGetResponse` has been removed
+- Field `ETag` of struct `OpenIDConnectProviderClientListSecretsResponse` has been removed
+- Field `ETag` of struct `OpenIDConnectProviderClientUpdateResponse` has been removed
+- Field `ResourceID` of struct `OperationStatusResult` has been removed
+- Field `ETag` of struct `PolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `PolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `PolicyClientGetResponse` has been removed
+- Field `ETag` of struct `PolicyFragmentClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `PolicyFragmentClientGetResponse` has been removed
+- Field `ETag` of struct `PolicyRestrictionClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `PolicyRestrictionClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `PolicyRestrictionClientGetResponse` has been removed
+- Field `ETag` of struct `PolicyRestrictionClientUpdateResponse` has been removed
+- Field `ETag` of struct `PortalConfigClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `PortalConfigClientGetResponse` has been removed
+- Field `ETag` of struct `PortalRevisionClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `PortalRevisionClientGetResponse` has been removed
+- Field `ETag` of struct `ProductAPILinkClientGetResponse` has been removed
+- Field `ETag` of struct `ProductClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `ProductClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `ProductClientGetResponse` has been removed
+- Field `ETag` of struct `ProductClientUpdateResponse` has been removed
+- Field `ETag` of struct `ProductGroupLinkClientGetResponse` has been removed
+- Field `ETag` of struct `ProductPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `ProductPolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `ProductPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `ProductWikisClientListResponse` has been removed
+- Field `ETag` of struct `SignInSettingsClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `SignInSettingsClientGetResponse` has been removed
+- Field `ETag` of struct `SignUpSettingsClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `SignUpSettingsClientGetResponse` has been removed
+- Field `ETag` of struct `SubscriptionClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `SubscriptionClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `SubscriptionClientGetResponse` has been removed
+- Field `ETag` of struct `SubscriptionClientListSecretsResponse` has been removed
+- Field `ETag` of struct `SubscriptionClientUpdateResponse` has been removed
+- Field `ETag` of struct `TagAPILinkClientGetResponse` has been removed
+- Field `ETag` of struct `TagClientAssignToAPIResponse` has been removed
+- Field `ETag` of struct `TagClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `TagClientGetByAPIResponse` has been removed
+- Field `ETag` of struct `TagClientGetByOperationResponse` has been removed
+- Field `ETag` of struct `TagClientGetByProductResponse` has been removed
+- Field `ETag` of struct `TagClientGetEntityStateByAPIResponse` has been removed
+- Field `ETag` of struct `TagClientGetEntityStateByOperationResponse` has been removed
+- Field `ETag` of struct `TagClientGetEntityStateByProductResponse` has been removed
+- Field `ETag` of struct `TagClientGetEntityStateResponse` has been removed
+- Field `ETag` of struct `TagClientGetResponse` has been removed
+- Field `ETag` of struct `TagClientUpdateResponse` has been removed
+- Field `ETag` of struct `TagOperationLinkClientGetResponse` has been removed
+- Field `ETag` of struct `TagProductLinkClientGetResponse` has been removed
+- Field `ETag` of struct `TenantAccessClientCreateResponse` has been removed
+- Field `ETag` of struct `TenantAccessClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `TenantAccessClientGetResponse` has been removed
+- Field `ETag` of struct `TenantAccessClientListSecretsResponse` has been removed
+- Field `ETag` of struct `TenantAccessClientUpdateResponse` has been removed
+- Field `ETag` of struct `TenantSettingsClientGetResponse` has been removed
+- Field `ETag` of struct `UserClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `UserClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `UserClientGetResponse` has been removed
+- Field `ETag` of struct `UserClientUpdateResponse` has been removed
+- Field `ETag` of struct `UserSubscriptionClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIDiagnosticClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIDiagnosticClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIDiagnosticClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIDiagnosticClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIOperationClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIOperationClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIOperationClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIOperationClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIOperationPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIOperationPolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIOperationPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIPolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIReleaseClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIReleaseClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIReleaseClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIReleaseClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPISchemaClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPISchemaClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIVersionSetClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIVersionSetClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIVersionSetClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceAPIVersionSetClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceBackendClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceBackendClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceBackendClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceBackendClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceCertificateClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceCertificateClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceCertificateClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceCertificateClientRefreshSecretResponse` has been removed
+- Field `ETag` of struct `WorkspaceClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceDiagnosticClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceDiagnosticClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceDiagnosticClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceDiagnosticClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceGlobalSchemaClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceGlobalSchemaClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceGroupClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceGroupClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceGroupClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceGroupClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceLoggerClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceLoggerClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceLoggerClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceLoggerClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceNamedValueClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceNamedValueClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceNamedValueClientListValueResponse` has been removed
+- Field `ETag` of struct `WorkspacePolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspacePolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspacePolicyClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspacePolicyFragmentClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspacePolicyFragmentClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductAPILinkClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductGroupLinkClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductPolicyClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductPolicyClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceProductPolicyClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceSubscriptionClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceSubscriptionClientGetEntityTagResponse` has been removed
+- Field `ETag` of struct `WorkspaceSubscriptionClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceSubscriptionClientListSecretsResponse` has been removed
+- Field `ETag` of struct `WorkspaceSubscriptionClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceTagAPILinkClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceTagClientCreateOrUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceTagClientGetEntityStateResponse` has been removed
+- Field `ETag` of struct `WorkspaceTagClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceTagClientUpdateResponse` has been removed
+- Field `ETag` of struct `WorkspaceTagOperationLinkClientGetResponse` has been removed
+- Field `ETag` of struct `WorkspaceTagProductLinkClientGetResponse` has been removed
+
+### Features Added
+
+- New value `SKUTypePremiumV2` added to enum type `SKUType`
+- New enum type `BackendSessionIDSource` with values `BackendSessionIDSourceCookie`
+- New enum type `CarbonEmissionCategory` with values `CarbonEmissionCategoryHigh`, `CarbonEmissionCategoryLow`, `CarbonEmissionCategoryMedium`, `CarbonEmissionCategoryVeryHigh`, `CarbonEmissionCategoryVeryLow`
+- New enum type `ClientApplicationState` with values `ClientApplicationStateActive`, `ClientApplicationStateApproved`, `ClientApplicationStatePending`, `ClientApplicationStateRejected`
+- New enum type `KeyVaultFetchCode` with values `KeyVaultFetchCodeFailed`, `KeyVaultFetchCodeSuccess`
+- New enum type `LlmDiagnosticSettings` with values `LlmDiagnosticSettingsDisabled`, `LlmDiagnosticSettingsEnabled`
+- New enum type `LlmMessageLogTypes` with values `LlmMessageLogTypesAll`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `ProductAuthType` with values `ProductAuthTypeApplicationToken`, `ProductAuthTypeSubscriptionKey`
+- New enum type `ReleaseChannel` with values `ReleaseChannelDefault`, `ReleaseChannelPreview`, `ReleaseChannelStable`
+- New function `NewAPIGatewayHostnameBindingClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIGatewayHostnameBindingClient, error)`
+- New function `*APIGatewayHostnameBindingClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, parameters GatewayHostnameBindingResource, options *APIGatewayHostnameBindingClientBeginCreateOrUpdateOptions) (*runtime.Poller[APIGatewayHostnameBindingClientCreateOrUpdateResponse], error)`
+- New function `*APIGatewayHostnameBindingClient.BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, ifMatch string, options *APIGatewayHostnameBindingClientBeginDeleteOptions) (*runtime.Poller[APIGatewayHostnameBindingClientDeleteResponse], error)`
+- New function `*APIGatewayHostnameBindingClient.Get(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, options *APIGatewayHostnameBindingClientGetOptions) (APIGatewayHostnameBindingClientGetResponse, error)`
+- New function `*APIGatewayHostnameBindingClient.NewListByGatewayPager(resourceGroupName string, gatewayName string, options *APIGatewayHostnameBindingClientListByGatewayOptions) *runtime.Pager[APIGatewayHostnameBindingClientListByGatewayResponse]`
+- New function `*APIGatewayHostnameBindingClient.BeginRefreshSecret(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, options *APIGatewayHostnameBindingClientBeginRefreshSecretOptions) (*runtime.Poller[APIGatewayHostnameBindingClientRefreshSecretResponse], error)`
+- New function `NewAPIToolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIToolClient, error)`
+- New function `*APIToolClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, parameters ToolContract, options *APIToolClientCreateOrUpdateOptions) (APIToolClientCreateOrUpdateResponse, error)`
+- New function `*APIToolClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientDeleteOptions) (APIToolClientDeleteResponse, error)`
+- New function `*APIToolClient.Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientGetOptions) (APIToolClientGetResponse, error)`
+- New function `*APIToolClient.GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientGetEntityTagOptions) (APIToolClientGetEntityTagResponse, error)`
+- New function `*APIToolClient.NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIToolClientListByAPIOptions) *runtime.Pager[APIToolClientListByAPIResponse]`
+- New function `*APIToolClient.Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, parameters ToolContract, options *APIToolClientUpdateOptions) (APIToolClientUpdateResponse, error)`
+- New function `*AuthorizationProviderClient.RefreshSecret(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationProviderClientRefreshSecretOptions) (AuthorizationProviderClientRefreshSecretResponse, error)`
+- New function `NewClientApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientApplicationClient, error)`
+- New function `*ClientApplicationClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, parameters ClientApplicationContract, options *ClientApplicationClientCreateOrUpdateOptions) (ClientApplicationClientCreateOrUpdateResponse, error)`
+- New function `*ClientApplicationClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientDeleteOptions) (ClientApplicationClientDeleteResponse, error)`
+- New function `*ClientApplicationClient.Get(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientGetOptions) (ClientApplicationClientGetResponse, error)`
+- New function `*ClientApplicationClient.GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientGetEntityTagOptions) (ClientApplicationClientGetEntityTagResponse, error)`
+- New function `*ClientApplicationClient.NewListByServicePager(resourceGroupName string, serviceName string, options *ClientApplicationClientListByServiceOptions) *runtime.Pager[ClientApplicationClientListByServiceResponse]`
+- New function `*ClientApplicationClient.ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientListSecretsOptions) (ClientApplicationClientListSecretsResponse, error)`
+- New function `NewClientApplicationProductLinkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientApplicationProductLinkClient, error)`
+- New function `*ClientApplicationProductLinkClient.Create(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, parameters ClientApplicationProductLinkContract, options *ClientApplicationProductLinkClientCreateOptions) (ClientApplicationProductLinkClientCreateResponse, error)`
+- New function `*ClientApplicationProductLinkClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, options *ClientApplicationProductLinkClientDeleteOptions) (ClientApplicationProductLinkClientDeleteResponse, error)`
+- New function `*ClientApplicationProductLinkClient.Get(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, options *ClientApplicationProductLinkClientGetOptions) (ClientApplicationProductLinkClientGetResponse, error)`
+- New function `*ClientApplicationProductLinkClient.NewListByClientApplicationsPager(resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationProductLinkClientListByClientApplicationsOptions) *runtime.Pager[ClientApplicationProductLinkClientListByClientApplicationsResponse]`
+- New function `*ClientFactory.NewAPIGatewayHostnameBindingClient() *APIGatewayHostnameBindingClient`
+- New function `*ClientFactory.NewAPIToolClient() *APIToolClient`
+- New function `*ClientFactory.NewClientApplicationClient() *ClientApplicationClient`
+- New function `*ClientFactory.NewClientApplicationProductLinkClient() *ClientApplicationProductLinkClient`
+- New function `*ServiceClient.BeginRefreshHostnames(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginRefreshHostnamesOptions) (*runtime.Poller[ServiceClientRefreshHostnamesResponse], error)`
+- New struct `AuthorizationProviderKeyVaultContract`
+- New struct `BackendFailureResponse`
+- New struct `BackendSessionAffinity`
+- New struct `BackendSessionID`
+- New struct `ClientApplicationCollection`
+- New struct `ClientApplicationContract`
+- New struct `ClientApplicationContractProperties`
+- New struct `ClientApplicationProductLinkCollection`
+- New struct `ClientApplicationProductLinkContract`
+- New struct `ClientApplicationProductLinkContractProperties`
+- New struct `ClientApplicationSecretsContract`
+- New struct `ClientApplicationSecretsContractEntra`
+- New struct `GatewayHostnameBindingBaseProperties`
+- New struct `GatewayHostnameBindingCertificate`
+- New struct `GatewayHostnameBindingKeyVault`
+- New struct `GatewayHostnameBindingKeyVaultLastStatus`
+- New struct `GatewayHostnameBindingListResult`
+- New struct `GatewayHostnameBindingResource`
+- New struct `LLMDiagnosticSettings`
+- New struct `LLMMessageDiagnosticSettings`
+- New struct `ManagedServiceIdentity`
+- New struct `ProductApplicationContractEntra`
+- New struct `ProductEntityBaseParametersApplication`
+- New struct `ToolCollection`
+- New struct `ToolContract`
+- New struct `ToolContractProperties`
+- New struct `UserAssignedIdentity`
+- New field `Etag` in struct `APIClientGetEntityTagResponse`
+- New field `Etag` in struct `APIClientGetResponse`
+- New field `Etag` in struct `APIClientUpdateResponse`
+- New field `SystemData` in struct `APIContract`
+- New field `Etag` in struct `APIDiagnosticClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIDiagnosticClientGetEntityTagResponse`
+- New field `Etag` in struct `APIDiagnosticClientGetResponse`
+- New field `Etag` in struct `APIDiagnosticClientUpdateResponse`
+- New field `Etag`, `RetryAfter` in struct `APIIssueAttachmentClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIIssueAttachmentClientGetEntityTagResponse`
+- New field `Etag` in struct `APIIssueAttachmentClientGetResponse`
+- New field `Etag`, `RetryAfter` in struct `APIIssueClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIIssueClientGetEntityTagResponse`
+- New field `Etag` in struct `APIIssueClientGetResponse`
+- New field `Etag` in struct `APIIssueClientUpdateResponse`
+- New field `Etag`, `RetryAfter` in struct `APIIssueCommentClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIIssueCommentClientGetEntityTagResponse`
+- New field `Etag` in struct `APIIssueCommentClientGetResponse`
+- New field `Etag` in struct `APIOperationClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIOperationClientGetEntityTagResponse`
+- New field `Etag` in struct `APIOperationClientGetResponse`
+- New field `Etag` in struct `APIOperationClientUpdateResponse`
+- New field `Etag` in struct `APIOperationPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIOperationPolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `APIOperationPolicyClientGetResponse`
+- New field `Etag` in struct `APIPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIPolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `APIPolicyClientGetResponse`
+- New field `Etag` in struct `APIReleaseClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIReleaseClientGetEntityTagResponse`
+- New field `Etag` in struct `APIReleaseClientGetResponse`
+- New field `Etag` in struct `APIReleaseClientUpdateResponse`
+- New field `SystemData` in struct `APIReleaseContract`
+- New field `Etag` in struct `APISchemaClientGetEntityTagResponse`
+- New field `Etag` in struct `APISchemaClientGetResponse`
+- New field `Etag`, `RetryAfter` in struct `APITagDescriptionClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APITagDescriptionClientGetEntityTagResponse`
+- New field `Etag` in struct `APITagDescriptionClientGetResponse`
+- New field `Etag` in struct `APIVersionSetClientCreateOrUpdateResponse`
+- New field `Etag` in struct `APIVersionSetClientGetEntityTagResponse`
+- New field `Etag` in struct `APIVersionSetClientGetResponse`
+- New field `Etag` in struct `APIVersionSetClientUpdateResponse`
+- New field `SystemData` in struct `APIVersionSetContract`
+- New field `RetryAfter` in struct `APIWikiClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `AccessInformationContract`
+- New field `SystemData` in struct `AllPoliciesContract`
+- New field `SystemData` in struct `AssociationContract`
+- New field `Etag` in struct `AuthorizationAccessPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `AuthorizationAccessPolicyClientGetResponse`
+- New field `SystemData` in struct `AuthorizationAccessPolicyContract`
+- New field `Etag` in struct `AuthorizationClientConfirmConsentCodeResponse`
+- New field `Etag` in struct `AuthorizationClientCreateOrUpdateResponse`
+- New field `Etag` in struct `AuthorizationClientGetResponse`
+- New field `SystemData` in struct `AuthorizationContract`
+- New field `Etag` in struct `AuthorizationLoginLinksClientPostResponse`
+- New field `Etag`, `RetryAfter` in struct `AuthorizationProviderClientCreateOrUpdateResponse`
+- New field `Etag` in struct `AuthorizationProviderClientGetResponse`
+- New field `SystemData` in struct `AuthorizationProviderContract`
+- New field `KeyVault` in struct `AuthorizationProviderOAuth2Settings`
+- New field `Etag`, `RetryAfter` in struct `AuthorizationServerClientCreateOrUpdateResponse`
+- New field `Etag` in struct `AuthorizationServerClientGetEntityTagResponse`
+- New field `Etag` in struct `AuthorizationServerClientGetResponse`
+- New field `Etag` in struct `AuthorizationServerClientListSecretsResponse`
+- New field `Etag` in struct `AuthorizationServerClientUpdateResponse`
+- New field `SystemData` in struct `AuthorizationServerContract`
+- New field `SystemData` in struct `AuthorizationServerUpdateContract`
+- New field `FailureResponse`, `SessionAffinity` in struct `BackendBaseParametersPool`
+- New field `Etag`, `RetryAfter` in struct `BackendClientCreateOrUpdateResponse`
+- New field `Etag` in struct `BackendClientGetEntityTagResponse`
+- New field `Etag` in struct `BackendClientGetResponse`
+- New field `Etag` in struct `BackendClientUpdateResponse`
+- New field `SystemData` in struct `BackendContract`
+- New field `AzureRegion` in struct `BackendContractProperties`
+- New field `PreferredCarbonEmission` in struct `BackendPoolItem`
+- New field `SystemData` in struct `BackendReconnectContract`
+- New field `ServerCertificateThumbprints`, `ServerX509Names` in struct `BackendTLSProperties`
+- New field `AzureRegion` in struct `BackendUpdateParameterProperties`
+- New field `Etag` in struct `CacheClientCreateOrUpdateResponse`
+- New field `Etag` in struct `CacheClientGetEntityTagResponse`
+- New field `Etag` in struct `CacheClientGetResponse`
+- New field `Etag` in struct `CacheClientUpdateResponse`
+- New field `SystemData` in struct `CacheContract`
+- New field `Etag` in struct `CertificateClientCreateOrUpdateResponse`
+- New field `Etag` in struct `CertificateClientGetEntityTagResponse`
+- New field `Etag` in struct `CertificateClientGetResponse`
+- New field `Etag` in struct `CertificateClientRefreshSecretResponse`
+- New field `SystemData` in struct `CertificateContract`
+- New field `FailureResponse` in struct `CircuitBreakerRule`
+- New field `Etag` in struct `ContentItemClientCreateOrUpdateResponse`
+- New field `Etag` in struct `ContentItemClientGetEntityTagResponse`
+- New field `Etag` in struct `ContentItemClientGetResponse`
+- New field `SystemData` in struct `ContentItemContract`
+- New field `Etag` in struct `ContentTypeClientCreateOrUpdateResponse`
+- New field `Etag` in struct `ContentTypeClientGetResponse`
+- New field `SystemData` in struct `ContentTypeContract`
+- New field `Etag` in struct `DelegationSettingsClientGetEntityTagResponse`
+- New field `Etag` in struct `DelegationSettingsClientGetResponse`
+- New field `SystemData` in struct `DeletedServiceContract`
+- New field `Etag`, `RetryAfter` in struct `DiagnosticClientCreateOrUpdateResponse`
+- New field `Etag` in struct `DiagnosticClientGetEntityTagResponse`
+- New field `Etag` in struct `DiagnosticClientGetResponse`
+- New field `Etag` in struct `DiagnosticClientUpdateResponse`
+- New field `SystemData` in struct `DiagnosticContract`
+- New field `LargeLanguageModel` in struct `DiagnosticContractProperties`
+- New field `SystemData` in struct `DiagnosticUpdateContract`
+- New field `Etag` in struct `DocumentationClientCreateOrUpdateResponse`
+- New field `Etag` in struct `DocumentationClientGetEntityTagResponse`
+- New field `Etag` in struct `DocumentationClientGetResponse`
+- New field `Etag` in struct `DocumentationClientUpdateResponse`
+- New field `SystemData` in struct `DocumentationContract`
+- New field `Etag` in struct `EmailTemplateClientGetEntityTagResponse`
+- New field `Etag` in struct `EmailTemplateClientGetResponse`
+- New field `Etag` in struct `EmailTemplateClientUpdateResponse`
+- New field `SystemData` in struct `EmailTemplateContract`
+- New field `Etag` in struct `GatewayAPIClientGetEntityTagResponse`
+- New field `Etag` in struct `GatewayCertificateAuthorityClientCreateOrUpdateResponse`
+- New field `Etag` in struct `GatewayCertificateAuthorityClientGetEntityTagResponse`
+- New field `Etag` in struct `GatewayCertificateAuthorityClientGetResponse`
+- New field `SystemData` in struct `GatewayCertificateAuthorityContract`
+- New field `Etag` in struct `GatewayClientCreateOrUpdateResponse`
+- New field `Etag` in struct `GatewayClientGetEntityTagResponse`
+- New field `Etag` in struct `GatewayClientGetResponse`
+- New field `Etag` in struct `GatewayClientListKeysResponse`
+- New field `Etag` in struct `GatewayClientUpdateResponse`
+- New field `SystemData` in struct `GatewayConfigConnectionResource`
+- New field `Identity`, `SystemData` in struct `GatewayContract`
+- New field `Etag`, `RetryAfter` in struct `GatewayHostnameConfigurationClientCreateOrUpdateResponse`
+- New field `Etag` in struct `GatewayHostnameConfigurationClientGetEntityTagResponse`
+- New field `Etag` in struct `GatewayHostnameConfigurationClientGetResponse`
+- New field `SystemData` in struct `GatewayHostnameConfigurationContract`
+- New field `Etag` in struct `GlobalSchemaClientGetEntityTagResponse`
+- New field `Etag` in struct `GlobalSchemaClientGetResponse`
+- New field `SystemData` in struct `GlobalSchemaContract`
+- New field `Etag` in struct `GraphQLAPIResolverClientCreateOrUpdateResponse`
+- New field `Etag` in struct `GraphQLAPIResolverClientGetEntityTagResponse`
+- New field `Etag` in struct `GraphQLAPIResolverClientGetResponse`
+- New field `Etag` in struct `GraphQLAPIResolverClientUpdateResponse`
+- New field `Etag` in struct `GraphQLAPIResolverPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `GraphQLAPIResolverPolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `GraphQLAPIResolverPolicyClientGetResponse`
+- New field `Etag`, `RetryAfter` in struct `GroupClientCreateOrUpdateResponse`
+- New field `Etag` in struct `GroupClientGetEntityTagResponse`
+- New field `Etag` in struct `GroupClientGetResponse`
+- New field `Etag` in struct `GroupClientUpdateResponse`
+- New field `SystemData` in struct `GroupContract`
+- New field `Etag` in struct `IdentityProviderClientCreateOrUpdateResponse`
+- New field `Etag` in struct `IdentityProviderClientGetEntityTagResponse`
+- New field `Etag` in struct `IdentityProviderClientGetResponse`
+- New field `Etag` in struct `IdentityProviderClientListSecretsResponse`
+- New field `Etag` in struct `IdentityProviderClientUpdateResponse`
+- New field `SystemData` in struct `IdentityProviderContract`
+- New field `CertificateID` in struct `IdentityProviderContractProperties`
+- New field `SystemData` in struct `IdentityProviderCreateContract`
+- New field `CertificateID` in struct `IdentityProviderCreateContractProperties`
+- New field `CertificateID` in struct `IdentityProviderUpdateProperties`
+- New field `SystemData` in struct `IssueAttachmentContract`
+- New field `Etag` in struct `IssueClientGetResponse`
+- New field `SystemData` in struct `IssueCommentContract`
+- New field `SystemData` in struct `IssueContract`
+- New field `Etag` in struct `LoggerClientCreateOrUpdateResponse`
+- New field `Etag` in struct `LoggerClientGetEntityTagResponse`
+- New field `Etag` in struct `LoggerClientGetResponse`
+- New field `Etag` in struct `LoggerClientUpdateResponse`
+- New field `SystemData` in struct `LoggerContract`
+- New field `Etag` in struct `NamedValueClientGetEntityTagResponse`
+- New field `Etag` in struct `NamedValueClientGetResponse`
+- New field `Etag` in struct `NamedValueClientListValueResponse`
+- New field `SystemData` in struct `NamedValueContract`
+- New field `SystemData` in struct `NamedValueCreateContract`
+- New field `SystemData` in struct `NotificationContract`
+- New field `Etag` in struct `OpenIDConnectProviderClientCreateOrUpdateResponse`
+- New field `Etag` in struct `OpenIDConnectProviderClientGetEntityTagResponse`
+- New field `Etag` in struct `OpenIDConnectProviderClientGetResponse`
+- New field `Etag` in struct `OpenIDConnectProviderClientListSecretsResponse`
+- New field `Etag` in struct `OpenIDConnectProviderClientUpdateResponse`
+- New field `SystemData` in struct `OpenidConnectProviderContract`
+- New field `SystemData` in struct `OperationContract`
+- New field `SystemData` in struct `OperationResultContract`
+- New field `RetryAfter` in struct `OperationsResultsClientGetResponse`
+- New field `Etag` in struct `PolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `PolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `PolicyClientGetResponse`
+- New field `SystemData` in struct `PolicyContract`
+- New field `SystemData` in struct `PolicyDescriptionContract`
+- New field `Etag` in struct `PolicyFragmentClientGetEntityTagResponse`
+- New field `Etag` in struct `PolicyFragmentClientGetResponse`
+- New field `SystemData` in struct `PolicyFragmentContract`
+- New field `Etag` in struct `PolicyRestrictionClientCreateOrUpdateResponse`
+- New field `Etag` in struct `PolicyRestrictionClientGetEntityTagResponse`
+- New field `Etag` in struct `PolicyRestrictionClientGetResponse`
+- New field `Etag` in struct `PolicyRestrictionClientUpdateResponse`
+- New field `SystemData` in struct `PolicyRestrictionContract`
+- New field `Etag` in struct `PortalConfigClientGetEntityTagResponse`
+- New field `Etag` in struct `PortalConfigClientGetResponse`
+- New field `SystemData` in struct `PortalConfigContract`
+- New field `SystemData` in struct `PortalDelegationSettings`
+- New field `Etag` in struct `PortalRevisionClientGetEntityTagResponse`
+- New field `Etag` in struct `PortalRevisionClientGetResponse`
+- New field `SystemData` in struct `PortalRevisionContract`
+- New field `SystemData` in struct `PortalSettingsContract`
+- New field `SystemData` in struct `PortalSigninSettings`
+- New field `SystemData` in struct `PortalSignupSettings`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `NextLink` in struct `PrivateLinkResourceListResult`
+- New field `Etag` in struct `ProductAPILinkClientGetResponse`
+- New field `SystemData` in struct `ProductAPILinkContract`
+- New field `Etag` in struct `ProductClientCreateOrUpdateResponse`
+- New field `Etag` in struct `ProductClientGetEntityTagResponse`
+- New field `Etag` in struct `ProductClientGetResponse`
+- New field `Etag` in struct `ProductClientUpdateResponse`
+- New field `SystemData` in struct `ProductContract`
+- New field `Application`, `AuthenticationType` in struct `ProductContractProperties`
+- New field `Etag` in struct `ProductGroupLinkClientGetResponse`
+- New field `SystemData` in struct `ProductGroupLinkContract`
+- New field `Etag` in struct `ProductPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `ProductPolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `ProductPolicyClientGetResponse`
+- New field `Application`, `AuthenticationType` in struct `ProductTagResourceContractProperties`
+- New field `Application`, `AuthenticationType` in struct `ProductUpdateProperties`
+- New field `RetryAfter` in struct `ProductWikiClientCreateOrUpdateResponse`
+- New field `Etag` in struct `ProductWikisClientListResponse`
+- New field `SystemData` in struct `RecipientEmailContract`
+- New field `SystemData` in struct `RecipientUserContract`
+- New field `NextLink` in struct `RequestReportCollection`
+- New field `SystemData` in struct `ResolverContract`
+- New field `SystemData` in struct `ResourceCollectionValueItem`
+- New field `SystemData` in struct `SchemaContract`
+- New field `ReleaseChannel`, `ZoneRedundant` in struct `ServiceProperties`
+- New field `ReleaseChannel`, `ZoneRedundant` in struct `ServiceUpdateProperties`
+- New field `Etag` in struct `SignInSettingsClientGetEntityTagResponse`
+- New field `Etag` in struct `SignInSettingsClientGetResponse`
+- New field `Etag` in struct `SignUpSettingsClientGetEntityTagResponse`
+- New field `Etag` in struct `SignUpSettingsClientGetResponse`
+- New field `Etag` in struct `SubscriptionClientCreateOrUpdateResponse`
+- New field `Etag` in struct `SubscriptionClientGetEntityTagResponse`
+- New field `Etag` in struct `SubscriptionClientGetResponse`
+- New field `Etag` in struct `SubscriptionClientListSecretsResponse`
+- New field `Etag` in struct `SubscriptionClientUpdateResponse`
+- New field `SystemData` in struct `SubscriptionContract`
+- New field `Etag` in struct `TagAPILinkClientGetResponse`
+- New field `SystemData` in struct `TagAPILinkContract`
+- New field `Etag` in struct `TagClientAssignToAPIResponse`
+- New field `Etag` in struct `TagClientCreateOrUpdateResponse`
+- New field `Etag` in struct `TagClientGetByAPIResponse`
+- New field `Etag` in struct `TagClientGetByOperationResponse`
+- New field `Etag` in struct `TagClientGetByProductResponse`
+- New field `Etag` in struct `TagClientGetEntityStateByAPIResponse`
+- New field `Etag` in struct `TagClientGetEntityStateByOperationResponse`
+- New field `Etag` in struct `TagClientGetEntityStateByProductResponse`
+- New field `Etag` in struct `TagClientGetEntityStateResponse`
+- New field `Etag` in struct `TagClientGetResponse`
+- New field `Etag` in struct `TagClientUpdateResponse`
+- New field `SystemData` in struct `TagContract`
+- New field `SystemData` in struct `TagDescriptionContract`
+- New field `Etag` in struct `TagOperationLinkClientGetResponse`
+- New field `SystemData` in struct `TagOperationLinkContract`
+- New field `Etag` in struct `TagProductLinkClientGetResponse`
+- New field `SystemData` in struct `TagProductLinkContract`
+- New field `Etag` in struct `TenantAccessClientCreateResponse`
+- New field `Etag` in struct `TenantAccessClientGetEntityTagResponse`
+- New field `Etag` in struct `TenantAccessClientGetResponse`
+- New field `Etag` in struct `TenantAccessClientListSecretsResponse`
+- New field `Etag` in struct `TenantAccessClientUpdateResponse`
+- New field `SystemData` in struct `TenantConfigurationSyncStateContract`
+- New field `Etag` in struct `TenantSettingsClientGetResponse`
+- New field `SystemData` in struct `TenantSettingsContract`
+- New field `Etag`, `RetryAfter` in struct `UserClientCreateOrUpdateResponse`
+- New field `Etag` in struct `UserClientGetEntityTagResponse`
+- New field `Etag` in struct `UserClientGetResponse`
+- New field `Etag` in struct `UserClientUpdateResponse`
+- New field `SystemData` in struct `UserContract`
+- New field `Etag` in struct `UserSubscriptionClientGetResponse`
+- New field `SystemData` in struct `WikiContract`
+- New field `Etag` in struct `WorkspaceAPIClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPIClientGetResponse`
+- New field `Etag` in struct `WorkspaceAPIClientUpdateResponse`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceAPIDiagnosticClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceAPIDiagnosticClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPIDiagnosticClientGetResponse`
+- New field `Etag` in struct `WorkspaceAPIDiagnosticClientUpdateResponse`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceAPIOperationClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceAPIOperationClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPIOperationClientGetResponse`
+- New field `Etag` in struct `WorkspaceAPIOperationClientUpdateResponse`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceAPIOperationPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceAPIOperationPolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPIOperationPolicyClientGetResponse`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceAPIPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceAPIPolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPIPolicyClientGetResponse`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceAPIReleaseClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceAPIReleaseClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPIReleaseClientGetResponse`
+- New field `Etag` in struct `WorkspaceAPIReleaseClientUpdateResponse`
+- New field `Etag` in struct `WorkspaceAPISchemaClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPISchemaClientGetResponse`
+- New field `Etag` in struct `WorkspaceAPIVersionSetClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceAPIVersionSetClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceAPIVersionSetClientGetResponse`
+- New field `Etag` in struct `WorkspaceAPIVersionSetClientUpdateResponse`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceBackendClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceBackendClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceBackendClientGetResponse`
+- New field `Etag` in struct `WorkspaceBackendClientUpdateResponse`
+- New field `Etag` in struct `WorkspaceCertificateClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceCertificateClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceCertificateClientGetResponse`
+- New field `Etag` in struct `WorkspaceCertificateClientRefreshSecretResponse`
+- New field `Etag` in struct `WorkspaceClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceClientGetResponse`
+- New field `Etag` in struct `WorkspaceClientUpdateResponse`
+- New field `SystemData` in struct `WorkspaceContract`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceDiagnosticClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceDiagnosticClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceDiagnosticClientGetResponse`
+- New field `Etag` in struct `WorkspaceDiagnosticClientUpdateResponse`
+- New field `Etag` in struct `WorkspaceGlobalSchemaClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceGlobalSchemaClientGetResponse`
+- New field `Etag` in struct `WorkspaceGroupClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceGroupClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceGroupClientGetResponse`
+- New field `Etag` in struct `WorkspaceGroupClientUpdateResponse`
+- New field `SystemData` in struct `WorkspaceLinksResource`
+- New field `Etag` in struct `WorkspaceLoggerClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceLoggerClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceLoggerClientGetResponse`
+- New field `Etag` in struct `WorkspaceLoggerClientUpdateResponse`
+- New field `Etag` in struct `WorkspaceNamedValueClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceNamedValueClientGetResponse`
+- New field `Etag` in struct `WorkspaceNamedValueClientListValueResponse`
+- New field `Etag` in struct `WorkspacePolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspacePolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspacePolicyClientGetResponse`
+- New field `Etag` in struct `WorkspacePolicyFragmentClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspacePolicyFragmentClientGetResponse`
+- New field `Etag` in struct `WorkspaceProductAPILinkClientGetResponse`
+- New field `Etag` in struct `WorkspaceProductClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceProductClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceProductClientGetResponse`
+- New field `Etag` in struct `WorkspaceProductClientUpdateResponse`
+- New field `Etag` in struct `WorkspaceProductGroupLinkClientGetResponse`
+- New field `Etag`, `RetryAfter` in struct `WorkspaceProductPolicyClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceProductPolicyClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceProductPolicyClientGetResponse`
+- New field `Etag` in struct `WorkspaceSubscriptionClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceSubscriptionClientGetEntityTagResponse`
+- New field `Etag` in struct `WorkspaceSubscriptionClientGetResponse`
+- New field `Etag` in struct `WorkspaceSubscriptionClientListSecretsResponse`
+- New field `Etag` in struct `WorkspaceSubscriptionClientUpdateResponse`
+- New field `Etag` in struct `WorkspaceTagAPILinkClientGetResponse`
+- New field `Etag` in struct `WorkspaceTagClientCreateOrUpdateResponse`
+- New field `Etag` in struct `WorkspaceTagClientGetEntityStateResponse`
+- New field `Etag` in struct `WorkspaceTagClientGetResponse`
+- New field `Etag` in struct `WorkspaceTagClientUpdateResponse`
+- New field `Etag` in struct `WorkspaceTagOperationLinkClientGetResponse`
+- New field `Etag` in struct `WorkspaceTagProductLinkClientGetResponse`
+
+
 ## 3.0.0 (2025-04-10)
 ### Breaking Changes
 

@@ -6,12 +6,6 @@
 
 * Ignore `api-version` query parameter during playback matching to avoid unnecessary re-recording when API versions change
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 3.1.1 (2025-12-17)
 
 ### Other Changes

@@ -23,20 +23,15 @@ const SessionRevoking = "session_revoking"
 
 type SessionCredentials = generated.SessionCredentials
 
-type Provider interface {
-	GetSessionCredentials(ctx context.Context, containerName string) (SessionCredentials, error)
-	ExpireSessionCredentials(containerName string)
-}
-
 type SessionPolicy struct {
 	bearerTokenPolicy policy.Policy
 	opts              SessionOptions
-	provider          Provider
+	provider          SessionProvider
 	refreshMu         sync.Mutex
 }
 
 func NewSessionPolicy(opts SessionOptions, bearerTokenPolicy policy.Policy, oauthServiceClient *generated.ServiceClient) (policy.Policy, error) {
-	var provider Provider
+	var provider SessionProvider
 	switch opts.Mode {
 	case SessionModeSingleContainer:
 		if opts.AccountName == "" {
@@ -179,7 +174,7 @@ func canUseSession(req *http.Request) (containerName string, ok bool) {
 	}
 
 	// If there's a 'comp' query param, it's not a Get Blob request
-	// (e.g., comp=tags, comp=metadata, comp=properties)
+	// (e.g., comp=tags, comp=properties)
 	if u.Query().Get("comp") != "" {
 		return "", false
 	}

@@ -244,46 +244,6 @@ func PossibleComplianceStatusValues() []ComplianceStatus {
 	}
 }
 
-// ConfidentialVMIntent - Captures the customer's intent to enable or disable Confidential Virtual Machine (CVM) support on
-// the cluster, either during initial deployment (Day-0) or at a later stage (Day-N).
-type ConfidentialVMIntent string
-
-const (
-	// ConfidentialVMIntentDisable - Indicates that the customer intends to disable CVM support on the cluster.
-	ConfidentialVMIntentDisable ConfidentialVMIntent = "Disable"
-	// ConfidentialVMIntentEnable - Indicates that the customer intends to enable CVM support on the cluster.
-	ConfidentialVMIntentEnable ConfidentialVMIntent = "Enable"
-)
-
-// PossibleConfidentialVMIntentValues returns the possible values for the ConfidentialVMIntent const type.
-func PossibleConfidentialVMIntentValues() []ConfidentialVMIntent {
-	return []ConfidentialVMIntent{
-		ConfidentialVMIntentDisable,
-		ConfidentialVMIntentEnable,
-	}
-}
-
-// ConfidentialVMStatus - Captures the current status of Confidential Virtual Machine (CVM) support on the cluster.
-type ConfidentialVMStatus string
-
-const (
-	// ConfidentialVMStatusDisabled - CVM support is disabled. None of the nodes in the cluster are CVM capable.
-	ConfidentialVMStatusDisabled ConfidentialVMStatus = "Disabled"
-	// ConfidentialVMStatusEnabled - CVM support is fully enabled on the cluster. All nodes are CVM capable.
-	ConfidentialVMStatusEnabled ConfidentialVMStatus = "Enabled"
-	// ConfidentialVMStatusPartiallyEnabled - CVM support is partially enabled. At least one node in the cluster is CVM capable.
-	ConfidentialVMStatusPartiallyEnabled ConfidentialVMStatus = "PartiallyEnabled"
-)
-
-// PossibleConfidentialVMStatusValues returns the possible values for the ConfidentialVMStatus const type.
-func PossibleConfidentialVMStatusValues() []ConfidentialVMStatus {
-	return []ConfidentialVMStatus{
-		ConfidentialVMStatusDisabled,
-		ConfidentialVMStatusEnabled,
-		ConfidentialVMStatusPartiallyEnabled,
-	}
-}
-
 // ConnectivityStatus - Overall connectivity status for the cluster resource. Indicates whether the cluster is connected to
 // Azure, partially connected, or has not recently communicated.
 type ConnectivityStatus string
@@ -515,109 +475,6 @@ func PossibleEdgeDeviceKindValues() []EdgeDeviceKind {
 	}
 }
 
-// EdgeMachineConnectivityStatus - Overall connectivity status for the machine resource.
-type EdgeMachineConnectivityStatus string
-
-const (
-	// EdgeMachineConnectivityStatusConnected - The machine resource is connected.
-	EdgeMachineConnectivityStatusConnected EdgeMachineConnectivityStatus = "Connected"
-	// EdgeMachineConnectivityStatusDisconnected - The machine resource is disconnected.
-	EdgeMachineConnectivityStatusDisconnected EdgeMachineConnectivityStatus = "Disconnected"
-	// EdgeMachineConnectivityStatusNotSpecified - The connectivity status of the machine resource is not specified.
-	EdgeMachineConnectivityStatusNotSpecified EdgeMachineConnectivityStatus = "NotSpecified"
-)
-
-// PossibleEdgeMachineConnectivityStatusValues returns the possible values for the EdgeMachineConnectivityStatus const type.
-func PossibleEdgeMachineConnectivityStatusValues() []EdgeMachineConnectivityStatus {
-	return []EdgeMachineConnectivityStatus{
-		EdgeMachineConnectivityStatusConnected,
-		EdgeMachineConnectivityStatusDisconnected,
-		EdgeMachineConnectivityStatusNotSpecified,
-	}
-}
-
-// EdgeMachineJobType - Job Type supported.
-type EdgeMachineJobType string
-
-const (
-	// EdgeMachineJobTypeCollectLog - Job to collect logs from the device.
-	EdgeMachineJobTypeCollectLog EdgeMachineJobType = "CollectLog"
-	// EdgeMachineJobTypeDownloadOs - Job to download OS packages on to the device
-	EdgeMachineJobTypeDownloadOs EdgeMachineJobType = "DownloadOs"
-	// EdgeMachineJobTypeProvisionOs - Job to provision operating system in the device.
-	EdgeMachineJobTypeProvisionOs EdgeMachineJobType = "ProvisionOs"
-	// EdgeMachineJobTypeRemoteSupport - Job to provide remote support to the device.
-	EdgeMachineJobTypeRemoteSupport EdgeMachineJobType = "RemoteSupport"
-)
-
-// PossibleEdgeMachineJobTypeValues returns the possible values for the EdgeMachineJobType const type.
-func PossibleEdgeMachineJobTypeValues() []EdgeMachineJobType {
-	return []EdgeMachineJobType{
-		EdgeMachineJobTypeCollectLog,
-		EdgeMachineJobTypeDownloadOs,
-		EdgeMachineJobTypeProvisionOs,
-		EdgeMachineJobTypeRemoteSupport,
-	}
-}
-
-// EdgeMachineKind - Edge Machine Kind.
-type EdgeMachineKind string
-
-const (
-	// EdgeMachineKindDedicated - EdgeMachine resource created for brownfield HCI customers without zero touch provisioning.
-	EdgeMachineKindDedicated EdgeMachineKind = "Dedicated"
-	// EdgeMachineKindStandard - EdgeMachine resource created using Zero-touch provisioning.
-	EdgeMachineKindStandard EdgeMachineKind = "Standard"
-)
-
-// PossibleEdgeMachineKindValues returns the possible values for the EdgeMachineKind const type.
-func PossibleEdgeMachineKindValues() []EdgeMachineKind {
-	return []EdgeMachineKind{
-		EdgeMachineKindDedicated,
-		EdgeMachineKindStandard,
-	}
-}
-
-// EdgeMachineState - OS State
-type EdgeMachineState string
-
-const (
-	// EdgeMachineStateCreated - Created when EdgeMachine resource created
-	EdgeMachineStateCreated EdgeMachineState = "Created"
-	// EdgeMachineStateFailed - EdgeMachine failed state and only option to recover is to re-provisioning machine
-	EdgeMachineStateFailed EdgeMachineState = "Failed"
-	// EdgeMachineStatePreparing - Preparing EdgeMachine
-	EdgeMachineStatePreparing EdgeMachineState = "Preparing"
-	// EdgeMachineStatePurposed - EdgeMachine state when machine configured with target OS to deploy workloads
-	EdgeMachineStatePurposed EdgeMachineState = "Purposed"
-	// EdgeMachineStateRegistering - EdgeMachine state during device discovery and registration
-	EdgeMachineStateRegistering EdgeMachineState = "Registering"
-	// EdgeMachineStateResetting - EdgeMachine state when transitioning from target OS to restricted OS
-	EdgeMachineStateResetting EdgeMachineState = "Resetting"
-	// EdgeMachineStateTransitioning - EdgeMachine state when transitioning from initial OS to target OS
-	EdgeMachineStateTransitioning EdgeMachineState = "Transitioning"
-	// EdgeMachineStateUnpurposed - EdgeMachine state when machine configured with restricted OS and not provisioned to deploy
-	// workloads
-	EdgeMachineStateUnpurposed EdgeMachineState = "Unpurposed"
-	// EdgeMachineStateUpdating - EdgeMachine state when OS updates are in-progress
-	EdgeMachineStateUpdating EdgeMachineState = "Updating"
-)
-
-// PossibleEdgeMachineStateValues returns the possible values for the EdgeMachineState const type.
-func PossibleEdgeMachineStateValues() []EdgeMachineState {
-	return []EdgeMachineState{
-		EdgeMachineStateCreated,
-		EdgeMachineStateFailed,
-		EdgeMachineStatePreparing,
-		EdgeMachineStatePurposed,
-		EdgeMachineStateRegistering,
-		EdgeMachineStateResetting,
-		EdgeMachineStateTransitioning,
-		EdgeMachineStateUnpurposed,
-		EdgeMachineStateUpdating,
-	}
-}
-
 // ExtensionAggregateState - Aggregate state of Arc Extensions across the nodes in this HCI cluster. This reflects the overall
 // status of the extension deployment and operation across all nodes.
 type ExtensionAggregateState string
@@ -742,24 +599,6 @@ func PossibleHciEdgeDeviceJobTypeValues() []HciEdgeDeviceJobType {
 	}
 }
 
-// HciJobType - ClusterJob Type supported.
-type HciJobType string
-
-const (
-	// HciJobTypeConfigureCVM - Job to CVM intent for the cluster.
-	HciJobTypeConfigureCVM HciJobType = "ConfigureCVM"
-	// HciJobTypeConfigureSdnIntegration - Job to configure SDN (Software Defined Networking) integration for the cluster.
-	HciJobTypeConfigureSdnIntegration HciJobType = "ConfigureSdnIntegration"
-)
-
-// PossibleHciJobTypeValues returns the possible values for the HciJobType const type.
-func PossibleHciJobTypeValues() []HciJobType {
-	return []HciJobType{
-		HciJobTypeConfigureCVM,
-		HciJobTypeConfigureSdnIntegration,
-	}
-}
-
 // HealthState - Overall health state for update-specific health checks. Indicates whether the system is functioning correctly,
 // has warnings or errors, or is undergoing a health evaluation.
 type HealthState string
@@ -791,24 +630,6 @@ func PossibleHealthStateValues() []HealthState {
 	}
 }
 
-// IPAssignmentType - IP assignment types
-type IPAssignmentType string
-
-const (
-	// IPAssignmentTypeAutomatic - Automatic IP assignment
-	IPAssignmentTypeAutomatic IPAssignmentType = "Automatic"
-	// IPAssignmentTypeManual - Manual IP assignment
-	IPAssignmentTypeManual IPAssignmentType = "Manual"
-)
-
-// PossibleIPAssignmentTypeValues returns the possible values for the IPAssignmentType const type.
-func PossibleIPAssignmentTypeValues() []IPAssignmentType {
-	return []IPAssignmentType{
-		IPAssignmentTypeAutomatic,
-		IPAssignmentTypeManual,
-	}
-}
-
 // IdentityProvider - Identity Provider for the cluster
 type IdentityProvider string
 
@@ -826,27 +647,6 @@ func PossibleIdentityProviderValues() []IdentityProvider {
 	return []IdentityProvider{
 		IdentityProviderActiveDirectory,
 		IdentityProviderLocalIdentity,
-	}
-}
-
-// IgvmStatus - Represents the IGVM support status for the device.
-type IgvmStatus string
-
-const (
-	// IgvmStatusDisabled - IGVM status is disabled, indicating that confidential VM features are not supported on this device.
-	IgvmStatusDisabled IgvmStatus = "Disabled"
-	// IgvmStatusEnabled - IGVM support is enabled, indicating that confidential VM features are available on this device.
-	IgvmStatusEnabled IgvmStatus = "Enabled"
-	// IgvmStatusUnknown - The IGVM status could not be determined due to a query failure or inconsistent system state.
-	IgvmStatusUnknown IgvmStatus = "Unknown"
-)
-
-// PossibleIgvmStatusValues returns the possible values for the IgvmStatus const type.
-func PossibleIgvmStatusValues() []IgvmStatus {
-	return []IgvmStatus{
-		IgvmStatusDisabled,
-		IgvmStatusEnabled,
-		IgvmStatusUnknown,
 	}
 }
 
@@ -1114,27 +914,6 @@ func PossibleNodeExtensionStateValues() []NodeExtensionState {
 	}
 }
 
-// OSOperationType - OS Provision Operation type
-type OSOperationType string
-
-const (
-	// OSOperationTypeProvision - OS Provisioning operation
-	OSOperationTypeProvision OSOperationType = "Provision"
-	// OSOperationTypeReImage - OS ReImage operation
-	OSOperationTypeReImage OSOperationType = "ReImage"
-	// OSOperationTypeUpdate - OS Update operation
-	OSOperationTypeUpdate OSOperationType = "Update"
-)
-
-// PossibleOSOperationTypeValues returns the possible values for the OSOperationType const type.
-func PossibleOSOperationTypeValues() []OSOperationType {
-	return []OSOperationType{
-		OSOperationTypeProvision,
-		OSOperationTypeReImage,
-		OSOperationTypeUpdate,
-	}
-}
-
 // OemActivation - OEM activation status of the cluster.
 type OemActivation string
 
@@ -1150,21 +929,6 @@ func PossibleOemActivationValues() []OemActivation {
 	return []OemActivation{
 		OemActivationDisabled,
 		OemActivationEnabled,
-	}
-}
-
-// OnboardingResourceType - Onboarding resource type.
-type OnboardingResourceType string
-
-const (
-	// OnboardingResourceTypeHybridComputeMachine - Hybrid Compute Machine.
-	OnboardingResourceTypeHybridComputeMachine OnboardingResourceType = "HybridComputeMachine"
-)
-
-// PossibleOnboardingResourceTypeValues returns the possible values for the OnboardingResourceType const type.
-func PossibleOnboardingResourceTypeValues() []OnboardingResourceType {
-	return []OnboardingResourceType{
-		OnboardingResourceTypeHybridComputeMachine,
 	}
 }
 
@@ -1205,57 +969,6 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
-	}
-}
-
-// OwnerKeyType - Type of owner key in the voucher
-type OwnerKeyType string
-
-const (
-	// OwnerKeyTypeMicrosoftManaged - Owner is Microsoft managed key
-	OwnerKeyTypeMicrosoftManaged OwnerKeyType = "MicrosoftManaged"
-)
-
-// PossibleOwnerKeyTypeValues returns the possible values for the OwnerKeyType const type.
-func PossibleOwnerKeyTypeValues() []OwnerKeyType {
-	return []OwnerKeyType{
-		OwnerKeyTypeMicrosoftManaged,
-	}
-}
-
-// OwnershipVoucherValidationStatus - Ownership Voucher validation Status.
-type OwnershipVoucherValidationStatus string
-
-const (
-	// OwnershipVoucherValidationStatusInvalid - Voucher evaluated as invalid.
-	OwnershipVoucherValidationStatusInvalid OwnershipVoucherValidationStatus = "Invalid"
-	// OwnershipVoucherValidationStatusValid - Voucher evaluated as valid.
-	OwnershipVoucherValidationStatusValid OwnershipVoucherValidationStatus = "Valid"
-)
-
-// PossibleOwnershipVoucherValidationStatusValues returns the possible values for the OwnershipVoucherValidationStatus const type.
-func PossibleOwnershipVoucherValidationStatusValues() []OwnershipVoucherValidationStatus {
-	return []OwnershipVoucherValidationStatus{
-		OwnershipVoucherValidationStatusInvalid,
-		OwnershipVoucherValidationStatusValid,
-	}
-}
-
-// ProvisioningOsType - Represents the provisioning operating system type.
-type ProvisioningOsType string
-
-const (
-	// ProvisioningOsTypeAzureLinux - AzureLinux OS.
-	ProvisioningOsTypeAzureLinux ProvisioningOsType = "AzureLinux"
-	// ProvisioningOsTypeHCI - HCI OS.
-	ProvisioningOsTypeHCI ProvisioningOsType = "HCI"
-)
-
-// PossibleProvisioningOsTypeValues returns the possible values for the ProvisioningOsType const type.
-func PossibleProvisioningOsTypeValues() []ProvisioningOsType {
-	return []ProvisioningOsType{
-		ProvisioningOsTypeAzureLinux,
-		ProvisioningOsTypeHCI,
 	}
 }
 
@@ -1404,68 +1117,6 @@ func PossibleRemoteSupportTypeValues() []RemoteSupportType {
 	}
 }
 
-// SdnIntegrationIntent - Indicates whether Software Defined Networking (SDN) integration should be enabled or disabled for
-// this deployment.
-type SdnIntegrationIntent string
-
-const (
-	// SdnIntegrationIntentDisable - Disable SDN integration for the deployment.
-	SdnIntegrationIntentDisable SdnIntegrationIntent = "Disable"
-	// SdnIntegrationIntentEnable - Enable SDN integration for the deployment.
-	SdnIntegrationIntentEnable SdnIntegrationIntent = "Enable"
-)
-
-// PossibleSdnIntegrationIntentValues returns the possible values for the SdnIntegrationIntent const type.
-func PossibleSdnIntegrationIntentValues() []SdnIntegrationIntent {
-	return []SdnIntegrationIntent{
-		SdnIntegrationIntentDisable,
-		SdnIntegrationIntentEnable,
-	}
-}
-
-// SdnStatus - Indicates the current Software Defined Networking (SDN) status of the resource, which may be an individual
-// device or a cluster.
-type SdnStatus string
-
-const (
-	// SdnStatusDisabled - SDN is not enabled on the resource. The domain name will be null. This is the default state when SDN
-	// has not been configured.
-	SdnStatusDisabled SdnStatus = "Disabled"
-	// SdnStatusEnabled - SDN is successfully enabled on the resource. The domain name will be populated in the format `<sdnPrefix>-nc.<domain>`.
-	// Customers may need to manage DNS settings to ensure proper resolution.
-	SdnStatusEnabled SdnStatus = "Enabled"
-	// SdnStatusUnknown - The SDN status could not be determined due to a failure in querying the SDN API service. This may occur
-	// if the query script fails or if the system is in an inconsistent state. The domain name will be null in this case.
-	SdnStatusUnknown SdnStatus = "Unknown"
-)
-
-// PossibleSdnStatusValues returns the possible values for the SdnStatus const type.
-func PossibleSdnStatusValues() []SdnStatus {
-	return []SdnStatus{
-		SdnStatusDisabled,
-		SdnStatusEnabled,
-		SdnStatusUnknown,
-	}
-}
-
-// SecretType - Type of secret used for authentication.
-type SecretType string
-
-const (
-	// SecretTypeKeyVault - Key Vault based authentication
-	SecretTypeKeyVault SecretType = "KeyVault"
-	// SecretTypeSSHPubKey - SSH Public Key based authentication
-	SecretTypeSSHPubKey SecretType = "SshPubKey"
-)
-
-// PossibleSecretTypeValues returns the possible values for the SecretType const type.
-func PossibleSecretTypeValues() []SecretType {
-	return []SecretType{
-		SecretTypeKeyVault,
-		SecretTypeSSHPubKey,
-	}
-}
-
 // SecretsType - Type of secrets to store
 type SecretsType string
 
@@ -1571,8 +1222,6 @@ const (
 	StateDownloading State = "Downloading"
 	// StateHasPrerequisite - The update has prerequisites that must be fulfilled before it can proceed.
 	StateHasPrerequisite State = "HasPrerequisite"
-	// StateHealthCheckExpired - The health check has expired and needs to be redone.
-	StateHealthCheckExpired State = "HealthCheckExpired"
 	// StateHealthCheckFailed - The health check failed, preventing the update from proceeding.
 	StateHealthCheckFailed State = "HealthCheckFailed"
 	// StateHealthChecking - A health check is being performed before applying the update.
@@ -1590,8 +1239,6 @@ const (
 	StateNotApplicableBecauseAnotherUpdateIsInProgress State = "NotApplicableBecauseAnotherUpdateIsInProgress"
 	// StateObsolete - The update is obsolete and no longer applicable.
 	StateObsolete State = "Obsolete"
-	// StatePendingOEMValidation - The update is pending OEM validation before it can proceed.
-	StatePendingOEMValidation State = "PendingOEMValidation"
 	// StatePreparationFailed - The update preparation phase failed.
 	StatePreparationFailed State = "PreparationFailed"
 	// StatePreparing - The update is currently in the preparation phase.
@@ -1615,7 +1262,6 @@ func PossibleStateValues() []State {
 		StateDownloadFailed,
 		StateDownloading,
 		StateHasPrerequisite,
-		StateHealthCheckExpired,
 		StateHealthCheckFailed,
 		StateHealthChecking,
 		StateInstallationFailed,
@@ -1624,7 +1270,6 @@ func PossibleStateValues() []State {
 		StateInvalid,
 		StateNotApplicableBecauseAnotherUpdateIsInProgress,
 		StateObsolete,
-		StatePendingOEMValidation,
 		StatePreparationFailed,
 		StatePreparing,
 		StateReady,

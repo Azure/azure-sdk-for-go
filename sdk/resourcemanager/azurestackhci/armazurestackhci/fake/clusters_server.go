@@ -8,23 +8,18 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // ClustersServer is a fake server for instances of the armazurestackhci.ClustersClient type.
 type ClustersServer struct {
-	// BeginChangeRing is the fake for method ClustersClient.BeginChangeRing
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginChangeRing func(ctx context.Context, resourceGroupName string, clusterName string, changeRingRequest armazurestackhci.ChangeRingRequest, options *armazurestackhci.ClustersClientBeginChangeRingOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientChangeRingResponse], errResp azfake.ErrorResponder)
-
 	// BeginConfigureRemoteSupport is the fake for method ClustersClient.BeginConfigureRemoteSupport
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginConfigureRemoteSupport func(ctx context.Context, resourceGroupName string, clusterName string, remoteSupportRequest armazurestackhci.RemoteSupportRequest, options *armazurestackhci.ClustersClientBeginConfigureRemoteSupportOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientConfigureRemoteSupportResponse], errResp azfake.ErrorResponder)
@@ -80,7 +75,6 @@ type ClustersServer struct {
 func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 	return &ClustersServerTransport{
 		srv:                                 srv,
-		beginChangeRing:                     newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientChangeRingResponse]](),
 		beginConfigureRemoteSupport:         newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientConfigureRemoteSupportResponse]](),
 		beginCreateIdentity:                 newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientCreateIdentityResponse]](),
 		beginDelete:                         newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientDeleteResponse]](),
@@ -97,7 +91,6 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 // Don't use this type directly, use NewClustersServerTransport instead.
 type ClustersServerTransport struct {
 	srv                                 *ClustersServer
-	beginChangeRing                     *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientChangeRingResponse]]
 	beginConfigureRemoteSupport         *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientConfigureRemoteSupportResponse]]
 	beginCreateIdentity                 *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientCreateIdentityResponse]]
 	beginDelete                         *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientDeleteResponse]]
@@ -132,8 +125,6 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ClustersClient.BeginChangeRing":
-				res.resp, res.err = c.dispatchBeginChangeRing(req)
 			case "ClustersClient.BeginConfigureRemoteSupport":
 				res.resp, res.err = c.dispatchBeginConfigureRemoteSupport(req)
 			case "ClustersClient.Create":
@@ -175,54 +166,6 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ClustersServerTransport) dispatchBeginChangeRing(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginChangeRing == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginChangeRing not implemented")}
-	}
-	beginChangeRing := c.beginChangeRing.get(req)
-	if beginChangeRing == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeRing`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.ChangeRingRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginChangeRing(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginChangeRing = &respr
-		c.beginChangeRing.add(req, beginChangeRing)
-	}
-
-	resp, err := server.PollerResponderNext(beginChangeRing, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginChangeRing.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginChangeRing) {
-		c.beginChangeRing.remove(req)
-	}
-
-	return resp, nil
 }
 
 func (c *ClustersServerTransport) dispatchBeginConfigureRemoteSupport(req *http.Request) (*http.Response, error) {

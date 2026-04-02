@@ -1,16 +1,20 @@
 # Release History
 
-## 1.11.3-beta.1 (Unreleased)
+## 1.12.1-beta.1 (Unreleased)
 
 ### Features Added
-
-* Added `IgnoredQueryParameters` field to `SetDefaultMatcherOptions` for specifying query parameters to ignore during playback matching
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.12.0 (2026-04-01)
+
+### Features Added
+
+* Added `IgnoredQueryParameters` field to `SetDefaultMatcherOptions` for specifying query parameters to ignore during playback matching
 
 ## 1.11.2 (2025-07-30)
 

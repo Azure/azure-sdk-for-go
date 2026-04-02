@@ -135,7 +135,7 @@ func buildImage(t *testing.T) (string, string) {
 
 	// build images in parallel, in separate goroutines, because building can be slow and may require retries in CI
 	t.Parallel()
-	ctx, cancel := context.WithTimeout(ctx, 3*time.Minute)
+	ctx, cancel := context.WithTimeout(ctx, 6*time.Minute)
 	defer cancel()
 
 	ch := make(chan struct{})

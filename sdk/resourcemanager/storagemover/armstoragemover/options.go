@@ -30,6 +30,27 @@ type AgentsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ConnectionsClientBeginDeleteOptions contains the optional parameters for the ConnectionsClient.BeginDelete method.
+type ConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ConnectionsClientCreateOrUpdateOptions contains the optional parameters for the ConnectionsClient.CreateOrUpdate method.
+type ConnectionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionsClientGetOptions contains the optional parameters for the ConnectionsClient.Get method.
+type ConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionsClientListOptions contains the optional parameters for the ConnectionsClient.NewListPager method.
+type ConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EndpointsClientBeginDeleteOptions contains the optional parameters for the EndpointsClient.BeginDelete method.
 type EndpointsClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.

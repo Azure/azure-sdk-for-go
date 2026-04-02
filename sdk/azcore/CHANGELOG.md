@@ -8,7 +8,9 @@
 
 ### Bugs Fixed
 
+* Fixed an issue in `ResponseError.Error()` where the request URL path was being logged unescaped.
 * Redact query parameters when logging errors.
+* For `runtime.JoinPaths`, don't add a slash between root and paths when `paths` starts with `?` (query string).
 
 ### Other Changes
 

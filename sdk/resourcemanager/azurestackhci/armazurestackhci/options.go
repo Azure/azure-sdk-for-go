@@ -62,35 +62,6 @@ type ArcSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterJobsClient.BeginCreateOrUpdate
-// method.
-type ClusterJobsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClusterJobsClientBeginDeleteOptions contains the optional parameters for the ClusterJobsClient.BeginDelete method.
-type ClusterJobsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClusterJobsClientGetOptions contains the optional parameters for the ClusterJobsClient.Get method.
-type ClusterJobsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClusterJobsClientListOptions contains the optional parameters for the ClusterJobsClient.NewListPager method.
-type ClusterJobsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientBeginChangeRingOptions contains the optional parameters for the ClustersClient.BeginChangeRing method.
-type ClustersClientBeginChangeRingOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // ClustersClientBeginConfigureRemoteSupportOptions contains the optional parameters for the ClustersClient.BeginConfigureRemoteSupport
 // method.
 type ClustersClientBeginConfigureRemoteSupportOptions struct {
@@ -190,56 +161,6 @@ type DeploymentSettingsClientListByClustersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicePoolsClientBeginClaimDevicesOptions contains the optional parameters for the DevicePoolsClient.BeginClaimDevices
-// method.
-type DevicePoolsClientBeginClaimDevicesOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DevicePoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevicePoolsClient.BeginCreateOrUpdate
-// method.
-type DevicePoolsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DevicePoolsClientBeginDeleteOptions contains the optional parameters for the DevicePoolsClient.BeginDelete method.
-type DevicePoolsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DevicePoolsClientBeginReleaseDevicesOptions contains the optional parameters for the DevicePoolsClient.BeginReleaseDevices
-// method.
-type DevicePoolsClientBeginReleaseDevicesOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DevicePoolsClientBeginUpdateOptions contains the optional parameters for the DevicePoolsClient.BeginUpdate method.
-type DevicePoolsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DevicePoolsClientGetOptions contains the optional parameters for the DevicePoolsClient.Get method.
-type DevicePoolsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DevicePoolsClientListByResourceGroupOptions contains the optional parameters for the DevicePoolsClient.NewListByResourceGroupPager
-// method.
-type DevicePoolsClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DevicePoolsClientListBySubscriptionOptions contains the optional parameters for the DevicePoolsClient.NewListBySubscriptionPager
-// method.
-type DevicePoolsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
 // EdgeDeviceJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeDeviceJobsClient.BeginCreateOrUpdate
 // method.
 type EdgeDeviceJobsClientBeginCreateOrUpdateOptions struct {
@@ -293,65 +214,6 @@ type EdgeDevicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EdgeMachineJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineJobsClient.BeginCreateOrUpdate
-// method.
-type EdgeMachineJobsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EdgeMachineJobsClientBeginDeleteOptions contains the optional parameters for the EdgeMachineJobsClient.BeginDelete method.
-type EdgeMachineJobsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EdgeMachineJobsClientGetOptions contains the optional parameters for the EdgeMachineJobsClient.Get method.
-type EdgeMachineJobsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeMachineJobsClientListOptions contains the optional parameters for the EdgeMachineJobsClient.NewListPager method.
-type EdgeMachineJobsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachinesClient.BeginCreateOrUpdate
-// method.
-type EdgeMachinesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EdgeMachinesClientBeginDeleteOptions contains the optional parameters for the EdgeMachinesClient.BeginDelete method.
-type EdgeMachinesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EdgeMachinesClientBeginUpdateOptions contains the optional parameters for the EdgeMachinesClient.BeginUpdate method.
-type EdgeMachinesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EdgeMachinesClientGetOptions contains the optional parameters for the EdgeMachinesClient.Get method.
-type EdgeMachinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeMachinesClientListByResourceGroupOptions contains the optional parameters for the EdgeMachinesClient.NewListByResourceGroupPager
-// method.
-type EdgeMachinesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeMachinesClientListBySubscriptionOptions contains the optional parameters for the EdgeMachinesClient.NewListBySubscriptionPager
-// method.
-type EdgeMachinesClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
 type ExtensionsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -387,12 +249,6 @@ type ExtensionsClientListByArcSettingOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubernetesVersionsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager
-// method.
-type KubernetesVersionsClientListBySubscriptionLocationResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OffersClientGetOptions contains the optional parameters for the OffersClient.Get method.
 type OffersClientGetOptions struct {
 	// Specify $expand=content,contentVersion to populate additional fields related to the marketplace offer.
@@ -413,42 +269,6 @@ type OffersClientListByPublisherOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OsImagesClientGetOptions contains the optional parameters for the OsImagesClient.Get method.
-type OsImagesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OsImagesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the OsImagesClient.NewListBySubscriptionLocationResourcePager
-// method.
-type OsImagesClientListBySubscriptionLocationResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OwnershipVouchersClientValidateOptions contains the optional parameters for the OwnershipVouchersClient.Validate method.
-type OwnershipVouchersClientValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PlatformUpdatesClientGetOptions contains the optional parameters for the PlatformUpdatesClient.Get method.
-type PlatformUpdatesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PlatformUpdatesClientListOptions contains the optional parameters for the PlatformUpdatesClient.NewListPager method.
-type PlatformUpdatesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PublishersClientGetOptions contains the optional parameters for the PublishersClient.Get method.
-type PublishersClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PublishersClientListByClusterOptions contains the optional parameters for the PublishersClient.NewListByClusterPager method.
-type PublishersClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -485,16 +305,6 @@ type SecuritySettingsClientGetOptions struct {
 // SecuritySettingsClientListByClustersOptions contains the optional parameters for the SecuritySettingsClient.NewListByClustersPager
 // method.
 type SecuritySettingsClientListByClustersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// UpdateContentsClientGetOptions contains the optional parameters for the UpdateContentsClient.Get method.
-type UpdateContentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// UpdateContentsClientListOptions contains the optional parameters for the UpdateContentsClient.NewListPager method.
-type UpdateContentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -540,20 +350,6 @@ type UpdateSummariesClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdateSummariesOperationGroupClientBeginCheckHealthOptions contains the optional parameters for the UpdateSummariesOperationGroupClient.BeginCheckHealth
-// method.
-type UpdateSummariesOperationGroupClientBeginCheckHealthOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions contains the optional parameters for the UpdateSummariesOperationGroupClient.BeginCheckUpdates
-// method.
-type UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // UpdatesClientBeginDeleteOptions contains the optional parameters for the UpdatesClient.BeginDelete method.
 type UpdatesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -562,12 +358,6 @@ type UpdatesClientBeginDeleteOptions struct {
 
 // UpdatesClientBeginPostOptions contains the optional parameters for the UpdatesClient.BeginPost method.
 type UpdatesClientBeginPostOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// UpdatesClientBeginPrepareOptions contains the optional parameters for the UpdatesClient.BeginPrepare method.
-type UpdatesClientBeginPrepareOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

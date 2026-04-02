@@ -1,5 +1,14 @@
 # Release History
 
+## 3.0.0-beta.4 (2026-03-24)
+### Features Added
+
+- New field `MaxConcurrency` in struct `UpdateGroup`
+- New field `MaxConcurrency` in struct `UpdateGroupStatus`
+- New field `MaxConcurrency` in struct `UpdateStage`
+- New field `MaxConcurrency` in struct `UpdateStageStatus`
+
+
 ## 3.0.0-beta.3 (2026-03-11)
 ### Breaking Changes
 

@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
@@ -430,5 +431,10 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 func (c *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
 	containerClientFilterBlobsOptions := o.format()
 	resp, err := c.generated().FilterBlobs(ctx, where, containerClientFilterBlobsOptions)
+	return resp, err
+}
+
+func (c *Client) CreateSession(ctx context.Context, o *CreateSessionOptions) (CreateSessionResponse, error) {
+	resp, err := c.generated().CreateSession(ctx, CreateSessionConfiguration{AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC)}, nil)
 	return resp, err
 }

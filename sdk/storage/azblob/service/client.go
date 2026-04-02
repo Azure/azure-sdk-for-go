@@ -32,6 +32,34 @@ type ClientOptions base.ClientOptions
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type Client base.Client[generated.ServiceClient]
 
+func NewClientWithSession(serviceURL string, cred azcore.TokenCredential, sessionOpts SessionOptions, options *ClientOptions) (*Client, error) {
+	// Client to get the session token and handle session token refresh
+	oauthClient, err := NewClient(serviceURL, cred, options)
+	if err != nil {
+		return nil, err
+	}
+	if sessionOpts.Mode == exported.SessionModeOff {
+		return oauthClient, nil
+	}
+
+	audience := base.GetAudience((*base.ClientOptions)(options))
+	conOptions := shared.GetClientOptions(options)
+	// policy to fall back on
+	oAuthPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+
+	sessionPolicy, err := exported.NewSessionPolicy(sessionOpts, oAuthPolicy, oauthClient.generated())
+	if err != nil {
+		return nil, err
+	}
+	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{sessionPolicy}}
+
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, &cred, (*base.ClientOptions)(conOptions))), nil
+}
+
 // NewClient creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
 //   - cred - an Azure AD credential, typically obtained via the azidentity module

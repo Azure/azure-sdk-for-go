@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-02-06/blob.json"
+input-file: "https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/19d9a891ef946d8530d4cfa7ed20639c17e0d250/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-10-06/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -80,7 +80,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2025-11-05"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{client.version}`, `[]string{ServiceVersion}`);
 ```
 
 ### Fix CRC Response Header in PutBlob response

@@ -3538,3 +3538,141 @@ func (s *ContainerRecordedTestsSuite) TestContainerClientCustomAudience() {
 	_, err = containerClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSession() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	//proxyURL, err := url.Parse("http://127.0.0.1:8888")
+	//_require.NoError(err)
+	//
+	//transport := &http.Transport{
+	//	Proxy: http.ProxyURL(proxyURL),
+	//}
+	//
+	//options := &service.ClientOptions{}
+	//options.Transport = &http.Client{Transport: transport}
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := containerClient.CreateSession(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ID)
+	_require.NotEmpty(*resp.ID)
+	_require.NotNil(resp.Expiration)
+	_require.True(resp.Expiration.After(time.Now().Add(-time.Minute)), "Expiration should be in the future or very recent")
+	_require.NotNil(resp.AuthenticationType)
+	_require.NotNil(resp.Credentials)
+	_require.NotNil(resp.Credentials.SessionKey)
+	_require.NotEmpty(*resp.Credentials.SessionKey)
+	_require.NotNil(resp.Credentials.SessionToken)
+	_require.NotEmpty(*resp.Credentials.SessionToken)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionNonExistentContainer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	// Attempting to create a session on a non-existent container should fail
+	_, err = containerClient.CreateSession(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionMultipleTimes() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create multiple sessions and verify they have different IDs
+	resp1, err := containerClient.CreateSession(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp1.ID)
+
+	resp2, err := containerClient.CreateSession(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp2.ID)
+
+	// Each session should have a unique ID
+	_require.NotEqual(*resp1.ID, *resp2.ID)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionWithDifferentContainers() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	// Create first container
+	containerName1 := testcommon.GenerateContainerName(testName + "1")
+	containerClient1 := testcommon.GetContainerClient(containerName1, svcClient)
+	_, err = containerClient1.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient1)
+
+	// Create second container
+	containerName2 := testcommon.GenerateContainerName(testName + "2")
+	containerClient2 := testcommon.GetContainerClient(containerName2, svcClient)
+	_, err = containerClient2.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient2)
+
+	// Create sessions for each container
+	resp1, err := containerClient1.CreateSession(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp1.ID)
+
+	resp2, err := containerClient2.CreateSession(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp2.ID)
+
+	// Sessions for different containers should be independent
+	_require.NotEqual(*resp1.ID, *resp2.ID)
+}

@@ -297,6 +297,49 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type CreateSessionConfiguration.
+func (c CreateSessionConfiguration) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "CreateSessionRequest"
+	type alias CreateSessionConfiguration
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&c),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type CreateSessionResponse.
+func (c CreateSessionResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias CreateSessionResponse
+	aux := &struct {
+		*alias
+		Expiration *dateTimeRFC1123 `xml:"Expiration"`
+	}{
+		alias:      (*alias)(&c),
+		Expiration: (*dateTimeRFC1123)(c.Expiration),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type CreateSessionResponse.
+func (c *CreateSessionResponse) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias CreateSessionResponse
+	aux := &struct {
+		*alias
+		Expiration *dateTimeRFC1123 `xml:"Expiration"`
+	}{
+		alias: (*alias)(c),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.Expiration != nil && !(*time.Time)(aux.Expiration).IsZero() {
+		c.Expiration = (*time.Time)(aux.Expiration)
+	}
+	return nil
+}
+
 // MarshalXML implements the xml.Marshaller interface for type FilterBlobSegment.
 func (f FilterBlobSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias FilterBlobSegment

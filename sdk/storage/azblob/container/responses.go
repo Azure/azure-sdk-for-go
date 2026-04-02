@@ -64,3 +64,5 @@ type BatchResponseItem = exported.BatchResponseItem
 
 // FilterBlobsResponse contains the response from method Client.FilterBlobs.
 type FilterBlobsResponse = generated.ContainerClientFilterBlobsResponse
+
+type CreateSessionResponse = generated.ContainerClientCreateSessionResponse

@@ -253,6 +253,23 @@ type CORSRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
+type CreateSessionConfiguration struct {
+	// REQUIRED; The type of authentication required to create the session. The only type currently supported is HMAC.
+	AuthenticationType *AuthenticationType `xml:"AuthenticationType"`
+}
+
+type CreateSessionResponse struct {
+	// The type of authentication required to create the session. The only type currently supported is HMAC.
+	AuthenticationType *AuthenticationType `xml:"AuthenticationType"`
+	Credentials        *SessionCredentials `xml:"Credentials"`
+
+	// The time when the session will expire. The format follows RFC 1123.
+	Expiration *time.Time `xml:"Expiration"`
+
+	// A unique identifier for the created session.
+	ID *string `xml:"Id"`
+}
+
 // DelimitedTextConfiguration - Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
 type DelimitedTextConfiguration struct {
 	// The string used to separate columns.
@@ -322,6 +339,9 @@ type KeyInfo struct {
 
 	// REQUIRED; The date-time the key is active in ISO 8601 UTC time
 	Start *string `xml:"Start"`
+
+	// The delegated user tenant id in Azure AD
+	DelegatedUserTid *string `xml:"DelegatedUserTid"`
 }
 
 // ListBlobsFlatSegmentResponse - An enumeration of blobs
@@ -465,6 +485,15 @@ type RetentionPolicy struct {
 	Days *int32 `xml:"Days"`
 }
 
+type SessionCredentials struct {
+	// Only returned when AuthenticationType is HMAC. A symmetric encryption key used to sign requests in the session using the
+	// Shared Key protocol.
+	SessionKey *string `xml:"SessionKey"`
+
+	// An opaque token used to authorize subsequent requests in the session. Must be treated as a security credential.
+	SessionToken *string `xml:"SessionToken"`
+}
+
 // SignedIdentifier - signed identifier
 type SignedIdentifier struct {
 	// REQUIRED; An Access policy
@@ -549,4 +578,7 @@ type UserDelegationKey struct {
 
 	// REQUIRED; The key as a base64 string
 	Value *string `xml:"Value"`
+
+	// The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
+	SignedDelegatedUserTid *string `xml:"SignedDelegatedUserTid"`
 }

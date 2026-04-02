@@ -1321,6 +1321,11 @@ type ContainerClientCreateResponse struct {
 	Version *string
 }
 
+// ContainerClientCreateSessionResponse contains the response from method ContainerClient.CreateSession.
+type ContainerClientCreateSessionResponse struct {
+	CreateSessionResponse
+}
+
 // ContainerClientDeleteResponse contains the response from method ContainerClient.Delete.
 type ContainerClientDeleteResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.

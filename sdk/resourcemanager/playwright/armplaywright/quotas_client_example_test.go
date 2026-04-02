@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PlaywrightQuotas_Get.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightQuotas_Get.json
 func ExampleQuotasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleQuotasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightQuotas_ListBySubscription.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightQuotas_ListBySubscription.json
 func ExampleQuotasClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

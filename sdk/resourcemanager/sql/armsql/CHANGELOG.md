@@ -1,5 +1,363 @@
 # Release History
 
+## 2.0.0-beta.8 (2026-04-02)
+### Breaking Changes
+
+- Function `*DataMaskingPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DataMaskingPolicy, options *DataMaskingPoliciesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, dataMaskingPolicyName DataMaskingPolicyName, parameters DataMaskingPolicy, options *DataMaskingPoliciesClientCreateOrUpdateOptions)`
+- Function `*DataMaskingPoliciesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DataMaskingPoliciesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, dataMaskingPolicyName DataMaskingPolicyName, options *DataMaskingPoliciesClientGetOptions)`
+- Function `*DataMaskingRulesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, dataMaskingRuleName string, parameters DataMaskingRule, options *DataMaskingRulesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, dataMaskingPolicyName DataMaskingPolicyName, dataMaskingRuleName string, parameters DataMaskingRule, options *DataMaskingRulesClientCreateOrUpdateOptions)`
+- Function `*DataMaskingRulesClient.NewListByDatabasePager` parameter(s) have been changed from `(resourceGroupName string, serverName string, databaseName string, options *DataMaskingRulesClientListByDatabaseOptions)` to `(resourceGroupName string, serverName string, databaseName string, dataMaskingPolicyName DataMaskingPolicyName, options *DataMaskingRulesClientListByDatabaseOptions)`
+- Function `*DatabaseBlobAuditingPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName BlobAuditingPolicyName, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesClientCreateOrUpdateOptions)`
+- Function `*DatabaseBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName BlobAuditingPolicyName, options *DatabaseBlobAuditingPoliciesClientGetOptions)`
+- Function `*ExtendedDatabaseBlobAuditingPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExtendedDatabaseBlobAuditingPolicy, options *ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName BlobAuditingPolicyName, parameters ExtendedDatabaseBlobAuditingPolicy, options *ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateOptions)`
+- Function `*ExtendedDatabaseBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName BlobAuditingPolicyName, options *ExtendedDatabaseBlobAuditingPoliciesClientGetOptions)`
+- Function `*ExtendedServerBlobAuditingPoliciesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName BlobAuditingPolicyName, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions)`
+- Function `*ExtendedServerBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, options *ExtendedServerBlobAuditingPoliciesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName BlobAuditingPolicyName, options *ExtendedServerBlobAuditingPoliciesClientGetOptions)`
+- Function `*ManagedDatabaseSensitivityLabelsClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *ManagedDatabaseSensitivityLabelsClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource CurrentSensitivityLabelSource, parameters SensitivityLabel, options *ManagedDatabaseSensitivityLabelsClientCreateOrUpdateOptions)`
+- Function `*ManagedDatabaseSensitivityLabelsClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, options *ManagedDatabaseSensitivityLabelsClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource CurrentSensitivityLabelSource, options *ManagedDatabaseSensitivityLabelsClientDeleteOptions)`
+- Function `*ManagedDatabaseSensitivityLabelsClient.DisableRecommendation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, options *ManagedDatabaseSensitivityLabelsClientDisableRecommendationOptions)` to `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource RecommendedSensitivityLabelSource, options *ManagedDatabaseSensitivityLabelsClientDisableRecommendationOptions)`
+- Function `*ManagedDatabaseSensitivityLabelsClient.EnableRecommendation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, options *ManagedDatabaseSensitivityLabelsClientEnableRecommendationOptions)` to `(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource RecommendedSensitivityLabelSource, options *ManagedDatabaseSensitivityLabelsClientEnableRecommendationOptions)`
+- Function `*OutboundFirewallRulesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, parameters OutboundFirewallRule, options *OutboundFirewallRulesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, options *OutboundFirewallRulesClientBeginCreateOrUpdateOptions)`
+- Function `*SensitivityLabelsClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource CurrentSensitivityLabelSource, parameters SensitivityLabel, options *SensitivityLabelsClientCreateOrUpdateOptions)`
+- Function `*SensitivityLabelsClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource CurrentSensitivityLabelSource, options *SensitivityLabelsClientDeleteOptions)`
+- Function `*SensitivityLabelsClient.DisableRecommendation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDisableRecommendationOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource RecommendedSensitivityLabelSource, options *SensitivityLabelsClientDisableRecommendationOptions)`
+- Function `*SensitivityLabelsClient.EnableRecommendation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientEnableRecommendationOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource RecommendedSensitivityLabelSource, options *SensitivityLabelsClientEnableRecommendationOptions)`
+- Function `*ServerBlobAuditingPoliciesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName BlobAuditingPolicyName, parameters ServerBlobAuditingPolicy, options *ServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions)`
+- Function `*ServerBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName BlobAuditingPolicyName, options *ServerBlobAuditingPoliciesClientGetOptions)`
+- Function `*VulnerabilityAssessmentBaselineClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, options *VulnerabilityAssessmentBaselineClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentBaselineClientGetOptions)`
+- Function `*VulnerabilityAssessmentBaselineClient.NewListBySQLVulnerabilityAssessmentPager` parameter(s) have been changed from `(resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, options *VulnerabilityAssessmentBaselineClientListBySQLVulnerabilityAssessmentOptions)` to `(resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentBaselineClientListBySQLVulnerabilityAssessmentOptions)`
+- Function `*VulnerabilityAssessmentBaselinesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, parameters DatabaseSQLVulnerabilityAssessmentRuleBaselineListInput, options *VulnerabilityAssessmentBaselinesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, parameters DatabaseSQLVulnerabilityAssessmentRuleBaselineListInput, options *VulnerabilityAssessmentBaselinesClientCreateOrUpdateOptions)`
+- Function `*VulnerabilityAssessmentExecuteScanClient.BeginExecute` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, options *VulnerabilityAssessmentExecuteScanClientBeginExecuteOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentExecuteScanClientBeginExecuteOptions)`
+- Function `*VulnerabilityAssessmentRuleBaselineClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, ruleID string, parameters DatabaseSQLVulnerabilityAssessmentRuleBaselineInput, options *VulnerabilityAssessmentRuleBaselineClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, ruleID string, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, parameters DatabaseSQLVulnerabilityAssessmentRuleBaselineInput, options *VulnerabilityAssessmentRuleBaselineClientCreateOrUpdateOptions)`
+- Function `*VulnerabilityAssessmentRuleBaselineClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, ruleID string, options *VulnerabilityAssessmentRuleBaselineClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, ruleID string, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentRuleBaselineClientGetOptions)`
+- Function `*VulnerabilityAssessmentRuleBaselineClient.NewListByBaselinePager` parameter(s) have been changed from `(resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, options *VulnerabilityAssessmentRuleBaselineClientListByBaselineOptions)` to `(resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentRuleBaselineClientListByBaselineOptions)`
+- Function `*VulnerabilityAssessmentRuleBaselinesClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, ruleID string, options *VulnerabilityAssessmentRuleBaselinesClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, baselineName BaselineName, ruleID string, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentRuleBaselinesClientDeleteOptions)`
+- Function `*VulnerabilityAssessmentScanResultClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName SQLVulnerabilityAssessmentName, scanID string, scanResultID string, options *VulnerabilityAssessmentScanResultClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName SQLVulnerabilityAssessmentName, scanID string, scanResultID string, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentScanResultClientGetOptions)`
+- Function `*VulnerabilityAssessmentScanResultClient.NewListByScanPager` parameter(s) have been changed from `(resourceGroupName string, serverName string, vulnerabilityAssessmentName SQLVulnerabilityAssessmentName, scanID string, options *VulnerabilityAssessmentScanResultClientListByScanOptions)` to `(resourceGroupName string, serverName string, vulnerabilityAssessmentName SQLVulnerabilityAssessmentName, scanID string, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentScanResultClientListByScanOptions)`
+- Function `*VulnerabilityAssessmentScansClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, scanID string, options *VulnerabilityAssessmentScansClientGetOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, scanID string, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentScansClientGetOptions)`
+- Function `*VulnerabilityAssessmentScansClient.NewListBySQLVulnerabilityAssessmentsPager` parameter(s) have been changed from `(resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, options *VulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsOptions)` to `(resourceGroupName string, serverName string, vulnerabilityAssessmentName VulnerabilityAssessmentName, systemDatabaseName VulnerabilityAssessmentSystemDatabaseName, options *VulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsOptions)`
+- Type of `CheckNameAvailabilityRequest.Type` has been changed from `*string` to `*CheckNameAvailabilityResourceType`
+- Type of `JobExecutionsClientListByAgentOptions.Skip` has been changed from `*int32` to `*int64`
+- Type of `JobExecutionsClientListByAgentOptions.Top` has been changed from `*int32` to `*int64`
+- Type of `JobExecutionsClientListByJobOptions.Skip` has been changed from `*int32` to `*int64`
+- Type of `JobExecutionsClientListByJobOptions.Top` has been changed from `*int32` to `*int64`
+- Type of `JobStepExecutionsClientListByJobExecutionOptions.Skip` has been changed from `*int32` to `*int64`
+- Type of `JobStepExecutionsClientListByJobExecutionOptions.Top` has been changed from `*int32` to `*int64`
+- Type of `JobTargetExecutionsClientListByJobExecutionOptions.Skip` has been changed from `*int32` to `*int64`
+- Type of `JobTargetExecutionsClientListByJobExecutionOptions.Top` has been changed from `*int32` to `*int64`
+- Type of `JobTargetExecutionsClientListByStepOptions.Skip` has been changed from `*int32` to `*int64`
+- Type of `JobTargetExecutionsClientListByStepOptions.Top` has been changed from `*int32` to `*int64`
+- Type of `ManagedDatabaseSecurityEventsClientListByDatabaseOptions.Skip` has been changed from `*int32` to `*int64`
+- Type of `ManagedDatabaseSecurityEventsClientListByDatabaseOptions.Top` has been changed from `*int32` to `*int64`
+- Type of `ManagedInstanceLongTermRetentionPolicy.Properties` has been changed from `*BaseLongTermRetentionPolicyProperties` to `*ManagedInstanceLongTermRetentionPolicyProperties`
+- Type of `ManagedInstanceOperationSteps.StepsList` has been changed from `[]*UpsertManagedServerOperationStep` to `[]*UpsertManagedServerOperationStepWithEstimatesAndDuration`
+- Type of `ManagedInstanceProperties.PricingModel` has been changed from `*FreemiumType` to `*PricingModel`
+- Type of `RecommendedActionProperties.Details` has been changed from `map[string]any` to `map[string]*string`
+- Type of `TopQueries.Queries` has been changed from `[]*QueryStatisticsPropertiesAutoGenerated` to `[]*QueryStatisticsProperties`
+- `AvailabilityZoneTypeOne`, `AvailabilityZoneTypeThree`, `AvailabilityZoneTypeTwo` from enum `AvailabilityZoneType` has been removed
+- `DiffBackupIntervalInHoursTwelve`, `DiffBackupIntervalInHoursTwentyFour` from enum `DiffBackupIntervalInHours` has been removed
+- `MinimalTLSVersionOne0`, `MinimalTLSVersionOne1`, `MinimalTLSVersionOne2`, `MinimalTLSVersionOne3` from enum `MinimalTLSVersion` has been removed
+- Enum `FreemiumType` has been removed
+- Enum `PrimaryAggregationType` has been removed
+- Enum `ServiceObjectiveName` has been removed
+- Enum `UnitDefinitionType` has been removed
+- Enum `UnitType` has been removed
+- Enum `UpsertManagedServerOperationStepStatus` has been removed
+- Function `*ClientFactory.NewElasticPoolActivitiesClient` has been removed
+- Function `*ClientFactory.NewElasticPoolDatabaseActivitiesClient` has been removed
+- Function `*ClientFactory.NewServerCommunicationLinksClient` has been removed
+- Function `*ClientFactory.NewServiceObjectivesClient` has been removed
+- Function `*DatabasesClient.NewListMetricDefinitionsPager` has been removed
+- Function `*DatabasesClient.NewListMetricsPager` has been removed
+- Function `NewElasticPoolActivitiesClient` has been removed
+- Function `*ElasticPoolActivitiesClient.NewListByElasticPoolPager` has been removed
+- Function `NewElasticPoolDatabaseActivitiesClient` has been removed
+- Function `*ElasticPoolDatabaseActivitiesClient.NewListByElasticPoolPager` has been removed
+- Function `*ElasticPoolsClient.NewListMetricDefinitionsPager` has been removed
+- Function `*ElasticPoolsClient.NewListMetricsPager` has been removed
+- Function `*GeoBackupPoliciesClient.NewListByDatabasePager` has been removed
+- Function `NewServerCommunicationLinksClient` has been removed
+- Function `*ServerCommunicationLinksClient.BeginCreateOrUpdate` has been removed
+- Function `*ServerCommunicationLinksClient.Delete` has been removed
+- Function `*ServerCommunicationLinksClient.Get` has been removed
+- Function `*ServerCommunicationLinksClient.NewListByServerPager` has been removed
+- Function `NewServiceObjectivesClient` has been removed
+- Function `*ServiceObjectivesClient.Get` has been removed
+- Function `*ServiceObjectivesClient.NewListByServerPager` has been removed
+- Struct `BaseLongTermRetentionPolicyProperties` has been removed
+- Struct `ElasticPoolActivity` has been removed
+- Struct `ElasticPoolActivityListResult` has been removed
+- Struct `ElasticPoolActivityProperties` has been removed
+- Struct `ElasticPoolDatabaseActivity` has been removed
+- Struct `ElasticPoolDatabaseActivityListResult` has been removed
+- Struct `ElasticPoolDatabaseActivityProperties` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Metric` has been removed
+- Struct `MetricAvailability` has been removed
+- Struct `MetricDefinition` has been removed
+- Struct `MetricDefinitionListResult` has been removed
+- Struct `MetricListResult` has been removed
+- Struct `MetricName` has been removed
+- Struct `MetricValue` has been removed
+- Struct `OperationImpact` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `ProxyResourceWithWritableName` has been removed
+- Struct `QueryMetricIntervalAutoGenerated` has been removed
+- Struct `QueryStatisticsPropertiesAutoGenerated` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceWithWritableName` has been removed
+- Struct `SecurityEventsFilterParameters` has been removed
+- Struct `ServerCommunicationLink` has been removed
+- Struct `ServerCommunicationLinkListResult` has been removed
+- Struct `ServerCommunicationLinkProperties` has been removed
+- Struct `ServiceObjective` has been removed
+- Struct `ServiceObjectiveListResult` has been removed
+- Struct `ServiceObjectiveProperties` has been removed
+- Struct `SloUsageMetric` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `UpsertManagedServerOperationStep` has been removed
+- Struct `VulnerabilityAssessmentScanRecordForSQLListResult` has been removed
+- Field `ImportExportExtensionsOperationResult` of struct `DatabaseExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `VulnerabilityAssessmentScanRecordForSQLListResult` of struct `DatabaseSQLVulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse` has been removed
+- Field `SkipToken` of struct `DatabasesClientListByServerOptions` has been removed
+- Field `EncryptionProtector` of struct `EncryptionProtectorsClientCreateOrUpdateResponse` has been removed
+- Field `ExtendedServerBlobAuditingPolicy` of struct `ExtendedServerBlobAuditingPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `LedgerDigestUploads` of struct `LedgerDigestUploadsClientCreateOrUpdateResponse` has been removed
+- Field `LongTermRetentionPolicy` of struct `LongTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedBackupShortTermRetentionPolicy` of struct `ManagedBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ZoneRedundant` of struct `ManagedInstanceEditionCapability` has been removed
+- Field `ManagedInstanceLongTermRetentionPolicy` of struct `ManagedInstanceLongTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `ManagedInstancePrivateEndpointConnection` of struct `ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedLedgerDigestUploads` of struct `ManagedLedgerDigestUploadsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedBackupShortTermRetentionPolicy` of struct `ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse` has been removed
+- Field `CurrentValue`, `DisplayName`, `Limit`, `NextResetTime`, `ResourceName`, `Unit` of struct `ServerUsage` has been removed
+- Field `VulnerabilityAssessmentScanRecordForSQLListResult` of struct `VulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse` has been removed
+
+### Features Added
+
+- New value `AvailabilityZoneType1`, `AvailabilityZoneType2`, `AvailabilityZoneType3` added to enum type `AvailabilityZoneType`
+- New value `CapabilityGroupSupportedJobAgentVersions` added to enum type `CapabilityGroup`
+- New value `DiffBackupIntervalInHours12`, `DiffBackupIntervalInHours24` added to enum type `DiffBackupIntervalInHours`
+- New value `ManagedInstanceDatabaseFormatSQLServer2025` added to enum type `ManagedInstanceDatabaseFormat`
+- New value `MinimalTLSVersion10`, `MinimalTLSVersion11`, `MinimalTLSVersion12`, `MinimalTLSVersion13` added to enum type `MinimalTLSVersion`
+- New value `OperationModeExport`, `OperationModeImport` added to enum type `OperationMode`
+- New value `StorageCapabilityStorageAccountTypeGZRS` added to enum type `StorageCapabilityStorageAccountType`
+- New enum type `BlobAuditingPolicyName` with values `BlobAuditingPolicyNameDefault`
+- New enum type `CheckNameAvailabilityResourceType` with values `CheckNameAvailabilityResourceTypeMicrosoftSQLServers`
+- New enum type `ClientClassificationSource` with values `ClientClassificationSourceMIP`, `ClientClassificationSourceNative`, `ClientClassificationSourceNone`, `ClientClassificationSourceRecommended`
+- New enum type `CurrentSensitivityLabelSource` with values `CurrentSensitivityLabelSourceCurrent`
+- New enum type `DataMaskingPolicyName` with values `DataMaskingPolicyNameDefault`
+- New enum type `DataSyncParticipantIdentityType` with values `DataSyncParticipantIdentityTypeNone`, `DataSyncParticipantIdentityTypeSystemAssigned`, `DataSyncParticipantIdentityTypeSystemAssignedUserAssigned`, `DataSyncParticipantIdentityTypeUserAssigned`
+- New enum type `ErrorType` with values `ErrorTypeNone`, `ErrorTypeUser`
+- New enum type `InaccessibilityReason` with values `InaccessibilityReasonDatabaseReplication`, `InaccessibilityReasonTransparentDataEncryption`, `InaccessibilityReasonUnknown`
+- New enum type `JobAgentIdentityType` with values `JobAgentIdentityTypeNone`, `JobAgentIdentityTypeSystemAssigned`, `JobAgentIdentityTypeSystemAssignedUserAssigned`, `JobAgentIdentityTypeUserAssigned`
+- New enum type `PricingModel` with values `PricingModelFreemium`, `PricingModelRegular`
+- New enum type `RecommendedSensitivityLabelSource` with values `RecommendedSensitivityLabelSourceRecommended`
+- New enum type `TransparentDataEncryptionScanState` with values `TransparentDataEncryptionScanStateAborted`, `TransparentDataEncryptionScanStateCompleted`, `TransparentDataEncryptionScanStateNone`, `TransparentDataEncryptionScanStateResume`, `TransparentDataEncryptionScanStateRunning`, `TransparentDataEncryptionScanStateSuspend`
+- New enum type `UpsertManagedServerOperationStepWithEstimatesAndDurationStatus` with values `UpsertManagedServerOperationStepWithEstimatesAndDurationStatusCanceled`, `UpsertManagedServerOperationStepWithEstimatesAndDurationStatusCompleted`, `UpsertManagedServerOperationStepWithEstimatesAndDurationStatusFailed`, `UpsertManagedServerOperationStepWithEstimatesAndDurationStatusInProgress`, `UpsertManagedServerOperationStepWithEstimatesAndDurationStatusNotStarted`, `UpsertManagedServerOperationStepWithEstimatesAndDurationStatusSlowedDown`
+- New enum type `VulnerabilityAssessmentSystemDatabaseName` with values `VulnerabilityAssessmentSystemDatabaseNameMaster`
+- New function `*ClientFactory.NewInstancePoolOperationsClient() *InstancePoolOperationsClient`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*GeoBackupPoliciesClient.NewListPager(resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesClientListOptions) *runtime.Pager[GeoBackupPoliciesClientListResponse]`
+- New function `NewInstancePoolOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InstancePoolOperationsClient, error)`
+- New function `*InstancePoolOperationsClient.Get(ctx context.Context, resourceGroupName string, instancePoolName string, operationID string, options *InstancePoolOperationsClientGetOptions) (InstancePoolOperationsClientGetResponse, error)`
+- New function `*InstancePoolOperationsClient.NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *InstancePoolOperationsClientListByInstancePoolOptions) *runtime.Pager[InstancePoolOperationsClientListByInstancePoolResponse]`
+- New function `*ManagedDatabaseSensitivityLabelsClient.NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse]`
+- New function `*ManagedDatabasesClient.BeginReevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*runtime.Poller[ManagedDatabasesClientReevaluateInaccessibleDatabaseStateResponse], error)`
+- New function `*ManagedInstanceLongTermRetentionPoliciesClient.BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, options *ManagedInstanceLongTermRetentionPoliciesClientBeginDeleteOptions) (*runtime.Poller[ManagedInstanceLongTermRetentionPoliciesClientDeleteResponse], error)`
+- New function `*ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*runtime.Poller[ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse], error)`
+- New function `*ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, options *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*runtime.Poller[ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse], error)`
+- New function `*SensitivityLabelsClient.NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListByDatabaseResponse]`
+- New function `*TransparentDataEncryptionsClient.BeginResume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginResumeOptions) (*runtime.Poller[TransparentDataEncryptionsClientResumeResponse], error)`
+- New function `*TransparentDataEncryptionsClient.BeginSuspend(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginSuspendOptions) (*runtime.Poller[TransparentDataEncryptionsClientSuspendResponse], error)`
+- New function `*VirtualClustersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters VirtualCluster, options *VirtualClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualClustersClientCreateOrUpdateResponse], error)`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.Get(ctx context.Context, resourceGroupName string, serverName string, nspConfigName string, options *NetworkSecurityPerimeterConfigurationsClientGetOptions) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListByServerPager(resourceGroupName string, serverName string, options *NetworkSecurityPerimeterConfigurationsClientListByServerOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListByServerResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile(ctx context.Context, resourceGroupName string, serverName string, nspConfigName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error)`
+- New struct `DataSyncParticipantIdentity`
+- New struct `DataSyncParticipantUserAssignedIdentity`
+- New struct `FreeLimitExhaustionBehaviorCapability`
+- New struct `InstancePoolOperation`
+- New struct `InstancePoolOperationListResult`
+- New struct `InstancePoolOperationProperties`
+- New struct `JobAgentEditionCapability`
+- New struct `JobAgentIdentity`
+- New struct `JobAgentServiceLevelObjectiveCapability`
+- New struct `JobAgentUserAssignedIdentity`
+- New struct `JobAgentVersionCapability`
+- New struct `ManagedDatabaseExtendedAccessibilityInfo`
+- New struct `ManagedInstanceLongTermRetentionPolicyProperties`
+- New struct `ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest`
+- New struct `MaxLimitRangeCapability`
+- New struct `NSPConfigAccessRule`
+- New struct `NSPConfigAccessRuleProperties`
+- New struct `NSPConfigAssociation`
+- New struct `NSPConfigNetworkSecurityPerimeterRule`
+- New struct `NSPConfigPerimeter`
+- New struct `NSPConfigProfile`
+- New struct `NSPProvisioningIssue`
+- New struct `NSPProvisioningIssueProperties`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `PerDatabaseAutoPauseDelayTimeRange`
+- New struct `ServerUsageProperties`
+- New struct `UpsertManagedServerOperationStepWithEstimatesAndDuration`
+- New struct `ZonePinningCapability`
+- New field `SystemData` in struct `Advisor`
+- New field `SystemData` in struct `AgentConfiguration`
+- New field `SystemData` in struct `BackupShortTermRetentionPolicy`
+- New field `SystemData` in struct `DataMaskingPolicy`
+- New field `NextLink` in struct `DataMaskingRuleListResult`
+- New field `Skip` in struct `DataMaskingRulesClientListByDatabaseOptions`
+- New field `SystemData` in struct `DataWarehouseUserActivities`
+- New field `SystemData` in struct `Database`
+- New field `SystemData` in struct `DatabaseAutomaticTuning`
+- New field `SystemData` in struct `DatabaseBlobAuditingPolicy`
+- New field `SystemData` in struct `DatabaseColumn`
+- New anonymous field `Database` in struct `DatabaseEncryptionProtectorsClientRevalidateResponse`
+- New anonymous field `Database` in struct `DatabaseEncryptionProtectorsClientRevertResponse`
+- New field `AdministratorLogin`, `AdministratorLoginPassword`, `AuthenticationType`, `DatabaseEdition`, `MaxSizeBytes`, `NetworkIsolation`, `ServiceObjectiveName` in struct `DatabaseExtensionsProperties`
+- New field `KeyVersion` in struct `DatabaseKey`
+- New field `ProvisioningState` in struct `DatabaseProperties`
+- New anonymous field `VulnerabilityAssessment` in struct `DatabaseSQLVulnerabilityAssessmentExecuteScanClientExecuteResponse`
+- New anonymous field `VulnerabilityAssessmentScanRecordListResult` in struct `DatabaseSQLVulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse`
+- New field `SystemData` in struct `DatabaseSchema`
+- New field `SystemData` in struct `DatabaseTable`
+- New field `ProvisioningState` in struct `DatabaseUpdateProperties`
+- New field `SystemData` in struct `DatabaseVulnerabilityAssessment`
+- New field `SystemData` in struct `DatabaseVulnerabilityAssessmentRuleBaseline`
+- New anonymous field `VulnerabilityAssessmentScanRecord` in struct `DatabaseVulnerabilityAssessmentScansClientInitiateScanResponse`
+- New anonymous field `Database` in struct `DatabasesClientFailoverResponse`
+- New field `Filter`, `Orderby`, `Skip`, `Top` in struct `DatabasesClientListByServerOptions`
+- New anonymous field `Database` in struct `DatabasesClientUpgradeDataWarehouseResponse`
+- New field `SystemData` in struct `DeletedServer`
+- New field `SystemData` in struct `DistributedAvailabilityGroup`
+- New field `ZonePinning` in struct `EditionCapability`
+- New field `SystemData` in struct `ElasticPool`
+- New field `ZonePinning` in struct `ElasticPoolEditionCapability`
+- New field `AutoPauseDelay` in struct `ElasticPoolPerDatabaseSettings`
+- New field `SupportedAutoPauseDelay`, `SupportedMinCapacities`, `SupportedPerDatabaseAutoPauseDelay`, `SupportedZones` in struct `ElasticPoolPerformanceLevelCapability`
+- New field `AutoPauseDelay`, `CurrentSKU` in struct `ElasticPoolProperties`
+- New field `AutoPauseDelay`, `CurrentSKU` in struct `ElasticPoolUpdateProperties`
+- New anonymous field `ElasticPool` in struct `ElasticPoolsClientFailoverResponse`
+- New field `SystemData` in struct `EncryptionProtector`
+- New field `KeyVersion` in struct `EncryptionProtectorProperties`
+- New anonymous field `EncryptionProtector` in struct `EncryptionProtectorsClientRevalidateResponse`
+- New field `SystemData` in struct `EndpointCertificate`
+- New field `SystemData` in struct `ExtendedDatabaseBlobAuditingPolicy`
+- New field `SystemData` in struct `ExtendedServerBlobAuditingPolicy`
+- New field `SystemData` in struct `FailoverGroup`
+- New field `SystemData` in struct `GeoBackupPolicy`
+- New field `NextLink` in struct `GeoBackupPolicyListResult`
+- New field `SystemData` in struct `ImportExportExtensionsOperationResult`
+- New field `BlobURI`, `PrivateEndpointConnections`, `QueuedTime` in struct `ImportExportExtensionsOperationResultProperties`
+- New field `SystemData` in struct `InstanceFailoverGroup`
+- New field `SystemData` in struct `InstancePool`
+- New field `SystemData` in struct `Job`
+- New field `Identity`, `SystemData` in struct `JobAgent`
+- New field `Identity`, `SKU` in struct `JobAgentUpdate`
+- New field `SystemData` in struct `JobCredential`
+- New field `SystemData` in struct `JobExecution`
+- New field `SystemData` in struct `JobPrivateEndpoint`
+- New field `SystemData` in struct `JobStep`
+- New field `SystemData` in struct `JobTargetGroup`
+- New field `SystemData` in struct `JobVersion`
+- New field `SystemData` in struct `LedgerDigestUploads`
+- New field `IsZoneResilientProvisioningAllowed`, `SupportedJobAgentVersions` in struct `LocationCapabilities`
+- New field `SystemData` in struct `LogicalDatabaseTransparentDataEncryption`
+- New field `SystemData` in struct `LongTermRetentionBackup`
+- New field `Filter`, `Skip`, `Top` in struct `LongTermRetentionManagedInstanceBackupsClientListByLocationOptions`
+- New field `Filter`, `Skip`, `Top` in struct `LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions`
+- New field `SystemData` in struct `LongTermRetentionPolicy`
+- New field `SystemData` in struct `MaintenanceWindowOptions`
+- New field `SystemData` in struct `MaintenanceWindows`
+- New field `SystemData` in struct `ManagedBackupShortTermRetentionPolicy`
+- New field `SystemData` in struct `ManagedDatabase`
+- New field `SystemData` in struct `ManagedDatabaseMoveOperationResult`
+- New field `ExtendedAccessibilityInfo` in struct `ManagedDatabaseProperties`
+- New field `SystemData` in struct `ManagedDatabaseRestoreDetailsResult`
+- New field `SystemData` in struct `ManagedDatabaseSecurityAlertPolicy`
+- New anonymous field `VulnerabilityAssessmentScanRecord` in struct `ManagedDatabaseVulnerabilityAssessmentScansClientInitiateScanResponse`
+- New anonymous field `ManagedDatabase` in struct `ManagedDatabasesClientCancelMoveResponse`
+- New anonymous field `ManagedDatabase` in struct `ManagedDatabasesClientCompleteMoveResponse`
+- New anonymous field `ManagedDatabase` in struct `ManagedDatabasesClientCompleteRestoreResponse`
+- New anonymous field `ManagedDatabase` in struct `ManagedDatabasesClientStartMoveResponse`
+- New field `SystemData` in struct `ManagedInstance`
+- New field `SystemData` in struct `ManagedInstanceAdministrator`
+- New field `SystemData` in struct `ManagedInstanceAzureADOnlyAuthentication`
+- New field `SystemData` in struct `ManagedInstanceDtc`
+- New field `FqdnEnabled` in struct `ManagedInstanceDtcProperties`
+- New field `IsGeneralPurposeV2` in struct `ManagedInstanceEditionCapability`
+- New field `SystemData` in struct `ManagedInstanceEncryptionProtector`
+- New anonymous field `ManagedInstanceEncryptionProtector` in struct `ManagedInstanceEncryptionProtectorsClientRevalidateResponse`
+- New field `ZoneRedundant` in struct `ManagedInstanceFamilyCapability`
+- New field `SystemData` in struct `ManagedInstanceKey`
+- New field `SystemData` in struct `ManagedInstanceLongTermRetentionBackup`
+- New field `BackupStorageAccessTier` in struct `ManagedInstanceLongTermRetentionBackupProperties`
+- New field `SystemData` in struct `ManagedInstanceLongTermRetentionPolicy`
+- New field `SystemData` in struct `ManagedInstanceOperation`
+- New field `SystemData` in struct `ManagedInstancePrivateEndpointConnection`
+- New field `SystemData` in struct `ManagedInstancePrivateLink`
+- New field `RequiredZoneNames` in struct `ManagedInstancePrivateLinkProperties`
+- New field `MemorySizeInGB`, `RequestedLogicalAvailabilityZone` in struct `ManagedInstanceProperties`
+- New field `SystemData` in struct `ManagedInstanceQuery`
+- New anonymous field `ManagedInstance` in struct `ManagedInstanceTdeCertificatesClientCreateResponse`
+- New field `IncludedStorageIOps`, `IncludedStorageThroughputMBps`, `IopsIncludedValueOverrideFactorPerSelectedStorageGB`, `IopsMinValueOverrideFactorPerSelectedStorageGB`, `SupportedMemoryLimitsMB`, `SupportedMemorySizesInGB`, `SupportedStorageIOps`, `SupportedStorageThroughputMBps`, `ThroughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB`, `ThroughputMBpsMinValueOverrideFactorPerSelectedStorageGB` in struct `ManagedInstanceVcoresCapability`
+- New field `SystemData` in struct `ManagedInstanceVulnerabilityAssessment`
+- New anonymous field `ManagedInstance` in struct `ManagedInstancesClientFailoverResponse`
+- New field `SystemData` in struct `ManagedLedgerDigestUploads`
+- New field `SystemData` in struct `ManagedServerDNSAlias`
+- New field `SystemData` in struct `ManagedTransparentDataEncryption`
+- New field `SystemData` in struct `OutboundFirewallRule`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `RecommendedAction`
+- New field `SystemData` in struct `RecoverableDatabase`
+- New field `SystemData` in struct `RecoverableManagedDatabase`
+- New field `SystemData` in struct `ReplicationLink`
+- New field `SystemData` in struct `RestorableDroppedDatabase`
+- New field `SystemData` in struct `RestorableDroppedManagedDatabase`
+- New field `SystemData` in struct `RestorePoint`
+- New field `SystemData` in struct `SensitivityLabel`
+- New field `ClientClassificationSource` in struct `SensitivityLabelProperties`
+- New field `SystemData` in struct `Server`
+- New field `SystemData` in struct `ServerAutomaticTuning`
+- New field `SystemData` in struct `ServerAzureADAdministrator`
+- New field `SystemData` in struct `ServerAzureADOnlyAuthentication`
+- New field `SystemData` in struct `ServerBlobAuditingPolicy`
+- New field `SystemData` in struct `ServerConfigurationOption`
+- New field `SystemData` in struct `ServerConnectionPolicy`
+- New field `SystemData` in struct `ServerDNSAlias`
+- New field `SystemData` in struct `ServerKey`
+- New field `KeyVersion` in struct `ServerKeyProperties`
+- New field `SystemData` in struct `ServerTrustCertificate`
+- New field `SystemData` in struct `ServerTrustGroup`
+- New field `ID`, `Properties`, `Type` in struct `ServerUsage`
+- New field `NextLink` in struct `ServerUsageListResult`
+- New field `SystemData` in struct `ServerVulnerabilityAssessment`
+- New field `SupportedFreeLimitExhaustionBehaviors`, `SupportedZones`, `ZonePinning` in struct `ServiceObjectiveCapability`
+- New field `SystemData` in struct `SubscriptionUsage`
+- New field `SystemData` in struct `SyncAgent`
+- New field `Identity`, `SystemData` in struct `SyncGroup`
+- New anonymous field `SyncGroup` in struct `SyncGroupsClientRefreshHubSchemaResponse`
+- New field `Identity`, `SystemData` in struct `SyncMember`
+- New anonymous field `SyncMember` in struct `SyncMembersClientRefreshMemberSchemaResponse`
+- New anonymous field `Server` in struct `TdeCertificatesClientCreateResponse`
+- New field `SystemData` in struct `TimeZone`
+- New field `ScanState` in struct `TransparentDataEncryptionProperties`
+- New field `SystemData` in struct `VirtualCluster`
+- New field `SystemData` in struct `VirtualNetworkRule`
+- New anonymous field `VulnerabilityAssessment` in struct `VulnerabilityAssessmentExecuteScanClientExecuteResponse`
+- New field `SystemData` in struct `VulnerabilityAssessmentScanRecord`
+- New anonymous field `VulnerabilityAssessmentScanRecordListResult` in struct `VulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse`
+- New field `SystemData` in struct `WorkloadClassifier`
+- New field `SystemData` in struct `WorkloadGroup`
+
+
 ## 2.0.0-beta.7 (2025-09-11)
 ### Breaking Changes
 

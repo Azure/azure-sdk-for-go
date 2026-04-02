@@ -1,0 +1,4 @@
+directory: specification/sql/resource-manager/Microsoft.Sql/SQL
+commit: 23007aec710b3925ce488905c6825b54a579322a
+repo: i-specs
+additionalDirectories: 

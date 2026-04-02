@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -59,7 +58,7 @@ func NewSessionPolicy(opts SessionOptions, bearerTokenPolicy policy.Policy, oaut
 }
 
 func (p *SessionPolicy) Do(req *policy.Request) (*http.Response, error) {
-	containerName, ok := parseBlobURL(req.Raw().URL.String())
+	containerName, ok := canUseSession(req.Raw())
 	if !ok {
 		return p.bearerTokenPolicy.Do(req)
 	}
@@ -165,28 +164,36 @@ func (p *SessionPolicy) applySessionReq(req *policy.Request, sessionCreds Sessio
 	return req.Next()
 }
 
-// parseBlobURL parses a blob URL and returns the container name if it's a valid blob URL.
-// Returns the container name and true if the URL is a blob URL, empty string and false otherwise.
-func parseBlobURL(rawURL string) (containerName string, isBlobURL bool) {
-	u, err := url.Parse(rawURL)
-	if err != nil {
+// canUseSession checks if the request can use session-based authentication.
+// Currently limited to Get Blob requests (GET method on blob URLs without comp query param).
+// Returns the container name and true if session can be used, empty string and false otherwise.
+func canUseSession(req *http.Request) (containerName string, ok bool) {
+	// Only GET requests are supported for sessions
+	if req.Method != http.MethodGet {
 		return "", false
 	}
 
-	// Path format: /<container>/<blob> or /<container>
+	u := req.URL
+	if u == nil {
+		return "", false
+	}
+
+	// If there's a 'comp' query param, it's not a Get Blob request
+	// (e.g., comp=tags, comp=metadata, comp=properties)
+	if u.Query().Get("comp") != "" {
+		return "", false
+	}
+
+	// Path format: /<container>/<blob>
 	path := strings.TrimPrefix(u.Path, "/")
 	if path == "" {
 		return "", false
 	}
 
 	parts := strings.SplitN(path, "/", 2)
-	if len(parts) == 0 || parts[0] == "" {
+	if len(parts) < 2 || parts[0] == "" || parts[1] == "" {
 		return "", false
 	}
 
-	containerName = parts[0]
-	// It's a blob URL if there's a blob path after the container
-	isBlobURL = len(parts) > 1 && parts[1] != ""
-
-	return containerName, isBlobURL
+	return parts[0], true
 }

@@ -705,6 +705,123 @@ func TestListSettingsPagerWithETagModifiedPage(t *testing.T) {
 	require.EqualValues(t, 2, countPages)
 }
 
+func TestCheckSettingsPager(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestCheckSettingsPager", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// Use HEAD requests to get page ETags without response body
+	checkPager := client.NewCheckSettingsPager(selector, nil)
+	countPages := 0
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, page.ETag, "ETag should be present in HEAD response")
+		require.NotEmpty(t, page.SyncToken, "SyncToken should be present in HEAD response")
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+}
+
+func TestCheckSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestCheckSettingsPagerWithETagUnmodifiedPage", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// First pass: use HEAD requests to get page ETags
+	checkPager := client.NewCheckSettingsPager(selector, nil)
+	matchConditions := []azcore.MatchConditions{}
+	countPages := 0
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, page.ETag)
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			IfNoneMatch: page.ETag,
+		})
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+
+	// Second pass: use HEAD requests with ETags - should get 304 Not Modified (empty ETags)
+	countPages = 0
+	checkPager = client.NewCheckSettingsPager(selector, &azappconfig.CheckSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		// When not modified, ETag is nil (304 response doesn't include new ETag)
+		require.Nil(t, page.ETag)
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+}
+
+func TestCheckSettingsPagerWithETagModifiedPage(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestCheckSettingsPagerWithETagModifiedPage", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// First pass: use GET to get settings and ETags (need the setting data for modification)
+	var lastSetting azappconfig.Setting
+	pager := client.NewListSettingsPager(selector, nil)
+	matchConditions := []azcore.MatchConditions{}
+	countPages := 0
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		for _, setting := range page.Settings {
+			lastSetting = setting
+		}
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			IfNoneMatch: page.ETag,
+		})
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+
+	// Modify the last setting so the second page changes
+	require.NotNil(t, lastSetting.Key)
+	require.NotNil(t, lastSetting.Value)
+	lastSetting.Value = to.Ptr(fmt.Sprintf("%s-1", *lastSetting.Value))
+	_, err := client.SetSetting(context.Background(), *lastSetting.Key, lastSetting.Value, &azappconfig.SetSettingOptions{
+		Label: lastSetting.Label,
+	})
+	require.NoError(t, err)
+
+	// Second pass: use HEAD requests with ETags - first page unmodified, second page modified
+	countPages = 0
+	checkPager := client.NewCheckSettingsPager(selector, &azappconfig.CheckSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		if countPages == 0 {
+			// First page is not modified, ETag should be nil (304)
+			require.Nil(t, page.ETag)
+		} else {
+			// Second page is modified, should have a new ETag (200)
+			require.NotNil(t, page.ETag)
+		}
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+}
+
 func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.CreateSnapshotResponse, error) {
 	if sf == nil {
 		all := "*"

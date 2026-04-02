@@ -141,8 +141,10 @@ type QueryParameters struct {
 	authorizedObjectID          string    `param:"saoid"`
 	unauthorizedObjectID        string    `param:"suoid"`
 	correlationID               string    `param:"scid"`
-	encryptionScope             string    `param:"ses"`
-	signedDelegatedUserObjectID string    `param:"sduoid"`
+	encryptionScope              string    `param:"ses"`
+	signedDelegatedUserObjectID  string    `param:"sduoid"`
+	signedRequestHeaders         string    `param:"srh"`
+	signedRequestQueryParameters string    `param:"srq"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
@@ -293,6 +295,16 @@ func (p *QueryParameters) SignedDelegatedUserObjectID() string {
 	return p.signedDelegatedUserObjectID
 }
 
+// SignedRequestHeaders returns signedRequestHeaders.
+func (p *QueryParameters) SignedRequestHeaders() string {
+	return p.signedRequestHeaders
+}
+
+// SignedRequestQueryParameters returns signedRequestQueryParameters.
+func (p *QueryParameters) SignedRequestQueryParameters() string {
+	return p.signedRequestQueryParameters
+}
+
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.
 func (p *QueryParameters) Encode() string {
 	v := url.Values{}
@@ -370,6 +382,12 @@ func (p *QueryParameters) Encode() string {
 	}
 	if p.signedDelegatedUserObjectID != "" {
 		v.Add("sduoid", p.signedDelegatedUserObjectID)
+	}
+	if p.signedRequestHeaders != "" {
+		v.Add("srh", p.signedRequestHeaders)
+	}
+	if p.signedRequestQueryParameters != "" {
+		v.Add("srq", p.signedRequestQueryParameters)
 	}
 
 	return v.Encode()
@@ -449,6 +467,10 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.encryptionScope = val
 		case "sduoid":
 			p.signedDelegatedUserObjectID = val
+		case "srh":
+			p.signedRequestHeaders = val
+		case "srq":
+			p.signedRequestQueryParameters = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}

@@ -11,6 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
@@ -108,6 +109,9 @@ func (s *ServerUsagesServerTransport) dispatchNewListByServerPager(req *http.Req
 		resp := s.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, nil)
 		newListByServerPager = &resp
 		s.newListByServerPager.add(req, newListByServerPager)
+		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armsql.ServerUsagesClientListByServerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newListByServerPager, req)
 	if err != nil {

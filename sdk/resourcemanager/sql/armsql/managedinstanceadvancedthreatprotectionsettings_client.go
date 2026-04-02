@@ -28,7 +28,7 @@ type ManagedInstanceAdvancedThreatProtectionSettingsClient struct {
 // NewManagedInstanceAdvancedThreatProtectionSettingsClient creates a new instance of ManagedInstanceAdvancedThreatProtectionSettingsClient with the specified values.
 //   - subscriptionID - The subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedInstanceAdvancedThreatProtectionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstanceAdvancedThreatProtectionSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewManagedInstanceAdvancedThreatProtectionSettingsClient(subscriptionID str
 // BeginCreateOrUpdate - Creates or updates Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -72,7 +72,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) BeginCreate
 // CreateOrUpdate - Creates or updates Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters ManagedInstanceAdvancedThreatProtection, options *ManagedInstanceAdvancedThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceAdvancedThreatProtectionSettingsClient.BeginCreateOrUpdate"
@@ -118,7 +118,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,7 +130,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 // Get - Get a managed instance's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -183,7 +183,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) getCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) getHandleRe
 
 // NewListByInstancePager - Get the managed instance's Advanced Threat Protection settings.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -249,7 +249,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) listByInsta
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,7 +27,7 @@ type ExtendedDatabaseBlobAuditingPoliciesClient struct {
 // NewExtendedDatabaseBlobAuditingPoliciesClient creates a new instance of ExtendedDatabaseBlobAuditingPoliciesClient with the specified values.
 //   - subscriptionID - The subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExtendedDatabaseBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtendedDatabaseBlobAuditingPoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewExtendedDatabaseBlobAuditingPoliciesClient(subscriptionID string, creden
 // CreateOrUpdate - Creates or updates an extended database's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -98,7 +98,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -119,7 +119,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateHandleRe
 // Get - Gets an extended database's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -173,7 +173,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,7 +190,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getHandleResponse(resp
 
 // NewListByDatabasePager - Lists extended auditing settings of a database.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -244,7 +244,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

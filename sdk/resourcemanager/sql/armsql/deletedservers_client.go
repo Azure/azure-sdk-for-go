@@ -27,7 +27,7 @@ type DeletedServersClient struct {
 // NewDeletedServersClient creates a new instance of DeletedServersClient with the specified values.
 //   - subscriptionID - The subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeletedServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedServersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDeletedServersClient(subscriptionID string, credential azcore.TokenCrede
 // Get - Gets a deleted server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - deletedServerName - The name of the deleted server.
 //   - options - DeletedServersClientGetOptions contains the optional parameters for the DeletedServersClient.Get method.
@@ -89,7 +89,7 @@ func (client *DeletedServersClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +106,7 @@ func (client *DeletedServersClient) getHandleResponse(resp *http.Response) (Dele
 
 // NewListPager - Gets a list of all deleted servers in a subscription.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - options - DeletedServersClientListOptions contains the optional parameters for the DeletedServersClient.NewListPager method.
 func (client *DeletedServersClient) NewListPager(options *DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeletedServersClientListResponse]{
@@ -143,7 +143,7 @@ func (client *DeletedServersClient) listCreateRequest(ctx context.Context, _ *De
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -160,7 +160,7 @@ func (client *DeletedServersClient) listHandleResponse(resp *http.Response) (Del
 
 // NewListByLocationPager - Gets a list of deleted servers for a location.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - options - DeletedServersClientListByLocationOptions contains the optional parameters for the DeletedServersClient.NewListByLocationPager
 //     method.
@@ -203,7 +203,7 @@ func (client *DeletedServersClient) listByLocationCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *DeletedServersClient) listByLocationHandleResponse(resp *http.Resp
 // BeginRecover - Recovers a deleted server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - deletedServerName - The name of the deleted server.
 //   - options - DeletedServersClientBeginRecoverOptions contains the optional parameters for the DeletedServersClient.BeginRecover
@@ -246,7 +246,7 @@ func (client *DeletedServersClient) BeginRecover(ctx context.Context, locationNa
 // Recover - Recovers a deleted server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 func (client *DeletedServersClient) recoverOperation(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersClientBeginRecoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeletedServersClient.BeginRecover"
@@ -288,7 +288,7 @@ func (client *DeletedServersClient) recoverCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

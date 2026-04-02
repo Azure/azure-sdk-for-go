@@ -27,7 +27,7 @@ type DatabaseEncryptionProtectorsClient struct {
 // NewDatabaseEncryptionProtectorsClient creates a new instance of DatabaseEncryptionProtectorsClient with the specified values.
 //   - subscriptionID - The subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseEncryptionProtectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseEncryptionProtectorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDatabaseEncryptionProtectorsClient(subscriptionID string, credential azc
 // BeginRevalidate - Revalidates an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -72,7 +72,7 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevalidate(ctx context.Co
 // Revalidate - Revalidates an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2025-02-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevalidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevalidate"
@@ -122,15 +122,16 @@ func (client *DatabaseEncryptionProtectorsClient) revalidateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRevert - Reverts an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -159,7 +160,7 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevert(ctx context.Contex
 // Revert - Reverts an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2025-02-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevertOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevert"
@@ -209,7 +210,8 @@ func (client *DatabaseEncryptionProtectorsClient) revertCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

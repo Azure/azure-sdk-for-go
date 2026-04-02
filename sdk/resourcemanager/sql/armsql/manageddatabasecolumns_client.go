@@ -27,7 +27,7 @@ type ManagedDatabaseColumnsClient struct {
 // NewManagedDatabaseColumnsClient creates a new instance of ManagedDatabaseColumnsClient with the specified values.
 //   - subscriptionID - The subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedDatabaseColumnsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseColumnsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewManagedDatabaseColumnsClient(subscriptionID string, credential azcore.To
 // Get - Get managed database column
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -111,7 +111,7 @@ func (client *ManagedDatabaseColumnsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -128,7 +128,7 @@ func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Respons
 
 // NewListByDatabasePager - List managed database columns
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -185,7 +185,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx cont
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	if options != nil && options.Column != nil {
 		for _, qv := range options.Column {
 			reqQP.Add("column", qv)
@@ -222,7 +222,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *h
 
 // NewListByTablePager - List managed database columns
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -289,7 +289,7 @@ func (client *ManagedDatabaseColumnsClient) listByTableCreateRequest(ctx context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

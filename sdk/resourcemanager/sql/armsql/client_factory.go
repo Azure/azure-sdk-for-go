@@ -281,22 +281,6 @@ func (c *ClientFactory) NewDistributedAvailabilityGroupsClient() *DistributedAva
 	}
 }
 
-// NewElasticPoolActivitiesClient creates a new instance of ElasticPoolActivitiesClient.
-func (c *ClientFactory) NewElasticPoolActivitiesClient() *ElasticPoolActivitiesClient {
-	return &ElasticPoolActivitiesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticPoolDatabaseActivitiesClient creates a new instance of ElasticPoolDatabaseActivitiesClient.
-func (c *ClientFactory) NewElasticPoolDatabaseActivitiesClient() *ElasticPoolDatabaseActivitiesClient {
-	return &ElasticPoolDatabaseActivitiesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewElasticPoolOperationsClient creates a new instance of ElasticPoolOperationsClient.
 func (c *ClientFactory) NewElasticPoolOperationsClient() *ElasticPoolOperationsClient {
 	return &ElasticPoolOperationsClient{
@@ -380,6 +364,14 @@ func (c *ClientFactory) NewIPv6FirewallRulesClient() *IPv6FirewallRulesClient {
 // NewInstanceFailoverGroupsClient creates a new instance of InstanceFailoverGroupsClient.
 func (c *ClientFactory) NewInstanceFailoverGroupsClient() *InstanceFailoverGroupsClient {
 	return &InstanceFailoverGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewInstancePoolOperationsClient creates a new instance of InstancePoolOperationsClient.
+func (c *ClientFactory) NewInstancePoolOperationsClient() *InstancePoolOperationsClient {
+	return &InstancePoolOperationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -793,6 +785,14 @@ func (c *ClientFactory) NewManagedServerSecurityAlertPoliciesClient() *ManagedSe
 	}
 }
 
+// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
+	return &NetworkSecurityPerimeterConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -936,14 +936,6 @@ func (c *ClientFactory) NewServerBlobAuditingPoliciesClient() *ServerBlobAuditin
 	}
 }
 
-// NewServerCommunicationLinksClient creates a new instance of ServerCommunicationLinksClient.
-func (c *ClientFactory) NewServerCommunicationLinksClient() *ServerCommunicationLinksClient {
-	return &ServerCommunicationLinksClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewServerConfigurationOptionsClient creates a new instance of ServerConfigurationOptionsClient.
 func (c *ClientFactory) NewServerConfigurationOptionsClient() *ServerConfigurationOptionsClient {
 	return &ServerConfigurationOptionsClient{
@@ -1035,14 +1027,6 @@ func (c *ClientFactory) NewServerVulnerabilityAssessmentsClient() *ServerVulnera
 // NewServersClient creates a new instance of ServersClient.
 func (c *ClientFactory) NewServersClient() *ServersClient {
 	return &ServersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewServiceObjectivesClient creates a new instance of ServiceObjectivesClient.
-func (c *ClientFactory) NewServiceObjectivesClient() *ServiceObjectivesClient {
-	return &ServiceObjectivesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

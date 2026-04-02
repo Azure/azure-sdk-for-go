@@ -1,5 +1,34 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-04-02)
+### Breaking Changes
+
+- Function `*ApplicationsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, applicationName string, parameters ApplicationPatchable, options *ApplicationsClientBeginUpdateOptions)`
+- Function `*ApplicationsClient.BeginUpdateByID` parameter(s) have been changed from `(ctx context.Context, applicationID string, options *ApplicationsClientBeginUpdateByIDOptions)` to `(ctx context.Context, applicationID string, parameters ApplicationPatchable, options *ApplicationsClientBeginUpdateByIDOptions)`
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `GenericResource` has been removed
+- Struct `Resource` has been removed
+- Field `Parameters` of struct `ApplicationsClientBeginUpdateByIDOptions` has been removed
+- Field `Parameters` of struct `ApplicationsClientBeginUpdateOptions` has been removed
+- Field `ApplicationPatchable` of struct `ApplicationsClientUpdateByIDResponse` has been removed
+- Field `ApplicationPatchable` of struct `ApplicationsClientUpdateResponse` has been removed
+
+### Features Added
+
+- New function `*ApplicationClient.NewApplicationDefinitionsClient() *ApplicationDefinitionsClient`
+- New function `*ApplicationClient.NewApplicationsClient() *ApplicationsClient`
+- New function `*ApplicationClient.NewJitRequestsClient() *JitRequestsClient`
+- New function `*ApplicationClient.PortalRegistryPackage(ctx context.Context, parameters RegistryPackagePlan, options *ApplicationClientPortalRegistryPackageOptions) (ApplicationClientPortalRegistryPackageResponse, error)`
+- New struct `RegistryPackage`
+- New struct `RegistryPackageLinks`
+- New struct `RegistryPackagePlan`
+- New field `RetryAfter` in struct `ApplicationDefinitionsClientCreateOrUpdateByIDResponse`
+- New anonymous field `Application` in struct `ApplicationsClientUpdateByIDResponse`
+- New anonymous field `Application` in struct `ApplicationsClientUpdateResponse`
+
+
 ## 2.1.0 (2023-11-24)
 ### Features Added
 

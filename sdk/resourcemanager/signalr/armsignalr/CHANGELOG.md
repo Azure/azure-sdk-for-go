@@ -1,5 +1,36 @@
 # Release History
 
+## 1.3.0-beta.2 (2026-03-19)
+### Features Added
+
+- New enum type `ClientConnectionCountRuleDiscriminator` with values `ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule`, `ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule`, `ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule`
+- New enum type `ClientTrafficControlRuleDiscriminator` with values `ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule`, `ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule`, `ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule`
+- New function `*ClientConnectionCountRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
+- New function `*ClientFactory.NewReplicaSharedPrivateLinkResourcesClient() *ReplicaSharedPrivateLinkResourcesClient`
+- New function `*ClientTrafficControlRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
+- New function `NewReplicaSharedPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicaSharedPrivateLinkResourcesClient, error)`
+- New function `*ReplicaSharedPrivateLinkResourcesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, sharedPrivateLinkResourceName string, parameters SharedPrivateLinkResource, options *ReplicaSharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ReplicaSharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)`
+- New function `*ReplicaSharedPrivateLinkResourcesClient.Get(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, sharedPrivateLinkResourceName string, options *ReplicaSharedPrivateLinkResourcesClientGetOptions) (ReplicaSharedPrivateLinkResourcesClientGetResponse, error)`
+- New function `*ReplicaSharedPrivateLinkResourcesClient.NewListPager(resourceGroupName string, resourceName string, replicaName string, options *ReplicaSharedPrivateLinkResourcesClientListOptions) *runtime.Pager[ReplicaSharedPrivateLinkResourcesClientListResponse]`
+- New function `*ThrottleByJwtCustomClaimRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
+- New function `*ThrottleByJwtSignatureRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
+- New function `*ThrottleByUserIDRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
+- New function `*TrafficThrottleByJwtCustomClaimRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
+- New function `*TrafficThrottleByJwtSignatureRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
+- New function `*TrafficThrottleByUserIDRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
+- New struct `ApplicationFirewallSettings`
+- New struct `RouteSettings`
+- New struct `ThrottleByJwtCustomClaimRule`
+- New struct `ThrottleByJwtSignatureRule`
+- New struct `ThrottleByUserIDRule`
+- New struct `TrafficThrottleByJwtCustomClaimRule`
+- New struct `TrafficThrottleByJwtSignatureRule`
+- New struct `TrafficThrottleByUserIDRule`
+- New field `ApplicationFirewall`, `RouteSettings` in struct `Properties`
+- New field `KeepAliveIntervalInSeconds` in struct `ServerlessSettings`
+- New field `Fqdns` in struct `SharedPrivateLinkResourceProperties`
+
+
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 

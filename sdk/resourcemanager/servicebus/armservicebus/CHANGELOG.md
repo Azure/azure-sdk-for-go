@@ -1,5 +1,61 @@
 # Release History
 
+## 2.0.0-beta.4 (2026-03-19)
+### Breaking Changes
+
+- Type of `DisasterRecoveryConfigsClientFailOverOptions.Parameters` has been changed from `*FailoverProperties` to `*NamespaceFailoverProperties`
+- Operation `*NamespacesClient.Update` has been changed to LRO, use `*NamespacesClient.BeginUpdate` instead.
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ErrorResponseError` has been removed
+- Struct `FailoverProperties` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceNamespacePatch` has been removed
+- Struct `SQLRuleAction` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New value `TLSVersion13` added to enum type `TLSVersion`
+- New enum type `GeoDRRoleType` with values `GeoDRRoleTypePrimary`, `GeoDRRoleTypeSecondary`
+- New enum type `Mode` with values `ModeDisabled`, `ModeEnabled`
+- New enum type `NetworkSecurityPerimeterConfigurationProvisioningState` with values `NetworkSecurityPerimeterConfigurationProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigurationProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigurationProvisioningStateCreating`, `NetworkSecurityPerimeterConfigurationProvisioningStateDeleted`, `NetworkSecurityPerimeterConfigurationProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigurationProvisioningStateFailed`, `NetworkSecurityPerimeterConfigurationProvisioningStateInvalidResponse`, `NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigurationProvisioningStateSucceededWithIssues`, `NetworkSecurityPerimeterConfigurationProvisioningStateUnknown`, `NetworkSecurityPerimeterConfigurationProvisioningStateUpdating`
+- New enum type `NspAccessRuleDirection` with values `NspAccessRuleDirectionInbound`, `NspAccessRuleDirectionOutbound`
+- New enum type `ResourceAssociationAccessMode` with values `ResourceAssociationAccessModeAuditMode`, `ResourceAssociationAccessModeEnforcedMode`, `ResourceAssociationAccessModeLearningMode`, `ResourceAssociationAccessModeNoAssociationMode`, `ResourceAssociationAccessModeUnspecifiedMode`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationClient() *NetworkSecurityPerimeterConfigurationClient`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*NamespacesClient.BeginFailover(ctx context.Context, resourceGroupName string, namespaceName string, parameters FailOver, options *NamespacesClientBeginFailoverOptions) (*runtime.Poller[NamespacesClientFailoverResponse], error)`
+- New function `NewNetworkSecurityPerimeterConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationClient.NewListPager(resourceGroupName string, namespaceName string, options *NetworkSecurityPerimeterConfigurationClientListOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationClientListResponse]`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.GetResourceAssociationName(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameOptions) (NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.Reconcile(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientReconcileOptions) (NetworkSecurityPerimeterConfigurationsClientReconcileResponse, error)`
+- New struct `ConfidentialCompute`
+- New struct `FailOver`
+- New struct `FailOverProperties`
+- New struct `GeoDataReplicationProperties`
+- New struct `NamespaceFailoverProperties`
+- New struct `NamespaceReplicaLocation`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationList`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityPerimeterConfigurationPropertiesProfile`
+- New struct `NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation`
+- New struct `NspAccessRule`
+- New struct `NspAccessRuleProperties`
+- New struct `NspAccessRulePropertiesSubscriptionsItem`
+- New struct `PlatformCapabilities`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New field `GeoDataReplication`, `PlatformCapabilities` in struct `SBNamespaceProperties`
+- New field `SystemData` in struct `SBNamespaceUpdateParameters`
+- New field `UserMetadata` in struct `SBQueueProperties`
+- New field `UserMetadata` in struct `SBSubscriptionProperties`
+- New field `UserMetadata` in struct `SBTopicProperties`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

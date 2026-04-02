@@ -5,6 +5,7 @@ package armbotservice_test
 
 import (
 	"context"
+	"crypto/sha1"
 	"fmt"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
@@ -28,6 +29,8 @@ type BotserviceTestSuite struct {
 	botServiceId      string
 	connectionName    string
 	resourceName      string
+	msaAppID          string
+	azureTenantID     string
 	location          string
 	resourceGroupName string
 	subscriptionId    string
@@ -41,6 +44,9 @@ func (testsuite *BotserviceTestSuite) SetupSuite() {
 	testsuite.armEndpoint = "https://management.azure.com"
 	testsuite.connectionName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "connecti", 14, false)
 	testsuite.resourceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "resource", 14, false)
+	h := sha1.Sum([]byte(testsuite.resourceName))
+	testsuite.msaAppID = fmt.Sprintf("%x-%x-%x-%x-%x", h[0:4], h[4:6], h[6:8], h[8:10], h[10:16])
+	testsuite.azureTenantID = recording.GetEnvVariable("AZURE_TENANT_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -87,10 +93,12 @@ func (testsuite *BotserviceTestSuite) Prepare() {
 			"tag2": to.Ptr("value2"),
 		},
 		Properties: &armbotservice.BotProperties{
-			Description: to.Ptr("The description of the bot"),
-			DisplayName: to.Ptr("The Name of the bot"),
-			Endpoint:    to.Ptr("https://bing.com/messages/"),
-			MsaAppID:    to.Ptr("00000000-0000-0000-0000-000000000001"),
+			Description:    to.Ptr("The description of the bot"),
+			DisplayName:    to.Ptr("The Name of the bot"),
+			Endpoint:       to.Ptr("https://bing.com/messages/"),
+			MsaAppID:       to.Ptr(testsuite.msaAppID),
+			MsaAppType:     to.Ptr(armbotservice.MsaAppTypeSingleTenant),
+			MsaAppTenantID: to.Ptr(testsuite.azureTenantID),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

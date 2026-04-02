@@ -6,6 +6,7 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
@@ -21,6 +22,10 @@ type ApplicationServer struct {
 	// NewListOperationsPager is the fake for method ApplicationClient.NewListOperationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOperationsPager func(options *armmanagedapplications.ApplicationClientListOperationsOptions) (resp azfake.PagerResponder[armmanagedapplications.ApplicationClientListOperationsResponse])
+
+	// PortalRegistryPackage is the fake for method ApplicationClient.PortalRegistryPackage
+	// HTTP status codes to indicate success: http.StatusOK
+	PortalRegistryPackage func(ctx context.Context, parameters armmanagedapplications.RegistryPackagePlan, options *armmanagedapplications.ApplicationClientPortalRegistryPackageOptions) (resp azfake.Responder[armmanagedapplications.ApplicationClientPortalRegistryPackageResponse], errResp azfake.ErrorResponder)
 }
 
 // NewApplicationServerTransport creates a new instance of ApplicationServerTransport with the provided implementation.
@@ -48,21 +53,42 @@ func (a *ApplicationServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ApplicationClient.NewListOperationsPager":
-		resp, err = a.dispatchNewListOperationsPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *ApplicationServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if applicationServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = applicationServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ApplicationClient.NewListOperationsPager":
+				res.resp, res.err = a.dispatchNewListOperationsPager(req)
+			case "ApplicationClient.PortalRegistryPackage":
+				res.resp, res.err = a.dispatchPortalRegistryPackage(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *ApplicationServerTransport) dispatchNewListOperationsPager(req *http.Request) (*http.Response, error) {
@@ -90,4 +116,33 @@ func (a *ApplicationServerTransport) dispatchNewListOperationsPager(req *http.Re
 		a.newListOperationsPager.remove(req)
 	}
 	return resp, nil
+}
+
+func (a *ApplicationServerTransport) dispatchPortalRegistryPackage(req *http.Request) (*http.Response, error) {
+	if a.srv.PortalRegistryPackage == nil {
+		return nil, &nonRetriableError{errors.New("fake for method PortalRegistryPackage not implemented")}
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.RegistryPackagePlan](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.PortalRegistryPackage(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryPackage, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ApplicationServerTransport
+var applicationServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

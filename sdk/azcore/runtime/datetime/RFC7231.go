@@ -8,12 +8,13 @@ import (
 	"time"
 )
 
-// used to convert times from UTC to GMT before sending across the wire
+// used to format timestamps with a fixed GMT zone name before sending across the wire
 var gmt = time.FixedZone("GMT", 0)
 
 // RFC7231 represents a date and time value in RFC 1123 format as defined in
 // https://tools.ietf.org/html/rfc1123.
-// The timezone is set to GMT as required by RFC 7231.
+// The timezone is set to GMT as required by RFC 7231 HTTP-date / IMF-fixdate:
+// https://datatracker.ietf.org/doc/html/rfc7231#section-7.1.1.1.
 type RFC7231 time.Time
 
 // MarshalJSON marshals the RFC7231 timestamp to a JSON byte slice.

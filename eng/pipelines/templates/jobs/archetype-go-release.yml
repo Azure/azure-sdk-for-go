@@ -145,8 +145,8 @@ stages:
                     -BuildId $(Build.BuildId) `
                     -RepoName '$(Build.Repository.Name)' `
                     -MarkPackageAsShipped $true
-              pwsh: true
-              workingDirectory: $(Pipeline.Workspace)
+                pwsh: true
+                workingDirectory: $(Pipeline.Workspace)
               displayName: Create API review for Go
               condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
           - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml

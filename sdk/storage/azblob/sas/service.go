@@ -57,20 +57,19 @@ func formatSignedRequestHeaders(headers map[string]string) (names string, canoni
 	if len(headers) == 0 {
 		return "", ""
 	}
+
 	keys := make([]string, 0, len(headers))
-	for name := range headers {
-		keys = append(keys, name)
-	}
-	names = strings.Join(keys, ",")
 	var sb strings.Builder
-	for _, key := range keys {
+
+	for key, value := range headers {
+		keys = append(keys, key)
 		sb.WriteString(key)
 		sb.WriteByte(':')
-		sb.WriteString(headers[key])
+		sb.WriteString(value)
 		sb.WriteByte('\n')
 	}
-	canonicalized = sb.String()
-	return
+
+	return strings.Join(keys, ","), sb.String()
 }
 
 // formatSignedRequestQueryParameters builds both the comma-separated query parameter names for the srq query parameter
@@ -80,20 +79,19 @@ func formatSignedRequestQueryParameters(params map[string]string) (names string,
 	if len(params) == 0 {
 		return "", ""
 	}
+
 	keys := make([]string, 0, len(params))
-	for name := range params {
-		keys = append(keys, name)
-	}
-	names = strings.Join(keys, ",")
 	var sb strings.Builder
-	for _, key := range keys {
+
+	for key, value := range params {
+		keys = append(keys, key)
 		sb.WriteByte('\n')
 		sb.WriteString(key)
 		sb.WriteByte(':')
-		sb.WriteString(params[key])
+		sb.WriteString(value)
 	}
-	canonicalized = sb.String()
-	return
+
+	return strings.Join(keys, ","), sb.String()
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.

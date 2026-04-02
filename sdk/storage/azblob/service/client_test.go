@@ -2008,12 +2008,14 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQ
 	_require.NoError(err)
 
 	requestHeaders := map[string]string{
-		"foo":     "bar",
-		"company": "msft",
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
 	}
 	requestQueryParameters := map[string]string{
 		"hello": "world",
 		"abra":  "cadabra",
+		"day":   "monday,tuesday",
 	}
 
 	// Create SAS with signed request headers and query parameters
@@ -2081,12 +2083,14 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQ
 	_require.NoError(err)
 
 	requestHeaders := map[string]string{
-		"foo":     "bar",
-		"company": "msft",
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
 	}
 	requestQueryParameters := map[string]string{
 		"hello": "world",
 		"abra":  "cadabra",
+		"day":   "monday,tuesday",
 	}
 
 	// Create SAS with signed request headers and query parameters
@@ -2146,12 +2150,14 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQ
 	_require.NoError(err)
 
 	requestHeaders := map[string]string{
-		"foo":     "bar",
-		"company": "msft",
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
 	}
 	requestQueryParameters := map[string]string{
 		"hello": "world",
 		"abra":  "cadabra",
+		"day":   "monday,tuesday",
 	}
 
 	// Create SAS with signed request headers and query parameters

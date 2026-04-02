@@ -6,14 +6,17 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
@@ -929,4 +932,236 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauthWithCustomAudienc
 	_require.NotNil(fs)
 	_require.NoError(err)
 
+}
+
+// customRequestHeadersAndQueryParametersPolicy injects additional headers and query parameters into each request.
+type customRequestHeadersAndQueryParametersPolicy struct {
+	headers     map[string]string
+	queryParams map[string]string
+}
+
+func (p *customRequestHeadersAndQueryParametersPolicy) Do(req *policy.Request) (*http.Response, error) {
+	rawReq := req.Raw()
+	for k, v := range p.headers {
+		rawReq.Header.Set(k, v)
+	}
+	q := rawReq.URL.Query()
+	for k, v := range p.queryParams {
+		q.Set(k, v)
+	}
+	rawReq.URL.RawQuery = q.Encode()
+	return req.Next()
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestFileSystemIdentitySASRequestHeadersAndQueryParameters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, fsClient)
+	_ = fileClient
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.FileSystemPermissions{Read: true}).String(),
+		FileSystemName:               fsName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build SAS file URL
+	parts, err := sas.ParseURL(fileClient.DFSURL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	fileURLWithSAS := parts.String()
+
+	// Create file client with per-call policy that injects headers and query params
+	fileClientSAS, err := file.NewClientWithNoCredential(fileURLWithSAS, &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{&customRequestHeadersAndQueryParametersPolicy{
+				headers:     requestHeaders,
+				queryParams: requestQueryParameters,
+			}},
+		},
+	})
+	_require.NoError(err)
+
+	// Act - GetProperties should succeed because the correct headers and query params are sent
+	resp, err := fileClientSAS.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestFileSystemIdentitySASRequestHeadersAndQueryParametersFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, fsClient)
+	_ = fileClient
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.FileSystemPermissions{Read: true}).String(),
+		FileSystemName:               fsName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build SAS file URL
+	parts, err := sas.ParseURL(fileClient.DFSURL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	fileURLWithSAS := parts.String()
+
+	// Deliberately do NOT send the required headers and query parameters
+	fileClientSAS, err := file.NewClientWithNoCredential(fileURLWithSAS, nil)
+	_require.NoError(err)
+
+	// Act - GetProperties should fail with AuthenticationFailed
+	_, err = fileClientSAS.GetProperties(context.Background(), nil)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestFileSystemIdentitySASRequestHeadersAndQueryParametersRoundtrip() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, fsClient)
+	_ = fileClient
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.FileSystemPermissions{Read: true}).String(),
+		FileSystemName:               fsName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build original SAS URL
+	parts, err := sas.ParseURL(fileClient.DFSURL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	originalURL := parts.String()
+
+	// Parse the URL again (roundtrip)
+	roundtripParts, err := sas.ParseURL(originalURL)
+	_require.NoError(err)
+	roundtripURL := roundtripParts.String()
+
+	// Verify roundtrip URL matches original
+	_require.Equal(originalURL, roundtripURL)
+	_require.Equal(sasQueryParams.Encode(), roundtripParts.SAS.Encode())
 }

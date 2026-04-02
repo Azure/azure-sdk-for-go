@@ -30,16 +30,18 @@ type DatalakeSignatureValues struct {
 	FilePath string
 	// Not nil for a directory SAS (ie sr=d)
 	// Use "" to create a FileSystem SAS
-	DirectoryPath        string
-	CacheControl         string // rscc
-	ContentDisposition   string // rscd
-	ContentEncoding      string // rsce
-	ContentLanguage      string // rscl
-	ContentType          string // rsct
-	AuthorizedObjectID   string // saoid
-	UnauthorizedObjectID string // suoid
-	CorrelationID        string // scid
-	EncryptionScope      string `param:"ses"`
+	DirectoryPath                string
+	CacheControl                 string // rscc
+	ContentDisposition           string // rscd
+	ContentEncoding              string // rsce
+	ContentLanguage              string // rscl
+	ContentType                  string // rsct
+	AuthorizedObjectID           string // saoid
+	UnauthorizedObjectID         string // suoid
+	CorrelationID                string // scid
+	EncryptionScope              string `param:"ses"`
+	SignedRequestHeaders         map[string]string
+	SignedRequestQueryParameters map[string]string
 }
 
 // TODO: add snapshot and versioning support in the future
@@ -49,6 +51,50 @@ func getDirectoryDepth(path string) string {
 		return ""
 	}
 	return fmt.Sprint(strings.Count(path, "/") + 1)
+}
+
+// formatSignedRequestHeaders builds both the comma-separated header names for the srh query parameter
+// and the canonicalized string for the stringToSign from a map of header name to header value.
+// Canonicalized format: headerName_1:headerValue_1\nheaderName_2:headerValue_2\n (trailing \n on each pair)
+func formatSignedRequestHeaders(headers map[string]string) (names string, canonicalized string) {
+	if len(headers) == 0 {
+		return "", ""
+	}
+
+	keys := make([]string, 0, len(headers))
+	var sb strings.Builder
+
+	for key, value := range headers {
+		keys = append(keys, key)
+		sb.WriteString(key)
+		sb.WriteByte(':')
+		sb.WriteString(value)
+		sb.WriteByte('\n')
+	}
+
+	return strings.Join(keys, ","), sb.String()
+}
+
+// formatSignedRequestQueryParameters builds both the comma-separated query parameter names for the srq query parameter
+// and the canonicalized string for the stringToSign from a map of query parameter name to value.
+// Canonicalized format: \nqueryParam_1:queryParamValue_1\nqueryParam_2:queryParamValue_2 (prefix \n on each pair)
+func formatSignedRequestQueryParameters(params map[string]string) (names string, canonicalized string) {
+	if len(params) == 0 {
+		return "", ""
+	}
+
+	keys := make([]string, 0, len(params))
+	var sb strings.Builder
+
+	for key, value := range params {
+		keys = append(keys, key)
+		sb.WriteByte('\n')
+		sb.WriteString(key)
+		sb.WriteByte(':')
+		sb.WriteString(value)
+	}
+
+	return strings.Join(keys, ","), sb.String()
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
@@ -178,6 +224,9 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 
 	udkStart, udkExpiry := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry)
 
+	srhNames, srhCanonicalized := formatSignedRequestHeaders(v.SignedRequestHeaders)
+	srqNames, srqCanonicalized := formatSignedRequestQueryParameters(v.SignedRequestQueryParameters)
+
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
@@ -200,6 +249,8 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		resource,
 		"", // snapshot not supported
 		v.EncryptionScope,
+		srhCanonicalized,
+		srqCanonicalized,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -223,17 +274,19 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		encryptionScope: v.EncryptionScope,
 
 		// Container/Blob-specific SAS parameters
-		resource:             resource,
-		identifier:           v.Identifier,
-		cacheControl:         v.CacheControl,
-		contentDisposition:   v.ContentDisposition,
-		contentEncoding:      v.ContentEncoding,
-		contentLanguage:      v.ContentLanguage,
-		contentType:          v.ContentType,
-		signedDirectoryDepth: getDirectoryDepth(v.DirectoryPath),
-		authorizedObjectID:   v.AuthorizedObjectID,
-		unauthorizedObjectID: v.UnauthorizedObjectID,
-		correlationID:        v.CorrelationID,
+		resource:                     resource,
+		identifier:                   v.Identifier,
+		cacheControl:                 v.CacheControl,
+		contentDisposition:           v.ContentDisposition,
+		contentEncoding:              v.ContentEncoding,
+		contentLanguage:              v.ContentLanguage,
+		contentType:                  v.ContentType,
+		signedDirectoryDepth:         getDirectoryDepth(v.DirectoryPath),
+		authorizedObjectID:           v.AuthorizedObjectID,
+		unauthorizedObjectID:         v.UnauthorizedObjectID,
+		correlationID:                v.CorrelationID,
+		signedRequestHeaders:         srhNames,
+		signedRequestQueryParameters: srqNames,
 		// Calculated SAS signature
 		signature: signature,
 	}

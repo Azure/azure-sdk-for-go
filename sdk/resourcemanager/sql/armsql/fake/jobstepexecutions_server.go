@@ -221,12 +221,12 @@ func (j *JobStepExecutionsServerTransport) dispatchNewListByJobExecutionPager(re
 		if err != nil {
 			return nil, err
 		}
-		skipParam, err := parseOptional(skipUnescaped, func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
 			if parseErr != nil {
 				return 0, parseErr
 			}
-			return int32(p), nil
+			return p, nil
 		})
 		if err != nil {
 			return nil, err
@@ -235,12 +235,12 @@ func (j *JobStepExecutionsServerTransport) dispatchNewListByJobExecutionPager(re
 		if err != nil {
 			return nil, err
 		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
 			if parseErr != nil {
 				return 0, parseErr
 			}
-			return int32(p), nil
+			return p, nil
 		})
 		if err != nil {
 			return nil, err

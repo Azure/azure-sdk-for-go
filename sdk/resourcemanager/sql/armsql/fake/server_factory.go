@@ -109,12 +109,6 @@ type ServerFactory struct {
 	// DistributedAvailabilityGroupsServer contains the fakes for client DistributedAvailabilityGroupsClient
 	DistributedAvailabilityGroupsServer DistributedAvailabilityGroupsServer
 
-	// ElasticPoolActivitiesServer contains the fakes for client ElasticPoolActivitiesClient
-	ElasticPoolActivitiesServer ElasticPoolActivitiesServer
-
-	// ElasticPoolDatabaseActivitiesServer contains the fakes for client ElasticPoolDatabaseActivitiesClient
-	ElasticPoolDatabaseActivitiesServer ElasticPoolDatabaseActivitiesServer
-
 	// ElasticPoolOperationsServer contains the fakes for client ElasticPoolOperationsClient
 	ElasticPoolOperationsServer ElasticPoolOperationsServer
 
@@ -147,6 +141,9 @@ type ServerFactory struct {
 
 	// InstanceFailoverGroupsServer contains the fakes for client InstanceFailoverGroupsClient
 	InstanceFailoverGroupsServer InstanceFailoverGroupsServer
+
+	// InstancePoolOperationsServer contains the fakes for client InstancePoolOperationsClient
+	InstancePoolOperationsServer InstancePoolOperationsServer
 
 	// InstancePoolsServer contains the fakes for client InstancePoolsClient
 	InstancePoolsServer InstancePoolsServer
@@ -301,6 +298,9 @@ type ServerFactory struct {
 	// ManagedServerSecurityAlertPoliciesServer contains the fakes for client ManagedServerSecurityAlertPoliciesClient
 	ManagedServerSecurityAlertPoliciesServer ManagedServerSecurityAlertPoliciesServer
 
+	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -355,9 +355,6 @@ type ServerFactory struct {
 	// ServerBlobAuditingPoliciesServer contains the fakes for client ServerBlobAuditingPoliciesClient
 	ServerBlobAuditingPoliciesServer ServerBlobAuditingPoliciesServer
 
-	// ServerCommunicationLinksServer contains the fakes for client ServerCommunicationLinksClient
-	ServerCommunicationLinksServer ServerCommunicationLinksServer
-
 	// ServerConfigurationOptionsServer contains the fakes for client ServerConfigurationOptionsClient
 	ServerConfigurationOptionsServer ServerConfigurationOptionsServer
 
@@ -393,9 +390,6 @@ type ServerFactory struct {
 
 	// ServersServer contains the fakes for client ServersClient
 	ServersServer ServersServer
-
-	// ServiceObjectivesServer contains the fakes for client ServiceObjectivesClient
-	ServiceObjectivesServer ServiceObjectivesServer
 
 	// StartStopManagedInstanceSchedulesServer contains the fakes for client StartStopManagedInstanceSchedulesClient
 	StartStopManagedInstanceSchedulesServer StartStopManagedInstanceSchedulesServer
@@ -512,8 +506,6 @@ type ServerFactoryTransport struct {
 	trDatabasesServer                                                        *DatabasesServerTransport
 	trDeletedServersServer                                                   *DeletedServersServerTransport
 	trDistributedAvailabilityGroupsServer                                    *DistributedAvailabilityGroupsServerTransport
-	trElasticPoolActivitiesServer                                            *ElasticPoolActivitiesServerTransport
-	trElasticPoolDatabaseActivitiesServer                                    *ElasticPoolDatabaseActivitiesServerTransport
 	trElasticPoolOperationsServer                                            *ElasticPoolOperationsServerTransport
 	trElasticPoolsServer                                                     *ElasticPoolsServerTransport
 	trEncryptionProtectorsServer                                             *EncryptionProtectorsServerTransport
@@ -525,6 +517,7 @@ type ServerFactoryTransport struct {
 	trGeoBackupPoliciesServer                                                *GeoBackupPoliciesServerTransport
 	trIPv6FirewallRulesServer                                                *IPv6FirewallRulesServerTransport
 	trInstanceFailoverGroupsServer                                           *InstanceFailoverGroupsServerTransport
+	trInstancePoolOperationsServer                                           *InstancePoolOperationsServerTransport
 	trInstancePoolsServer                                                    *InstancePoolsServerTransport
 	trJobAgentsServer                                                        *JobAgentsServerTransport
 	trJobCredentialsServer                                                   *JobCredentialsServerTransport
@@ -576,6 +569,7 @@ type ServerFactoryTransport struct {
 	trManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServer *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerTransport
 	trManagedServerDNSAliasesServer                                          *ManagedServerDNSAliasesServerTransport
 	trManagedServerSecurityAlertPoliciesServer                               *ManagedServerSecurityAlertPoliciesServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer                           *NetworkSecurityPerimeterConfigurationsServerTransport
 	trOperationsServer                                                       *OperationsServerTransport
 	trOutboundFirewallRulesServer                                            *OutboundFirewallRulesServerTransport
 	trPrivateEndpointConnectionsServer                                       *PrivateEndpointConnectionsServerTransport
@@ -594,7 +588,6 @@ type ServerFactoryTransport struct {
 	trServerAzureADAdministratorsServer                                      *ServerAzureADAdministratorsServerTransport
 	trServerAzureADOnlyAuthenticationsServer                                 *ServerAzureADOnlyAuthenticationsServerTransport
 	trServerBlobAuditingPoliciesServer                                       *ServerBlobAuditingPoliciesServerTransport
-	trServerCommunicationLinksServer                                         *ServerCommunicationLinksServerTransport
 	trServerConfigurationOptionsServer                                       *ServerConfigurationOptionsServerTransport
 	trServerConnectionPoliciesServer                                         *ServerConnectionPoliciesServerTransport
 	trServerDNSAliasesServer                                                 *ServerDNSAliasesServerTransport
@@ -607,7 +600,6 @@ type ServerFactoryTransport struct {
 	trServerUsagesServer                                                     *ServerUsagesServerTransport
 	trServerVulnerabilityAssessmentsServer                                   *ServerVulnerabilityAssessmentsServerTransport
 	trServersServer                                                          *ServersServerTransport
-	trServiceObjectivesServer                                                *ServiceObjectivesServerTransport
 	trStartStopManagedInstanceSchedulesServer                                *StartStopManagedInstanceSchedulesServerTransport
 	trSubscriptionUsagesServer                                               *SubscriptionUsagesServerTransport
 	trSynapseLinkWorkspacesServer                                            *SynapseLinkWorkspacesServerTransport
@@ -795,16 +787,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDistributedAvailabilityGroupsServerTransport(&s.srv.DistributedAvailabilityGroupsServer)
 		})
 		resp, err = s.trDistributedAvailabilityGroupsServer.Do(req)
-	case "ElasticPoolActivitiesClient":
-		initServer(s, &s.trElasticPoolActivitiesServer, func() *ElasticPoolActivitiesServerTransport {
-			return NewElasticPoolActivitiesServerTransport(&s.srv.ElasticPoolActivitiesServer)
-		})
-		resp, err = s.trElasticPoolActivitiesServer.Do(req)
-	case "ElasticPoolDatabaseActivitiesClient":
-		initServer(s, &s.trElasticPoolDatabaseActivitiesServer, func() *ElasticPoolDatabaseActivitiesServerTransport {
-			return NewElasticPoolDatabaseActivitiesServerTransport(&s.srv.ElasticPoolDatabaseActivitiesServer)
-		})
-		resp, err = s.trElasticPoolDatabaseActivitiesServer.Do(req)
 	case "ElasticPoolOperationsClient":
 		initServer(s, &s.trElasticPoolOperationsServer, func() *ElasticPoolOperationsServerTransport {
 			return NewElasticPoolOperationsServerTransport(&s.srv.ElasticPoolOperationsServer)
@@ -858,6 +840,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewInstanceFailoverGroupsServerTransport(&s.srv.InstanceFailoverGroupsServer)
 		})
 		resp, err = s.trInstanceFailoverGroupsServer.Do(req)
+	case "InstancePoolOperationsClient":
+		initServer(s, &s.trInstancePoolOperationsServer, func() *InstancePoolOperationsServerTransport {
+			return NewInstancePoolOperationsServerTransport(&s.srv.InstancePoolOperationsServer)
+		})
+		resp, err = s.trInstancePoolOperationsServer.Do(req)
 	case "InstancePoolsClient":
 		initServer(s, &s.trInstancePoolsServer, func() *InstancePoolsServerTransport {
 			return NewInstancePoolsServerTransport(&s.srv.InstancePoolsServer)
@@ -1105,6 +1092,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedServerSecurityAlertPoliciesServerTransport(&s.srv.ManagedServerSecurityAlertPoliciesServer)
 		})
 		resp, err = s.trManagedServerSecurityAlertPoliciesServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -1193,11 +1185,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewServerBlobAuditingPoliciesServerTransport(&s.srv.ServerBlobAuditingPoliciesServer)
 		})
 		resp, err = s.trServerBlobAuditingPoliciesServer.Do(req)
-	case "ServerCommunicationLinksClient":
-		initServer(s, &s.trServerCommunicationLinksServer, func() *ServerCommunicationLinksServerTransport {
-			return NewServerCommunicationLinksServerTransport(&s.srv.ServerCommunicationLinksServer)
-		})
-		resp, err = s.trServerCommunicationLinksServer.Do(req)
 	case "ServerConfigurationOptionsClient":
 		initServer(s, &s.trServerConfigurationOptionsServer, func() *ServerConfigurationOptionsServerTransport {
 			return NewServerConfigurationOptionsServerTransport(&s.srv.ServerConfigurationOptionsServer)
@@ -1252,11 +1239,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServersClient":
 		initServer(s, &s.trServersServer, func() *ServersServerTransport { return NewServersServerTransport(&s.srv.ServersServer) })
 		resp, err = s.trServersServer.Do(req)
-	case "ServiceObjectivesClient":
-		initServer(s, &s.trServiceObjectivesServer, func() *ServiceObjectivesServerTransport {
-			return NewServiceObjectivesServerTransport(&s.srv.ServiceObjectivesServer)
-		})
-		resp, err = s.trServiceObjectivesServer.Do(req)
 	case "StartStopManagedInstanceSchedulesClient":
 		initServer(s, &s.trStartStopManagedInstanceSchedulesServer, func() *StartStopManagedInstanceSchedulesServerTransport {
 			return NewStartStopManagedInstanceSchedulesServerTransport(&s.srv.StartStopManagedInstanceSchedulesServer)

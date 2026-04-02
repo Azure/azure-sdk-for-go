@@ -16,62 +16,63 @@ import (
 	"strings"
 )
 
-// ServersClient contains the methods for the Servers group.
-// Don't use this type directly, use NewServersClient() instead.
-type ServersClient struct {
+// PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
+// Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
+type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewServersClient creates a new instance of ServersClient with the specified values.
+// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServersClient, error) {
+func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ServersClient{
+	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Gets information about a server in cluster.
+// Get - Gets a private link resource for cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
-//   - serverName - The name of the server.
-//   - options - ServersClientGetOptions contains the optional parameters for the ServersClient.Get method.
-func (client *ServersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, serverName string, options *ServersClientGetOptions) (ServersClientGetResponse, error) {
+//   - privateLinkResourceName - The name of the private link resource.
+//   - options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
+//     method.
+func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, privateLinkResourceName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error) {
 	var err error
-	const operationName = "ServersClient.Get"
+	const operationName = "PrivateLinkResourcesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, serverName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, privateLinkResourceName, options)
 	if err != nil {
-		return ServersClientGetResponse{}, err
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ServersClientGetResponse{}, err
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ServersClientGetResponse{}, err
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, serverName string, _ *ServersClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/servers/{serverName}"
+func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateLinkResourceName string, _ *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateLinkResources/{privateLinkResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -84,10 +85,10 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
+	if privateLinkResourceName == "" {
+		return nil, errors.New("parameter privateLinkResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	urlPath = strings.ReplaceAll(urlPath, "{privateLinkResourceName}", url.PathEscape(privateLinkResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -100,28 +101,28 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClientGetResponse, error) {
-	result := ServersClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterServer); err != nil {
-		return ServersClientGetResponse{}, err
+func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesClientGetResponse, error) {
+	result := PrivateLinkResourcesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByClusterPager - Lists servers of a cluster.
+// NewListByClusterPager - Gets the private link resources for cluster.
 //
 // Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
-//   - options - ServersClientListByClusterOptions contains the optional parameters for the ServersClient.NewListByClusterPager
+//   - options - PrivateLinkResourcesClientListByClusterOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByClusterPager
 //     method.
-func (client *ServersClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ServersClientListByClusterOptions) *runtime.Pager[ServersClientListByClusterResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ServersClientListByClusterResponse]{
-		More: func(page ServersClientListByClusterResponse) bool {
+func (client *PrivateLinkResourcesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateLinkResourcesClientListByClusterOptions) *runtime.Pager[PrivateLinkResourcesClientListByClusterResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListByClusterResponse]{
+		More: func(page PrivateLinkResourcesClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ServersClientListByClusterResponse) (ServersClientListByClusterResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServersClient.NewListByClusterPager")
+		Fetcher: func(ctx context.Context, page *PrivateLinkResourcesClientListByClusterResponse) (PrivateLinkResourcesClientListByClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkResourcesClient.NewListByClusterPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -130,7 +131,7 @@ func (client *ServersClient) NewListByClusterPager(resourceGroupName string, clu
 				return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 			}, nil)
 			if err != nil {
-				return ServersClientListByClusterResponse{}, err
+				return PrivateLinkResourcesClientListByClusterResponse{}, err
 			}
 			return client.listByClusterHandleResponse(resp)
 		},
@@ -139,8 +140,8 @@ func (client *ServersClient) NewListByClusterPager(resourceGroupName string, clu
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *ServersClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ServersClientListByClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/servers"
+func (client *PrivateLinkResourcesClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *PrivateLinkResourcesClientListByClusterOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -165,10 +166,10 @@ func (client *ServersClient) listByClusterCreateRequest(ctx context.Context, res
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *ServersClient) listByClusterHandleResponse(resp *http.Response) (ServersClientListByClusterResponse, error) {
-	result := ServersClientListByClusterResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterServerListResult); err != nil {
-		return ServersClientListByClusterResponse{}, err
+func (client *PrivateLinkResourcesClient) listByClusterHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByClusterResponse, error) {
+	result := PrivateLinkResourcesClientListByClusterResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
+		return PrivateLinkResourcesClientListByClusterResponse{}, err
 	}
 	return result, nil
 }

@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Redis Enterprise module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v3
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v4
 ```
 
 ## Authorization

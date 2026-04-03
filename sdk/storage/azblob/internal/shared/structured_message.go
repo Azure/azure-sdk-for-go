@@ -286,13 +286,16 @@ func NewSMEncoder(inner io.ReadSeeker, contentLen int64, segmentSize int) *SMEnc
 		segmentSize = SMDefaultSegmentSize
 	}
 
-	numSegments := int(contentLen) / segmentSize
-	if int(contentLen)%segmentSize != 0 {
-		numSegments++
+	// Compute segment count using int64 arithmetic to avoid overflow on 32-bit architectures.
+	segSize64 := int64(segmentSize)
+	numSegments64 := contentLen / segSize64
+	if contentLen%segSize64 != 0 {
+		numSegments64++
 	}
-	if numSegments == 0 {
-		numSegments = 1
+	if numSegments64 == 0 {
+		numSegments64 = 1
 	}
+	numSegments := int(numSegments64)
 
 	// Calculate total encoded length
 	encodedLen := int64(SMHeaderSize)
@@ -666,6 +669,12 @@ func (d *SMDecoder) parseHeader() error {
 	d.flags = binary.LittleEndian.Uint16(buf[9:11])
 	d.numSegments = binary.LittleEndian.Uint16(buf[11:13])
 	d.hasCRC = d.flags&SMFlagCRC64 != 0
+
+	// Validate msgLen: must be at least header + (per segment: header + footer) + trailer.
+	minMsgLen := uint64(SMHeaderSize) + uint64(d.numSegments)*uint64(SMSegmentHeaderSize+SMSegmentFooterSize) + uint64(SMMessageTrailerSize)
+	if d.msgLen < minMsgLen {
+		return fmt.Errorf("structured message length %d is too small for %d segments (minimum %d)", d.msgLen, d.numSegments, minMsgLen)
+	}
 
 	if d.hasCRC {
 		d.msgCRC = crc64.New(CRC64Table)

@@ -906,6 +906,62 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	_require.Contains(err.Error(), bloberror.MD5Mismatch)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+
+	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	_, err = bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestUploadWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 4 * 1024 // 4 KB
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(bytes.NewReader(content))
+
+	_, err = bbClient.Upload(context.Background(), rsc, &blockblob.UploadOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	// Download and verify data was persisted correctly
+	downloadResp, err := bbClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestPutBlobWithCRC64() {
 	s.T().Skip("Content CRC64 cannot be validated in Upload()")
 	_require := require.New(s.T())
@@ -5769,6 +5825,36 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBufferWithCRC64OrMD5() {
 	})
 	_require.Error(err)
 	_require.Error(err, bloberror.UnsupportedChecksum)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestUploadBufferWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	_, content := testcommon.GetDataAndReader(testName, 8*1024)
+
+	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		BlockSize:               4 * 1024,
+		Concurrency:             2,
+	})
+	_require.NoError(err)
+
+	// Download and verify data was persisted correctly
+	downloadResp, err := bbClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {

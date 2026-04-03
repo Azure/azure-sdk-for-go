@@ -369,8 +369,8 @@ type BlobClientDeleteResponse struct {
 	Version *string
 }
 
-// BlobClientDownloadResponse contains the response from method BlobClient.Download.
-type BlobClientDownloadResponse struct {
+// BlobClientDownloadResponseInternal contains the response from method BlobClient.Download.
+type BlobClientDownloadResponseInternal struct {
 	// Indicates that the service supports requests for partial blob content.
 	AcceptRanges *string
 
@@ -585,7 +585,7 @@ type BlobClientGetPropertiesResponse struct {
 	// For blob storage LRS accounts, valid values are rehydrate-pending-to-hot/rehydrate-pending-to-cool. If the blob is being
 	// rehydrated and is not complete then this header is returned indicating that rehydrate is pending and also tells the destination
 	// tier.
-	ArchiveStatus *ArchiveStatus
+	ArchiveStatus *string
 
 	// The number of committed blocks present in the blob. This header is returned only for append blobs.
 	BlobCommittedBlockCount *int32

@@ -73,7 +73,7 @@ func (o *CreateOptions) format() *generated.PageBlobClientCreateOptions {
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
 		Metadata:                 o.Metadata,
 		Tier:                     o.Tier,
-		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
+		ImmutabilityPolicyExpiry: shared.ConvertToGMT(o.ImmutabilityPolicyExpiry),
 		//ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		LegalHold: o.LegalHold,
 	}
@@ -99,9 +99,9 @@ func (o *CreateOptions) format() *generated.PageBlobClientCreateOptions {
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -147,9 +147,9 @@ func (o *UploadPagesOptions) format() *generated.PageBlobClientUploadPagesOption
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -203,9 +203,9 @@ func (o *UploadPagesFromURLOptions) format() *generated.PageBlobClientUploadPage
 	}
 	if o.SourceModifiedAccessConditions != nil {
 		options.SourceIfMatch = o.SourceModifiedAccessConditions.SourceIfMatch
-		options.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
+		options.SourceIfModifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfModifiedSince)
 		options.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
-		options.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+		options.SourceIfUnmodifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince)
 	}
 	if o.AccessConditions != nil {
 		if o.AccessConditions.LeaseAccessConditions != nil {
@@ -213,9 +213,9 @@ func (o *UploadPagesFromURLOptions) format() *generated.PageBlobClientUploadPage
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			options.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			options.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			options.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -261,9 +261,9 @@ func (o *ClearPagesOptions) format() *generated.PageBlobClientClearPagesOptions 
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -318,9 +318,9 @@ func (o *GetPageRangesOptions) format() *generated.PageBlobClientGetPageRangesOp
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -383,9 +383,9 @@ func (o *GetPageRangesDiffOptions) format() *generated.PageBlobClientGetPageRang
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -422,9 +422,9 @@ func (o *ResizeOptions) format() *generated.PageBlobClientResizeOptions {
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -456,9 +456,9 @@ func (o *UpdateSequenceNumberOptions) format() *generated.PageBlobClientUpdateSe
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			options.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			options.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			options.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -484,9 +484,9 @@ func (o *CopyIncrementalOptions) format() *generated.PageBlobClientCopyIncrement
 	opts := &generated.PageBlobClientCopyIncrementalOptions{}
 	if o.ModifiedAccessConditions != nil {
 		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 		opts.IfTags = o.ModifiedAccessConditions.IfTags
 	}
 

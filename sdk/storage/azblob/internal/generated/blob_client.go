@@ -875,19 +875,19 @@ func (client *BlobClient) deleteImmutabilityPolicyHandleResponse(resp *http.Resp
 //
 // Generated from API version 2026-04-06
 //   - options - BlobClientDownloadOptions contains the optional parameters for the BlobClient.Download method.
-func (client *BlobClient) Download(ctx context.Context, options *BlobClientDownloadOptions) (BlobClientDownloadResponse, error) {
+func (client *BlobClient) Download(ctx context.Context, options *BlobClientDownloadOptions) (BlobClientDownloadResponseInternal, error) {
 	var err error
 	req, err := client.downloadCreateRequest(ctx, options)
 	if err != nil {
-		return BlobClientDownloadResponse{}, err
+		return BlobClientDownloadResponseInternal{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return BlobClientDownloadResponse{}, err
+		return BlobClientDownloadResponseInternal{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusPartialContent) {
 		err = runtime.NewResponseError(httpResp)
-		return BlobClientDownloadResponse{}, err
+		return BlobClientDownloadResponseInternal{}, err
 	}
 	resp, err := client.downloadHandleResponse(httpResp)
 	return resp, err
@@ -959,8 +959,8 @@ func (client *BlobClient) downloadCreateRequest(ctx context.Context, options *Bl
 }
 
 // downloadHandleResponse handles the Download response.
-func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClientDownloadResponse, error) {
-	result := BlobClientDownloadResponse{Body: resp.Body}
+func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClientDownloadResponseInternal, error) {
+	result := BlobClientDownloadResponseInternal{Body: resp.Body}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
@@ -968,21 +968,21 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
 		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.BlobCommittedBlockCount = &blobCommittedBlockCount
 	}
 	if val := resp.Header.Get("x-ms-blob-content-md5"); val != "" {
 		blobContentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.BlobContentMD5 = blobContentMD5
 	}
 	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
 		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.BlobSequenceNumber = &blobSequenceNumber
 	}
@@ -998,7 +998,7 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.ContentCRC64 = contentCRC64
 	}
@@ -1014,14 +1014,14 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("Content-Length"); val != "" {
 		contentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.ContentLength = &contentLength
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.ContentMD5 = contentMD5
 	}
@@ -1034,7 +1034,7 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
 		copyCompletionTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.CopyCompletionTime = &copyCompletionTime
 	}
@@ -1056,14 +1056,14 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
 		creationTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.CreationTime = &creationTime
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.Date = &date
 	}
@@ -1082,7 +1082,7 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
 		immutabilityPolicyExpiry, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.ImmutabilityPolicyExpiry = &immutabilityPolicyExpiry
 	}
@@ -1092,35 +1092,35 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("x-ms-is-current-version"); val != "" {
 		isCurrentVersion, err := strconv.ParseBool(val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.IsCurrentVersion = &isCurrentVersion
 	}
 	if val := resp.Header.Get("x-ms-blob-sealed"); val != "" {
 		isSealed, err := strconv.ParseBool(val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.IsSealed = &isSealed
 	}
 	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
 	if val := resp.Header.Get("x-ms-last-access-time"); val != "" {
 		lastAccessed, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.LastAccessed = &lastAccessed
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1133,7 +1133,7 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("x-ms-legal-hold"); val != "" {
 		legalHold, err := strconv.ParseBool(val)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.LegalHold = &legalHold
 	}
@@ -1165,14 +1165,14 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("x-ms-structured-content-length"); val != "" {
 		structuredContentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.StructuredContentLength = &structuredContentLength
 	}
 	if val := resp.Header.Get("x-ms-tag-count"); val != "" {
 		tagCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return BlobClientDownloadResponse{}, err
+			return BlobClientDownloadResponseInternal{}, err
 		}
 		result.TagCount = &tagCount
 	}
@@ -1360,7 +1360,7 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		result.AccessTierInferred = &accessTierInferred
 	}
 	if val := resp.Header.Get("x-ms-archive-status"); val != "" {
-		result.ArchiveStatus = (*ArchiveStatus)(&val)
+		result.ArchiveStatus = &val
 	}
 	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)

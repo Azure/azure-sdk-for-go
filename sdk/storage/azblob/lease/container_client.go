@@ -58,7 +58,8 @@ func (c *ContainerClient) LeaseID() *string {
 // The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *ContainerClient) AcquireLease(ctx context.Context, duration int32, o *ContainerAcquireOptions) (ContainerAcquireResponse, error) {
-	return c.generated().AcquireLease(ctx, duration, o.format())
+	leaseID := c.LeaseID()
+	return c.generated().AcquireLease(ctx, duration, o.format(leaseID))
 }
 
 // BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)

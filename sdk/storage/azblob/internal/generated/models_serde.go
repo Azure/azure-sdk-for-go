@@ -7,9 +7,10 @@ package generated
 import (
 	"encoding/json"
 	"encoding/xml"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
-	"time"
 )
 
 // MarshalXML implements the xml.Marshaller interface for type AccessPolicy.
@@ -213,7 +214,7 @@ func (b BlobTags) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias BlobTags
 	aux := &struct {
 		*alias
-		BlobTagSet *[]*BlobTag `xml:"TagSet>BlobTag"`
+		BlobTagSet *[]*BlobTag `xml:"TagSet>Tag"`
 	}{
 		alias: (*alias)(&b),
 	}

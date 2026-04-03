@@ -6,6 +6,7 @@ package lease
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // BreakNaturally tells ContainerClient's or BlobClient's BreakLease method to break the lease using service semantics.
@@ -22,17 +23,15 @@ type BlobAcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BlobAcquireOptions) format() *generated.BlobClientAcquireLeaseOptions {
-	if o == nil {
-		return nil
+func (o *BlobAcquireOptions) format(leaseID *string) *generated.BlobClientAcquireLeaseOptions {
+	opts := &generated.BlobClientAcquireLeaseOptions{
+		ProposedLeaseID: leaseID,
 	}
-
-	opts := &generated.BlobClientAcquireLeaseOptions{}
-	if o.ModifiedAccessConditions != nil {
+	if o != nil && o.ModifiedAccessConditions != nil {
 		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -64,9 +63,9 @@ func (o *BlobBreakOptions) format() *generated.BlobClientBreakLeaseOptions {
 	}
 	if o.ModifiedAccessConditions != nil {
 		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -85,9 +84,9 @@ func (o *BlobChangeOptions) format() *generated.BlobClientChangeLeaseOptions {
 	opts := &generated.BlobClientChangeLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
 		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -106,9 +105,9 @@ func (o *BlobRenewOptions) format() *generated.BlobClientRenewLeaseOptions {
 	opts := &generated.BlobClientRenewLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
 		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -127,9 +126,9 @@ func (o *BlobReleaseOptions) format() *generated.BlobClientReleaseLeaseOptions {
 	opts := &generated.BlobClientReleaseLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
 		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -140,16 +139,14 @@ type ContainerAcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ContainerAcquireOptions) format() *generated.ContainerClientAcquireLeaseOptions {
-	if o == nil {
-		return nil
-	}
+func (o *ContainerAcquireOptions) format(leaseID *string) *generated.ContainerClientAcquireLeaseOptions {
 	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
-
-	opts := &generated.ContainerClientAcquireLeaseOptions{}
-	if o.ModifiedAccessConditions != nil {
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	opts := &generated.ContainerClientAcquireLeaseOptions{
+		ProposedLeaseID: leaseID,
+	}
+	if o != nil && o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -181,8 +178,8 @@ func (o *ContainerBreakOptions) format() *generated.ContainerClientBreakLeaseOpt
 		BreakPeriod: period,
 	}
 	if o.ModifiedAccessConditions != nil {
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -201,8 +198,8 @@ func (o *ContainerChangeOptions) format() *generated.ContainerClientChangeLeaseO
 
 	opts := &generated.ContainerClientChangeLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -221,8 +218,8 @@ func (o *ContainerRenewOptions) format() *generated.ContainerClientRenewLeaseOpt
 
 	opts := &generated.ContainerClientRenewLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -241,8 +238,8 @@ func (o *ContainerReleaseOptions) format() *generated.ContainerClientReleaseLeas
 
 	opts := &generated.ContainerClientReleaseLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
-		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts

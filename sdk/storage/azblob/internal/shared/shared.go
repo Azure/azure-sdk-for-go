@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -51,6 +52,14 @@ func CopyOptions[T any](opts *T) *T {
 	}
 	cp := *opts
 	return &cp
+}
+
+func ConvertToGMT(localTime *time.Time) *time.Time {
+	if localTime == nil {
+		return nil
+	}
+	gmtLoc := time.FixedZone("GMT", 0)
+	return to.Ptr((*localTime).In(gmtLoc))
 }
 
 var errConnectionString = errors.New("connection string is either blank or malformed. The expected connection string " +

@@ -5,9 +5,10 @@
 package generated
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"time"
 )
 
 // AccessPolicy - Represents an access policy.
@@ -232,7 +233,7 @@ type BlobTag struct {
 // BlobTags - Represents blob tags.
 type BlobTags struct {
 	// REQUIRED; Represents the blob tags.
-	BlobTagSet []*BlobTag `xml:"TagSet>BlobTag"`
+	BlobTagSet []*BlobTag `xml:"TagSet>Tag"`
 }
 
 // Block - Represents a single block in a block blob. It describes the block's ID and size.
@@ -488,7 +489,7 @@ type ListBlobsHierarchySegmentResponse struct {
 // ListContainersSegmentResponse - The list container segment response
 type ListContainersSegmentResponse struct {
 	// REQUIRED; The container segment.
-	ContainerItems []*ContainerItem `xml:"Containers>ContainerItem"`
+	ContainerItems []*ContainerItem `xml:"Containers>Container"`
 
 	// REQUIRED; The service endpoint.
 	ServiceEndpoint *string `xml:"ServiceEndpoint,attr"`
@@ -618,11 +619,10 @@ type RetentionPolicy struct {
 
 // SignedIdentifier - The signed identifier.
 type SignedIdentifier struct {
-	// REQUIRED; The unique ID for the signed identifier.
-	ID *string `xml:"Id"`
-
 	// The access policy for the signed identifier.
 	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
+	// REQUIRED; The unique ID for the signed identifier.
+	ID *string `xml:"Id"`
 }
 
 // StaticWebsite - The properties that enable an account to host a static website

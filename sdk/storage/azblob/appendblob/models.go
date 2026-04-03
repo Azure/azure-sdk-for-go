@@ -55,7 +55,7 @@ func (o *CreateOptions) format() *generated.AppendBlobClientCreateOptions {
 	}
 
 	opts := &generated.AppendBlobClientCreateOptions{
-		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
+		ImmutabilityPolicyExpiry: shared.ConvertToGMT(o.ImmutabilityPolicyExpiry),
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		LegalHold:                o.LegalHold,
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
@@ -67,9 +67,9 @@ func (o *CreateOptions) format() *generated.AppendBlobClientCreateOptions {
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 	if o.HTTPHeaders != nil {
@@ -126,9 +126,9 @@ func (o *AppendBlockOptions) format() *generated.AppendBlobClientAppendBlockOpti
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 	if o.CPKInfo != nil {
@@ -190,9 +190,9 @@ func (o *AppendBlockFromURLOptions) format() *generated.AppendBlobClientAppendBl
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			options.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			options.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			options.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 	if o.CPKInfo != nil {
@@ -205,9 +205,9 @@ func (o *AppendBlockFromURLOptions) format() *generated.AppendBlobClientAppendBl
 	}
 	if o.SourceModifiedAccessConditions != nil {
 		options.SourceIfMatch = o.SourceModifiedAccessConditions.SourceIfMatch
-		options.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
+		options.SourceIfModifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfModifiedSince)
 		options.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
-		options.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+		options.SourceIfUnmodifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince)
 	}
 
 	if o.SourceContentValidation != nil {
@@ -241,9 +241,9 @@ func (o *SealOptions) format() *generated.AppendBlobClientSealOptions {
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 

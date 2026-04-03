@@ -86,9 +86,9 @@ func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 	if o.CPKInfo != nil {
@@ -232,9 +232,9 @@ func (o *DeleteOptions) format() *generated.BlobClientDeleteOptions {
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -298,9 +298,9 @@ func (o *GetPropertiesOptions) format() *generated.BlobClientGetPropertiesOption
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 	if o.CPKInfo != nil {
@@ -320,10 +320,6 @@ type SetHTTPHeadersOptions struct {
 }
 
 func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) *generated.BlobClientSetHTTPHeadersOptions {
-	if o == nil {
-		return nil
-	}
-
 	opts := &generated.BlobClientSetHTTPHeadersOptions{
 		BlobCacheControl:       httpHeaders.BlobCacheControl,
 		BlobContentDisposition: httpHeaders.BlobContentDisposition,
@@ -332,15 +328,18 @@ func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) *generated.BlobC
 		BlobContentMD5:         httpHeaders.BlobContentMD5,
 		BlobContentType:        httpHeaders.BlobContentType,
 	}
+	if o == nil {
+		return opts
+	}
 	if o.AccessConditions != nil {
 		if o.AccessConditions.LeaseAccessConditions != nil {
 			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -357,20 +356,19 @@ type SetMetadataOptions struct {
 }
 
 func (o *SetMetadataOptions) format(metadata map[string]*string) *generated.BlobClientSetMetadataOptions {
-	if o == nil {
-		return nil
-	}
-
 	opts := &generated.BlobClientSetMetadataOptions{Metadata: metadata}
+	if o == nil {
+		return opts
+	}
 	if o.AccessConditions != nil {
 		if o.AccessConditions.LeaseAccessConditions != nil {
 			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 	if o.CPKInfo != nil {
@@ -407,9 +405,9 @@ func (o *CreateSnapshotOptions) format() *generated.BlobClientCreateSnapshotOpti
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 	if o.CPKInfo != nil {
@@ -464,15 +462,15 @@ func (o *StartCopyFromURLOptions) format() *generated.BlobClientStartCopyFromURL
 		RehydratePriority:        o.RehydratePriority,
 		SealBlob:                 o.SealBlob,
 		Tier:                     o.Tier,
-		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
+		ImmutabilityPolicyExpiry: shared.ConvertToGMT(o.ImmutabilityPolicyExpiry),
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		LegalHold:                o.LegalHold,
 	}
 	if o.SourceModifiedAccessConditions != nil {
 		opts.SourceIfMatch = o.SourceModifiedAccessConditions.SourceIfMatch
-		opts.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
+		opts.SourceIfModifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfModifiedSince)
 		opts.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
-		opts.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+		opts.SourceIfUnmodifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince)
 	}
 	if o.AccessConditions != nil {
 		if o.AccessConditions.LeaseAccessConditions != nil {
@@ -480,9 +478,9 @@ func (o *StartCopyFromURLOptions) format() *generated.BlobClientStartCopyFromURL
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -531,22 +529,20 @@ func (o *SetTagsOptions) format() *generated.BlobClientSetTagsOptions {
 		return nil
 	}
 
-	// Notes: no mapping for o.BlobModifiedAccessConditions
+	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
 	opts := &generated.BlobClientSetTagsOptions{
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		VersionID:                 o.VersionID,
 	}
-	if o.AccessConditions != nil {
-		if o.AccessConditions.LeaseAccessConditions != nil {
-			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
-		}
-		if o.AccessConditions.ModifiedAccessConditions != nil {
-			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
-			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
-		}
+	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
+		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	}
+	if o.BlobModifiedAccessConditions != nil {
+		opts.IfMatch = o.BlobModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = shared.ConvertToGMT(o.BlobModifiedAccessConditions.IfModifiedSince)
+		opts.IfNoneMatch = o.BlobModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.BlobModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -582,9 +578,9 @@ func (o *GetTagsOptions) format() *generated.BlobClientGetTagsOptions {
 		}
 		if o.BlobAccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.BlobAccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.BlobAccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 
@@ -609,7 +605,7 @@ func (o *SetImmutabilityPolicyOptions) format() *generated.BlobClientSetImmutabi
 
 	opts := &generated.BlobClientSetImmutabilityPolicyOptions{ImmutabilityPolicyMode: o.Mode}
 	if o.ModifiedAccessConditions != nil {
-		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfUnmodifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfUnmodifiedSince)
 	}
 
 	return opts
@@ -701,7 +697,7 @@ func (o *CopyFromURLOptions) format() *generated.BlobClientCopyFromURLOptions {
 	opts := &generated.BlobClientCopyFromURLOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.BlobTags),
 		CopySourceAuthorization:  o.CopySourceAuthorization,
-		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
+		ImmutabilityPolicyExpiry: shared.ConvertToGMT(o.ImmutabilityPolicyExpiry),
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		FileRequestIntent:        o.FileRequestIntent,
 		LegalHold:                o.LegalHold,
@@ -711,9 +707,9 @@ func (o *CopyFromURLOptions) format() *generated.BlobClientCopyFromURLOptions {
 	}
 	if o.SourceModifiedAccessConditions != nil {
 		opts.SourceIfMatch = o.SourceModifiedAccessConditions.SourceIfMatch
-		opts.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
+		opts.SourceIfModifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfModifiedSince)
 		opts.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
-		opts.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+		opts.SourceIfUnmodifiedSince = shared.ConvertToGMT(o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince)
 	}
 	if o.BlobAccessConditions != nil {
 		if o.BlobAccessConditions.LeaseAccessConditions != nil {
@@ -721,9 +717,9 @@ func (o *CopyFromURLOptions) format() *generated.BlobClientCopyFromURLOptions {
 		}
 		if o.BlobAccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.BlobAccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfModifiedSince = shared.ConvertToGMT(o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince)
 			opts.IfNoneMatch = o.BlobAccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
 

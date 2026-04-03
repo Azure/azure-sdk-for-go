@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.StorageSync": "2022-09-01"
+  },
+  "emitterVersion": "0.10.2"
+}

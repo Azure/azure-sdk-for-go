@@ -5,11 +5,6 @@
 
 package armazurearcdata
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata"
-	moduleVersion = "v0.7.0"
-)
-
 // AccountProvisioningMode - The service account provisioning mode for this Active Directory connector.
 type AccountProvisioningMode string
 
@@ -23,6 +18,64 @@ func PossibleAccountProvisioningModeValues() []AccountProvisioningMode {
 	return []AccountProvisioningMode{
 		AccountProvisioningModeAutomatic,
 		AccountProvisioningModeManual,
+	}
+}
+
+// ActivationState - The activation state of the license.
+type ActivationState string
+
+const (
+	ActivationStateActivated   ActivationState = "Activated"
+	ActivationStateDeactivated ActivationState = "Deactivated"
+)
+
+// PossibleActivationStateValues returns the possible values for the ActivationState const type.
+func PossibleActivationStateValues() []ActivationState {
+	return []ActivationState{
+		ActivationStateActivated,
+		ActivationStateDeactivated,
+	}
+}
+
+// AggregationType - The aggregation type to use for the numerical columns in the dataset.
+type AggregationType string
+
+const (
+	AggregationTypeAverage AggregationType = "Average"
+	AggregationTypeCount   AggregationType = "Count"
+	AggregationTypeMaximum AggregationType = "Maximum"
+	AggregationTypeMinimum AggregationType = "Minimum"
+	AggregationTypeSum     AggregationType = "Sum"
+)
+
+// PossibleAggregationTypeValues returns the possible values for the AggregationType const type.
+func PossibleAggregationTypeValues() []AggregationType {
+	return []AggregationType{
+		AggregationTypeAverage,
+		AggregationTypeCount,
+		AggregationTypeMaximum,
+		AggregationTypeMinimum,
+		AggregationTypeSum,
+	}
+}
+
+// AlwaysOnRole - The role of the SQL Server, based on availability.
+type AlwaysOnRole string
+
+const (
+	AlwaysOnRoleAvailabilityGroupReplica AlwaysOnRole = "AvailabilityGroupReplica"
+	AlwaysOnRoleFailoverClusterInstance  AlwaysOnRole = "FailoverClusterInstance"
+	AlwaysOnRoleFailoverClusterNode      AlwaysOnRole = "FailoverClusterNode"
+	AlwaysOnRoleNone                     AlwaysOnRole = "None"
+)
+
+// PossibleAlwaysOnRoleValues returns the possible values for the AlwaysOnRole const type.
+func PossibleAlwaysOnRoleValues() []AlwaysOnRole {
+	return []AlwaysOnRole{
+		AlwaysOnRoleAvailabilityGroupReplica,
+		AlwaysOnRoleFailoverClusterInstance,
+		AlwaysOnRoleFailoverClusterNode,
+		AlwaysOnRoleNone,
 	}
 }
 
@@ -44,23 +97,208 @@ func PossibleArcSQLManagedInstanceLicenseTypeValues() []ArcSQLManagedInstanceLic
 	}
 }
 
+// ArcSQLServerAvailabilityGroupTypeFilter - Filter retrieval based on availability group type.
+type ArcSQLServerAvailabilityGroupTypeFilter string
+
+const (
+	// ArcSQLServerAvailabilityGroupTypeFilterCONTAINED - Contained Availability Group (CAG).
+	ArcSQLServerAvailabilityGroupTypeFilterCONTAINED ArcSQLServerAvailabilityGroupTypeFilter = "CONTAINED"
+	// ArcSQLServerAvailabilityGroupTypeFilterDEFAULT - Default standard availability group that is not contained or distributed.
+	ArcSQLServerAvailabilityGroupTypeFilterDEFAULT ArcSQLServerAvailabilityGroupTypeFilter = "DEFAULT"
+	// ArcSQLServerAvailabilityGroupTypeFilterDISTRIBUTED - Distributed Availability Group (DAG)
+	ArcSQLServerAvailabilityGroupTypeFilterDISTRIBUTED ArcSQLServerAvailabilityGroupTypeFilter = "DISTRIBUTED"
+)
+
+// PossibleArcSQLServerAvailabilityGroupTypeFilterValues returns the possible values for the ArcSQLServerAvailabilityGroupTypeFilter const type.
+func PossibleArcSQLServerAvailabilityGroupTypeFilterValues() []ArcSQLServerAvailabilityGroupTypeFilter {
+	return []ArcSQLServerAvailabilityGroupTypeFilter{
+		ArcSQLServerAvailabilityGroupTypeFilterCONTAINED,
+		ArcSQLServerAvailabilityGroupTypeFilterDEFAULT,
+		ArcSQLServerAvailabilityGroupTypeFilterDISTRIBUTED,
+	}
+}
+
+// ArcSQLServerAvailabilityMode - Property that determines whether a given availability replica can run in synchronous-commit
+// mode
+type ArcSQLServerAvailabilityMode string
+
+const (
+	ArcSQLServerAvailabilityModeASYNCHRONOUSCOMMIT ArcSQLServerAvailabilityMode = "ASYNCHRONOUS_COMMIT"
+	ArcSQLServerAvailabilityModeSYNCHRONOUSCOMMIT  ArcSQLServerAvailabilityMode = "SYNCHRONOUS_COMMIT"
+)
+
+// PossibleArcSQLServerAvailabilityModeValues returns the possible values for the ArcSQLServerAvailabilityMode const type.
+func PossibleArcSQLServerAvailabilityModeValues() []ArcSQLServerAvailabilityMode {
+	return []ArcSQLServerAvailabilityMode{
+		ArcSQLServerAvailabilityModeASYNCHRONOUSCOMMIT,
+		ArcSQLServerAvailabilityModeSYNCHRONOUSCOMMIT,
+	}
+}
+
+// ArcSQLServerFailoverMode - Property to set the failover mode of the availability group replica
+type ArcSQLServerFailoverMode string
+
+const (
+	ArcSQLServerFailoverModeAUTOMATIC ArcSQLServerFailoverMode = "AUTOMATIC"
+	ArcSQLServerFailoverModeEXTERNAL  ArcSQLServerFailoverMode = "EXTERNAL"
+	ArcSQLServerFailoverModeMANUAL    ArcSQLServerFailoverMode = "MANUAL"
+	ArcSQLServerFailoverModeNONE      ArcSQLServerFailoverMode = "NONE"
+)
+
+// PossibleArcSQLServerFailoverModeValues returns the possible values for the ArcSQLServerFailoverMode const type.
+func PossibleArcSQLServerFailoverModeValues() []ArcSQLServerFailoverMode {
+	return []ArcSQLServerFailoverMode{
+		ArcSQLServerFailoverModeAUTOMATIC,
+		ArcSQLServerFailoverModeEXTERNAL,
+		ArcSQLServerFailoverModeMANUAL,
+		ArcSQLServerFailoverModeNONE,
+	}
+}
+
 // ArcSQLServerLicenseType - SQL Server license type.
 type ArcSQLServerLicenseType string
 
 const (
-	ArcSQLServerLicenseTypeFree      ArcSQLServerLicenseType = "Free"
-	ArcSQLServerLicenseTypeHADR      ArcSQLServerLicenseType = "HADR"
-	ArcSQLServerLicenseTypePaid      ArcSQLServerLicenseType = "Paid"
-	ArcSQLServerLicenseTypeUndefined ArcSQLServerLicenseType = "Undefined"
+	ArcSQLServerLicenseTypeFabricCapacity ArcSQLServerLicenseType = "FabricCapacity"
+	ArcSQLServerLicenseTypeFree           ArcSQLServerLicenseType = "Free"
+	ArcSQLServerLicenseTypeHADR           ArcSQLServerLicenseType = "HADR"
+	ArcSQLServerLicenseTypeLicenseOnly    ArcSQLServerLicenseType = "LicenseOnly"
+	ArcSQLServerLicenseTypePAYG           ArcSQLServerLicenseType = "PAYG"
+	ArcSQLServerLicenseTypePaid           ArcSQLServerLicenseType = "Paid"
+	ArcSQLServerLicenseTypeServerCAL      ArcSQLServerLicenseType = "ServerCAL"
+	ArcSQLServerLicenseTypeUndefined      ArcSQLServerLicenseType = "Undefined"
 )
 
 // PossibleArcSQLServerLicenseTypeValues returns the possible values for the ArcSQLServerLicenseType const type.
 func PossibleArcSQLServerLicenseTypeValues() []ArcSQLServerLicenseType {
 	return []ArcSQLServerLicenseType{
+		ArcSQLServerLicenseTypeFabricCapacity,
 		ArcSQLServerLicenseTypeFree,
 		ArcSQLServerLicenseTypeHADR,
+		ArcSQLServerLicenseTypeLicenseOnly,
+		ArcSQLServerLicenseTypePAYG,
 		ArcSQLServerLicenseTypePaid,
+		ArcSQLServerLicenseTypeServerCAL,
 		ArcSQLServerLicenseTypeUndefined,
+	}
+}
+
+// AssessmentStatus - The status of the requirement.
+type AssessmentStatus string
+
+const (
+	AssessmentStatusFailure AssessmentStatus = "Failure"
+	AssessmentStatusSuccess AssessmentStatus = "Success"
+	AssessmentStatusWarning AssessmentStatus = "Warning"
+)
+
+// PossibleAssessmentStatusValues returns the possible values for the AssessmentStatus const type.
+func PossibleAssessmentStatusValues() []AssessmentStatus {
+	return []AssessmentStatus{
+		AssessmentStatusFailure,
+		AssessmentStatusSuccess,
+		AssessmentStatusWarning,
+	}
+}
+
+// AutomatedBackupPreference - Preferred replica for running automated backups.
+type AutomatedBackupPreference string
+
+const (
+	AutomatedBackupPreferenceNONE          AutomatedBackupPreference = "NONE"
+	AutomatedBackupPreferencePRIMARY       AutomatedBackupPreference = "PRIMARY"
+	AutomatedBackupPreferenceSECONDARY     AutomatedBackupPreference = "SECONDARY"
+	AutomatedBackupPreferenceSECONDARYONLY AutomatedBackupPreference = "SECONDARY_ONLY"
+)
+
+// PossibleAutomatedBackupPreferenceValues returns the possible values for the AutomatedBackupPreference const type.
+func PossibleAutomatedBackupPreferenceValues() []AutomatedBackupPreference {
+	return []AutomatedBackupPreference{
+		AutomatedBackupPreferenceNONE,
+		AutomatedBackupPreferencePRIMARY,
+		AutomatedBackupPreferenceSECONDARY,
+		AutomatedBackupPreferenceSECONDARYONLY,
+	}
+}
+
+// AzureManagedInstanceRole - The role of managed instance in a distributed availability group, can be Primary or Secondary.
+type AzureManagedInstanceRole string
+
+const (
+	AzureManagedInstanceRolePrimary   AzureManagedInstanceRole = "Primary"
+	AzureManagedInstanceRoleSecondary AzureManagedInstanceRole = "Secondary"
+)
+
+// PossibleAzureManagedInstanceRoleValues returns the possible values for the AzureManagedInstanceRole const type.
+func PossibleAzureManagedInstanceRoleValues() []AzureManagedInstanceRole {
+	return []AzureManagedInstanceRole{
+		AzureManagedInstanceRolePrimary,
+		AzureManagedInstanceRoleSecondary,
+	}
+}
+
+// BillingPlan - SQL Server ESU license type.
+type BillingPlan string
+
+const (
+	BillingPlanPAYG BillingPlan = "PAYG"
+	BillingPlanPaid BillingPlan = "Paid"
+)
+
+// PossibleBillingPlanValues returns the possible values for the BillingPlan const type.
+func PossibleBillingPlanValues() []BillingPlan {
+	return []BillingPlan{
+		BillingPlanPAYG,
+		BillingPlanPaid,
+	}
+}
+
+// ClusterType - Set to WSFC when availability group is on a failover cluster instance on a Windows Server failover cluster.
+// Set to NONE when availability group not using WSFC for cluster coordination.
+type ClusterType string
+
+const (
+	ClusterTypeNONE ClusterType = "NONE"
+	ClusterTypeWSFC ClusterType = "WSFC"
+)
+
+// PossibleClusterTypeValues returns the possible values for the ClusterType const type.
+func PossibleClusterTypeValues() []ClusterType {
+	return []ClusterType{
+		ClusterTypeNONE,
+		ClusterTypeWSFC,
+	}
+}
+
+// ConnectionAuth - The endpoint connection authentication type(s).
+type ConnectionAuth string
+
+const (
+	ConnectionAuthCertificate                 ConnectionAuth = "Certificate"
+	ConnectionAuthCertificateWindowsKerberos  ConnectionAuth = "Certificate_Windows_Kerberos"
+	ConnectionAuthCertificateWindowsNTLM      ConnectionAuth = "Certificate_Windows_NTLM"
+	ConnectionAuthCertificateWindowsNegotiate ConnectionAuth = "Certificate_Windows_Negotiate"
+	ConnectionAuthWindowsKerberos             ConnectionAuth = "Windows_Kerberos"
+	ConnectionAuthWindowsKerberosCertificate  ConnectionAuth = "Windows_Kerberos_Certificate"
+	ConnectionAuthWindowsNTLM                 ConnectionAuth = "Windows_NTLM"
+	ConnectionAuthWindowsNTLMCertificate      ConnectionAuth = "Windows_NTLM_Certificate"
+	ConnectionAuthWindowsNegotiate            ConnectionAuth = "Windows_Negotiate"
+	ConnectionAuthWindowsNegotiateCertificate ConnectionAuth = "Windows_Negotiate_Certificate"
+)
+
+// PossibleConnectionAuthValues returns the possible values for the ConnectionAuth const type.
+func PossibleConnectionAuthValues() []ConnectionAuth {
+	return []ConnectionAuth{
+		ConnectionAuthCertificate,
+		ConnectionAuthCertificateWindowsKerberos,
+		ConnectionAuthCertificateWindowsNTLM,
+		ConnectionAuthCertificateWindowsNegotiate,
+		ConnectionAuthWindowsKerberos,
+		ConnectionAuthWindowsKerberosCertificate,
+		ConnectionAuthWindowsNTLM,
+		ConnectionAuthWindowsNTLMCertificate,
+		ConnectionAuthWindowsNegotiate,
+		ConnectionAuthWindowsNegotiateCertificate,
 	}
 }
 
@@ -70,6 +308,7 @@ type ConnectionStatus string
 const (
 	ConnectionStatusConnected    ConnectionStatus = "Connected"
 	ConnectionStatusDisconnected ConnectionStatus = "Disconnected"
+	ConnectionStatusDiscovered   ConnectionStatus = "Discovered"
 	ConnectionStatusRegistered   ConnectionStatus = "Registered"
 	ConnectionStatusUnknown      ConnectionStatus = "Unknown"
 )
@@ -79,6 +318,7 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	return []ConnectionStatus{
 		ConnectionStatusConnected,
 		ConnectionStatusDisconnected,
+		ConnectionStatusDiscovered,
 		ConnectionStatusRegistered,
 		ConnectionStatusUnknown,
 	}
@@ -104,6 +344,69 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DatabaseCreateMode - Database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of
+// an existing database. sourceDatabaseId and restorePointInTime must be specified.
+type DatabaseCreateMode string
+
+const (
+	DatabaseCreateModeDefault            DatabaseCreateMode = "Default"
+	DatabaseCreateModePointInTimeRestore DatabaseCreateMode = "PointInTimeRestore"
+)
+
+// PossibleDatabaseCreateModeValues returns the possible values for the DatabaseCreateMode const type.
+func PossibleDatabaseCreateModeValues() []DatabaseCreateMode {
+	return []DatabaseCreateMode{
+		DatabaseCreateModeDefault,
+		DatabaseCreateModePointInTimeRestore,
+	}
+}
+
+// DatabaseState - State of the database.
+type DatabaseState string
+
+const (
+	DatabaseStateCopying          DatabaseState = "Copying"
+	DatabaseStateEmergency        DatabaseState = "Emergency"
+	DatabaseStateOffline          DatabaseState = "Offline"
+	DatabaseStateOfflineSecondary DatabaseState = "OfflineSecondary"
+	DatabaseStateOnline           DatabaseState = "Online"
+	DatabaseStateRecovering       DatabaseState = "Recovering"
+	DatabaseStateRecoveryPending  DatabaseState = "RecoveryPending"
+	DatabaseStateRestoring        DatabaseState = "Restoring"
+	DatabaseStateSuspect          DatabaseState = "Suspect"
+)
+
+// PossibleDatabaseStateValues returns the possible values for the DatabaseState const type.
+func PossibleDatabaseStateValues() []DatabaseState {
+	return []DatabaseState{
+		DatabaseStateCopying,
+		DatabaseStateEmergency,
+		DatabaseStateOffline,
+		DatabaseStateOfflineSecondary,
+		DatabaseStateOnline,
+		DatabaseStateRecovering,
+		DatabaseStateRecoveryPending,
+		DatabaseStateRestoring,
+		DatabaseStateSuspect,
+	}
+}
+
+// DbFailover - Specifies whether the availability group supports failover for database health conditions.
+type DbFailover string
+
+const (
+	DbFailoverOFF DbFailover = "OFF"
+	DbFailoverON  DbFailover = "ON"
+)
+
+// PossibleDbFailoverValues returns the possible values for the DbFailover const type.
+func PossibleDbFailoverValues() []DbFailover {
+	return []DbFailover{
+		DbFailoverOFF,
+		DbFailoverON,
+	}
+}
+
 // DefenderStatus - Status of Azure Defender.
 type DefenderStatus string
 
@@ -122,27 +425,157 @@ func PossibleDefenderStatusValues() []DefenderStatus {
 	}
 }
 
+// DifferentialBackupHours - The differential backup interval in hours.
+type DifferentialBackupHours int32
+
+const (
+	DifferentialBackupHoursTwelve     DifferentialBackupHours = 12
+	DifferentialBackupHoursTwentyFour DifferentialBackupHours = 24
+)
+
+// PossibleDifferentialBackupHoursValues returns the possible values for the DifferentialBackupHours const type.
+func PossibleDifferentialBackupHoursValues() []DifferentialBackupHours {
+	return []DifferentialBackupHours{
+		DifferentialBackupHoursTwelve,
+		DifferentialBackupHoursTwentyFour,
+	}
+}
+
+// DiscoverySource - Indicates the discovery agent or client for this instance.
+type DiscoverySource string
+
+const (
+	// DiscoverySourceADS - Instance is discovered/registered from Azure Data Studio (ADS).
+	DiscoverySourceADS DiscoverySource = "ADS"
+	// DiscoverySourceAzureArc - Instance is discovered by Azure Arc enabled agent/extensions.
+	DiscoverySourceAzureArc DiscoverySource = "Azure Arc"
+	// DiscoverySourceAzureMigrate - Instance is discovered by Azure Migrate agent.
+	DiscoverySourceAzureMigrate DiscoverySource = "Azure Migrate"
+	// DiscoverySourceDMSCLI - Instance is discovered/registered from DMS using datamigration extension for the Azure CLI
+	DiscoverySourceDMSCLI DiscoverySource = "DMS-CLI"
+	// DiscoverySourceDMSPS - Instance is discovered/registered from DMS using PowerShell - Azure DataMigration Service Module.
+	DiscoverySourceDMSPS DiscoverySource = "DMS-PS"
+	// DiscoverySourceDMSPortal - Instance is discovered/registered from Azure Database Migration Service(DMS) Azure Portal.
+	DiscoverySourceDMSPortal DiscoverySource = "DMS-Portal"
+	// DiscoverySourceDMSSDK - Instance is discovered/registered from Azure Database Migration Service SDK like Python or .NET
+	// SDKs.
+	DiscoverySourceDMSSDK DiscoverySource = "DMS-SDK"
+	// DiscoverySourceImport - Instance is registered via Import.
+	DiscoverySourceImport DiscoverySource = "Import"
+	// DiscoverySourceOther - Instance is discovered/registered from any other source not listed above.
+	DiscoverySourceOther DiscoverySource = "Other"
+	// DiscoverySourceSSMA - Instance is discovered/registered from SQL Server Migration Assistant (SSMA).
+	DiscoverySourceSSMA DiscoverySource = "SSMA"
+	// DiscoverySourceSSMS - Instance is discovered/registered from SQL Server Management Studio (SSMS).
+	DiscoverySourceSSMS DiscoverySource = "SSMS"
+)
+
+// PossibleDiscoverySourceValues returns the possible values for the DiscoverySource const type.
+func PossibleDiscoverySourceValues() []DiscoverySource {
+	return []DiscoverySource{
+		DiscoverySourceADS,
+		DiscoverySourceAzureArc,
+		DiscoverySourceAzureMigrate,
+		DiscoverySourceDMSCLI,
+		DiscoverySourceDMSPS,
+		DiscoverySourceDMSPortal,
+		DiscoverySourceDMSSDK,
+		DiscoverySourceImport,
+		DiscoverySourceOther,
+		DiscoverySourceSSMA,
+		DiscoverySourceSSMS,
+	}
+}
+
+// DtcSupport - Specifies whether DTC support has been enabled for this availability group.
+type DtcSupport string
+
+const (
+	DtcSupportNONE  DtcSupport = "NONE"
+	DtcSupportPERDB DtcSupport = "PER_DB"
+)
+
+// PossibleDtcSupportValues returns the possible values for the DtcSupport const type.
+func PossibleDtcSupportValues() []DtcSupport {
+	return []DtcSupport{
+		DtcSupportNONE,
+		DtcSupportPERDB,
+	}
+}
+
 // EditionType - SQL Server edition.
 type EditionType string
 
 const (
-	EditionTypeDeveloper  EditionType = "Developer"
-	EditionTypeEnterprise EditionType = "Enterprise"
-	EditionTypeEvaluation EditionType = "Evaluation"
-	EditionTypeExpress    EditionType = "Express"
-	EditionTypeStandard   EditionType = "Standard"
-	EditionTypeWeb        EditionType = "Web"
+	EditionTypeBusinessIntelligence EditionType = "Business Intelligence"
+	EditionTypeDeveloper            EditionType = "Developer"
+	EditionTypeEnterprise           EditionType = "Enterprise"
+	EditionTypeEvaluation           EditionType = "Evaluation"
+	EditionTypeExpress              EditionType = "Express"
+	EditionTypeStandard             EditionType = "Standard"
+	EditionTypeStandardDeveloper    EditionType = "Standard Developer"
+	EditionTypeUnknown              EditionType = "Unknown"
+	EditionTypeWeb                  EditionType = "Web"
 )
 
 // PossibleEditionTypeValues returns the possible values for the EditionType const type.
 func PossibleEditionTypeValues() []EditionType {
 	return []EditionType{
+		EditionTypeBusinessIntelligence,
 		EditionTypeDeveloper,
 		EditionTypeEnterprise,
 		EditionTypeEvaluation,
 		EditionTypeExpress,
 		EditionTypeStandard,
+		EditionTypeStandardDeveloper,
+		EditionTypeUnknown,
 		EditionTypeWeb,
+	}
+}
+
+// EncryptionAlgorithm - The encryption algorithm(s) used by the endpoint.
+type EncryptionAlgorithm string
+
+const (
+	EncryptionAlgorithmAES        EncryptionAlgorithm = "AES"
+	EncryptionAlgorithmAESRC4     EncryptionAlgorithm = "AES, RC4"
+	EncryptionAlgorithmNONE       EncryptionAlgorithm = "NONE"
+	EncryptionAlgorithmNONEAES    EncryptionAlgorithm = "NONE, AES"
+	EncryptionAlgorithmNONEAESRC4 EncryptionAlgorithm = "NONE, AES, RC4"
+	EncryptionAlgorithmNONERC4    EncryptionAlgorithm = "NONE, RC4"
+	EncryptionAlgorithmNONERC4AES EncryptionAlgorithm = "NONE, RC4, AES"
+	EncryptionAlgorithmRC4        EncryptionAlgorithm = "RC4"
+	EncryptionAlgorithmRC4AES     EncryptionAlgorithm = "RC4, AES"
+)
+
+// PossibleEncryptionAlgorithmValues returns the possible values for the EncryptionAlgorithm const type.
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
+	return []EncryptionAlgorithm{
+		EncryptionAlgorithmAES,
+		EncryptionAlgorithmAESRC4,
+		EncryptionAlgorithmNONE,
+		EncryptionAlgorithmNONEAES,
+		EncryptionAlgorithmNONEAESRC4,
+		EncryptionAlgorithmNONERC4,
+		EncryptionAlgorithmNONERC4AES,
+		EncryptionAlgorithmRC4,
+		EncryptionAlgorithmRC4AES,
+	}
+}
+
+// ExecutionState - The execution state of the background job.
+type ExecutionState string
+
+const (
+	ExecutionStateRunning ExecutionState = "Running"
+	ExecutionStateWaiting ExecutionState = "Waiting"
+)
+
+// PossibleExecutionStateValues returns the possible values for the ExecutionState const type.
+func PossibleExecutionStateValues() []ExecutionState {
+	return []ExecutionState{
+		ExecutionStateRunning,
+		ExecutionStateWaiting,
 	}
 }
 
@@ -160,25 +593,99 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
+// FailoverGroupPartnerSyncMode - The partner sync mode of the SQL managed instance.
+type FailoverGroupPartnerSyncMode string
+
+const (
+	FailoverGroupPartnerSyncModeAsync FailoverGroupPartnerSyncMode = "async"
+	FailoverGroupPartnerSyncModeSync  FailoverGroupPartnerSyncMode = "sync"
+)
+
+// PossibleFailoverGroupPartnerSyncModeValues returns the possible values for the FailoverGroupPartnerSyncMode const type.
+func PossibleFailoverGroupPartnerSyncModeValues() []FailoverGroupPartnerSyncMode {
+	return []FailoverGroupPartnerSyncMode{
+		FailoverGroupPartnerSyncModeAsync,
+		FailoverGroupPartnerSyncModeSync,
+	}
+}
+
+// FailureConditionLevel - User-defined failure condition level under which an automatic failover must be triggered.
+type FailureConditionLevel int32
+
+const (
+	FailureConditionLevelFive  FailureConditionLevel = 5
+	FailureConditionLevelFour  FailureConditionLevel = 4
+	FailureConditionLevelOne   FailureConditionLevel = 1
+	FailureConditionLevelThree FailureConditionLevel = 3
+	FailureConditionLevelTwo   FailureConditionLevel = 2
+)
+
+// PossibleFailureConditionLevelValues returns the possible values for the FailureConditionLevel const type.
+func PossibleFailureConditionLevelValues() []FailureConditionLevel {
+	return []FailureConditionLevel{
+		FailureConditionLevelFive,
+		FailureConditionLevelFour,
+		FailureConditionLevelOne,
+		FailureConditionLevelThree,
+		FailureConditionLevelTwo,
+	}
+}
+
 // HostType - Type of host for Azure Arc SQL Server
 type HostType string
 
 const (
-	HostTypeAWSVirtualMachine HostType = "AWS Virtual Machine"
-	HostTypeGCPVirtualMachine HostType = "GCP Virtual Machine"
-	HostTypeOther             HostType = "Other"
-	HostTypePhysicalServer    HostType = "Physical Server"
-	HostTypeVirtualMachine    HostType = "Virtual Machine"
+	HostTypeAWSKubernetesService      HostType = "AWS Kubernetes Service"
+	HostTypeAWSVMWareVirtualMachine   HostType = "AWS VMWare Virtual Machine"
+	HostTypeAWSVirtualMachine         HostType = "AWS Virtual Machine"
+	HostTypeAzureKubernetesService    HostType = "Azure Kubernetes Service"
+	HostTypeAzureVMWareVirtualMachine HostType = "Azure VMWare Virtual Machine"
+	HostTypeAzureVirtualMachine       HostType = "Azure Virtual Machine"
+	HostTypeContainer                 HostType = "Container"
+	HostTypeGCPKubernetesService      HostType = "GCP Kubernetes Service"
+	HostTypeGCPVMWareVirtualMachine   HostType = "GCP VMWare Virtual Machine"
+	HostTypeGCPVirtualMachine         HostType = "GCP Virtual Machine"
+	HostTypeHyperVVirtualMachine      HostType = "Hyper-V Virtual Machine"
+	HostTypeOther                     HostType = "Other"
+	HostTypePhysicalServer            HostType = "Physical Server"
+	HostTypeVirtualMachine            HostType = "Virtual Machine"
 )
 
 // PossibleHostTypeValues returns the possible values for the HostType const type.
 func PossibleHostTypeValues() []HostType {
 	return []HostType{
+		HostTypeAWSKubernetesService,
+		HostTypeAWSVMWareVirtualMachine,
 		HostTypeAWSVirtualMachine,
+		HostTypeAzureKubernetesService,
+		HostTypeAzureVMWareVirtualMachine,
+		HostTypeAzureVirtualMachine,
+		HostTypeContainer,
+		HostTypeGCPKubernetesService,
+		HostTypeGCPVMWareVirtualMachine,
 		HostTypeGCPVirtualMachine,
+		HostTypeHyperVVirtualMachine,
 		HostTypeOther,
 		HostTypePhysicalServer,
 		HostTypeVirtualMachine,
+	}
+}
+
+// IdentityType - The method used for Entra authentication
+type IdentityType string
+
+const (
+	// IdentityTypeSystemAssignedManagedIdentity - System Assigned Managed Identity
+	IdentityTypeSystemAssignedManagedIdentity IdentityType = "SystemAssignedManagedIdentity"
+	// IdentityTypeUserAssignedManagedIdentity - User Assigned Managed Identity
+	IdentityTypeUserAssignedManagedIdentity IdentityType = "UserAssignedManagedIdentity"
+)
+
+// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{
+		IdentityTypeSystemAssignedManagedIdentity,
+		IdentityTypeUserAssignedManagedIdentity,
 	}
 }
 
@@ -206,6 +713,245 @@ func PossibleInfrastructureValues() []Infrastructure {
 	}
 }
 
+// InitiatedFrom - To indicate the client from which the migration is initiated from e.g. Azure Arc, DMS-Azure Portal/PS/CLI
+// for additional tracking.
+type InitiatedFrom string
+
+const (
+	// InitiatedFromADS - Migration is initiated from Azure Data Studio (ADS).
+	InitiatedFromADS InitiatedFrom = "ADS"
+	// InitiatedFromAzureArc - Migration is initiated from Azure Arc enabled clients.
+	InitiatedFromAzureArc InitiatedFrom = "Azure Arc"
+	// InitiatedFromDMSCLI - Migration is initiated from DMS using datamigration extension for the Azure CLI
+	InitiatedFromDMSCLI InitiatedFrom = "DMS-CLI"
+	// InitiatedFromDMSPS - Migration is initiated from DMS using PowerShell - Azure DataMigration Service Module.
+	InitiatedFromDMSPS InitiatedFrom = "DMS-PS"
+	// InitiatedFromDMSPortal - Migration is initiated from Azure Database Migration Service(DMS) Azure Portal.
+	InitiatedFromDMSPortal InitiatedFrom = "DMS-Portal"
+	// InitiatedFromDMSSDK - Migration is initiated from Azure Database Migration Service SDK like Python or .NET SDKs.
+	InitiatedFromDMSSDK InitiatedFrom = "DMS-SDK"
+	// InitiatedFromOther - Migration is initiated from any other client not listed above.
+	InitiatedFromOther InitiatedFrom = "Other"
+	// InitiatedFromSSMA - Migration is initiated from SQL Server Migration Assistant (SSMA).
+	InitiatedFromSSMA InitiatedFrom = "SSMA"
+	// InitiatedFromSSMS - Migration is initiated from SQL Server Management Studio (SSMS).
+	InitiatedFromSSMS InitiatedFrom = "SSMS"
+)
+
+// PossibleInitiatedFromValues returns the possible values for the InitiatedFrom const type.
+func PossibleInitiatedFromValues() []InitiatedFrom {
+	return []InitiatedFrom{
+		InitiatedFromADS,
+		InitiatedFromAzureArc,
+		InitiatedFromDMSCLI,
+		InitiatedFromDMSPS,
+		InitiatedFromDMSPortal,
+		InitiatedFromDMSSDK,
+		InitiatedFromOther,
+		InitiatedFromSSMA,
+		InitiatedFromSSMS,
+	}
+}
+
+// InstanceFailoverGroupRole - The role of the SQL managed instance in this failover group.
+type InstanceFailoverGroupRole string
+
+const (
+	InstanceFailoverGroupRoleForcePrimaryAllowDataLoss InstanceFailoverGroupRole = "force-primary-allow-data-loss"
+	InstanceFailoverGroupRoleForceSecondary            InstanceFailoverGroupRole = "force-secondary"
+	InstanceFailoverGroupRolePrimary                   InstanceFailoverGroupRole = "primary"
+	InstanceFailoverGroupRoleSecondary                 InstanceFailoverGroupRole = "secondary"
+)
+
+// PossibleInstanceFailoverGroupRoleValues returns the possible values for the InstanceFailoverGroupRole const type.
+func PossibleInstanceFailoverGroupRoleValues() []InstanceFailoverGroupRole {
+	return []InstanceFailoverGroupRole{
+		InstanceFailoverGroupRoleForcePrimaryAllowDataLoss,
+		InstanceFailoverGroupRoleForceSecondary,
+		InstanceFailoverGroupRolePrimary,
+		InstanceFailoverGroupRoleSecondary,
+	}
+}
+
+// JobStatus - Represents the current status of the target recommendation job.
+type JobStatus string
+
+const (
+	JobStatusFailed     JobStatus = "Failed"
+	JobStatusInProgress JobStatus = "InProgress"
+	JobStatusNotStarted JobStatus = "NotStarted"
+	JobStatusSucceeded  JobStatus = "Succeeded"
+)
+
+// PossibleJobStatusValues returns the possible values for the JobStatus const type.
+func PossibleJobStatusValues() []JobStatus {
+	return []JobStatus{
+		JobStatusFailed,
+		JobStatusInProgress,
+		JobStatusNotStarted,
+		JobStatusSucceeded,
+	}
+}
+
+// LastExecutionStatus - The last execution status of the background job.
+type LastExecutionStatus string
+
+const (
+	LastExecutionStatusCompleted   LastExecutionStatus = "Completed"
+	LastExecutionStatusFailed      LastExecutionStatus = "Failed"
+	LastExecutionStatusFaulted     LastExecutionStatus = "Faulted"
+	LastExecutionStatusPostponed   LastExecutionStatus = "Postponed"
+	LastExecutionStatusRescheduled LastExecutionStatus = "Rescheduled"
+	LastExecutionStatusSucceeded   LastExecutionStatus = "Succeeded"
+)
+
+// PossibleLastExecutionStatusValues returns the possible values for the LastExecutionStatus const type.
+func PossibleLastExecutionStatusValues() []LastExecutionStatus {
+	return []LastExecutionStatus{
+		LastExecutionStatusCompleted,
+		LastExecutionStatusFailed,
+		LastExecutionStatusFaulted,
+		LastExecutionStatusPostponed,
+		LastExecutionStatusRescheduled,
+		LastExecutionStatusSucceeded,
+	}
+}
+
+// LicenseCategory - This property represents the choice between SQL Server Core and ESU licenses.
+type LicenseCategory string
+
+const (
+	LicenseCategoryCore LicenseCategory = "Core"
+)
+
+// PossibleLicenseCategoryValues returns the possible values for the LicenseCategory const type.
+func PossibleLicenseCategoryValues() []LicenseCategory {
+	return []LicenseCategory{
+		LicenseCategoryCore,
+	}
+}
+
+// MiLinkAssessmentCategory - Validation category for the MI Link prerequisites assessment.
+type MiLinkAssessmentCategory string
+
+const (
+	// MiLinkAssessmentCategoryBoxToMiNetworkConnectivity - Assessment of network connectivity from the on-premise SQL Server
+	// (box) to the Managed Instance.
+	MiLinkAssessmentCategoryBoxToMiNetworkConnectivity MiLinkAssessmentCategory = "BoxToMiNetworkConnectivity"
+	// MiLinkAssessmentCategoryCertificates - Assessments of the necessary certificates configuration.
+	MiLinkAssessmentCategoryCertificates MiLinkAssessmentCategory = "Certificates"
+	// MiLinkAssessmentCategoryDagCrossValidation - Assessments of the chosen Distributed Availability Group.
+	MiLinkAssessmentCategoryDagCrossValidation MiLinkAssessmentCategory = "DagCrossValidation"
+	// MiLinkAssessmentCategoryManagedInstance - Assessments of the Managed Instance.
+	MiLinkAssessmentCategoryManagedInstance MiLinkAssessmentCategory = "ManagedInstance"
+	// MiLinkAssessmentCategoryManagedInstanceCrossValidation - Assessments that use data from both the Managed Instance and the
+	// given instance of the on-premise SQL Server (box) for the validations.
+	MiLinkAssessmentCategoryManagedInstanceCrossValidation MiLinkAssessmentCategory = "ManagedInstanceCrossValidation"
+	// MiLinkAssessmentCategoryManagedInstanceDatabase - Assessments of the database(s) on the Managed Instance.
+	MiLinkAssessmentCategoryManagedInstanceDatabase MiLinkAssessmentCategory = "ManagedInstanceDatabase"
+	// MiLinkAssessmentCategoryMiToBoxNetworkConnectivity - Assessments of network connectivity from the Managed Instance to the
+	// on-premise SQL Server (box).
+	MiLinkAssessmentCategoryMiToBoxNetworkConnectivity MiLinkAssessmentCategory = "MiToBoxNetworkConnectivity"
+	// MiLinkAssessmentCategorySQLInstance - Assessments of the given instance on the on-premise SQL Server (box).
+	MiLinkAssessmentCategorySQLInstance MiLinkAssessmentCategory = "SqlInstance"
+	// MiLinkAssessmentCategorySQLInstanceAg - Assessments of the chosen Availability Group.
+	MiLinkAssessmentCategorySQLInstanceAg MiLinkAssessmentCategory = "SqlInstanceAg"
+	// MiLinkAssessmentCategorySQLInstanceDatabase - Assessments of the database(s) on the given instance on the on-premise SQL
+	// Server (box).
+	MiLinkAssessmentCategorySQLInstanceDatabase MiLinkAssessmentCategory = "SqlInstanceDatabase"
+)
+
+// PossibleMiLinkAssessmentCategoryValues returns the possible values for the MiLinkAssessmentCategory const type.
+func PossibleMiLinkAssessmentCategoryValues() []MiLinkAssessmentCategory {
+	return []MiLinkAssessmentCategory{
+		MiLinkAssessmentCategoryBoxToMiNetworkConnectivity,
+		MiLinkAssessmentCategoryCertificates,
+		MiLinkAssessmentCategoryDagCrossValidation,
+		MiLinkAssessmentCategoryManagedInstance,
+		MiLinkAssessmentCategoryManagedInstanceCrossValidation,
+		MiLinkAssessmentCategoryManagedInstanceDatabase,
+		MiLinkAssessmentCategoryMiToBoxNetworkConnectivity,
+		MiLinkAssessmentCategorySQLInstance,
+		MiLinkAssessmentCategorySQLInstanceAg,
+		MiLinkAssessmentCategorySQLInstanceDatabase,
+	}
+}
+
+// MigrationMode - Mode/type of migration.
+type MigrationMode string
+
+const (
+	// MigrationModeLogShipping - Migration based on log-shipping technology like LRS (Log Replay Service).
+	MigrationModeLogShipping MigrationMode = "LogShipping"
+	// MigrationModeLogical - Logical migration refers to moving data at the logical level (schema and rows) rather than transferring
+	// physical database files or backups. Examples include migrating to Azure SQL Database, which does not support physical restore.
+	MigrationModeLogical MigrationMode = "Logical"
+	// MigrationModeMILink - Migration using managed instance link (MILink) that utilizes Always On availability group technology.
+	MigrationModeMILink MigrationMode = "MILink"
+	// MigrationModeOther - Other mode of migration not listed currently.
+	MigrationModeOther MigrationMode = "Other"
+	// MigrationModeUnknown - Mode of migration is not known.
+	MigrationModeUnknown MigrationMode = "Unknown"
+)
+
+// PossibleMigrationModeValues returns the possible values for the MigrationMode const type.
+func PossibleMigrationModeValues() []MigrationMode {
+	return []MigrationMode{
+		MigrationModeLogShipping,
+		MigrationModeLogical,
+		MigrationModeMILink,
+		MigrationModeOther,
+		MigrationModeUnknown,
+	}
+}
+
+// MigrationStatus - Status of the migration job.
+type MigrationStatus string
+
+const (
+	MigrationStatusCancelled              MigrationStatus = "Cancelled"
+	MigrationStatusFailed                 MigrationStatus = "Failed"
+	MigrationStatusInProgress             MigrationStatus = "InProgress"
+	MigrationStatusInProgressWithWarnings MigrationStatus = "InProgressWithWarnings"
+	MigrationStatusNotStarted             MigrationStatus = "NotStarted"
+	MigrationStatusSuccessful             MigrationStatus = "Successful"
+	MigrationStatusUnknown                MigrationStatus = "Unknown"
+)
+
+// PossibleMigrationStatusValues returns the possible values for the MigrationStatus const type.
+func PossibleMigrationStatusValues() []MigrationStatus {
+	return []MigrationStatus{
+		MigrationStatusCancelled,
+		MigrationStatusFailed,
+		MigrationStatusInProgress,
+		MigrationStatusInProgressWithWarnings,
+		MigrationStatusNotStarted,
+		MigrationStatusSuccessful,
+		MigrationStatusUnknown,
+	}
+}
+
+// Mode - Mode of authentication in SqlServer.
+type Mode string
+
+const (
+	// ModeMixed - Mixed mode authentication for SQL Server which includes windows and SQL Authentication.
+	ModeMixed Mode = "Mixed"
+	// ModeUndefined - Used for scenarios were the mode cannot be determined.
+	ModeUndefined Mode = "Undefined"
+	// ModeWindows - Windows Authentication for SQL Server.
+	ModeWindows Mode = "Windows"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeMixed,
+		ModeUndefined,
+		ModeWindows,
+	}
+}
+
 // OperationOrigin - The intended executor of the operation.
 type OperationOrigin string
 
@@ -219,6 +965,163 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	return []OperationOrigin{
 		OperationOriginSystem,
 		OperationOriginUser,
+	}
+}
+
+// PrimaryAllowConnections - Whether the primary replica should allow all connections or only READ_WRITE connections (disallowing
+// ReadOnly connections)
+type PrimaryAllowConnections string
+
+const (
+	PrimaryAllowConnectionsALL       PrimaryAllowConnections = "ALL"
+	PrimaryAllowConnectionsREADWRITE PrimaryAllowConnections = "READ_WRITE"
+)
+
+// PossiblePrimaryAllowConnectionsValues returns the possible values for the PrimaryAllowConnections const type.
+func PossiblePrimaryAllowConnectionsValues() []PrimaryAllowConnections {
+	return []PrimaryAllowConnections{
+		PrimaryAllowConnectionsALL,
+		PrimaryAllowConnectionsREADWRITE,
+	}
+}
+
+// ProvisioningState - The provisioning state of the failover group resource.
+type ProvisioningState string
+
+const (
+	ProvisioningStateAccepted  ProvisioningState = "Accepted"
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
+		ProvisioningStateFailed,
+		ProvisioningStateSucceeded,
+	}
+}
+
+// RecommendationStatus - The target recommendation Status for this database.
+type RecommendationStatus string
+
+const (
+	RecommendationStatusNotReady            RecommendationStatus = "NotReady"
+	RecommendationStatusReady               RecommendationStatus = "Ready"
+	RecommendationStatusReadyWithConditions RecommendationStatus = "ReadyWithConditions"
+	RecommendationStatusUnknown             RecommendationStatus = "Unknown"
+)
+
+// PossibleRecommendationStatusValues returns the possible values for the RecommendationStatus const type.
+func PossibleRecommendationStatusValues() []RecommendationStatus {
+	return []RecommendationStatus{
+		RecommendationStatusNotReady,
+		RecommendationStatusReady,
+		RecommendationStatusReadyWithConditions,
+		RecommendationStatusUnknown,
+	}
+}
+
+// RecoveryMode - Status of the database.
+type RecoveryMode string
+
+const (
+	RecoveryModeBulkLogged RecoveryMode = "Bulk-logged"
+	RecoveryModeFull       RecoveryMode = "Full"
+	RecoveryModeSimple     RecoveryMode = "Simple"
+)
+
+// PossibleRecoveryModeValues returns the possible values for the RecoveryMode const type.
+func PossibleRecoveryModeValues() []RecoveryMode {
+	return []RecoveryMode{
+		RecoveryModeBulkLogged,
+		RecoveryModeFull,
+		RecoveryModeSimple,
+	}
+}
+
+type ReplicationPartnerType string
+
+const (
+	ReplicationPartnerTypeAzureSQLManagedInstance ReplicationPartnerType = "AzureSQLManagedInstance"
+	ReplicationPartnerTypeAzureSQLVM              ReplicationPartnerType = "AzureSQLVM"
+	ReplicationPartnerTypeSQLServer               ReplicationPartnerType = "SQLServer"
+	ReplicationPartnerTypeUnknown                 ReplicationPartnerType = "Unknown"
+)
+
+// PossibleReplicationPartnerTypeValues returns the possible values for the ReplicationPartnerType const type.
+func PossibleReplicationPartnerTypeValues() []ReplicationPartnerType {
+	return []ReplicationPartnerType{
+		ReplicationPartnerTypeAzureSQLManagedInstance,
+		ReplicationPartnerTypeAzureSQLVM,
+		ReplicationPartnerTypeSQLServer,
+		ReplicationPartnerTypeUnknown,
+	}
+}
+
+// ResourceUpdateMode - Controls whether the SQL Server instance resource is updated with the target recommendation details
+// after the job completes.
+type ResourceUpdateMode string
+
+const (
+	// ResourceUpdateModeSkipResourceUpdate - Do not update the SQL Server instance resource. The target recommendation results
+	// will only be available via the GetTargetRecommendationReports API.
+	ResourceUpdateModeSkipResourceUpdate ResourceUpdateMode = "SkipResourceUpdate"
+	// ResourceUpdateModeUpdateAllTargetRecommendationDetails - Update the SQL Server instance resource with all target recommendation
+	// details, including SKU recommendations and cost estimates, upon job completion.
+	ResourceUpdateModeUpdateAllTargetRecommendationDetails ResourceUpdateMode = "UpdateAllTargetRecommendationDetails"
+)
+
+// PossibleResourceUpdateModeValues returns the possible values for the ResourceUpdateMode const type.
+func PossibleResourceUpdateModeValues() []ResourceUpdateMode {
+	return []ResourceUpdateMode{
+		ResourceUpdateModeSkipResourceUpdate,
+		ResourceUpdateModeUpdateAllTargetRecommendationDetails,
+	}
+}
+
+// Result - The result of the sequencer action.
+type Result string
+
+const (
+	ResultFailed       Result = "Failed"
+	ResultNotCompleted Result = "NotCompleted"
+	ResultSkipped      Result = "Skipped"
+	ResultSucceeded    Result = "Succeeded"
+	ResultTimedOut     Result = "TimedOut"
+)
+
+// PossibleResultValues returns the possible values for the Result const type.
+func PossibleResultValues() []Result {
+	return []Result{
+		ResultFailed,
+		ResultNotCompleted,
+		ResultSkipped,
+		ResultSucceeded,
+		ResultTimedOut,
+	}
+}
+
+// Role - Mirroring Role
+type Role string
+
+const (
+	RoleALL     Role = "ALL"
+	RoleNONE    Role = "NONE"
+	RolePARTNER Role = "PARTNER"
+	RoleWITNESS Role = "WITNESS"
+)
+
+// PossibleRoleValues returns the possible values for the Role const type.
+func PossibleRoleValues() []Role {
+	return []Role{
+		RoleALL,
+		RoleNONE,
+		RolePARTNER,
+		RoleWITNESS,
 	}
 }
 
@@ -238,6 +1141,141 @@ func PossibleSQLManagedInstanceSKUTierValues() []SQLManagedInstanceSKUTier {
 	}
 }
 
+// SQLServerInstanceBpaColumnType - The type of the result column.
+type SQLServerInstanceBpaColumnType string
+
+const (
+	SQLServerInstanceBpaColumnTypeBool     SQLServerInstanceBpaColumnType = "bool"
+	SQLServerInstanceBpaColumnTypeDatetime SQLServerInstanceBpaColumnType = "datetime"
+	SQLServerInstanceBpaColumnTypeDouble   SQLServerInstanceBpaColumnType = "double"
+	SQLServerInstanceBpaColumnTypeGUID     SQLServerInstanceBpaColumnType = "guid"
+	SQLServerInstanceBpaColumnTypeInt      SQLServerInstanceBpaColumnType = "int"
+	SQLServerInstanceBpaColumnTypeLong     SQLServerInstanceBpaColumnType = "long"
+	SQLServerInstanceBpaColumnTypeString   SQLServerInstanceBpaColumnType = "string"
+	SQLServerInstanceBpaColumnTypeTimespan SQLServerInstanceBpaColumnType = "timespan"
+)
+
+// PossibleSQLServerInstanceBpaColumnTypeValues returns the possible values for the SQLServerInstanceBpaColumnType const type.
+func PossibleSQLServerInstanceBpaColumnTypeValues() []SQLServerInstanceBpaColumnType {
+	return []SQLServerInstanceBpaColumnType{
+		SQLServerInstanceBpaColumnTypeBool,
+		SQLServerInstanceBpaColumnTypeDatetime,
+		SQLServerInstanceBpaColumnTypeDouble,
+		SQLServerInstanceBpaColumnTypeGUID,
+		SQLServerInstanceBpaColumnTypeInt,
+		SQLServerInstanceBpaColumnTypeLong,
+		SQLServerInstanceBpaColumnTypeString,
+		SQLServerInstanceBpaColumnTypeTimespan,
+	}
+}
+
+// SQLServerInstanceBpaQueryType - The type of query to run for summarizing the best practices assessment results. If not
+// specified, the default is 'Basic'.
+type SQLServerInstanceBpaQueryType string
+
+const (
+	SQLServerInstanceBpaQueryTypeBasic            SQLServerInstanceBpaQueryType = "Basic"
+	SQLServerInstanceBpaQueryTypeHistoricalTrends SQLServerInstanceBpaQueryType = "HistoricalTrends"
+)
+
+// PossibleSQLServerInstanceBpaQueryTypeValues returns the possible values for the SQLServerInstanceBpaQueryType const type.
+func PossibleSQLServerInstanceBpaQueryTypeValues() []SQLServerInstanceBpaQueryType {
+	return []SQLServerInstanceBpaQueryType{
+		SQLServerInstanceBpaQueryTypeBasic,
+		SQLServerInstanceBpaQueryTypeHistoricalTrends,
+	}
+}
+
+// SQLServerInstanceBpaReportType - The report type that needs to be fetched. If not specified, the default is AssessmentSummary.
+type SQLServerInstanceBpaReportType string
+
+const (
+	SQLServerInstanceBpaReportTypeAssessmentDataPoint SQLServerInstanceBpaReportType = "AssessmentDataPoint"
+	SQLServerInstanceBpaReportTypeAssessmentSummary   SQLServerInstanceBpaReportType = "AssessmentSummary"
+)
+
+// PossibleSQLServerInstanceBpaReportTypeValues returns the possible values for the SQLServerInstanceBpaReportType const type.
+func PossibleSQLServerInstanceBpaReportTypeValues() []SQLServerInstanceBpaReportType {
+	return []SQLServerInstanceBpaReportType{
+		SQLServerInstanceBpaReportTypeAssessmentDataPoint,
+		SQLServerInstanceBpaReportTypeAssessmentSummary,
+	}
+}
+
+// SQLServerInstanceTargetRecommendationReportSectionType - Filters the report to a specific section type. If not specified,
+// all section types are returned. Section types are grouped into two categories: requirements sections contain performance
+// and resource
+// metrics collected from the source SQL Server, while recommendation sections contain suggested Azure target SKUs derived
+// from those requirements.
+type SQLServerInstanceTargetRecommendationReportSectionType string
+
+const (
+	// SQLServerInstanceTargetRecommendationReportSectionTypeFileRequirementsPerDatabase - File-level performance requirements
+	// per database, including IOPS and throughput metrics for individual data and log files. Only available when includeFileLevelRequirements
+	// is set to true in the RunTargetRecommendationJob request.
+	SQLServerInstanceTargetRecommendationReportSectionTypeFileRequirementsPerDatabase SQLServerInstanceTargetRecommendationReportSectionType = "FileRequirementsPerDatabase"
+	// SQLServerInstanceTargetRecommendationReportSectionTypeRequirementsPerDatabase - Performance and resource requirements broken
+	// down per database, including CPU, memory, IOPS, throughput, and storage metrics collected from the source server for each
+	// individual database.
+	SQLServerInstanceTargetRecommendationReportSectionTypeRequirementsPerDatabase SQLServerInstanceTargetRecommendationReportSectionType = "RequirementsPerDatabase"
+	// SQLServerInstanceTargetRecommendationReportSectionTypeRequirementsPerInstance - Aggregated performance and resource requirements
+	// for the entire SQL Server instance, including CPU, memory, IOPS, throughput, and storage metrics collected from the source
+	// server.
+	SQLServerInstanceTargetRecommendationReportSectionTypeRequirementsPerInstance SQLServerInstanceTargetRecommendationReportSectionType = "RequirementsPerInstance"
+	// SQLServerInstanceTargetRecommendationReportSectionTypeSQLDbTargetRecommendationPerDatabase - Recommended Azure SQL Database
+	// SKU per database, including service tier, compute, storage, and estimated monthly cost derived from the collected requirements
+	// for each individual database.
+	SQLServerInstanceTargetRecommendationReportSectionTypeSQLDbTargetRecommendationPerDatabase SQLServerInstanceTargetRecommendationReportSectionType = "SqlDbTargetRecommendationPerDatabase"
+	// SQLServerInstanceTargetRecommendationReportSectionTypeSQLMiTargetRecommendationPerInstance - Recommended Azure SQL Managed
+	// Instance SKU for the entire SQL Server instance, including service tier, compute, storage, and estimated monthly cost derived
+	// from the collected requirements.
+	SQLServerInstanceTargetRecommendationReportSectionTypeSQLMiTargetRecommendationPerInstance SQLServerInstanceTargetRecommendationReportSectionType = "SqlMiTargetRecommendationPerInstance"
+	// SQLServerInstanceTargetRecommendationReportSectionTypeSQLVMTargetRecommendationPerInstance - Recommended Azure SQL Virtual
+	// Machine SKU for the entire SQL Server instance, including VM size, compute, storage, and estimated monthly cost derived
+	// from the collected requirements.
+	SQLServerInstanceTargetRecommendationReportSectionTypeSQLVMTargetRecommendationPerInstance SQLServerInstanceTargetRecommendationReportSectionType = "SqlVmTargetRecommendationPerInstance"
+)
+
+// PossibleSQLServerInstanceTargetRecommendationReportSectionTypeValues returns the possible values for the SQLServerInstanceTargetRecommendationReportSectionType const type.
+func PossibleSQLServerInstanceTargetRecommendationReportSectionTypeValues() []SQLServerInstanceTargetRecommendationReportSectionType {
+	return []SQLServerInstanceTargetRecommendationReportSectionType{
+		SQLServerInstanceTargetRecommendationReportSectionTypeFileRequirementsPerDatabase,
+		SQLServerInstanceTargetRecommendationReportSectionTypeRequirementsPerDatabase,
+		SQLServerInstanceTargetRecommendationReportSectionTypeRequirementsPerInstance,
+		SQLServerInstanceTargetRecommendationReportSectionTypeSQLDbTargetRecommendationPerDatabase,
+		SQLServerInstanceTargetRecommendationReportSectionTypeSQLMiTargetRecommendationPerInstance,
+		SQLServerInstanceTargetRecommendationReportSectionTypeSQLVMTargetRecommendationPerInstance,
+	}
+}
+
+// SQLServerInstanceTelemetryColumnType - The type of the telemetry column.
+type SQLServerInstanceTelemetryColumnType string
+
+const (
+	SQLServerInstanceTelemetryColumnTypeBool     SQLServerInstanceTelemetryColumnType = "bool"
+	SQLServerInstanceTelemetryColumnTypeDatetime SQLServerInstanceTelemetryColumnType = "datetime"
+	SQLServerInstanceTelemetryColumnTypeDouble   SQLServerInstanceTelemetryColumnType = "double"
+	SQLServerInstanceTelemetryColumnTypeGUID     SQLServerInstanceTelemetryColumnType = "guid"
+	SQLServerInstanceTelemetryColumnTypeInt      SQLServerInstanceTelemetryColumnType = "int"
+	SQLServerInstanceTelemetryColumnTypeLong     SQLServerInstanceTelemetryColumnType = "long"
+	SQLServerInstanceTelemetryColumnTypeString   SQLServerInstanceTelemetryColumnType = "string"
+	SQLServerInstanceTelemetryColumnTypeTimespan SQLServerInstanceTelemetryColumnType = "timespan"
+)
+
+// PossibleSQLServerInstanceTelemetryColumnTypeValues returns the possible values for the SQLServerInstanceTelemetryColumnType const type.
+func PossibleSQLServerInstanceTelemetryColumnTypeValues() []SQLServerInstanceTelemetryColumnType {
+	return []SQLServerInstanceTelemetryColumnType{
+		SQLServerInstanceTelemetryColumnTypeBool,
+		SQLServerInstanceTelemetryColumnTypeDatetime,
+		SQLServerInstanceTelemetryColumnTypeDouble,
+		SQLServerInstanceTelemetryColumnTypeGUID,
+		SQLServerInstanceTelemetryColumnTypeInt,
+		SQLServerInstanceTelemetryColumnTypeLong,
+		SQLServerInstanceTelemetryColumnTypeString,
+		SQLServerInstanceTelemetryColumnTypeTimespan,
+	}
+}
+
 // SQLVersion - SQL Server version.
 type SQLVersion string
 
@@ -248,6 +1286,7 @@ const (
 	SQLVersionSQLServer2017 SQLVersion = "SQL Server 2017"
 	SQLVersionSQLServer2019 SQLVersion = "SQL Server 2019"
 	SQLVersionSQLServer2022 SQLVersion = "SQL Server 2022"
+	SQLVersionSQLServer2025 SQLVersion = "SQL Server 2025"
 	SQLVersionUnknown       SQLVersion = "Unknown"
 )
 
@@ -260,6 +1299,180 @@ func PossibleSQLVersionValues() []SQLVersion {
 		SQLVersionSQLServer2017,
 		SQLVersionSQLServer2019,
 		SQLVersionSQLServer2022,
+		SQLVersionSQLServer2025,
 		SQLVersionUnknown,
+	}
+}
+
+// ScopeType - The Azure scope to which the license will apply.
+type ScopeType string
+
+const (
+	ScopeTypeResourceGroup ScopeType = "ResourceGroup"
+	ScopeTypeSubscription  ScopeType = "Subscription"
+	ScopeTypeTenant        ScopeType = "Tenant"
+)
+
+// PossibleScopeTypeValues returns the possible values for the ScopeType const type.
+func PossibleScopeTypeValues() []ScopeType {
+	return []ScopeType{
+		ScopeTypeResourceGroup,
+		ScopeTypeSubscription,
+		ScopeTypeTenant,
+	}
+}
+
+// SecondaryAllowConnections - Whether the secondary replica should allow all connections, no connections, or only ReadOnly
+// connections.
+type SecondaryAllowConnections string
+
+const (
+	SecondaryAllowConnectionsALL      SecondaryAllowConnections = "ALL"
+	SecondaryAllowConnectionsNO       SecondaryAllowConnections = "NO"
+	SecondaryAllowConnectionsREADONLY SecondaryAllowConnections = "READ_ONLY"
+)
+
+// PossibleSecondaryAllowConnectionsValues returns the possible values for the SecondaryAllowConnections const type.
+func PossibleSecondaryAllowConnectionsValues() []SecondaryAllowConnections {
+	return []SecondaryAllowConnections{
+		SecondaryAllowConnectionsALL,
+		SecondaryAllowConnectionsNO,
+		SecondaryAllowConnectionsREADONLY,
+	}
+}
+
+// SeedingMode - Specifies how the secondary replica will be initially seeded. AUTOMATIC enables direct seeding. This method
+// will seed the secondary replica over the network. This method does not require you to backup
+// and restore a copy of the primary database on the replica. MANUAL specifies manual seeding (default). This method requires
+// you to create a backup of the database on the primary replica and manually
+// restore that backup on the secondary replica.
+type SeedingMode string
+
+const (
+	SeedingModeAUTOMATIC SeedingMode = "AUTOMATIC"
+	SeedingModeMANUAL    SeedingMode = "MANUAL"
+)
+
+// PossibleSeedingModeValues returns the possible values for the SeedingMode const type.
+func PossibleSeedingModeValues() []SeedingMode {
+	return []SeedingMode{
+		SeedingModeAUTOMATIC,
+		SeedingModeMANUAL,
+	}
+}
+
+// SequencerState - The state of the sequencer action.
+type SequencerState string
+
+const (
+	SequencerStateCompleted           SequencerState = "Completed"
+	SequencerStateCreatingSuccessors  SequencerState = "CreatingSuccessors"
+	SequencerStateExecutingAction     SequencerState = "ExecutingAction"
+	SequencerStateNotStarted          SequencerState = "NotStarted"
+	SequencerStateWaitingPredecessors SequencerState = "WaitingPredecessors"
+)
+
+// PossibleSequencerStateValues returns the possible values for the SequencerState const type.
+func PossibleSequencerStateValues() []SequencerState {
+	return []SequencerState{
+		SequencerStateCompleted,
+		SequencerStateCreatingSuccessors,
+		SequencerStateExecutingAction,
+		SequencerStateNotStarted,
+		SequencerStateWaitingPredecessors,
+	}
+}
+
+// ServiceType - Indicates if the resource represents a SQL Server engine or a SQL Server component service installed on the
+// host.
+type ServiceType string
+
+const (
+	// ServiceTypeEngine - SQL Server Database Services.
+	ServiceTypeEngine ServiceType = "Engine"
+	// ServiceTypePBIRS - Power BI Report Server.
+	ServiceTypePBIRS ServiceType = "PBIRS"
+	// ServiceTypeSSAS - SQL Server Analysis Services.
+	ServiceTypeSSAS ServiceType = "SSAS"
+	// ServiceTypeSSIS - SQL Server Integration Services.
+	ServiceTypeSSIS ServiceType = "SSIS"
+	// ServiceTypeSSRS - SQL Server Reporting Services.
+	ServiceTypeSSRS ServiceType = "SSRS"
+)
+
+// PossibleServiceTypeValues returns the possible values for the ServiceType const type.
+func PossibleServiceTypeValues() []ServiceType {
+	return []ServiceType{
+		ServiceTypeEngine,
+		ServiceTypePBIRS,
+		ServiceTypeSSAS,
+		ServiceTypeSSIS,
+		ServiceTypeSSRS,
+	}
+}
+
+// State - The activation state of the license.
+type State string
+
+const (
+	StateActive     State = "Active"
+	StateCompleted  State = "Completed"
+	StateDeleted    State = "Deleted"
+	StateDisabled   State = "Disabled"
+	StateEnabled    State = "Enabled"
+	StateFaulted    State = "Faulted"
+	StateInactive   State = "Inactive"
+	StateSuspended  State = "Suspended"
+	StateTerminated State = "Terminated"
+)
+
+// PossibleStateValues returns the possible values for the State const type.
+func PossibleStateValues() []State {
+	return []State{
+		StateActive,
+		StateCompleted,
+		StateDeleted,
+		StateDisabled,
+		StateEnabled,
+		StateFaulted,
+		StateInactive,
+		StateSuspended,
+		StateTerminated,
+	}
+}
+
+// TargetType - Type of target in Azure this database is being migrated to.
+type TargetType string
+
+const (
+	TargetTypeAzureSQLDatabase        TargetType = "AzureSqlDatabase"
+	TargetTypeAzureSQLManagedInstance TargetType = "AzureSqlManagedInstance"
+	TargetTypeAzureSQLVirtualMachine  TargetType = "AzureSqlVirtualMachine"
+)
+
+// PossibleTargetTypeValues returns the possible values for the TargetType const type.
+func PossibleTargetTypeValues() []TargetType {
+	return []TargetType{
+		TargetTypeAzureSQLDatabase,
+		TargetTypeAzureSQLManagedInstance,
+		TargetTypeAzureSQLVirtualMachine,
+	}
+}
+
+// Version - The SQL Server version the license covers.
+type Version string
+
+const (
+	VersionSQLServer2012 Version = "SQL Server 2012"
+	VersionSQLServer2014 Version = "SQL Server 2014"
+	VersionSQLServer2016 Version = "SQL Server 2016"
+)
+
+// PossibleVersionValues returns the possible values for the Version const type.
+func PossibleVersionValues() []Version {
+	return []Version{
+		VersionSQLServer2012,
+		VersionSQLServer2014,
+		VersionSQLServer2016,
 	}
 }

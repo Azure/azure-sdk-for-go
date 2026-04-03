@@ -27,7 +27,7 @@ type SQLServerInstancesClient struct {
 // NewSQLServerInstancesClient creates a new instance of SQLServerInstancesClient with the specified values.
 //   - subscriptionID - The ID of the Azure subscription
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSQLServerInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLServerInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSQLServerInstancesClient(subscriptionID string, credential azcore.TokenC
 // BeginCreate - Creates or replaces a SQL Server Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - sqlServerInstanceName - Name of SQL Server Instance
 //   - sqlServerInstance - The SQL Server Instance to be created or updated.
@@ -70,7 +70,7 @@ func (client *SQLServerInstancesClient) BeginCreate(ctx context.Context, resourc
 // Create - Creates or replaces a SQL Server Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 func (client *SQLServerInstancesClient) create(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstance SQLServerInstance, options *SQLServerInstancesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLServerInstancesClient.BeginCreate"
@@ -93,7 +93,7 @@ func (client *SQLServerInstancesClient) create(ctx context.Context, resourceGrou
 }
 
 // createCreateRequest creates the Create request.
-func (client *SQLServerInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstance SQLServerInstance, options *SQLServerInstancesClientBeginCreateOptions) (*policy.Request, error) {
+func (client *SQLServerInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstance SQLServerInstance, _ *SQLServerInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -112,7 +112,7 @@ func (client *SQLServerInstancesClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sqlServerInstance); err != nil {
@@ -124,7 +124,7 @@ func (client *SQLServerInstancesClient) createCreateRequest(ctx context.Context,
 // BeginDelete - Deletes a SQL Server Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - sqlServerInstanceName - Name of SQL Server Instance
 //   - options - SQLServerInstancesClientBeginDeleteOptions contains the optional parameters for the SQLServerInstancesClient.BeginDelete
@@ -149,7 +149,7 @@ func (client *SQLServerInstancesClient) BeginDelete(ctx context.Context, resourc
 // Delete - Deletes a SQL Server Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 func (client *SQLServerInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLServerInstancesClient.BeginDelete"
@@ -172,7 +172,7 @@ func (client *SQLServerInstancesClient) deleteOperation(ctx context.Context, res
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SQLServerInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SQLServerInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -191,7 +191,7 @@ func (client *SQLServerInstancesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *SQLServerInstancesClient) deleteCreateRequest(ctx context.Context,
 // Get - Retrieves a SQL Server Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - sqlServerInstanceName - Name of SQL Server Instance
 //   - options - SQLServerInstancesClientGetOptions contains the optional parameters for the SQLServerInstancesClient.Get method.
@@ -227,7 +227,7 @@ func (client *SQLServerInstancesClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLServerInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientGetOptions) (*policy.Request, error) {
+func (client *SQLServerInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,7 +246,7 @@ func (client *SQLServerInstancesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,9 +261,620 @@ func (client *SQLServerInstancesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
+// NewGetAllAvailabilityGroupsPager - Retrieves full properties of all the Availability Groups in a SQL Server instance.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientGetAllAvailabilityGroupsOptions contains the optional parameters for the SQLServerInstancesClient.NewGetAllAvailabilityGroupsPager
+//     method.
+func (client *SQLServerInstancesClient) NewGetAllAvailabilityGroupsPager(resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientGetAllAvailabilityGroupsOptions) *runtime.Pager[SQLServerInstancesClientGetAllAvailabilityGroupsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SQLServerInstancesClientGetAllAvailabilityGroupsResponse]{
+		More: func(page SQLServerInstancesClientGetAllAvailabilityGroupsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SQLServerInstancesClientGetAllAvailabilityGroupsResponse) (SQLServerInstancesClientGetAllAvailabilityGroupsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SQLServerInstancesClient.NewGetAllAvailabilityGroupsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getAllAvailabilityGroupsCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+			}, nil)
+			if err != nil {
+				return SQLServerInstancesClientGetAllAvailabilityGroupsResponse{}, err
+			}
+			return client.getAllAvailabilityGroupsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// getAllAvailabilityGroupsCreateRequest creates the GetAllAvailabilityGroups request.
+func (client *SQLServerInstancesClient) getAllAvailabilityGroupsCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientGetAllAvailabilityGroupsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/getAllAvailabilityGroups"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.AvailabilityGroupRetrievalFilters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.AvailabilityGroupRetrievalFilters); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// getAllAvailabilityGroupsHandleResponse handles the GetAllAvailabilityGroups response.
+func (client *SQLServerInstancesClient) getAllAvailabilityGroupsHandleResponse(resp *http.Response) (SQLServerInstancesClientGetAllAvailabilityGroupsResponse, error) {
+	result := SQLServerInstancesClientGetAllAvailabilityGroupsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ArcSQLServerAvailabilityGroupListResult); err != nil {
+		return SQLServerInstancesClientGetAllAvailabilityGroupsResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginGetBestPracticesAssessment - Retrieves SQL best practices assessment results for the SQL Server instance.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - sqlServerInstanceBpaRequest - The request to fetch the SQL best practices assessment results.
+//   - options - SQLServerInstancesClientBeginGetBestPracticesAssessmentOptions contains the optional parameters for the SQLServerInstancesClient.BeginGetBestPracticesAssessment
+//     method.
+func (client *SQLServerInstancesClient) BeginGetBestPracticesAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceBpaRequest SQLServerInstanceBpaRequest, options *SQLServerInstancesClientBeginGetBestPracticesAssessmentOptions) (*runtime.Poller[*runtime.Pager[SQLServerInstancesClientGetBestPracticesAssessmentResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[SQLServerInstancesClientGetBestPracticesAssessmentResponse]{
+		More: func(page SQLServerInstancesClientGetBestPracticesAssessmentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SQLServerInstancesClientGetBestPracticesAssessmentResponse) (SQLServerInstancesClientGetBestPracticesAssessmentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SQLServerInstancesClient.BeginGetBestPracticesAssessment")
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), *page.NextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getBestPracticesAssessmentCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceBpaRequest, options)
+			}, nil)
+			if err != nil {
+				return SQLServerInstancesClientGetBestPracticesAssessmentResponse{}, err
+			}
+			return client.getBestPracticesAssessmentHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getBestPracticesAssessment(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceBpaRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[SQLServerInstancesClientGetBestPracticesAssessmentResponse]]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Response:      &pager,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[SQLServerInstancesClientGetBestPracticesAssessmentResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+	}
+}
+
+// GetBestPracticesAssessment - Retrieves SQL best practices assessment results for the SQL Server instance.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) getBestPracticesAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceBpaRequest SQLServerInstanceBpaRequest, options *SQLServerInstancesClientBeginGetBestPracticesAssessmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginGetBestPracticesAssessment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getBestPracticesAssessmentCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceBpaRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// getBestPracticesAssessmentCreateRequest creates the GetBestPracticesAssessment request.
+func (client *SQLServerInstancesClient) getBestPracticesAssessmentCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceBpaRequest SQLServerInstanceBpaRequest, _ *SQLServerInstancesClientBeginGetBestPracticesAssessmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/getBestPracticesAssessment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, sqlServerInstanceBpaRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// getBestPracticesAssessmentHandleResponse handles the GetBestPracticesAssessment response.
+func (client *SQLServerInstancesClient) getBestPracticesAssessmentHandleResponse(resp *http.Response) (SQLServerInstancesClientGetBestPracticesAssessmentResponse, error) {
+	result := SQLServerInstancesClientGetBestPracticesAssessmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstanceBpaResponse); err != nil {
+		return SQLServerInstancesClientGetBestPracticesAssessmentResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginGetJobs - Gets job details for sql arc resource asynchronously
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientBeginGetJobsOptions contains the optional parameters for the SQLServerInstancesClient.BeginGetJobs
+//     method.
+func (client *SQLServerInstancesClient) BeginGetJobs(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetJobsOptions) (*runtime.Poller[SQLServerInstancesClientGetJobsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getJobs(ctx, resourceGroupName, sqlServerInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientGetJobsResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientGetJobsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// GetJobs - Gets job details for sql arc resource asynchronously
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) getJobs(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetJobsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginGetJobs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getJobsCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// getJobsCreateRequest creates the GetJobs request.
+func (client *SQLServerInstancesClient) getJobsCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetJobsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/getJobs"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.SQLServerInstanceJobsRequest != nil {
+		if err := runtime.MarshalAsJSON(req, *options.SQLServerInstanceJobsRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// GetJobsStatus - Gets jobs status details for sql arc resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientGetJobsStatusOptions contains the optional parameters for the SQLServerInstancesClient.GetJobsStatus
+//     method.
+func (client *SQLServerInstancesClient) GetJobsStatus(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientGetJobsStatusOptions) (SQLServerInstancesClientGetJobsStatusResponse, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.GetJobsStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getJobsStatusCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return SQLServerInstancesClientGetJobsStatusResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SQLServerInstancesClientGetJobsStatusResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SQLServerInstancesClientGetJobsStatusResponse{}, err
+	}
+	resp, err := client.getJobsStatusHandleResponse(httpResp)
+	return resp, err
+}
+
+// getJobsStatusCreateRequest creates the GetJobsStatus request.
+func (client *SQLServerInstancesClient) getJobsStatusCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientGetJobsStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/getJobsStatus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.SQLServerInstanceJobsStatusRequest != nil {
+		if err := runtime.MarshalAsJSON(req, *options.SQLServerInstanceJobsStatusRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// getJobsStatusHandleResponse handles the GetJobsStatus response.
+func (client *SQLServerInstancesClient) getJobsStatusHandleResponse(resp *http.Response) (SQLServerInstancesClientGetJobsStatusResponse, error) {
+	result := SQLServerInstancesClientGetJobsStatusResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstanceJobsStatusResponse); err != nil {
+		return SQLServerInstancesClientGetJobsStatusResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginGetMigrationReadinessReport - Retrieves the migration readiness report for the SQL Server instance. The report contains
+// an assessment of the instance's readiness for migration to Azure SQL targets.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientBeginGetMigrationReadinessReportOptions contains the optional parameters for the SQLServerInstancesClient.BeginGetMigrationReadinessReport
+//     method.
+func (client *SQLServerInstancesClient) BeginGetMigrationReadinessReport(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetMigrationReadinessReportOptions) (*runtime.Poller[SQLServerInstancesClientGetMigrationReadinessReportResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getMigrationReadinessReport(ctx, resourceGroupName, sqlServerInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientGetMigrationReadinessReportResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientGetMigrationReadinessReportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// GetMigrationReadinessReport - Retrieves the migration readiness report for the SQL Server instance. The report contains
+// an assessment of the instance's readiness for migration to Azure SQL targets.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) getMigrationReadinessReport(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetMigrationReadinessReportOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginGetMigrationReadinessReport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getMigrationReadinessReportCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// getMigrationReadinessReportCreateRequest creates the GetMigrationReadinessReport request.
+func (client *SQLServerInstancesClient) getMigrationReadinessReportCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientBeginGetMigrationReadinessReportOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/getMigrationReadinessReport"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginGetTargetRecommendationReports - Retrieves the current job status and the latest target recommendation report for
+// the SQL Server instance. The response always includes the jobStatus field, which indicates the state of the most recent
+// target recommendation job (NotStarted, InProgress, Succeeded, or Failed). The report data is included in the response only
+// when the jobStatus is Succeeded. A target recommendation job must be started
+// using the RunTargetRecommendationJob API before calling this API. Only the most recent report is returned. If the report
+// contains more sections than can be returned in a single response, use the
+// nextReportOffset and nextSectionOffset values from the response to retrieve the remaining data.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientBeginGetTargetRecommendationReportsOptions contains the optional parameters for the SQLServerInstancesClient.BeginGetTargetRecommendationReports
+//     method.
+func (client *SQLServerInstancesClient) BeginGetTargetRecommendationReports(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetTargetRecommendationReportsOptions) (*runtime.Poller[SQLServerInstancesClientGetTargetRecommendationReportsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getTargetRecommendationReports(ctx, resourceGroupName, sqlServerInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientGetTargetRecommendationReportsResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientGetTargetRecommendationReportsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// GetTargetRecommendationReports - Retrieves the current job status and the latest target recommendation report for the SQL
+// Server instance. The response always includes the jobStatus field, which indicates the state of the most recent
+// target recommendation job (NotStarted, InProgress, Succeeded, or Failed). The report data is included in the response only
+// when the jobStatus is Succeeded. A target recommendation job must be started
+// using the RunTargetRecommendationJob API before calling this API. Only the most recent report is returned. If the report
+// contains more sections than can be returned in a single response, use the
+// nextReportOffset and nextSectionOffset values from the response to retrieve the remaining data.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) getTargetRecommendationReports(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetTargetRecommendationReportsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginGetTargetRecommendationReports"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getTargetRecommendationReportsCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// getTargetRecommendationReportsCreateRequest creates the GetTargetRecommendationReports request.
+func (client *SQLServerInstancesClient) getTargetRecommendationReportsCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginGetTargetRecommendationReportsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/getTargetRecommendationReports"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.SQLServerInstanceTargetRecommendationReportsRequest != nil {
+		if err := runtime.MarshalAsJSON(req, *options.SQLServerInstanceTargetRecommendationReportsRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginGetTelemetry - Retrieves SQL Server instance telemetry
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - sqlServerInstanceTelemetryRequest - Contains the parameters to get SQL Server instance telemetry.
+//   - options - SQLServerInstancesClientBeginGetTelemetryOptions contains the optional parameters for the SQLServerInstancesClient.BeginGetTelemetry
+//     method.
+func (client *SQLServerInstancesClient) BeginGetTelemetry(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceTelemetryRequest SQLServerInstanceTelemetryRequest, options *SQLServerInstancesClientBeginGetTelemetryOptions) (*runtime.Poller[*runtime.Pager[SQLServerInstancesClientGetTelemetryResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[SQLServerInstancesClientGetTelemetryResponse]{
+		More: func(page SQLServerInstancesClientGetTelemetryResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SQLServerInstancesClientGetTelemetryResponse) (SQLServerInstancesClientGetTelemetryResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SQLServerInstancesClient.BeginGetTelemetry")
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), *page.NextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getTelemetryCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceTelemetryRequest, options)
+			}, nil)
+			if err != nil {
+				return SQLServerInstancesClientGetTelemetryResponse{}, err
+			}
+			return client.getTelemetryHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getTelemetry(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceTelemetryRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[SQLServerInstancesClientGetTelemetryResponse]]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Response:      &pager,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[SQLServerInstancesClientGetTelemetryResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+	}
+}
+
+// GetTelemetry - Retrieves SQL Server instance telemetry
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) getTelemetry(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceTelemetryRequest SQLServerInstanceTelemetryRequest, options *SQLServerInstancesClientBeginGetTelemetryOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginGetTelemetry"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getTelemetryCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceTelemetryRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// getTelemetryCreateRequest creates the GetTelemetry request.
+func (client *SQLServerInstancesClient) getTelemetryCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceTelemetryRequest SQLServerInstanceTelemetryRequest, _ *SQLServerInstancesClientBeginGetTelemetryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/getTelemetry"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, sqlServerInstanceTelemetryRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// getTelemetryHandleResponse handles the GetTelemetry response.
+func (client *SQLServerInstancesClient) getTelemetryHandleResponse(resp *http.Response) (SQLServerInstancesClientGetTelemetryResponse, error) {
+	result := SQLServerInstancesClientGetTelemetryResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstanceTelemetryResponse); err != nil {
+		return SQLServerInstancesClientGetTelemetryResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List sqlServerInstance resources in the subscription
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - options - SQLServerInstancesClientListOptions contains the optional parameters for the SQLServerInstancesClient.NewListPager
 //     method.
 func (client *SQLServerInstancesClient) NewListPager(options *SQLServerInstancesClientListOptions) *runtime.Pager[SQLServerInstancesClientListResponse] {
@@ -290,7 +901,7 @@ func (client *SQLServerInstancesClient) NewListPager(options *SQLServerInstances
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLServerInstancesClient) listCreateRequest(ctx context.Context, options *SQLServerInstancesClientListOptions) (*policy.Request, error) {
+func (client *SQLServerInstancesClient) listCreateRequest(ctx context.Context, _ *SQLServerInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -301,7 +912,7 @@ func (client *SQLServerInstancesClient) listCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -318,7 +929,7 @@ func (client *SQLServerInstancesClient) listHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Gets all sqlServerInstances in a resource group.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - options - SQLServerInstancesClientListByResourceGroupOptions contains the optional parameters for the SQLServerInstancesClient.NewListByResourceGroupPager
 //     method.
@@ -346,7 +957,7 @@ func (client *SQLServerInstancesClient) NewListByResourceGroupPager(resourceGrou
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SQLServerInstancesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SQLServerInstancesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *SQLServerInstancesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *SQLServerInstancesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -361,7 +972,7 @@ func (client *SQLServerInstancesClient) listByResourceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -376,39 +987,648 @@ func (client *SQLServerInstancesClient) listByResourceGroupHandleResponse(resp *
 	return result, nil
 }
 
-// Update - Updates a SQL Server Instance resource
+// PostUpgrade - Clean up after upgrading.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01-preview
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientPostUpgradeOptions contains the optional parameters for the SQLServerInstancesClient.PostUpgrade
+//     method.
+func (client *SQLServerInstancesClient) PostUpgrade(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientPostUpgradeOptions) (SQLServerInstancesClientPostUpgradeResponse, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.PostUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.postUpgradeCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return SQLServerInstancesClientPostUpgradeResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SQLServerInstancesClientPostUpgradeResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SQLServerInstancesClientPostUpgradeResponse{}, err
+	}
+	resp, err := client.postUpgradeHandleResponse(httpResp)
+	return resp, err
+}
+
+// postUpgradeCreateRequest creates the PostUpgrade request.
+func (client *SQLServerInstancesClient) postUpgradeCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientPostUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/postUpgrade"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// postUpgradeHandleResponse handles the PostUpgrade response.
+func (client *SQLServerInstancesClient) postUpgradeHandleResponse(resp *http.Response) (SQLServerInstancesClientPostUpgradeResponse, error) {
+	result := SQLServerInstancesClientPostUpgradeResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstance); err != nil {
+		return SQLServerInstancesClientPostUpgradeResponse{}, err
+	}
+	return result, nil
+}
+
+// PreUpgrade - Request Upgrade Permission before upgrading.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientPreUpgradeOptions contains the optional parameters for the SQLServerInstancesClient.PreUpgrade
+//     method.
+func (client *SQLServerInstancesClient) PreUpgrade(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientPreUpgradeOptions) (SQLServerInstancesClientPreUpgradeResponse, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.PreUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.preUpgradeCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return SQLServerInstancesClientPreUpgradeResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SQLServerInstancesClientPreUpgradeResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SQLServerInstancesClientPreUpgradeResponse{}, err
+	}
+	resp, err := client.preUpgradeHandleResponse(httpResp)
+	return resp, err
+}
+
+// preUpgradeCreateRequest creates the PreUpgrade request.
+func (client *SQLServerInstancesClient) preUpgradeCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientPreUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/preUpgrade"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// preUpgradeHandleResponse handles the PreUpgrade response.
+func (client *SQLServerInstancesClient) preUpgradeHandleResponse(resp *http.Response) (SQLServerInstancesClientPreUpgradeResponse, error) {
+	result := SQLServerInstancesClientPreUpgradeResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstance); err != nil {
+		return SQLServerInstancesClientPreUpgradeResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginRunBestPracticeAssessment - The request to run SQL best practices assessment asynchronously.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientBeginRunBestPracticeAssessmentOptions contains the optional parameters for the SQLServerInstancesClient.BeginRunBestPracticeAssessment
+//     method.
+func (client *SQLServerInstancesClient) BeginRunBestPracticeAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginRunBestPracticeAssessmentOptions) (*runtime.Poller[SQLServerInstancesClientRunBestPracticeAssessmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runBestPracticeAssessment(ctx, resourceGroupName, sqlServerInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientRunBestPracticeAssessmentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientRunBestPracticeAssessmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// RunBestPracticeAssessment - The request to run SQL best practices assessment asynchronously.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) runBestPracticeAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginRunBestPracticeAssessmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginRunBestPracticeAssessment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runBestPracticeAssessmentCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// runBestPracticeAssessmentCreateRequest creates the RunBestPracticeAssessment request.
+func (client *SQLServerInstancesClient) runBestPracticeAssessmentCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientBeginRunBestPracticeAssessmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/runBestPracticeAssessment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// RunBestPracticesAssessment - The request to run SQL best practices assessment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientRunBestPracticesAssessmentOptions contains the optional parameters for the SQLServerInstancesClient.RunBestPracticesAssessment
+//     method.
+func (client *SQLServerInstancesClient) RunBestPracticesAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientRunBestPracticesAssessmentOptions) (SQLServerInstancesClientRunBestPracticesAssessmentResponse, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.RunBestPracticesAssessment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runBestPracticesAssessmentCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return SQLServerInstancesClientRunBestPracticesAssessmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SQLServerInstancesClientRunBestPracticesAssessmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SQLServerInstancesClientRunBestPracticesAssessmentResponse{}, err
+	}
+	resp, err := client.runBestPracticesAssessmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// runBestPracticesAssessmentCreateRequest creates the RunBestPracticesAssessment request.
+func (client *SQLServerInstancesClient) runBestPracticesAssessmentCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientRunBestPracticesAssessmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/runBestPracticesAssessment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// runBestPracticesAssessmentHandleResponse handles the RunBestPracticesAssessment response.
+func (client *SQLServerInstancesClient) runBestPracticesAssessmentHandleResponse(resp *http.Response) (SQLServerInstancesClientRunBestPracticesAssessmentResponse, error) {
+	result := SQLServerInstancesClientRunBestPracticesAssessmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstanceRunBestPracticesAssessmentResponse); err != nil {
+		return SQLServerInstancesClientRunBestPracticesAssessmentResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginRunManagedInstanceLinkAssessment - Runs Managed Instance Link assessment for SQL Server instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - sqlServerInstanceManagedInstanceLinkAssessmentRequest - Contains the parameters to run SQL Server instance MI link assessment.
+//   - options - SQLServerInstancesClientBeginRunManagedInstanceLinkAssessmentOptions contains the optional parameters for the
+//     SQLServerInstancesClient.BeginRunManagedInstanceLinkAssessment method.
+func (client *SQLServerInstancesClient) BeginRunManagedInstanceLinkAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceManagedInstanceLinkAssessmentRequest SQLServerInstanceManagedInstanceLinkAssessmentRequest, options *SQLServerInstancesClientBeginRunManagedInstanceLinkAssessmentOptions) (*runtime.Poller[SQLServerInstancesClientRunManagedInstanceLinkAssessmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runManagedInstanceLinkAssessment(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceManagedInstanceLinkAssessmentRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientRunManagedInstanceLinkAssessmentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientRunManagedInstanceLinkAssessmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// RunManagedInstanceLinkAssessment - Runs Managed Instance Link assessment for SQL Server instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) runManagedInstanceLinkAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceManagedInstanceLinkAssessmentRequest SQLServerInstanceManagedInstanceLinkAssessmentRequest, options *SQLServerInstancesClientBeginRunManagedInstanceLinkAssessmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginRunManagedInstanceLinkAssessment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runManagedInstanceLinkAssessmentCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, sqlServerInstanceManagedInstanceLinkAssessmentRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// runManagedInstanceLinkAssessmentCreateRequest creates the RunManagedInstanceLinkAssessment request.
+func (client *SQLServerInstancesClient) runManagedInstanceLinkAssessmentCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, sqlServerInstanceManagedInstanceLinkAssessmentRequest SQLServerInstanceManagedInstanceLinkAssessmentRequest, _ *SQLServerInstancesClientBeginRunManagedInstanceLinkAssessmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/runManagedInstanceLinkAssessment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, sqlServerInstanceManagedInstanceLinkAssessmentRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// RunMigrationAssessment - Runs migration assessment for SQL Server instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientRunMigrationAssessmentOptions contains the optional parameters for the SQLServerInstancesClient.RunMigrationAssessment
+//     method.
+func (client *SQLServerInstancesClient) RunMigrationAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientRunMigrationAssessmentOptions) (SQLServerInstancesClientRunMigrationAssessmentResponse, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.RunMigrationAssessment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runMigrationAssessmentCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return SQLServerInstancesClientRunMigrationAssessmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SQLServerInstancesClientRunMigrationAssessmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SQLServerInstancesClientRunMigrationAssessmentResponse{}, err
+	}
+	resp, err := client.runMigrationAssessmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// runMigrationAssessmentCreateRequest creates the RunMigrationAssessment request.
+func (client *SQLServerInstancesClient) runMigrationAssessmentCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientRunMigrationAssessmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/runMigrationAssessment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// runMigrationAssessmentHandleResponse handles the RunMigrationAssessment response.
+func (client *SQLServerInstancesClient) runMigrationAssessmentHandleResponse(resp *http.Response) (SQLServerInstancesClientRunMigrationAssessmentResponse, error) {
+	result := SQLServerInstancesClientRunMigrationAssessmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstanceRunMigrationAssessmentResponse); err != nil {
+		return SQLServerInstancesClientRunMigrationAssessmentResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginRunMigrationReadinessAssessment - The request to run migration readiness assessment asynchronously.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientBeginRunMigrationReadinessAssessmentOptions contains the optional parameters for the
+//     SQLServerInstancesClient.BeginRunMigrationReadinessAssessment method.
+func (client *SQLServerInstancesClient) BeginRunMigrationReadinessAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginRunMigrationReadinessAssessmentOptions) (*runtime.Poller[SQLServerInstancesClientRunMigrationReadinessAssessmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runMigrationReadinessAssessment(ctx, resourceGroupName, sqlServerInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientRunMigrationReadinessAssessmentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientRunMigrationReadinessAssessmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// RunMigrationReadinessAssessment - The request to run migration readiness assessment asynchronously.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) runMigrationReadinessAssessment(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginRunMigrationReadinessAssessmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginRunMigrationReadinessAssessment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runMigrationReadinessAssessmentCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// runMigrationReadinessAssessmentCreateRequest creates the RunMigrationReadinessAssessment request.
+func (client *SQLServerInstancesClient) runMigrationReadinessAssessmentCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, _ *SQLServerInstancesClientBeginRunMigrationReadinessAssessmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/runMigrationReadinessAssessment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRunTargetRecommendationJob - Starts a target recommendation job for the SQL Server instance. Only one job can run
+// at a time. If the previous job is in a non-terminal state (NotStarted or InProgress), calling this operation again
+// returns the existing job status without creating a new job. A new job is created only when the previous job has reached
+// a terminal state (Succeeded or Failed). This operation does not return
+// recommendations directly. Use the GetTargetRecommendationReports API to check the job status and retrieve the target recommendation
+// report if the jobStatus is Succeeded.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the Azure resource group
+//   - sqlServerInstanceName - Name of SQL Server Instance
+//   - options - SQLServerInstancesClientBeginRunTargetRecommendationJobOptions contains the optional parameters for the SQLServerInstancesClient.BeginRunTargetRecommendationJob
+//     method.
+func (client *SQLServerInstancesClient) BeginRunTargetRecommendationJob(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginRunTargetRecommendationJobOptions) (*runtime.Poller[SQLServerInstancesClientRunTargetRecommendationJobResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runTargetRecommendationJob(ctx, resourceGroupName, sqlServerInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientRunTargetRecommendationJobResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientRunTargetRecommendationJobResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// RunTargetRecommendationJob - Starts a target recommendation job for the SQL Server instance. Only one job can run at a
+// time. If the previous job is in a non-terminal state (NotStarted or InProgress), calling this operation again
+// returns the existing job status without creating a new job. A new job is created only when the previous job has reached
+// a terminal state (Succeeded or Failed). This operation does not return
+// recommendations directly. Use the GetTargetRecommendationReports API to check the job status and retrieve the target recommendation
+// report if the jobStatus is Succeeded.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) runTargetRecommendationJob(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginRunTargetRecommendationJobOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SQLServerInstancesClient.BeginRunTargetRecommendationJob"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runTargetRecommendationJobCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// runTargetRecommendationJobCreateRequest creates the RunTargetRecommendationJob request.
+func (client *SQLServerInstancesClient) runTargetRecommendationJobCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, options *SQLServerInstancesClientBeginRunTargetRecommendationJobOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}/runTargetRecommendationJob"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlServerInstanceName == "" {
+		return nil, errors.New("parameter sqlServerInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlServerInstanceName}", url.PathEscape(sqlServerInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.SQLServerInstanceRunTargetRecommendationJobRequest != nil {
+		if err := runtime.MarshalAsJSON(req, *options.SQLServerInstanceRunTargetRecommendationJobRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates a SQL Server Instance resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the Azure resource group
 //   - sqlServerInstanceName - Name of SQL Server Instance
 //   - parameters - The SQL Server Instance.
-//   - options - SQLServerInstancesClientUpdateOptions contains the optional parameters for the SQLServerInstancesClient.Update
+//   - options - SQLServerInstancesClientBeginUpdateOptions contains the optional parameters for the SQLServerInstancesClient.BeginUpdate
 //     method.
-func (client *SQLServerInstancesClient) Update(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, parameters SQLServerInstanceUpdate, options *SQLServerInstancesClientUpdateOptions) (SQLServerInstancesClientUpdateResponse, error) {
+func (client *SQLServerInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, parameters SQLServerInstanceUpdate, options *SQLServerInstancesClientBeginUpdateOptions) (*runtime.Poller[SQLServerInstancesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, sqlServerInstanceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SQLServerInstancesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SQLServerInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Updates a SQL Server Instance resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
+func (client *SQLServerInstancesClient) update(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, parameters SQLServerInstanceUpdate, options *SQLServerInstancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SQLServerInstancesClient.Update"
+	const operationName = "SQLServerInstancesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, sqlServerInstanceName, parameters, options)
 	if err != nil {
-		return SQLServerInstancesClientUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SQLServerInstancesClientUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return SQLServerInstancesClientUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SQLServerInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, parameters SQLServerInstanceUpdate, options *SQLServerInstancesClientUpdateOptions) (*policy.Request, error) {
+func (client *SQLServerInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlServerInstanceName string, parameters SQLServerInstanceUpdate, _ *SQLServerInstancesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlServerInstances/{sqlServerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -427,20 +1647,11 @@ func (client *SQLServerInstancesClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
-}
-
-// updateHandleResponse handles the Update response.
-func (client *SQLServerInstancesClient) updateHandleResponse(resp *http.Response) (SQLServerInstancesClientUpdateResponse, error) {
-	result := SQLServerInstancesClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerInstance); err != nil {
-		return SQLServerInstancesClientUpdateResponse{}, err
-	}
-	return result, nil
 }

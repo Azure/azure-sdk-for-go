@@ -4,6 +4,23 @@
 
 package armcomputelimit
 
+// FeaturesClientBeginEnableOptions contains the optional parameters for the FeaturesClient.BeginEnable method.
+type FeaturesClientBeginEnableOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FeaturesClientGetOptions contains the optional parameters for the FeaturesClient.Get method.
+type FeaturesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the FeaturesClient.NewListBySubscriptionLocationResourcePager
+// method.
+type FeaturesClientListBySubscriptionLocationResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GuestSubscriptionsClientCreateOptions contains the optional parameters for the GuestSubscriptionsClient.Create method.
 type GuestSubscriptionsClientCreateOptions struct {
 	// placeholder for future optional parameters

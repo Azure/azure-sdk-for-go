@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armcomputelimit.ClientFactory type.
 type ServerFactory struct {
+	// FeaturesServer contains the fakes for client FeaturesClient
+	FeaturesServer FeaturesServer
+
 	// GuestSubscriptionsServer contains the fakes for client GuestSubscriptionsClient
 	GuestSubscriptionsServer GuestSubscriptionsServer
 
@@ -39,6 +42,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                        *ServerFactory
 	trMu                       sync.Mutex
+	trFeaturesServer           *FeaturesServerTransport
 	trGuestSubscriptionsServer *GuestSubscriptionsServerTransport
 	trOperationsServer         *OperationsServerTransport
 	trSharedLimitsServer       *SharedLimitsServerTransport
@@ -57,16 +61,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "FeaturesClient":
+		initServer(&s.trMu, &s.trFeaturesServer, func() *FeaturesServerTransport { return NewFeaturesServerTransport(&s.srv.FeaturesServer) })
+		resp, err = s.trFeaturesServer.Do(req)
 	case "GuestSubscriptionsClient":
-		initServer(s, &s.trGuestSubscriptionsServer, func() *GuestSubscriptionsServerTransport {
+		initServer(&s.trMu, &s.trGuestSubscriptionsServer, func() *GuestSubscriptionsServerTransport {
 			return NewGuestSubscriptionsServerTransport(&s.srv.GuestSubscriptionsServer)
 		})
 		resp, err = s.trGuestSubscriptionsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "SharedLimitsClient":
-		initServer(s, &s.trSharedLimitsServer, func() *SharedLimitsServerTransport { return NewSharedLimitsServerTransport(&s.srv.SharedLimitsServer) })
+		initServer(&s.trMu, &s.trSharedLimitsServer, func() *SharedLimitsServerTransport { return NewSharedLimitsServerTransport(&s.srv.SharedLimitsServer) })
 		resp, err = s.trSharedLimitsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -77,12 +84,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

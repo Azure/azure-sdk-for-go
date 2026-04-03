@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.CognitiveServices": "2026-01-15-preview"
+  },
+  "emitterVersion": "0.10.4"
+}

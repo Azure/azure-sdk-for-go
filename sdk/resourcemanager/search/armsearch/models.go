@@ -50,6 +50,16 @@ type AdminKeyResult struct {
 	SecondaryKey *string
 }
 
+// AzureActiveDirectoryApplicationCredentials - Describes the Azure Active Directory application credentials required to access
+// an Azure Key Vault.
+type AzureActiveDirectoryApplicationCredentials struct {
+	// The application (client) ID of an App Registration in the tenant.
+	ApplicationID *string
+
+	// An AAD client secret that was generated for the App Registration used to authenticate with Azure Key Vault.
+	ApplicationSecret *string
+}
+
 // CheckNameAvailabilityInput - Input of check name availability API.
 type CheckNameAvailabilityInput struct {
 	// REQUIRED; The search service name to validate. Search service names must only contain lowercase letters, digits or dashes,
@@ -77,6 +87,28 @@ type CheckNameAvailabilityOutput struct {
 	Reason *UnavailableNameReason
 }
 
+// DataIdentity - Abstract base type for data identities.
+type DataIdentity struct {
+	// REQUIRED; A URI fragment specifying the type of identity.
+	ODataType *string
+}
+
+// GetDataIdentity implements the DataIdentityClassification interface for type DataIdentity.
+func (d *DataIdentity) GetDataIdentity() *DataIdentity { return d }
+
+// DataNoneIdentity - Clears the identity property.
+type DataNoneIdentity struct {
+	// CONSTANT; Field has constant value "#Microsoft.Azure.Search.DataNoneIdentity", any specified value is ignored.
+	ODataType *string
+}
+
+// GetDataIdentity implements the DataIdentityClassification interface for type DataNoneIdentity.
+func (d *DataNoneIdentity) GetDataIdentity() *DataIdentity {
+	return &DataIdentity{
+		ODataType: d.ODataType,
+	}
+}
+
 // DataPlaneAADOrAPIKeyAuthOption - Indicates that either the API key or an access token from a Microsoft Entra ID tenant
 // can be used for authentication.
 type DataPlaneAADOrAPIKeyAuthOption struct {
@@ -94,6 +126,27 @@ type DataPlaneAuthOptions struct {
 	APIKeyOnly any
 }
 
+// DataUserAssignedIdentity - Specifies the user assigned identity to use.
+type DataUserAssignedIdentity struct {
+	// CONSTANT; Field has constant value "#Microsoft.Azure.Search.DataUserAssignedIdentity", any specified value is ignored.
+	ODataType *string
+
+	// REQUIRED; The fully qualified Azure resource Id of a user assigned managed identity typically in the form "/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId"
+	// that should have been assigned to the search service.
+	UserAssignedIdentity *string
+
+	// Optional for Multi-tenant User-Assigned Managed Identity CMK Support: The client id (as a UUID) of the multi-tenant App
+	// Registration that has been configured to federate with the userAssignedIdentity.
+	FederatedIdentityClientID *string
+}
+
+// GetDataIdentity implements the DataIdentityClassification interface for type DataUserAssignedIdentity.
+func (d *DataUserAssignedIdentity) GetDataIdentity() *DataIdentity {
+	return &DataIdentity{
+		ODataType: d.ODataType,
+	}
+}
+
 // EncryptionWithCmk - Describes a policy that determines how resources within the search service are to be encrypted with
 // customer managed keys.
 type EncryptionWithCmk struct {
@@ -101,9 +154,18 @@ type EncryptionWithCmk struct {
 	// key.
 	Enforcement *SearchEncryptionWithCmk
 
+	// Describes the customer-managed key configuration for encrypting the search service.
+	ServiceLevelEncryptionKey *ResourceEncryptionKey
+
 	// READ-ONLY; Returns the status of search service compliance with respect to non-CMK-encrypted objects. If a service has
 	// more than one unencrypted object, and enforcement is enabled, the service is marked as noncompliant.
 	EncryptionComplianceStatus *SearchEncryptionComplianceStatus
+}
+
+// FeatureOffering - Describes the availability of a specific feature in a region.
+type FeatureOffering struct {
+	// The name of the feature offered in this region.
+	Name *string
 }
 
 // IPRule - The IP restriction rule of the Azure AI Search service.
@@ -219,6 +281,27 @@ type NetworkSecurityProfile struct {
 
 	// Name of the profile
 	Name *string
+}
+
+// OfferingsByRegion - Describes the Azure AI Search features and SKUs available in a specific Azure region.
+type OfferingsByRegion struct {
+	// The list of features offered in this region.
+	Features []*FeatureOffering
+
+	// The name of the region.
+	RegionName *string
+
+	// The list of SKUs offered in this region.
+	SKUs []*SKUOffering
+}
+
+// OfferingsListResult - Response containing the list of offerings available in Azure AI Search, organized by region.
+type OfferingsListResult struct {
+	// READ-ONLY; The URL to get the next set of offerings, if any.
+	NextLink *string
+
+	// READ-ONLY; The list of Azure AI Search offerings by region.
+	Value []*OfferingsByRegion
 }
 
 // Operation - REST API Operation
@@ -435,11 +518,11 @@ type QuotaUsageResult struct {
 	// The unit of measurement for the search SKU.
 	Unit *string
 
-	// READ-ONLY; The name of the SKU supported by Azure AI Search.
+	// READ-ONLY; The SKU name information of the current search service.
 	Name *QuotaUsageResultName
 }
 
-// QuotaUsageResultName - The name of the SKU supported by Azure AI Search.
+// QuotaUsageResultName - The SKU name information, including its identifier and localized display name.
 type QuotaUsageResultName struct {
 	// The localized string value for the SKU name.
 	LocalizedValue *string
@@ -466,14 +549,71 @@ type ResourceAssociation struct {
 	Name *string
 }
 
+// ResourceEncryptionKey - A customer-managed encryption key in Azure Key Vault. Keys that you create and manage can be used
+// to encrypt or decrypt data-at-rest, such as indexes and synonym maps.
+type ResourceEncryptionKey struct {
+	// Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using managed identity
+	// instead.
+	AccessCredentials *AzureActiveDirectoryApplicationCredentials
+
+	// An explicit managed identity to use for this encryption key. If not specified and the access credentials property is null,
+	// the system-assigned managed identity is used. On update to the resource, if the explicit identity is unspecified, it remains
+	// unchanged. If "none" is specified, the value of this property is cleared.
+	Identity DataIdentityClassification
+
+	// The name of your Azure Key Vault key to be used to encrypt your data at rest.
+	KeyName *string
+
+	// The version of your Azure Key Vault key to be used to encrypt your data at rest.
+	KeyVersion *string
+
+	// The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your data at
+	// rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
+	VaultURI *string
+}
+
 // SKU - Defines the SKU of a search service, which determines billing rate and capacity limits.
 type SKU struct {
 	// The SKU of the search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas.
 	// 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard, but with more
 	// capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12 replicas (or up to
 	// 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports
-	// 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'
+	// 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions. 'serverless':
+	// Serverless tier with auto-scaling capabilities.
 	Name *SKUName
+}
+
+// SKULimits - Describes the limits associated with a SKU offering.
+type SKULimits struct {
+	// The maximum number of indexers available for this SKU.
+	Indexers *int32
+
+	// The maximum number of indexes available for this SKU.
+	Indexes *int32
+
+	// The maximum storage size in Gigabytes available for this SKU per partition.
+	PartitionStorageInGigabytes *float32
+
+	// The maximum vector storage size in Gigabytes available for this SKU per partition.
+	PartitionVectorStorageInGigabytes *float32
+
+	// The maximum number of partitions available for this SKU.
+	Partitions *int32
+
+	// The maximum number of replicas available for this SKU.
+	Replicas *int32
+
+	// The maximum number of search units available for this SKU.
+	SearchUnits *int32
+}
+
+// SKUOffering - Describes a SKU offering with its limits in a specific region.
+type SKUOffering struct {
+	// The limits associated with this SKU offered in this region.
+	Limits *SKULimits
+
+	// The SKU definition.
+	SKU *SKU
 }
 
 // Service - Describes an Azure AI Search service and its current state.
@@ -545,24 +685,28 @@ type ServiceProperties struct {
 	// is either 'Default' or 'HighDensity'. For all other SKUs, this value must be 'Default'.
 	HostingMode *HostingMode
 
+	// Specifies the billing plan for agentic retrieval on the Azure AI Search service. This configuration is only available for
+	// certain pricing tiers in certain regions.
+	KnowledgeRetrieval *KnowledgeRetrieval
+
 	// Network specific rules that determine how the Azure AI Search service may be reached.
 	NetworkRuleSet *NetworkRuleSet
 
-	// The number of partitions in the search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater than 1 are
-	// only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity', the allowed values are between
-	// 1 and 3.
+	// The number of partitions in the dedicated search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater
+	// than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity', the allowed values
+	// are between 1 and 3.
 	PartitionCount *int32
 
 	// This value can be set to 'Enabled' to avoid breaking changes on existing customer resources and templates. If set to 'Disabled',
 	// traffic over public interface is not allowed, and private endpoint connections would be the exclusive access method.
 	PublicNetworkAccess *PublicNetworkAccess
 
-	// The number of replicas in the search service. If specified, it must be a value between 1 and 12 inclusive for standard
-	// SKUs or between 1 and 3 inclusive for basic SKU.
+	// The number of replicas in the dedicated search service. If specified, it must be a value between 1 and 12 inclusive for
+	// standard SKUs or between 1 and 3 inclusive for basic SKU.
 	ReplicaCount *int32
 
-	// Sets options that control the availability of semantic search. This configuration is only possible for certain Azure AI
-	// Search SKUs in certain locations.
+	// Specifies the availability and billing plan for semantic search on the Azure AI Search service. This configuration is only
+	// available for certain pricing tiers in certain regions.
 	SemanticSearch *SearchSemanticSearch
 
 	// Indicates if the search service has an upgrade available.

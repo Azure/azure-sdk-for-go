@@ -6,7 +6,6 @@ package fake
 
 import (
 	"encoding/json"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
 )
 

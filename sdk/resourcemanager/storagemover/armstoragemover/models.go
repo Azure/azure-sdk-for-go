@@ -102,6 +102,26 @@ type AgentUpdateProperties struct {
 	UploadLimitSchedule *UploadLimitSchedule
 }
 
+// AzureKeyVaultS3WithHmacCredentials - The Azure Key Vault secret URIs which store the credentials.
+type AzureKeyVaultS3WithHmacCredentials struct {
+	// CONSTANT; The Credentials type.
+	// Field has constant value CredentialTypeAzureKeyVaultS3WithHMAC, any specified value is ignored.
+	Type *CredentialType
+
+	// The Azure Key Vault secret URI which stores the username. Use empty string to clean-up existing value.
+	AccessKeyURI *string
+
+	// The Azure Key Vault secret URI which stores the password. Use empty string to clean-up existing value.
+	SecretKeyURI *string
+}
+
+// GetCredentials implements the CredentialsClassification interface for type AzureKeyVaultS3WithHmacCredentials.
+func (a *AzureKeyVaultS3WithHmacCredentials) GetCredentials() *Credentials {
+	return &Credentials{
+		Type: a.Type,
+	}
+}
+
 // AzureKeyVaultSmbCredentials - The Azure Key Vault secret URIs which store the credentials.
 type AzureKeyVaultSmbCredentials struct {
 	// CONSTANT; The Credentials type.
@@ -137,6 +157,9 @@ type AzureMultiCloudConnectorEndpointProperties struct {
 	// A description for the Endpoint.
 	Description *string
 
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
+
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
 }
@@ -145,6 +168,7 @@ type AzureMultiCloudConnectorEndpointProperties struct {
 func (a *AzureMultiCloudConnectorEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
 	return &EndpointBaseProperties{
 		Description:       a.Description,
+		EndpointKind:      a.EndpointKind,
 		EndpointType:      a.EndpointType,
 		ProvisioningState: a.ProvisioningState,
 	}
@@ -183,6 +207,9 @@ type AzureStorageBlobContainerEndpointProperties struct {
 	// A description for the Endpoint.
 	Description *string
 
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
+
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
 }
@@ -191,6 +218,7 @@ type AzureStorageBlobContainerEndpointProperties struct {
 func (a *AzureStorageBlobContainerEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
 	return &EndpointBaseProperties{
 		Description:       a.Description,
+		EndpointKind:      a.EndpointKind,
 		EndpointType:      a.EndpointType,
 		ProvisioningState: a.ProvisioningState,
 	}
@@ -228,6 +256,9 @@ type AzureStorageNfsFileShareEndpointProperties struct {
 	// A description for the Endpoint.
 	Description *string
 
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
+
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
 }
@@ -236,6 +267,7 @@ type AzureStorageNfsFileShareEndpointProperties struct {
 func (a *AzureStorageNfsFileShareEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
 	return &EndpointBaseProperties{
 		Description:       a.Description,
+		EndpointKind:      a.EndpointKind,
 		EndpointType:      a.EndpointType,
 		ProvisioningState: a.ProvisioningState,
 	}
@@ -274,6 +306,9 @@ type AzureStorageSmbFileShareEndpointProperties struct {
 	// A description for the Endpoint.
 	Description *string
 
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
+
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
 }
@@ -282,6 +317,7 @@ type AzureStorageSmbFileShareEndpointProperties struct {
 func (a *AzureStorageSmbFileShareEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
 	return &EndpointBaseProperties{
 		Description:       a.Description,
+		EndpointKind:      a.EndpointKind,
 		EndpointType:      a.EndpointType,
 		ProvisioningState: a.ProvisioningState,
 	}
@@ -303,6 +339,57 @@ func (a *AzureStorageSmbFileShareEndpointUpdateProperties) GetEndpointBaseUpdate
 		Description:  a.Description,
 		EndpointType: a.EndpointType,
 	}
+}
+
+// Connection - The Connection resource.
+type Connection struct {
+	// REQUIRED; Connection properties.
+	Properties *ConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ConnectionList - List of Connections.
+type ConnectionList struct {
+	// READ-ONLY; The Connection items on this page
+	Value []*Connection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ConnectionProperties - Properties of the Connection resource.
+type ConnectionProperties struct {
+	// REQUIRED; The PrivateLinkServiceId for the connection.
+	PrivateLinkServiceID *string
+
+	// A description for the Connection.
+	Description *string
+
+	// List of job definitions associated with this connection.
+	JobList []*string
+
+	// READ-ONLY; The connection status.
+	ConnectionStatus *ConnectionStatus
+
+	// READ-ONLY; The PrivateEndpointName associated with the connection.
+	PrivateEndpointName *string
+
+	// READ-ONLY; The privateEndpoint resource Id
+	PrivateEndpointResourceID *string
+
+	// READ-ONLY; The provisioning state of this resource.
+	ProvisioningState *ProvisioningState
 }
 
 // Credentials - The Credentials.
@@ -342,6 +429,9 @@ type EndpointBaseProperties struct {
 
 	// A description for the Endpoint.
 	Description *string
+
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
 
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
@@ -423,12 +513,24 @@ type JobDefinitionProperties struct {
 	// Name of the Agent to assign for new Job Runs of this Job Definition.
 	AgentName *string
 
+	// List of connections associated to this job
+	Connections []*string
+
+	// The checksum validation mode for the job definition.
+	DataIntegrityValidation *DataIntegrityValidation
+
 	// A description for the Job Definition. OnPremToCloud is for migrating data from on-premises to cloud. CloudToCloud is for
 	// migrating data between cloud to cloud.
 	Description *string
 
 	// The type of the Job.
 	JobType *JobType
+
+	// Boolean to preserve permissions or not.
+	PreservePermissions *bool
+
+	// Schedule information for the Job Definition.
+	Schedule *ScheduleInfo
 
 	// The subpath to use when reading from the source Endpoint.
 	SourceSubpath *string
@@ -477,8 +579,14 @@ type JobDefinitionUpdateProperties struct {
 	// Name of the Agent to assign for new Job Runs of this Job Definition.
 	AgentName *string
 
+	// List of connections associated to this job
+	Connections []*string
+
 	// Strategy to use for copy.
 	CopyMode *CopyMode
+
+	// Data Integrity Validation mode.
+	DataIntegrityValidation *DataIntegrityValidation
 
 	// A description for the Job Definition.
 	Description *string
@@ -588,6 +696,9 @@ type JobRunProperties struct {
 	// READ-ONLY; The status of Agent's scanning of source.
 	ScanStatus *JobRunScanStatus
 
+	// READ-ONLY; Scheduled execution time. Null if Trigger type is manual.
+	ScheduledExecutionTime *time.Time
+
 	// READ-ONLY; Name of source Endpoint resource. This resource may no longer exist.
 	SourceName *string
 
@@ -608,12 +719,30 @@ type JobRunProperties struct {
 
 	// READ-ONLY; Fully qualified resource id of of Endpoint. This id may no longer exist.
 	TargetResourceID *string
+
+	// READ-ONLY; Trigger type for the job run. Default is manual.
+	TriggerType *TriggerType
+
+	// READ-ONLY; Warning details.
+	Warnings []*JobRunWarning
 }
 
 // JobRunResourceID - Response that identifies a Job Run.
 type JobRunResourceID struct {
 	// READ-ONLY; Fully qualified resource id of the Job Run.
 	JobRunResourceID *string
+}
+
+// JobRunWarning - Warning type
+type JobRunWarning struct {
+	// Error code of the given entry.
+	Code *string
+
+	// Warning message of the given entry.
+	Message *string
+
+	// Target of the given error entry.
+	Target *string
 }
 
 // List of Storage Movers.
@@ -656,6 +785,9 @@ type NfsMountEndpointProperties struct {
 	// A description for the Endpoint.
 	Description *string
 
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
+
 	// The NFS protocol version.
 	NfsVersion *NfsVersion
 
@@ -667,6 +799,7 @@ type NfsMountEndpointProperties struct {
 func (n *NfsMountEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
 	return &EndpointBaseProperties{
 		Description:       n.Description,
+		EndpointKind:      n.EndpointKind,
 		EndpointType:      n.EndpointType,
 		ProvisioningState: n.ProvisioningState,
 	}
@@ -797,6 +930,91 @@ type Properties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// S3WithHmacEndpointProperties - The properties of S3WithHmac share endpoint.
+type S3WithHmacEndpointProperties struct {
+	// CONSTANT; The Endpoint resource type.
+	// Field has constant value EndpointTypeS3WithHmac, any specified value is ignored.
+	EndpointType *EndpointType
+
+	// The Azure Key Vault credentials which stores the access key and secret key. Use empty string to clean-up existing value.
+	Credentials *AzureKeyVaultS3WithHmacCredentials
+
+	// A description for the Endpoint.
+	Description *string
+
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
+
+	// The description for other source type of S3WithHmac endpoint.
+	OtherSourceTypeDescription *string
+
+	// The source type of S3WithHmac endpoint.
+	SourceType *S3WithHmacSourceType
+
+	// The URI which points to the source.
+	SourceURI *string
+
+	// READ-ONLY; The provisioning state of this resource.
+	ProvisioningState *ProvisioningState
+}
+
+// GetEndpointBaseProperties implements the EndpointBasePropertiesClassification interface for type S3WithHmacEndpointProperties.
+func (s *S3WithHmacEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
+	return &EndpointBaseProperties{
+		Description:       s.Description,
+		EndpointKind:      s.EndpointKind,
+		EndpointType:      s.EndpointType,
+		ProvisioningState: s.ProvisioningState,
+	}
+}
+
+type S3WithHmacEndpointUpdateProperties struct {
+	// CONSTANT; The Endpoint resource type.
+	// Field has constant value EndpointTypeS3WithHmac, any specified value is ignored.
+	EndpointType *EndpointType
+
+	// The Azure Key Vault secret URIs which store the required credentials to access the S3.
+	Credentials *AzureKeyVaultS3WithHmacCredentials
+
+	// A description for the Endpoint.
+	Description *string
+}
+
+// GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type S3WithHmacEndpointUpdateProperties.
+func (s *S3WithHmacEndpointUpdateProperties) GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties {
+	return &EndpointBaseUpdateProperties{
+		Description:  s.Description,
+		EndpointType: s.EndpointType,
+	}
+}
+
+// ScheduleInfo - Schedule information for the Job Definition.
+type ScheduleInfo struct {
+	// REQUIRED; Type of schedule — Monthly, Weekly, or Daily
+	Frequency *Frequency
+
+	// REQUIRED; Whether the schedule is currently active
+	IsActive *bool
+
+	// Optional CRON expression for advanced scheduling
+	CronExpression *string
+
+	// Days of the month for monthly schedules
+	DaysOfMonth []*int32
+
+	// Days of the week for weekly schedules
+	DaysOfWeek []*string
+
+	// End time of the schedule (in UTC)
+	EndDate *time.Time
+
+	// Time of day to execute (hours and minutes)
+	ExecutionTime *Time
+
+	// Specific one-time execution date and time
+	StartDate *time.Time
+}
+
 // SmbMountEndpointProperties - The properties of SMB share endpoint.
 type SmbMountEndpointProperties struct {
 	// CONSTANT; The Endpoint resource type.
@@ -815,6 +1033,9 @@ type SmbMountEndpointProperties struct {
 	// A description for the Endpoint.
 	Description *string
 
+	// The Endpoint resource kind source or target.
+	EndpointKind *EndpointKind
+
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
 }
@@ -823,6 +1044,7 @@ type SmbMountEndpointProperties struct {
 func (s *SmbMountEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
 	return &EndpointBaseProperties{
 		Description:       s.Description,
+		EndpointKind:      s.EndpointKind,
 		EndpointType:      s.EndpointType,
 		ProvisioningState: s.ProvisioningState,
 	}

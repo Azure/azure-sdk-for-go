@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_CheckNameAvailability.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
 func ExampleWorkspacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleWorkspacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_CreateOrUpdate.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,8 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 		Properties: &armplaywright.WorkspaceProperties{
 			RegionalAffinity: to.Ptr(armplaywright.EnablementStatusEnabled),
 			LocalAuth:        to.Ptr(armplaywright.EnablementStatusEnabled),
+			Reporting:        to.Ptr(armplaywright.EnablementStatusEnabled),
+			StorageURI:       to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
 		},
 	}, nil)
 	if err != nil {
@@ -79,7 +81,9 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// 			DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
 	// 			RegionalAffinity: to.Ptr(armplaywright.EnablementStatusEnabled),
 	// 			LocalAuth: to.Ptr(armplaywright.EnablementStatusEnabled),
+	// 			Reporting: to.Ptr(armplaywright.EnablementStatusEnabled),
 	// 			WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			StorageURI: to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
 	// 			ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),
@@ -100,7 +104,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_Delete.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_Delete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +125,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_Get.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_Get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +150,9 @@ func ExampleWorkspacesClient_Get() {
 	// 			DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
 	// 			RegionalAffinity: to.Ptr(armplaywright.EnablementStatusEnabled),
 	// 			LocalAuth: to.Ptr(armplaywright.EnablementStatusEnabled),
+	// 			Reporting: to.Ptr(armplaywright.EnablementStatusEnabled),
 	// 			WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			StorageURI: to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
 	// 			ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),
@@ -167,7 +173,7 @@ func ExampleWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_ListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +204,9 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 					DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
 		// 					RegionalAffinity: to.Ptr(armplaywright.EnablementStatusEnabled),
 		// 					LocalAuth: to.Ptr(armplaywright.EnablementStatusEnabled),
+		// 					Reporting: to.Ptr(armplaywright.EnablementStatusEnabled),
 		// 					WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					StorageURI: to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
 		// 					ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),
@@ -222,7 +230,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_ListBySubscription.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_ListBySubscription.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +261,9 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 					DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
 		// 					RegionalAffinity: to.Ptr(armplaywright.EnablementStatusEnabled),
 		// 					LocalAuth: to.Ptr(armplaywright.EnablementStatusEnabled),
+		// 					Reporting: to.Ptr(armplaywright.EnablementStatusEnabled),
 		// 					WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					StorageURI: to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
 		// 					ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),
@@ -277,7 +287,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_Update.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_Update.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,6 +305,7 @@ func ExampleWorkspacesClient_Update() {
 		},
 		Properties: &armplaywright.WorkspaceUpdateProperties{
 			RegionalAffinity: to.Ptr(armplaywright.EnablementStatusDisabled),
+			Reporting:        to.Ptr(armplaywright.EnablementStatusDisabled),
 		},
 	}, nil)
 	if err != nil {
@@ -310,7 +321,9 @@ func ExampleWorkspacesClient_Update() {
 	// 			DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
 	// 			RegionalAffinity: to.Ptr(armplaywright.EnablementStatusDisabled),
 	// 			LocalAuth: to.Ptr(armplaywright.EnablementStatusEnabled),
+	// 			Reporting: to.Ptr(armplaywright.EnablementStatusDisabled),
 	// 			WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			StorageURI: to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
 	// 			ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),

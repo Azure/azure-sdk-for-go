@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_CreateOrUpdate.json
-func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRun() {
+// Generated from example definition: 2026-02-01-preview/UpdateRuns_CreateOrUpdate.json
+func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,10 +29,12 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRun() {
 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
 				Stages: []*armcontainerservicefleet.UpdateStage{
 					{
-						Name: to.Ptr("stage1"),
+						Name:           to.Ptr("stage1"),
+						MaxConcurrency: to.Ptr("10"),
 						Groups: []*armcontainerservicefleet.UpdateGroup{
 							{
-								Name: to.Ptr("group-a"),
+								Name:           to.Ptr("group-a"),
+								MaxConcurrency: to.Ptr("2"),
 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 									{
 										DisplayName: to.Ptr("gate before group-a"),
@@ -104,9 +106,11 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRun() {
 	// 				Stages: []*armcontainerservicefleet.UpdateStage{
 	// 					{
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("10"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("2"),
 	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 	// 									{
 	// 										DisplayName: to.Ptr("gate before group-a"),
@@ -156,12 +160,14 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRun() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
 	// 										Status: &armcontainerservicefleet.UpdateStatus{
@@ -221,244 +227,8 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRun() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginCreateOrUpdate(ctx, "rgfleets", "fleet1", "fleet1", armcontainerservicefleet.UpdateRun{
-		Properties: &armcontainerservicefleet.UpdateRunProperties{
-			UpdateStrategyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
-			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-				Stages: []*armcontainerservicefleet.UpdateStage{
-					{
-						Name: to.Ptr("stage1"),
-						Groups: []*armcontainerservicefleet.UpdateGroup{
-							{
-								Name: to.Ptr("group-a"),
-							},
-						},
-						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-					},
-				},
-			},
-			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-					Type:              to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-					KubernetesVersion: to.Ptr("1.26.1"),
-				},
-				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-					CustomNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-						{},
-					},
-				},
-			},
-			Status: &armcontainerservicefleet.UpdateRunStatus{
-				Status: &armcontainerservicefleet.UpdateStatus{
-					State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-					Error: &armcontainerservicefleet.ErrorDetail{},
-				},
-				NodeImageSelection: &armcontainerservicefleet.NodeImageSelectionStatus{},
-			},
-			AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
-		},
-	}, &armcontainerservicefleet.UpdateRunsClientBeginCreateOrUpdateOptions{
-		IfMatch:     to.Ptr("wyolpuaxgybeygcbz"),
-		IfNoneMatch: to.Ptr("rwrhonlormgshamadufoo")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientCreateOrUpdateResponse{
-	// 	UpdateRun: &armcontainerservicefleet.UpdateRun{
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			UpdateStrategyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 					CustomNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 					Error: &armcontainerservicefleet.ErrorDetail{
-	// 						Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 						Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 						Target: to.Ptr("l"),
-	// 						Details: []*armcontainerservicefleet.ErrorDetail{
-	// 						},
-	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 							{
-	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: map[string]any{
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							Error: &armcontainerservicefleet.ErrorDetail{
-	// 								Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 								Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 								Target: to.Ptr("l"),
-	// 								Details: []*armcontainerservicefleet.ErrorDetail{
-	// 								},
-	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 									{
-	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: map[string]any{
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									Error: &armcontainerservicefleet.ErrorDetail{
-	// 										Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 										Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 										Target: to.Ptr("l"),
-	// 										Details: []*armcontainerservicefleet.ErrorDetail{
-	// 										},
-	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 											{
-	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: map[string]any{
-	// 												},
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											Error: &armcontainerservicefleet.ErrorDetail{
-	// 												Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 												Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 												Target: to.Ptr("l"),
-	// 												Details: []*armcontainerservicefleet.ErrorDetail{
-	// 												},
-	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 													{
-	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: map[string]any{
-	// 														},
-	// 													},
-	// 												},
-	// 											},
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-	// 										OperationID: to.Ptr("islvvdetacuskjzmkcxc"),
-	// 										Message: to.Ptr("xrvhotarzemcgeen"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								Error: &armcontainerservicefleet.ErrorDetail{
-	// 									Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 									Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 									Target: to.Ptr("l"),
-	// 									Details: []*armcontainerservicefleet.ErrorDetail{
-	// 									},
-	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 										{
-	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: map[string]any{
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelectionStatus{
-	// 					SelectedNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("someUser"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("someOtherUser"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Delete.json
-func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResource() {
+// Generated from example definition: 2026-02-01-preview/UpdateRuns_Delete.json
+func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -483,35 +253,8 @@ func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResource() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Delete_MaximumSet_Gen.json
-func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResourceGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginDelete(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.UpdateRunsClientBeginDeleteOptions{
-		IfMatch: to.Ptr("xnbwucfeufeagpa")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Get.json
-func ExampleUpdateRunsClient_Get_getsAnUpdateRunResource() {
+// Generated from example definition: 2026-02-01-preview/UpdateRuns_Get.json
+func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -547,9 +290,11 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResource() {
 	// 				Stages: []*armcontainerservicefleet.UpdateStage{
 	// 					{
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("10"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("2"),
 	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 	// 									{
 	// 										DisplayName: to.Ptr("gate before group-a"),
@@ -599,12 +344,14 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResource() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
 	// 										Status: &armcontainerservicefleet.UpdateStatus{
@@ -664,201 +411,8 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResource() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Get_MaximumSet_Gen.json
-func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewUpdateRunsClient().Get(ctx, "rgfleets", "fleet1", "fleet1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientGetResponse{
-	// 	UpdateRun: &armcontainerservicefleet.UpdateRun{
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			UpdateStrategyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 					CustomNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 					Error: &armcontainerservicefleet.ErrorDetail{
-	// 						Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 						Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 						Target: to.Ptr("l"),
-	// 						Details: []*armcontainerservicefleet.ErrorDetail{
-	// 						},
-	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 							{
-	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: map[string]any{
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							Error: &armcontainerservicefleet.ErrorDetail{
-	// 								Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 								Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 								Target: to.Ptr("l"),
-	// 								Details: []*armcontainerservicefleet.ErrorDetail{
-	// 								},
-	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 									{
-	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: map[string]any{
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									Error: &armcontainerservicefleet.ErrorDetail{
-	// 										Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 										Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 										Target: to.Ptr("l"),
-	// 										Details: []*armcontainerservicefleet.ErrorDetail{
-	// 										},
-	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 											{
-	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: map[string]any{
-	// 												},
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											Error: &armcontainerservicefleet.ErrorDetail{
-	// 												Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 												Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 												Target: to.Ptr("l"),
-	// 												Details: []*armcontainerservicefleet.ErrorDetail{
-	// 												},
-	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 													{
-	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: map[string]any{
-	// 														},
-	// 													},
-	// 												},
-	// 											},
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-	// 										OperationID: to.Ptr("islvvdetacuskjzmkcxc"),
-	// 										Message: to.Ptr("xrvhotarzemcgeen"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								Error: &armcontainerservicefleet.ErrorDetail{
-	// 									Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 									Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 									Target: to.Ptr("l"),
-	// 									Details: []*armcontainerservicefleet.ErrorDetail{
-	// 									},
-	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 										{
-	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: map[string]any{
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelectionStatus{
-	// 					SelectedNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("someUser"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("someOtherUser"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_ListByFleet.json
-func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFleet() {
+// Generated from example definition: 2026-02-01-preview/UpdateRuns_ListByFleet.json
+func ExampleUpdateRunsClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -900,9 +454,11 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 		// 						Stages: []*armcontainerservicefleet.UpdateStage{
 		// 							{
 		// 								Name: to.Ptr("stage1"),
+		// 								MaxConcurrency: to.Ptr("10"),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
 		// 									{
 		// 										Name: to.Ptr("group-a"),
+		// 										MaxConcurrency: to.Ptr("2"),
 		// 										BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 		// 											{
 		// 												DisplayName: to.Ptr("gate before group-a"),
@@ -952,12 +508,14 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 		// 									State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 		// 								},
 		// 								Name: to.Ptr("stage1"),
+		// 								MaxConcurrency: to.Ptr[int32](10),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 		// 									{
 		// 										Status: &armcontainerservicefleet.UpdateStatus{
 		// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 		// 										},
 		// 										Name: to.Ptr("group-a"),
+		// 										MaxConcurrency: to.Ptr[int32](2),
 		// 										Members: []*armcontainerservicefleet.MemberUpdateStatus{
 		// 											{
 		// 												Status: &armcontainerservicefleet.UpdateStatus{
@@ -1021,211 +579,8 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_ListByFleet_MaximumSet_Gen.json
-func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFleetGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewUpdateRunsClient().NewListByFleetPager("rgfleets", "fleet1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservicefleet.UpdateRunsClientListByFleetResponse{
-		// 	UpdateRunListResult: armcontainerservicefleet.UpdateRunListResult{
-		// 		Value: []*armcontainerservicefleet.UpdateRun{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-		// 				Name: to.Ptr("run1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-		// 				SystemData: &armcontainerservicefleet.SystemData{
-		// 					CreatedBy: to.Ptr("@contoso.com"),
-		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
-		// 				},
-		// 				Properties: &armcontainerservicefleet.UpdateRunProperties{
-		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-		// 					Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-		// 						Stages: []*armcontainerservicefleet.UpdateStage{
-		// 							{
-		// 								Name: to.Ptr("stage1"),
-		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
-		// 									{
-		// 										Name: to.Ptr("group-a"),
-		// 									},
-		// 								},
-		// 								AfterStageWaitInSeconds: to.Ptr[int32](3600),
-		// 							},
-		// 						},
-		// 					},
-		// 					ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-		// 						Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-		// 							Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-		// 							KubernetesVersion: to.Ptr("1.26.1"),
-		// 						},
-		// 						NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-		// 							Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-		// 							CustomNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-		// 								{
-		// 									Version: to.Ptr("wkcmcqhecdbsoskkny"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					Status: &armcontainerservicefleet.UpdateRunStatus{
-		// 						Status: &armcontainerservicefleet.UpdateStatus{
-		// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.763Z"); return t}()),
-		// 							CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.763Z"); return t}()),
-		// 							Error: &armcontainerservicefleet.ErrorDetail{
-		// 								Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-		// 								Message: to.Ptr("udtnrxlgadzqlogclb"),
-		// 								Target: to.Ptr("l"),
-		// 								Details: []*armcontainerservicefleet.ErrorDetail{
-		// 								},
-		// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-		// 									{
-		// 										Type: to.Ptr("fzgprz"),
-		// 										Info: map[string]any{
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						Stages: []*armcontainerservicefleet.UpdateStageStatus{
-		// 							{
-		// 								Status: &armcontainerservicefleet.UpdateStatus{
-		// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-		// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 									CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 									Error: &armcontainerservicefleet.ErrorDetail{
-		// 										Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-		// 										Message: to.Ptr("udtnrxlgadzqlogclb"),
-		// 										Target: to.Ptr("l"),
-		// 										Details: []*armcontainerservicefleet.ErrorDetail{
-		// 										},
-		// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-		// 											{
-		// 												Type: to.Ptr("fzgprz"),
-		// 												Info: map[string]any{
-		// 												},
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 								Name: to.Ptr("stage1"),
-		// 								Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-		// 									{
-		// 										Status: &armcontainerservicefleet.UpdateStatus{
-		// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-		// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 											CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 											Error: &armcontainerservicefleet.ErrorDetail{
-		// 												Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-		// 												Message: to.Ptr("udtnrxlgadzqlogclb"),
-		// 												Target: to.Ptr("l"),
-		// 												Details: []*armcontainerservicefleet.ErrorDetail{
-		// 												},
-		// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-		// 													{
-		// 														Type: to.Ptr("fzgprz"),
-		// 														Info: map[string]any{
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 										Name: to.Ptr("group-a"),
-		// 										Members: []*armcontainerservicefleet.MemberUpdateStatus{
-		// 											{
-		// 												Status: &armcontainerservicefleet.UpdateStatus{
-		// 													State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-		// 													StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 													CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 													Error: &armcontainerservicefleet.ErrorDetail{
-		// 														Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-		// 														Message: to.Ptr("udtnrxlgadzqlogclb"),
-		// 														Target: to.Ptr("l"),
-		// 														Details: []*armcontainerservicefleet.ErrorDetail{
-		// 														},
-		// 														AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-		// 															{
-		// 																Type: to.Ptr("fzgprz"),
-		// 																Info: map[string]any{
-		// 																},
-		// 															},
-		// 														},
-		// 													},
-		// 												},
-		// 												Name: to.Ptr("member-one"),
-		// 												ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-		// 												OperationID: to.Ptr("islvvdetacuskjzmkcxc"),
-		// 												Message: to.Ptr("xrvhotarzemcgeen"),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 								AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-		// 									Status: &armcontainerservicefleet.UpdateStatus{
-		// 										State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-		// 										StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 										CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-		// 										Error: &armcontainerservicefleet.ErrorDetail{
-		// 											Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-		// 											Message: to.Ptr("udtnrxlgadzqlogclb"),
-		// 											Target: to.Ptr("l"),
-		// 											Details: []*armcontainerservicefleet.ErrorDetail{
-		// 											},
-		// 											AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-		// 												{
-		// 													Type: to.Ptr("fzgprz"),
-		// 													Info: map[string]any{
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 									},
-		// 									WaitDurationInSeconds: to.Ptr[int32](3600),
-		// 								},
-		// 							},
-		// 						},
-		// 						NodeImageSelection: &armcontainerservicefleet.NodeImageSelectionStatus{
-		// 							SelectedNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-		// 								{
-		// 									Version: to.Ptr("wkcmcqhecdbsoskkny"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					UpdateStrategyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/updateStrategies/strategy1"),
-		// 					AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
-		// 				},
-		// 				ETag: to.Ptr("\"EtagValue\""),
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("http://nextlink.contoso.com"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Skip.json
-func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageWaitSOfAnUpdateRun() {
+// Generated from example definition: 2026-02-01-preview/UpdateRuns_Skip.json
+func ExampleUpdateRunsClient_BeginSkip() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1276,12 +631,15 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 				Stages: []*armcontainerservicefleet.UpdateStage{
 	// 					{
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("10"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("2"),
 	// 							},
 	// 							{
 	// 								Name: to.Ptr("group-b"),
+	// 								MaxConcurrency: to.Ptr("2"),
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
@@ -1309,6 +667,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
@@ -1316,6 +675,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
 	// 										Status: &armcontainerservicefleet.UpdateStatus{
@@ -1332,6 +692,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-b"),
+	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
 	// 										Status: &armcontainerservicefleet.UpdateStatus{
@@ -1358,217 +719,8 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Skip_MaximumSet_Gen.json
-func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageWaitSOfAnUpdateRunGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginSkip(ctx, "rgfleets", "fleet1", "fleet1", armcontainerservicefleet.SkipProperties{
-		Targets: []*armcontainerservicefleet.SkipTarget{
-			{
-				Type: to.Ptr(armcontainerservicefleet.TargetTypeMember),
-				Name: to.Ptr("member-one"),
-			},
-			{
-				Type: to.Ptr(armcontainerservicefleet.TargetTypeAfterStageWait),
-				Name: to.Ptr("stage1"),
-			},
-		},
-	}, &armcontainerservicefleet.UpdateRunsClientBeginSkipOptions{
-		IfMatch: to.Ptr("rncfubdzrhcihvpqflbsjvoau")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientSkipResponse{
-	// 	UpdateRun: &armcontainerservicefleet.UpdateRun{
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			UpdateStrategyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 					CustomNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 					Error: &armcontainerservicefleet.ErrorDetail{
-	// 						Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 						Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 						Target: to.Ptr("l"),
-	// 						Details: []*armcontainerservicefleet.ErrorDetail{
-	// 						},
-	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 							{
-	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: map[string]any{
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							Error: &armcontainerservicefleet.ErrorDetail{
-	// 								Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 								Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 								Target: to.Ptr("l"),
-	// 								Details: []*armcontainerservicefleet.ErrorDetail{
-	// 								},
-	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 									{
-	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: map[string]any{
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									Error: &armcontainerservicefleet.ErrorDetail{
-	// 										Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 										Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 										Target: to.Ptr("l"),
-	// 										Details: []*armcontainerservicefleet.ErrorDetail{
-	// 										},
-	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 											{
-	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: map[string]any{
-	// 												},
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											Error: &armcontainerservicefleet.ErrorDetail{
-	// 												Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 												Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 												Target: to.Ptr("l"),
-	// 												Details: []*armcontainerservicefleet.ErrorDetail{
-	// 												},
-	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 													{
-	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: map[string]any{
-	// 														},
-	// 													},
-	// 												},
-	// 											},
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-	// 										OperationID: to.Ptr("islvvdetacuskjzmkcxc"),
-	// 										Message: to.Ptr("xrvhotarzemcgeen"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								Error: &armcontainerservicefleet.ErrorDetail{
-	// 									Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 									Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 									Target: to.Ptr("l"),
-	// 									Details: []*armcontainerservicefleet.ErrorDetail{
-	// 									},
-	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 										{
-	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: map[string]any{
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelectionStatus{
-	// 					SelectedNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("someUser"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("someOtherUser"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Start.json
-func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRun() {
+// Generated from example definition: 2026-02-01-preview/UpdateRuns_Start.json
+func ExampleUpdateRunsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1608,9 +760,11 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRun() {
 	// 				Stages: []*armcontainerservicefleet.UpdateStage{
 	// 					{
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("10"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("5"),
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
@@ -1638,6 +792,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRun() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
@@ -1645,6 +800,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRun() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr[int32](5),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
 	// 										Status: &armcontainerservicefleet.UpdateStatus{
@@ -1671,206 +827,8 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRun() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Start_MaximumSet_Gen.json
-func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginStart(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.UpdateRunsClientBeginStartOptions{
-		IfMatch: to.Ptr("bvhjlqeindkmljbbiypbqiaqgtkhlu")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientStartResponse{
-	// 	UpdateRun: &armcontainerservicefleet.UpdateRun{
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			UpdateStrategyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 					CustomNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 					Error: &armcontainerservicefleet.ErrorDetail{
-	// 						Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 						Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 						Target: to.Ptr("l"),
-	// 						Details: []*armcontainerservicefleet.ErrorDetail{
-	// 						},
-	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 							{
-	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: map[string]any{
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							Error: &armcontainerservicefleet.ErrorDetail{
-	// 								Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 								Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 								Target: to.Ptr("l"),
-	// 								Details: []*armcontainerservicefleet.ErrorDetail{
-	// 								},
-	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 									{
-	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: map[string]any{
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									Error: &armcontainerservicefleet.ErrorDetail{
-	// 										Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 										Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 										Target: to.Ptr("l"),
-	// 										Details: []*armcontainerservicefleet.ErrorDetail{
-	// 										},
-	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 											{
-	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: map[string]any{
-	// 												},
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											Error: &armcontainerservicefleet.ErrorDetail{
-	// 												Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 												Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 												Target: to.Ptr("l"),
-	// 												Details: []*armcontainerservicefleet.ErrorDetail{
-	// 												},
-	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 													{
-	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: map[string]any{
-	// 														},
-	// 													},
-	// 												},
-	// 											},
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-	// 										OperationID: to.Ptr("islvvdetacuskjzmkcxc"),
-	// 										Message: to.Ptr("xrvhotarzemcgeen"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								Error: &armcontainerservicefleet.ErrorDetail{
-	// 									Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 									Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 									Target: to.Ptr("l"),
-	// 									Details: []*armcontainerservicefleet.ErrorDetail{
-	// 									},
-	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 										{
-	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: map[string]any{
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelectionStatus{
-	// 					SelectedNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("someUser"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("someOtherUser"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Stop.json
-func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRun() {
+// Generated from example definition: 2026-02-01-preview/UpdateRuns_Stop.json
+func ExampleUpdateRunsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1910,9 +868,11 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRun() {
 	// 				Stages: []*armcontainerservicefleet.UpdateStage{
 	// 					{
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("20%"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("5"),
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
@@ -1940,6 +900,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRun() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
@@ -1947,6 +908,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRun() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr[int32](5),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
 	// 										Status: &armcontainerservicefleet.UpdateStatus{
@@ -1969,204 +931,6 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRun() {
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/UpdateRuns_Stop_MaximumSet_Gen.json
-func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginStop(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.UpdateRunsClientBeginStopOptions{
-		IfMatch: to.Ptr("jb")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientStopResponse{
-	// 	UpdateRun: &armcontainerservicefleet.UpdateRun{
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			UpdateStrategyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 					CustomNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.768Z"); return t}()),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 					Error: &armcontainerservicefleet.ErrorDetail{
-	// 						Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 						Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 						Target: to.Ptr("l"),
-	// 						Details: []*armcontainerservicefleet.ErrorDetail{
-	// 						},
-	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 							{
-	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: map[string]any{
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 							Error: &armcontainerservicefleet.ErrorDetail{
-	// 								Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 								Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 								Target: to.Ptr("l"),
-	// 								Details: []*armcontainerservicefleet.ErrorDetail{
-	// 								},
-	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 									{
-	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: map[string]any{
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 									Error: &armcontainerservicefleet.ErrorDetail{
-	// 										Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 										Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 										Target: to.Ptr("l"),
-	// 										Details: []*armcontainerservicefleet.ErrorDetail{
-	// 										},
-	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 											{
-	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: map[string]any{
-	// 												},
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 											Error: &armcontainerservicefleet.ErrorDetail{
-	// 												Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 												Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 												Target: to.Ptr("l"),
-	// 												Details: []*armcontainerservicefleet.ErrorDetail{
-	// 												},
-	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 													{
-	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: map[string]any{
-	// 														},
-	// 													},
-	// 												},
-	// 											},
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-	// 										OperationID: to.Ptr("islvvdetacuskjzmkcxc"),
-	// 										Message: to.Ptr("xrvhotarzemcgeen"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-14T23:29:32.767Z"); return t}()),
-	// 								Error: &armcontainerservicefleet.ErrorDetail{
-	// 									Code: to.Ptr("ezwocfahsfmbddlqgloysjkthkn"),
-	// 									Message: to.Ptr("udtnrxlgadzqlogclb"),
-	// 									Target: to.Ptr("l"),
-	// 									Details: []*armcontainerservicefleet.ErrorDetail{
-	// 									},
-	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 										{
-	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: map[string]any{
-	// 											},
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelectionStatus{
-	// 					SelectedNodeImageVersions: []*armcontainerservicefleet.NodeImageVersion{
-	// 						{
-	// 							Version: to.Ptr("wkcmcqhecdbsoskkny"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("someUser"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("someOtherUser"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
-	// 		},
 	// 	},
 	// }
 }

@@ -16,12 +16,6 @@ type DeidServicesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// DeidServicesClientBeginUpdateOptions contains the optional parameters for the DeidServicesClient.BeginUpdate method.
-type DeidServicesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // DeidServicesClientGetOptions contains the optional parameters for the DeidServicesClient.Get method.
 type DeidServicesClientGetOptions struct {
 	// placeholder for future optional parameters

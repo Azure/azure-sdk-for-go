@@ -6,12 +6,6 @@ package armhealthdataaiservices
 
 import "time"
 
-// DeidPropertiesUpdate - The template for adding optional properties.
-type DeidPropertiesUpdate struct {
-	// Gets or sets allow or disallow public network access to resource
-	PublicNetworkAccess *PublicNetworkAccess
-}
-
 // DeidService - A HealthDataAIServicesProviderHub resource
 type DeidService struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -63,18 +57,6 @@ type DeidServiceProperties struct {
 	ServiceURL *string
 }
 
-// DeidUpdate - Patch request body for DeidService
-type DeidUpdate struct {
-	// Updatable managed service identity
-	Identity *ManagedServiceIdentityUpdate
-
-	// RP-specific properties
-	Properties *DeidPropertiesUpdate
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
@@ -89,15 +71,6 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
-}
-
-// ManagedServiceIdentityUpdate - The template for adding optional properties.
-type ManagedServiceIdentityUpdate struct {
-	// The type of managed identity assigned to this resource.
-	Type *ManagedServiceIdentityType
-
-	// The identities assigned to this resource by the user.
-	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
 // Operation - REST API Operation

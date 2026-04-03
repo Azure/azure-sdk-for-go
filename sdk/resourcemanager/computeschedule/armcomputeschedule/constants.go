@@ -19,6 +19,27 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+// AllocationStrategy - The allocation strategy for VM size selection
+type AllocationStrategy string
+
+const (
+	// AllocationStrategyCapacityOptimized - Platform prioritizes VM sizes with the highest available capacity first
+	AllocationStrategyCapacityOptimized AllocationStrategy = "CapacityOptimized"
+	// AllocationStrategyLowestPrice - Platform prioritizes VM sizes with the lowest hourly cost
+	AllocationStrategyLowestPrice AllocationStrategy = "LowestPrice"
+	// AllocationStrategyPrioritized - Customer specifies a rank for each VM size, platform uses VM sizes in rank order
+	AllocationStrategyPrioritized AllocationStrategy = "Prioritized"
+)
+
+// PossibleAllocationStrategyValues returns the possible values for the AllocationStrategy const type.
+func PossibleAllocationStrategyValues() []AllocationStrategy {
+	return []AllocationStrategy{
+		AllocationStrategyCapacityOptimized,
+		AllocationStrategyLowestPrice,
+		AllocationStrategyPrioritized,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -61,6 +82,33 @@ func PossibleDeadlineTypeValues() []DeadlineType {
 		DeadlineTypeCompleteBy,
 		DeadlineTypeInitiateAt,
 		DeadlineTypeUnknown,
+	}
+}
+
+// DistributionStrategy - The distribution strategy for zone allocation
+type DistributionStrategy string
+
+const (
+	// DistributionStrategyBestEffortBalanced - Platform attempts to evenly distribute VMs across all available zones with best
+	// effort
+	DistributionStrategyBestEffortBalanced DistributionStrategy = "BestEffortBalanced"
+	// DistributionStrategyBestEffortSingleZone - Platform attempts to place as many VMs as possible in a single zone, falls back
+	// to multiple zones if needed
+	DistributionStrategyBestEffortSingleZone DistributionStrategy = "BestEffortSingleZone"
+	// DistributionStrategyPrioritized - Platform uses customer-provided zone rankings to allocate VMs
+	DistributionStrategyPrioritized DistributionStrategy = "Prioritized"
+	// DistributionStrategyStrictBalanced - Platform must evenly distribute VMs across zones, request is rejected if exact balance
+	// cannot be achieved
+	DistributionStrategyStrictBalanced DistributionStrategy = "StrictBalanced"
+)
+
+// PossibleDistributionStrategyValues returns the possible values for the DistributionStrategy const type.
+func PossibleDistributionStrategyValues() []DistributionStrategy {
+	return []DistributionStrategy{
+		DistributionStrategyBestEffortBalanced,
+		DistributionStrategyBestEffortSingleZone,
+		DistributionStrategyPrioritized,
+		DistributionStrategyStrictBalanced,
 	}
 }
 
@@ -260,6 +308,42 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// OsType - The supported operating system types for flex VM creation
+type OsType string
+
+const (
+	// OsTypeLinux - Linux operating system
+	OsTypeLinux OsType = "Linux"
+	// OsTypeWindows - Windows operating system
+	OsTypeWindows OsType = "Windows"
+)
+
+// PossibleOsTypeValues returns the possible values for the OsType const type.
+func PossibleOsTypeValues() []OsType {
+	return []OsType{
+		OsTypeLinux,
+		OsTypeWindows,
+	}
+}
+
+// PriorityType - The priority type for VM allocation
+type PriorityType string
+
+const (
+	// PriorityTypeRegular - Regular priority VMs
+	PriorityTypeRegular PriorityType = "Regular"
+	// PriorityTypeSpot - Spot priority VMs
+	PriorityTypeSpot PriorityType = "Spot"
+)
+
+// PossiblePriorityTypeValues returns the possible values for the PriorityType const type.
+func PossiblePriorityTypeValues() []PriorityType {
+	return []PriorityType{
+		PriorityTypeRegular,
+		PriorityTypeSpot,
+	}
+}
+
 // ProvisioningState - Provisioning state
 type ProvisioningState string
 
@@ -306,8 +390,12 @@ func PossibleResourceOperationStatusValues() []ResourceOperationStatus {
 type ResourceOperationType string
 
 const (
+	// ResourceOperationTypeCreate - Create operations on the resources
+	ResourceOperationTypeCreate ResourceOperationType = "Create"
 	// ResourceOperationTypeDeallocate - Deallocate operations on the resources
 	ResourceOperationTypeDeallocate ResourceOperationType = "Deallocate"
+	// ResourceOperationTypeDelete - Delete operations on the resources
+	ResourceOperationTypeDelete ResourceOperationType = "Delete"
 	// ResourceOperationTypeHibernate - Hibernate operations on the resources
 	ResourceOperationTypeHibernate ResourceOperationType = "Hibernate"
 	// ResourceOperationTypeStart - Start operations on the resources
@@ -319,7 +407,9 @@ const (
 // PossibleResourceOperationTypeValues returns the possible values for the ResourceOperationType const type.
 func PossibleResourceOperationTypeValues() []ResourceOperationType {
 	return []ResourceOperationType{
+		ResourceOperationTypeCreate,
 		ResourceOperationTypeDeallocate,
+		ResourceOperationTypeDelete,
 		ResourceOperationTypeHibernate,
 		ResourceOperationTypeStart,
 		ResourceOperationTypeUnknown,

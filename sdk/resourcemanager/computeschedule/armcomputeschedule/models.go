@@ -28,6 +28,21 @@ type CancelOperationsResponse struct {
 	Results []*ResourceOperation
 }
 
+// CreateFlexResourceOperationResponse - The response from a create flex request
+type CreateFlexResourceOperationResponse struct {
+	// REQUIRED; The description of the operation response
+	Description *string
+
+	// REQUIRED; The location of the create flex request eg westus
+	Location *string
+
+	// REQUIRED; The type of resources used in the create flex request eg virtual machines
+	Type *string
+
+	// The results from the create flex request if no errors exist
+	Results []*ResourceOperation
+}
+
 // CreateResourceOperationResponse - The response from a create request
 type CreateResourceOperationResponse struct {
 	// REQUIRED; The description of the operation response
@@ -113,6 +128,18 @@ type ExecuteCreateContent struct {
 	Correlationid *string
 }
 
+// ExecuteCreateFlexContent - The ExecuteCreateFlexRequest request for executeCreateFlex operations
+type ExecuteCreateFlexContent struct {
+	// REQUIRED; The execution parameters for the request
+	ExecutionParameters *ExecutionParameters
+
+	// REQUIRED; Resource creation payload with flex properties
+	ResourceConfigParameters *ResourceProvisionFlexPayload
+
+	// Correlationid item
+	Correlationid *string
+}
+
 // ExecuteDeallocateContent - The ExecuteDeallocateRequest request for executeDeallocate operations
 type ExecuteDeallocateContent struct {
 	// REQUIRED; CorrelationId item
@@ -171,6 +198,33 @@ type ExecutionParameters struct {
 
 	// Retry policy the user can pass
 	RetryPolicy *RetryPolicy
+}
+
+// FallbackOperationInfo - Describes the fallback operation that was performed
+type FallbackOperationInfo struct {
+	// REQUIRED; The last operation type that was performed as a fallback
+	LastOpType *ResourceOperationType
+
+	// REQUIRED; The status of the fallback operation
+	Status *string
+
+	// The error code if the fallback operation failed
+	Error *ResourceOperationError
+}
+
+// FlexProperties - The flex properties for flexible VM creation
+type FlexProperties struct {
+	// REQUIRED; The operating system type for the VMs
+	OSType *OsType
+
+	// REQUIRED; The priority profile for VM allocation
+	PriorityProfile *PriorityProfile
+
+	// REQUIRED; The list of VM size profiles to use for flex creation
+	VMSizeProfiles []*VMSizeProfile
+
+	// The zone allocation policy for distributing VMs across availability zones
+	ZoneAllocationPolicy *ZoneAllocationPolicy
 }
 
 // GetOperationErrorsContent - This is the request to get errors per vm operations
@@ -469,6 +523,15 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// PriorityProfile - The priority profile for flex VM creation
+type PriorityProfile struct {
+	// The allocation strategy for VM size selection
+	AllocationStrategy *AllocationStrategy
+
+	// The priority type for VM allocation
+	Type *PriorityType
+}
+
 // RecurringActionsResourceOperationResult - The response from scheduled action resource requests, which contains the status
 // of each resource
 type RecurringActionsResourceOperationResult struct {
@@ -529,6 +592,9 @@ type ResourceOperationDetails struct {
 	// Type of deadline of the operation
 	DeadlineType *DeadlineType
 
+	// Fallback operation details if a fallback was performed
+	FallbackOperationInfo *FallbackOperationInfo
+
 	// Type of operation performed on the resources
 	OpType *ResourceOperationType
 
@@ -567,6 +633,24 @@ type ResourceOperationError struct {
 type ResourcePatchRequest struct {
 	// REQUIRED; The list of resources we watch to patch
 	Resources []*ScheduledActionResource
+}
+
+// ResourceProvisionFlexPayload - Resource creation data model for flex VM provisioning
+type ResourceProvisionFlexPayload struct {
+	// REQUIRED; The flex properties for flexible VM creation
+	FlexProperties *FlexProperties
+
+	// REQUIRED; Number of VMs to be created
+	ResourceCount *int32
+
+	// JSON object that contains VM properties that are common across all VMs in this batch
+	BaseProfile map[string]any
+
+	// JSON array that contains VM properties that should be overridden for each VM in the batch
+	ResourceOverrides []map[string]any
+
+	// If resourceOverrides doesn't contain name, service will create name based on prefix and resourceCount
+	ResourcePrefix *string
 }
 
 // ResourceProvisionPayload - Resource creation data model
@@ -619,6 +703,9 @@ type Resources struct {
 
 // RetryPolicy - The retry policy for the user request
 type RetryPolicy struct {
+	// Action to take on failure
+	OnFailureAction *ResourceOperationType
+
 	// Retry count for user request
 	RetryCount *int32
 
@@ -919,4 +1006,31 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// VMSizeProfile - A VM size profile with a name and rank for flex VM creation
+type VMSizeProfile struct {
+	// REQUIRED; The name of the VM size, eg Standard_D2ads_v5
+	Name *string
+
+	// REQUIRED; The rank of this VM size in the priority order
+	Rank *int32
+}
+
+// ZoneAllocationPolicy - The zone allocation policy for distributing VMs across availability zones
+type ZoneAllocationPolicy struct {
+	// The distribution strategy for zone allocation
+	DistributionStrategy *DistributionStrategy
+
+	// The zone preferences for allocation priority
+	ZonePreferences []*ZonePreference
+}
+
+// ZonePreference - A zone preference with a zone identifier and rank
+type ZonePreference struct {
+	// REQUIRED; The rank of this zone in the priority order
+	Rank *int32
+
+	// REQUIRED; The zone identifier
+	Zone *string
 }

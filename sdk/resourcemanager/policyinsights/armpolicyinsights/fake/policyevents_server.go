@@ -153,7 +153,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForManagementGr
 		const regexStr = `/providers/(?P<managementGroupsNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -269,7 +269,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForPolicyDefini
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -389,7 +389,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForPolicySetDef
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -509,7 +509,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForResourcePage
 		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -631,7 +631,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForResourceGrou
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -751,7 +751,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForResourceGrou
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -875,7 +875,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForSubscription
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -991,7 +991,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForSubscription
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyEvents/(?P<policyEventsResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()

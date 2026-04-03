@@ -27,7 +27,7 @@ type PolicyEventsClient struct {
 
 // NewPolicyEventsClient creates a new instance of PolicyEventsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyEventsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

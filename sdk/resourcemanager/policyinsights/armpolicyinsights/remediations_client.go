@@ -28,7 +28,7 @@ type RemediationsClient struct {
 // NewRemediationsClient creates a new instance of RemediationsClient with the specified values.
 //   - subscriptionID - Microsoft Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRemediationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RemediationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

@@ -54,25 +54,44 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "Client.GetScope":
-		resp, err = s.dispatchGetScope(req)
-	case "Client.GetTenant":
-		resp, err = s.dispatchGetTenant(req)
-	case "Client.Put":
-		resp, err = s.dispatchPut(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "Client.GetScope":
+				res.resp, res.err = s.dispatchGetScope(req)
+			case "Client.GetTenant":
+				res.resp, res.err = s.dispatchGetTenant(req)
+			case "Client.Put":
+				res.resp, res.err = s.dispatchPut(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *ServerTransport) dispatchGetScope(req *http.Request) (*http.Response, error) {
@@ -82,7 +101,7 @@ func (s *ServerTransport) dispatchGetScope(req *http.Request) (*http.Response, e
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -121,7 +140,7 @@ func (s *ServerTransport) dispatchGetTenant(req *http.Request) (*http.Response, 
 	const regexStr = `/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	defaultParamParam, err := parseWithCast(matches[regex.SubexpIndex("default")], func(v string) (armdataboundaries.DefaultName, error) {
@@ -156,7 +175,7 @@ func (s *ServerTransport) dispatchPut(req *http.Request) (*http.Response, error)
 	const regexStr = `/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdataboundaries.DataBoundaryDefinition](req)
@@ -186,4 +205,10 @@ func (s *ServerTransport) dispatchPut(req *http.Request) (*http.Response, error)
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

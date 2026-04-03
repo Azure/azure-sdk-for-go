@@ -25,7 +25,7 @@ type Client struct {
 
 // NewClient creates a new instance of Client with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *Client) GetScope(ctx context.Context, scope string, defaultParam D
 }
 
 // getScopeCreateRequest creates the GetScope request.
-func (client *Client) getScopeCreateRequest(ctx context.Context, scope string, defaultParam DefaultName, options *ClientGetScopeOptions) (*policy.Request, error) {
+func (client *Client) getScopeCreateRequest(ctx context.Context, scope string, defaultParam DefaultName, _ *ClientGetScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/dataBoundaries/{default}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if defaultParam == "" {
@@ -123,7 +123,7 @@ func (client *Client) GetTenant(ctx context.Context, defaultParam DefaultName, o
 }
 
 // getTenantCreateRequest creates the GetTenant request.
-func (client *Client) getTenantCreateRequest(ctx context.Context, defaultParam DefaultName, options *ClientGetTenantOptions) (*policy.Request, error) {
+func (client *Client) getTenantCreateRequest(ctx context.Context, defaultParam DefaultName, _ *ClientGetTenantOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/dataBoundaries/{default}"
 	if defaultParam == "" {
 		return nil, errors.New("parameter defaultParam cannot be empty")
@@ -179,7 +179,7 @@ func (client *Client) Put(ctx context.Context, defaultParam DefaultName, dataBou
 }
 
 // putCreateRequest creates the Put request.
-func (client *Client) putCreateRequest(ctx context.Context, defaultParam DefaultName, dataBoundaryDefinition DataBoundaryDefinition, options *ClientPutOptions) (*policy.Request, error) {
+func (client *Client) putCreateRequest(ctx context.Context, defaultParam DefaultName, dataBoundaryDefinition DataBoundaryDefinition, _ *ClientPutOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/dataBoundaries/{default}"
 	if defaultParam == "" {
 		return nil, errors.New("parameter defaultParam cannot be empty")

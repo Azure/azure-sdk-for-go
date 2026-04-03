@@ -36,3 +36,10 @@ func (c *ClientFactory) NewClient() *Client {
 		internal: c.internal,
 	}
 }
+
+// NewOperationsClient creates a new instance of OperationsClient.
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	return &OperationsClient{
+		internal: c.internal,
+	}
+}

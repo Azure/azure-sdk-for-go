@@ -32,7 +32,7 @@ type FileClient struct {
 // AbortCopy - Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - copyID - The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
 //   - options - FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
@@ -67,18 +67,18 @@ func (client *FileClient) abortCopyCreateRequest(ctx context.Context, copyID str
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-copy-action"] = []string{"abort"}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
+	req.Raw().Header["x-ms-copy-action"] = []string{"abort"}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -104,7 +104,7 @@ func (client *FileClient) abortCopyHandleResponse(resp *http.Response) (FileClie
 // AcquireLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
 //     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
 //     renew or change.
@@ -139,22 +139,22 @@ func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, duratio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"acquire"}
 	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(duration), 10)}
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
 	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *FileClient) acquireLeaseHandleResponse(resp *http.Response) (FileC
 // BreakLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientBreakLeaseOptions contains the optional parameters for the FileClient.BreakLease method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) BreakLease(ctx context.Context, options *FileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientBreakLeaseResponse, error) {
@@ -229,21 +229,21 @@ func (client *FileClient) breakLeaseCreateRequest(ctx context.Context, options *
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"break"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -285,7 +285,7 @@ func (client *FileClient) breakLeaseHandleResponse(resp *http.Response) (FileCli
 // ChangeLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - FileClientChangeLeaseOptions contains the optional parameters for the FileClient.ChangeLease method.
 func (client *FileClient) ChangeLease(ctx context.Context, leaseID string, options *FileClientChangeLeaseOptions) (FileClientChangeLeaseResponse, error) {
@@ -318,22 +318,22 @@ func (client *FileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"change"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
 	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -372,10 +372,10 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 	return result, nil
 }
 
-// Create - Creates a new file or replaces a file. Note it only initializes the file with no content.
+// Create - Creates a new file or replaces a file. Can also initialize the file with content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - fileContentLength - Specifies the maximum size for the file, up to 4 TB.
 //   - options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 //   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
@@ -409,14 +409,21 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.ContentLength != nil {
+		req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(*options.ContentLength, 10)}
+	}
+	if options != nil && options.ContentMD5 != nil {
+		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.ContentMD5)}
+	}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(fileContentLength, 10)}
-	req.Raw().Header["x-ms-type"] = []string{"file"}
-	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.CacheControl != nil {
+		req.Raw().Header["x-ms-cache-control"] = []string{*shareFileHTTPHeaders.CacheControl}
+	}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentDisposition != nil {
+		req.Raw().Header["x-ms-content-disposition"] = []string{*shareFileHTTPHeaders.ContentDisposition}
 	}
 	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentEncoding != nil {
 		req.Raw().Header["x-ms-content-encoding"] = []string{*shareFileHTTPHeaders.ContentEncoding}
@@ -424,21 +431,27 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentLanguage != nil {
 		req.Raw().Header["x-ms-content-language"] = []string{*shareFileHTTPHeaders.ContentLanguage}
 	}
-	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.CacheControl != nil {
-		req.Raw().Header["x-ms-cache-control"] = []string{*shareFileHTTPHeaders.CacheControl}
-	}
+	req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(fileContentLength, 10)}
 	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentMD5 != nil {
 		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(shareFileHTTPHeaders.ContentMD5)}
 	}
-	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentDisposition != nil {
-		req.Raw().Header["x-ms-content-disposition"] = []string{*shareFileHTTPHeaders.ContentDisposition}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
+		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
 	}
-	if options != nil && options.Metadata != nil {
-		for k, v := range options.Metadata {
-			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
-		}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
+	if options != nil && options.FileChangeTime != nil {
+		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
+	}
+	if options != nil && options.FileCreationTime != nil {
+		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
+	}
+	if options != nil && options.NFSFileType != nil {
+		req.Raw().Header["x-ms-file-file-type"] = []string{string(*options.NFSFileType)}
+	}
+	if options != nil && options.FileLastWriteTime != nil {
+		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
 	}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
@@ -449,46 +462,39 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	if options != nil && options.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
-	}
-	if options != nil && options.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
-	}
-	if options != nil && options.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
-	}
-	if options != nil && options.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
-	}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	if options != nil && options.FilePropertySemantics != nil {
+		req.Raw().Header["x-ms-file-property-semantics"] = []string{string(*options.FilePropertySemantics)}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
-	}
 	if options != nil && options.Group != nil {
 		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if options != nil && options.Metadata != nil {
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
+		}
 	}
 	if options != nil && options.FileMode != nil {
 		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
 	}
-	if options != nil && options.NFSFileType != nil {
-		req.Raw().Header["x-ms-file-file-type"] = []string{string(*options.NFSFileType)}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
-	if options != nil && options.ContentMD5 != nil {
-		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.ContentMD5)}
+	if options != nil && options.StructuredBodyType != nil {
+		req.Raw().Header["x-ms-structured-body"] = []string{*options.StructuredBodyType}
 	}
-	if options != nil && options.FilePropertySemantics != nil {
-		req.Raw().Header["x-ms-file-property-semantics"] = []string{string(*options.FilePropertySemantics)}
+	if options != nil && options.StructuredContentLength != nil {
+		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	if options != nil && options.ContentLength != nil {
-		req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(*options.ContentLength, 10)}
-	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-type"] = []string{"file"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.Optionalbody != nil {
 		if err := req.SetBody(options.Optionalbody, "application/octet-stream"); err != nil {
 			return nil, err
@@ -587,6 +593,9 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
+	if val := resp.Header.Get("x-ms-structured-body"); val != "" {
+		result.StructuredBodyType = &val
+	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
 	}
@@ -596,7 +605,7 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 // CreateHardLink - Creates a hard link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - targetFile - NFS only. Required. Specifies the path of the target file to which the link will be created, up to 2 KiB in
 //     length. It should be full path of the target from the root.The target file must be in the
 //     same share and hence the same storage account.
@@ -632,19 +641,19 @@ func (client *FileClient) createHardLinkCreateRequest(ctx context.Context, targe
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	req.Raw().Header["x-ms-type"] = []string{"file"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
-	req.Raw().Header["x-ms-file-target-file"] = []string{targetFile}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-file-target-file"] = []string{targetFile}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	req.Raw().Header["x-ms-type"] = []string{"file"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -729,7 +738,7 @@ func (client *FileClient) createHardLinkHandleResponse(resp *http.Response) (Fil
 // CreateSymbolicLink - Creates a symbolic link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - linkText - NFS only. Required. The path to the original file, the symbolic link is pointing to. The path is of type string
 //     which is not resolved and is stored as is. The path can be absolute path or the relative
 //     path depending on the content stored in the symbolic link file.
@@ -765,13 +774,9 @@ func (client *FileClient) createSymbolicLinkCreateRequest(ctx context.Context, l
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.Metadata != nil {
-		for k, v := range options.Metadata {
-			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
-		}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
@@ -779,23 +784,27 @@ func (client *FileClient) createSymbolicLinkCreateRequest(ctx context.Context, l
 	if options != nil && options.FileLastWriteTime != nil {
 		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
 	}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
-	}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
-	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	if options != nil && options.Group != nil {
 		req.Raw().Header["x-ms-group"] = []string{*options.Group}
 	}
-	req.Raw().Header["x-ms-link-text"] = []string{linkText}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-link-text"] = []string{linkText}
+	if options != nil && options.Metadata != nil {
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
+		}
+	}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -873,7 +882,7 @@ func (client *FileClient) createSymbolicLinkHandleResponse(resp *http.Response) 
 // Delete - removes the file from the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientDeleteOptions contains the optional parameters for the FileClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) Delete(ctx context.Context, options *FileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDeleteResponse, error) {
@@ -905,17 +914,17 @@ func (client *FileClient) deleteCreateRequest(ctx context.Context, options *File
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -948,7 +957,7 @@ func (client *FileClient) deleteHandleResponse(resp *http.Response) (FileClientD
 // Download - Reads or downloads a file from the system, including its metadata and properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientDownloadOptions contains the optional parameters for the FileClient.Download method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) Download(ctx context.Context, options *FileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDownloadResponse, error) {
@@ -981,10 +990,16 @@ func (client *FileClient) downloadCreateRequest(ctx context.Context, options *Fi
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
 	if options != nil && options.Range != nil {
 		req.Raw().Header["x-ms-range"] = []string{*options.Range}
 	}
@@ -994,13 +1009,7 @@ func (client *FileClient) downloadCreateRequest(ctx context.Context, options *Fi
 	if options != nil && options.StructuredBodyType != nil {
 		req.Raw().Header["x-ms-structured-body"] = []string{*options.StructuredBodyType}
 	}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -1183,7 +1192,7 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 // ForceCloseHandles - Closes all handles open for given file
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 //     all handles.
 //   - options - FileClientForceCloseHandlesOptions contains the optional parameters for the FileClient.ForceCloseHandles method.
@@ -1213,25 +1222,25 @@ func (client *FileClient) forceCloseHandlesCreateRequest(ctx context.Context, ha
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "forceclosehandles")
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	if options != nil && options.Marker != nil {
 		reqQP.Set("marker", *options.Marker)
 	}
 	if options != nil && options.Sharesnapshot != nil {
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -1277,7 +1286,7 @@ func (client *FileClient) forceCloseHandlesHandleResponse(resp *http.Response) (
 // not return the content of the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientGetPropertiesOptions contains the optional parameters for the FileClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) GetProperties(ctx context.Context, options *FileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetPropertiesResponse, error) {
@@ -1312,17 +1321,17 @@ func (client *FileClient) getPropertiesCreateRequest(ctx context.Context, option
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -1488,7 +1497,7 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 // GetRangeList - Returns the list of valid ranges for a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientGetRangeListOptions contains the optional parameters for the FileClient.GetRangeList method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) GetRangeList(ctx context.Context, options *FileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetRangeListResponse, error) {
@@ -1517,23 +1526,17 @@ func (client *FileClient) getRangeListCreateRequest(ctx context.Context, options
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "rangelist")
-	if options != nil && options.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
-	}
 	if options != nil && options.Prevsharesnapshot != nil {
 		reqQP.Set("prevsharesnapshot", *options.Prevsharesnapshot)
+	}
+	if options != nil && options.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.Range != nil {
-		req.Raw().Header["x-ms-range"] = []string{*options.Range}
-	}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -1543,7 +1546,13 @@ func (client *FileClient) getRangeListCreateRequest(ctx context.Context, options
 	if options != nil && options.SupportRename != nil {
 		req.Raw().Header["x-ms-file-support-rename"] = []string{strconv.FormatBool(*options.SupportRename)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if options != nil && options.Range != nil {
+		req.Raw().Header["x-ms-range"] = []string{*options.Range}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -1589,7 +1598,7 @@ func (client *FileClient) getRangeListHandleResponse(resp *http.Response) (FileC
 // GetSymbolicLink -
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientGetSymbolicLinkOptions contains the optional parameters for the FileClient.GetSymbolicLink method.
 func (client *FileClient) GetSymbolicLink(ctx context.Context, options *FileClientGetSymbolicLinkOptions) (FileClientGetSymbolicLinkResponse, error) {
 	var err error
@@ -1617,21 +1626,21 @@ func (client *FileClient) getSymbolicLinkCreateRequest(ctx context.Context, opti
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("restype", "symboliclink")
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	if options != nil && options.Sharesnapshot != nil {
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -1673,7 +1682,7 @@ func (client *FileClient) getSymbolicLinkHandleResponse(resp *http.Response) (Fi
 // ListHandles - Lists handles for file
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientListHandlesOptions contains the optional parameters for the FileClient.ListHandles method.
 func (client *FileClient) ListHandles(ctx context.Context, options *FileClientListHandlesOptions) (FileClientListHandlesResponse, error) {
 	var err error
@@ -1707,21 +1716,21 @@ func (client *FileClient) listHandlesCreateRequest(ctx context.Context, options 
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	if options != nil && options.Sharesnapshot != nil {
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -1753,7 +1762,7 @@ func (client *FileClient) listHandlesHandleResponse(resp *http.Response) (FileCl
 // ReleaseLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - FileClientReleaseLeaseOptions contains the optional parameters for the FileClient.ReleaseLease method.
 func (client *FileClient) ReleaseLease(ctx context.Context, leaseID string, options *FileClientReleaseLeaseOptions) (FileClientReleaseLeaseResponse, error) {
@@ -1786,19 +1795,19 @@ func (client *FileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
-	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
-	}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
+	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -1837,7 +1846,7 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 // Rename - Renames a file
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - renameSource - Required. Specifies the URI-style path of the source file, up to 2 KB in length.
 //   - options - FileClientRenameOptions contains the optional parameters for the FileClient.Rename method.
 //   - SourceLeaseAccessConditions - SourceLeaseAccessConditions contains a group of parameters for the DirectoryClient.Rename
@@ -1876,16 +1885,12 @@ func (client *FileClient) renameCreateRequest(ctx context.Context, renameSource 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
-	if options != nil && options.ReplaceIfExists != nil {
-		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	if options != nil && options.IgnoreReadOnly != nil {
-		req.Raw().Header["x-ms-file-rename-ignore-readonly"] = []string{strconv.FormatBool(*options.IgnoreReadOnly)}
-	}
-	if sourceLeaseAccessConditions != nil && sourceLeaseAccessConditions.SourceLeaseID != nil {
-		req.Raw().Header["x-ms-source-lease-id"] = []string{*sourceLeaseAccessConditions.SourceLeaseID}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
+		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
 	}
 	if destinationLeaseAccessConditions != nil && destinationLeaseAccessConditions.DestinationLeaseID != nil {
 		req.Raw().Header["x-ms-destination-lease-id"] = []string{*destinationLeaseAccessConditions.DestinationLeaseID}
@@ -1893,14 +1898,14 @@ func (client *FileClient) renameCreateRequest(ctx context.Context, renameSource 
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileAttributes != nil {
 		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSMBInfo.FileAttributes}
 	}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileChangeTime != nil {
+		req.Raw().Header["x-ms-file-change-time"] = []string{*copyFileSMBInfo.FileChangeTime}
+	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSMBInfo.FileCreationTime}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileLastWriteTime != nil {
 		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSMBInfo.FileLastWriteTime}
-	}
-	if copyFileSMBInfo != nil && copyFileSMBInfo.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*copyFileSMBInfo.FileChangeTime}
 	}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
@@ -1911,6 +1916,16 @@ func (client *FileClient) renameCreateRequest(ctx context.Context, renameSource 
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
+	if options != nil && options.IgnoreReadOnly != nil {
+		req.Raw().Header["x-ms-file-rename-ignore-readonly"] = []string{strconv.FormatBool(*options.IgnoreReadOnly)}
+	}
+	if options != nil && options.ReplaceIfExists != nil {
+		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
+	}
+	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
@@ -1918,19 +1933,13 @@ func (client *FileClient) renameCreateRequest(ctx context.Context, renameSource 
 			}
 		}
 	}
-	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
 	if client.allowSourceTrailingDot != nil {
 		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
 	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	if sourceLeaseAccessConditions != nil && sourceLeaseAccessConditions.SourceLeaseID != nil {
+		req.Raw().Header["x-ms-source-lease-id"] = []string{*sourceLeaseAccessConditions.SourceLeaseID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -2006,7 +2015,7 @@ func (client *FileClient) renameHandleResponse(resp *http.Response) (FileClientR
 // SetHTTPHeaders - Sets HTTP headers on the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 //   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
@@ -2040,12 +2049,15 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.FileContentLength != nil {
-		req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(*options.FileContentLength, 10)}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.CacheControl != nil {
+		req.Raw().Header["x-ms-cache-control"] = []string{*shareFileHTTPHeaders.CacheControl}
+	}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentDisposition != nil {
+		req.Raw().Header["x-ms-content-disposition"] = []string{*shareFileHTTPHeaders.ContentDisposition}
 	}
 	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentEncoding != nil {
 		req.Raw().Header["x-ms-content-encoding"] = []string{*shareFileHTTPHeaders.ContentEncoding}
@@ -2053,14 +2065,26 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, optio
 	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentLanguage != nil {
 		req.Raw().Header["x-ms-content-language"] = []string{*shareFileHTTPHeaders.ContentLanguage}
 	}
-	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.CacheControl != nil {
-		req.Raw().Header["x-ms-cache-control"] = []string{*shareFileHTTPHeaders.CacheControl}
+	if options != nil && options.FileContentLength != nil {
+		req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(*options.FileContentLength, 10)}
 	}
 	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentMD5 != nil {
 		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(shareFileHTTPHeaders.ContentMD5)}
 	}
-	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentDisposition != nil {
-		req.Raw().Header["x-ms-content-disposition"] = []string{*shareFileHTTPHeaders.ContentDisposition}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
+		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
+	}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
+	if options != nil && options.FileChangeTime != nil {
+		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
+	}
+	if options != nil && options.FileCreationTime != nil {
+		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
+	}
+	if options != nil && options.FileLastWriteTime != nil {
+		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
 	}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
@@ -2071,37 +2095,22 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, optio
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	if options != nil && options.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
-	}
-	if options != nil && options.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
-	}
-	if options != nil && options.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
-	}
-	if options != nil && options.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
-	}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
 	if options != nil && options.Group != nil {
 		req.Raw().Header["x-ms-group"] = []string{*options.Group}
 	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
 	if options != nil && options.FileMode != nil {
 		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -2193,7 +2202,7 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 // SetMetadata - Updates user-defined metadata for the specified file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - options - FileClientSetMetadataOptions contains the optional parameters for the FileClient.SetMetadata method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) SetMetadata(ctx context.Context, options *FileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientSetMetadataResponse, error) {
@@ -2226,6 +2235,16 @@ func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
@@ -2234,16 +2253,6 @@ func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options 
 		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -2286,7 +2295,7 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 // StartCopy - Copies a blob or file to a destination file within the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
 //     the same storage account, you may use Shared Key to authenticate the source file. If you are
 //     copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
@@ -2325,32 +2334,22 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if options != nil && options.Metadata != nil {
-		for k, v := range options.Metadata {
-			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
-		}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	req.Raw().Header["x-ms-copy-source"] = []string{copySource}
-	if options != nil && options.FilePermission != nil {
-		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSMBInfo.FileAttributes}
 	}
-	if options != nil && options.FilePermissionFormat != nil {
-		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
-	}
-	if options != nil && options.FilePermissionKey != nil {
-		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
-	}
-	if copyFileSMBInfo != nil && copyFileSMBInfo.FilePermissionCopyMode != nil {
-		req.Raw().Header["x-ms-file-permission-copy-mode"] = []string{string(*copyFileSMBInfo.FilePermissionCopyMode)}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileChangeTime != nil {
+		req.Raw().Header["x-ms-file-change-time"] = []string{*copyFileSMBInfo.FileChangeTime}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.IgnoreReadOnly != nil {
 		req.Raw().Header["x-ms-file-copy-ignore-readonly"] = []string{strconv.FormatBool(*copyFileSMBInfo.IgnoreReadOnly)}
 	}
-	if copyFileSMBInfo != nil && copyFileSMBInfo.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSMBInfo.FileAttributes}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.SetArchiveAttribute != nil {
+		req.Raw().Header["x-ms-file-copy-set-archive"] = []string{strconv.FormatBool(*copyFileSMBInfo.SetArchiveAttribute)}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSMBInfo.FileCreationTime}
@@ -2358,40 +2357,50 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileLastWriteTime != nil {
 		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSMBInfo.FileLastWriteTime}
 	}
-	if copyFileSMBInfo != nil && copyFileSMBInfo.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*copyFileSMBInfo.FileChangeTime}
-	}
-	if copyFileSMBInfo != nil && copyFileSMBInfo.SetArchiveAttribute != nil {
-		req.Raw().Header["x-ms-file-copy-set-archive"] = []string{strconv.FormatBool(*copyFileSMBInfo.SetArchiveAttribute)}
-	}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if client.allowSourceTrailingDot != nil {
-		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
-	}
-	if options != nil && options.Group != nil {
-		req.Raw().Header["x-ms-group"] = []string{*options.Group}
-	}
-	if options != nil && options.FileMode != nil {
-		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
-	}
 	if options != nil && options.FileModeCopyMode != nil {
 		req.Raw().Header["x-ms-file-mode-copy-mode"] = []string{string(*options.FileModeCopyMode)}
 	}
 	if options != nil && options.FileOwnerCopyMode != nil {
 		req.Raw().Header["x-ms-file-owner-copy-mode"] = []string{string(*options.FileOwnerCopyMode)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.FilePermission != nil {
+		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
+	}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FilePermissionCopyMode != nil {
+		req.Raw().Header["x-ms-file-permission-copy-mode"] = []string{string(*copyFileSMBInfo.FilePermissionCopyMode)}
+	}
+	if options != nil && options.FilePermissionFormat != nil {
+		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
+	}
+	if options != nil && options.FilePermissionKey != nil {
+		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	if options != nil && options.Group != nil {
+		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if options != nil && options.Metadata != nil {
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
+		}
+	}
+	if options != nil && options.FileMode != nil {
+		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
+	}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	}
+	if client.allowSourceTrailingDot != nil {
+		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -2433,7 +2442,7 @@ func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClie
 // UploadRange - Upload a range of bytes to a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - rangeParam - Specifies the range of bytes to be written. Both the start and end of the range must be specified. For an
 //     update operation, the range can be up to 4 MB in size. For a clear operation, the range can be
 //     up to the value of the file's full size. The File service accepts only a single byte range for the Range and 'x-ms-range'
@@ -2478,32 +2487,32 @@ func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-range"] = []string{rangeParam}
-	req.Raw().Header["x-ms-write"] = []string{string(fileRangeWrite)}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.ContentMD5 != nil {
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.ContentMD5)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if options != nil && options.FileLastWrittenMode != nil {
 		req.Raw().Header["x-ms-file-last-write-time"] = []string{string(*options.FileLastWrittenMode)}
 	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	req.Raw().Header["x-ms-range"] = []string{rangeParam}
 	if options != nil && options.StructuredBodyType != nil {
 		req.Raw().Header["x-ms-structured-body"] = []string{*options.StructuredBodyType}
 	}
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-write"] = []string{string(fileRangeWrite)}
 	if options != nil && options.Optionalbody != nil {
 		if err := req.SetBody(options.Optionalbody, "application/octet-stream"); err != nil {
 			return nil, err
@@ -2569,7 +2578,7 @@ func (client *FileClient) uploadRangeHandleResponse(resp *http.Response) (FileCl
 // UploadRangeFromURL - Upload a range of bytes to a file where the contents are read from a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-04-06
+// Generated from API version 2026-06-06
 //   - rangeParam - Writes data to the specified byte range in the file.
 //   - copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
 //     the same storage account, you may use Shared Key to authenticate the source file. If you are
@@ -2613,13 +2622,28 @@ func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-range"] = []string{rangeParam}
-	req.Raw().Header["x-ms-copy-source"] = []string{copySource}
-	if options != nil && options.SourceRange != nil {
-		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
-	}
-	req.Raw().Header["x-ms-write"] = []string{"update"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
+	req.Raw().Header["x-ms-copy-source"] = []string{copySource}
+	if options != nil && options.CopySourceAuthorization != nil {
+		req.Raw().Header["x-ms-copy-source-authorization"] = []string{*options.CopySourceAuthorization}
+	}
+	if options != nil && options.FileLastWrittenMode != nil {
+		req.Raw().Header["x-ms-file-last-write-time"] = []string{string(*options.FileLastWrittenMode)}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	req.Raw().Header["x-ms-range"] = []string{rangeParam}
+	if client.allowSourceTrailingDot != nil {
+		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
+	}
 	if options != nil && options.SourceContentCRC64 != nil {
 		req.Raw().Header["x-ms-source-content-crc64"] = []string{base64.StdEncoding.EncodeToString(options.SourceContentCRC64)}
 	}
@@ -2629,26 +2653,11 @@ func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatchCRC64 != nil {
 		req.Raw().Header["x-ms-source-if-none-match-crc64"] = []string{base64.StdEncoding.EncodeToString(sourceModifiedAccessConditions.SourceIfNoneMatchCRC64)}
 	}
+	if options != nil && options.SourceRange != nil {
+		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
+	}
 	req.Raw().Header["x-ms-version"] = []string{client.version}
-	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
-	}
-	if options != nil && options.CopySourceAuthorization != nil {
-		req.Raw().Header["x-ms-copy-source-authorization"] = []string{*options.CopySourceAuthorization}
-	}
-	if options != nil && options.FileLastWrittenMode != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{string(*options.FileLastWrittenMode)}
-	}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if client.allowSourceTrailingDot != nil {
-		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-write"] = []string{"update"}
 	return req, nil
 }
 

@@ -6,7 +6,6 @@
 package generated
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"time"
 )
@@ -17,7 +16,7 @@ type DirectoryClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -28,8 +27,8 @@ type DirectoryClientCreateResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -52,8 +51,8 @@ type DirectoryClientCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
-	NFSFileType *NFSFileType
+	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
+	NfsFileType *NfsFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -104,7 +103,7 @@ type DirectoryClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -115,8 +114,8 @@ type DirectoryClientGetPropertiesResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -142,8 +141,8 @@ type DirectoryClientGetPropertiesResponse struct {
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
 
-	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
-	NFSFileType *NFSFileType
+	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
+	NfsFileType *NfsFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -197,7 +196,7 @@ type DirectoryClientRenameResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -208,8 +207,8 @@ type DirectoryClientRenameResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -239,7 +238,7 @@ type DirectoryClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -257,7 +256,7 @@ type DirectoryClientSetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -268,8 +267,8 @@ type DirectoryClientSetPropertiesResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -323,7 +322,7 @@ type FileClientAcquireLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -347,7 +346,7 @@ type FileClientBreakLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -371,7 +370,7 @@ type FileClientChangeLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -395,7 +394,7 @@ type FileClientCreateHardLinkResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
 	FileChangeTime *time.Time
@@ -403,8 +402,8 @@ type FileClientCreateHardLinkResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -424,8 +423,8 @@ type FileClientCreateHardLinkResponse struct {
 	// LinkCount contains the information returned from the x-ms-link-count header response.
 	LinkCount *int64
 
-	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
-	NFSFileType *NFSFileType
+	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
+	NfsFileType *NfsFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -449,7 +448,7 @@ type FileClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -460,8 +459,8 @@ type FileClientCreateResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -484,8 +483,8 @@ type FileClientCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
-	NFSFileType *NFSFileType
+	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
+	NfsFileType *NfsFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -509,7 +508,7 @@ type FileClientCreateSymbolicLinkResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
 	FileChangeTime *time.Time
@@ -517,8 +516,8 @@ type FileClientCreateSymbolicLinkResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -535,8 +534,8 @@ type FileClientCreateSymbolicLinkResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
-	NFSFileType *NFSFileType
+	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
+	NfsFileType *NfsFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -617,7 +616,7 @@ type FileClientDownloadResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -631,8 +630,8 @@ type FileClientDownloadResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -752,7 +751,7 @@ type FileClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -763,8 +762,8 @@ type FileClientGetPropertiesResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -805,8 +804,8 @@ type FileClientGetPropertiesResponse struct {
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
 
-	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
-	NFSFileType *NFSFileType
+	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
+	NfsFileType *NfsFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -827,7 +826,7 @@ type FileClientGetRangeListResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileContentLength contains the information returned from the x-ms-content-length header response.
 	FileContentLength *int64
@@ -851,7 +850,7 @@ type FileClientGetSymbolicLinkResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -893,7 +892,7 @@ type FileClientReleaseLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -911,7 +910,7 @@ type FileClientRenameResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -922,8 +921,8 @@ type FileClientRenameResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -953,7 +952,7 @@ type FileClientSetHTTPHeadersResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -964,8 +963,8 @@ type FileClientSetHTTPHeadersResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// ID contains the information returned from the x-ms-file-id header response.
-	ID *string
+	// FileID contains the information returned from the x-ms-file-id header response.
+	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -1007,7 +1006,7 @@ type FileClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -1034,7 +1033,7 @@ type FileClientStartCopyResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1055,7 +1054,7 @@ type FileClientUploadRangeFromURLResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -1085,7 +1084,7 @@ type FileClientUploadRangeResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
@@ -1166,7 +1165,7 @@ type ShareClientAcquireLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1190,7 +1189,7 @@ type ShareClientBreakLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1217,7 +1216,7 @@ type ShareClientChangeLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1253,7 +1252,7 @@ type ShareClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1287,7 +1286,7 @@ type ShareClientCreateSnapshotResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1313,11 +1312,11 @@ type ShareClientDeleteResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 
-	// FileShareSnapshotUsageBytes contains the information returned from the x-ms-file-share-snapshot-usage-bytes header response.
-	FileShareSnapshotUsageBytes *int64
+	// XMSFileShareSnapshotUsageBytes contains the information returned from the x-ms-file-share-snapshot-usage-bytes header response.
+	XMSFileShareSnapshotUsageBytes *int64
 
-	// FileShareUsageBytes contains the information returned from the x-ms-file-share-usage-bytes header response.
-	FileShareUsageBytes *int64
+	// XMSFileShareUsageBytes contains the information returned from the x-ms-file-share-usage-bytes header response.
+	XMSFileShareUsageBytes *int64
 }
 
 // ShareClientGetAccessPolicyResponse contains the response from method ShareClient.GetAccessPolicy.
@@ -1326,7 +1325,7 @@ type ShareClientGetAccessPolicyResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1371,10 +1370,10 @@ type ShareClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
-	// EnableSMBDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
-	EnableSMBDirectoryLease *bool
+	// EnableSmbDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
+	EnableSmbDirectoryLease *bool
 
 	// EnableSnapshotVirtualDirectoryAccess contains the information returned from the x-ms-enable-snapshot-virtual-directory-access
 	// header response.
@@ -1460,7 +1459,7 @@ type ShareClientGetStatisticsResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1481,7 +1480,7 @@ type ShareClientReleaseLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1502,7 +1501,7 @@ type ShareClientRenewLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1526,7 +1525,7 @@ type ShareClientRestoreResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
 	IncludedBurstIops *int64
@@ -1559,7 +1558,7 @@ type ShareClientSetAccessPolicyResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1577,7 +1576,7 @@ type ShareClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1595,7 +1594,7 @@ type ShareClientSetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag
+	ETag *string
 
 	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
 	IncludedBurstIops *int64

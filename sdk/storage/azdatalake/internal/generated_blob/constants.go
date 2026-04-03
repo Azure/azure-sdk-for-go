@@ -3,4 +3,4 @@
 
 package generated_blob
 
-const ServiceVersion = "2026-04-06"
+const ServiceVersion = "2026-06-06"

@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.ManagedNetworkFabric": "2024-06-15-preview"
+  },
+  "emitterVersion": "0.10.5"
+}

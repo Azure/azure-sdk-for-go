@@ -7,6 +7,54 @@ package armcognitiveservices
 
 import "encoding/json"
 
+func unmarshalAgentDeploymentPropertiesClassification(rawMsg json.RawMessage) (AgentDeploymentPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AgentDeploymentPropertiesClassification
+	switch m["deploymentType"] {
+	case string(AgentDeploymentTypeHosted):
+		b = &HostedAgentDeployment{}
+	case string(AgentDeploymentTypeManaged):
+		b = &ManagedAgentDeployment{}
+	default:
+		b = &AgentDeploymentProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalApplicationAuthorizationPolicyClassification(rawMsg json.RawMessage) (ApplicationAuthorizationPolicyClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ApplicationAuthorizationPolicyClassification
+	switch m["type"] {
+	case string(BuiltInAuthorizationSchemeChannels):
+		b = &ChannelsBuiltInAuthorizationPolicy{}
+	case string(BuiltInAuthorizationSchemeDefault):
+		b = &RoleBasedBuiltInAuthorizationPolicy{}
+	case string(BuiltInAuthorizationSchemeOrganizationScope):
+		b = &OrganizationSharedBuiltInAuthorizationPolicy{}
+	default:
+		b = &ApplicationAuthorizationPolicy{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalConnectionPropertiesV2Classification(rawMsg json.RawMessage) (ConnectionPropertiesV2Classification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -48,4 +96,44 @@ func unmarshalConnectionPropertiesV2Classification(rawMsg json.RawMessage) (Conn
 		return nil, err
 	}
 	return b, nil
+}
+
+func unmarshalOutboundRuleClassification(rawMsg json.RawMessage) (OutboundRuleClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b OutboundRuleClassification
+	switch m["type"] {
+	case string(RuleTypeFQDN):
+		b = &FqdnOutboundRule{}
+	default:
+		b = &OutboundRule{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalOutboundRuleClassificationMap(rawMsg json.RawMessage) (map[string]OutboundRuleClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]OutboundRuleClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalOutboundRuleClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }

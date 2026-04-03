@@ -42,7 +42,7 @@ func NewLocationBasedModelCapacitiesClient(subscriptionID string, credential azc
 
 // NewListPager - List Location Based ModelCapacities.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - location - Resource location.
 //   - modelFormat - The format of the Model
 //   - modelName - The name of the Model
@@ -88,7 +88,7 @@ func (client *LocationBasedModelCapacitiesClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	reqQP.Set("modelFormat", modelFormat)
 	reqQP.Set("modelName", modelName)
 	reqQP.Set("modelVersion", modelVersion)

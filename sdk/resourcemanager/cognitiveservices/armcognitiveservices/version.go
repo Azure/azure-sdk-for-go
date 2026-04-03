@@ -6,5 +6,5 @@ package armcognitiveservices
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v3.1.0-beta.1"
 )

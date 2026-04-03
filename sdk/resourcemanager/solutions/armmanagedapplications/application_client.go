@@ -22,7 +22,7 @@ type ApplicationClient struct {
 
 // NewApplicationClient creates a new instance of ApplicationClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -36,7 +36,7 @@ func NewApplicationClient(credential azcore.TokenCredential, options *arm.Client
 
 // NewListOperationsPager - Lists all of the available Microsoft.Solutions REST API operations.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - options - ApplicationClientListOperationsOptions contains the optional parameters for the ApplicationClient.NewListOperationsPager
 //     method.
 func (client *ApplicationClient) NewListOperationsPager(options *ApplicationClientListOperationsOptions) *runtime.Pager[ApplicationClientListOperationsResponse] {
@@ -63,14 +63,14 @@ func (client *ApplicationClient) NewListOperationsPager(options *ApplicationClie
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *ApplicationClient) listOperationsCreateRequest(ctx context.Context, options *ApplicationClientListOperationsOptions) (*policy.Request, error) {
+func (client *ApplicationClient) listOperationsCreateRequest(ctx context.Context, _ *ApplicationClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Solutions/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -81,6 +81,61 @@ func (client *ApplicationClient) listOperationsHandleResponse(resp *http.Respons
 	result := ApplicationClientListOperationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return ApplicationClientListOperationsResponse{}, err
+	}
+	return result, nil
+}
+
+// PortalRegistryPackage - Generates the registry package links for Managed Applications and Solution Templates.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01-preview
+//   - parameters - Request body parameters to get registry packages.
+//   - options - ApplicationClientPortalRegistryPackageOptions contains the optional parameters for the ApplicationClient.PortalRegistryPackage
+//     method.
+func (client *ApplicationClient) PortalRegistryPackage(ctx context.Context, parameters RegistryPackagePlan, options *ApplicationClientPortalRegistryPackageOptions) (ApplicationClientPortalRegistryPackageResponse, error) {
+	var err error
+	const operationName = "ApplicationClient.PortalRegistryPackage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.portalRegistryPackageCreateRequest(ctx, parameters, options)
+	if err != nil {
+		return ApplicationClientPortalRegistryPackageResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ApplicationClientPortalRegistryPackageResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ApplicationClientPortalRegistryPackageResponse{}, err
+	}
+	resp, err := client.portalRegistryPackageHandleResponse(httpResp)
+	return resp, err
+}
+
+// portalRegistryPackageCreateRequest creates the PortalRegistryPackage request.
+func (client *ApplicationClient) portalRegistryPackageCreateRequest(ctx context.Context, parameters RegistryPackagePlan, _ *ApplicationClientPortalRegistryPackageOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Solutions/portalRegistryPackage"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// portalRegistryPackageHandleResponse handles the PortalRegistryPackage response.
+func (client *ApplicationClient) portalRegistryPackageHandleResponse(resp *http.Response) (ApplicationClientPortalRegistryPackageResponse, error) {
+	result := ApplicationClientPortalRegistryPackageResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryPackage); err != nil {
+		return ApplicationClientPortalRegistryPackageResponse{}, err
 	}
 	return result, nil
 }

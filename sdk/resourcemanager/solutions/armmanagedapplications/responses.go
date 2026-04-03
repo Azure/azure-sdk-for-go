@@ -11,6 +11,12 @@ type ApplicationClientListOperationsResponse struct {
 	OperationListResult
 }
 
+// ApplicationClientPortalRegistryPackageResponse contains the response from method ApplicationClient.PortalRegistryPackage.
+type ApplicationClientPortalRegistryPackageResponse struct {
+	// Information about an application definition request.
+	RegistryPackage
+}
+
 // ApplicationDefinitionsClientCreateOrUpdateByIDResponse contains the response from method ApplicationDefinitionsClient.CreateOrUpdateByID.
 type ApplicationDefinitionsClientCreateOrUpdateByIDResponse struct {
 	// Information about managed application definition.

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/JobCRUD/GetJob.json
+// Generated from example definition: 2026-03-01/JobCRUD/GetJob.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobCRUD/ListJobs.json
+// Generated from example definition: 2026-03-01/JobCRUD/ListJobs.json
 func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

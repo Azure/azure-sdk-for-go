@@ -42,7 +42,7 @@ func NewExportJobsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginTrigger - Triggers export of jobs and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the BackupVaultResource
 //   - options - ExportJobsClientBeginTriggerOptions contains the optional parameters for the ExportJobsClient.BeginTrigger method.
@@ -66,7 +66,7 @@ func (client *ExportJobsClient) BeginTrigger(ctx context.Context, resourceGroupN
 // Trigger - Triggers export of jobs and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExportJobsClient.BeginTrigger"
@@ -108,7 +108,7 @@ func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

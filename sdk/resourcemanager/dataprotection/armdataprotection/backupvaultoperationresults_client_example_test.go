@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VaultCRUD/GetOperationResultPatch.json
+// Generated from example definition: 2026-03-01/VaultCRUD/GetOperationResultPatch.json
 func ExampleBackupVaultOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

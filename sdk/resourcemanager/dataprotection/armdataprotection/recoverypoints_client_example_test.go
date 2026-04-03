@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/GetRecoveryPoint.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/GetRecoveryPoint.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleRecoveryPointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/ListRecoveryPoints.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/ListRecoveryPoints.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

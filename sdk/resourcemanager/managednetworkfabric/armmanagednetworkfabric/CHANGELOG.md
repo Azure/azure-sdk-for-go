@@ -1,5 +1,476 @@
 # Release History
 
+## 2.0.0 (2026-04-01)
+### Breaking Changes
+
+- Function `*InternalNetworksClient.BeginUpdateBgpAdministrativeState` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions)` to `(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body InternalNetworkUpdateBgpAdministrativeStateRequest, options *InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions)`
+- Function `*NetworkDevicesClient.BeginUpgrade` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateVersion, options *NetworkDevicesClientBeginUpgradeOptions)` to `(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDeviceUpgradeRequest, options *NetworkDevicesClientBeginUpgradeOptions)`
+- Function `*NetworkFabricsClient.BeginUpgrade` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateVersion, options *NetworkFabricsClientBeginUpgradeOptions)` to `(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, options *NetworkFabricsClientBeginUpgradeOptions)`
+- Function `*NetworkRacksClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkRackName string, body TagsUpdate, options *NetworkRacksClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions)`
+- Type of `AccessControlListPatchProperties.DynamicMatchConfigurations` has been changed from `[]*CommonDynamicMatchConfiguration` to `[]*CommonDynamicMatchConfigurationPatch`
+- Type of `AccessControlListPatchProperties.MatchConfigurations` has been changed from `[]*AccessControlListMatchConfiguration` to `[]*AccessControlListMatchConfigurationPatch`
+- Type of `ExternalNetworkPatchProperties.ExportRoutePolicy` has been changed from `*ExportRoutePolicy` to `*ExportRoutePolicyPatch`
+- Type of `ExternalNetworkPatchProperties.ImportRoutePolicy` has been changed from `*ImportRoutePolicy` to `*ImportRoutePolicyPatch`
+- Type of `ExternalNetworkPatchProperties.OptionBProperties` has been changed from `*L3OptionBProperties` to `*L3OptionBPatchProperties`
+- Type of `ExternalNetworkPatchPropertiesOptionAProperties.BfdConfiguration` has been changed from `*BfdConfiguration` to `*BfdPatchConfiguration`
+- Type of `InternalNetworkPatchProperties.BgpConfiguration` has been changed from `*BgpConfiguration` to `*BgpPatchConfiguration`
+- Type of `InternalNetworkPatchProperties.ConnectedIPv4Subnets` has been changed from `[]*ConnectedSubnet` to `[]*ConnectedSubnetPatch`
+- Type of `InternalNetworkPatchProperties.ConnectedIPv6Subnets` has been changed from `[]*ConnectedSubnet` to `[]*ConnectedSubnetPatch`
+- Type of `InternalNetworkPatchProperties.StaticRouteConfiguration` has been changed from `*StaticRouteConfiguration` to `*StaticRoutePatchConfiguration`
+- Type of `InternalNetworkProperties.BgpConfiguration` has been changed from `*InternalNetworkPropertiesBgpConfiguration` to `*BgpConfiguration`
+- Type of `InternalNetworkProperties.StaticRouteConfiguration` has been changed from `*InternalNetworkPropertiesStaticRouteConfiguration` to `*StaticRouteConfiguration`
+- Type of `InternetGatewayPatch.Properties` has been changed from `*InternetGatewayPatchableProperties` to `*InternetGatewayPatchProperties`
+- Type of `L3IsolationDomainPatchProperties.AggregateRouteConfiguration` has been changed from `*AggregateRouteConfiguration` to `*AggregateRoutePatchConfiguration`
+- Type of `L3IsolationDomainPatchProperties.ConnectedSubnetRoutePolicy` has been changed from `*ConnectedSubnetRoutePolicy` to `*ConnectedSubnetRoutePolicyPatch`
+- Type of `NeighborGroupPatchProperties.Destination` has been changed from `*NeighborGroupDestination` to `*NeighborGroupDestinationPatch`
+- Type of `NetworkFabricControllerPatch.Properties` has been changed from `*NetworkFabricControllerPatchableProperties` to `*NetworkFabricControllerPatchProperties`
+- Type of `NetworkFabricPatchProperties.ManagementNetworkConfiguration` has been changed from `*ManagementNetworkConfigurationPatchableProperties` to `*ManagementNetworkPatchConfiguration`
+- Type of `NetworkFabricPatchProperties.TerminalServerConfiguration` has been changed from `*NetworkFabricPatchablePropertiesTerminalServerConfiguration` to `*TerminalServerPatchConfiguration`
+- Type of `NetworkTapPatch.Properties` has been changed from `*NetworkTapPatchableParameters` to `*NetworkTapPatchProperties`
+- Type of `NetworkTapProperties.Destinations` has been changed from `[]*NetworkTapPropertiesDestinationsItem` to `[]*DestinationProperties`
+- Type of `NetworkTapRulePatchProperties.DynamicMatchConfigurations` has been changed from `[]*CommonDynamicMatchConfiguration` to `[]*CommonDynamicMatchConfigurationPatch`
+- Type of `NetworkTapRulePatchProperties.MatchConfigurations` has been changed from `[]*NetworkTapRuleMatchConfiguration` to `[]*NetworkTapRuleMatchConfigurationPatch`
+- Type of `NetworkTapRuleProperties.PollingIntervalInSeconds` has been changed from `*PollingIntervalInSeconds` to `*int32`
+- Type of `NetworkToNetworkInterconnectPatch.Properties` has been changed from `*NetworkToNetworkInterconnectPatchableProperties` to `*NetworkToNetworkInterconnectPatchProperties`
+- Type of `NetworkToNetworkInterconnectProperties.OptionBLayer3Configuration` has been changed from `*NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration` to `*OptionBLayer3Configuration`
+- Type of `RoutePolicyPatchableProperties.Statements` has been changed from `[]*RoutePolicyStatementProperties` to `[]*RoutePolicyStatementPatchProperties`
+- Type of `VPNConfigurationPatchableProperties.OptionAProperties` has been changed from `*VPNConfigurationPatchablePropertiesOptionAProperties` to `*VPNOptionAPatchProperties`
+- Type of `VPNConfigurationPatchableProperties.OptionBProperties` has been changed from `*OptionBProperties` to `*VPNOptionBPatchProperties`
+- Type of `VPNConfigurationProperties.OptionAProperties` has been changed from `*VPNConfigurationPropertiesOptionAProperties` to `*VPNOptionAProperties`
+- Type of `VPNConfigurationProperties.OptionBProperties` has been changed from `*OptionBProperties` to `*VPNOptionBProperties`
+- Enum `PollingIntervalInSeconds` has been removed
+- Struct `InternalNetworkPropertiesBgpConfiguration` has been removed
+- Struct `InternalNetworkPropertiesStaticRouteConfiguration` has been removed
+- Struct `InternetGatewayPatchableProperties` has been removed
+- Struct `ManagementNetworkConfigurationPatchableProperties` has been removed
+- Struct `NetworkFabricControllerPatchableProperties` has been removed
+- Struct `NetworkFabricPatchablePropertiesTerminalServerConfiguration` has been removed
+- Struct `NetworkTapPatchableParameters` has been removed
+- Struct `NetworkTapPatchableParametersDestinationsItem` has been removed
+- Struct `NetworkTapPropertiesDestinationsItem` has been removed
+- Struct `NetworkToNetworkInterconnectPatchableProperties` has been removed
+- Struct `NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration` has been removed
+- Struct `OptionBProperties` has been removed
+- Struct `TagsUpdate` has been removed
+- Struct `VPNConfigurationPatchablePropertiesOptionAProperties` has been removed
+- Struct `VPNConfigurationPropertiesOptionAProperties` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `AccessControlListsClientUpdateAdministrativeStateResponse` has been removed
+- Field `ExportRoutePolicyID` of struct `ConnectedSubnetRoutePolicy` has been removed
+- Field `ExportRoutePolicyID`, `ImportRoutePolicyID` of struct `ExternalNetworkPatchProperties` has been removed
+- Field `ExportRoutePolicyID`, `ImportRoutePolicyID` of struct `ExternalNetworkProperties` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `ExternalNetworksClientUpdateAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse` has been removed
+- Field `ExportRoutePolicyID`, `ImportRoutePolicyID` of struct `InternalNetworkPatchProperties` has been removed
+- Field `ExportRoutePolicyID`, `ImportRoutePolicyID` of struct `InternalNetworkProperties` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `InternalNetworksClientUpdateAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `InternalNetworksClientUpdateBgpAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForDeviceUpdate` of struct `L2IsolationDomainsClientUpdateAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForDeviceUpdate` of struct `L3IsolationDomainsClientUpdateAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkDevicesClientRebootResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkDevicesClientRefreshConfigurationResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkDevicesClientUpdateAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkDevicesClientUpgradeResponse` has been removed
+- Field `WorkloadManagementNetwork` of struct `NetworkFabricControllerProperties` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkFabricsClientCommitConfigurationResponse` has been removed
+- Field `CommonPostActionResponseForDeviceUpdate` of struct `NetworkFabricsClientDeprovisionResponse` has been removed
+- Field `ValidateConfigurationResponse` of struct `NetworkFabricsClientGetTopologyResponse` has been removed
+- Field `CommonPostActionResponseForDeviceUpdate` of struct `NetworkFabricsClientProvisionResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkFabricsClientRefreshConfigurationResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkFabricsClientUpgradeResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkInterfacesClientUpdateAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkTapRulesClientResyncResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkTapsClientResyncResponse` has been removed
+- Field `CommonPostActionResponseForDeviceUpdate` of struct `NetworkTapsClientUpdateAdministrativeStateResponse` has been removed
+- Field `Name` of struct `NetworkToNetworkInterconnectPatch` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForStateUpdate` of struct `NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse` has been removed
+- Field `CommonPostActionResponseForDeviceUpdate` of struct `RoutePoliciesClientUpdateAdministrativeStateResponse` has been removed
+
+### Features Added
+
+- New value `ACLActionTypePoliceRate`, `ACLActionTypeRemark` added to enum type `ACLActionType`
+- New value `AdministrativeStateEnabledDegraded`, `AdministrativeStateUnderMaintenance` added to enum type `AdministrativeState`
+- New value `ConfigurationStatePendingAdministrativeUpdate`, `ConfigurationStatePendingCommit`, `ConfigurationStateProvisioning` added to enum type `ConfigurationState`
+- New value `DeviceAdministrativeStateDisable`, `DeviceAdministrativeStateEnable`, `DeviceAdministrativeStateUnderMaintenance`, `DeviceAdministrativeStateUngracefulQuarantine`, `DeviceAdministrativeStateUngracefulRMA` added to enum type `DeviceAdministrativeState`
+- New value `EnableDisableStateUnderMaintenance` added to enum type `EnableDisableState`
+- New value `Layer4ProtocolSCTP` added to enum type `Layer4Protocol`
+- New value `PortTypeBidirectional` added to enum type `PortType`
+- New value `SourceDestinationTypeBidirectional` added to enum type `SourceDestinationType`
+- New enum type `ACLType` with values `ACLTypeControlPlaneACL`, `ACLTypeCp`, `ACLTypeManagement`, `ACLTypeTenant`
+- New enum type `BgpAdministrativeState` with values `BgpAdministrativeStateDisabled`, `BgpAdministrativeStateEnabled`
+- New enum type `BitRateUnit` with values `BitRateUnitBps`, `BitRateUnitGbps`, `BitRateUnitKbps`, `BitRateUnitMbps`, `BitRateUnitPps`
+- New enum type `BmpConfigurationState` with values `BmpConfigurationStateDisabled`, `BmpConfigurationStateEnabled`
+- New enum type `BmpExportPolicy` with values `BmpExportPolicyAll`, `BmpExportPolicyLocalRib`, `BmpExportPolicyPostPolicy`, `BmpExportPolicyPrePolicy`
+- New enum type `BmpMonitoredAddressFamily` with values `BmpMonitoredAddressFamilyAll`, `BmpMonitoredAddressFamilyIPv4Unicast`, `BmpMonitoredAddressFamilyIPv6Unicast`, `BmpMonitoredAddressFamilyVPNIPv4`, `BmpMonitoredAddressFamilyVPNIPv6`
+- New enum type `BurstSizeUnit` with values `BurstSizeUnitBytes`, `BurstSizeUnitGBytes`, `BurstSizeUnitKBytes`, `BurstSizeUnitMBytes`, `BurstSizeUnitPackets`
+- New enum type `CommitBatchState` with values `CommitBatchStateFailed`, `CommitBatchStateProcessing`, `CommitBatchStateSucceeded`
+- New enum type `CommitConfigurationPolicy` with values `CommitConfigurationPolicyStageCEConfiguration`
+- New enum type `CommitStage` with values `CommitStageContinue`, `CommitStageRollback`, `CommitStageStart`
+- New enum type `ControlPlaneACLActionType` with values `ControlPlaneACLActionTypeDeny`, `ControlPlaneACLActionTypePermit`, `ControlPlaneACLActionTypeRemark`
+- New enum type `ControlPlaneACLPortMatchType` with values `ControlPlaneACLPortMatchTypeEquals`, `ControlPlaneACLPortMatchTypeGreaterThan`, `ControlPlaneACLPortMatchTypeLesserThan`, `ControlPlaneACLPortMatchTypeNotEquals`, `ControlPlaneACLPortMatchTypeRange`
+- New enum type `ControlPlaneACLTTLMatchType` with values `ControlPlaneACLTTLMatchTypeEquals`, `ControlPlaneACLTTLMatchTypeGreaterThan`, `ControlPlaneACLTTLMatchTypeLesserThan`, `ControlPlaneACLTTLMatchTypeNotEquals`
+- New enum type `DeviceRole` with values `DeviceRoleCE`, `DeviceRoleManagementSwitch`, `DeviceRoleNPB`, `DeviceRoleToR`
+- New enum type `ExtendedVlan` with values `ExtendedVlanDisabled`, `ExtendedVlanEnabled`
+- New enum type `ExternalNetworkRouteType` with values `ExternalNetworkRouteTypeOptionA`, `ExternalNetworkRouteTypeStatic`
+- New enum type `InternalNetworkRouteType` with values `InternalNetworkRouteTypeBgp`, `InternalNetworkRouteTypeStatic`
+- New enum type `LockConfigurationState` with values `LockConfigurationStateDisabled`, `LockConfigurationStateEnabled`
+- New enum type `ManagedServiceIdentitySelectorType` with values `ManagedServiceIdentitySelectorTypeSystemAssignedIdentity`, `ManagedServiceIdentitySelectorTypeUserAssignedIdentity`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `MicroBfdState` with values `MicroBfdStateDisabled`, `MicroBfdStateEnabled`
+- New enum type `NNIDerivedUniqueRouteDistinguisherConfigurationState` with values `NNIDerivedUniqueRouteDistinguisherConfigurationStateDisabled`, `NNIDerivedUniqueRouteDistinguisherConfigurationStateEnabled`
+- New enum type `NetworkFabricLockAction` with values `NetworkFabricLockActionLock`, `NetworkFabricLockActionUnlock`
+- New enum type `NetworkFabricLockType` with values `NetworkFabricLockTypeAdministrative`, `NetworkFabricLockTypeConfiguration`
+- New enum type `NetworkFabricUpgradeAction` with values `NetworkFabricUpgradeActionComplete`, `NetworkFabricUpgradeActionStart`
+- New enum type `QosConfigurationState` with values `QosConfigurationStateDisabled`, `QosConfigurationStateEnabled`
+- New enum type `RouteType` with values `RouteTypeOptionA`, `RouteTypeStatic`
+- New enum type `RuleCondition` with values `RuleConditionAnd`, `RuleConditionOr`
+- New enum type `StationConfigurationState` with values `StationConfigurationStateDisabled`, `StationConfigurationStateEnabled`
+- New enum type `StationConnectionMode` with values `StationConnectionModeActive`, `StationConnectionModePassive`
+- New enum type `SynchronizationStatus` with values `SynchronizationStatusInSync`, `SynchronizationStatusOutOfSync`, `SynchronizationStatusSynchronizing`
+- New enum type `UniqueRouteDistinguisherConfigurationState` with values `UniqueRouteDistinguisherConfigurationStateDisabled`, `UniqueRouteDistinguisherConfigurationStateEnabled`
+- New enum type `V4OverV6BgpSessionState` with values `V4OverV6BgpSessionStateDisabled`, `V4OverV6BgpSessionStateEnabled`
+- New enum type `V6OverV4BgpSessionState` with values `V6OverV4BgpSessionStateDisabled`, `V6OverV4BgpSessionStateEnabled`
+- New function `*ClientFactory.NewNetworkBootstrapDevicesClient() *NetworkBootstrapDevicesClient`
+- New function `*ClientFactory.NewNetworkBootstrapInterfacesClient() *NetworkBootstrapInterfacesClient`
+- New function `*ClientFactory.NewNetworkMonitorsClient() *NetworkMonitorsClient`
+- New function `*ExternalNetworksClient.BeginUpdateBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetworkUpdateBfdAdministrativeStateRequest, options *ExternalNetworksClientBeginUpdateBfdAdministrativeStateOptions) (*runtime.Poller[ExternalNetworksClientUpdateBfdAdministrativeStateResponse], error)`
+- New function `*InternalNetworksClient.BeginUpdateBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body InternalNetworkUpdateBfdAdministrativeStateRequest, options *InternalNetworksClientBeginUpdateBfdAdministrativeStateOptions) (*runtime.Poller[InternalNetworksClientUpdateBfdAdministrativeStateResponse], error)`
+- New function `*NeighborGroupsClient.BeginResync(ctx context.Context, resourceGroupName string, neighborGroupName string, options *NeighborGroupsClientBeginResyncOptions) (*runtime.Poller[NeighborGroupsClientResyncResponse], error)`
+- New function `NewNetworkBootstrapDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkBootstrapDevicesClient, error)`
+- New function `*NetworkBootstrapDevicesClient.BeginCreate(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body NetworkBootstrapDevice, options *NetworkBootstrapDevicesClientBeginCreateOptions) (*runtime.Poller[NetworkBootstrapDevicesClientCreateResponse], error)`
+- New function `*NetworkBootstrapDevicesClient.BeginDelete(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginDeleteOptions) (*runtime.Poller[NetworkBootstrapDevicesClientDeleteResponse], error)`
+- New function `*NetworkBootstrapDevicesClient.Get(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientGetOptions) (NetworkBootstrapDevicesClientGetResponse, error)`
+- New function `*NetworkBootstrapDevicesClient.NewListByResourceGroupPager(resourceGroupName string, options *NetworkBootstrapDevicesClientListByResourceGroupOptions) *runtime.Pager[NetworkBootstrapDevicesClientListByResourceGroupResponse]`
+- New function `*NetworkBootstrapDevicesClient.NewListBySubscriptionPager(options *NetworkBootstrapDevicesClientListBySubscriptionOptions) *runtime.Pager[NetworkBootstrapDevicesClientListBySubscriptionResponse]`
+- New function `*NetworkBootstrapDevicesClient.BeginReboot(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginRebootOptions) (*runtime.Poller[NetworkBootstrapDevicesClientRebootResponse], error)`
+- New function `*NetworkBootstrapDevicesClient.BeginRefreshConfiguration(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginRefreshConfigurationOptions) (*runtime.Poller[NetworkBootstrapDevicesClientRefreshConfigurationResponse], error)`
+- New function `*NetworkBootstrapDevicesClient.BeginResyncPasswords(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginResyncPasswordsOptions) (*runtime.Poller[NetworkBootstrapDevicesClientResyncPasswordsResponse], error)`
+- New function `*NetworkBootstrapDevicesClient.BeginUpdate(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body NetworkBootstrapDevicePatch, options *NetworkBootstrapDevicesClientBeginUpdateOptions) (*runtime.Poller[NetworkBootstrapDevicesClientUpdateResponse], error)`
+- New function `*NetworkBootstrapDevicesClient.BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body UpdateDeviceAdministrativeState, options *NetworkBootstrapDevicesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkBootstrapDevicesClientUpdateAdministrativeStateResponse], error)`
+- New function `*NetworkBootstrapDevicesClient.BeginUpgrade(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body UpdateVersion, options *NetworkBootstrapDevicesClientBeginUpgradeOptions) (*runtime.Poller[NetworkBootstrapDevicesClientUpgradeResponse], error)`
+- New function `NewNetworkBootstrapInterfacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkBootstrapInterfacesClient, error)`
+- New function `*NetworkBootstrapInterfacesClient.BeginCreate(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body NetworkBootstrapInterface, options *NetworkBootstrapInterfacesClientBeginCreateOptions) (*runtime.Poller[NetworkBootstrapInterfacesClientCreateResponse], error)`
+- New function `*NetworkBootstrapInterfacesClient.BeginDelete(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, options *NetworkBootstrapInterfacesClientBeginDeleteOptions) (*runtime.Poller[NetworkBootstrapInterfacesClientDeleteResponse], error)`
+- New function `*NetworkBootstrapInterfacesClient.Get(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, options *NetworkBootstrapInterfacesClientGetOptions) (NetworkBootstrapInterfacesClientGetResponse, error)`
+- New function `*NetworkBootstrapInterfacesClient.NewListByNetworkBootstrapDevicePager(resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceOptions) *runtime.Pager[NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse]`
+- New function `*NetworkBootstrapInterfacesClient.BeginUpdate(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body NetworkBootstrapInterfacePatch, options *NetworkBootstrapInterfacesClientBeginUpdateOptions) (*runtime.Poller[NetworkBootstrapInterfacesClientUpdateResponse], error)`
+- New function `*NetworkBootstrapInterfacesClient.BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body UpdateAdministrativeState, options *NetworkBootstrapInterfacesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkBootstrapInterfacesClientUpdateAdministrativeStateResponse], error)`
+- New function `*NetworkDevicesClient.BeginResyncCertificates(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginResyncCertificatesOptions) (*runtime.Poller[NetworkDevicesClientResyncCertificatesResponse], error)`
+- New function `*NetworkDevicesClient.BeginResyncPasswords(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginResyncPasswordsOptions) (*runtime.Poller[NetworkDevicesClientResyncPasswordsResponse], error)`
+- New function `*NetworkDevicesClient.BeginRunRoCommand(ctx context.Context, resourceGroupName string, networkDeviceName string, body DeviceRoCommand, options *NetworkDevicesClientBeginRunRoCommandOptions) (*runtime.Poller[NetworkDevicesClientRunRoCommandResponse], error)`
+- New function `*NetworkDevicesClient.BeginRunRwCommand(ctx context.Context, resourceGroupName string, networkDeviceName string, body DeviceRwCommand, options *NetworkDevicesClientBeginRunRwCommandOptions) (*runtime.Poller[NetworkDevicesClientRunRwCommandResponse], error)`
+- New function `*NetworkFabricsClient.BeginArmConfigurationDiff(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginArmConfigurationDiffOptions) (*runtime.Poller[NetworkFabricsClientArmConfigurationDiffResponse], error)`
+- New function `*NetworkFabricsClient.BeginCommitBatchStatus(ctx context.Context, resourceGroupName string, networkFabricName string, body CommitBatchStatusRequest, options *NetworkFabricsClientBeginCommitBatchStatusOptions) (*runtime.Poller[NetworkFabricsClientCommitBatchStatusResponse], error)`
+- New function `*NetworkFabricsClient.BeginDiscardCommitBatch(ctx context.Context, resourceGroupName string, networkFabricName string, body DiscardCommitBatchRequest, options *NetworkFabricsClientBeginDiscardCommitBatchOptions) (*runtime.Poller[NetworkFabricsClientDiscardCommitBatchResponse], error)`
+- New function `*NetworkFabricsClient.BeginLockFabric(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, options *NetworkFabricsClientBeginLockFabricOptions) (*runtime.Poller[NetworkFabricsClientLockFabricResponse], error)`
+- New function `*NetworkFabricsClient.BeginResyncCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncCertificatesOptions) (*runtime.Poller[NetworkFabricsClientResyncCertificatesResponse], error)`
+- New function `*NetworkFabricsClient.BeginResyncPasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncPasswordsOptions) (*runtime.Poller[NetworkFabricsClientResyncPasswordsResponse], error)`
+- New function `*NetworkFabricsClient.BeginRotateCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotateCertificatesOptions) (*runtime.Poller[NetworkFabricsClientRotateCertificatesResponse], error)`
+- New function `*NetworkFabricsClient.BeginRotatePasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotatePasswordsOptions) (*runtime.Poller[NetworkFabricsClientRotatePasswordsResponse], error)`
+- New function `*NetworkFabricsClient.BeginViewDeviceConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*runtime.Poller[NetworkFabricsClientViewDeviceConfigurationResponse], error)`
+- New function `NewNetworkMonitorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkMonitorsClient, error)`
+- New function `*NetworkMonitorsClient.BeginCreate(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitor, options *NetworkMonitorsClientBeginCreateOptions) (*runtime.Poller[NetworkMonitorsClientCreateResponse], error)`
+- New function `*NetworkMonitorsClient.BeginDelete(ctx context.Context, resourceGroupName string, networkMonitorName string, options *NetworkMonitorsClientBeginDeleteOptions) (*runtime.Poller[NetworkMonitorsClientDeleteResponse], error)`
+- New function `*NetworkMonitorsClient.Get(ctx context.Context, resourceGroupName string, networkMonitorName string, options *NetworkMonitorsClientGetOptions) (NetworkMonitorsClientGetResponse, error)`
+- New function `*NetworkMonitorsClient.NewListByResourceGroupPager(resourceGroupName string, options *NetworkMonitorsClientListByResourceGroupOptions) *runtime.Pager[NetworkMonitorsClientListByResourceGroupResponse]`
+- New function `*NetworkMonitorsClient.NewListBySubscriptionPager(options *NetworkMonitorsClientListBySubscriptionOptions) *runtime.Pager[NetworkMonitorsClientListBySubscriptionResponse]`
+- New function `*NetworkMonitorsClient.BeginUpdate(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, options *NetworkMonitorsClientBeginUpdateOptions) (*runtime.Poller[NetworkMonitorsClientUpdateResponse], error)`
+- New function `*NetworkMonitorsClient.BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, options *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkMonitorsClientUpdateAdministrativeStateResponse], error)`
+- New function `*NetworkToNetworkInterconnectsClient.BeginUpdateBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, options *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse], error)`
+- New struct `AccessControlListActionPatch`
+- New struct `AccessControlListMatchConditionPatch`
+- New struct `AccessControlListMatchConfigurationPatch`
+- New struct `AccessControlListPortConditionPatch`
+- New struct `ActionIPCommunityPatchProperties`
+- New struct `ActionIPExtendedCommunityPatchProperties`
+- New struct `AggregateRoutePatchConfiguration`
+- New struct `ArmConfigurationDiffOperationResponse`
+- New struct `ArmConfigurationDiffResponseProperties`
+- New struct `AuthorizedTransceiverPatchProperties`
+- New struct `AuthorizedTransceiverProperties`
+- New struct `BfdPatchConfiguration`
+- New struct `BgpPatchConfiguration`
+- New struct `BitRate`
+- New struct `BmpConfigurationPatchProperties`
+- New struct `BmpConfigurationProperties`
+- New struct `BmpExportPolicyPatchProperties`
+- New struct `BmpExportPolicyProperties`
+- New struct `BurstSize`
+- New struct `CertificateArchiveReference`
+- New struct `CertificateRotationStatus`
+- New struct `CommitBatchDetails`
+- New struct `CommitBatchStatusOperationResponse`
+- New struct `CommitBatchStatusRequest`
+- New struct `CommitBatchStatusResponseProperties`
+- New struct `CommitConfigurationRequest`
+- New struct `CommitConfigurationResponse`
+- New struct `CommonDynamicMatchConfigurationPatch`
+- New struct `CommonPostActionResponseForDeviceROCommands`
+- New struct `CommonPostActionResponseForDeviceROCommandsOperationStatusResult`
+- New struct `ConditionalDefaultRouteProperties`
+- New struct `ConnectedSubnetPatch`
+- New struct `ConnectedSubnetRoutePolicyPatch`
+- New struct `ControlPlanACLIPMatchCondition`
+- New struct `ControlPlaneACLAction`
+- New struct `ControlPlaneACLActionPatch`
+- New struct `ControlPlaneACLIPMatchConditionPatch`
+- New struct `ControlPlaneACLMatchCondition`
+- New struct `ControlPlaneACLMatchConditionPatch`
+- New struct `ControlPlaneACLMatchConfigurationPatchProperties`
+- New struct `ControlPlaneACLMatchConfigurationProperties`
+- New struct `ControlPlaneACLPatchProperties`
+- New struct `ControlPlaneACLPortCondition`
+- New struct `ControlPlaneACLPortMatchCondition`
+- New struct `ControlPlaneACLPortMatchConditionPatch`
+- New struct `ControlPlaneACLProperties`
+- New struct `ControlPlaneACLTTLMatchCondition`
+- New struct `ControlPlaneACLTTLMatchConditionPatch`
+- New struct `DestinationPatchProperties`
+- New struct `DestinationProperties`
+- New struct `DeviceRoCommand`
+- New struct `DeviceRwCommand`
+- New struct `DiscardCommitBatchOperationResponse`
+- New struct `DiscardCommitBatchRequest`
+- New struct `DiscardCommitBatchResponseProperties`
+- New struct `ExportRoutePolicyInformationPatch`
+- New struct `ExportRoutePolicyPatch`
+- New struct `ExternalNetworkBmpPatchProperties`
+- New struct `ExternalNetworkBmpProperties`
+- New struct `ExternalNetworkStaticRouteConfiguration`
+- New struct `ExternalNetworkStaticRoutePatchConfiguration`
+- New struct `ExternalNetworkUpdateBfdAdministrativeStateRequest`
+- New struct `ExternalNetworkUpdateBfdAdministrativeStateResponse`
+- New struct `ExternalNetworkUpdateBfdAdministrativeStateResponseProperties`
+- New struct `FabricLockProperties`
+- New struct `FeatureFlagProperties`
+- New struct `GetTopologyResponse`
+- New struct `GetTopologyResponseProperties`
+- New struct `GlobalAccessControlListActionPatchProperties`
+- New struct `GlobalAccessControlListActionProperties`
+- New struct `GlobalNetworkTapRuleActionPatchProperties`
+- New struct `GlobalNetworkTapRuleActionProperties`
+- New struct `HeaderAddressProperties`
+- New struct `IPGroupPatchProperties`
+- New struct `IPMatchConditionPatch`
+- New struct `IcmpConfigurationPatchProperties`
+- New struct `IcmpConfigurationProperties`
+- New struct `IdentitySelector`
+- New struct `IdentitySelectorPatch`
+- New struct `ImportRoutePolicyInformationPatch`
+- New struct `ImportRoutePolicyPatch`
+- New struct `InternalNetworkBmpPatchProperties`
+- New struct `InternalNetworkBmpProperties`
+- New struct `InternalNetworkUpdateBfdAdministrativeStateRequest`
+- New struct `InternalNetworkUpdateBfdAdministrativeStateResponse`
+- New struct `InternalNetworkUpdateBfdAdministrativeStateResponseProperties`
+- New struct `InternalNetworkUpdateBgpAdministrativeStateRequest`
+- New struct `InternalNetworkUpdateBgpAdministrativeStateResponse`
+- New struct `InternalNetworkUpdateBgpAdministrativeStateResponseProperties`
+- New struct `InternetGatewayPatchProperties`
+- New struct `IsolationDomainPatchProperties`
+- New struct `L3ExportRoutePolicyPatch`
+- New struct `L3OptionBPatchProperties`
+- New struct `L3UniqueRouteDistinguisherProperties`
+- New struct `LastOperationProperties`
+- New struct `Layer2ConfigurationPatch`
+- New struct `ManagedServiceIdentity`
+- New struct `ManagedServiceIdentityPatch`
+- New struct `ManagementNetworkPatchConfiguration`
+- New struct `NativeIPv4PrefixLimitPatchProperties`
+- New struct `NativeIPv4PrefixLimitProperties`
+- New struct `NativeIPv6PrefixLimitPatchProperties`
+- New struct `NativeIPv6PrefixLimitProperties`
+- New struct `NeighborAddressBfdAdministrativeStatus`
+- New struct `NeighborAddressBgpAdministrativeStatus`
+- New struct `NeighborAddressPatch`
+- New struct `NeighborGroupDestinationPatch`
+- New struct `NeighborGroupResyncResponse`
+- New struct `NetworkBootstrapDevice`
+- New struct `NetworkBootstrapDeviceListResult`
+- New struct `NetworkBootstrapDevicePatch`
+- New struct `NetworkBootstrapDevicePatchProperties`
+- New struct `NetworkBootstrapDeviceProperties`
+- New struct `NetworkBootstrapDeviceRebootResponse`
+- New struct `NetworkBootstrapDeviceRefreshConfigurationResponse`
+- New struct `NetworkBootstrapDeviceResyncPasswordsResponse`
+- New struct `NetworkBootstrapDeviceUpdateAdministrativeStateResponse`
+- New struct `NetworkBootstrapDeviceUpgradeResponse`
+- New struct `NetworkBootstrapInterface`
+- New struct `NetworkBootstrapInterfaceListResult`
+- New struct `NetworkBootstrapInterfacePatch`
+- New struct `NetworkBootstrapInterfacePatchProperties`
+- New struct `NetworkBootstrapInterfaceProperties`
+- New struct `NetworkDeviceRefreshConfigurationResponse`
+- New struct `NetworkDeviceResyncPasswordsResponse`
+- New struct `NetworkDeviceRunRwCommandResponse`
+- New struct `NetworkDeviceRwCommandResponseProperties`
+- New struct `NetworkDeviceUpdateAdministrativeStateResponse`
+- New struct `NetworkDeviceUpgradeRequest`
+- New struct `NetworkDeviceUpgradeResponse`
+- New struct `NetworkFabricControllerPatchProperties`
+- New struct `NetworkFabricLockRequest`
+- New struct `NetworkFabricResyncCertificatesResponse`
+- New struct `NetworkFabricResyncPasswordsResponse`
+- New struct `NetworkFabricRotateCertificatesResponse`
+- New struct `NetworkFabricRotatePasswordsResponse`
+- New struct `NetworkMonitor`
+- New struct `NetworkMonitorListResult`
+- New struct `NetworkMonitorPatch`
+- New struct `NetworkMonitorPatchProperties`
+- New struct `NetworkMonitorProperties`
+- New struct `NetworkRackPatch`
+- New struct `NetworkTapPatchProperties`
+- New struct `NetworkTapResyncResponse`
+- New struct `NetworkTapRuleActionPatch`
+- New struct `NetworkTapRuleMatchConditionPatch`
+- New struct `NetworkTapRuleMatchConfigurationPatch`
+- New struct `NetworkTapRuleResyncResponse`
+- New struct `NetworkToNetworkInterconnectPatchProperties`
+- New struct `NniBmpPatchProperties`
+- New struct `NniBmpProperties`
+- New struct `NniStaticRouteConfiguration`
+- New struct `NniStaticRoutePatchConfiguration`
+- New struct `NniUpdateBfdAdministrativeStateRequest`
+- New struct `NniUpdateBfdAdministrativeStateResponse`
+- New struct `NniUpdateBfdAdministrativeStateResponseProperties`
+- New struct `NpbStaticRouteConfigurationPatch`
+- New struct `OperationStatusResult`
+- New struct `OptionBLayer3ConfigurationPatchProperties`
+- New struct `OptionBLayer3PrefixLimitPatchProperties`
+- New struct `OptionBLayer3PrefixLimitProperties`
+- New struct `PoliceRateConfigurationProperties`
+- New struct `PortConditionPatch`
+- New struct `PortGroupPatchProperties`
+- New struct `PrefixLimitPatchProperties`
+- New struct `PrefixLimitProperties`
+- New struct `QosPatchProperties`
+- New struct `QosProperties`
+- New struct `RoutePolicyStatementPatchProperties`
+- New struct `RoutePrefixLimitPatchProperties`
+- New struct `RoutePrefixLimitProperties`
+- New struct `RouteTargetPatchInformation`
+- New struct `SecretArchiveReference`
+- New struct `SecretRotationStatus`
+- New struct `SecretRotationSummary`
+- New struct `StatementActionPatchProperties`
+- New struct `StatementConditionPatchProperties`
+- New struct `StaticRoutePatchConfiguration`
+- New struct `StaticRoutePatchProperties`
+- New struct `StaticRouteRoutePolicy`
+- New struct `StaticRouteRoutePolicyPatch`
+- New struct `StationConnectionPatchProperties`
+- New struct `StationConnectionProperties`
+- New struct `StorageAccountConfiguration`
+- New struct `StorageAccountPatchConfiguration`
+- New struct `TerminalServerPatchConfiguration`
+- New struct `UniqueRouteDistinguisherPatchProperties`
+- New struct `UniqueRouteDistinguisherProperties`
+- New struct `UpdateAdministrativeStateResponse`
+- New struct `UpdateAdministrativeStateResponseProperties`
+- New struct `UpgradeNetworkFabricProperties`
+- New struct `UserAssignedIdentity`
+- New struct `VPNOptionAPatchProperties`
+- New struct `VPNOptionAProperties`
+- New struct `VPNOptionBPatchProperties`
+- New struct `VPNOptionBProperties`
+- New struct `ViewDeviceConfigurationOperationResponse`
+- New struct `ViewDeviceConfigurationResponseProperties`
+- New struct `VlanGroupPatchProperties`
+- New struct `VlanMatchConditionPatch`
+- New field `PoliceRateConfiguration`, `RemarkComment` in struct `AccessControlListAction`
+- New field `IcmpConfiguration`, `ProtocolNeighbors` in struct `AccessControlListMatchCondition`
+- New field `ACLType`, `ControlPlaneACLConfiguration`, `DefaultAction`, `DeviceRole`, `GlobalAccessControlListActions` in struct `AccessControlListPatchProperties`
+- New field `ACLType`, `ControlPlaneACLConfiguration`, `DefaultAction`, `DeviceRole`, `GlobalAccessControlListActions`, `LastOperation`, `NetworkFabricIDs` in struct `AccessControlListProperties`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `AccessControlListsClientUpdateAdministrativeStateResponse`
+- New field `BmpConfiguration`, `V4OverV6BgpSession`, `V6OverV4BgpSession` in struct `BgpConfiguration`
+- New field `NetworkToNetworkInterconnectID`, `StaticRouteConfiguration` in struct `ExternalNetworkPatchProperties`
+- New field `BmpConfiguration`, `NativeIPv4PrefixLimit`, `NativeIPv6PrefixLimit`, `V4OverV6BgpSession`, `V6OverV4BgpSession` in struct `ExternalNetworkPatchPropertiesOptionAProperties`
+- New field `LastOperation`, `NetworkFabricID`, `StaticRouteConfiguration` in struct `ExternalNetworkProperties`
+- New field `BmpConfiguration`, `NativeIPv4PrefixLimit`, `NativeIPv6PrefixLimit`, `V4OverV6BgpSession`, `V6OverV4BgpSession` in struct `ExternalNetworkPropertiesOptionAProperties`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `ExternalNetworksClientUpdateAdministrativeStateResponse`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse`
+- New field `LastOperation`, `NetworkFabricID` in struct `IPCommunityProperties`
+- New field `LastOperation`, `NetworkFabricID` in struct `IPExtendedCommunityProperties`
+- New field `LastOperation`, `NetworkFabricID` in struct `IPPrefixProperties`
+- New field `NativeIPv4PrefixLimit`, `NativeIPv6PrefixLimit` in struct `InternalNetworkPatchProperties`
+- New field `LastOperation`, `NativeIPv4PrefixLimit`, `NativeIPv6PrefixLimit`, `NetworkFabricID` in struct `InternalNetworkProperties`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `InternalNetworksClientUpdateAdministrativeStateResponse`
+- New anonymous field `InternalNetworkUpdateBgpAdministrativeStateResponse` in struct `InternalNetworksClientUpdateBgpAdministrativeStateResponse`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse`
+- New field `InternetGatewayType`, `LastOperation` in struct `InternetGatewayProperties`
+- New field `LastOperation` in struct `InternetGatewayRuleProperties`
+- New field `Identity` in struct `L2IsolationDomain`
+- New field `Identity` in struct `L2IsolationDomainPatch`
+- New field `ExtendedVlan`, `NetworkToNetworkInterconnectID` in struct `L2IsolationDomainPatchProperties`
+- New field `ExtendedVlan`, `LastOperation`, `NetworkToNetworkInterconnectID` in struct `L2IsolationDomainProperties`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `L2IsolationDomainsClientUpdateAdministrativeStateResponse`
+- New field `Identity` in struct `L3IsolationDomain`
+- New field `Identity` in struct `L3IsolationDomainPatch`
+- New field `ExportPolicyConfiguration`, `StaticRouteRoutePolicy`, `V4RoutePrefixLimit`, `V6RoutePrefixLimit` in struct `L3IsolationDomainPatchProperties`
+- New field `ExportPolicyConfiguration`, `LastOperation`, `StaticRouteRoutePolicy`, `UniqueRdConfiguration`, `V4RoutePrefixLimit`, `V6RoutePrefixLimit` in struct `L3IsolationDomainProperties`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `L3IsolationDomainsClientUpdateAdministrativeStateResponse`
+- New field `BfdAdministrativeState`, `BgpAdministrativeState` in struct `NeighborAddress`
+- New field `Identity` in struct `NeighborGroup`
+- New field `Identity` in struct `NeighborGroupPatch`
+- New field `ConfigurationState`, `LastOperation`, `NetworkFabricIDs` in struct `NeighborGroupProperties`
+- New field `Identity` in struct `NetworkDevice`
+- New field `Identity` in struct `NetworkDevicePatchParameters`
+- New field `IdentitySelector` in struct `NetworkDevicePatchParametersProperties`
+- New field `CertificateRotationStatus`, `IdentitySelector`, `LastOperation`, `NetworkFabricID`, `RwDeviceConfig`, `SecretRotationStatus` in struct `NetworkDeviceProperties`
+- New anonymous field `OperationStatusResult` in struct `NetworkDevicesClientRebootResponse`
+- New anonymous field `NetworkDeviceRefreshConfigurationResponse` in struct `NetworkDevicesClientRefreshConfigurationResponse`
+- New anonymous field `NetworkDeviceUpdateAdministrativeStateResponse` in struct `NetworkDevicesClientUpdateAdministrativeStateResponse`
+- New anonymous field `NetworkDeviceUpgradeResponse` in struct `NetworkDevicesClientUpgradeResponse`
+- New field `Identity` in struct `NetworkFabric`
+- New field `Identity` in struct `NetworkFabricController`
+- New field `Identity` in struct `NetworkFabricControllerPatch`
+- New field `LastOperation` in struct `NetworkFabricControllerProperties`
+- New field `Identity` in struct `NetworkFabricPatch`
+- New field `AuthorizedTransceiver`, `ControlPlaneACLs`, `FeatureFlags`, `HardwareAlertThreshold`, `QosConfiguration`, `StorageAccountConfiguration`, `TrustedIPPrefixes`, `UniqueRdConfiguration` in struct `NetworkFabricPatchProperties`
+- New field `ActiveCommitBatches`, `AuthorizedTransceiver`, `ControlPlaneACLs`, `FabricLocks`, `FeatureFlags`, `HardwareAlertThreshold`, `LastOperation`, `QosConfiguration`, `SecretRotationSummary`, `StorageAccountConfiguration`, `StorageArrayCount`, `TrustedIPPrefixes`, `UniqueRdConfiguration` in struct `NetworkFabricProperties`
+- New field `Body` in struct `NetworkFabricsClientBeginCommitConfigurationOptions`
+- New anonymous field `CommitConfigurationResponse` in struct `NetworkFabricsClientCommitConfigurationResponse`
+- New anonymous field `OperationStatusResult` in struct `NetworkFabricsClientDeprovisionResponse`
+- New anonymous field `GetTopologyResponse` in struct `NetworkFabricsClientGetTopologyResponse`
+- New anonymous field `OperationStatusResult` in struct `NetworkFabricsClientProvisionResponse`
+- New anonymous field `OperationStatusResult` in struct `NetworkFabricsClientRefreshConfigurationResponse`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse`
+- New anonymous field `OperationStatusResult` in struct `NetworkFabricsClientUpgradeResponse`
+- New field `Identity` in struct `NetworkInterface`
+- New field `Identity` in struct `NetworkInterfacePatch`
+- New field `AdditionalDescription` in struct `NetworkInterfacePatchProperties`
+- New field `AdditionalDescription`, `ConfigurationState`, `Description`, `LastOperation`, `NetworkFabricID` in struct `NetworkInterfaceProperties`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `NetworkInterfacesClientUpdateAdministrativeStateResponse`
+- New field `Identity` in struct `NetworkPacketBroker`
+- New field `Identity` in struct `NetworkPacketBrokerPatch`
+- New field `ConfigurationState`, `LastOperation` in struct `NetworkPacketBrokerProperties`
+- New field `ConfigurationState`, `LastOperation` in struct `NetworkRackProperties`
+- New field `Identity` in struct `NetworkTap`
+- New field `Identity` in struct `NetworkTapPatch`
+- New field `LastOperation`, `NetworkFabricIDs` in struct `NetworkTapProperties`
+- New field `Identity` in struct `NetworkTapRule`
+- New field `Identity` in struct `NetworkTapRulePatch`
+- New field `GlobalNetworkTapRuleActions`, `IdentitySelector` in struct `NetworkTapRulePatchProperties`
+- New field `GlobalNetworkTapRuleActions`, `IdentitySelector`, `LastOperation`, `NetworkFabricIDs`, `NetworkTapIDs` in struct `NetworkTapRuleProperties`
+- New anonymous field `NetworkTapRuleResyncResponse` in struct `NetworkTapRulesClientResyncResponse`
+- New anonymous field `NetworkTapResyncResponse` in struct `NetworkTapsClientResyncResponse`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `NetworkTapsClientUpdateAdministrativeStateResponse`
+- New field `ConditionalDefaultRouteConfiguration`, `LastOperation`, `MicroBfdState`, `StaticRouteConfiguration` in struct `NetworkToNetworkInterconnectProperties`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse`
+- New field `BmpConfiguration`, `PeLoopbackIPAddress`, `PrefixLimits` in struct `OptionBLayer3Configuration`
+- New anonymous field `UpdateAdministrativeStateResponse` in struct `RoutePoliciesClientUpdateAdministrativeStateResponse`
+- New field `DefaultAction` in struct `RoutePolicyPatchableProperties`
+- New field `DefaultAction`, `LastOperation` in struct `RoutePolicyProperties`
+- New field `Condition`, `DestinationAddressList`, `HeaderAddressList`, `SourceAddressList` in struct `RuleProperties`
+- New field `Extension` in struct `StaticRouteConfiguration`
+- New field `SecretRotationStatus` in struct `TerminalServerConfiguration`
+
+
 ## 1.1.0 (2023-11-24)
 ### Features Added
 

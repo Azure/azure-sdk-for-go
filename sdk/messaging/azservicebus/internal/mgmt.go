@@ -15,6 +15,26 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
+// defaultServerTimeout is the minimum server-timeout sent with management RPC operations.
+// This matches the default operation timeout in the .NET (60s) and Java (59s) SDKs.
+// Setting a floor prevents timeout exhaustion during service-side scatter-gather for
+// partitioned entities. See https://github.com/Azure/azure-sdk-for-go/issues/26421.
+const defaultServerTimeout = 60 * time.Second
+
+// serverTimeoutMillis returns the server-timeout value in milliseconds to send with
+// management operations. It uses the greater of ctx's remaining deadline or
+// defaultServerTimeout, ensuring the service always has enough time for operations
+// like partition scatter-gather. If ctx has no deadline, returns defaultServerTimeout.
+func serverTimeoutMillis(ctx context.Context) uint {
+	timeout := defaultServerTimeout
+	if deadline, ok := ctx.Deadline(); ok {
+		if remaining := time.Until(deadline); remaining > timeout {
+			timeout = remaining
+		}
+	}
+	return uint(timeout / time.Millisecond)
+}
+
 type Disposition struct {
 	Status                DispositionStatus
 	LockTokens            []*uuid.UUID
@@ -126,9 +146,7 @@ func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string
 
 	addAssociatedLinkName(linkName, msg)
 
-	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
-	}
+	msg.ApplicationProperties["server-timeout"] = serverTimeoutMillis(ctx)
 
 	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
@@ -486,9 +504,7 @@ func ScheduleMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName st
 
 	addAssociatedLinkName(linkName, msg)
 
-	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
-	}
+	msg.ApplicationProperties["com.microsoft:server-timeout"] = serverTimeoutMillis(ctx)
 
 	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
@@ -528,9 +544,7 @@ func CancelScheduledMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, link
 
 	addAssociatedLinkName(linkName, msg)
 
-	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
-	}
+	msg.ApplicationProperties["com.microsoft:server-timeout"] = serverTimeoutMillis(ctx)
 
 	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {

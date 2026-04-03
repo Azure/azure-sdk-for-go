@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"strings"
 	"sync"
-	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -221,9 +220,12 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 		msg.ApplicationProperties = make(map[string]any)
 	}
 
+	// Set server-timeout if one isn't already present. Some operations (e.g.,
+	// ScheduleMessages, CancelScheduledMessages) use the vendor-prefixed key
+	// "com.microsoft:server-timeout" — check both to avoid sending a duplicate.
 	if _, ok := msg.ApplicationProperties["server-timeout"]; !ok {
-		if deadline, ok := ctx.Deadline(); ok {
-			msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
+		if _, ok := msg.ApplicationProperties["com.microsoft:server-timeout"]; !ok {
+			msg.ApplicationProperties["server-timeout"] = serverTimeoutMillis(ctx)
 		}
 	}
 

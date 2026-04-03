@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Management operations (PeekMessages, ScheduleMessages, CancelScheduledMessages, and others) now use a minimum server-timeout of 60 seconds, matching the .NET and Java SDK defaults. Previously the user's context deadline was passed directly as the server-timeout, which could cause premature timeouts on partitioned entities where the service needs up to 60 seconds for partition scatter-gather. (#26421)
+
 ### Other Changes
 
 ## 1.10.0 (2025-08-05)

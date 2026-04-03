@@ -1968,19 +1968,19 @@ type customRequestHeadersAndQueryParametersPolicy struct {
 func (p *customRequestHeadersAndQueryParametersPolicy) Do(req *policy.Request) (*http.Response, error) {
 	rawReq := req.Raw()
 	for k, v := range p.headers {
-		rawReq.Header[k] = strings.Split(v, ",")
+		rawReq.Header.Set(k, v)
 	}
 
 	q := rawReq.URL.Query()
 	for k, v := range p.queryParams {
-		q[k] = strings.Split(v, ",")
+		q.Set(k, v)
 	}
 	rawReq.URL.RawQuery = q.Encode()
 
 	return req.Next()
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQueryParameters() {
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParameters() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
@@ -2055,7 +2055,7 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQ
 	_require.NotNil(resp.RequestID)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQueryParametersFail() {
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParametersFail() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
@@ -2122,7 +2122,7 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQ
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestContainerIdentitySASRequestHeadersAndQueryParametersRoundtrip() {
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParametersRoundtrip() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)

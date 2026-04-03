@@ -1,5 +1,334 @@
 # Release History
 
+## 5.0.0-beta.1 (2026-03-03)
+### Breaking Changes
+
+- Function `*CertificatesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, options *CertificatesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, certificateEnvelope Certificate, options *CertificatesClientCreateOrUpdateOptions)`
+- Function `*ConnectedEnvironmentsCertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, options *ConnectedEnvironmentsCertificatesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, certificateEnvelope Certificate, options *ConnectedEnvironmentsCertificatesClientBeginCreateOrUpdateOptions)`
+- Function `*HTTPRouteConfigClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, httpRouteConfigEnvelope HTTPRouteConfig, options *HTTPRouteConfigClientCreateOrUpdateOptions)`
+- Function `*LogicAppsClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *LogicAppsClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, resource LogicApp, options *LogicAppsClientCreateOrUpdateOptions)`
+- Function `*ManagedCertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, options *ManagedCertificatesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, managedCertificateEnvelope ManagedCertificate, options *ManagedCertificatesClientBeginCreateOrUpdateOptions)`
+- Function `*ClientFactory.NewContainerAppsAPIClient` has been removed
+- Function `NewContainerAppsAPIClient` has been removed
+- Function `*ContainerAppsAPIClient.GetCustomDomainVerificationID` has been removed
+- Function `*ContainerAppsAPIClient.JobExecution` has been removed
+- Operation `*ConnectedEnvironmentsDaprComponentsClient.ListSecrets` has supported pagination, use `*ConnectedEnvironmentsDaprComponentsClient.NewListSecretsPager` instead.
+- Operation `*ConnectedEnvironmentsStoragesClient.List` has supported pagination, use `*ConnectedEnvironmentsStoragesClient.NewListPager` instead.
+- Operation `*ContainerAppsClient.ListSecrets` has supported pagination, use `*ContainerAppsClient.NewListSecretsPager` instead.
+- Operation `*ContainerAppsRevisionReplicasClient.ListReplicas` has supported pagination, use `*ContainerAppsRevisionReplicasClient.NewListReplicasPager` instead.
+- Operation `*DaprComponentsClient.ListSecrets` has supported pagination, use `*DaprComponentsClient.NewListSecretsPager` instead.
+- Operation `*JobsClient.ListSecrets` has supported pagination, use `*JobsClient.NewListSecretsPager` instead.
+- Operation `*ManagedEnvironmentsStoragesClient.List` has supported pagination, use `*ManagedEnvironmentsStoragesClient.NewListPager` instead.
+- Struct `BaseContainer` has been removed
+- Struct `DefaultErrorResponse` has been removed
+- Struct `DefaultErrorResponseError` has been removed
+- Struct `DefaultErrorResponseErrorDetailsItem` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `JobExecutionNamesCollection` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceTags` has been removed
+- Struct `TrackedResource` has been removed
+- Field `CertificateEnvelope` of struct `CertificatesClientCreateOrUpdateOptions` has been removed
+- Field `CertificateEnvelope` of struct `ConnectedEnvironmentsCertificatesClientBeginCreateOrUpdateOptions` has been removed
+- Field `HTTPRouteConfigEnvelope` of struct `HTTPRouteConfigClientCreateOrUpdateOptions` has been removed
+- Field `Resource` of struct `LogicAppsClientCreateOrUpdateOptions` has been removed
+- Field `ManagedCertificateEnvelope` of struct `ManagedCertificatesClientBeginCreateOrUpdateOptions` has been removed
+
+### Features Added
+
+- New value `ActiveRevisionsModeLabels` added to enum type `ActiveRevisionsMode`
+- New value `ContainerTypeNodeLTS`, `ContainerTypeShell` added to enum type `ContainerType`
+- New value `JavaComponentTypeNacos`, `JavaComponentTypeSpringCloudGateway` added to enum type `JavaComponentType`
+- New value `StorageTypeSmb` added to enum type `StorageType`
+- New enum type `BuildProvisioningState` with values `BuildProvisioningStateCanceled`, `BuildProvisioningStateCreating`, `BuildProvisioningStateDeleting`, `BuildProvisioningStateFailed`, `BuildProvisioningStateSucceeded`, `BuildProvisioningStateUpdating`
+- New enum type `BuildStatus` with values `BuildStatusCanceled`, `BuildStatusFailed`, `BuildStatusInProgress`, `BuildStatusNotStarted`, `BuildStatusSucceeded`
+- New enum type `BuilderProvisioningState` with values `BuilderProvisioningStateCanceled`, `BuilderProvisioningStateCreating`, `BuilderProvisioningStateDeleting`, `BuilderProvisioningStateFailed`, `BuilderProvisioningStateSucceeded`, `BuilderProvisioningStateUpdating`
+- New enum type `CertificateType` with values `CertificateTypeImagePullTrustedCA`, `CertificateTypeServerSSLCertificate`
+- New enum type `DetectionStatus` with values `DetectionStatusFailed`, `DetectionStatusRegistryLoginFailed`, `DetectionStatusSucceeded`
+- New enum type `DotNetComponentProvisioningState` with values `DotNetComponentProvisioningStateCanceled`, `DotNetComponentProvisioningStateDeleting`, `DotNetComponentProvisioningStateFailed`, `DotNetComponentProvisioningStateInProgress`, `DotNetComponentProvisioningStateSucceeded`
+- New enum type `DotNetComponentType` with values `DotNetComponentTypeAspireDashboard`
+- New enum type `ImageType` with values `ImageTypeCloudBuild`, `ImageTypeContainerImage`
+- New enum type `IngressTargetPortHTTPScheme` with values `IngressTargetPortHTTPSchemeHTTP`, `IngressTargetPortHTTPSchemeHTTPS`
+- New enum type `JobRunningState` with values `JobRunningStateProgressing`, `JobRunningStateReady`, `JobRunningStateSuspended`
+- New enum type `Level` with values `LevelDebug`, `LevelError`, `LevelInfo`, `LevelOff`, `LevelTrace`, `LevelWarn`
+- New enum type `LogicAppsProxyMethod` with values `LogicAppsProxyMethodGET`, `LogicAppsProxyMethodPOST`
+- New enum type `PatchApplyStatus` with values `PatchApplyStatusCanceled`, `PatchApplyStatusCreatingRevision`, `PatchApplyStatusImagePushPullFailed`, `PatchApplyStatusManuallySkipped`, `PatchApplyStatusNotStarted`, `PatchApplyStatusRebaseFailed`, `PatchApplyStatusRebaseInProgress`, `PatchApplyStatusRevisionCreationFailed`, `PatchApplyStatusSucceeded`
+- New enum type `PatchType` with values `PatchTypeFrameworkAndOSSecurity`, `PatchTypeFrameworkSecurity`, `PatchTypeOSSecurity`, `PatchTypeOther`
+- New enum type `PatchingMode` with values `PatchingModeAutomatic`, `PatchingModeDisabled`, `PatchingModeManual`
+- New enum type `SessionProbeType` with values `SessionProbeTypeLiveness`, `SessionProbeTypeStartup`
+- New enum type `Status` with values `StatusFailed`, `StatusStarting`, `StatusSucceeded`
+- New function `NewAppClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppClient, error)`
+- New function `*AppClient.GetCustomDomainVerificationID(ctx context.Context, options *AppClientGetCustomDomainVerificationIDOptions) (AppClientGetCustomDomainVerificationIDResponse, error)`
+- New function `*AppClient.NewAppResiliencyClient() *AppResiliencyClient`
+- New function `*AppClient.NewAvailableWorkloadProfilesClient() *AvailableWorkloadProfilesClient`
+- New function `*AppClient.NewBillingMetersClient() *BillingMetersClient`
+- New function `*AppClient.NewBuildAuthTokenClient() *BuildAuthTokenClient`
+- New function `*AppClient.NewBuildersClient() *BuildersClient`
+- New function `*AppClient.NewBuildsByBuilderResourceClient() *BuildsByBuilderResourceClient`
+- New function `*AppClient.NewBuildsClient() *BuildsClient`
+- New function `*AppClient.NewCertificatesClient() *CertificatesClient`
+- New function `*AppClient.NewConnectedEnvironmentsCertificatesClient() *ConnectedEnvironmentsCertificatesClient`
+- New function `*AppClient.NewConnectedEnvironmentsClient() *ConnectedEnvironmentsClient`
+- New function `*AppClient.NewConnectedEnvironmentsDaprComponentsClient() *ConnectedEnvironmentsDaprComponentsClient`
+- New function `*AppClient.NewConnectedEnvironmentsStoragesClient() *ConnectedEnvironmentsStoragesClient`
+- New function `*AppClient.NewContainerAppsAuthConfigsClient() *ContainerAppsAuthConfigsClient`
+- New function `*AppClient.NewContainerAppsBuildsByContainerAppClient() *ContainerAppsBuildsByContainerAppClient`
+- New function `*AppClient.NewContainerAppsBuildsClient() *ContainerAppsBuildsClient`
+- New function `*AppClient.NewContainerAppsClient() *ContainerAppsClient`
+- New function `*AppClient.NewContainerAppsDiagnosticsClient() *ContainerAppsDiagnosticsClient`
+- New function `*AppClient.NewContainerAppsFunctionsClient() *ContainerAppsFunctionsClient`
+- New function `*AppClient.NewContainerAppsLabelHistoryClient() *ContainerAppsLabelHistoryClient`
+- New function `*AppClient.NewContainerAppsPatchesClient() *ContainerAppsPatchesClient`
+- New function `*AppClient.NewContainerAppsRevisionFunctionsClient() *ContainerAppsRevisionFunctionsClient`
+- New function `*AppClient.NewContainerAppsRevisionReplicasClient() *ContainerAppsRevisionReplicasClient`
+- New function `*AppClient.NewContainerAppsRevisionsClient() *ContainerAppsRevisionsClient`
+- New function `*AppClient.NewContainerAppsSessionPoolsClient() *ContainerAppsSessionPoolsClient`
+- New function `*AppClient.NewContainerAppsSourceControlsClient() *ContainerAppsSourceControlsClient`
+- New function `*AppClient.NewDaprComponentResiliencyPoliciesClient() *DaprComponentResiliencyPoliciesClient`
+- New function `*AppClient.NewDaprComponentsClient() *DaprComponentsClient`
+- New function `*AppClient.NewDaprSubscriptionsClient() *DaprSubscriptionsClient`
+- New function `*AppClient.NewDotNetComponentsClient() *DotNetComponentsClient`
+- New function `*AppClient.NewFunctionsExtensionClient() *FunctionsExtensionClient`
+- New function `*AppClient.NewHTTPRouteConfigClient() *HTTPRouteConfigClient`
+- New function `*AppClient.NewJavaComponentsClient() *JavaComponentsClient`
+- New function `*AppClient.NewJobsClient() *JobsClient`
+- New function `*AppClient.NewJobsExecutionsClient() *JobsExecutionsClient`
+- New function `*AppClient.NewLogicAppsClient() *LogicAppsClient`
+- New function `*AppClient.NewMaintenanceConfigurationsClient() *MaintenanceConfigurationsClient`
+- New function `*AppClient.NewManagedCertificatesClient() *ManagedCertificatesClient`
+- New function `*AppClient.NewManagedEnvironmentDiagnosticsClient() *ManagedEnvironmentDiagnosticsClient`
+- New function `*AppClient.NewManagedEnvironmentPrivateEndpointConnectionsClient() *ManagedEnvironmentPrivateEndpointConnectionsClient`
+- New function `*AppClient.NewManagedEnvironmentPrivateLinkResourcesClient() *ManagedEnvironmentPrivateLinkResourcesClient`
+- New function `*AppClient.NewManagedEnvironmentUsagesClient() *ManagedEnvironmentUsagesClient`
+- New function `*AppClient.NewManagedEnvironmentsClient() *ManagedEnvironmentsClient`
+- New function `*AppClient.NewManagedEnvironmentsDiagnosticsClient() *ManagedEnvironmentsDiagnosticsClient`
+- New function `*AppClient.NewManagedEnvironmentsStoragesClient() *ManagedEnvironmentsStoragesClient`
+- New function `*AppClient.NewNamespacesClient() *NamespacesClient`
+- New function `*AppClient.NewOperationsClient() *OperationsClient`
+- New function `*AppClient.NewUsagesClient() *UsagesClient`
+- New function `NewAppResiliencyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppResiliencyClient, error)`
+- New function `*AppResiliencyClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, appName string, name string, resiliencyEnvelope AppResiliency, options *AppResiliencyClientCreateOrUpdateOptions) (AppResiliencyClientCreateOrUpdateResponse, error)`
+- New function `*AppResiliencyClient.Delete(ctx context.Context, resourceGroupName string, appName string, name string, options *AppResiliencyClientDeleteOptions) (AppResiliencyClientDeleteResponse, error)`
+- New function `*AppResiliencyClient.Get(ctx context.Context, resourceGroupName string, appName string, name string, options *AppResiliencyClientGetOptions) (AppResiliencyClientGetResponse, error)`
+- New function `*AppResiliencyClient.NewListPager(resourceGroupName string, appName string, options *AppResiliencyClientListOptions) *runtime.Pager[AppResiliencyClientListResponse]`
+- New function `*AppResiliencyClient.Update(ctx context.Context, resourceGroupName string, appName string, name string, resiliencyEnvelope AppResiliency, options *AppResiliencyClientUpdateOptions) (AppResiliencyClientUpdateResponse, error)`
+- New function `NewBuildAuthTokenClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BuildAuthTokenClient, error)`
+- New function `*BuildAuthTokenClient.List(ctx context.Context, resourceGroupName string, builderName string, buildName string, options *BuildAuthTokenClientListOptions) (BuildAuthTokenClientListResponse, error)`
+- New function `NewBuildersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BuildersClient, error)`
+- New function `*BuildersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, builderName string, builderEnvelope BuilderResource, options *BuildersClientBeginCreateOrUpdateOptions) (*runtime.Poller[BuildersClientCreateOrUpdateResponse], error)`
+- New function `*BuildersClient.BeginDelete(ctx context.Context, resourceGroupName string, builderName string, options *BuildersClientBeginDeleteOptions) (*runtime.Poller[BuildersClientDeleteResponse], error)`
+- New function `*BuildersClient.Get(ctx context.Context, resourceGroupName string, builderName string, options *BuildersClientGetOptions) (BuildersClientGetResponse, error)`
+- New function `*BuildersClient.NewListByResourceGroupPager(resourceGroupName string, options *BuildersClientListByResourceGroupOptions) *runtime.Pager[BuildersClientListByResourceGroupResponse]`
+- New function `*BuildersClient.NewListBySubscriptionPager(options *BuildersClientListBySubscriptionOptions) *runtime.Pager[BuildersClientListBySubscriptionResponse]`
+- New function `*BuildersClient.BeginUpdate(ctx context.Context, resourceGroupName string, builderName string, builderEnvelope BuilderResourceUpdate, options *BuildersClientBeginUpdateOptions) (*runtime.Poller[BuildersClientUpdateResponse], error)`
+- New function `NewBuildsByBuilderResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BuildsByBuilderResourceClient, error)`
+- New function `*BuildsByBuilderResourceClient.NewListPager(resourceGroupName string, builderName string, options *BuildsByBuilderResourceClientListOptions) *runtime.Pager[BuildsByBuilderResourceClientListResponse]`
+- New function `NewBuildsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BuildsClient, error)`
+- New function `*BuildsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, builderName string, buildName string, buildEnvelope BuildResource, options *BuildsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BuildsClientCreateOrUpdateResponse], error)`
+- New function `*BuildsClient.BeginDelete(ctx context.Context, resourceGroupName string, builderName string, buildName string, options *BuildsClientBeginDeleteOptions) (*runtime.Poller[BuildsClientDeleteResponse], error)`
+- New function `*BuildsClient.Get(ctx context.Context, resourceGroupName string, builderName string, buildName string, options *BuildsClientGetOptions) (BuildsClientGetResponse, error)`
+- New function `*ClientFactory.NewAppClient() *AppClient`
+- New function `*ClientFactory.NewAppResiliencyClient() *AppResiliencyClient`
+- New function `*ClientFactory.NewBuildAuthTokenClient() *BuildAuthTokenClient`
+- New function `*ClientFactory.NewBuildersClient() *BuildersClient`
+- New function `*ClientFactory.NewBuildsByBuilderResourceClient() *BuildsByBuilderResourceClient`
+- New function `*ClientFactory.NewBuildsClient() *BuildsClient`
+- New function `*ClientFactory.NewContainerAppsBuildsByContainerAppClient() *ContainerAppsBuildsByContainerAppClient`
+- New function `*ClientFactory.NewContainerAppsBuildsClient() *ContainerAppsBuildsClient`
+- New function `*ClientFactory.NewContainerAppsFunctionsClient() *ContainerAppsFunctionsClient`
+- New function `*ClientFactory.NewContainerAppsLabelHistoryClient() *ContainerAppsLabelHistoryClient`
+- New function `*ClientFactory.NewContainerAppsPatchesClient() *ContainerAppsPatchesClient`
+- New function `*ClientFactory.NewContainerAppsRevisionFunctionsClient() *ContainerAppsRevisionFunctionsClient`
+- New function `*ClientFactory.NewDaprComponentResiliencyPoliciesClient() *DaprComponentResiliencyPoliciesClient`
+- New function `*ClientFactory.NewDaprSubscriptionsClient() *DaprSubscriptionsClient`
+- New function `*ClientFactory.NewDotNetComponentsClient() *DotNetComponentsClient`
+- New function `*ClientFactory.NewFunctionsExtensionClient() *FunctionsExtensionClient`
+- New function `NewContainerAppsBuildsByContainerAppClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsBuildsByContainerAppClient, error)`
+- New function `*ContainerAppsBuildsByContainerAppClient.NewListPager(resourceGroupName string, containerAppName string, options *ContainerAppsBuildsByContainerAppClientListOptions) *runtime.Pager[ContainerAppsBuildsByContainerAppClientListResponse]`
+- New function `NewContainerAppsBuildsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsBuildsClient, error)`
+- New function `*ContainerAppsBuildsClient.BeginDelete(ctx context.Context, resourceGroupName string, containerAppName string, buildName string, options *ContainerAppsBuildsClientBeginDeleteOptions) (*runtime.Poller[ContainerAppsBuildsClientDeleteResponse], error)`
+- New function `*ContainerAppsBuildsClient.Get(ctx context.Context, resourceGroupName string, containerAppName string, buildName string, options *ContainerAppsBuildsClientGetOptions) (ContainerAppsBuildsClientGetResponse, error)`
+- New function `NewContainerAppsFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsFunctionsClient, error)`
+- New function `*ContainerAppsFunctionsClient.Get(ctx context.Context, resourceGroupName string, containerAppName string, functionName string, options *ContainerAppsFunctionsClientGetOptions) (ContainerAppsFunctionsClientGetResponse, error)`
+- New function `*ContainerAppsFunctionsClient.NewListPager(resourceGroupName string, containerAppName string, options *ContainerAppsFunctionsClientListOptions) *runtime.Pager[ContainerAppsFunctionsClientListResponse]`
+- New function `NewContainerAppsLabelHistoryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsLabelHistoryClient, error)`
+- New function `*ContainerAppsLabelHistoryClient.DeleteLabelHistory(ctx context.Context, resourceGroupName string, containerAppName string, labelName string, options *ContainerAppsLabelHistoryClientDeleteLabelHistoryOptions) (ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse, error)`
+- New function `*ContainerAppsLabelHistoryClient.GetLabelHistory(ctx context.Context, resourceGroupName string, containerAppName string, labelName string, options *ContainerAppsLabelHistoryClientGetLabelHistoryOptions) (ContainerAppsLabelHistoryClientGetLabelHistoryResponse, error)`
+- New function `*ContainerAppsLabelHistoryClient.NewListLabelHistoryPager(resourceGroupName string, containerAppName string, options *ContainerAppsLabelHistoryClientListLabelHistoryOptions) *runtime.Pager[ContainerAppsLabelHistoryClientListLabelHistoryResponse]`
+- New function `NewContainerAppsPatchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsPatchesClient, error)`
+- New function `*ContainerAppsPatchesClient.BeginApply(ctx context.Context, resourceGroupName string, containerAppName string, patchName string, options *ContainerAppsPatchesClientBeginApplyOptions) (*runtime.Poller[ContainerAppsPatchesClientApplyResponse], error)`
+- New function `*ContainerAppsPatchesClient.BeginDelete(ctx context.Context, resourceGroupName string, containerAppName string, patchName string, options *ContainerAppsPatchesClientBeginDeleteOptions) (*runtime.Poller[ContainerAppsPatchesClientDeleteResponse], error)`
+- New function `*ContainerAppsPatchesClient.Get(ctx context.Context, resourceGroupName string, containerAppName string, patchName string, options *ContainerAppsPatchesClientGetOptions) (ContainerAppsPatchesClientGetResponse, error)`
+- New function `*ContainerAppsPatchesClient.NewListByContainerAppPager(resourceGroupName string, containerAppName string, options *ContainerAppsPatchesClientListByContainerAppOptions) *runtime.Pager[ContainerAppsPatchesClientListByContainerAppResponse]`
+- New function `*ContainerAppsPatchesClient.BeginSkipConfigure(ctx context.Context, resourceGroupName string, containerAppName string, patchName string, patchSkipConfig PatchSkipConfig, options *ContainerAppsPatchesClientBeginSkipConfigureOptions) (*runtime.Poller[ContainerAppsPatchesClientSkipConfigureResponse], error)`
+- New function `NewContainerAppsRevisionFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsRevisionFunctionsClient, error)`
+- New function `*ContainerAppsRevisionFunctionsClient.Get(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, functionName string, options *ContainerAppsRevisionFunctionsClientGetOptions) (ContainerAppsRevisionFunctionsClientGetResponse, error)`
+- New function `*ContainerAppsRevisionFunctionsClient.NewListPager(resourceGroupName string, containerAppName string, revisionName string, options *ContainerAppsRevisionFunctionsClientListOptions) *runtime.Pager[ContainerAppsRevisionFunctionsClientListResponse]`
+- New function `*ContainerAppsSessionPoolsClient.FetchMcpServerCredentials(ctx context.Context, resourceGroupName string, sessionPoolName string, options *ContainerAppsSessionPoolsClientFetchMcpServerCredentialsOptions) (ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse, error)`
+- New function `*ContainerAppsSessionPoolsClient.RotateMcpServerCredentials(ctx context.Context, resourceGroupName string, sessionPoolName string, options *ContainerAppsSessionPoolsClientRotateMcpServerCredentialsOptions) (ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse, error)`
+- New function `NewDaprComponentResiliencyPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DaprComponentResiliencyPoliciesClient, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, componentName string, name string, daprComponentResiliencyPolicyEnvelope DaprComponentResiliencyPolicy, options *DaprComponentResiliencyPoliciesClientCreateOrUpdateOptions) (DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.Delete(ctx context.Context, resourceGroupName string, environmentName string, componentName string, name string, options *DaprComponentResiliencyPoliciesClientDeleteOptions) (DaprComponentResiliencyPoliciesClientDeleteResponse, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.Get(ctx context.Context, resourceGroupName string, environmentName string, componentName string, name string, options *DaprComponentResiliencyPoliciesClientGetOptions) (DaprComponentResiliencyPoliciesClientGetResponse, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.NewListPager(resourceGroupName string, environmentName string, componentName string, options *DaprComponentResiliencyPoliciesClientListOptions) *runtime.Pager[DaprComponentResiliencyPoliciesClientListResponse]`
+- New function `NewDaprSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DaprSubscriptionsClient, error)`
+- New function `*DaprSubscriptionsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, name string, daprSubscriptionEnvelope DaprSubscription, options *DaprSubscriptionsClientCreateOrUpdateOptions) (DaprSubscriptionsClientCreateOrUpdateResponse, error)`
+- New function `*DaprSubscriptionsClient.Delete(ctx context.Context, resourceGroupName string, environmentName string, name string, options *DaprSubscriptionsClientDeleteOptions) (DaprSubscriptionsClientDeleteResponse, error)`
+- New function `*DaprSubscriptionsClient.Get(ctx context.Context, resourceGroupName string, environmentName string, name string, options *DaprSubscriptionsClientGetOptions) (DaprSubscriptionsClientGetResponse, error)`
+- New function `*DaprSubscriptionsClient.NewListPager(resourceGroupName string, environmentName string, options *DaprSubscriptionsClientListOptions) *runtime.Pager[DaprSubscriptionsClientListResponse]`
+- New function `NewDotNetComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DotNetComponentsClient, error)`
+- New function `*DotNetComponentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, options *DotNetComponentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DotNetComponentsClientCreateOrUpdateResponse], error)`
+- New function `*DotNetComponentsClient.BeginDelete(ctx context.Context, resourceGroupName string, environmentName string, name string, options *DotNetComponentsClientBeginDeleteOptions) (*runtime.Poller[DotNetComponentsClientDeleteResponse], error)`
+- New function `*DotNetComponentsClient.Get(ctx context.Context, resourceGroupName string, environmentName string, name string, options *DotNetComponentsClientGetOptions) (DotNetComponentsClientGetResponse, error)`
+- New function `*DotNetComponentsClient.NewListPager(resourceGroupName string, environmentName string, options *DotNetComponentsClientListOptions) *runtime.Pager[DotNetComponentsClientListResponse]`
+- New function `*DotNetComponentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, environmentName string, name string, dotNetComponentEnvelope DotNetComponent, options *DotNetComponentsClientBeginUpdateOptions) (*runtime.Poller[DotNetComponentsClientUpdateResponse], error)`
+- New function `NewFunctionsExtensionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FunctionsExtensionClient, error)`
+- New function `*FunctionsExtensionClient.InvokeFunctionsHost(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, functionAppName string, options *FunctionsExtensionClientInvokeFunctionsHostOptions) (FunctionsExtensionClientInvokeFunctionsHostResponse, error)`
+- New function `*JobsClient.JobExecution(ctx context.Context, resourceGroupName string, jobName string, jobExecutionName string, options *JobsClientJobExecutionOptions) (JobsClientJobExecutionResponse, error)`
+- New function `*JobsClient.BeginResume(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginResumeOptions) (*runtime.Poller[JobsClientResumeResponse], error)`
+- New function `*JobsClient.BeginSuspend(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginSuspendOptions) (*runtime.Poller[JobsClientSuspendResponse], error)`
+- New function `*LogicAppsClient.DeployWorkflowArtifacts(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *LogicAppsClientDeployWorkflowArtifactsOptions) (LogicAppsClientDeployWorkflowArtifactsResponse, error)`
+- New function `*LogicAppsClient.Invoke(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, xMSLogicAppsProxyPath string, xMSLogicAppsProxyMethod LogicAppsProxyMethod, options *LogicAppsClientInvokeOptions) (LogicAppsClientInvokeResponse, error)`
+- New function `*SpringCloudGatewayComponent.GetJavaComponentProperties() *JavaComponentProperties`
+- New function `*NacosComponent.GetJavaComponentProperties() *JavaComponentProperties`
+- New struct `AppInsightsConfiguration`
+- New struct `AppResiliency`
+- New struct `AppResiliencyCollection`
+- New struct `AppResiliencyProperties`
+- New struct `BuildCollection`
+- New struct `BuildConfiguration`
+- New struct `BuildProperties`
+- New struct `BuildResource`
+- New struct `BuildToken`
+- New struct `BuilderCollection`
+- New struct `BuilderProperties`
+- New struct `BuilderResource`
+- New struct `BuilderResourceUpdate`
+- New struct `BuilderResourceUpdateProperties`
+- New struct `CircuitBreakerPolicy`
+- New struct `ContainerAppPropertiesPatchingConfiguration`
+- New struct `ContainerAppsBuildCollection`
+- New struct `ContainerAppsBuildConfiguration`
+- New struct `ContainerAppsBuildProperties`
+- New struct `ContainerAppsBuildResource`
+- New struct `ContainerAppsFunction`
+- New struct `ContainerAppsFunctionCollection`
+- New struct `ContainerAppsFunctionProperties`
+- New struct `ContainerAppsPatchResource`
+- New struct `ContainerExecutionStatus`
+- New struct `ContainerRegistry`
+- New struct `ContainerRegistryWithCustomImage`
+- New struct `DaprComponentResiliencyPoliciesCollection`
+- New struct `DaprComponentResiliencyPolicy`
+- New struct `DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration`
+- New struct `DaprComponentResiliencyPolicyConfiguration`
+- New struct `DaprComponentResiliencyPolicyHTTPRetryBackOffConfiguration`
+- New struct `DaprComponentResiliencyPolicyHTTPRetryPolicyConfiguration`
+- New struct `DaprComponentResiliencyPolicyProperties`
+- New struct `DaprComponentResiliencyPolicyTimeoutPolicyConfiguration`
+- New struct `DaprComponentServiceBinding`
+- New struct `DaprServiceBindMetadata`
+- New struct `DaprSubscription`
+- New struct `DaprSubscriptionBulkSubscribeOptions`
+- New struct `DaprSubscriptionProperties`
+- New struct `DaprSubscriptionRouteRule`
+- New struct `DaprSubscriptionRoutes`
+- New struct `DaprSubscriptionsCollection`
+- New struct `DataDogConfiguration`
+- New struct `DestinationsConfiguration`
+- New struct `DiskEncryptionConfiguration`
+- New struct `DiskEncryptionConfigurationKeyVaultConfiguration`
+- New struct `DiskEncryptionConfigurationKeyVaultConfigurationAuth`
+- New struct `DotNetComponent`
+- New struct `DotNetComponentConfigurationProperty`
+- New struct `DotNetComponentProperties`
+- New struct `DotNetComponentServiceBind`
+- New struct `DotNetComponentsCollection`
+- New struct `EnvironmentVariable`
+- New struct `ExecutionStatus`
+- New struct `HTTPConnectionPool`
+- New struct `HTTPGet`
+- New struct `HTTPRetryPolicy`
+- New struct `HTTPRetryPolicyMatches`
+- New struct `HTTPRetryPolicyRetryBackOff`
+- New struct `Header`
+- New struct `HeaderMatch`
+- New struct `HeaderMatchMatch`
+- New struct `LabelHistory`
+- New struct `LabelHistoryCollection`
+- New struct `LabelHistoryProperties`
+- New struct `LabelHistoryRecordItem`
+- New struct `LoggerSetting`
+- New struct `LogicAppProperties`
+- New struct `LogsConfiguration`
+- New struct `McpServerCredential`
+- New struct `McpServerSettings`
+- New struct `MetricsConfiguration`
+- New struct `NacosComponent`
+- New struct `Object`
+- New struct `OpenTelemetryConfiguration`
+- New struct `OtlpConfiguration`
+- New struct `PatchCollection`
+- New struct `PatchDetails`
+- New struct `PatchDetailsNewLayer`
+- New struct `PatchDetailsOldLayer`
+- New struct `PatchProperties`
+- New struct `PatchSkipConfig`
+- New struct `PreBuildStep`
+- New struct `ReplicaExecutionStatus`
+- New struct `RuntimeDotnet`
+- New struct `RuntimeJavaJavaAgent`
+- New struct `RuntimeJavaJavaAgentLogging`
+- New struct `ScgRoute`
+- New struct `SessionProbe`
+- New struct `SessionProbeHTTPGet`
+- New struct `SessionProbeHTTPGetHTTPHeadersItem`
+- New struct `SessionProbeTCPSocket`
+- New struct `SmbStorage`
+- New struct `SpringCloudGatewayComponent`
+- New struct `TCPConnectionPool`
+- New struct `TCPRetryPolicy`
+- New struct `TemplatePoolStatus`
+- New struct `TemplateStatus`
+- New struct `TemplateUpdateStatus`
+- New struct `TimeoutPolicy`
+- New struct `TracesConfiguration`
+- New struct `WorkflowArtifacts`
+- New field `BlobContainerURI`, `ClientID`, `ManagedIdentityResourceID` in struct `BlobStorageTokenStore`
+- New field `CertificateType` in struct `CertificateProperties`
+- New field `RevisionTransitionThreshold`, `TargetLabel` in struct `Configuration`
+- New field `Smb` in struct `ConnectedEnvironmentStorageProperties`
+- New field `ImageType` in struct `Container`
+- New field `DeploymentErrors`, `PatchingConfiguration` in struct `ContainerAppProperties`
+- New field `XMSGithubAuxiliary` in struct `ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions`
+- New field `DeleteWorkflow`, `IgnoreWorkflowDeletionFailure`, `XMSGithubAuxiliary` in struct `ContainerAppsSourceControlsClientBeginDeleteOptions`
+- New field `Gpu` in struct `ContainerResources`
+- New field `ServiceComponentBind` in struct `DaprComponentProperties`
+- New field `BuildEnvironmentVariables`, `DockerfilePath` in struct `GithubActionConfiguration`
+- New field `Weight` in struct `HTTPRouteTarget`
+- New field `TargetPortHTTPScheme` in struct `Ingress`
+- New field `ImageType` in struct `InitContainer`
+- New field `ExtendedLocation` in struct `Job`
+- New field `SystemData` in struct `JobExecution`
+- New field `DetailedStatus`, `Message`, `Reason` in struct `JobExecutionProperties`
+- New field `ExtendedLocation` in struct `JobPatchProperties`
+- New field `RunningState` in struct `JobProperties`
+- New field `DynamicJSONColumns` in struct `LogAnalyticsConfiguration`
+- New field `Properties` in struct `LogicApp`
+- New field `AppInsightsConfiguration`, `AvailabilityZones`, `DiskEncryptionConfiguration`, `OpenTelemetryConfiguration`, `PrivateLinkDefaultDomain` in struct `ManagedEnvironmentProperties`
+- New field `DebugEndpoint` in struct `ReplicaContainer`
+- New field `Labels` in struct `RevisionProperties`
+- New field `Dotnet` in struct `Runtime`
+- New field `JavaAgent` in struct `RuntimeJava`
+- New field `ClientType`, `CustomizedKeys` in struct `ServiceBind`
+- New field `Probes` in struct `SessionContainer`
+- New field `McpServerSettings`, `TemplateUpdateStatus` in struct `SessionPoolProperties`
+- New field `EnableFips` in struct `WorkloadProfile`
+
+
 ## 4.0.0 (2025-10-23)
 ### Breaking Changes
 

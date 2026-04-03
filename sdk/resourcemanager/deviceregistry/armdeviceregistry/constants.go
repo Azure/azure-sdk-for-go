@@ -40,6 +40,29 @@ func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	}
 }
 
+// BringYourOwnRootStatus - Status of the Bring Your Own Root configuration.
+type BringYourOwnRootStatus string
+
+const (
+	// BringYourOwnRootStatusActive - The signed certificate has been successfully uploaded and validated, and the CA is active.
+	BringYourOwnRootStatusActive BringYourOwnRootStatus = "Active"
+	// BringYourOwnRootStatusActiveButPendingRenewal - The certificate is nearing expiration (within renewal window) or has expired.
+	// A new CSR has been generated and is waiting for the customer to provide a new signed certificate.
+	BringYourOwnRootStatusActiveButPendingRenewal BringYourOwnRootStatus = "ActiveButPendingRenewal"
+	// BringYourOwnRootStatusPendingActivation - The CSR has been generated and is waiting for the customer to provide the signed
+	// certificate.
+	BringYourOwnRootStatusPendingActivation BringYourOwnRootStatus = "PendingActivation"
+)
+
+// PossibleBringYourOwnRootStatusValues returns the possible values for the BringYourOwnRootStatus const type.
+func PossibleBringYourOwnRootStatusValues() []BringYourOwnRootStatus {
+	return []BringYourOwnRootStatus{
+		BringYourOwnRootStatusActive,
+		BringYourOwnRootStatusActiveButPendingRenewal,
+		BringYourOwnRootStatusPendingActivation,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -320,6 +343,21 @@ func PossibleStreamDestinationTargetValues() []StreamDestinationTarget {
 	return []StreamDestinationTarget{
 		StreamDestinationTargetMqtt,
 		StreamDestinationTargetStorage,
+	}
+}
+
+// SupportedKeyType - Supported key types.
+type SupportedKeyType string
+
+const (
+	// SupportedKeyTypeECC - Indicates the ECC key type.
+	SupportedKeyTypeECC SupportedKeyType = "ECC"
+)
+
+// PossibleSupportedKeyTypeValues returns the possible values for the SupportedKeyType const type.
+func PossibleSupportedKeyTypeValues() []SupportedKeyType {
+	return []SupportedKeyType{
+		SupportedKeyTypeECC,
 	}
 }
 

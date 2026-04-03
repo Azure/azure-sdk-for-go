@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Namespace_With_Endpoints.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
 func ExampleNamespacesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,19 +28,16 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 		Properties: &armdeviceregistry.NamespaceProperties{
 			Messaging: &armdeviceregistry.Messaging{
 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-					"eventGridEndpoint": {
-						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-						Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
+					"iothubEndpoint": {
+						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+						Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
 					},
-					"anotherEventGridEndpoint": {
-						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-						Address:      to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events"),
+					"anotherIothubEndpoint": {
+						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+						Address:      to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
 					},
 				},
 			},
-		},
-		Identity: &armdeviceregistry.SystemAssignedServiceIdentity{
-			Type: to.Ptr(armdeviceregistry.SystemAssignedServiceIdentityTypeSystemAssigned),
 		},
 	}, nil)
 	if err != nil {
@@ -76,13 +73,13 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 			Messaging: &armdeviceregistry.Messaging{
 	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-	// 					"eventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net"),
 	// 					},
-	// 					"anotherEventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"anotherIothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
 	// 					},
 	// 				},
 	// 			},
@@ -91,7 +88,7 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_Namespace.json
+// Generated from example definition: 2026-03-01-preview/Delete_Namespace.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +109,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_Namespace.json
+// Generated from example definition: 2026-03-01-preview/Get_Namespace.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,13 +150,13 @@ func ExampleNamespacesClient_Get() {
 	// 			UUID: to.Ptr("cfbef47a-6971-4c90-a7a9-99be82dea167"),
 	// 			Messaging: &armdeviceregistry.Messaging{
 	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-	// 					"myPrimaryEventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						Address: to.Ptr("https://myeventgridtopic1.westeurope-1.eventgrid.azure.net"),
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
+	// 					"myPrimaryIothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net"),
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
 	// 					},
-	// 					"mySecondaryEventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						Address: to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net"),
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
+	// 					"mySecondaryIothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
 	// 					},
 	// 				},
 	// 			},
@@ -169,7 +166,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_Namespace_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_Namespace_ByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +232,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/List_Namespace_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_Namespace_BySubscription.json
 func ExampleNamespacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +299,7 @@ func ExampleNamespacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Migrate_Assets_Namespace.json
+// Generated from example definition: 2026-03-01-preview/Migrate_Assets_Namespace.json
 func ExampleNamespacesClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +332,7 @@ func ExampleNamespacesClient_BeginMigrate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Update_Namespace_Endpoints.json
+// Generated from example definition: 2026-03-01-preview/Update_Namespace_Endpoints.json
 func ExampleNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,9 +347,9 @@ func ExampleNamespacesClient_BeginUpdate() {
 		Properties: &armdeviceregistry.NamespaceUpdateProperties{
 			Messaging: &armdeviceregistry.Messaging{
 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-					"eventGridEndpoint": {
-						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-						Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
+					"iothubEndpoint": {
+						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+						Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
 					},
 				},
 			},
@@ -392,17 +389,17 @@ func ExampleNamespacesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 			Messaging: &armdeviceregistry.Messaging{
 	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-	// 					"eventGridEndpoint1": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic1.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint1": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net/api/events"),
 	// 					},
-	// 					"eventGridEndpoint2": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint2": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
 	// 					},
-	// 					"eventGridEndpoint3": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic3.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint3": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-3.azure-devices.net"),
 	// 					},
 	// 				},
 	// 			},

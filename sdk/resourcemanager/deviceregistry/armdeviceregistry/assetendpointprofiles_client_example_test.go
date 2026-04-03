@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAssetEndpointProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
 func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAssetEndpointProfileWithDiscoveredAepRef() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/Delete_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleAssetEndpointProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/Get_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Get_AssetEndpointProfile_With_SyncStatus.json
+// Generated from example definition: 2026-03-01-preview/Get_AssetEndpointProfile_With_SyncStatus.json
 func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfileWithSyncStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfileWithSyncStatu
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_AssetEndpointProfiles_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_AssetEndpointProfiles_ByResourceGroup.json
 func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/List_AssetEndpointProfiles_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_AssetEndpointProfiles_BySubscription.json
 func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +555,7 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Update_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/Update_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

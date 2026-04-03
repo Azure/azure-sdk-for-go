@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Schema.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Schema.json
 func ExampleSchemasClient_CreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleSchemasClient_CreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_Schema.json
+// Generated from example definition: 2026-03-01-preview/Delete_Schema.json
 func ExampleSchemasClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleSchemasClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_Schema.json
+// Generated from example definition: 2026-03-01-preview/Get_Schema.json
 func ExampleSchemasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleSchemasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_Schemas_BySchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/List_Schemas_BySchemaRegistry.json
 func ExampleSchemasClient_NewListBySchemaRegistryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

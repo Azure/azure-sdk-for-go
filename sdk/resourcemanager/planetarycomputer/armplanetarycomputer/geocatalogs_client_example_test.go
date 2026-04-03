@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Create.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Create.json
 func ExampleGeoCatalogsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleGeoCatalogsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Delete.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Delete.json
 func ExampleGeoCatalogsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleGeoCatalogsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Get.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Get.json
 func ExampleGeoCatalogsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleGeoCatalogsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_ListByResourceGroup.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_ListByResourceGroup.json
 func ExampleGeoCatalogsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleGeoCatalogsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_ListBySubscription.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_ListBySubscription.json
 func ExampleGeoCatalogsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleGeoCatalogsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Update.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Update.json
 func ExampleGeoCatalogsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

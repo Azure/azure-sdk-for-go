@@ -114,33 +114,33 @@ func (ipr *IPRange) String() string {
 // This type defines the components used by all Azure Storage resources (Containers, Blobs, Files, & Queues).
 type QueryParameters struct {
 	// All members are immutable or values so copies of this struct are goroutine-safe.
-	version                     string    `param:"sv"`
-	services                    string    `param:"ss"`
-	resourceTypes               string    `param:"srt"`
-	protocol                    Protocol  `param:"spr"`
-	startTime                   time.Time `param:"st"`
-	expiryTime                  time.Time `param:"se"`
-	snapshotTime                time.Time `param:"snapshot"`
-	ipRange                     IPRange   `param:"sip"`
-	identifier                  string    `param:"si"`
-	resource                    string    `param:"sr"`
-	permissions                 string    `param:"sp"`
-	signature                   string    `param:"sig"`
-	cacheControl                string    `param:"rscc"`
-	contentDisposition          string    `param:"rscd"`
-	contentEncoding             string    `param:"rsce"`
-	contentLanguage             string    `param:"rscl"`
-	contentType                 string    `param:"rsct"`
-	signedOID                   string    `param:"skoid"`
-	signedTID                   string    `param:"sktid"`
-	signedStart                 time.Time `param:"skt"`
-	signedService               string    `param:"sks"`
-	signedExpiry                time.Time `param:"ske"`
-	signedVersion               string    `param:"skv"`
-	signedDirectoryDepth        string    `param:"sdd"`
-	authorizedObjectID          string    `param:"saoid"`
-	unauthorizedObjectID        string    `param:"suoid"`
-	correlationID               string    `param:"scid"`
+	version                      string    `param:"sv"`
+	services                     string    `param:"ss"`
+	resourceTypes                string    `param:"srt"`
+	protocol                     Protocol  `param:"spr"`
+	startTime                    time.Time `param:"st"`
+	expiryTime                   time.Time `param:"se"`
+	snapshotTime                 time.Time `param:"snapshot"`
+	ipRange                      IPRange   `param:"sip"`
+	identifier                   string    `param:"si"`
+	resource                     string    `param:"sr"`
+	permissions                  string    `param:"sp"`
+	signature                    string    `param:"sig"`
+	cacheControl                 string    `param:"rscc"`
+	contentDisposition           string    `param:"rscd"`
+	contentEncoding              string    `param:"rsce"`
+	contentLanguage              string    `param:"rscl"`
+	contentType                  string    `param:"rsct"`
+	signedOID                    string    `param:"skoid"`
+	signedTID                    string    `param:"sktid"`
+	signedStart                  time.Time `param:"skt"`
+	signedService                string    `param:"sks"`
+	signedExpiry                 time.Time `param:"ske"`
+	signedVersion                string    `param:"skv"`
+	signedDirectoryDepth         string    `param:"sdd"`
+	authorizedObjectID           string    `param:"saoid"`
+	unauthorizedObjectID         string    `param:"suoid"`
+	correlationID                string    `param:"scid"`
 	encryptionScope              string    `param:"ses"`
 	signedDelegatedUserObjectID  string    `param:"sduoid"`
 	signedRequestHeaders         string    `param:"srh"`

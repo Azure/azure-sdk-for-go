@@ -70,5 +70,3 @@ func (testsuite *TerraformTestSuite) TestOperationsList() {
 		testsuite.Require().NoError(err)
 	}
 }
-
-

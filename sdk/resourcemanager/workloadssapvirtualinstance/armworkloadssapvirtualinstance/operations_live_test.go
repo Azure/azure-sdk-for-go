@@ -67,5 +67,3 @@ func (testsuite *WorkloadssapvirtualinstanceOperationsTestSuite) TestOperationsN
 		testsuite.Require().NoError(err)
 	}
 }
-
-

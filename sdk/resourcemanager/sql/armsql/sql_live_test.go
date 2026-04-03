@@ -87,7 +87,7 @@ func (testsuite *SqlAccessTestSuite) TestServerGet() {
 	serversClient := sqlClientFactory.NewServersClient()
 	resp, err := serversClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.sqlServersName, nil)
 	testsuite.Require().NoError(err)
-	fmt.Println("get server:", *resp.Server.ID)
+	fmt.Println("get server:", *resp.ID)
 }
 
 func (testsuite *SqlAccessTestSuite) Cleanup() {

@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20260323091451-5227f4cb0603
 	github.com/Masterminds/semver v1.5.0
 	github.com/ahmetb/go-linq/v3 v3.2.0
-	github.com/go-git/go-git/v5 v5.17.0
+	github.com/go-git/go-git/v5 v5.16.5
 	github.com/goccy/go-yaml v1.19.2
 	github.com/google/go-github/v62 v62.0.0
 	github.com/spf13/cobra v1.10.2

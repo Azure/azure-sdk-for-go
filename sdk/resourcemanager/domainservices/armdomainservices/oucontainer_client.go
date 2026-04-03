@@ -28,7 +28,7 @@ type OuContainerClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OuContainerClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreate - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - ouContainerName - The name of the OuContainer.
@@ -70,7 +70,7 @@ func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupN
 // Create - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 func (client *OuContainerClient) create(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OuContainerClient.BeginCreate"
@@ -93,7 +93,7 @@ func (client *OuContainerClient) create(ctx context.Context, resourceGroupName s
 }
 
 // createCreateRequest creates the Create request.
-func (client *OuContainerClient) createCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*policy.Request, error) {
+func (client *OuContainerClient) createCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, _ *OuContainerClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,7 +116,7 @@ func (client *OuContainerClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, containerAccount); err != nil {
@@ -128,7 +128,7 @@ func (client *OuContainerClient) createCreateRequest(ctx context.Context, resour
 // BeginDelete - The Delete OuContainer operation deletes specified OuContainer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - ouContainerName - The name of the OuContainer.
@@ -153,7 +153,7 @@ func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - The Delete OuContainer operation deletes specified OuContainer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 func (client *OuContainerClient) deleteOperation(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OuContainerClient.BeginDelete"
@@ -176,7 +176,7 @@ func (client *OuContainerClient) deleteOperation(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, _ *OuContainerClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -199,7 +199,7 @@ func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -208,7 +208,7 @@ func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Get OuContainer in DomainService instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - ouContainerName - The name of the OuContainer.
@@ -236,7 +236,7 @@ func (client *OuContainerClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientGetOptions) (*policy.Request, error) {
+func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, _ *OuContainerClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -259,7 +259,7 @@ func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *OuContainerClient) getHandleResponse(resp *http.Response) (OuConta
 
 // NewListPager - The List of OuContainers in DomainService instance.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - options - OuContainerClientListOptions contains the optional parameters for the OuContainerClient.NewListPager method.
@@ -304,7 +304,7 @@ func (client *OuContainerClient) NewListPager(resourceGroupName string, domainSe
 }
 
 // listCreateRequest creates the List request.
-func (client *OuContainerClient) listCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) (*policy.Request, error) {
+func (client *OuContainerClient) listCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, _ *OuContainerClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -323,7 +323,7 @@ func (client *OuContainerClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +341,7 @@ func (client *OuContainerClient) listHandleResponse(resp *http.Response) (OuCont
 // BeginUpdate - The Update OuContainer operation can be used to update the existing OuContainers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - ouContainerName - The name of the OuContainer.
@@ -367,7 +367,7 @@ func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupN
 // Update - The Update OuContainer operation can be used to update the existing OuContainers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 func (client *OuContainerClient) update(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OuContainerClient.BeginUpdate"
@@ -390,7 +390,7 @@ func (client *OuContainerClient) update(ctx context.Context, resourceGroupName s
 }
 
 // updateCreateRequest creates the Update request.
-func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, _ *OuContainerClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -413,7 +413,7 @@ func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, containerAccount); err != nil {

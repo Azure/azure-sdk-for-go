@@ -34,6 +34,12 @@ type ClientListResponse struct {
 	DomainServiceListResult
 }
 
+// ClientUnsuspendResponse contains the response from method Client.Unsuspend.
+type ClientUnsuspendResponse struct {
+	// Response for successful unsuspend of a domain service.
+	UnsuspendDomainServiceResponse
+}
+
 // ClientUpdateResponse contains the response from method Client.BeginUpdate.
 type ClientUpdateResponse struct {
 	// Domain service.

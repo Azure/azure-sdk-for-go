@@ -37,9 +37,16 @@ func (t *dateTimeRFC1123) UnmarshalJSON(data []byte) error {
 }
 
 func (t *dateTimeRFC1123) UnmarshalText(data []byte) error {
+	if len(data) == 0 {
+		return nil
+	}
 	p, err := time.Parse(time.RFC1123, string(data))
 	*t = dateTimeRFC1123(p)
 	return err
+}
+
+func (t dateTimeRFC1123) String() string {
+	return time.Time(t).Format(time.RFC1123)
 }
 
 func populateDateTimeRFC1123(m map[string]any, k string, t *time.Time) {
@@ -55,7 +62,7 @@ func populateDateTimeRFC1123(m map[string]any, k string, t *time.Time) {
 }
 
 func unpopulateDateTimeRFC1123(data json.RawMessage, fn string, t **time.Time) error {
-	if data == nil || strings.EqualFold(string(data), "null") {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	var aux dateTimeRFC1123

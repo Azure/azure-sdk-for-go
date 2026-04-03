@@ -48,21 +48,40 @@ func (d *DomainServiceOperationsServerTransport) Do(req *http.Request) (*http.Re
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DomainServiceOperationsClient.NewListPager":
-		resp, err = d.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DomainServiceOperationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if domainServiceOperationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = domainServiceOperationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DomainServiceOperationsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DomainServiceOperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -90,4 +109,10 @@ func (d *DomainServiceOperationsServerTransport) dispatchNewListPager(req *http.
 		d.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DomainServiceOperationsServerTransport
+var domainServiceOperationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

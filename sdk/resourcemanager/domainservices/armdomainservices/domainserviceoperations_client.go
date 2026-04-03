@@ -22,7 +22,7 @@ type DomainServiceOperationsClient struct {
 
 // NewDomainServiceOperationsClient creates a new instance of DomainServiceOperationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDomainServiceOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainServiceOperationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -36,7 +36,7 @@ func NewDomainServiceOperationsClient(credential azcore.TokenCredential, options
 
 // NewListPager - Lists all the available Domain Services operations.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - options - DomainServiceOperationsClientListOptions contains the optional parameters for the DomainServiceOperationsClient.NewListPager
 //     method.
 func (client *DomainServiceOperationsClient) NewListPager(options *DomainServiceOperationsClientListOptions) *runtime.Pager[DomainServiceOperationsClientListResponse] {
@@ -63,14 +63,14 @@ func (client *DomainServiceOperationsClient) NewListPager(options *DomainService
 }
 
 // listCreateRequest creates the List request.
-func (client *DomainServiceOperationsClient) listCreateRequest(ctx context.Context, options *DomainServiceOperationsClientListOptions) (*policy.Request, error) {
+func (client *DomainServiceOperationsClient) listCreateRequest(ctx context.Context, _ *DomainServiceOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.AAD/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

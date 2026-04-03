@@ -48,21 +48,40 @@ func (o *OuContainerOperationsServerTransport) Do(req *http.Request) (*http.Resp
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return o.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "OuContainerOperationsClient.NewListPager":
-		resp, err = o.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (o *OuContainerOperationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if ouContainerOperationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = ouContainerOperationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "OuContainerOperationsClient.NewListPager":
+				res.resp, res.err = o.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (o *OuContainerOperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -90,4 +109,10 @@ func (o *OuContainerOperationsServerTransport) dispatchNewListPager(req *http.Re
 		o.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to OuContainerOperationsServerTransport
+var ouContainerOperationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

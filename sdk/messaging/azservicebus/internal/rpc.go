@@ -220,12 +220,14 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 		msg.ApplicationProperties = make(map[string]any)
 	}
 
-	// Set server-timeout if one isn't already present. Some operations (e.g.,
-	// ScheduleMessages, CancelScheduledMessages) use the vendor-prefixed key
-	// "com.microsoft:server-timeout" — check both to avoid sending a duplicate.
-	if _, ok := msg.ApplicationProperties["server-timeout"]; !ok {
-		if _, ok := msg.ApplicationProperties["com.microsoft:server-timeout"]; !ok {
-			msg.ApplicationProperties["server-timeout"] = serverTimeoutMillis(ctx)
+	// Set server-timeout for Service Bus management operations that don't already
+	// set one explicitly. Only applies when the "operation" property indicates a
+	// management operation (com.microsoft: prefix), not CBS put-token requests.
+	if op, ok := msg.ApplicationProperties["operation"].(string); ok && strings.HasPrefix(op, "com.microsoft:") {
+		if _, ok := msg.ApplicationProperties["server-timeout"]; !ok {
+			if _, ok := msg.ApplicationProperties["com.microsoft:server-timeout"]; !ok {
+				msg.ApplicationProperties["server-timeout"] = serverTimeoutMillis(ctx)
+			}
 		}
 	}
 

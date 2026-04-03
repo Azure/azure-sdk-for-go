@@ -16,7 +16,8 @@ import (
 )
 
 // defaultServerTimeout is the minimum server-timeout sent with management RPC operations.
-// This matches the default operation timeout in the .NET (60s) and Java (59s) SDKs.
+// This aligns with the default operation timeout in the .NET SDK (60s) and is
+// consistent with other SDK defaults, including the Java SDK's 59s timeout.
 // Setting a floor prevents timeout exhaustion during service-side scatter-gather for
 // partitioned entities. See https://github.com/Azure/azure-sdk-for-go/issues/26421.
 const defaultServerTimeout = 60 * time.Second

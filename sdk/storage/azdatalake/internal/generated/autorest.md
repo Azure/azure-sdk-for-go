@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Azure.Storage.Files.DataLake/stable/2026-02-06/DataLakeStorage.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e1470c23ac1cb2a15cd5ef1e2b2dd187a3de13e9/specification/storage/data-plane/Azure.Storage.Files.DataLake/stable/2026-06-06/DataLakeStorage.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -326,15 +326,15 @@ directive:
         replace(/err = unpopulate\((.*), "IsDirectory", &p\.IsDirectory\)/g, 'var rawVal string\nerr = unpopulate(val, "IsDirectory", &rawVal)\nboolVal, _ := strconv.ParseBool(rawVal)\np.IsDirectory = &boolVal');
 ```
 
-### Updating service version to 2025-07-05
+### Updating service version to 2026-06-06
 ```yaml
 directive:
-- from: 
+- from:
   - zz_service_client.go
-  - zz_filesystem_client.go 
+  - zz_filesystem_client.go
   - zz_path_client.go
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2025-05-05"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{"2026-06-06"}`, `[]string{ServiceVersion}`);
 ```

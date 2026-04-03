@@ -73,29 +73,48 @@ func (o *OuContainerServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return o.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "OuContainerClient.BeginCreate":
-		resp, err = o.dispatchBeginCreate(req)
-	case "OuContainerClient.BeginDelete":
-		resp, err = o.dispatchBeginDelete(req)
-	case "OuContainerClient.Get":
-		resp, err = o.dispatchGet(req)
-	case "OuContainerClient.NewListPager":
-		resp, err = o.dispatchNewListPager(req)
-	case "OuContainerClient.BeginUpdate":
-		resp, err = o.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (o *OuContainerServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if ouContainerServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = ouContainerServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "OuContainerClient.BeginCreate":
+				res.resp, res.err = o.dispatchBeginCreate(req)
+			case "OuContainerClient.BeginDelete":
+				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OuContainerClient.Get":
+				res.resp, res.err = o.dispatchGet(req)
+			case "OuContainerClient.NewListPager":
+				res.resp, res.err = o.dispatchNewListPager(req)
+			case "OuContainerClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (o *OuContainerServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -107,7 +126,7 @@ func (o *OuContainerServerTransport) dispatchBeginCreate(req *http.Request) (*ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Aad/domainServices/(?P<domainServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ouContainer/(?P<ouContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdomainservices.ContainerAccount](req)
@@ -159,7 +178,7 @@ func (o *OuContainerServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Aad/domainServices/(?P<domainServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ouContainer/(?P<ouContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -205,7 +224,7 @@ func (o *OuContainerServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Aad/domainServices/(?P<domainServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ouContainer/(?P<ouContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -244,7 +263,7 @@ func (o *OuContainerServerTransport) dispatchNewListPager(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Aad/domainServices/(?P<domainServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ouContainer`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -285,7 +304,7 @@ func (o *OuContainerServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Aad/domainServices/(?P<domainServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ouContainer/(?P<ouContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdomainservices.ContainerAccount](req)
@@ -326,4 +345,10 @@ func (o *OuContainerServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to OuContainerServerTransport
+var ouContainerServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

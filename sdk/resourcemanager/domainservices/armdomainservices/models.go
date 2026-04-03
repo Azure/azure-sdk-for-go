@@ -54,11 +54,17 @@ type ContainerAccount struct {
 
 // DomainSecuritySettings - Domain Security Settings
 type DomainSecuritySettings struct {
+	// A flag to determine whether or not ChannelBinding is enabled or disabled.
+	ChannelBinding *ChannelBinding
+
 	// A flag to determine whether or not KerberosArmoring is enabled or disabled.
 	KerberosArmoring *KerberosArmoring
 
 	// A flag to determine whether or not KerberosRc4Encryption is enabled or disabled.
 	KerberosRc4Encryption *KerberosRc4Encryption
+
+	// A flag to determine whether or not LdapSigning is enabled or disabled.
+	LdapSigning *LdapSigning
 
 	// A flag to determine whether or not NtlmV1 is enabled or disabled.
 	NtlmV1 *NtlmV1
@@ -71,6 +77,11 @@ type DomainSecuritySettings struct {
 
 	// A flag to determine whether or not SyncOnPremPasswords is enabled or disabled.
 	SyncOnPremPasswords *SyncOnPremPasswords
+
+	// A flag to determine whether the SyncOnPremSamAccountName feature is active. When enabled, the samAccountName attribute
+	// in Entra Domain Services is synchronized from the onPremisesSamAccountName
+	// attribute in Entra ID
+	SyncOnPremSamAccountName *SyncOnPremSamAccountName
 
 	// A flag to determine whether or not TlsV1 is enabled or disabled.
 	TLSV1 *TLSV1
@@ -144,6 +155,9 @@ type DomainServiceProperties struct {
 	// Sku Type
 	SKU *string
 
+	// All or CloudOnly, All users in AAD are synced to AAD DS domain or only users actively syncing in the cloud
+	SyncScope *SyncScope
+
 	// READ-ONLY; Deployment Id
 	DeploymentID *string
 
@@ -152,6 +166,9 @@ type DomainServiceProperties struct {
 
 	// READ-ONLY; the current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string
+
+	// READ-ONLY; The unique sync application id of the Azure AD Domain Services deployment.
+	SyncApplicationID *string
 
 	// READ-ONLY; SyncOwner ReplicaSet Id
 	SyncOwner *string
@@ -401,6 +418,11 @@ type ReplicaSet struct {
 	// READ-ONLY; ReplicaSet Id
 	ReplicaSetID *string
 
+	// READ-ONLY; Number of times the customer has self-resumed the domain service. Valid values range from 0 to 5, where 5 is
+	// the maximum allowed count before further self-resume is denied and support intervention is
+	// required.
+	SelfUnsuspendCounter *int32
+
 	// READ-ONLY; Status of Domain Service instance
 	ServiceStatus *string
 
@@ -460,4 +482,9 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// UnsuspendDomainServiceResponse - Response for successful unsuspend of a domain service.
+type UnsuspendDomainServiceResponse struct {
+	Message *string
 }

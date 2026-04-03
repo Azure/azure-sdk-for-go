@@ -151,12 +151,15 @@ func (c *ContainerAccount) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DomainSecuritySettings.
 func (d DomainSecuritySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "channelBinding", d.ChannelBinding)
 	populate(objectMap, "kerberosArmoring", d.KerberosArmoring)
 	populate(objectMap, "kerberosRc4Encryption", d.KerberosRc4Encryption)
+	populate(objectMap, "ldapSigning", d.LdapSigning)
 	populate(objectMap, "ntlmV1", d.NtlmV1)
 	populate(objectMap, "syncKerberosPasswords", d.SyncKerberosPasswords)
 	populate(objectMap, "syncNtlmPasswords", d.SyncNtlmPasswords)
 	populate(objectMap, "syncOnPremPasswords", d.SyncOnPremPasswords)
+	populate(objectMap, "syncOnPremSamAccountName", d.SyncOnPremSamAccountName)
 	populate(objectMap, "tlsV1", d.TLSV1)
 	return json.Marshal(objectMap)
 }
@@ -170,11 +173,17 @@ func (d *DomainSecuritySettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelBinding":
+			err = unpopulate(val, "ChannelBinding", &d.ChannelBinding)
+			delete(rawMsg, key)
 		case "kerberosArmoring":
 			err = unpopulate(val, "KerberosArmoring", &d.KerberosArmoring)
 			delete(rawMsg, key)
 		case "kerberosRc4Encryption":
 			err = unpopulate(val, "KerberosRc4Encryption", &d.KerberosRc4Encryption)
+			delete(rawMsg, key)
+		case "ldapSigning":
+			err = unpopulate(val, "LdapSigning", &d.LdapSigning)
 			delete(rawMsg, key)
 		case "ntlmV1":
 			err = unpopulate(val, "NtlmV1", &d.NtlmV1)
@@ -187,6 +196,9 @@ func (d *DomainSecuritySettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "syncOnPremPasswords":
 			err = unpopulate(val, "SyncOnPremPasswords", &d.SyncOnPremPasswords)
+			delete(rawMsg, key)
+		case "syncOnPremSamAccountName":
+			err = unpopulate(val, "SyncOnPremSamAccountName", &d.SyncOnPremSamAccountName)
 			delete(rawMsg, key)
 		case "tlsV1":
 			err = unpopulate(val, "TLSV1", &d.TLSV1)
@@ -301,7 +313,9 @@ func (d DomainServiceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "replicaSets", d.ReplicaSets)
 	populate(objectMap, "resourceForestSettings", d.ResourceForestSettings)
 	populate(objectMap, "sku", d.SKU)
+	populate(objectMap, "syncApplicationId", d.SyncApplicationID)
 	populate(objectMap, "syncOwner", d.SyncOwner)
+	populate(objectMap, "syncScope", d.SyncScope)
 	populate(objectMap, "tenantId", d.TenantID)
 	populate(objectMap, "version", d.Version)
 	return json.Marshal(objectMap)
@@ -355,8 +369,14 @@ func (d *DomainServiceProperties) UnmarshalJSON(data []byte) error {
 		case "sku":
 			err = unpopulate(val, "SKU", &d.SKU)
 			delete(rawMsg, key)
+		case "syncApplicationId":
+			err = unpopulate(val, "SyncApplicationID", &d.SyncApplicationID)
+			delete(rawMsg, key)
 		case "syncOwner":
 			err = unpopulate(val, "SyncOwner", &d.SyncOwner)
+			delete(rawMsg, key)
+		case "syncScope":
+			err = unpopulate(val, "SyncScope", &d.SyncScope)
 			delete(rawMsg, key)
 		case "tenantId":
 			err = unpopulate(val, "TenantID", &d.TenantID)
@@ -909,6 +929,7 @@ func (r ReplicaSet) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "healthMonitors", r.HealthMonitors)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "replicaSetId", r.ReplicaSetID)
+	populate(objectMap, "selfUnsuspendCounter", r.SelfUnsuspendCounter)
 	populate(objectMap, "serviceStatus", r.ServiceStatus)
 	populate(objectMap, "subnetId", r.SubnetID)
 	populate(objectMap, "vnetSiteId", r.VnetSiteID)
@@ -944,6 +965,9 @@ func (r *ReplicaSet) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "replicaSetId":
 			err = unpopulate(val, "ReplicaSetID", &r.ReplicaSetID)
+			delete(rawMsg, key)
+		case "selfUnsuspendCounter":
+			err = unpopulate(val, "SelfUnsuspendCounter", &r.SelfUnsuspendCounter)
 			delete(rawMsg, key)
 		case "serviceStatus":
 			err = unpopulate(val, "ServiceStatus", &r.ServiceStatus)
@@ -1091,6 +1115,33 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type UnsuspendDomainServiceResponse.
+func (u UnsuspendDomainServiceResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "message", u.Message)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UnsuspendDomainServiceResponse.
+func (u *UnsuspendDomainServiceResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "message":
+			err = unpopulate(val, "Message", &u.Message)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -1102,7 +1153,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

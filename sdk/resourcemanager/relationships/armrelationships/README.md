@@ -55,7 +55,7 @@ clientFactory, err := armrelationships.NewClientFactory(cred, &options)
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-operationsClient := clientFactory.NewOperationsClient()
+client := clientFactory.()
 ```
 
 ## Fakes

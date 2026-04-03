@@ -9,12 +9,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -46,7 +44,6 @@ func (testsuite *ComputeScheduleOperationsTestSuite) SetupSuite() {
 	testsuite.resourceGroupName = *resourceGroup.Name
 
 	fmt.Println("create new resource group ", testsuite.resourceGroupName, " of ", testsuite.subscriptionId, "successfully")
-	testsuite.Prepare()
 }
 
 func TTestComputeScheduleOperationsTestSuite(t *testing.T) {
@@ -70,29 +67,4 @@ func (testsuite *ComputeScheduleOperationsTestSuite) TestOperationsNewListPager(
 		_, err := pager.NextPage(ctx)
 		testsuite.Require().NoError(err)
 	}
-}
-
-func (testsuite *ComputeScheduleOperationsTestSuite) Prepare() {
-	// get default credential
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	testsuite.Require().NoError(err)
-	// new client factory
-
-	fmt.Println("subscriptionId", testsuite.subscriptionId, "groupName", testsuite.resourceGroupName, "location", testsuite.location)
-	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	client := clientFactory.NewResourceGroupsClient()
-
-	testsuite.Require().NoError(err)
-	// check whether create new group successfully
-	res, err := client.CheckExistence(testsuite.ctx, testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(err)
-	if !res.Success {
-		_, err = client.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
-			Location: to.Ptr(testsuite.location),
-		}, nil)
-		testsuite.Require().NoError(err)
-	}
-
-	fmt.Println("create new resource group ", testsuite.resourceGroupName, " of ", testsuite.subscriptionId, "successfully")
 }

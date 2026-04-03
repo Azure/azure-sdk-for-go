@@ -652,9 +652,6 @@ type BlobClientGetPropertiesResponse struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-	// SmartAccessTier contains the information returned from the x-ms-smart-access-tier header response.
-	SmartAccessTier *string
-
 	// TagCount contains the information returned from the x-ms-tag-count header response.
 	TagCount *int64
 

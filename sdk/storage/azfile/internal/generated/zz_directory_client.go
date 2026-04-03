@@ -32,7 +32,7 @@ type DirectoryClient struct {
 // Create - Creates a new directory under the specified share or parent directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
 func (client *DirectoryClient) Create(ctx context.Context, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
 	var err error
@@ -64,22 +64,17 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	if options != nil && options.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	if options != nil && options.Metadata != nil {
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
+		}
 	}
-	if options != nil && options.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
-	}
-	if options != nil && options.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
-	}
-	if options != nil && options.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
-	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}
@@ -89,29 +84,34 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, options 
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	if options != nil && options.FilePropertySemantics != nil {
-		req.Raw().Header["x-ms-file-property-semantics"] = []string{string(*options.FilePropertySemantics)}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
+	if options != nil && options.FileCreationTime != nil {
+		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
+	}
+	if options != nil && options.FileLastWriteTime != nil {
+		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
+	}
+	if options != nil && options.FileChangeTime != nil {
+		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	}
 	if options != nil && options.Group != nil {
 		req.Raw().Header["x-ms-group"] = []string{*options.Group}
-	}
-	if options != nil && options.Metadata != nil {
-		for k, v := range options.Metadata {
-			if v != nil {
-				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
-		}
 	}
 	if options != nil && options.FileMode != nil {
 		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
 	}
-	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	if options != nil && options.FilePropertySemantics != nil {
+		req.Raw().Header["x-ms-file-property-semantics"] = []string{string(*options.FilePropertySemantics)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -199,7 +199,7 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 // Delete - Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - options - DirectoryClientDeleteOptions contains the optional parameters for the DirectoryClient.Delete method.
 func (client *DirectoryClient) Delete(ctx context.Context, options *DirectoryClientDeleteOptions) (DirectoryClientDeleteResponse, error) {
 	var err error
@@ -231,14 +231,14 @@ func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -264,7 +264,7 @@ func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (Direct
 // ForceCloseHandles - Closes all handles open for given directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 //     all handles.
 //   - options - DirectoryClientForceCloseHandlesOptions contains the optional parameters for the DirectoryClient.ForceCloseHandles
@@ -295,28 +295,28 @@ func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "forceclosehandles")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
 	if options != nil && options.Marker != nil {
 		reqQP.Set("marker", *options.Marker)
 	}
 	if options != nil && options.Sharesnapshot != nil {
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
+	if options != nil && options.Recursive != nil {
+		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
-	if options != nil && options.Recursive != nil {
-		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
-	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -363,7 +363,7 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 // subdirectories.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - options - DirectoryClientGetPropertiesOptions contains the optional parameters for the DirectoryClient.GetProperties method.
 func (client *DirectoryClient) GetProperties(ctx context.Context, options *DirectoryClientGetPropertiesOptions) (DirectoryClientGetPropertiesResponse, error) {
 	var err error
@@ -398,14 +398,14 @@ func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, o
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -501,7 +501,7 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // NewListFilesAndDirectoriesSegmentPager - Returns a list of files or directories under the specified share or directory.
 // It lists the contents only for a single level of the directory hierarchy.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.NewListFilesAndDirectoriesSegmentPager
 //     method.
 //
@@ -512,9 +512,13 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("restype", "directory")
 	reqQP.Set("comp", "list")
-	if options != nil && options.Include != nil {
-		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
+	if options != nil && options.Prefix != nil {
+		reqQP.Set("prefix", *options.Prefix)
+	}
+	if options != nil && options.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	if options != nil && options.Marker != nil {
 		reqQP.Set("marker", *options.Marker)
@@ -522,28 +526,24 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx c
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	if options != nil && options.Prefix != nil {
-		reqQP.Set("prefix", *options.Prefix)
-	}
-	reqQP.Set("restype", "directory")
-	if options != nil && options.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
-	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	if options != nil && options.Include != nil {
+		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
 	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.IncludeExtendedInfo != nil {
 		req.Raw().Header["x-ms-file-extended-info"] = []string{strconv.FormatBool(*options.IncludeExtendedInfo)}
+	}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -575,7 +575,7 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp
 // ListHandles - Lists handles for directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - options - DirectoryClientListHandlesOptions contains the optional parameters for the DirectoryClient.ListHandles method.
 func (client *DirectoryClient) ListHandles(ctx context.Context, options *DirectoryClientListHandlesOptions) (DirectoryClientListHandlesResponse, error) {
 	var err error
@@ -609,24 +609,24 @@ func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	if options != nil && options.Sharesnapshot != nil {
-		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
-	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
+	if options != nil && options.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.Recursive != nil {
+		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	if options != nil && options.Recursive != nil {
-		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
-	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -658,7 +658,7 @@ func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (D
 // Rename - Renames a directory
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - renameSource - Required. Specifies the URI-style path of the source file, up to 2 KB in length.
 //   - options - DirectoryClientRenameOptions contains the optional parameters for the DirectoryClient.Rename method.
 //   - SourceLeaseAccessConditions - SourceLeaseAccessConditions contains a group of parameters for the DirectoryClient.Rename
@@ -691,15 +691,22 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("comp", "rename")
 	reqQP.Set("restype", "directory")
+	reqQP.Set("comp", "rename")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
+	if options != nil && options.ReplaceIfExists != nil {
+		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
+	}
+	if options != nil && options.IgnoreReadOnly != nil {
+		req.Raw().Header["x-ms-file-rename-ignore-readonly"] = []string{strconv.FormatBool(*options.IgnoreReadOnly)}
+	}
+	if sourceLeaseAccessConditions != nil && sourceLeaseAccessConditions.SourceLeaseID != nil {
+		req.Raw().Header["x-ms-source-lease-id"] = []string{*sourceLeaseAccessConditions.SourceLeaseID}
 	}
 	if destinationLeaseAccessConditions != nil && destinationLeaseAccessConditions.DestinationLeaseID != nil {
 		req.Raw().Header["x-ms-destination-lease-id"] = []string{*destinationLeaseAccessConditions.DestinationLeaseID}
@@ -707,14 +714,14 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileAttributes != nil {
 		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSMBInfo.FileAttributes}
 	}
-	if copyFileSMBInfo != nil && copyFileSMBInfo.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*copyFileSMBInfo.FileChangeTime}
-	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSMBInfo.FileCreationTime}
 	}
 	if copyFileSMBInfo != nil && copyFileSMBInfo.FileLastWriteTime != nil {
 		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSMBInfo.FileLastWriteTime}
+	}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileChangeTime != nil {
+		req.Raw().Header["x-ms-file-change-time"] = []string{*copyFileSMBInfo.FileChangeTime}
 	}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
@@ -725,16 +732,6 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	if options != nil && options.IgnoreReadOnly != nil {
-		req.Raw().Header["x-ms-file-rename-ignore-readonly"] = []string{strconv.FormatBool(*options.IgnoreReadOnly)}
-	}
-	if options != nil && options.ReplaceIfExists != nil {
-		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
-	}
-	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
@@ -742,13 +739,16 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 			}
 		}
 	}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
 	if client.allowSourceTrailingDot != nil {
 		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowSourceTrailingDot)}
 	}
-	if sourceLeaseAccessConditions != nil && sourceLeaseAccessConditions.SourceLeaseID != nil {
-		req.Raw().Header["x-ms-source-lease-id"] = []string{*sourceLeaseAccessConditions.SourceLeaseID}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -824,7 +824,7 @@ func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (Direct
 // SetMetadata - Updates user defined metadata for the specified directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - options - DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
 func (client *DirectoryClient) SetMetadata(ctx context.Context, options *DirectoryClientSetMetadataOptions) (DirectoryClientSetMetadataResponse, error) {
 	var err error
@@ -851,19 +851,12 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("comp", "metadata")
 	reqQP.Set("restype", "directory")
+	reqQP.Set("comp", "metadata")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if client.fileRequestIntent != nil {
-		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
-	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
@@ -872,6 +865,13 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{client.version}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
@@ -907,7 +907,7 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 // SetProperties - Sets properties on the directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-04-06
 //   - options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
 func (client *DirectoryClient) SetProperties(ctx context.Context, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
 	var err error
@@ -934,28 +934,13 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("comp", "properties")
 	reqQP.Set("restype", "directory")
+	reqQP.Set("comp", "properties")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/xml"}
-	if client.allowTrailingDot != nil {
-		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
-	}
-	if options != nil && options.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
-	}
-	if options != nil && options.FileChangeTime != nil {
-		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
-	}
-	if options != nil && options.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
-	}
-	if options != nil && options.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
-	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}
@@ -965,8 +950,26 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
+	if options != nil && options.FileCreationTime != nil {
+		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
+	}
+	if options != nil && options.FileLastWriteTime != nil {
+		req.Raw().Header["x-ms-file-last-write-time"] = []string{*options.FileLastWriteTime}
+	}
+	if options != nil && options.FileChangeTime != nil {
+		req.Raw().Header["x-ms-file-change-time"] = []string{*options.FileChangeTime}
+	}
+	if client.allowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
+	}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
 	if options != nil && options.Group != nil {
 		req.Raw().Header["x-ms-group"] = []string{*options.Group}
@@ -974,10 +977,7 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.FileMode != nil {
 		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
 	}
-	if options != nil && options.Owner != nil {
-		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
-	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 

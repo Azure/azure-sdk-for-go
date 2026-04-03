@@ -33,14 +33,7 @@ func (t *dateTimeRFC1123) UnmarshalJSON(data []byte) error {
 }
 
 func (t *dateTimeRFC1123) UnmarshalText(data []byte) error {
-	if len(data) == 0 {
-		return nil
-	}
 	p, err := time.Parse(time.RFC1123, string(data))
 	*t = dateTimeRFC1123(p)
 	return err
-}
-
-func (t dateTimeRFC1123) String() string {
-	return time.Time(t).Format(time.RFC1123)
 }

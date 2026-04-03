@@ -411,13 +411,6 @@ type FileClientCreateOptions struct {
 	// Optional, NFS only. The owner of the file or directory.
 	Owner *string
 
-	// Required if the request body is a structured message. Specifies the message schema version and properties.
-	StructuredBodyType *string
-
-	// Required if the request body is a structured message. Specifies the length of the blob/file content inside the message
-	// body. Will always be smaller than Content-Length.
-	StructuredContentLength *int64
-
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32

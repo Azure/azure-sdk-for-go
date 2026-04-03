@@ -24,7 +24,6 @@ const (
 	AccessTierP70     AccessTier = "P70"
 	AccessTierP80     AccessTier = "P80"
 	AccessTierPremium AccessTier = "Premium"
-	AccessTierSmart   AccessTier = "Smart"
 )
 
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
@@ -46,7 +45,6 @@ func PossibleAccessTierValues() []AccessTier {
 		AccessTierP70,
 		AccessTierP80,
 		AccessTierPremium,
-		AccessTierSmart,
 	}
 }
 
@@ -74,10 +72,9 @@ func PossibleAccountKindValues() []AccountKind {
 type ArchiveStatus string
 
 const (
-	ArchiveStatusRehydratePendingToCold  ArchiveStatus = "rehydrate-pending-to-cold"
-	ArchiveStatusRehydratePendingToCool  ArchiveStatus = "rehydrate-pending-to-cool"
-	ArchiveStatusRehydratePendingToHot   ArchiveStatus = "rehydrate-pending-to-hot"
-	ArchiveStatusRehydratePendingToSmart ArchiveStatus = "rehydrate-pending-to-smart"
+	ArchiveStatusRehydratePendingToCold ArchiveStatus = "rehydrate-pending-to-cold"
+	ArchiveStatusRehydratePendingToCool ArchiveStatus = "rehydrate-pending-to-cool"
+	ArchiveStatusRehydratePendingToHot  ArchiveStatus = "rehydrate-pending-to-hot"
 )
 
 // PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
@@ -86,7 +83,6 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 		ArchiveStatusRehydratePendingToCold,
 		ArchiveStatusRehydratePendingToCool,
 		ArchiveStatusRehydratePendingToHot,
-		ArchiveStatusRehydratePendingToSmart,
 	}
 }
 

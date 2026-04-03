@@ -147,7 +147,6 @@ type BlobProperties struct {
 	RemainingRetentionDays *int32             `xml:"RemainingRetentionDays"`
 	ResourceType           *string            `xml:"ResourceType"`
 	ServerEncrypted        *bool              `xml:"ServerEncrypted"`
-	SmartAccessTier        *AccessTier        `xml:"SmartAccessTier"`
 	TagCount               *int32             `xml:"TagCount"`
 }
 

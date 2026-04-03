@@ -11,6 +11,12 @@ type ApplicationClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ApplicationClientPortalRegistryPackageOptions contains the optional parameters for the ApplicationClient.PortalRegistryPackage
+// method.
+type ApplicationClientPortalRegistryPackageOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ApplicationDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.CreateOrUpdateByID
 // method.
 type ApplicationDefinitionsClientCreateOrUpdateByIDOptions struct {
@@ -73,40 +79,40 @@ type ApplicationDefinitionsClientUpdateOptions struct {
 // ApplicationsClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdateByID
 // method.
 type ApplicationsClientBeginCreateOrUpdateByIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
 // method.
 type ApplicationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginDeleteByIDOptions contains the optional parameters for the ApplicationsClient.BeginDeleteByID method.
 type ApplicationsClientBeginDeleteByIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete method.
 type ApplicationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginRefreshPermissionsOptions contains the optional parameters for the ApplicationsClient.BeginRefreshPermissions
 // method.
 type ApplicationsClientBeginRefreshPermissionsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginUpdateAccessOptions contains the optional parameters for the ApplicationsClient.BeginUpdateAccess
 // method.
 type ApplicationsClientBeginUpdateAccessOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -115,7 +121,7 @@ type ApplicationsClientBeginUpdateByIDOptions struct {
 	// Parameters supplied to update an existing managed application.
 	Parameters *ApplicationPatchable
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -124,7 +130,7 @@ type ApplicationsClientBeginUpdateOptions struct {
 	// Parameters supplied to update an existing managed application.
 	Parameters *ApplicationPatchable
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -164,7 +170,7 @@ type ApplicationsClientListTokensOptions struct {
 // JitRequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the JitRequestsClient.BeginCreateOrUpdate
 // method.
 type JitRequestsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

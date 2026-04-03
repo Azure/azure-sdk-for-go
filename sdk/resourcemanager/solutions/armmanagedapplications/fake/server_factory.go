@@ -16,10 +16,17 @@ import (
 
 // ServerFactory is a fake server for instances of the armmanagedapplications.ClientFactory type.
 type ServerFactory struct {
-	ApplicationServer            ApplicationServer
+	// ApplicationServer contains the fakes for client ApplicationClient
+	ApplicationServer ApplicationServer
+
+	// ApplicationDefinitionsServer contains the fakes for client ApplicationDefinitionsClient
 	ApplicationDefinitionsServer ApplicationDefinitionsServer
-	ApplicationsServer           ApplicationsServer
-	JitRequestsServer            JitRequestsServer
+
+	// ApplicationsServer contains the fakes for client ApplicationsClient
+	ApplicationsServer ApplicationsServer
+
+	// JitRequestsServer contains the fakes for client JitRequestsClient
+	JitRequestsServer JitRequestsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

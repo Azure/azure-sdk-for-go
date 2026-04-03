@@ -89,39 +89,58 @@ func (a *ApplicationDefinitionsServerTransport) Do(req *http.Request) (*http.Res
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ApplicationDefinitionsClient.CreateOrUpdate":
-		resp, err = a.dispatchCreateOrUpdate(req)
-	case "ApplicationDefinitionsClient.CreateOrUpdateByID":
-		resp, err = a.dispatchCreateOrUpdateByID(req)
-	case "ApplicationDefinitionsClient.Delete":
-		resp, err = a.dispatchDelete(req)
-	case "ApplicationDefinitionsClient.DeleteByID":
-		resp, err = a.dispatchDeleteByID(req)
-	case "ApplicationDefinitionsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "ApplicationDefinitionsClient.GetByID":
-		resp, err = a.dispatchGetByID(req)
-	case "ApplicationDefinitionsClient.NewListByResourceGroupPager":
-		resp, err = a.dispatchNewListByResourceGroupPager(req)
-	case "ApplicationDefinitionsClient.NewListBySubscriptionPager":
-		resp, err = a.dispatchNewListBySubscriptionPager(req)
-	case "ApplicationDefinitionsClient.Update":
-		resp, err = a.dispatchUpdate(req)
-	case "ApplicationDefinitionsClient.UpdateByID":
-		resp, err = a.dispatchUpdateByID(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *ApplicationDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if applicationDefinitionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = applicationDefinitionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ApplicationDefinitionsClient.CreateOrUpdate":
+				res.resp, res.err = a.dispatchCreateOrUpdate(req)
+			case "ApplicationDefinitionsClient.CreateOrUpdateByID":
+				res.resp, res.err = a.dispatchCreateOrUpdateByID(req)
+			case "ApplicationDefinitionsClient.Delete":
+				res.resp, res.err = a.dispatchDelete(req)
+			case "ApplicationDefinitionsClient.DeleteByID":
+				res.resp, res.err = a.dispatchDeleteByID(req)
+			case "ApplicationDefinitionsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "ApplicationDefinitionsClient.GetByID":
+				res.resp, res.err = a.dispatchGetByID(req)
+			case "ApplicationDefinitionsClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "ApplicationDefinitionsClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
+			case "ApplicationDefinitionsClient.Update":
+				res.resp, res.err = a.dispatchUpdate(req)
+			case "ApplicationDefinitionsClient.UpdateByID":
+				res.resp, res.err = a.dispatchUpdateByID(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *ApplicationDefinitionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -131,7 +150,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchCreateOrUpdate(req *http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.ApplicationDefinition](req)
@@ -168,7 +187,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchCreateOrUpdateByID(req *
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.ApplicationDefinition](req)
@@ -205,7 +224,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchDelete(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -238,7 +257,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchDeleteByID(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -271,7 +290,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchGet(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -304,7 +323,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchGetByID(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -339,7 +358,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchNewListByResourceGroupPa
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -376,7 +395,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchNewListBySubscriptionPag
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionPager(nil)
@@ -407,7 +426,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchUpdate(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.ApplicationDefinitionPatchable](req)
@@ -444,7 +463,7 @@ func (a *ApplicationDefinitionsServerTransport) dispatchUpdateByID(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applicationDefinitions/(?P<applicationDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.ApplicationDefinitionPatchable](req)
@@ -472,4 +491,10 @@ func (a *ApplicationDefinitionsServerTransport) dispatchUpdateByID(req *http.Req
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ApplicationDefinitionsServerTransport
+var applicationDefinitionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

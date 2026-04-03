@@ -27,7 +27,7 @@ type ApplicationDefinitionsClient struct {
 // NewApplicationDefinitionsClient creates a new instance of ApplicationDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.To
 // CreateOrUpdate - Creates or updates a managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - parameters - Parameters supplied to the create or update an managed application definition.
@@ -72,7 +72,7 @@ func (client *ApplicationDefinitionsClient) CreateOrUpdate(ctx context.Context, 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ApplicationDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, _ *ApplicationDefinitionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -91,7 +91,7 @@ func (client *ApplicationDefinitionsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -112,7 +112,7 @@ func (client *ApplicationDefinitionsClient) createOrUpdateHandleResponse(resp *h
 // CreateOrUpdateByID - Creates or updates a managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - parameters - Parameters supplied to the create or update a managed application definition.
@@ -141,7 +141,7 @@ func (client *ApplicationDefinitionsClient) CreateOrUpdateByID(ctx context.Conte
 }
 
 // createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
-func (client *ApplicationDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, _ *ApplicationDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -160,7 +160,7 @@ func (client *ApplicationDefinitionsClient) createOrUpdateByIDCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -181,7 +181,7 @@ func (client *ApplicationDefinitionsClient) createOrUpdateByIDHandleResponse(res
 // Delete - Deletes the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - options - ApplicationDefinitionsClientDeleteOptions contains the optional parameters for the ApplicationDefinitionsClient.Delete
@@ -208,7 +208,7 @@ func (client *ApplicationDefinitionsClient) Delete(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, _ *ApplicationDefinitionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,7 +227,7 @@ func (client *ApplicationDefinitionsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -236,7 +236,7 @@ func (client *ApplicationDefinitionsClient) deleteCreateRequest(ctx context.Cont
 // DeleteByID - Deletes the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - options - ApplicationDefinitionsClientDeleteByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.DeleteByID
@@ -263,7 +263,7 @@ func (client *ApplicationDefinitionsClient) DeleteByID(ctx context.Context, reso
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *ApplicationDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, _ *ApplicationDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -282,7 +282,7 @@ func (client *ApplicationDefinitionsClient) deleteByIDCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +291,7 @@ func (client *ApplicationDefinitionsClient) deleteByIDCreateRequest(ctx context.
 // Get - Gets the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - options - ApplicationDefinitionsClientGetOptions contains the optional parameters for the ApplicationDefinitionsClient.Get
@@ -319,7 +319,7 @@ func (client *ApplicationDefinitionsClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientGetOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, _ *ApplicationDefinitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -338,7 +338,7 @@ func (client *ApplicationDefinitionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -356,7 +356,7 @@ func (client *ApplicationDefinitionsClient) getHandleResponse(resp *http.Respons
 // GetByID - Gets the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - options - ApplicationDefinitionsClientGetByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.GetByID
@@ -384,7 +384,7 @@ func (client *ApplicationDefinitionsClient) GetByID(ctx context.Context, resourc
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *ApplicationDefinitionsClient) getByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) getByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, _ *ApplicationDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -403,7 +403,7 @@ func (client *ApplicationDefinitionsClient) getByIDCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -420,7 +420,7 @@ func (client *ApplicationDefinitionsClient) getByIDHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - Lists the managed application definitions in a resource group.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ApplicationDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ApplicationDefinitionsClient.NewListByResourceGroupPager
 //     method.
@@ -448,7 +448,7 @@ func (client *ApplicationDefinitionsClient) NewListByResourceGroupPager(resource
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ApplicationDefinitionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ApplicationDefinitionsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -463,7 +463,7 @@ func (client *ApplicationDefinitionsClient) listByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -480,7 +480,7 @@ func (client *ApplicationDefinitionsClient) listByResourceGroupHandleResponse(re
 
 // NewListBySubscriptionPager - Lists all the application definitions within a subscription.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - options - ApplicationDefinitionsClientListBySubscriptionOptions contains the optional parameters for the ApplicationDefinitionsClient.NewListBySubscriptionPager
 //     method.
 func (client *ApplicationDefinitionsClient) NewListBySubscriptionPager(options *ApplicationDefinitionsClientListBySubscriptionOptions) *runtime.Pager[ApplicationDefinitionsClientListBySubscriptionResponse] {
@@ -507,7 +507,7 @@ func (client *ApplicationDefinitionsClient) NewListBySubscriptionPager(options *
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ApplicationDefinitionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ApplicationDefinitionsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ApplicationDefinitionsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Solutions/applicationDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -518,7 +518,7 @@ func (client *ApplicationDefinitionsClient) listBySubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -536,7 +536,7 @@ func (client *ApplicationDefinitionsClient) listBySubscriptionHandleResponse(res
 // Update - Updates the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - parameters - Parameters supplied to the update a managed application definition.
@@ -565,7 +565,7 @@ func (client *ApplicationDefinitionsClient) Update(ctx context.Context, resource
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ApplicationDefinitionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinitionPatchable, options *ApplicationDefinitionsClientUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinitionPatchable, _ *ApplicationDefinitionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -584,7 +584,7 @@ func (client *ApplicationDefinitionsClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -605,7 +605,7 @@ func (client *ApplicationDefinitionsClient) updateHandleResponse(resp *http.Resp
 // UpdateByID - Updates the managed application definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - applicationDefinitionName - The name of the managed application definition.
 //   - parameters - Parameters supplied to the update a managed application definition.
@@ -634,7 +634,7 @@ func (client *ApplicationDefinitionsClient) UpdateByID(ctx context.Context, reso
 }
 
 // updateByIDCreateRequest creates the UpdateByID request.
-func (client *ApplicationDefinitionsClient) updateByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinitionPatchable, options *ApplicationDefinitionsClientUpdateByIDOptions) (*policy.Request, error) {
+func (client *ApplicationDefinitionsClient) updateByIDCreateRequest(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinitionPatchable, _ *ApplicationDefinitionsClientUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applicationDefinitions/{applicationDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -653,7 +653,7 @@ func (client *ApplicationDefinitionsClient) updateByIDCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

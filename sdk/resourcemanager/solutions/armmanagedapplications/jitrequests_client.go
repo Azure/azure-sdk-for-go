@@ -27,7 +27,7 @@ type JitRequestsClient struct {
 // NewJitRequestsClient creates a new instance of JitRequestsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JitRequestsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreateOrUpdate - Creates or updates the JIT request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jitRequestName - The name of the JIT request.
 //   - parameters - Parameters supplied to the update JIT request.
@@ -70,7 +70,7 @@ func (client *JitRequestsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Creates or updates the JIT request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 func (client *JitRequestsClient) createOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JitRequestsClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *JitRequestsClient) createOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, _ *JitRequestsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -112,7 +112,7 @@ func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,7 +124,7 @@ func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context
 // Delete - Deletes the JIT request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jitRequestName - The name of the JIT request.
 //   - options - JitRequestsClientDeleteOptions contains the optional parameters for the JitRequestsClient.Delete method.
@@ -150,7 +150,7 @@ func (client *JitRequestsClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientDeleteOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, _ *JitRequestsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -169,7 +169,7 @@ func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Gets the JIT request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jitRequestName - The name of the JIT request.
 //   - options - JitRequestsClientGetOptions contains the optional parameters for the JitRequestsClient.Get method.
@@ -205,7 +205,7 @@ func (client *JitRequestsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientGetOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, _ *JitRequestsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -224,7 +224,7 @@ func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -242,7 +242,7 @@ func (client *JitRequestsClient) getHandleResponse(resp *http.Response) (JitRequ
 // ListByResourceGroup - Lists all JIT requests within the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JitRequestsClientListByResourceGroupOptions contains the optional parameters for the JitRequestsClient.ListByResourceGroup
 //     method.
@@ -269,7 +269,7 @@ func (client *JitRequestsClient) ListByResourceGroup(ctx context.Context, resour
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JitRequestsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *JitRequestsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -284,7 +284,7 @@ func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,7 +302,7 @@ func (client *JitRequestsClient) listByResourceGroupHandleResponse(resp *http.Re
 // ListBySubscription - Lists all JIT requests within the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - options - JitRequestsClientListBySubscriptionOptions contains the optional parameters for the JitRequestsClient.ListBySubscription
 //     method.
 func (client *JitRequestsClient) ListBySubscription(ctx context.Context, options *JitRequestsClientListBySubscriptionOptions) (JitRequestsClientListBySubscriptionResponse, error) {
@@ -328,7 +328,7 @@ func (client *JitRequestsClient) ListBySubscription(ctx context.Context, options
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *JitRequestsClient) listBySubscriptionCreateRequest(ctx context.Context, options *JitRequestsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *JitRequestsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Solutions/jitRequests"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -339,7 +339,7 @@ func (client *JitRequestsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -357,7 +357,7 @@ func (client *JitRequestsClient) listBySubscriptionHandleResponse(resp *http.Res
 // Update - Updates the JIT request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01
+// Generated from API version 2023-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jitRequestName - The name of the JIT request.
 //   - parameters - Parameters supplied to the update JIT request.
@@ -385,7 +385,7 @@ func (client *JitRequestsClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // updateCreateRequest creates the Update request.
-func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestPatchable, options *JitRequestsClientUpdateOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestPatchable, _ *JitRequestsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -404,7 +404,7 @@ func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

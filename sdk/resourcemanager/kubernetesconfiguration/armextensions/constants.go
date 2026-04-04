@@ -8,10 +8,12 @@ package armextensions
 type AKSIdentityType string
 
 const (
-	// AKSIdentityTypeSystemAssigned - SystemAssigned
+	// AKSIdentityTypeSystemAssigned - SystemAssigned identity
 	AKSIdentityTypeSystemAssigned AKSIdentityType = "SystemAssigned"
-	// AKSIdentityTypeUserAssigned - UserAssigned
+	// AKSIdentityTypeUserAssigned - UserAssigned identity
 	AKSIdentityTypeUserAssigned AKSIdentityType = "UserAssigned"
+	// AKSIdentityTypeWorkload - Workload identity
+	AKSIdentityTypeWorkload AKSIdentityType = "Workload"
 )
 
 // PossibleAKSIdentityTypeValues returns the possible values for the AKSIdentityType const type.
@@ -19,6 +21,29 @@ func PossibleAKSIdentityTypeValues() []AKSIdentityType {
 	return []AKSIdentityType{
 		AKSIdentityTypeSystemAssigned,
 		AKSIdentityTypeUserAssigned,
+		AKSIdentityTypeWorkload,
+	}
+}
+
+// AutoUpgradeMode - The upgrade mode for auto upgrade.
+// The default is "compatible".
+type AutoUpgradeMode string
+
+const (
+	// AutoUpgradeModeCompatible - The extension will be automatically upgraded to compatible versions as determined by the user.
+	AutoUpgradeModeCompatible AutoUpgradeMode = "compatible"
+	// AutoUpgradeModeNone - The extension will not be automatically upgraded.
+	AutoUpgradeModeNone AutoUpgradeMode = "none"
+	// AutoUpgradeModePatch - The extension will be automatically upgraded to the latest patch version within the minor version.
+	AutoUpgradeModePatch AutoUpgradeMode = "patch"
+)
+
+// PossibleAutoUpgradeModeValues returns the possible values for the AutoUpgradeMode const type.
+func PossibleAutoUpgradeModeValues() []AutoUpgradeMode {
+	return []AutoUpgradeMode{
+		AutoUpgradeModeCompatible,
+		AutoUpgradeModeNone,
+		AutoUpgradeModePatch,
 	}
 }
 
@@ -50,11 +75,11 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type LevelType string
 
 const (
-	// LevelTypeError - Error
+	// LevelTypeError - Indicates an error status from the extension.
 	LevelTypeError LevelType = "Error"
-	// LevelTypeInformation - Information
+	// LevelTypeInformation - Indicates an informational status from the extension.
 	LevelTypeInformation LevelType = "Information"
-	// LevelTypeWarning - Warning
+	// LevelTypeWarning - Indicates a warning status from the extension.
 	LevelTypeWarning LevelType = "Warning"
 )
 
@@ -71,17 +96,17 @@ func PossibleLevelTypeValues() []LevelType {
 type ProvisioningState string
 
 const (
-	// ProvisioningStateCanceled - Canceled
+	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateCreating - Creating
+	// ProvisioningStateCreating - Resource is being created.
 	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting - Deleting
+	// ProvisioningStateDeleting - Resource is being deleted.
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Failed
+	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateSucceeded - Succeeded
+	// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	// ProvisioningStateUpdating - Updating
+	// ProvisioningStateUpdating - Resource is being updated.
 	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 

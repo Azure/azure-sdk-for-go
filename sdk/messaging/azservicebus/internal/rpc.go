@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"strings"
 	"sync"
-	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -221,9 +220,14 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 		msg.ApplicationProperties = make(map[string]any)
 	}
 
-	if _, ok := msg.ApplicationProperties["server-timeout"]; !ok {
-		if deadline, ok := ctx.Deadline(); ok {
-			msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
+	// Set server-timeout for Service Bus management operations that don't already
+	// set one explicitly. Only applies when the "operation" property indicates a
+	// management operation (com.microsoft: prefix), not CBS put-token requests.
+	if op, ok := msg.ApplicationProperties["operation"].(string); ok && strings.HasPrefix(op, "com.microsoft:") {
+		if _, ok := msg.ApplicationProperties["server-timeout"]; !ok {
+			if _, ok := msg.ApplicationProperties["com.microsoft:server-timeout"]; !ok {
+				msg.ApplicationProperties["server-timeout"] = serverTimeoutMillis(ctx)
+			}
 		}
 	}
 

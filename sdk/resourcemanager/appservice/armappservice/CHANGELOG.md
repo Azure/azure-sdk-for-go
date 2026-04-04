@@ -1,5 +1,16 @@
 # Release History
 
+## 7.0.0 (2026-03-27)
+### Breaking Changes
+
+- Type of `RetryHistory.Error` has been changed from `*ErrorResponse` to `*WorkflowErrorResponse`
+- Struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New struct `WorkflowErrorResponse`
+
+
 ## 6.0.0 (2026-02-27)
 ### Breaking Changes
 

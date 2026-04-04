@@ -411,9 +411,21 @@ func (c longlongCodec) Write(value interface{}, w io.Writer) error {
 	switch n := value.(type) {
 	case int:
 		v = int64(n)
+	case int8:
+		v = int64(n)
+	case int16:
+		v = int64(n)
+	case int32:
+		v = int64(n)
 	case int64:
 		v = n
 	case uint:
+		v = int64(n)
+	case uint8:
+		v = int64(n)
+	case uint16:
+		v = int64(n)
+	case uint32:
 		v = int64(n)
 	case uint64:
 		v = int64(n)

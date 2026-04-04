@@ -42,6 +42,8 @@ const (
 	SubStatusPartitionKeyRangeGone      = 1002 // PartitionKeyRangeGoneException
 	SubStatusCompletingSplit            = 1007 // PartitionKeyRangeIsSplittingException
 	SubStatusCompletingPartitionMigrate = 1008 // PartitionIsMigratingException
+	SubStatusLeaseNotFound              = 1022 // LeaseNotFoundException
+	SubStatusTimeoutGenerated410        = 20002
 )
 
 // -----------------------------------------------------------------------------
@@ -140,6 +142,11 @@ type PartitionKeyRangeIsSplittingError struct {
 
 // PartitionIsMigratingError indicates the partition is being migrated (410, substatus 1008).
 type PartitionIsMigratingError struct {
+	RntbdError
+}
+
+// LeaseNotFoundError indicates the lease was not found (410, substatus 1022).
+type LeaseNotFoundError struct {
 	RntbdError
 }
 
@@ -288,6 +295,8 @@ func ErrorFromResponse(response *ResponseMessage) error {
 			return &PartitionKeyRangeIsSplittingError{baseError}
 		case SubStatusCompletingPartitionMigrate:
 			return &PartitionIsMigratingError{baseError}
+		case SubStatusLeaseNotFound:
+			return &LeaseNotFoundError{baseError}
 		default:
 			return &GoneError{baseError}
 		}

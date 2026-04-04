@@ -115,8 +115,13 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 		// do this outside the for loop so defers don't accumulate.
 		rwbody = &retryableRequestBody{body: req.Body()}
 		defer func() {
-			// TODO: https://github.com/Azure/azure-sdk-for-go/issues/25649
-			_ = rwbody.realClose()
+			if cerr := rwbody.realClose(); cerr != nil {
+				if err == nil {
+					err = cerr
+				} else {
+					err = errors.Join(err, cerr)
+				}
+			}
 		}()
 	}
 	try := int32(1)

@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed tenant ID extraction from DSTSv2 authority URIs in challenge policy. The policy now correctly parses the tenant GUID instead of using the literal path segment "dstsv2".
 
 #### Other Changes
 

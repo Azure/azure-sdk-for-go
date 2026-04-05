@@ -109,4 +109,14 @@ func TestParseTenantNegative(t *testing.T) {
 	sampleURL = ""
 	actual = parseTenant(sampleURL)
 	require.Equal(t, expected, actual)
+
+	require.Equal(t, "1234-5678", parseTenant("https://login.microsoftonline.com/1234-5678/oauth2"))
+	require.Equal(t, "1234-5678", parseTenant("https://login.microsoftonline.com/1234-5678?foo=bar"))
+	require.Equal(t, "1234-5678", parseTenant("login.microsoftonline.com/1234-5678"))
+	require.Equal(t, "", parseTenant("https://login.microsoftonline.com/"))
+
+	// DSTSv2 authority URIs: tenant ID is in the second path segment
+	require.Equal(t, "de763a21-49f7-4b08-a8e1-52c8fbc103b4", parseTenant("https://uswest2-passive-dsts.dsts.core.windows.net/dstsv2/de763a21-49f7-4b08-a8e1-52c8fbc103b4"))
+	require.Equal(t, "de763a21-49f7-4b08-a8e1-52c8fbc103b4", parseTenant("https://uswest2-passive-dsts.dsts.core.windows.net/DSTSv2/de763a21-49f7-4b08-a8e1-52c8fbc103b4"))
+	require.Equal(t, "dstsv2", parseTenant("https://example.com/dstsv2"))
 }

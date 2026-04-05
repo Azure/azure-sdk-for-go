@@ -6,6 +6,7 @@ package shared
 import (
 	"errors"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -61,18 +62,32 @@ func (c *challengePolicyError) Unwrap() error {
 
 // parses Tenant ID from auth challenge
 // https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/oauth2/authorize
-func parseTenant(url string) string {
-	if url == "" {
+func parseTenant(authURL string) string {
+	if authURL == "" {
 		return ""
 	}
-	parts := strings.Split(url, "/")
-	if len(parts) >= 3 {
-		tenant := parts[3]
-		tenant = strings.ReplaceAll(tenant, ",", "")
+	u, err := url.Parse(authURL)
+	if err != nil {
+		return ""
+	}
+	if u.Host == "" {
+		u, err = url.Parse("https://" + authURL)
+		if err != nil {
+			return ""
+		}
+	}
+	path := strings.Trim(u.Path, "/")
+	parts := strings.Split(path, "/")
+	if len(parts) > 0 && parts[0] != "" {
+		tenant := strings.ReplaceAll(parts[0], ",", "")
+		// DSTSv2 authority URIs place "dstsv2" as the first path segment
+		// with the actual tenant ID in the second segment.
+		if strings.EqualFold(tenant, "dstsv2") && len(parts) > 1 {
+			return strings.ReplaceAll(parts[1], ",", "")
+		}
 		return tenant
-	} else {
-		return ""
 	}
+	return ""
 }
 
 func (s *storageAuthorizer) parseChallenge(resp *http.Response) error {

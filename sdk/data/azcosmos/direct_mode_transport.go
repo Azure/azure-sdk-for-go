@@ -142,7 +142,7 @@ func (t *directModeTransport) httpToServiceRequest(req *http.Request) (*rntbd.Se
 		activityID = uuid.New()
 	}
 
-	opType := t.httpMethodToOperationType(req.Method)
+	opType := t.httpMethodToOperationType(req.Method, req.Header)
 	resType := t.parseResourceType(req.Header.Get("x-ms-cosmos-resource-type"))
 
 	resourceAddress := strings.TrimPrefix(req.URL.Path, "/")
@@ -190,11 +190,15 @@ func (t *directModeTransport) httpToServiceRequest(req *http.Request) (*rntbd.Se
 	return svcReq, nil
 }
 
-func (t *directModeTransport) httpMethodToOperationType(method string) rntbd.OperationType {
+func (t *directModeTransport) httpMethodToOperationType(method string, headers http.Header) rntbd.OperationType {
 	switch strings.ToUpper(method) {
 	case http.MethodGet:
 		return rntbd.OperationRead
 	case http.MethodPost:
+		// Check if this is a query request (POST with x-ms-documentdb-query header)
+		if strings.EqualFold(headers.Get("x-ms-documentdb-query"), "true") {
+			return rntbd.OperationQuery
+		}
 		return rntbd.OperationCreate
 	case http.MethodPut:
 		return rntbd.OperationReplace

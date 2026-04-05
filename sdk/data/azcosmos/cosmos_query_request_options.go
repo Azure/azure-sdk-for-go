@@ -49,6 +49,18 @@ type QueryOptions struct {
 	// QueryEngine can be set to enable the use of an external query engine for processing cross-partition queries.
 	// This is a preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes.
 	QueryEngine queryengine.QueryEngine
+
+	// EnableOptimisticDirectExecution enables Optimistic Direct Execution (ODE) for single-partition queries.
+	// When enabled, simple queries with a partition key may bypass the query plan fetch and execute directly
+	// against the target partition via Direct mode (RNTBD).
+	// This can significantly reduce latency for simple, single-partition queries.
+	// Default is true when Direct mode is enabled.
+	EnableOptimisticDirectExecution *bool
+
+	// DisableQueryPlanCache disables the query plan cache for this query.
+	// By default, query plans are cached to reduce Gateway roundtrips for repeated queries.
+	// Set to true to force a fresh query plan fetch.
+	DisableQueryPlanCache bool
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {

@@ -36,7 +36,8 @@ type Client struct {
 	gem             *globalEndpointManager
 	endpointUrl     *url.URL
 	directTransport *directModeTransport
-	directRouter    *directModeRouter // Routes partition keys to partition key ranges for Direct mode
+	directRouter    *directModeRouter
+	queryPlanCache  *QueryPlanCache
 }
 
 // Endpoint used to create the client.
@@ -124,7 +125,10 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport, directRouter: directRouter}, nil
+
+	queryPlanCache := newQueryPlanCache(nil)
+
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport, directRouter: directRouter, queryPlanCache: queryPlanCache}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -215,7 +219,10 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport, directRouter: directRouter}, nil
+
+	queryPlanCache := newQueryPlanCache(nil)
+
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport, directRouter: directRouter, queryPlanCache: queryPlanCache}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.

@@ -5,6 +5,8 @@
 ### Features Added
 
 * Added Direct mode (RNTBD protocol) support for lower latency connections to Cosmos DB. Enable via `ClientOptions.ConnectionMode = ConnectionModeDirect`. Direct mode bypasses the gateway for document operations, reducing latency by connecting directly to backend replicas.
+* Added query plan caching to reduce Gateway roundtrips for repeated queries. Query plans are cached with a 5-minute TTL by default (similar to Java SDK). Caching can be disabled per-query via `QueryOptions.DisableQueryPlanCache`.
+* Added Optimistic Direct Execution (ODE) for single-partition queries when Direct mode is enabled. Simple queries with a partition key can now bypass the query plan fetch and execute directly against the target partition via RNTBD. Control via `QueryOptions.EnableOptimisticDirectExecution`.
 
 ### Breaking Changes
 

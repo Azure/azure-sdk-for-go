@@ -28,6 +28,7 @@ const (
 	claimsToken     = "all the claims"
 	kvChallenge1    = `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://vault.azure.net"`
 	kvChallenge2    = `Bearer authorization="https://login.microsoftonline.com/tenant2", resource="https://vault.azure.net"`
+	dstsv2Challenge = `Bearer authorization="https://uswest2-passive-dsts.dsts.core.windows.net/dstsv2/de763a21-49f7-4b08-a8e1-52c8fbc103b4", resource="https://vault.azure.net"`
 	caeChallenge1   = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzE="`
 	caeChallenge2   = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzI="`
 )
@@ -166,6 +167,35 @@ func TestChallengePolicy_Tenant(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 200, res.StatusCode)
 	require.Equal(t, tkReqs, 2)
+}
+
+func TestChallengePolicy_DSTSv2Tenant(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithHeader("WWW-Authenticate", dstsv2Challenge),
+		mock.WithStatusCode(401),
+	)
+	srv.AppendResponse()
+
+	tkReqs := 0
+	cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+		require.True(t, tro.EnableCAE)
+		tkReqs += 1
+		require.Equal(t, "de763a21-49f7-4b08-a8e1-52c8fbc103b4", tro.TenantID)
+		return azcore.AccessToken{Token: "token", ExpiresOn: time.Now().Add(time.Hour)}, nil
+	})
+	p := NewKeyVaultChallengePolicy(cred, nil)
+	pl := runtime.NewPipeline("", "",
+		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
+		&policy.ClientOptions{Transport: srv},
+	)
+	req, err := runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
+	require.NoError(t, err)
+	res, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, 200, res.StatusCode)
+	require.Equal(t, 1, tkReqs)
 }
 
 func TestChallengePolicy_CAE(t *testing.T) {
@@ -353,6 +383,21 @@ func TestParseTenant(t *testing.T) {
 	sampleURL := "https://login.microsoftonline.com/" + expected
 	actual = parseTenant(sampleURL)
 	require.Equal(t, expected, actual, "tenant was not properly parsed, got %s, expected %s", actual, expected)
+}
+
+func TestParseTenantNegative(t *testing.T) {
+	actual := parseTenant("https://localhost/")
+	require.Empty(t, actual)
+
+	require.Equal(t, "1234-5678", parseTenant("https://login.microsoftonline.com/1234-5678/oauth2"))
+	require.Equal(t, "1234-5678", parseTenant("https://login.microsoftonline.com/1234-5678?foo=bar"))
+	require.Equal(t, "1234-5678", parseTenant("login.microsoftonline.com/1234-5678"))
+	require.Equal(t, "", parseTenant("https://login.microsoftonline.com/"))
+
+	// DSTSv2 authority URIs: tenant ID is in the second path segment
+	require.Equal(t, "de763a21-49f7-4b08-a8e1-52c8fbc103b4", parseTenant("https://uswest2-passive-dsts.dsts.core.windows.net/dstsv2/de763a21-49f7-4b08-a8e1-52c8fbc103b4"))
+	require.Equal(t, "de763a21-49f7-4b08-a8e1-52c8fbc103b4", parseTenant("https://uswest2-passive-dsts.dsts.core.windows.net/DSTSv2/de763a21-49f7-4b08-a8e1-52c8fbc103b4"))
+	require.Equal(t, "dstsv2", parseTenant("https://example.com/dstsv2"))
 }
 
 func TestChallengePolicy_ConcurrentRequests(t *testing.T) {

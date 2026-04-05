@@ -210,7 +210,7 @@ type OperationType uint16
 const (
 	OperationConnection OperationType = 0x0000
 	OperationCreate     OperationType = 0x0001
-	OperationUpdate     OperationType = 0x0002
+	OperationPatch      OperationType = 0x0002 // Called "Patch" in Java SDK, not "Update"
 	OperationRead       OperationType = 0x0003
 	OperationReadFeed   OperationType = 0x0004
 	OperationDelete     OperationType = 0x0005
@@ -243,6 +243,8 @@ const (
 	OperationPreReplaceValidation             OperationType = 0x0020
 	OperationAddComputeGatewayRequestCharges  OperationType = 0x0021
 	OperationMigratePartition                 OperationType = 0x0022
+	OperationBatch                            OperationType = 0x0025
+	OperationInvalid                          OperationType = 0xFFFF
 )
 
 // String returns the string representation of the operation type.
@@ -252,8 +254,8 @@ func (o OperationType) String() string {
 		return "Connection"
 	case OperationCreate:
 		return "Create"
-	case OperationUpdate:
-		return "Update"
+	case OperationPatch:
+		return "Patch"
 	case OperationRead:
 		return "Read"
 	case OperationReadFeed:
@@ -316,6 +318,10 @@ func (o OperationType) String() string {
 		return "AddComputeGatewayRequestCharges"
 	case OperationMigratePartition:
 		return "MigratePartition"
+	case OperationBatch:
+		return "Batch"
+	case OperationInvalid:
+		return "Invalid"
 	default:
 		return "Unknown"
 	}

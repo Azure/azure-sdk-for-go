@@ -211,6 +211,216 @@ func (ts *TokenStream) GetValue(id uint16, tokenType TokenType) (interface{}, er
 	return token.GetValue()
 }
 
+// -----------------------------------------------------------------------------
+// TokenStream Helper Methods - Type-Safe Setters
+// -----------------------------------------------------------------------------
+
+// SetByte sets a byte token value.
+func (ts *TokenStream) SetByte(id uint16, value byte) {
+	ts.SetValue(id, TokenByte, value) //nolint:errcheck
+}
+
+// SetUShort sets an unsigned 16-bit token value.
+func (ts *TokenStream) SetUShort(id uint16, value uint16) {
+	ts.SetValue(id, TokenUShort, value) //nolint:errcheck
+}
+
+// SetULong sets an unsigned 32-bit token value.
+func (ts *TokenStream) SetULong(id uint16, value uint32) {
+	ts.SetValue(id, TokenULong, value) //nolint:errcheck
+}
+
+// SetLong sets a signed 32-bit token value.
+func (ts *TokenStream) SetLong(id uint16, value int32) {
+	ts.SetValue(id, TokenLong, value) //nolint:errcheck
+}
+
+// SetULongLong sets an unsigned 64-bit token value.
+func (ts *TokenStream) SetULongLong(id uint16, value uint64) {
+	ts.SetValue(id, TokenULongLong, value) //nolint:errcheck
+}
+
+// SetLongLong sets a signed 64-bit token value.
+func (ts *TokenStream) SetLongLong(id uint16, value int64) {
+	ts.SetValue(id, TokenLongLong, value) //nolint:errcheck
+}
+
+// SetFloat sets a 32-bit floating point token value.
+func (ts *TokenStream) SetFloat(id uint16, value float32) {
+	ts.SetValue(id, TokenFloat, value) //nolint:errcheck
+}
+
+// SetDouble sets a 64-bit floating point token value.
+func (ts *TokenStream) SetDouble(id uint16, value float64) {
+	ts.SetValue(id, TokenDouble, value) //nolint:errcheck
+}
+
+// SetString sets a string token value.
+func (ts *TokenStream) SetString(id uint16, value string) {
+	ts.SetValue(id, TokenString, value) //nolint:errcheck
+}
+
+// SetBytes sets a byte array token value.
+func (ts *TokenStream) SetBytes(id uint16, value []byte) {
+	ts.SetValue(id, TokenBytes, value) //nolint:errcheck
+}
+
+// SetGUID sets a GUID token value.
+func (ts *TokenStream) SetGUID(id uint16, value uuid.UUID) {
+	ts.SetValue(id, TokenGuid, value) //nolint:errcheck
+}
+
+// -----------------------------------------------------------------------------
+// TokenStream Helper Methods - Type-Safe Getters
+// -----------------------------------------------------------------------------
+
+// GetByte returns the byte value of a token, or 0 if not present.
+func (ts *TokenStream) GetByte(id uint16) byte {
+	val, err := ts.GetValue(id, TokenByte)
+	if err != nil || val == nil {
+		return 0
+	}
+	if b, ok := val.(byte); ok {
+		return b
+	}
+	return 0
+}
+
+// GetUShort returns the unsigned 16-bit value of a token, or 0 if not present.
+func (ts *TokenStream) GetUShort(id uint16) uint16 {
+	val, err := ts.GetValue(id, TokenUShort)
+	if err != nil || val == nil {
+		return 0
+	}
+	if v, ok := val.(uint16); ok {
+		return v
+	}
+	return 0
+}
+
+// GetULong returns the unsigned 32-bit value of a token, or 0 if not present.
+// Handles both uint32 (from SetULong) and int64 (from codec decode).
+func (ts *TokenStream) GetULong(id uint16) uint32 {
+	val, err := ts.GetValue(id, TokenULong)
+	if err != nil || val == nil {
+		return 0
+	}
+	switch v := val.(type) {
+	case int64:
+		return uint32(v)
+	case uint32:
+		return v
+	case int32:
+		return uint32(v)
+	case int:
+		return uint32(v)
+	}
+	return 0
+}
+
+// GetLong returns the signed 32-bit value of a token, or 0 if not present.
+func (ts *TokenStream) GetLong(id uint16) int32 {
+	val, err := ts.GetValue(id, TokenLong)
+	if err != nil || val == nil {
+		return 0
+	}
+	if v, ok := val.(int32); ok {
+		return v
+	}
+	return 0
+}
+
+// GetULongLong returns the unsigned 64-bit value of a token, or 0 if not present.
+// Handles both uint64 (from SetULongLong) and int64 (from codec decode).
+func (ts *TokenStream) GetULongLong(id uint16) int64 {
+	val, err := ts.GetValue(id, TokenULongLong)
+	if err != nil || val == nil {
+		return 0
+	}
+	switch v := val.(type) {
+	case int64:
+		return v
+	case uint64:
+		return int64(v)
+	}
+	return 0
+}
+
+// GetLongLong returns the signed 64-bit value of a token, or 0 if not present.
+func (ts *TokenStream) GetLongLong(id uint16) int64 {
+	val, err := ts.GetValue(id, TokenLongLong)
+	if err != nil || val == nil {
+		return 0
+	}
+	switch v := val.(type) {
+	case int64:
+		return v
+	case int:
+		return int64(v)
+	}
+	return 0
+}
+
+// GetFloat returns the 32-bit floating point value of a token, or 0 if not present.
+func (ts *TokenStream) GetFloat(id uint16) float32 {
+	val, err := ts.GetValue(id, TokenFloat)
+	if err != nil || val == nil {
+		return 0
+	}
+	if f, ok := val.(float32); ok {
+		return f
+	}
+	return 0
+}
+
+// GetDouble returns the 64-bit floating point value of a token, or 0 if not present.
+func (ts *TokenStream) GetDouble(id uint16) float64 {
+	val, err := ts.GetValue(id, TokenDouble)
+	if err != nil || val == nil {
+		return 0
+	}
+	if f, ok := val.(float64); ok {
+		return f
+	}
+	return 0
+}
+
+// GetString returns the string value of a token, or empty string if not present.
+func (ts *TokenStream) GetString(id uint16) string {
+	val, err := ts.GetValue(id, TokenString)
+	if err != nil || val == nil {
+		return ""
+	}
+	if s, ok := val.(string); ok {
+		return s
+	}
+	return ""
+}
+
+// GetBytes returns the byte array value of a token, or nil if not present.
+func (ts *TokenStream) GetBytes(id uint16) []byte {
+	val, err := ts.GetValue(id, TokenBytes)
+	if err != nil || val == nil {
+		return nil
+	}
+	if b, ok := val.([]byte); ok {
+		return b
+	}
+	return nil
+}
+
+// GetGUID returns the GUID value of a token, or empty UUID if not present.
+func (ts *TokenStream) GetGUID(id uint16) uuid.UUID {
+	val, err := ts.GetValue(id, TokenGuid)
+	if err != nil || val == nil {
+		return EmptyUUID
+	}
+	if g, ok := val.(uuid.UUID); ok {
+		return g
+	}
+	return EmptyUUID
+}
+
 // Count returns the number of present tokens in the stream.
 func (ts *TokenStream) Count() int {
 	count := 0

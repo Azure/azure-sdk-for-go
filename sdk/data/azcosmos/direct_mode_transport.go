@@ -1,0 +1,436 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package azcosmos
+
+import (
+	"bytes"
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/rntbd"
+	"github.com/google/uuid"
+)
+
+type directModeTransport struct {
+	endpointProvider *rntbd.EndpointProvider
+	addressResolver  AddressResolver
+	fallback         http.RoundTripper
+
+	mu     sync.RWMutex
+	closed bool
+}
+
+type AddressResolver interface {
+	Resolve(ctx context.Context, req *http.Request) ([]*url.URL, error)
+}
+
+type DirectModeTransportOptions struct {
+	PoolOptions     *rntbd.PoolOptions
+	AddressResolver AddressResolver
+	Fallback        http.RoundTripper
+}
+
+func newDirectModeTransport(opts *DirectModeTransportOptions) *directModeTransport {
+	if opts == nil {
+		opts = &DirectModeTransportOptions{}
+	}
+
+	poolOpts := opts.PoolOptions
+	if poolOpts == nil {
+		poolOpts = rntbd.DefaultPoolOptions()
+	}
+
+	fallback := opts.Fallback
+	if fallback == nil {
+		fallback = http.DefaultTransport
+	}
+
+	return &directModeTransport{
+		endpointProvider: rntbd.NewEndpointProvider(poolOpts),
+		addressResolver:  opts.AddressResolver,
+		fallback:         fallback,
+	}
+}
+
+func (t *directModeTransport) Do(req *http.Request) (*http.Response, error) {
+	if !t.shouldUseDirect(req) {
+		return t.fallback.RoundTrip(req)
+	}
+
+	svcReq, err := t.httpToServiceRequest(req)
+	if err != nil {
+		return nil, fmt.Errorf("direct mode: failed to convert request: %w", err)
+	}
+
+	addresses, err := t.resolveAddresses(req.Context(), req)
+	if err != nil {
+		return t.fallback.RoundTrip(req)
+	}
+
+	if len(addresses) == 0 {
+		return t.fallback.RoundTrip(req)
+	}
+
+	var lastErr error
+	for _, addr := range addresses {
+		resp, err := t.sendToEndpoint(req.Context(), addr, svcReq)
+		if err != nil {
+			lastErr = err
+			continue
+		}
+		return resp, nil
+	}
+
+	if lastErr != nil {
+		return nil, fmt.Errorf("direct mode: all replicas failed: %w", lastErr)
+	}
+	return nil, errors.New("direct mode: no replicas available")
+}
+
+func (t *directModeTransport) shouldUseDirect(req *http.Request) bool {
+	if t.addressResolver == nil {
+		return false
+	}
+
+	resType := req.Header.Get("x-ms-cosmos-resource-type")
+	if resType == "" {
+		return false
+	}
+
+	switch strings.ToLower(resType) {
+	case "document", "storedprocedure", "trigger", "userdefinedfunctions", "conflict", "attachment":
+		return true
+	default:
+		return false
+	}
+}
+
+func (t *directModeTransport) httpToServiceRequest(req *http.Request) (*rntbd.ServiceRequest, error) {
+	activityIDStr := req.Header.Get("x-ms-activity-id")
+	var activityID uuid.UUID
+	if activityIDStr != "" {
+		var err error
+		activityID, err = uuid.Parse(activityIDStr)
+		if err != nil {
+			activityID = uuid.New()
+		}
+	} else {
+		activityID = uuid.New()
+	}
+
+	opType := t.httpMethodToOperationType(req.Method)
+	resType := t.parseResourceType(req.Header.Get("x-ms-cosmos-resource-type"))
+
+	resourceAddress := strings.TrimPrefix(req.URL.Path, "/")
+
+	headers := make(map[string]string)
+	for key, values := range req.Header {
+		if len(values) > 0 {
+			headers[key] = values[0]
+		}
+	}
+
+	var content []byte
+	if req.Body != nil {
+		var err error
+		content, err = io.ReadAll(req.Body)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read request body: %w", err)
+		}
+		req.Body = io.NopCloser(bytes.NewReader(content))
+	}
+
+	svcReq := &rntbd.ServiceRequest{
+		OperationType:   opType,
+		ResourceType:    resType,
+		ResourceAddress: resourceAddress,
+		IsNameBased:     !t.isRidBased(resourceAddress),
+		ActivityID:      activityID,
+		Headers:         headers,
+		Content:         content,
+	}
+
+	return svcReq, nil
+}
+
+func (t *directModeTransport) httpMethodToOperationType(method string) rntbd.OperationType {
+	switch strings.ToUpper(method) {
+	case http.MethodGet:
+		return rntbd.OperationRead
+	case http.MethodPost:
+		return rntbd.OperationCreate
+	case http.MethodPut:
+		return rntbd.OperationReplace
+	case http.MethodDelete:
+		return rntbd.OperationDelete
+	case http.MethodPatch:
+		return rntbd.OperationPatch
+	default:
+		return rntbd.OperationInvalid
+	}
+}
+
+func (t *directModeTransport) parseResourceType(resTypeStr string) rntbd.ResourceType {
+	switch strings.ToLower(resTypeStr) {
+	case "document":
+		return rntbd.ResourceDocument
+	case "collection":
+		return rntbd.ResourceCollection
+	case "database":
+		return rntbd.ResourceDatabase
+	case "storedprocedure":
+		return rntbd.ResourceStoredProcedure
+	case "trigger":
+		return rntbd.ResourceTrigger
+	case "userdefinedfunctions":
+		return rntbd.ResourceUserDefinedFunction
+	case "conflict":
+		return rntbd.ResourceConflict
+	case "attachment":
+		return rntbd.ResourceAttachment
+	case "user":
+		return rntbd.ResourceUser
+	case "permission":
+		return rntbd.ResourcePermission
+	case "offer":
+		return rntbd.ResourceOffer
+	case "partitionkeyrange":
+		return rntbd.ResourcePartitionKeyRange
+	default:
+		return rntbd.ResourceDocument
+	}
+}
+
+func (t *directModeTransport) isRidBased(resourceAddress string) bool {
+	if strings.HasPrefix(resourceAddress, "dbs/") {
+		return false
+	}
+	return len(resourceAddress) > 0 && !strings.Contains(resourceAddress, "/")
+}
+
+func (t *directModeTransport) resolveAddresses(ctx context.Context, req *http.Request) ([]*url.URL, error) {
+	if t.addressResolver == nil {
+		return nil, errors.New("no address resolver configured")
+	}
+	return t.addressResolver.Resolve(ctx, req)
+}
+
+func (t *directModeTransport) sendToEndpoint(ctx context.Context, addr *url.URL, svcReq *rntbd.ServiceRequest) (*http.Response, error) {
+	endpoint, err := t.endpointProvider.GetOrCreate(addr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get endpoint: %w", err)
+	}
+
+	conn, err := endpoint.Acquire(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to acquire connection: %w", err)
+	}
+	defer conn.Release()
+
+	reqMsg, err := rntbd.BuildRequestMessage(svcReq)
+	if err != nil {
+		endpoint.RecordError()
+		return nil, fmt.Errorf("failed to build RNTBD request: %w", err)
+	}
+
+	respMsg, err := conn.Send(ctx, reqMsg)
+	if err != nil {
+		endpoint.RecordError()
+		return nil, fmt.Errorf("failed to send RNTBD request: %w", err)
+	}
+
+	endpoint.RecordSuccess()
+
+	return t.rntbdToHttpResponse(respMsg, svcReq)
+}
+
+func (t *directModeTransport) rntbdToHttpResponse(respMsg *rntbd.ResponseMessage, svcReq *rntbd.ServiceRequest) (*http.Response, error) {
+	storeResp, err := rntbd.ParseResponseMessage(respMsg, svcReq.ResourceAddress)
+	if err != nil {
+		return nil, fmt.Errorf("direct mode: failed to parse response: %w", err)
+	}
+
+	statusCode := int(storeResp.StatusCode)
+
+	header := make(http.Header)
+	for key, value := range storeResp.Headers {
+		header.Set(key, value)
+	}
+
+	var body io.ReadCloser
+	if len(storeResp.Content) > 0 {
+		body = io.NopCloser(bytes.NewReader(storeResp.Content))
+	} else {
+		body = io.NopCloser(bytes.NewReader(nil))
+	}
+
+	resp := &http.Response{
+		Status:        fmt.Sprintf("%d %s", statusCode, http.StatusText(statusCode)),
+		StatusCode:    statusCode,
+		Proto:         "RNTBD/1.0",
+		ProtoMajor:    1,
+		ProtoMinor:    0,
+		Header:        header,
+		Body:          body,
+		ContentLength: int64(len(storeResp.Content)),
+	}
+
+	if lsnStr := header.Get(rntbd.RespHeaderLSN); lsnStr != "" {
+		resp.Header.Set("x-ms-lsn", lsnStr)
+	}
+	if ruStr := header.Get(rntbd.RespHeaderRequestCharge); ruStr != "" {
+		resp.Header.Set("x-ms-request-charge", ruStr)
+	}
+	if sessionToken := header.Get(rntbd.RespHeaderSessionToken); sessionToken != "" {
+		resp.Header.Set("x-ms-session-token", sessionToken)
+	}
+	if etag := header.Get(rntbd.RespHeaderETag); etag != "" {
+		resp.Header.Set("etag", etag)
+	}
+	if continuation := header.Get(rntbd.RespHeaderContinuation); continuation != "" {
+		resp.Header.Set("x-ms-continuation", continuation)
+	}
+
+	return resp, nil
+}
+
+func (t *directModeTransport) Close() error {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+
+	if t.closed {
+		return nil
+	}
+	t.closed = true
+
+	return t.endpointProvider.Close()
+}
+
+type gatewayAddressResolver struct {
+	client      *http.Client
+	accountHost string
+	masterKey   string
+
+	mu    sync.RWMutex
+	cache map[string][]*url.URL
+}
+
+type GatewayAddressResolverOptions struct {
+	Client      *http.Client
+	AccountHost string
+	MasterKey   string
+}
+
+func newGatewayAddressResolver(opts *GatewayAddressResolverOptions) *gatewayAddressResolver {
+	if opts == nil {
+		opts = &GatewayAddressResolverOptions{}
+	}
+
+	client := opts.Client
+	if client == nil {
+		client = http.DefaultClient
+	}
+
+	return &gatewayAddressResolver{
+		client:      client,
+		accountHost: opts.AccountHost,
+		masterKey:   opts.MasterKey,
+		cache:       make(map[string][]*url.URL),
+	}
+}
+
+func (r *gatewayAddressResolver) Resolve(ctx context.Context, req *http.Request) ([]*url.URL, error) {
+	pkRangeID := req.Header.Get("x-ms-documentdb-partitionkeyrangeid")
+	collectionRid := req.Header.Get("x-ms-cosmos-collection-rid")
+
+	if collectionRid == "" || pkRangeID == "" {
+		return nil, nil
+	}
+
+	cacheKey := collectionRid + ":" + pkRangeID
+
+	r.mu.RLock()
+	addresses, ok := r.cache[cacheKey]
+	r.mu.RUnlock()
+	if ok {
+		return addresses, nil
+	}
+
+	addresses, err := r.fetchAddresses(ctx, collectionRid, pkRangeID)
+	if err != nil {
+		return nil, err
+	}
+
+	r.mu.Lock()
+	r.cache[cacheKey] = addresses
+	r.mu.Unlock()
+
+	return addresses, nil
+}
+
+func (r *gatewayAddressResolver) fetchAddresses(ctx context.Context, collectionRid, pkRangeID string) ([]*url.URL, error) {
+	path := fmt.Sprintf("/addresses/?$filter=protocol eq rntbd&$partition=%s&$collectionId=%s", pkRangeID, collectionRid)
+	addrURL := r.accountHost + path
+
+	addrReq, err := http.NewRequestWithContext(ctx, http.MethodGet, addrURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := r.client.Do(addrReq)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("address resolution failed with status %d", resp.StatusCode)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.parseAddressResponse(body)
+}
+
+func (r *gatewayAddressResolver) parseAddressResponse(body []byte) ([]*url.URL, error) {
+	lines := strings.Split(string(body), "\n")
+	var addresses []*url.URL
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "rntbd://") {
+			addr, err := url.Parse(line)
+			if err != nil {
+				continue
+			}
+			addresses = append(addresses, addr)
+		}
+	}
+
+	return addresses, nil
+}
+
+func (r *gatewayAddressResolver) InvalidateCache(collectionRid, pkRangeID string) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	delete(r.cache, collectionRid+":"+pkRangeID)
+}
+
+func (r *gatewayAddressResolver) ClearCache() {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.cache = make(map[string][]*url.URL)
+}
+
+var _ = strconv.Itoa

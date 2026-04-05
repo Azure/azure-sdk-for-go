@@ -29,15 +29,24 @@ const (
 
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
-	endpoint    string
-	internal    *azcore.Client
-	gem         *globalEndpointManager
-	endpointUrl *url.URL
+	endpoint        string
+	internal        *azcore.Client
+	gem             *globalEndpointManager
+	endpointUrl     *url.URL
+	directTransport *directModeTransport
 }
 
 // Endpoint used to create the client.
 func (c *Client) Endpoint() string {
 	return c.endpoint
+}
+
+// Close releases resources associated with the client, including RNTBD connections in Direct mode.
+func (c *Client) Close() error {
+	if c.directTransport != nil {
+		return c.directTransport.Close()
+	}
+	return nil
 }
 
 // NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.
@@ -51,8 +60,21 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	}
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
-	if o != nil {
-		preferredRegions = o.PreferredRegions
+	var directTransport *directModeTransport
+
+	if o == nil {
+		o = &ClientOptions{}
+	}
+
+	preferredRegions = o.PreferredRegions
+
+	if o.ConnectionMode == ConnectionModeDirect {
+		directTransport = newDirectModeTransport(&DirectModeTransportOptions{
+			AddressResolver: newGatewayAddressResolver(&GatewayAddressResolverOptions{
+				AccountHost: endpoint,
+			}),
+		})
+		o.Transport = directTransport
 	}
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
@@ -64,7 +86,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -79,7 +101,11 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 
 	var scope []string
 
-	if o != nil && o.Cloud.Services != nil {
+	if o == nil {
+		o = &ClientOptions{}
+	}
+
+	if o.Cloud.Services != nil {
 		if svcCfg, ok := o.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
 			audience := svcCfg.Audience
 			scope = []string{audience + "/.default"}
@@ -88,7 +114,6 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	}
 
 	if scope == nil {
-		// Fallback to account-scope
 		scope, err = createScopeFromEndpoint(endpointUrl)
 		if err != nil {
 			return nil, err
@@ -96,11 +121,19 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		log.Write(azlog.EventRequest, fmt.Sprintf("Using account scope from endpoint for authentication: %s", scope[0]))
 	}
 
-	preferredRegions := []string{}
+	preferredRegions := o.PreferredRegions
 	enableCrossRegionRetries := true
-	if o != nil {
-		preferredRegions = o.PreferredRegions
+	var directTransport *directModeTransport
+
+	if o.ConnectionMode == ConnectionModeDirect {
+		directTransport = newDirectModeTransport(&DirectModeTransportOptions{
+			AddressResolver: newGatewayAddressResolver(&GatewayAddressResolverOptions{
+				AccountHost: endpoint,
+			}),
+		})
+		o.Transport = directTransport
 	}
+
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
@@ -110,7 +143,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.

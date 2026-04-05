@@ -86,7 +86,7 @@ func TestOperationType(t *testing.T) {
 	}{
 		{OperationConnection, 0x0000, "Connection"},
 		{OperationCreate, 0x0001, "Create"},
-		{OperationUpdate, 0x0002, "Update"},
+		{OperationPatch, 0x0002, "Patch"},
 		{OperationRead, 0x0003, "Read"},
 		{OperationReadFeed, 0x0004, "ReadFeed"},
 		{OperationDelete, 0x0005, "Delete"},

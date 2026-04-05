@@ -38,6 +38,28 @@ To create a client, you will need the account's connection string.
 	client, err := azcosmos.NewClientFromConnectionString("myConnectionString", nil)
 	handle(err)
 
+# Connection Modes
+
+The SDK supports two connection modes:
+
+Gateway Mode (Default): Routes all requests through the Azure Cosmos DB gateway using HTTPS.
+Works with any network configuration.
+
+	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, nil)
+	handle(err)
+
+Direct Mode: Connects directly to Azure Cosmos DB backend nodes for document operations
+using the RNTBD (binary) protocol over TCP. Provides lower latency and higher throughput.
+
+	options := &azcosmos.ClientOptions{
+		ConnectionMode: azcosmos.ConnectionModeDirect,
+	}
+	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, options)
+	handle(err)
+
+Direct mode requires TCP connectivity to Cosmos DB backend ports (typically 10255).
+Control plane operations (database/container management) always use HTTPS via the gateway.
+
 # Key Concepts
 
 The following are relevant concepts for the usage of the client:

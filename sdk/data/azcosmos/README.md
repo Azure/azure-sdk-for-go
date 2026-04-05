@@ -61,6 +61,40 @@ azlog.SetListener(func(event azlog.Event, s string) {
 azlog.SetEvents(azlog.EventRequest, azlog.EventResponse, azlog.EventRetryPolicy, azlog.EventResponseError) 
 ```
 
+## Connection Modes
+
+The SDK supports two connection modes for communicating with Azure Cosmos DB:
+
+### Gateway Mode (Default)
+
+Gateway mode routes all requests through the Azure Cosmos DB gateway using HTTPS. This is the default mode and works with any network configuration.
+
+```go
+client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+```
+
+### Direct Mode
+
+Direct mode connects directly to Azure Cosmos DB backend nodes for document operations using the RNTBD (binary) protocol over TCP. This provides lower latency and higher throughput compared to Gateway mode.
+
+```go
+options := &azcosmos.ClientOptions{
+    ConnectionMode: azcosmos.ConnectionModeDirect,
+}
+client, err := azcosmos.NewClientWithKey(endpoint, cred, options)
+```
+
+**When to use Direct mode:**
+- Low-latency requirements for document operations
+- High-throughput scenarios
+- Applications running in Azure or with direct network connectivity to Cosmos DB
+
+**Requirements:**
+- TCP connectivity to Cosmos DB backend ports (typically 10255)
+- Not behind restrictive firewalls that block non-HTTPS traffic
+
+**Note:** Control plane operations (database and container management) always use HTTPS through the gateway, regardless of connection mode. Only document operations (CRUD, queries) use the RNTBD protocol in Direct mode.
+
 ## Examples
 
 The following section provides several code snippets covering some of the most common Azure Cosmos DB NoSQL API tasks, including:

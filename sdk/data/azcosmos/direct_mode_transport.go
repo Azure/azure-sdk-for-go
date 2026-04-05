@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -14,6 +15,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/rntbd"
 	"github.com/google/uuid"
@@ -62,7 +64,7 @@ func newDirectModeTransport(opts *DirectModeTransportOptions) *directModeTranspo
 
 func (t *directModeTransport) Do(req *http.Request) (*http.Response, error) {
 	if !t.shouldUseDirect(req) {
-		return t.fallback.RoundTrip(req)
+		return t.fallbackWithCleanHeaders(req)
 	}
 
 	svcReq, err := t.httpToServiceRequest(req)
@@ -72,11 +74,11 @@ func (t *directModeTransport) Do(req *http.Request) (*http.Response, error) {
 
 	addresses, err := t.resolveAddresses(req.Context(), req)
 	if err != nil {
-		return t.fallback.RoundTrip(req)
+		return t.fallbackWithCleanHeaders(req)
 	}
 
 	if len(addresses) == 0 {
-		return t.fallback.RoundTrip(req)
+		return t.fallbackWithCleanHeaders(req)
 	}
 
 	var lastErr error
@@ -93,6 +95,14 @@ func (t *directModeTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, fmt.Errorf("direct mode: all replicas failed: %w", lastErr)
 	}
 	return nil, errors.New("direct mode: no replicas available")
+}
+
+func (t *directModeTransport) fallbackWithCleanHeaders(req *http.Request) (*http.Response, error) {
+	// Gateway rejects requests with both partitionKey AND partitionKeyRangeId/EPK
+	req.Header.Del(cosmosHeaderPartitionKeyRangeId)
+	req.Header.Del(cosmosHeaderCollectionRid)
+	req.Header.Del(cosmosHeaderEffectivePartitionKey)
+	return t.fallback.RoundTrip(req)
 }
 
 func (t *directModeTransport) shouldUseDirect(req *http.Request) bool {
@@ -134,7 +144,8 @@ func (t *directModeTransport) httpToServiceRequest(req *http.Request) (*rntbd.Se
 	headers := make(map[string]string)
 	for key, values := range req.Header {
 		if len(values) > 0 {
-			headers[key] = values[0]
+			// Normalize header keys to lowercase to match RNTBD header mapping
+			headers[strings.ToLower(key)] = values[0]
 		}
 	}
 
@@ -148,9 +159,21 @@ func (t *directModeTransport) httpToServiceRequest(req *http.Request) (*rntbd.Se
 		req.Body = io.NopCloser(bytes.NewReader(content))
 	}
 
+	// For Direct Mode document operations, we need the collection's ResourceID (RID)
+	// even when using name-based addressing. This is required by the RNTBD protocol.
+	collectionRid := headers["x-ms-cosmos-collection-rid"]
+
+	// Java SDK uses PartitionKeyRangeId internally for address resolution but does NOT send it as an RNTBD token.
+	// The emulator rejects requests that have BOTH PartitionKey AND PartitionKeyRangeId tokens.
+	if headers["x-ms-documentdb-partitionkeyrangeid"] != "" {
+		delete(headers, "x-ms-documentdb-partitionkeyrangeid")
+		delete(headers, "x-ms-effective-partition-key")
+	}
+
 	svcReq := &rntbd.ServiceRequest{
 		OperationType:   opType,
 		ResourceType:    resType,
+		ResourceID:      collectionRid, // Collection RID required for document operations
 		ResourceAddress: resourceAddress,
 		IsNameBased:     !t.isRidBased(resourceAddress),
 		ActivityID:      activityID,
@@ -235,11 +258,16 @@ func (t *directModeTransport) sendToEndpoint(ctx context.Context, addr *url.URL,
 	}
 	defer conn.Release()
 
+	// Java SDK strips trailing slash from replica path (see RntbdRequestArgs line 59)
+	svcReq.ReplicaPath = strings.TrimSuffix(addr.Path, "/")
+
 	reqMsg, err := rntbd.BuildRequestMessage(svcReq)
 	if err != nil {
 		endpoint.RecordError()
 		return nil, fmt.Errorf("failed to build RNTBD request: %w", err)
 	}
+
+	svcReq.MarkSendingRequestStarted(time.Now().UnixNano())
 
 	respMsg, err := conn.Send(ctx, reqMsg)
 	if err != nil {
@@ -317,7 +345,7 @@ func (t *directModeTransport) Close() error {
 type gatewayAddressResolver struct {
 	client      *http.Client
 	accountHost string
-	masterKey   string
+	cred        *KeyCredential
 
 	mu    sync.RWMutex
 	cache map[string][]*url.URL
@@ -326,7 +354,7 @@ type gatewayAddressResolver struct {
 type GatewayAddressResolverOptions struct {
 	Client      *http.Client
 	AccountHost string
-	MasterKey   string
+	Credential  *KeyCredential
 }
 
 func newGatewayAddressResolver(opts *GatewayAddressResolverOptions) *gatewayAddressResolver {
@@ -342,7 +370,7 @@ func newGatewayAddressResolver(opts *GatewayAddressResolverOptions) *gatewayAddr
 	return &gatewayAddressResolver{
 		client:      client,
 		accountHost: opts.AccountHost,
-		masterKey:   opts.MasterKey,
+		cred:        opts.Credential,
 		cache:       make(map[string][]*url.URL),
 	}
 }
@@ -355,6 +383,9 @@ func (r *gatewayAddressResolver) Resolve(ctx context.Context, req *http.Request)
 		return nil, nil
 	}
 
+	// Extract the resource path from the request URL (e.g., "dbs/dbName/colls/collName/docs")
+	resourcePath := strings.TrimPrefix(req.URL.Path, "/")
+
 	cacheKey := collectionRid + ":" + pkRangeID
 
 	r.mu.RLock()
@@ -364,7 +395,7 @@ func (r *gatewayAddressResolver) Resolve(ctx context.Context, req *http.Request)
 		return addresses, nil
 	}
 
-	addresses, err := r.fetchAddresses(ctx, collectionRid, pkRangeID)
+	addresses, err := r.fetchAddresses(ctx, collectionRid, pkRangeID, resourcePath)
 	if err != nil {
 		return nil, err
 	}
@@ -376,13 +407,25 @@ func (r *gatewayAddressResolver) Resolve(ctx context.Context, req *http.Request)
 	return addresses, nil
 }
 
-func (r *gatewayAddressResolver) fetchAddresses(ctx context.Context, collectionRid, pkRangeID string) ([]*url.URL, error) {
-	path := fmt.Sprintf("/addresses/?$filter=protocol eq rntbd&$partition=%s&$collectionId=%s", pkRangeID, collectionRid)
+func (r *gatewayAddressResolver) fetchAddresses(ctx context.Context, collectionRid, pkRangeID, resourcePath string) ([]*url.URL, error) {
+	resolveFor := url.QueryEscape(resourcePath)
+	filter := url.QueryEscape("protocol eq rntbd")
+	path := fmt.Sprintf("/addresses/?$resolveFor=%s&$filter=%s&$partitionKeyRangeIds=%s", resolveFor, filter, pkRangeID)
 	addrURL := r.accountHost + path
 
 	addrReq, err := http.NewRequestWithContext(ctx, http.MethodGet, addrURL, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	xmsDate := time.Now().UTC().Format(http.TimeFormat)
+	addrReq.Header.Set(headerXmsDate, xmsDate)
+	addrReq.Header.Set(headerXmsVersion, apiVersion)
+
+	if r.cred != nil {
+		resourceIdForAuth := r.extractCollectionPath(resourcePath, collectionRid)
+		authHeader := r.cred.buildCanonicalizedAuthHeader(false, http.MethodGet, "docs", resourceIdForAuth, xmsDate, "master", "1.0")
+		addrReq.Header.Set(headerAuthorization, authHeader)
 	}
 
 	resp, err := r.client.Do(addrReq)
@@ -391,30 +434,39 @@ func (r *gatewayAddressResolver) fetchAddresses(ctx context.Context, collectionR
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("address resolution failed with status %d", resp.StatusCode)
-	}
-
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("address resolution failed with status %d: %s", resp.StatusCode, string(body))
 	}
 
 	return r.parseAddressResponse(body)
 }
 
 func (r *gatewayAddressResolver) parseAddressResponse(body []byte) ([]*url.URL, error) {
-	lines := strings.Split(string(body), "\n")
-	var addresses []*url.URL
+	var response struct {
+		Addresss []struct {
+			PhysicalUri string `json:"physcialUri"`
+			IsPrimary   bool   `json:"isPrimary"`
+			Protocol    string `json:"protocol"`
+		} `json:"Addresss"`
+	}
 
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if strings.HasPrefix(line, "rntbd://") {
-			addr, err := url.Parse(line)
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, fmt.Errorf("failed to parse address response: %w", err)
+	}
+
+	var addresses []*url.URL
+	for _, addr := range response.Addresss {
+		if addr.Protocol == "rntbd" && addr.PhysicalUri != "" {
+			parsed, err := url.Parse(addr.PhysicalUri)
 			if err != nil {
 				continue
 			}
-			addresses = append(addresses, addr)
+			addresses = append(addresses, parsed)
 		}
 	}
 
@@ -431,6 +483,14 @@ func (r *gatewayAddressResolver) ClearCache() {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.cache = make(map[string][]*url.URL)
+}
+
+func (r *gatewayAddressResolver) extractCollectionPath(resourcePath string, collectionRid string) string {
+	parts := strings.Split(resourcePath, "/")
+	if len(parts) >= 4 && parts[0] == "dbs" && parts[2] == "colls" {
+		return strings.Join(parts[:4], "/")
+	}
+	return collectionRid
 }
 
 var _ = strconv.Itoa

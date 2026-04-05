@@ -650,6 +650,14 @@ const (
 	RequestHeaderAllowTentativeWrites            RequestHeader = 0x0066
 	RequestHeaderIsUserRequest                   RequestHeader = 0x0067
 	RequestHeaderSharedOfferThroughput           RequestHeader = 0x0068
+
+	// Additional headers for document operations
+	RequestHeaderIsBatchAtomic            RequestHeader = 0x0073
+	RequestHeaderShouldBatchContinueOnErr RequestHeader = 0x0074
+	RequestHeaderIsBatchOrdered           RequestHeader = 0x0075
+	RequestHeaderReturnPreference         RequestHeader = 0x0082
+	RequestHeaderIsClientEncrypted        RequestHeader = 0x0087
+	RequestHeaderSDKSupportedCapabilities RequestHeader = 0x00A2
 )
 
 // RequestHeaderInfo provides metadata about request headers.
@@ -761,6 +769,12 @@ var RequestHeaders = map[RequestHeader]RequestHeaderInfo{
 	RequestHeaderAllowTentativeWrites:                      {RequestHeaderAllowTentativeWrites, TokenByte, false},
 	RequestHeaderIsUserRequest:                             {RequestHeaderIsUserRequest, TokenByte, false},
 	RequestHeaderSharedOfferThroughput:                     {RequestHeaderSharedOfferThroughput, TokenULong, false},
+	RequestHeaderIsBatchAtomic:                             {RequestHeaderIsBatchAtomic, TokenByte, false},
+	RequestHeaderShouldBatchContinueOnErr:                  {RequestHeaderShouldBatchContinueOnErr, TokenByte, false},
+	RequestHeaderIsBatchOrdered:                            {RequestHeaderIsBatchOrdered, TokenByte, false},
+	RequestHeaderReturnPreference:                          {RequestHeaderReturnPreference, TokenByte, false},
+	RequestHeaderIsClientEncrypted:                         {RequestHeaderIsClientEncrypted, TokenByte, false},
+	RequestHeaderSDKSupportedCapabilities:                  {RequestHeaderSDKSupportedCapabilities, TokenULong, false},
 }
 
 // ResponseHeader represents RNTBD response header IDs.

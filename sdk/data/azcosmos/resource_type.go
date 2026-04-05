@@ -21,3 +21,36 @@ const (
 	resourceTypePartitionKeyRange   resourceType = 125
 	resourceTypeClientEncryptionKey resourceType = 141
 )
+
+func (r resourceType) String() string {
+	switch r {
+	case resourceTypeDatabase:
+		return "database"
+	case resourceTypeCollection:
+		return "collection"
+	case resourceTypeDocument:
+		return "document"
+	case resourceTypeUser:
+		return "user"
+	case resourceTypePermission:
+		return "permission"
+	case resourceTypeConflict:
+		return "conflict"
+	case resourceTypeStoredProcedure:
+		return "storedprocedure"
+	case resourceTypeTrigger:
+		return "trigger"
+	case resourceTypeUserDefinedFunction:
+		return "userdefinedfunctions"
+	case resourceTypeOffer:
+		return "offer"
+	case resourceTypeDatabaseAccount:
+		return "databaseaccount"
+	case resourceTypePartitionKeyRange:
+		return "partitionkeyrange"
+	case resourceTypeClientEncryptionKey:
+		return "clientencryptionkey"
+	default:
+		return ""
+	}
+}

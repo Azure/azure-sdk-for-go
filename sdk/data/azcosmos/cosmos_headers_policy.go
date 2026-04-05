@@ -18,12 +18,19 @@ type headerOptionsOverride struct {
 	enableContentResponseOnWrite *bool
 	partitionKey                 *PartitionKey
 	correlatedActivityId         *uuid.UUID
+	collectionRID                string
+	partitionKeyRangeID          string
+	effectivePartitionKey        string
 }
 
 func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 	o := pipelineRequestOptions{}
 	if req.OperationValue(&o) {
 		enableContentResponseOnWrite := p.enableContentResponseOnWrite
+
+		if resTypeStr := o.resourceType.String(); resTypeStr != "" {
+			req.Raw().Header.Set(cosmosHeaderResourceType, resTypeStr)
+		}
 
 		if o.headerOptionsOverride != nil {
 			if o.headerOptionsOverride.enableContentResponseOnWrite != nil {
@@ -40,6 +47,18 @@ func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 
 			if o.headerOptionsOverride.correlatedActivityId != nil {
 				req.Raw().Header.Add(cosmosHeaderCorrelatedActivityId, o.headerOptionsOverride.correlatedActivityId.String())
+			}
+
+			if o.headerOptionsOverride.collectionRID != "" {
+				req.Raw().Header.Set(cosmosHeaderCollectionRid, o.headerOptionsOverride.collectionRID)
+			}
+
+			if o.headerOptionsOverride.partitionKeyRangeID != "" {
+				req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, o.headerOptionsOverride.partitionKeyRangeID)
+			}
+
+			if o.headerOptionsOverride.effectivePartitionKey != "" {
+				req.Raw().Header.Set(cosmosHeaderEffectivePartitionKey, o.headerOptionsOverride.effectivePartitionKey)
 			}
 		}
 

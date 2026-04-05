@@ -255,6 +255,7 @@ func (c *ContainerClient) CreateItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -308,6 +309,7 @@ func (c *ContainerClient) UpsertItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	addHeader := func(r *policy.Request) {
 		r.Raw().Header.Add(cosmosHeaderIsUpsert, "true")
@@ -367,6 +369,7 @@ func (c *ContainerClient) ReplaceItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -420,6 +423,7 @@ func (c *ContainerClient) ReadItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -525,6 +529,7 @@ func (c *ContainerClient) DeleteItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -664,6 +669,7 @@ func (c *ContainerClient) PatchItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -720,6 +726,7 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	h := headerOptionsOverride{
 		partitionKey: &b.partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &b.partitionKey, &h)
 
 	if o == nil {
 		o = &TransactionalBatchOptions{}
@@ -914,4 +921,25 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 		return partitionKeyRangeResponse{}, err
 	}
 	return response, nil
+}
+
+func (c *ContainerClient) applyDirectModeRouting(ctx context.Context, partitionKey *PartitionKey, h *headerOptionsOverride) {
+	// Only resolve routing when Direct Mode transport is actually enabled
+	if c.database.client.directTransport == nil {
+		return
+	}
+
+	router := c.database.client.directRouter
+	if router == nil {
+		return
+	}
+
+	routingInfo, err := router.resolve(ctx, c, partitionKey)
+	if err != nil {
+		return
+	}
+
+	h.collectionRID = routingInfo.collectionRID
+	h.partitionKeyRangeID = routingInfo.partitionKeyRangeID
+	h.effectivePartitionKey = routingInfo.effectivePartitionKey
 }

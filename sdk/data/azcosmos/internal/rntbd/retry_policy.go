@@ -148,12 +148,13 @@ func (p *retryWithRetryPolicy) shouldRetry(err error) (ShouldRetryResult, bool) 
 // -----------------------------------------------------------------------------
 
 type GoneAndRetryWithRetryPolicy struct {
-	waitTimeInSeconds      int
-	attemptCount           int
-	currentBackoffSeconds  int
-	startTime              time.Time
-	lastRetryWithException *RetryWithError
-	retryWithPolicy        *retryWithRetryPolicy
+	waitTimeInSeconds                int
+	attemptCount                     int
+	currentBackoffSeconds            int
+	startTime                        time.Time
+	lastRetryWithException           *RetryWithError
+	retryWithPolicy                  *retryWithRetryPolicy
+	nonIdempotentWriteRetriesEnabled bool
 }
 
 func NewGoneAndRetryWithRetryPolicy(waitTimeInSeconds int) *GoneAndRetryWithRetryPolicy {
@@ -161,15 +162,26 @@ func NewGoneAndRetryWithRetryPolicy(waitTimeInSeconds int) *GoneAndRetryWithRetr
 		waitTimeInSeconds = DefaultWaitTimeInSeconds
 	}
 	return &GoneAndRetryWithRetryPolicy{
-		waitTimeInSeconds:     waitTimeInSeconds,
-		attemptCount:          1,
-		currentBackoffSeconds: InitialBackoffTimeSeconds,
-		startTime:             time.Now(),
-		retryWithPolicy:       newRetryWithRetryPolicy(waitTimeInSeconds),
+		waitTimeInSeconds:                waitTimeInSeconds,
+		attemptCount:                     1,
+		currentBackoffSeconds:            InitialBackoffTimeSeconds,
+		startTime:                        time.Now(),
+		retryWithPolicy:                  newRetryWithRetryPolicy(waitTimeInSeconds),
+		nonIdempotentWriteRetriesEnabled: false,
 	}
 }
 
+func NewGoneAndRetryWithRetryPolicyWithWriteRetries(waitTimeInSeconds int, enableNonIdempotentWriteRetries bool) *GoneAndRetryWithRetryPolicy {
+	p := NewGoneAndRetryWithRetryPolicy(waitTimeInSeconds)
+	p.nonIdempotentWriteRetriesEnabled = enableNonIdempotentWriteRetries
+	return p
+}
+
 func (p *GoneAndRetryWithRetryPolicy) ShouldRetry(err error, retryCtx *RetryContext) ShouldRetryResult {
+	return p.ShouldRetryWithRequest(err, retryCtx, nil)
+}
+
+func (p *GoneAndRetryWithRetryPolicy) ShouldRetryWithRequest(err error, retryCtx *RetryContext, req *ServiceRequest) ShouldRetryResult {
 	if retryCtx == nil {
 		retryCtx = NewRetryContext()
 	}
@@ -184,15 +196,17 @@ func (p *GoneAndRetryWithRetryPolicy) ShouldRetry(err error, retryCtx *RetryCont
 	}
 
 	// GoneRetryPolicy handles the rest
-	switch err.(type) {
+	switch e := err.(type) {
 	case *GoneError:
-		return p.handleGoneException(retryCtx)
+		return p.handleGoneExceptionWithWriteSafety(retryCtx, req, e.IsBasedOn410ResponseFromService)
+	case *InvalidPartitionError:
+		return p.handleGoneExceptionWithWriteSafety(retryCtx, req, e.IsBasedOn410ResponseFromService)
 	case *PartitionIsMigratingError:
-		return p.handlePartitionIsMigratingException(retryCtx)
+		return p.handlePartitionIsMigratingExceptionWithWriteSafety(retryCtx, req, e.IsBasedOn410ResponseFromService)
 	case *PartitionKeyRangeIsSplittingError:
-		return p.handlePartitionKeyRangeIsSplittingException(retryCtx)
+		return p.handlePartitionKeyRangeIsSplittingExceptionWithWriteSafety(retryCtx, req, e.IsBasedOn410ResponseFromService)
 	case *PartitionKeyRangeGoneError:
-		return p.handleGoneException(retryCtx)
+		return p.handleGoneExceptionWithWriteSafety(retryCtx, req, e.IsBasedOn410ResponseFromService)
 	case *LeaseNotFoundError:
 		return p.handleLeaseNotFoundException()
 	default:
@@ -200,7 +214,41 @@ func (p *GoneAndRetryWithRetryPolicy) ShouldRetry(err error, retryCtx *RetryCont
 	}
 }
 
+func (p *GoneAndRetryWithRetryPolicy) canRetryWrite(req *ServiceRequest, isBasedOn410FromService bool) bool {
+	if req == nil {
+		return true
+	}
+	if req.IsReadOnly() {
+		return true
+	}
+	if !req.HasSendingRequestStarted() {
+		return true
+	}
+	if isBasedOn410FromService {
+		return true
+	}
+	return p.nonIdempotentWriteRetriesEnabled
+}
+
+func (p *GoneAndRetryWithRetryPolicy) createWriteNotRetriableError(req *ServiceRequest) ShouldRetryResult {
+	return NoRetryWithError(&RequestTimeoutError{
+		RntbdError: RntbdError{
+			StatusCode: StatusRequestTimeout,
+			ActivityID: req.ActivityID,
+			Message:    "write request cannot be retried after send started without service 410 confirmation",
+		},
+	})
+}
+
 func (p *GoneAndRetryWithRetryPolicy) handleGoneException(retryCtx *RetryContext) ShouldRetryResult {
+	return p.handleGoneExceptionWithWriteSafety(retryCtx, nil, true)
+}
+
+func (p *GoneAndRetryWithRetryPolicy) handleGoneExceptionWithWriteSafety(retryCtx *RetryContext, req *ServiceRequest, isBasedOn410FromService bool) ShouldRetryResult {
+	if !p.canRetryWrite(req, isBasedOn410FromService) {
+		return p.createWriteNotRetriableError(req)
+	}
+
 	currentRetryAttemptCount := p.attemptCount
 
 	var backoffTime time.Duration
@@ -251,19 +299,27 @@ func (p *GoneAndRetryWithRetryPolicy) handleGoneException(retryCtx *RetryContext
 }
 
 func (p *GoneAndRetryWithRetryPolicy) handlePartitionIsMigratingException(retryCtx *RetryContext) ShouldRetryResult {
+	return p.handlePartitionIsMigratingExceptionWithWriteSafety(retryCtx, nil, true)
+}
+
+func (p *GoneAndRetryWithRetryPolicy) handlePartitionIsMigratingExceptionWithWriteSafety(retryCtx *RetryContext, req *ServiceRequest, isBasedOn410FromService bool) ShouldRetryResult {
 	retryCtx.ForceCollectionRoutingMapRefresh = true
 
-	result := p.handleGoneException(retryCtx)
+	result := p.handleGoneExceptionWithWriteSafety(retryCtx, req, isBasedOn410FromService)
 	result.ForceRefreshAddressCache = true
 	return result
 }
 
 func (p *GoneAndRetryWithRetryPolicy) handlePartitionKeyRangeIsSplittingException(retryCtx *RetryContext) ShouldRetryResult {
+	return p.handlePartitionKeyRangeIsSplittingExceptionWithWriteSafety(retryCtx, nil, true)
+}
+
+func (p *GoneAndRetryWithRetryPolicy) handlePartitionKeyRangeIsSplittingExceptionWithWriteSafety(retryCtx *RetryContext, req *ServiceRequest, isBasedOn410FromService bool) ShouldRetryResult {
 	retryCtx.ResolvedPartitionKeyRange = nil
 	retryCtx.QuorumSelectedLSN = -1
 	retryCtx.ForcePartitionKeyRangeRefresh = true
 
-	result := p.handleGoneException(retryCtx)
+	result := p.handleGoneExceptionWithWriteSafety(retryCtx, req, isBasedOn410FromService)
 	result.ForceRefreshAddressCache = false
 	return result
 }

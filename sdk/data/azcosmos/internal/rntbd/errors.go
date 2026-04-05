@@ -123,31 +123,37 @@ type ConflictError struct {
 // This is the base type for partition-related gone errors.
 type GoneError struct {
 	RntbdError
+	IsBasedOn410ResponseFromService bool
 }
 
 // InvalidPartitionError indicates the partition is invalid due to stale cache (410, substatus 1000).
 type InvalidPartitionError struct {
 	RntbdError
+	IsBasedOn410ResponseFromService bool
 }
 
 // PartitionKeyRangeGoneError indicates the partition key range is gone (410, substatus 1002).
 type PartitionKeyRangeGoneError struct {
 	RntbdError
+	IsBasedOn410ResponseFromService bool
 }
 
 // PartitionKeyRangeIsSplittingError indicates the partition is being split (410, substatus 1007).
 type PartitionKeyRangeIsSplittingError struct {
 	RntbdError
+	IsBasedOn410ResponseFromService bool
 }
 
 // PartitionIsMigratingError indicates the partition is being migrated (410, substatus 1008).
 type PartitionIsMigratingError struct {
 	RntbdError
+	IsBasedOn410ResponseFromService bool
 }
 
 // LeaseNotFoundError indicates the lease was not found (410, substatus 1022).
 type LeaseNotFoundError struct {
 	RntbdError
+	IsBasedOn410ResponseFromService bool
 }
 
 // PreconditionFailedError indicates an ETag/If-Match precondition failed (412).
@@ -285,20 +291,19 @@ func ErrorFromResponse(response *ResponseMessage) error {
 		return &ConflictError{baseError}
 
 	case StatusGone:
-		// Sub-status determines specific Gone error type
 		switch subStatusCode {
 		case SubStatusNameCacheIsStale:
-			return &InvalidPartitionError{baseError}
+			return &InvalidPartitionError{RntbdError: baseError, IsBasedOn410ResponseFromService: true}
 		case SubStatusPartitionKeyRangeGone:
-			return &PartitionKeyRangeGoneError{baseError}
+			return &PartitionKeyRangeGoneError{RntbdError: baseError, IsBasedOn410ResponseFromService: true}
 		case SubStatusCompletingSplit:
-			return &PartitionKeyRangeIsSplittingError{baseError}
+			return &PartitionKeyRangeIsSplittingError{RntbdError: baseError, IsBasedOn410ResponseFromService: true}
 		case SubStatusCompletingPartitionMigrate:
-			return &PartitionIsMigratingError{baseError}
+			return &PartitionIsMigratingError{RntbdError: baseError, IsBasedOn410ResponseFromService: true}
 		case SubStatusLeaseNotFound:
-			return &LeaseNotFoundError{baseError}
+			return &LeaseNotFoundError{RntbdError: baseError, IsBasedOn410ResponseFromService: true}
 		default:
-			return &GoneError{baseError}
+			return &GoneError{RntbdError: baseError, IsBasedOn410ResponseFromService: true}
 		}
 
 	case StatusPreconditionFailed:
@@ -378,8 +383,29 @@ func IsConflict(err error) bool {
 func IsGone(err error) bool {
 	switch err.(type) {
 	case *GoneError, *InvalidPartitionError, *PartitionKeyRangeGoneError,
-		*PartitionKeyRangeIsSplittingError, *PartitionIsMigratingError:
+		*PartitionKeyRangeIsSplittingError, *PartitionIsMigratingError, *LeaseNotFoundError:
 		return true
+	default:
+		return false
+	}
+}
+
+// IsGoneBasedOn410FromService returns true if the error is a 410 Gone error that originated
+// from the service (not from transport layer). Safe to retry for non-idempotent writes.
+func IsGoneBasedOn410FromService(err error) bool {
+	switch e := err.(type) {
+	case *GoneError:
+		return e.IsBasedOn410ResponseFromService
+	case *InvalidPartitionError:
+		return e.IsBasedOn410ResponseFromService
+	case *PartitionKeyRangeGoneError:
+		return e.IsBasedOn410ResponseFromService
+	case *PartitionKeyRangeIsSplittingError:
+		return e.IsBasedOn410ResponseFromService
+	case *PartitionIsMigratingError:
+		return e.IsBasedOn410ResponseFromService
+	case *LeaseNotFoundError:
+		return e.IsBasedOn410ResponseFromService
 	default:
 		return false
 	}

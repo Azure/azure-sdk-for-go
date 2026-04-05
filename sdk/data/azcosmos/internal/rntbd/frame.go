@@ -8,6 +8,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"sort"
 
 	"github.com/google/uuid"
 )
@@ -452,10 +453,19 @@ func (ts *TokenStream) ComputeLength() int {
 	return length
 }
 
-// Encode writes all present tokens to the writer.
+// Encode writes all present tokens to the writer in sorted order by token ID.
+// Sorting ensures deterministic wire format, which is required by the Cosmos DB server.
 func (ts *TokenStream) Encode(w io.Writer) error {
-	for _, t := range ts.tokens {
-		if err := t.Encode(w); err != nil {
+	ids := make([]uint16, 0, len(ts.tokens))
+	for id, t := range ts.tokens {
+		if t.IsPresent() {
+			ids = append(ids, id)
+		}
+	}
+	sort.Slice(ids, func(i, j int) bool { return ids[i] < ids[j] })
+
+	for _, id := range ids {
+		if err := ts.tokens[id].Encode(w); err != nil {
 			return err
 		}
 	}

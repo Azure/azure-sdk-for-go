@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added Direct mode (RNTBD protocol) support for lower latency connections to Cosmos DB. Enable via `ClientOptions.ConnectionMode = ConnectionModeDirect`. Direct mode bypasses the gateway for document operations, reducing latency by connecting directly to backend replicas.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -70,6 +70,8 @@ const (
 	HTTPHeaderStartEPK                                  = "x-ms-start-epk"
 	HTTPHeaderEndEPK                                    = "x-ms-end-epk"
 	HTTPHeaderRestoreMetadataFilter                     = "x-ms-restore-metadata-filter"
+	HTTPHeaderPrefer                                    = "prefer"
+	HTTPHeaderSDKSupportedCapabilities                  = "x-ms-cosmos-sdk-supportedcapabilities"
 )
 
 const (
@@ -147,6 +149,11 @@ type ServiceRequest struct {
 	TransportRequestID        uint32
 	PartitionKeyRangeIdentity *PartitionKeyRangeIdentity
 	DefaultReplicaIndex       *int
+
+	// hasSendingRequestStarted: true once bytes written to network. Critical for write safety -
+	// cannot retry non-idempotent writes after send starts (server may have processed request).
+	hasSendingRequestStarted bool
+	sentTime                 int64 // Unix nanos - when request was sent
 }
 
 func NewServiceRequest(
@@ -355,8 +362,21 @@ func DecodeBase64(s string) []byte {
 	if s == "" {
 		return nil
 	}
-	data, err := base64.StdEncoding.DecodeString(s)
+	// Cosmos DB uses a custom base64 variant where '-' replaces '/'
+	// Normalize to standard base64 before decoding
+	normalized := strings.ReplaceAll(s, "-", "/")
+
+	// Add padding if missing (base64 requires length to be multiple of 4)
+	switch len(normalized) % 4 {
+	case 2:
+		normalized += "=="
+	case 3:
+		normalized += "="
+	}
+
+	data, err := base64.StdEncoding.DecodeString(normalized)
 	if err != nil {
+		// Fallback to URL encoding in case it's already URL-safe base64
 		data, err = base64.URLEncoding.DecodeString(s)
 		if err != nil {
 			return nil
@@ -374,6 +394,29 @@ func ParseBool(s string) bool {
 		return false
 	}
 	return b
+}
+
+func (r *ServiceRequest) IsReadOnly() bool {
+	switch r.OperationType {
+	case OperationRead, OperationReadFeed, OperationQuery, OperationSQLQuery,
+		OperationHead, OperationHeadFeed:
+		return true
+	default:
+		return false
+	}
+}
+
+func (r *ServiceRequest) HasSendingRequestStarted() bool {
+	return r.hasSendingRequestStarted
+}
+
+func (r *ServiceRequest) MarkSendingRequestStarted(sentTimeNanos int64) {
+	r.hasSendingRequestStarted = true
+	r.sentTime = sentTimeNanos
+}
+
+func (r *ServiceRequest) GetSentTime() int64 {
+	return r.sentTime
 }
 
 func ParseInt64(s string) (int64, bool) {

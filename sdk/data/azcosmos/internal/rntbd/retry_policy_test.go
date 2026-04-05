@@ -53,14 +53,17 @@ func TestRetryPolicy_ShouldRetryWithPartitionIsMigratingException(t *testing.T) 
 }
 
 func TestRetryPolicy_ShouldRetryWithInvalidPartitionException(t *testing.T) {
-	// New SDK: InvalidPartitionError is no longer retried by GoneRetryPolicy
 	policy := NewGoneAndRetryWithRetryPolicy(30)
 	retryCtx := NewRetryContext()
 
-	invalidErr := &InvalidPartitionError{RntbdError: RntbdError{StatusCode: StatusGone, SubStatusCode: SubStatusNameCacheIsStale}}
+	invalidErr := &InvalidPartitionError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone, SubStatusCode: SubStatusNameCacheIsStale},
+		IsBasedOn410ResponseFromService: true,
+	}
 
 	result := policy.ShouldRetry(invalidErr, retryCtx)
-	require.False(t, result.ShouldRetry)
+	require.True(t, result.ShouldRetry)
+	require.True(t, result.ForceRefreshAddressCache)
 }
 
 func TestRetryPolicy_ShouldRetryWithPartitionKeyRangeIsSplittingException(t *testing.T) {
@@ -179,4 +182,332 @@ func TestRetryPolicy_NoRetryForUnknownError(t *testing.T) {
 	notFoundErr := &NotFoundError{RntbdError: RntbdError{StatusCode: StatusNotFound}}
 	result = policy.ShouldRetry(notFoundErr, NewRetryContext())
 	require.False(t, result.ShouldRetry)
+}
+
+// =============================================================================
+// Non-Idempotent Write Safety Tests (Stage 9)
+// =============================================================================
+
+func TestRetryPolicy_ReadOnlyOperationsAlwaysRetry(t *testing.T) {
+	// Read-only operations should always be allowed to retry regardless of send state
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+	goneErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: false, // NOT from service - transport error
+	}
+
+	readOnlyOps := []OperationType{
+		OperationRead,
+		OperationReadFeed,
+		OperationQuery,
+		OperationSQLQuery,
+		OperationHead,
+		OperationHeadFeed,
+	}
+
+	for _, opType := range readOnlyOps {
+		t.Run(opType.String(), func(t *testing.T) {
+			req := &ServiceRequest{OperationType: opType}
+			// Simulate that sending has started
+			req.MarkSendingRequestStarted(time.Now().UnixNano())
+
+			result := policy.ShouldRetryWithRequest(goneErr, retryCtx, req)
+			require.True(t, result.ShouldRetry, "read-only operation %s should always retry", opType.String())
+		})
+	}
+}
+
+func TestRetryPolicy_WriteBeforeSendStartedRetries(t *testing.T) {
+	// Write operations BEFORE send started should retry (no network write yet)
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+	goneErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: false, // NOT from service - transport error
+	}
+
+	writeOps := []OperationType{
+		OperationCreate,
+		OperationReplace,
+		OperationDelete,
+		OperationUpsert,
+		OperationPatch,
+		OperationBatch,
+	}
+
+	for _, opType := range writeOps {
+		t.Run(opType.String(), func(t *testing.T) {
+			req := &ServiceRequest{OperationType: opType}
+			// Do NOT mark sending started - send hasn't begun
+
+			result := policy.ShouldRetryWithRequest(goneErr, retryCtx, req)
+			require.True(t, result.ShouldRetry, "write operation %s should retry before send started", opType.String())
+		})
+	}
+}
+
+func TestRetryPolicy_WriteAfterSendStartedWithService410Retries(t *testing.T) {
+	// Write operations AFTER send started WITH service 410 should retry
+	// (server confirmed it didn't process the request)
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+	goneErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: true, // From service - safe to retry
+	}
+
+	writeOps := []OperationType{
+		OperationCreate,
+		OperationReplace,
+		OperationDelete,
+		OperationUpsert,
+		OperationPatch,
+		OperationBatch,
+	}
+
+	for _, opType := range writeOps {
+		t.Run(opType.String(), func(t *testing.T) {
+			req := &ServiceRequest{OperationType: opType}
+			req.MarkSendingRequestStarted(time.Now().UnixNano())
+
+			result := policy.ShouldRetryWithRequest(goneErr, retryCtx, req)
+			require.True(t, result.ShouldRetry, "write operation %s should retry with service 410", opType.String())
+		})
+	}
+}
+
+func TestRetryPolicy_WriteAfterSendStartedWithoutService410ReturnsTimeout(t *testing.T) {
+	// Write operations AFTER send started WITHOUT service 410 should NOT retry
+	// (could cause duplicate writes)
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+	goneErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: false, // Transport error - NOT from service
+	}
+
+	writeOps := []OperationType{
+		OperationCreate,
+		OperationReplace,
+		OperationDelete,
+		OperationUpsert,
+		OperationPatch,
+		OperationBatch,
+	}
+
+	for _, opType := range writeOps {
+		t.Run(opType.String(), func(t *testing.T) {
+			req := &ServiceRequest{OperationType: opType}
+			req.MarkSendingRequestStarted(time.Now().UnixNano())
+
+			result := policy.ShouldRetryWithRequest(goneErr, retryCtx, req)
+			require.False(t, result.ShouldRetry, "write operation %s should NOT retry without service 410", opType.String())
+			require.NotNil(t, result.Exception)
+
+			var timeoutErr *RequestTimeoutError
+			require.ErrorAs(t, result.Exception, &timeoutErr)
+			require.Equal(t, int32(StatusRequestTimeout), timeoutErr.StatusCode)
+		})
+	}
+}
+
+func TestRetryPolicy_NonIdempotentWriteRetriesEnabledFlag(t *testing.T) {
+	// When nonIdempotentWriteRetriesEnabled is true, even unsafe writes should retry
+	policy := NewGoneAndRetryWithRetryPolicyWithWriteRetries(30, true)
+	retryCtx := NewRetryContext()
+	goneErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: false, // Transport error - normally unsafe
+	}
+
+	req := &ServiceRequest{OperationType: OperationCreate}
+	req.MarkSendingRequestStarted(time.Now().UnixNano())
+
+	result := policy.ShouldRetryWithRequest(goneErr, retryCtx, req)
+	require.True(t, result.ShouldRetry, "should retry when nonIdempotentWriteRetriesEnabled is true")
+}
+
+func TestRetryPolicy_NilRequestAllowsRetry(t *testing.T) {
+	// Nil request should allow retry (backward compatibility)
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+	goneErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: false,
+	}
+
+	// Using nil request via ShouldRetry (not ShouldRetryWithRequest)
+	result := policy.ShouldRetry(goneErr, retryCtx)
+	require.True(t, result.ShouldRetry, "nil request should allow retry for backward compatibility")
+}
+
+func TestRetryPolicy_AllGoneErrorTypesCheckWriteSafety(t *testing.T) {
+	// All Gone error types should check write safety
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+
+	// Create a write request that has started sending
+	writeReq := &ServiceRequest{OperationType: OperationCreate}
+	writeReq.MarkSendingRequestStarted(time.Now().UnixNano())
+
+	testCases := []struct {
+		name string
+		err  error
+	}{
+		{
+			name: "GoneError",
+			err:  &GoneError{RntbdError: RntbdError{StatusCode: StatusGone}, IsBasedOn410ResponseFromService: false},
+		},
+		{
+			name: "InvalidPartitionError",
+			err:  &InvalidPartitionError{RntbdError: RntbdError{StatusCode: StatusGone}, IsBasedOn410ResponseFromService: false},
+		},
+		{
+			name: "PartitionIsMigratingError",
+			err:  &PartitionIsMigratingError{RntbdError: RntbdError{StatusCode: StatusGone}, IsBasedOn410ResponseFromService: false},
+		},
+		{
+			name: "PartitionKeyRangeIsSplittingError",
+			err:  &PartitionKeyRangeIsSplittingError{RntbdError: RntbdError{StatusCode: StatusGone}, IsBasedOn410ResponseFromService: false},
+		},
+		{
+			name: "PartitionKeyRangeGoneError",
+			err:  &PartitionKeyRangeGoneError{RntbdError: RntbdError{StatusCode: StatusGone}, IsBasedOn410ResponseFromService: false},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := policy.ShouldRetryWithRequest(tc.err, retryCtx, writeReq)
+			require.False(t, result.ShouldRetry, "%s should not retry unsafe write", tc.name)
+			require.NotNil(t, result.Exception)
+
+			var timeoutErr *RequestTimeoutError
+			require.ErrorAs(t, result.Exception, &timeoutErr)
+		})
+	}
+}
+
+func TestRetryPolicy_ServiceRequestSendTracking(t *testing.T) {
+	// Test ServiceRequest send tracking methods
+	req := &ServiceRequest{OperationType: OperationCreate}
+
+	require.False(t, req.HasSendingRequestStarted(), "should not have started initially")
+	require.Equal(t, int64(0), req.GetSentTime(), "sent time should be 0 initially")
+
+	sentTime := time.Now().UnixNano()
+	req.MarkSendingRequestStarted(sentTime)
+
+	require.True(t, req.HasSendingRequestStarted(), "should have started after marking")
+	require.Equal(t, sentTime, req.GetSentTime(), "sent time should match")
+}
+
+func TestRetryPolicy_ServiceRequestIsReadOnly(t *testing.T) {
+	// Test IsReadOnly classification
+	readOps := []OperationType{
+		OperationRead,
+		OperationReadFeed,
+		OperationQuery,
+		OperationSQLQuery,
+		OperationHead,
+		OperationHeadFeed,
+	}
+
+	writeOps := []OperationType{
+		OperationCreate,
+		OperationReplace,
+		OperationDelete,
+		OperationUpsert,
+		OperationPatch,
+		OperationBatch,
+		OperationExecuteJavaScript,
+	}
+
+	for _, opType := range readOps {
+		req := &ServiceRequest{OperationType: opType}
+		require.True(t, req.IsReadOnly(), "operation %s should be read-only", opType.String())
+	}
+
+	for _, opType := range writeOps {
+		req := &ServiceRequest{OperationType: opType}
+		require.False(t, req.IsReadOnly(), "operation %s should NOT be read-only", opType.String())
+	}
+}
+
+func TestRetryPolicy_PartitionIsMigratingPreservesWriteSafety(t *testing.T) {
+	// PartitionIsMigratingError should also check write safety
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+	migratingErr := &PartitionIsMigratingError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone, SubStatusCode: SubStatusCompletingPartitionMigrate},
+		IsBasedOn410ResponseFromService: false,
+	}
+
+	// Read operation - should retry
+	readReq := &ServiceRequest{OperationType: OperationRead}
+	readReq.MarkSendingRequestStarted(time.Now().UnixNano())
+	result := policy.ShouldRetryWithRequest(migratingErr, retryCtx, readReq)
+	require.True(t, result.ShouldRetry)
+	require.True(t, result.ForceRefreshAddressCache)
+	require.True(t, retryCtx.ForceCollectionRoutingMapRefresh)
+
+	// Write operation after send without service 410 - should NOT retry
+	retryCtx2 := NewRetryContext()
+	writeReq := &ServiceRequest{OperationType: OperationCreate}
+	writeReq.MarkSendingRequestStarted(time.Now().UnixNano())
+	result = policy.ShouldRetryWithRequest(migratingErr, retryCtx2, writeReq)
+	require.False(t, result.ShouldRetry)
+}
+
+func TestRetryPolicy_PartitionKeyRangeIsSplittingPreservesWriteSafety(t *testing.T) {
+	// PartitionKeyRangeIsSplittingError should also check write safety
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	retryCtx := NewRetryContext()
+	retryCtx.ResolvedPartitionKeyRange = "some-range"
+	retryCtx.QuorumSelectedLSN = 100
+
+	splittingErr := &PartitionKeyRangeIsSplittingError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone, SubStatusCode: SubStatusCompletingSplit},
+		IsBasedOn410ResponseFromService: false,
+	}
+
+	// Read operation - should retry
+	readReq := &ServiceRequest{OperationType: OperationRead}
+	readReq.MarkSendingRequestStarted(time.Now().UnixNano())
+	result := policy.ShouldRetryWithRequest(splittingErr, retryCtx, readReq)
+	require.True(t, result.ShouldRetry)
+	require.True(t, retryCtx.ForcePartitionKeyRangeRefresh)
+	require.Nil(t, retryCtx.ResolvedPartitionKeyRange)
+	require.Equal(t, int64(-1), retryCtx.QuorumSelectedLSN)
+
+	// Write operation after send without service 410 - should NOT retry
+	retryCtx2 := NewRetryContext()
+	writeReq := &ServiceRequest{OperationType: OperationCreate}
+	writeReq.MarkSendingRequestStarted(time.Now().UnixNano())
+	result = policy.ShouldRetryWithRequest(splittingErr, retryCtx2, writeReq)
+	require.False(t, result.ShouldRetry)
+}
+
+func TestRetryPolicy_ErrorFromServiceVsTransport(t *testing.T) {
+	// Test the distinction between service 410 and transport errors
+	policy := NewGoneAndRetryWithRetryPolicy(30)
+	writeReq := &ServiceRequest{OperationType: OperationCreate}
+	writeReq.MarkSendingRequestStarted(time.Now().UnixNano())
+
+	// Service 410 - safe to retry
+	serviceErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: true,
+	}
+	result := policy.ShouldRetryWithRequest(serviceErr, NewRetryContext(), writeReq)
+	require.True(t, result.ShouldRetry, "service 410 should allow retry")
+
+	// Transport error - NOT safe to retry
+	transportErr := &GoneError{
+		RntbdError:                      RntbdError{StatusCode: StatusGone},
+		IsBasedOn410ResponseFromService: false,
+	}
+	result = policy.ShouldRetryWithRequest(transportErr, NewRetryContext(), writeReq)
+	require.False(t, result.ShouldRetry, "transport error should NOT allow retry")
 }

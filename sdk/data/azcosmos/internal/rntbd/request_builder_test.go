@@ -190,11 +190,15 @@ func TestBuildRequestMessage_WithReplicaPath(t *testing.T) {
 }
 
 func TestBuildRequestMessage_ResourceIDPath(t *testing.T) {
+	// Use a ResourceID that contains characters invalid for base64
+	// so DecodeBase64 returns nil and falls back to raw string bytes.
+	// This tests the fallback path for non-base64 resource IDs.
+	testResourceID := "test!resource@id#123"
 	req := &ServiceRequest{
 		OperationType:   OperationRead,
 		ResourceType:    ResourceDocument,
-		ResourceID:      "SomeResourceId",
-		ResourceAddress: "SomeResourceId",
+		ResourceID:      testResourceID,
+		ResourceAddress: testResourceID,
 		IsNameBased:     false,
 		ActivityID:      uuid.New(),
 		Headers:         make(map[string]string),
@@ -205,7 +209,7 @@ func TestBuildRequestMessage_ResourceIDPath(t *testing.T) {
 
 	resourceID := msg.Headers.GetBytes(uint16(RequestHeaderResourceId))
 	require.NotNil(t, resourceID)
-	require.Equal(t, "SomeResourceId", string(resourceID))
+	require.Equal(t, testResourceID, string(resourceID))
 }
 
 func TestBuildRequestMessage_PageSize(t *testing.T) {

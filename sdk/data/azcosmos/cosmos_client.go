@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"net/http"
@@ -19,6 +20,7 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/rntbd"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
@@ -34,6 +36,7 @@ type Client struct {
 	gem             *globalEndpointManager
 	endpointUrl     *url.URL
 	directTransport *directModeTransport
+	directRouter    *directModeRouter // Routes partition keys to partition key ranges for Direct mode
 }
 
 // Endpoint used to create the client.
@@ -69,13 +72,47 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	preferredRegions = o.PreferredRegions
 
 	if o.ConnectionMode == ConnectionModeDirect {
+		userTransport := o.Transport
+
+		var httpClient *http.Client
+		if userTransport != nil {
+			if rt, ok := userTransport.(*http.Client); ok {
+				httpClient = rt
+			}
+		}
+		if httpClient == nil {
+			httpClient = http.DefaultClient
+		}
+
+		var fallbackRT http.RoundTripper
+		var tlsConfig *tls.Config
+		if httpClient.Transport != nil {
+			fallbackRT = httpClient.Transport
+			if httpTransport, ok := httpClient.Transport.(*http.Transport); ok && httpTransport.TLSClientConfig != nil {
+				tlsConfig = httpTransport.TLSClientConfig.Clone()
+			}
+		} else {
+			fallbackRT = http.DefaultTransport
+		}
+
+		poolOpts := rntbd.DefaultPoolOptions()
+		if tlsConfig != nil {
+			poolOpts.ConnectionOptions.TLSConfig = tlsConfig
+		}
+
 		directTransport = newDirectModeTransport(&DirectModeTransportOptions{
+			PoolOptions: poolOpts,
 			AddressResolver: newGatewayAddressResolver(&GatewayAddressResolverOptions{
 				AccountHost: endpoint,
+				Credential:  &cred,
+				Client:      httpClient,
 			}),
+			Fallback: fallbackRT,
 		})
 		o.Transport = directTransport
 	}
+
+	directRouter := newDirectModeRouter(5 * time.Minute)
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
@@ -86,7 +123,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport, directRouter: directRouter}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -126,13 +163,46 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	var directTransport *directModeTransport
 
 	if o.ConnectionMode == ConnectionModeDirect {
+		userTransport := o.Transport
+
+		var httpClient *http.Client
+		if userTransport != nil {
+			if rt, ok := userTransport.(*http.Client); ok {
+				httpClient = rt
+			}
+		}
+		if httpClient == nil {
+			httpClient = http.DefaultClient
+		}
+
+		var fallbackRT http.RoundTripper
+		var tlsConfig *tls.Config
+		if httpClient.Transport != nil {
+			fallbackRT = httpClient.Transport
+			if httpTransport, ok := httpClient.Transport.(*http.Transport); ok && httpTransport.TLSClientConfig != nil {
+				tlsConfig = httpTransport.TLSClientConfig.Clone()
+			}
+		} else {
+			fallbackRT = http.DefaultTransport
+		}
+
+		poolOpts := rntbd.DefaultPoolOptions()
+		if tlsConfig != nil {
+			poolOpts.ConnectionOptions.TLSConfig = tlsConfig
+		}
+
 		directTransport = newDirectModeTransport(&DirectModeTransportOptions{
+			PoolOptions: poolOpts,
 			AddressResolver: newGatewayAddressResolver(&GatewayAddressResolverOptions{
 				AccountHost: endpoint,
+				Client:      httpClient,
 			}),
+			Fallback: fallbackRT,
 		})
 		o.Transport = directTransport
 	}
+
+	directRouter := newDirectModeRouter(5 * time.Minute)
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
@@ -143,7 +213,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, directTransport: directTransport, directRouter: directRouter}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.

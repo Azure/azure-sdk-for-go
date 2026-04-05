@@ -376,7 +376,8 @@ func TestContentSerializationFormat(t *testing.T) {
 func TestRequestHeaderCount(t *testing.T) {
 	// Java SDK has headers from 0x0000-0x0068 (105 slots)
 	// We include "NotUsed" entries to maintain ID alignment for future extensions
-	expectedCount := 100 // All defined headers including "NotUsed" placeholders
+	// Direct mode implementation added 6 additional headers (0x0064-0x0069)
+	expectedCount := 106
 
 	if len(RequestHeaders) != expectedCount {
 		t.Errorf("RequestHeaders count = %d, want %d", len(RequestHeaders), expectedCount)

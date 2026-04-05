@@ -66,6 +66,31 @@ func (e *emulatorTests) getClient(t *testing.T, tp tracing.Provider) *Client {
 	return client
 }
 
+func (e *emulatorTests) getDirectModeClient(t *testing.T, tp tracing.Provider) *Client {
+	cred, _ := NewKeyCredential(e.key)
+
+	// Create a client with a custom transport that skips TLS verification
+	// Since there's a self-signed certificate in the emulator, we need to skip verification
+	transport := &http.Client{Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}}
+
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			TracingProvider: tp,
+			Transport:       transport,
+		},
+		ConnectionMode: ConnectionModeDirect,
+	}
+
+	client, err := NewClientWithKey(e.host, cred, options)
+	if err != nil {
+		t.Fatalf("Failed to create direct mode client: %v", err)
+	}
+
+	return client
+}
+
 func (e *emulatorTests) getAadClient(t *testing.T, tp tracing.Provider) *Client {
 	cred := &emulatorTokenCredential{}
 	options := &ClientOptions{ClientOptions: azcore.ClientOptions{

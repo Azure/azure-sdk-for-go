@@ -4,17 +4,22 @@
 package rntbd
 
 import (
+	"encoding/hex"
 	"strconv"
 	"strings"
 )
 
 var httpHeaderToRntbdHeader = map[string]RequestHeader{
+	HTTPHeaderAuthorization:                             RequestHeaderAuthorizationToken,
+	HTTPHeaderXDate:                                     RequestHeaderDate,
 	HTTPHeaderConsistencyLevel:                          RequestHeaderConsistencyLevel,
 	HTTPHeaderContinuation:                              RequestHeaderContinuationToken,
 	HTTPHeaderSessionToken:                              RequestHeaderSessionToken,
 	HTTPHeaderPageSize:                                  RequestHeaderPageSize,
 	HTTPHeaderPartitionKey:                              RequestHeaderPartitionKey,
 	HTTPHeaderPartitionKeyRangeID:                       RequestHeaderPartitionKeyRangeId,
+	"x-ms-cosmos-collection-rid":                        RequestHeaderCollectionRid,
+	"x-ms-documentdb-collection-rid":                    RequestHeaderCollectionRid,
 	HTTPHeaderIndexingDirective:                         RequestHeaderIndexingDirective,
 	HTTPHeaderPreTriggerInclude:                         RequestHeaderPreTriggerInclude,
 	HTTPHeaderPostTriggerInclude:                        RequestHeaderPostTriggerInclude,
@@ -62,30 +67,35 @@ var httpHeaderToRntbdHeader = map[string]RequestHeader{
 	HTTPHeaderIfMatch:                                   RequestHeaderMatch,
 	HTTPHeaderIfModifiedSince:                           RequestHeaderIfModifiedSince,
 	BackendHeaderBinaryID:                               RequestHeaderBinaryId,
-	BackendHeaderEffectivePartitionKey:                  RequestHeaderEffectivePartitionKey,
-	BackendHeaderBindReplicaDirective:                   RequestHeaderBindReplicaDirective,
-	BackendHeaderPrimaryMasterKey:                       RequestHeaderPrimaryMasterKey,
-	BackendHeaderSecondaryMasterKey:                     RequestHeaderSecondaryMasterKey,
-	BackendHeaderPrimaryReadonlyKey:                     RequestHeaderPrimaryReadonlyKey,
-	BackendHeaderSecondaryReadonlyKey:                   RequestHeaderSecondaryReadonlyKey,
-	BackendHeaderEntityID:                               RequestHeaderEntityId,
-	BackendHeaderResourceSchemaName:                     RequestHeaderResourceSchemaName,
-	BackendHeaderIsFanoutRequest:                        RequestHeaderIsFanout,
-	BackendHeaderCollectionPartitionIndex:               RequestHeaderCollectionPartitionIndex,
-	BackendHeaderCollectionServiceIndex:                 RequestHeaderCollectionServiceIndex,
-	BackendHeaderCollectionRid:                          RequestHeaderCollectionRid,
-	BackendHeaderPartitionCount:                         RequestHeaderPartitionCount,
-	BackendHeaderPartitionResourceFilter:                RequestHeaderPartitionResourceFilter,
-	BackendHeaderEnableDynamicRidRangeAllocation:        RequestHeaderEnableDynamicRidRangeAllocation,
-	BackendHeaderExcludeSystemProperties:                RequestHeaderExcludeSystemProperties,
-	BackendHeaderBinaryPassthroughRequest:               RequestHeaderBinaryPassthroughRequest,
-	BackendHeaderTimeToLiveInSeconds:                    RequestHeaderTimeToLiveInSeconds,
-	BackendHeaderRemoteStorageType:                      RequestHeaderRemoteStorageType,
-	BackendHeaderShareThroughput:                        RequestHeaderShareThroughput,
-	BackendHeaderFanoutOperationState:                   RequestHeaderFanoutOperationState,
-	BackendHeaderRestoreParams:                          RequestHeaderRestoreParams,
-	BackendHeaderIsUserRequest:                          RequestHeaderIsUserRequest,
-	BackendHeaderAllowTentativeWrites:                   RequestHeaderAllowTentativeWrites,
+	// EffectivePartitionKey (0x005A) - Java SDK's fillTokenFromHeader doesn't handle Bytes type, so EPK is NOT sent
+	BackendHeaderBindReplicaDirective:            RequestHeaderBindReplicaDirective,
+	BackendHeaderPrimaryMasterKey:                RequestHeaderPrimaryMasterKey,
+	BackendHeaderSecondaryMasterKey:              RequestHeaderSecondaryMasterKey,
+	BackendHeaderPrimaryReadonlyKey:              RequestHeaderPrimaryReadonlyKey,
+	BackendHeaderSecondaryReadonlyKey:            RequestHeaderSecondaryReadonlyKey,
+	BackendHeaderEntityID:                        RequestHeaderEntityId,
+	BackendHeaderResourceSchemaName:              RequestHeaderResourceSchemaName,
+	BackendHeaderIsFanoutRequest:                 RequestHeaderIsFanout,
+	BackendHeaderCollectionPartitionIndex:        RequestHeaderCollectionPartitionIndex,
+	BackendHeaderCollectionServiceIndex:          RequestHeaderCollectionServiceIndex,
+	BackendHeaderCollectionRid:                   RequestHeaderCollectionRid,
+	BackendHeaderPartitionCount:                  RequestHeaderPartitionCount,
+	BackendHeaderPartitionResourceFilter:         RequestHeaderPartitionResourceFilter,
+	BackendHeaderEnableDynamicRidRangeAllocation: RequestHeaderEnableDynamicRidRangeAllocation,
+	BackendHeaderExcludeSystemProperties:         RequestHeaderExcludeSystemProperties,
+	BackendHeaderBinaryPassthroughRequest:        RequestHeaderBinaryPassthroughRequest,
+	BackendHeaderTimeToLiveInSeconds:             RequestHeaderTimeToLiveInSeconds,
+	BackendHeaderRemoteStorageType:               RequestHeaderRemoteStorageType,
+	BackendHeaderShareThroughput:                 RequestHeaderShareThroughput,
+	BackendHeaderFanoutOperationState:            RequestHeaderFanoutOperationState,
+	BackendHeaderRestoreParams:                   RequestHeaderRestoreParams,
+	BackendHeaderIsUserRequest:                   RequestHeaderIsUserRequest,
+	BackendHeaderAllowTentativeWrites:            RequestHeaderAllowTentativeWrites,
+	// Also map the "cosmos" variant of the header used by global endpoint manager
+	"x-ms-cosmos-allow-tentative-writes": RequestHeaderAllowTentativeWrites,
+	HTTPHeaderPrefer:                     RequestHeaderReturnPreference,
+	HTTPHeaderSDKSupportedCapabilities:   RequestHeaderSDKSupportedCapabilities,
+	HTTPHeaderVersion:                    RequestHeaderClientVersion,
 }
 
 var consistencyLevelMap = map[string]ConsistencyLevel{
@@ -137,7 +147,12 @@ var remoteStorageTypeMap = map[string]RemoteStorageType{
 func BuildRequestMessage(req *ServiceRequest) (*RequestMessage, error) {
 	msg := NewRequestMessage(req.ResourceType, req.OperationType, req.ActivityID)
 
-	msg.Headers.SetByte(uint16(RequestHeaderPayloadPresent), boolToByte(req.HasContent()))
+	hasPayload := req.HasContent()
+	msg.Headers.SetByte(uint16(RequestHeaderPayloadPresent), boolToByte(hasPayload))
+
+	// ContentSerializationFormat: Java SDK only sets this token when the HTTP header
+	// "x-ms-documentdb-content-serialization-format" is explicitly present (see RntbdRequestHeaders.addContentSerializationFormat).
+	// Do NOT set it unconditionally - setting it when not expected can cause server-side deserialization issues.
 
 	if req.ReplicaPath != "" {
 		msg.Headers.SetString(uint16(RequestHeaderReplicaPath), req.ReplicaPath)
@@ -147,14 +162,20 @@ func BuildRequestMessage(req *ServiceRequest) (*RequestMessage, error) {
 		msg.Headers.SetULong(uint16(RequestHeaderTransportRequestID), req.TransportRequestID)
 	}
 
-	if req.IsNameBased {
-		addNameBasedHeaders(msg.Headers, req.ResourceAddress, req.ResourceType)
-	} else if req.ResourceID != "" {
+	// Java SDK sets ResourceId BEFORE checking if name-based (see addResourceIdOrPathHeaders lines 1169-1177).
+	// "Name-based can also have ResourceId because gateway might have generated it"
+	// This means ResourceId is sent regardless of whether request is name-based or not.
+	if req.ResourceID != "" {
 		resourceIDBytes := DecodeBase64(req.ResourceID)
 		if resourceIDBytes == nil {
 			resourceIDBytes = []byte(req.ResourceID)
 		}
 		msg.Headers.SetBytes(uint16(RequestHeaderResourceId), resourceIDBytes)
+	}
+
+	// THEN add name-based path headers if this is a name-based request
+	if req.IsNameBased {
+		addNameBasedHeaders(msg.Headers, req.ResourceAddress, req.ResourceType)
 	}
 
 	for httpHeader, value := range req.Headers {
@@ -252,7 +273,12 @@ func addHeader(headers *TokenStream, httpHeader string, value string) {
 	case TokenString, TokenSmallString, TokenULongString:
 		headers.SetValue(uint16(rntbdHeader), headerInfo.Type, value) //nolint:errcheck
 	case TokenBytes, TokenSmallBytes, TokenULongBytes:
-		if decoded := DecodeBase64(value); decoded != nil {
+		// For EffectivePartitionKey, the value is a hex string that needs to be decoded
+		if rntbdHeader == RequestHeaderEffectivePartitionKey {
+			if decoded, err := hex.DecodeString(value); err == nil {
+				headers.SetValue(uint16(rntbdHeader), headerInfo.Type, decoded) //nolint:errcheck
+			}
+		} else if decoded := DecodeBase64(value); decoded != nil {
 			headers.SetValue(uint16(rntbdHeader), headerInfo.Type, decoded) //nolint:errcheck
 		} else {
 			headers.SetValue(uint16(rntbdHeader), headerInfo.Type, []byte(value)) //nolint:errcheck
@@ -304,6 +330,11 @@ func convertToByte(httpHeader string, value string) byte {
 		if storageType, ok := remoteStorageTypeMap[valueLower]; ok {
 			return byte(storageType)
 		}
+	case HTTPHeaderPrefer:
+		if strings.Contains(valueLower, "return=minimal") {
+			return 1
+		}
+		return 0
 	}
 
 	if valueLower == "true" || value == "1" {

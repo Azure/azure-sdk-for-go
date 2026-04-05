@@ -387,6 +387,9 @@
 # ServiceLabel: %Digital Twins
 # ServiceOwners:                                                   @inesk-vt @sourabhguha
 
+# ServiceLabel: %Discovery
+# ServiceOwners:                                                   @olawal @alchocro @anmaga
+
 # ServiceLabel: %Functions
 # ServiceOwners:                                                   @ahmedelnably @fabiocav
 
@@ -642,6 +645,9 @@
 
 # ServiceLabel: %ARM - Templates
 # ServiceOwners:                                                   @armleads-azure
+
+# PRLabel: %Discovery
+/sdk/resourcemanager/discovery/                                    @olawal @alchocro @anmaga
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/                                              @lirenhe @tadelesh @JiaqiZhang-Dev

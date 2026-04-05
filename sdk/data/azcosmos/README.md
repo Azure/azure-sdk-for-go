@@ -119,6 +119,91 @@ client, err := azcosmos.NewClientWithKey(endpoint, cred, options)
 
 **Note:** Control plane operations (database and container management) always use HTTPS through the gateway, regardless of connection mode. Only document operations (CRUD, queries) use the RNTBD protocol in Direct mode.
 
+## Query Optimization
+
+The SDK includes several query optimization features to reduce latency and improve throughput.
+
+### Query Plan Caching
+
+By default, query plans are cached to reduce Gateway roundtrips for repeated queries. When executing a query that requires a query plan, the SDK:
+
+1. Checks the local cache for a matching plan
+2. On cache hit, uses the cached plan (saving a Gateway roundtrip)
+3. On cache miss, fetches the plan from Gateway and caches it
+
+**Cache Configuration:**
+- **Max Size:** 5,000 entries (LRU eviction when full)
+- **TTL:** 5 minutes per entry
+- **Cache Key:** Container link + query text (SHA256 hashed)
+
+#### When to Disable Query Plan Caching
+
+You can disable caching on a per-query basis using `DisableQueryPlanCache`:
+
+```go
+pk := azcosmos.NewPartitionKeyString("myPartition")
+pager := container.NewQueryItemsPager("SELECT * FROM c", pk, &azcosmos.QueryOptions{
+    DisableQueryPlanCache: true,
+})
+```
+
+**Disable query plan caching when:**
+
+| Scenario | Reason |
+|----------|--------|
+| **Container schema changes in progress** | Avoid stale plans from old indexing policy |
+| **Dynamic/ad-hoc queries** | Prevent cache pollution from one-off unique queries |
+| **Memory-constrained environment** | Reduce memory footprint |
+| **Debugging query performance** | Force fresh plan fetch to see current execution strategy |
+| **Very few repeated queries** | Cache overhead may exceed benefit |
+
+#### Important: Use Parameterized Queries
+
+The cache key is based on the **query text only**, not parameter values. To benefit from caching, use parameterized queries:
+
+```go
+// ✅ GOOD - Same cache entry reused for different values
+query := "SELECT * FROM c WHERE c.city = @city"
+pager := container.NewQueryItemsPager(query, pk, &azcosmos.QueryOptions{
+    QueryParameters: []azcosmos.QueryParameter{
+        {Name: "@city", Value: "Seattle"},
+    },
+})
+
+// ❌ BAD - Each unique query creates a new cache entry (cache pollution)
+query := fmt.Sprintf("SELECT * FROM c WHERE c.city = '%s'", userCity)
+pager := container.NewQueryItemsPager(query, pk, nil)
+```
+
+Non-parameterized queries with embedded values will cause cache pollution, as each unique query string creates a separate cache entry.
+
+### Optimistic Direct Execution (ODE)
+
+When Direct mode is enabled, simple single-partition queries can bypass the query plan fetch entirely and execute directly against the target partition via RNTBD. This is called **Optimistic Direct Execution (ODE)**.
+
+**ODE is enabled by default** when:
+- Direct mode connection is configured
+- A partition key is provided with the query
+
+To disable ODE for a specific query:
+
+```go
+enabled := false
+pager := container.NewQueryItemsPager("SELECT * FROM c", pk, &azcosmos.QueryOptions{
+    EnableOptimisticDirectExecution: &enabled,
+})
+```
+
+**ODE Benefits:**
+- Eliminates Gateway query plan fetch latency (~350ms savings observed)
+- Reduces RU consumption (no query plan request)
+- Lower overall query latency for simple queries
+
+**When ODE may not be suitable:**
+- Complex queries with ORDER BY, GROUP BY, aggregates, DISTINCT, TOP, or OFFSET
+- Cross-partition queries
+- When you need the query plan for debugging
+
 ## Examples
 
 The following section provides several code snippets covering some of the most common Azure Cosmos DB NoSQL API tasks, including:

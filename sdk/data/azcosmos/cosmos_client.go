@@ -99,6 +99,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 		if tlsConfig != nil {
 			poolOpts.ConnectionOptions.TLSConfig = tlsConfig
 		}
+		applyDirectModeOptions(poolOpts, o)
 
 		directTransport = newDirectModeTransport(&DirectModeTransportOptions{
 			PoolOptions: poolOpts,
@@ -190,6 +191,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		if tlsConfig != nil {
 			poolOpts.ConnectionOptions.TLSConfig = tlsConfig
 		}
+		applyDirectModeOptions(poolOpts, o)
 
 		directTransport = newDirectModeTransport(&DirectModeTransportOptions{
 			PoolOptions: poolOpts,
@@ -743,5 +745,25 @@ func getAllowedHeaders() []string {
 		cosmosHeaderIsPartitionKeyDeletePending,
 		cosmosHeaderQueryExecutionInfo,
 		headerXmsItemCount,
+	}
+}
+
+func applyDirectModeOptions(poolOpts *rntbd.PoolOptions, clientOpts *ClientOptions) {
+	if clientOpts.DirectModeOptions == nil {
+		return
+	}
+	dm := clientOpts.DirectModeOptions
+	if dm.MaxRequestsPerConnection > 0 {
+		poolOpts.MaxRequestsPerConnection = dm.MaxRequestsPerConnection
+	}
+	if dm.IdleConnectionTimeout > 0 {
+		poolOpts.IdleConnectionTimeout = dm.IdleConnectionTimeout
+		poolOpts.ConnectionOptions.IdleTimeout = dm.IdleConnectionTimeout
+	}
+	if dm.MaxConnectionsPerEndpoint > 0 {
+		poolOpts.MaxConnectionsPerEndpoint = dm.MaxConnectionsPerEndpoint
+	}
+	if dm.ConnectTimeout > 0 {
+		poolOpts.ConnectionOptions.ConnectTimeout = dm.ConnectTimeout
 	}
 }

@@ -84,6 +84,30 @@ options := &azcosmos.ClientOptions{
 client, err := azcosmos.NewClientWithKey(endpoint, cred, options)
 ```
 
+#### Direct Mode Configuration Options
+
+You can tune Direct mode connection behavior with these options:
+
+```go
+options := &azcosmos.ClientOptions{
+    ConnectionMode: azcosmos.ConnectionModeDirect,
+    DirectModeOptions: &azcosmos.DirectModeOptions{
+        MaxRequestsPerConnection:  50,              // Max concurrent requests per TCP connection (default: 30)
+        IdleConnectionTimeout:     10 * time.Minute, // Idle connection timeout (default: server value)
+        MaxConnectionsPerEndpoint: 20,              // Max TCP connections per backend (default: 10)
+        ConnectTimeout:            10 * time.Second, // TCP connect timeout (default: 5s)
+    },
+}
+client, err := azcosmos.NewClientWithKey(endpoint, cred, options)
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `MaxRequestsPerConnection` | 30 | Maximum concurrent requests per TCP connection. Higher values improve throughput but increase memory usage. |
+| `IdleConnectionTimeout` | 0 (server) | Duration after which idle connections are closed. 0 uses server-provided value. |
+| `MaxConnectionsPerEndpoint` | 10 | Maximum TCP connections per backend endpoint. |
+| `ConnectTimeout` | 5s | Timeout for establishing new TCP connections. |
+
 **When to use Direct mode:**
 - Low-latency requirements for document operations
 - High-throughput scenarios

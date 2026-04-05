@@ -133,6 +133,40 @@ func ExampleClientOptions_connectionModeDirect() {
 	fmt.Println(client)
 }
 
+func ExampleClientOptions_connectionModeDirectWithOptions() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	clientOptions := azcosmos.ClientOptions{
+		ConnectionMode: azcosmos.ConnectionModeDirect,
+		DirectModeOptions: &azcosmos.DirectModeOptions{
+			MaxRequestsPerConnection:  50,
+			IdleConnectionTimeout:     10 * time.Minute,
+			MaxConnectionsPerEndpoint: 20,
+			ConnectTimeout:            10 * time.Second,
+		},
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, &clientOptions)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(client)
+}
+
 func ExampleClient_CreateDatabase() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {

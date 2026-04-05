@@ -60,6 +60,20 @@ using the RNTBD (binary) protocol over TCP. Provides lower latency and higher th
 Direct mode requires TCP connectivity to Cosmos DB backend ports (typically 10255).
 Control plane operations (database/container management) always use HTTPS via the gateway.
 
+Direct Mode Configuration: You can tune connection pool behavior for Direct mode:
+
+	options := &azcosmos.ClientOptions{
+		ConnectionMode: azcosmos.ConnectionModeDirect,
+		DirectModeOptions: &azcosmos.DirectModeOptions{
+			MaxRequestsPerConnection:  50,               // Max concurrent requests per TCP connection (default: 30)
+			IdleConnectionTimeout:     10 * time.Minute, // Idle connection timeout (default: server value)
+			MaxConnectionsPerEndpoint: 20,               // Max TCP connections per backend (default: 10)
+			ConnectTimeout:            10 * time.Second, // TCP connect timeout (default: 5s)
+		},
+	}
+	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, options)
+	handle(err)
+
 # Key Concepts
 
 The following are relevant concepts for the usage of the client:

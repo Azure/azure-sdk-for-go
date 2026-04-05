@@ -255,6 +255,7 @@ func (c *ContainerClient) CreateItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -308,6 +309,7 @@ func (c *ContainerClient) UpsertItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	addHeader := func(r *policy.Request) {
 		r.Raw().Header.Add(cosmosHeaderIsUpsert, "true")
@@ -367,6 +369,7 @@ func (c *ContainerClient) ReplaceItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -420,6 +423,7 @@ func (c *ContainerClient) ReadItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -525,6 +529,7 @@ func (c *ContainerClient) DeleteItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -596,13 +601,19 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 		headerOptionsOverride: &h,
 	}
 
-	// For now, we short-cut straight to the preview query engine if provided.
-	// In the future, we could consider running the normal pipeline until the Gateway fails due to an unsupported query and then switch over.
-	// However, this logic could also just be handled in the query engine itself.
-	if queryOptions.QueryEngine != nil {
-		return c.executeQueryWithEngine(queryOptions.QueryEngine, query, queryOptions, operationContext)
-	}
+	mode := c.selectQueryExecutionMode(partitionKey, queryOptions)
 
+	switch mode {
+	case queryModeEngine:
+		return c.executeQueryWithEngine(queryOptions.QueryEngine, query, queryOptions, operationContext)
+	case queryModeODE:
+		return c.executeQueryWithODE(query, partitionKey, queryOptions, operationContext)
+	default:
+		return c.executeQueryViaGateway(query, queryOptions, operationContext)
+	}
+}
+
+func (c *ContainerClient) executeQueryViaGateway(query string, queryOptions *QueryOptions, operationContext pipelineRequestOptions) *runtime.Pager[QueryItemsResponse] {
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
 	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
@@ -619,7 +630,6 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
-					// Use the previous page continuation if available
 					queryOptions.ContinuationToken = page.ContinuationToken
 				}
 			}
@@ -664,6 +674,7 @@ func (c *ContainerClient) PatchItem(
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &partitionKey, &h)
 
 	if o == nil {
 		o = &ItemOptions{}
@@ -720,6 +731,7 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	h := headerOptionsOverride{
 		partitionKey: &b.partitionKey,
 	}
+	c.applyDirectModeRouting(ctx, &b.partitionKey, &h)
 
 	if o == nil {
 		o = &TransactionalBatchOptions{}
@@ -914,4 +926,25 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 		return partitionKeyRangeResponse{}, err
 	}
 	return response, nil
+}
+
+func (c *ContainerClient) applyDirectModeRouting(ctx context.Context, partitionKey *PartitionKey, h *headerOptionsOverride) {
+	// Only resolve routing when Direct Mode transport is actually enabled
+	if c.database.client.directTransport == nil {
+		return
+	}
+
+	router := c.database.client.directRouter
+	if router == nil {
+		return
+	}
+
+	routingInfo, err := router.resolve(ctx, c, partitionKey)
+	if err != nil {
+		return
+	}
+
+	h.collectionRID = routingInfo.collectionRID
+	h.partitionKeyRangeID = routingInfo.partitionKeyRangeID
+	h.effectivePartitionKey = routingInfo.effectivePartitionKey
 }

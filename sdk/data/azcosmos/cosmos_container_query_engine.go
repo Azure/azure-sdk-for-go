@@ -101,9 +101,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 		},
 		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
 			if queryPipeline == nil {
-				// First page, we need to fetch the query plan and PK ranges
-				// TODO: We could proactively try to run this query against the gateway and then fall back to the engine. That's what Python does.
-				plan, err := c.getQueryPlanFromGateway(ctx, query, queryEngine.SupportedFeatures(), queryOptions, operationContext)
+				plan, err := c.getQueryPlanWithCache(ctx, query, queryEngine.SupportedFeatures(), queryOptions, operationContext)
 				if err != nil {
 					return QueryItemsResponse{}, err
 				}
@@ -112,15 +110,12 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					return QueryItemsResponse{}, err
 				}
 
-				// Create a query pipeline
 				queryPipeline, err = queryEngine.CreateQueryPipeline(query, string(plan), string(pkranges))
 				if err != nil {
 					return QueryItemsResponse{}, err
 				}
 				log.Writef(EventQueryEngine, "Created query pipeline")
 
-				// The gateway may have rewritten the query, which would be encoded in the query plan.
-				// The pipeline parsed the query plan, so we can ask it for the rewritten query.
 				query = queryPipeline.Query()
 			}
 

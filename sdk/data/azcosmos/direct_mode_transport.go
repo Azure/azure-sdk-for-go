@@ -30,10 +30,16 @@ type directModeTransport struct {
 	closed bool
 }
 
+// AddressResolver resolves backend addresses for Direct mode requests.
+// It determines the physical replica endpoints for a given request based on
+// partition key range information from request headers.
 type AddressResolver interface {
 	Resolve(ctx context.Context, req *http.Request) ([]*url.URL, error)
 }
 
+// DirectModeTransportOptions configures the Direct mode HTTP transport.
+// It allows customization of connection pooling, address resolution, and
+// fallback behavior when Direct mode cannot be used.
 type DirectModeTransportOptions struct {
 	PoolOptions     *rntbd.PoolOptions
 	AddressResolver AddressResolver
@@ -351,6 +357,9 @@ type gatewayAddressResolver struct {
 	cache map[string][]*url.URL
 }
 
+// GatewayAddressResolverOptions configures the gateway-based address resolver.
+// This resolver queries the Cosmos DB gateway to discover backend replica addresses
+// for a given partition key range.
 type GatewayAddressResolverOptions struct {
 	Client      *http.Client
 	AccountHost string
@@ -432,7 +441,7 @@ func (r *gatewayAddressResolver) fetchAddresses(ctx context.Context, collectionR
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

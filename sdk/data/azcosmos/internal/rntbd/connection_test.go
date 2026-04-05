@@ -137,7 +137,7 @@ func (s *mockServer) HandleRequest(t *testing.T, conn net.Conn, handler func(*Re
 	// Echo TransportRequestID from request to response (server behavior)
 	if token := req.Headers.Get(uint16(RequestHeaderTransportRequestID)); token != nil && token.IsPresent() {
 		if val, err := token.GetValue(); err == nil {
-			resp.Headers.SetValue(uint16(ResponseHeaderTransportRequestID), TokenULong, val)
+			_ = resp.Headers.SetValue(uint16(ResponseHeaderTransportRequestID), TokenULong, val)
 		}
 	}
 
@@ -160,9 +160,9 @@ func (s *mockServer) Close() {
 	s.closed = true
 
 	for _, conn := range s.connections {
-		conn.Close()
+		_ = conn.Close()
 	}
-	s.listener.Close()
+	_ = s.listener.Close()
 }
 
 // -----------------------------------------------------------------------------

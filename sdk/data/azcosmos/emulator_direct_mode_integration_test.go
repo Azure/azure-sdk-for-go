@@ -46,14 +46,14 @@ func newTestLogger(t *testing.T) *testLogger {
 	}
 
 	header := fmt.Sprintf("=== Log file for %s ===\nStarted: %s\n\n", testName, time.Now().Format(time.RFC3339))
-	file.WriteString(header)
+	_, _ = file.WriteString(header)
 
 	t.Logf("Logging to file: %s", logPath)
 
 	t.Cleanup(func() {
 		if file != nil {
-			file.WriteString(fmt.Sprintf("\n=== Test completed at %s ===\n", time.Now().Format(time.RFC3339)))
-			file.Close()
+			_, _ = file.WriteString(fmt.Sprintf("\n=== Test completed at %s ===\n", time.Now().Format(time.RFC3339)))
+			_ = file.Close()
 		}
 	})
 
@@ -72,7 +72,7 @@ func (l *testLogger) Log(format string, args ...any) {
 
 	if l.file != nil {
 		l.mu.Lock()
-		l.file.WriteString(fmt.Sprintf("[%s] %s\n", timestamp, msg))
+		_, _ = l.file.WriteString(fmt.Sprintf("[%s] %s\n", timestamp, msg))
 		l.mu.Unlock()
 	}
 }

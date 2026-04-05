@@ -173,7 +173,7 @@ func Dial(ctx context.Context, address *url.URL, opts *ConnectionOptions) (*Conn
 	}
 	tlsConn := tls.Client(tcpConn, tlsConfig)
 	if err := tlsConn.HandshakeContext(connectCtx); err != nil {
-		tcpConn.Close()
+		_ = tcpConn.Close()
 		return nil, fmt.Errorf("rntbd: TLS handshake failed: %w", err)
 	}
 
@@ -191,7 +191,7 @@ func Dial(ctx context.Context, address *url.URL, opts *ConnectionOptions) (*Conn
 
 	// Context negotiation
 	if err := c.negotiateContext(connectCtx); err != nil {
-		c.conn.Close()
+		_ = c.conn.Close()
 		return nil, fmt.Errorf("rntbd: context negotiation failed: %w", err)
 	}
 
@@ -226,8 +226,8 @@ func (c *Connection) negotiateContext(ctx context.Context) error {
 	// Read context response
 	// Apply deadline if context has one
 	if deadline, ok := ctx.Deadline(); ok {
-		c.conn.SetReadDeadline(deadline)
-		defer c.conn.SetReadDeadline(time.Time{})
+		_ = c.conn.SetReadDeadline(deadline)
+		defer func() { _ = c.conn.SetReadDeadline(time.Time{}) }()
 	}
 
 	context, err := DecodeContext(c.reader)
@@ -303,7 +303,7 @@ func (c *Connection) Send(ctx context.Context, req *RequestMessage) (*ResponseMe
 
 	// Assign a monotonic transport request ID for response dispatching
 	transportID := c.nextTransportReqID.Add(1)
-	req.Headers.SetValue(uint16(RequestHeaderTransportRequestID), TokenULong, transportID)
+	_ = req.Headers.SetValue(uint16(RequestHeaderTransportRequestID), TokenULong, transportID)
 
 	// Determine deadline
 	deadline, hasDeadline := ctx.Deadline()
@@ -343,14 +343,14 @@ func (c *Connection) Send(ctx context.Context, req *RequestMessage) (*ResponseMe
 	// Send request
 	c.writeMu.Lock()
 	if hasDeadline {
-		c.conn.SetWriteDeadline(deadline)
+		_ = c.conn.SetWriteDeadline(deadline)
 	}
 	_, err = c.writer.Write(data)
 	if err == nil {
 		err = c.writer.Flush()
 	}
 	if hasDeadline {
-		c.conn.SetWriteDeadline(time.Time{})
+		_ = c.conn.SetWriteDeadline(time.Time{})
 	}
 	c.writeMu.Unlock()
 
@@ -400,7 +400,7 @@ func (c *Connection) readLoop() {
 		if r := recover(); r != nil {
 			readErr := fmt.Errorf("rntbd: readLoop panic: %v", r)
 			c.failPendingRequests(readErr)
-			c.Close()
+			_ = c.Close()
 		}
 	}()
 
@@ -419,7 +419,7 @@ func (c *Connection) readLoop() {
 			}
 			// Connection error - close and fail all pending requests
 			c.failPendingRequests(fmt.Errorf("rntbd: read error: %w", err))
-			c.Close()
+			_ = c.Close()
 			return
 		}
 

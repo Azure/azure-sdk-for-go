@@ -94,7 +94,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
@@ -121,7 +121,7 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredential() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)

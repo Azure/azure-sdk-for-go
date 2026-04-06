@@ -103,7 +103,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require.Equal(shareClient.URL(), correctURL)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
@@ -130,7 +130,7 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredential() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)

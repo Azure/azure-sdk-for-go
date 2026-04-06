@@ -1921,7 +1921,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientDefaultAudience() {
 	}
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
@@ -1951,7 +1951,7 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredential() {
 	_require := require.New(s.T())
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)

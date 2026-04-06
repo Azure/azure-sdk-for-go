@@ -120,9 +120,9 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	start := now.Add(-5 * time.Minute)
 	expiry := now.Add(5 * time.Minute)
 	info := service.KeyInfo{
-		Start:            to.Ptr(start.Format(time.RFC3339)),
-		Expiry:           to.Ptr(expiry.Format(time.RFC3339)),
-		DelegatedUserTid: to.Ptr(dummyTenantID),
+		Start:                 to.Ptr(start.Format(time.RFC3339)),
+		Expiry:                to.Ptr(expiry.Format(time.RFC3339)),
+		DelegatedUserTenantID: to.Ptr(dummyTenantID),
 	}
 
 	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
@@ -702,14 +702,14 @@ func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTena
 	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
 
 	udk := exported.UserDelegationKey{
-		SignedStart:            &now,
-		SignedExpiry:           &expiry,
-		SignedService:          &serviceCode,
-		SignedVersion:          &version,
-		SignedOID:              &oid,
-		SignedTID:              &tid,
-		SignedDelegatedUserTid: &skdutid,
-		Value:                  val,
+		SignedStart:                 &now,
+		SignedExpiry:                &expiry,
+		SignedService:               &serviceCode,
+		SignedVersion:               &version,
+		SignedOID:                   &oid,
+		SignedTID:                   &tid,
+		SignedDelegatedUserTenantID: &skdutid,
+		Value:                       val,
 	}
 	udc := exported.NewUserDelegationCredential("testaccount", udk)
 

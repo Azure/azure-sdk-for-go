@@ -324,7 +324,7 @@ type KeyInfo struct {
 	Start *string `xml:"Start"`
 
 	// The delegated user tenant id in Azure AD
-	DelegatedUserTid *string `xml:"DelegatedUserTid"`
+	DelegatedUserTenantID *string `xml:"DelegatedUserTid"`
 }
 
 // ListBlobsFlatSegmentResponse - An enumeration of blobs
@@ -554,5 +554,5 @@ type UserDelegationKey struct {
 	Value *string `xml:"Value"`
 
 	// The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
-	SignedDelegatedUserTid *string `xml:"SignedDelegatedUserTid"`
+	SignedDelegatedUserTenantID *string `xml:"SignedDelegatedUserTid"`
 }

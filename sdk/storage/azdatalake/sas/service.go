@@ -226,8 +226,8 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 	udkStart, udkExpiry := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry)
 
 	var signedDelegatedUserTenantID string
-	if udk.SignedDelegatedUserTid != nil {
-		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTid
+	if udk.SignedDelegatedUserTenantID != nil {
+		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTenantID
 	}
 
 	srhNames, srhCanonicalized := formatSignedRequestHeaders(v.SignedRequestHeaders)

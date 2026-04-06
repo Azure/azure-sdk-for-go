@@ -241,8 +241,8 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
 
 	var signedDelegatedUserTenantID string
-	if udk.SignedDelegatedUserTid != nil {
-		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTid
+	if udk.SignedDelegatedUserTenantID != nil {
+		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTenantID
 	}
 
 	srhNames, srhCanonicalized := formatSignedRequestHeaders(v.SignedRequestHeaders)

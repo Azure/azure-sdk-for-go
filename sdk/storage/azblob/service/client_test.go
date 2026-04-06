@@ -1941,9 +1941,9 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	start := now.Add(-5 * time.Minute)
 	expiry := now.Add(5 * time.Minute)
 	info := service.KeyInfo{
-		Start:            to.Ptr(start.Format(time.RFC3339)),
-		Expiry:           to.Ptr(expiry.Format(time.RFC3339)),
-		DelegatedUserTid: to.Ptr(dummyTenantID),
+		Start:                 to.Ptr(start.Format(time.RFC3339)),
+		Expiry:                to.Ptr(expiry.Format(time.RFC3339)),
+		DelegatedUserTenantID: to.Ptr(dummyTenantID),
 	}
 
 	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)

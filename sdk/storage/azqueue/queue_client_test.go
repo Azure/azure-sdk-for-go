@@ -1456,14 +1456,14 @@ func (s *UnrecordedTestSuite) TestUserDelegationSASWithDelegatedUserTenantID() {
 	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
 
 	udk := exported.UserDelegationKey{
-		SignedStart:            &now,
-		SignedExpiry:           &expiry,
-		SignedService:          &serviceCode,
-		SignedVersion:          &version,
-		SignedOID:              &oid,
-		SignedTID:              &tid,
-		SignedDelegatedUserTid: &skdutid,
-		Value:                  val,
+		SignedStart:                 &now,
+		SignedExpiry:                &expiry,
+		SignedService:               &serviceCode,
+		SignedVersion:               &version,
+		SignedOID:                   &oid,
+		SignedTID:                   &tid,
+		SignedDelegatedUserTenantID: &skdutid,
+		Value:                       val,
 	}
 	udc := exported.NewUserDelegationCredential("testaccount", udk)
 

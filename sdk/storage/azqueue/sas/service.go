@@ -109,8 +109,8 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 	udkExpiry := formatTime(udk.SignedExpiry, "")
 
 	var signedDelegatedUserTenantID string
-	if udk.SignedDelegatedUserTid != nil {
-		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTid
+	if udk.SignedDelegatedUserTenantID != nil {
+		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTenantID
 	}
 
 	stringToSign := strings.Join([]string{

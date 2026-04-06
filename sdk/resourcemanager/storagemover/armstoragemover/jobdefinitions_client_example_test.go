@@ -156,7 +156,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateWith
 				IsActive:  to.Ptr(true),
 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-01T00:00:00Z"); return t }()),
 				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T12:00:00Z"); return t }()),
-				ExecutionTime: &armstoragemover.Time{
+				ExecutionTime: &armstoragemover.SchedulerTime{
 					Hour:   to.Ptr[int32](9),
 					Minute: to.Ptr(armstoragemover.MinuteZero),
 				},
@@ -199,7 +199,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateWith
 	// 				IsActive: to.Ptr(true),
 	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-01T00:00:00Z"); return t}()),
 	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T12:00:00Z"); return t}()),
-	// 				ExecutionTime: &armstoragemover.Time{
+	// 				ExecutionTime: &armstoragemover.SchedulerTime{
 	// 					Hour: to.Ptr[int32](9),
 	// 					Minute: to.Ptr(				armstoragemover.MinuteZero),
 	// 				},
@@ -324,7 +324,7 @@ func ExampleJobDefinitionsClient_Get_jobDefinitionsGetWithSchedule() {
 	// 				IsActive: to.Ptr(true),
 	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-01T00:00:00Z"); return t}()),
 	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T12:00:00Z"); return t}()),
-	// 				ExecutionTime: &armstoragemover.Time{
+	// 				ExecutionTime: &armstoragemover.SchedulerTime{
 	// 					Hour: to.Ptr[int32](9),
 	// 					Minute: to.Ptr(				armstoragemover.MinuteZero),
 	// 				},

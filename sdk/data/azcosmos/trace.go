@@ -217,12 +217,15 @@ func diagnosticsFromContext(ctx context.Context) Diagnostics {
 	return newDiagnostics(traceFromContext(ctx))
 }
 
-func ensureOperationTrace(ctx context.Context, name string) context.Context {
+func ensureOperationTrace(ctx context.Context, name string) (context.Context, func()) {
 	if traceFromContext(ctx) != nil {
-		return ctx
+		return ctx, func() {}
 	}
 
-	return withTrace(ctx, newRootTrace(name))
+	root := newRootTrace(name)
+	return withTrace(ctx, root), func() {
+		root.End()
+	}
 }
 
 func startSpan(ctx context.Context, name string, tracer aztracing.Tracer, options *azruntime.StartSpanOptions) (context.Context, func(error)) {

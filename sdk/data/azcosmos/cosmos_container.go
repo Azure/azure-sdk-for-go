@@ -480,7 +480,8 @@ func (c *ContainerClient) ReadManyItems(
 		resourceAddress: c.link,
 	}
 
-	ctx = ensureOperationTrace(ctx, fmt.Sprintf("read_many_items %s", c.id))
+	ctx, endTrace := ensureOperationTrace(ctx, fmt.Sprintf("read_many_items %s", c.id))
+	defer endTrace()
 
 	response, err := c.executeReadManyWithQueries(ctx, itemIdentities, readManyOptions, operationContext)
 	if err != nil {

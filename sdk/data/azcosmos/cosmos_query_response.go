@@ -45,14 +45,14 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 
 	result := queryServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return QueryItemsResponse{}, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	marshalledValue := make([][]byte, 0)
 	for _, e := range result.Documents {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return QueryItemsResponse{}, err
+			return response, wrapResponseError(err, response.Response)
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
@@ -86,7 +86,7 @@ func newContainersQueryResponse(resp *http.Response) (QueryContainersResponse, e
 	}
 	result := queryContainersServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return QueryContainersResponse{}, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	response.Containers = result.Containers
@@ -120,7 +120,7 @@ func newDatabasesQueryResponse(resp *http.Response) (QueryDatabasesResponse, err
 
 	result := queryDatabasesServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return QueryDatabasesResponse{}, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	response.Databases = result.Databases

@@ -158,6 +158,114 @@ func TestQueryResponseDiagnosticsIncludeQueryMetrics(t *testing.T) {
 	require.Equal(t, "retrievedDocumentCount=1", data[traceDatumKeyQueryMetrics])
 }
 
+func TestDiagnosticsFromErrorReturnsQueryParseDiagnostics(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	srv.SetResponse(
+		mock.WithBody([]byte(`{"Documents":[`)),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "query-activity"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "5.5"),
+	)
+
+	client := newTestDiagnosticsClient(t, srv, false)
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDocument,
+		resourceAddress: "dbs/test/colls/test",
+	}
+
+	resp, err := client.sendQueryRequest("/", context.Background(), "SELECT * FROM c", nil, operationContext, &QueryOptions{}, nil)
+	require.NoError(t, err)
+
+	_, err = newQueryResponse(resp)
+	require.Error(t, err)
+
+	diagnostics, ok := DiagnosticsFromError(err)
+	require.True(t, ok)
+	require.NotEmpty(t, diagnostics.String())
+
+	var parsed map[string]any
+	require.NoError(t, json.Unmarshal([]byte(diagnostics.String()), &parsed))
+
+	data := parsed["data"].(map[string]any)
+	pointStats := data[traceDatumKeyPointOperationStatistics].(map[string]any)
+	require.Equal(t, float64(http.StatusOK), pointStats["StatusCode"])
+	require.Equal(t, float64(5.5), pointStats["RequestCharge"])
+}
+
+func TestReadManyItemsDiagnosticsAreStableAfterReturn(t *testing.T) {
+	containerBody, err := json.Marshal(ContainerProperties{
+		ID: "testcontainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	})
+	require.NoError(t, err)
+
+	rangeBody, err := json.Marshal(partitionKeyRangeResponse{
+		PartitionKeyRanges: []partitionKeyRange{
+			{
+				ID:           "0",
+				MinInclusive: "",
+				MaxExclusive: "",
+			},
+		},
+		Count: 1,
+	})
+	require.NoError(t, err)
+
+	queryBody, err := json.Marshal(map[string][]map[string]string{
+		"Documents": {
+			{"id": "item1", "pk": "pk1"},
+		},
+	})
+	require.NoError(t, err)
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	srv.AppendResponse(
+		mock.WithBody(containerBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "container-read"),
+	)
+	srv.AppendResponse(
+		mock.WithBody(rangeBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "range-read"),
+	)
+	srv.AppendResponse(
+		mock.WithBody(queryBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "query-read"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.5"),
+	)
+
+	container := newTestDiagnosticsContainer(t, srv, false)
+
+	resp, err := container.ReadManyItems(context.Background(), []ItemIdentity{
+		{
+			ID:           "item1",
+			PartitionKey: NewPartitionKeyString("pk1"),
+		},
+	}, nil)
+	require.NoError(t, err)
+	require.Len(t, resp.Items, 1)
+
+	firstDuration := resp.Diagnostics.ClientElapsedTime()
+	firstPayload := resp.Diagnostics.String()
+	require.Greater(t, firstDuration, time.Duration(0))
+	require.NotEmpty(t, firstPayload)
+
+	time.Sleep(20 * time.Millisecond)
+
+	secondDuration := resp.Diagnostics.ClientElapsedTime()
+	secondPayload := resp.Diagnostics.String()
+	require.Equal(t, firstDuration, secondDuration)
+	require.Equal(t, firstPayload, secondPayload)
+}
+
 func newTestDiagnosticsClient(t *testing.T, transport policy.Transporter, withRetryPolicy bool) *Client {
 	t.Helper()
 
@@ -186,4 +294,18 @@ func newTestDiagnosticsClient(t *testing.T, transport policy.Transporter, withRe
 		internal:    internalClient,
 		gem:         gem,
 	}
+}
+
+func newTestDiagnosticsContainer(t *testing.T, transport policy.Transporter, withRetryPolicy bool) *ContainerClient {
+	t.Helper()
+
+	client := newTestDiagnosticsClient(t, transport, withRetryPolicy)
+
+	database, err := newDatabase("testdb", client)
+	require.NoError(t, err)
+
+	container, err := database.NewContainer("testcontainer")
+	require.NoError(t, err)
+
+	return container
 }

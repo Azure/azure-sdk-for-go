@@ -120,3 +120,7 @@ func wrapRequestError(err error, diagnostics Diagnostics) error {
 		diagnostics: diagnostics,
 	}
 }
+
+func wrapResponseError(err error, response Response) error {
+	return wrapRequestError(err, response.Diagnostics)
+}

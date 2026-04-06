@@ -105,7 +105,7 @@ type KeyInfo struct {
 	Expiry *string `xml:"Expiry"`
 
 	// The delegated user tenant id in Azure AD
-	DelegatedUserTid *string `xml:"DelegatedUserTid"`
+	DelegatedUserTenantID *string `xml:"DelegatedUserTid"`
 
 	// The date-time the key is active in ISO 8601 UTC time
 	Start *string `xml:"Start"`
@@ -471,5 +471,5 @@ type UserDelegationKey struct {
 	Value *string `xml:"Value"`
 
 	// The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
-	SignedDelegatedUserTid *string `xml:"SignedDelegatedUserTid"`
+	SignedDelegatedUserTenantID *string `xml:"SignedDelegatedUserTid"`
 }

@@ -70,7 +70,8 @@ directive:
     };
 ```
 
-### Fixing casing of SignedTid and SignedOid
+### Fixing casing of SignedTid and SignedOid,
+### and rename DelegatedUserTid and SignedDelegatedUserTid to DelegatedUserTenantID and DelegatedUserTenantID respectively
 
 ``` yaml
 directive:

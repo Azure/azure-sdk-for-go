@@ -111,21 +111,20 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	start := now.Add(-5 * time.Minute)
 	expiry := now.Add(5 * time.Minute)
 	info := service.KeyInfo{
-		Start:            to.Ptr(start.Format(time.RFC3339)),
-		Expiry:           to.Ptr(expiry.Format(time.RFC3339)),
+		Start:                 to.Ptr(start.Format(time.RFC3339)),
+		Expiry:                to.Ptr(expiry.Format(time.RFC3339)),
 		DelegatedUserTenantID: to.Ptr(dummyTenantID),
 	}
 
 	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
-	if err != nil {
-		testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
-	}
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
 }
 
 func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {
 	_require := require.New(s.T())
 
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
 	_require.Greater(len(accountName), 0)
 
 	cred, err := testcommon.GetGenericTokenCredential()
@@ -1042,14 +1041,14 @@ func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTena
 	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
 
 	udk := exported.UserDelegationKey{
-		SignedStart:            &now,
-		SignedExpiry:           &expiry,
-		SignedService:          &serviceCode,
-		SignedVersion:          &version,
-		SignedOID:              &oid,
-		SignedTID:              &tid,
+		SignedStart:                 &now,
+		SignedExpiry:                &expiry,
+		SignedService:               &serviceCode,
+		SignedVersion:               &version,
+		SignedOID:                   &oid,
+		SignedTID:                   &tid,
 		SignedDelegatedUserTenantID: &skdutid,
-		Value:                  val,
+		Value:                       val,
 	}
 	udc := exported.NewUserDelegationCredential("testaccount", udk)
 

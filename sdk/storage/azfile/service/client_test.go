@@ -126,9 +126,8 @@ func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredentialError() {
 	}
 
 	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
-	if err != nil {
-		testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
-	}
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }
 
 func (s *ServiceRecordedTestsSuite) TestGetUserDelegationCredential() {

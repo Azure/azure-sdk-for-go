@@ -6,15 +6,14 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/DeleteUpdateSummaries.json
+// Generated from example definition: 2026-02-01/DeleteUpdateSummaries.json
 func ExampleUpdateSummariesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +39,7 @@ func ExampleUpdateSummariesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GetUpdateSummaries.json
+// Generated from example definition: 2026-02-01/GetUpdateSummaries.json
 func ExampleUpdateSummariesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +90,7 @@ func ExampleUpdateSummariesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListUpdateSummaries.json
+// Generated from example definition: 2026-02-01/ListUpdateSummaries.json
 func ExampleUpdateSummariesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +150,7 @@ func ExampleUpdateSummariesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/PutUpdateSummaries.json
+// Generated from example definition: 2026-02-01/PutUpdateSummaries.json
 func ExampleUpdateSummariesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

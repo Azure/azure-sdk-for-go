@@ -144,7 +144,7 @@ type QueryParameters struct {
 	correlationID                string    `param:"scid"`
 	encryptionScope              string    `param:"ses"`
 	signedDelegatedUserObjectID  string    `param:"sduoid"`
-	signedDelegatedUserTenantId  string    `param:"skdutid"`
+	signedDelegatedUserTenantID  string    `param:"skdutid"`
 	signedRequestHeaders         string    `param:"srh"`
 	signedRequestQueryParameters string    `param:"srq"`
 	// private member used for startTime and expiryTime formatting.
@@ -297,9 +297,9 @@ func (p *QueryParameters) SignedDelegatedUserObjectID() string {
 	return p.signedDelegatedUserObjectID
 }
 
-// SignedDelegatedUserTenantId returns SignedDelegatedUserTenantId
-func (p *QueryParameters) SignedDelegatedUserTenantId() string {
-	return p.signedDelegatedUserTenantId
+// SignedDelegatedUserTenantID returns SignedDelegatedUserTenantID
+func (p *QueryParameters) SignedDelegatedUserTenantID() string {
+	return p.signedDelegatedUserTenantID
 }
 
 // SignedRequestHeaders returns signedRequestHeaders.
@@ -390,8 +390,8 @@ func (p *QueryParameters) Encode() string {
 	if p.signedDelegatedUserObjectID != "" {
 		v.Add("sduoid", p.signedDelegatedUserObjectID)
 	}
-	if p.signedDelegatedUserTenantId != "" {
-		v.Add("skdutid", p.signedDelegatedUserTenantId)
+	if p.signedDelegatedUserTenantID != "" {
+		v.Add("skdutid", p.signedDelegatedUserTenantID)
 	}
 	if p.signedRequestHeaders != "" {
 		v.Add("srh", p.signedRequestHeaders)
@@ -478,7 +478,7 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 		case "sduoid":
 			p.signedDelegatedUserObjectID = val
 		case "skdutid":
-			p.signedDelegatedUserTenantId = val
+			p.signedDelegatedUserTenantID = val
 		case "srh":
 			p.signedRequestHeaders = val
 		case "srq":

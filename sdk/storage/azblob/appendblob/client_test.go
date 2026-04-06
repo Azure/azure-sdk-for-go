@@ -3921,7 +3921,7 @@ func getOIDFromCredential(ctx context.Context, cred azcore.TokenCredential) (str
 	return oid, nil
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTenantId() {
+func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTenantID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

@@ -202,7 +202,7 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.UnauthorizedObjectID(), sasCompMap["suoid"])
 	require.Equal(t, parameters.SignedCorrelationID(), sasCompMap["scid"])
 	require.Equal(t, parameters.SignedDelegatedUserObjectID(), sasCompMap["sduoid"])
-	require.Equal(t, parameters.SignedDelegatedUserTenantId(), sasCompMap["skdutid"])
+	require.Equal(t, parameters.SignedDelegatedUserTenantID(), sasCompMap["skdutid"])
 }
 
 func TestSASInvalidQueryParameter(t *testing.T) {

@@ -1028,7 +1028,7 @@ func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserObje
 	_require.Contains(enc, "sduoid=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTenantId() {
+func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTenantID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

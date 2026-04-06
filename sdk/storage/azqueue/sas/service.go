@@ -108,9 +108,9 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 	udkStart := formatTime(udk.SignedStart, "")
 	udkExpiry := formatTime(udk.SignedExpiry, "")
 
-	var signedDelegatedUserTenantId string
+	var signedDelegatedUserTenantID string
 	if udk.SignedDelegatedUserTid != nil {
-		signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
+		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTid
 	}
 
 	stringToSign := strings.Join([]string{
@@ -127,7 +127,7 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
-		signedDelegatedUserTenantId,
+		signedDelegatedUserTenantID,
 		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
@@ -160,7 +160,7 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
-	p.signedDelegatedUserTenantId = signedDelegatedUserTenantId
+	p.signedDelegatedUserTenantID = signedDelegatedUserTenantID
 
 	return p, nil
 }

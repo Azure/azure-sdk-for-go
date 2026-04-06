@@ -240,9 +240,9 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 
 	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
 
-	var signedDelegatedUserTenantId string
+	var signedDelegatedUserTenantID string
 	if udk.SignedDelegatedUserTid != nil {
-		signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
+		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTid
 	}
 
 	srhNames, srhCanonicalized := formatSignedRequestHeaders(v.SignedRequestHeaders)
@@ -262,7 +262,7 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
-		signedDelegatedUserTenantId,
+		signedDelegatedUserTenantID,
 		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
@@ -321,7 +321,7 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
-	p.signedDelegatedUserTenantId = signedDelegatedUserTenantId
+	p.signedDelegatedUserTenantID = signedDelegatedUserTenantID
 
 	return p, nil
 }

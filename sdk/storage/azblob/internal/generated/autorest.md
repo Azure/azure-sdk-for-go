@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-02-06/blob.json"
+input-file: "https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/820fffd94121cfac69cd0f963964c02a45750c79/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-10-06/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -67,10 +67,10 @@ directive:
     $.items.enum.push("permissions");
 ```
 
-### Updating service version to 2026-02-06
+### Updating service version to 2026-10-06
 ```yaml
 directive:
-- from: 
+- from:
   - zz_appendblob_client.go
   - zz_blob_client.go
   - zz_blockblob_client.go
@@ -80,7 +80,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2025-11-05"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{"2026-10-06"}`, `[]string{ServiceVersion}`);
 ```
 
 ### Fix CRC Response Header in PutBlob response
@@ -127,6 +127,22 @@ directive:
         replace(/func \(client \*ContainerClient\) NewListBlobFlatSegmentPager\(.+\/\/ listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request/s, `//\n// listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request`).
         replace(/\(client \*ContainerClient\) listBlobFlatSegmentCreateRequest\(/, `(client *ContainerClient) ListBlobFlatSegmentCreateRequest(`).
         replace(/\(client \*ContainerClient\) listBlobFlatSegmentHandleResponse\(/, `(client *ContainerClient) ListBlobFlatSegmentHandleResponse(`);
+```
+
+### Remove wrapper/pager methods and export Arrow clone generated methods in container client
+
+``` yaml
+directive:
+  - from: zz_container_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*ContainerClient\) ListBlobFlatSegmentApacheArrow\(.+\/\/ listBlobFlatSegmentApacheArrowCreateRequest creates the ListBlobFlatSegmentApacheArrow request/s, `//\n// listBlobFlatSegmentApacheArrowCreateRequest creates the ListBlobFlatSegmentApacheArrow request`).
+        replace(/\(client \*ContainerClient\) listBlobFlatSegmentApacheArrowCreateRequest\(/g, `(client *ContainerClient) ListBlobFlatSegmentApacheArrowCreateRequest(`).
+        replace(/\(client \*ContainerClient\) listBlobFlatSegmentApacheArrowHandleResponse\(/g, `(client *ContainerClient) ListBlobFlatSegmentApacheArrowHandleResponse(`).
+        replace(/func \(client \*ContainerClient\) NewListBlobHierarchySegmentApacheArrowPager\(.+\/\/ listBlobHierarchySegmentApacheArrowCreateRequest creates the ListBlobHierarchySegmentApacheArrow request/s, `//\n// listBlobHierarchySegmentApacheArrowCreateRequest creates the ListBlobHierarchySegmentApacheArrow request`).
+        replace(/\(client \*ContainerClient\) listBlobHierarchySegmentApacheArrowCreateRequest\(/g, `(client *ContainerClient) ListBlobHierarchySegmentApacheArrowCreateRequest(`).
+        replace(/\(client \*ContainerClient\) listBlobHierarchySegmentApacheArrowHandleResponse\(/g, `(client *ContainerClient) ListBlobHierarchySegmentApacheArrowHandleResponse(`);
 ```
 
 ### Remove pager methods and export various generated methods in service client

@@ -3538,3 +3538,346 @@ func (s *ContainerRecordedTestsSuite) TestContainerClientCustomAudience() {
 	_, err = containerClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+// Arrow format integration tests — require a Photon-enabled storage account.
+// Set AZURE_STORAGE_ACCOUNT_NAME and AZURE_STORAGE_ACCOUNT_KEY env vars to a preprod Photon-enabled account.
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowFormat() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const blobCount = 5
+	for i := 0; i < blobCount; i++ {
+		blobName := fmt.Sprintf("arrowblob%d", i)
+		testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+	})
+
+	count := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		count += len(resp.Segment.BlobItems)
+		for _, blob := range resp.Segment.BlobItems {
+			_require.NotNil(blob.Name)
+			_require.NotNil(blob.Properties)
+		}
+	}
+	_require.Equal(blobCount, count)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowFormatFallbackToXML() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	testcommon.CreateNewBlockBlob(context.Background(), _require, "fallbackblob", containerClient)
+
+	// When the account doesn't support Arrow, it should fall back to XML transparently.
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.GreaterOrEqual(len(resp.Segment.BlobItems), 1)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowEmptyContainer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Empty(resp.Segment.BlobItems)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create blobs with different prefixes
+	for i := 0; i < 3; i++ {
+		testcommon.CreateNewBlockBlob(context.Background(), _require, fmt.Sprintf("prefix1/blob%d", i), containerClient)
+	}
+	for i := 0; i < 2; i++ {
+		testcommon.CreateNewBlockBlob(context.Background(), _require, fmt.Sprintf("prefix2/blob%d", i), containerClient)
+	}
+
+	prefix := "prefix1/"
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+		Prefix:         &prefix,
+	})
+
+	count := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		count += len(resp.Segment.BlobItems)
+		for _, blob := range resp.Segment.BlobItems {
+			_require.True(strings.HasPrefix(*blob.Name, prefix))
+		}
+	}
+	_require.Equal(3, count)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithMetadata() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := "metadatablob"
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)),
+		&blockblob.UploadOptions{Metadata: testcommon.BasicMetadata})
+	_require.NoError(err)
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+		Include:        container.ListBlobsInclude{Metadata: true},
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Segment.BlobItems, 1)
+
+		item := resp.Segment.BlobItems[0]
+		_require.Equal(blobName, *item.Name)
+		_require.NotNil(item.Metadata)
+		_require.Len(item.Metadata, len(testcommon.BasicMetadata))
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowPagination() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const blobCount = 10
+	for i := 0; i < blobCount; i++ {
+		testcommon.CreateNewBlockBlob(context.Background(), _require, fmt.Sprintf("pageblob%02d", i), containerClient)
+	}
+
+	maxResults := int32(3)
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+		MaxResults:     &maxResults,
+	})
+
+	totalCount := 0
+	pageCount := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		totalCount += len(resp.Segment.BlobItems)
+		pageCount++
+	}
+	_require.Equal(blobCount, totalCount)
+	_require.GreaterOrEqual(pageCount, 2) // Should have at least 2 pages with max 3 per page
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsHierarchyArrowFormat() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create blobs in a hierarchy
+	testcommon.CreateNewBlockBlob(context.Background(), _require, "topblob.txt", containerClient)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, "dir1/file1.txt", containerClient)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, "dir1/file2.txt", containerClient)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, "dir2/file3.txt", containerClient)
+
+	pager := containerClient.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{
+		UseArrowFormat: to.Ptr(true),
+	})
+
+	var allItems []*container.BlobItem
+	var allPrefixes []*container.BlobPrefix
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		allItems = append(allItems, resp.Segment.BlobItems...)
+		allPrefixes = append(allPrefixes, resp.Segment.BlobPrefixes...)
+	}
+
+	// Should have 1 top-level blob and 2 prefixes (dir1/, dir2/)
+	_require.Len(allItems, 1)
+	_require.Equal("topblob.txt", *allItems[0].Name)
+	_require.Len(allPrefixes, 2)
+
+	prefixNames := []string{*allPrefixes[0].Name, *allPrefixes[1].Name}
+	sort.Strings(prefixNames)
+	_require.Equal("dir1/", prefixNames[0])
+	_require.Equal("dir2/", prefixNames[1])
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowStartFromEndBefore() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create blobs with names that sort lexicographically: a, b, c, d, e
+	for _, name := range []string{"a", "b", "c", "d", "e"} {
+		testcommon.CreateNewBlockBlob(context.Background(), _require, name, containerClient)
+	}
+
+	startFrom := "b"
+	endBefore := "d"
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+		StartFrom:      &startFrom,
+		EndBefore:       &endBefore,
+	})
+
+	var names []string
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, item := range resp.Segment.BlobItems {
+			names = append(names, *item.Name)
+		}
+	}
+
+	// Should include b, c (startFrom is inclusive, endBefore is exclusive)
+	_require.Equal([]string{"b", "c"}, names)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithSnapshots() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := "snapblob"
+	testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	// Create a snapshot
+	blobClient := containerClient.NewBlobClient(blobName)
+	_, err = blobClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+		Include:        container.ListBlobsInclude{Snapshots: true},
+	})
+
+	count := 0
+	snapshotCount := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, item := range resp.Segment.BlobItems {
+			count++
+			if item.Snapshot != nil && *item.Snapshot != "" {
+				snapshotCount++
+			}
+		}
+	}
+
+	_require.GreaterOrEqual(count, 2)         // At least the blob + 1 snapshot
+	_require.GreaterOrEqual(snapshotCount, 1) // At least 1 snapshot entry
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowMatchesXML() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const blobCount = 5
+	for i := 0; i < blobCount; i++ {
+		testcommon.CreateNewBlockBlob(context.Background(), _require, fmt.Sprintf("matchblob%d", i), containerClient)
+	}
+
+	// List with XML (default)
+	xmlPager := containerClient.NewListBlobsFlatPager(nil)
+	var xmlNames []string
+	for xmlPager.More() {
+		resp, err := xmlPager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, item := range resp.Segment.BlobItems {
+			xmlNames = append(xmlNames, *item.Name)
+		}
+	}
+
+	// List with Arrow
+	arrowPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		UseArrowFormat: to.Ptr(true),
+	})
+	var arrowNames []string
+	for arrowPager.More() {
+		resp, err := arrowPager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, item := range resp.Segment.BlobItems {
+			arrowNames = append(arrowNames, *item.Name)
+		}
+	}
+
+	sort.Strings(xmlNames)
+	sort.Strings(arrowNames)
+	_require.Equal(xmlNames, arrowNames)
+}

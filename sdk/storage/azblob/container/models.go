@@ -191,6 +191,27 @@ type ListBlobsFlatOptions struct {
 	// Specifies the relative path to list paths from. For non-recursive list, only one entity level is supported; For recursive
 	// list, multiple entity levels are supported. (Inclusive)
 	StartFrom *string
+	// End listing before this blob name (exclusive). Can be combined with StartFrom for range listing.
+	// Only supported when UseArrowFormat is true.
+	EndBefore *string
+	// UseArrowFormat requests the service to return results in Apache Arrow IPC format for improved performance.
+	// If the service does not support Arrow format, it will transparently fall back to XML.
+	// Arrow format is only supported on non-HNS (hierarchical namespace) accounts via the Blob endpoint.
+	UseArrowFormat *bool
+}
+
+func (o *ListBlobsFlatOptions) formatArrow() generated.ContainerClientListBlobFlatSegmentApacheArrowOptions {
+	if o == nil {
+		return generated.ContainerClientListBlobFlatSegmentApacheArrowOptions{}
+	}
+	return generated.ContainerClientListBlobFlatSegmentApacheArrowOptions{
+		Include:    o.Include.format(),
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Prefix:     o.Prefix,
+		StartFrom:  o.StartFrom,
+		EndBefore:  o.EndBefore,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -216,9 +237,15 @@ type ListBlobsHierarchyOptions struct {
 	// Specifies the relative path to list paths from. For non-recursive list, only one entity level is supported; For recursive
 	// list, multiple entity levels are supported. (Inclusive)
 	StartFrom *string
+	// End listing before this blob name (exclusive). Can be combined with StartFrom for range listing.
+	// Only supported when UseArrowFormat is true.
+	EndBefore *string
+	// UseArrowFormat requests the service to return results in Apache Arrow IPC format for improved performance.
+	// If the service does not support Arrow format, it will transparently fall back to XML.
+	// Arrow format is only supported on non-HNS (hierarchical namespace) accounts via the Blob endpoint.
+	UseArrowFormat *bool
 }
 
-// ContainerClientListBlobHierarchySegmentOptions contains the optional parameters for the ContainerClient.ListBlobHierarchySegment method.
 func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHierarchySegmentOptions {
 	if o == nil {
 		return generated.ContainerClientListBlobHierarchySegmentOptions{}
@@ -229,6 +256,21 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
+		StartFrom:  o.StartFrom,
+	}
+}
+
+func (o *ListBlobsHierarchyOptions) formatArrow() generated.ContainerClientListBlobHierarchySegmentApacheArrowOptions {
+	if o == nil {
+		return generated.ContainerClientListBlobHierarchySegmentApacheArrowOptions{}
+	}
+	return generated.ContainerClientListBlobHierarchySegmentApacheArrowOptions{
+		Include:    o.Include.format(),
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Prefix:     o.Prefix,
+		StartFrom:  o.StartFrom,
+		EndBefore:  o.EndBefore,
 	}
 }
 

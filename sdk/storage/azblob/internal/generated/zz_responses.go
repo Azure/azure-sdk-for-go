@@ -1457,10 +1457,52 @@ type ContainerClientGetPropertiesResponse struct {
 	Version *string
 }
 
+// ContainerClientListBlobFlatSegmentApacheArrowResponse contains the response from method ContainerClient.ListBlobFlatSegmentApacheArrow.
+type ContainerClientListBlobFlatSegmentApacheArrowResponse struct {
+	// Body contains the streaming response.
+	Body io.ReadCloser
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // ContainerClientListBlobFlatSegmentResponse contains the response from method ContainerClient.NewListBlobFlatSegmentPager.
 type ContainerClientListBlobFlatSegmentResponse struct {
 	// An enumeration of blobs
 	ListBlobsFlatSegmentResponse
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// ContainerClientListBlobHierarchySegmentApacheArrowResponse contains the response from method ContainerClient.NewListBlobHierarchySegmentApacheArrowPager.
+type ContainerClientListBlobHierarchySegmentApacheArrowResponse struct {
+	// Body contains the streaming response.
+	Body io.ReadCloser
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string

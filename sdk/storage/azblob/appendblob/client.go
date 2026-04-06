@@ -211,7 +211,8 @@ func (ab *Client) AppendBlockFromURL(ctx context.Context, source string, o *Appe
 		leaseAccessConditions,
 		appendPositionAccessConditions,
 		modifiedAccessConditions,
-		sourceModifiedAccessConditions)
+		sourceModifiedAccessConditions,
+		nil)
 	return resp, err
 }
 

@@ -4,6 +4,8 @@
 
 package armavs
 
+import "time"
+
 // AddonsClientBeginCreateOrUpdateOptions contains the optional parameters for the AddonsClient.BeginCreateOrUpdate method.
 type AddonsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -208,6 +210,33 @@ type IscsiPathsClientListByPrivateCloudOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LicensesClientBeginCreateOrUpdateOptions contains the optional parameters for the LicensesClient.BeginCreateOrUpdate method.
+type LicensesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LicensesClientBeginDeleteOptions contains the optional parameters for the LicensesClient.BeginDelete method.
+type LicensesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LicensesClientGetOptions contains the optional parameters for the LicensesClient.Get method.
+type LicensesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LicensesClientGetPropertiesOptions contains the optional parameters for the LicensesClient.GetProperties method.
+type LicensesClientGetPropertiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LicensesClientListOptions contains the optional parameters for the LicensesClient.NewListPager method.
+type LicensesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LocationsClientCheckQuotaAvailabilityOptions contains the optional parameters for the LocationsClient.CheckQuotaAvailability
 // method.
 type LocationsClientCheckQuotaAvailabilityOptions struct {
@@ -219,6 +248,41 @@ type LocationsClientCheckQuotaAvailabilityOptions struct {
 type LocationsClientCheckTrialAvailabilityOptions struct {
 	// Optionally, check for a specific SKU
 	SKU *SKU
+}
+
+// MaintenancesClientGetOptions contains the optional parameters for the MaintenancesClient.Get method.
+type MaintenancesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenancesClientInitiateChecksOptions contains the optional parameters for the MaintenancesClient.InitiateChecks method.
+type MaintenancesClientInitiateChecksOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenancesClientListOptions contains the optional parameters for the MaintenancesClient.NewListPager method.
+type MaintenancesClientListOptions struct {
+	// date from which result should be returned. ie. scheduledStartTime >= from
+	From *time.Time
+
+	// Filter maintenances based on state
+	StateName *MaintenanceStateName
+
+	// Filter active or inactive maintenances
+	Status *MaintenanceStatusFilter
+
+	// date till which result should be returned. i.e. scheduledStartTime <= to
+	To *time.Time
+}
+
+// MaintenancesClientRescheduleOptions contains the optional parameters for the MaintenancesClient.Reschedule method.
+type MaintenancesClientRescheduleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenancesClientScheduleOptions contains the optional parameters for the MaintenancesClient.Schedule method.
+type MaintenancesClientScheduleOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -292,6 +356,11 @@ type PrivateCloudsClientBeginUpdateOptions struct {
 
 // PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
 type PrivateCloudsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateCloudsClientGetVcfLicenseOptions contains the optional parameters for the PrivateCloudsClient.GetVcfLicense method.
+type PrivateCloudsClientGetVcfLicenseOptions struct {
 	// placeholder for future optional parameters
 }
 

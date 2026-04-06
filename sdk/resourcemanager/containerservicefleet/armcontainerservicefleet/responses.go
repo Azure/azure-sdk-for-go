@@ -36,6 +36,35 @@ type AutoUpgradeProfilesClientListByFleetResponse struct {
 	AutoUpgradeProfileListResult
 }
 
+// FleetManagedNamespacesClientCreateOrUpdateResponse contains the response from method FleetManagedNamespacesClient.BeginCreateOrUpdate.
+type FleetManagedNamespacesClientCreateOrUpdateResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
+// FleetManagedNamespacesClientDeleteResponse contains the response from method FleetManagedNamespacesClient.BeginDelete.
+type FleetManagedNamespacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FleetManagedNamespacesClientGetResponse contains the response from method FleetManagedNamespacesClient.Get.
+type FleetManagedNamespacesClientGetResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
+// FleetManagedNamespacesClientListByFleetResponse contains the response from method FleetManagedNamespacesClient.NewListByFleetPager.
+type FleetManagedNamespacesClientListByFleetResponse struct {
+	// The response of a FleetManagedNamespace list operation.
+	FleetManagedNamespaceListResult
+}
+
+// FleetManagedNamespacesClientUpdateResponse contains the response from method FleetManagedNamespacesClient.BeginUpdate.
+type FleetManagedNamespacesClientUpdateResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
 // FleetMembersClientCreateResponse contains the response from method FleetMembersClient.BeginCreate.
 type FleetMembersClientCreateResponse struct {
 	// A member of the Fleet. It contains a reference to an existing Kubernetes cluster on Azure.
@@ -127,6 +156,24 @@ type FleetsClientListCredentialsResponse struct {
 type FleetsClientUpdateAsyncResponse struct {
 	// The Fleet resource.
 	Fleet
+}
+
+// GatesClientGetResponse contains the response from method GatesClient.Get.
+type GatesClientGetResponse struct {
+	// A Gate controls the progression during a staged rollout, e.g. in an Update Run.
+	Gate
+}
+
+// GatesClientListByFleetResponse contains the response from method GatesClient.NewListByFleetPager.
+type GatesClientListByFleetResponse struct {
+	// The response of a Gate list operation.
+	GateListResult
+}
+
+// GatesClientUpdateResponse contains the response from method GatesClient.BeginUpdate.
+type GatesClientUpdateResponse struct {
+	// A Gate controls the progression during a staged rollout, e.g. in an Update Run.
+	Gate
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

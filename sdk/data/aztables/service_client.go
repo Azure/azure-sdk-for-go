@@ -39,9 +39,10 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 		return nil, errors.New("cloud configuration is missing for Azure Tables")
 	}
 
-	audience := cfg.Audience
+	// unlike Cosmos, Azure Table Storage uses the same audience for all clouds, public and sovereign.
+	audience := "https://storage.azure.com"
 	if isCosmosEndpoint(serviceURL) {
-		audience = strings.Replace(audience, "storage", "cosmos", 1)
+		audience = cfg.Audience
 	}
 
 	plOpts := runtime.PipelineOptions{

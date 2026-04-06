@@ -12,8 +12,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/responses"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
+	"github.com/openai/openai-go/v3/option"
+	"github.com/openai/openai-go/v3/responses"
 )
 
 // Example_responsesApiTextGeneration demonstrates how to use the Azure OpenAI Responses API for text generation.
@@ -24,26 +27,26 @@ import (
 // - Delete the response to clean up
 //
 // The example uses environment variables for configuration:
-// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 // - AZURE_OPENAI_MODEL: The deployment name of your model (e.g., "gpt-4o")
 //
 // The Responses API is a new stateful API from Azure OpenAI that brings together capabilities
 // from chat completions and assistants APIs in a unified experience.
 func Example_responsesApiTextGeneration() {
-	if !CheckRequiredEnvVars("AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 	model := os.Getenv("AZURE_OPENAI_MODEL")
 
 	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "2025-03-01-preview")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Create a simple text input
 	resp, err := client.Responses.New(
@@ -100,23 +103,23 @@ func Example_responsesApiTextGeneration() {
 // - Delete both responses to clean up
 //
 // The example uses environment variables for configuration:
-// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 // - AZURE_OPENAI_MODEL: The deployment name of your model (e.g., "gpt-4o")
 func Example_responsesApiChaining() {
-	if !CheckRequiredEnvVars("AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 	model := os.Getenv("AZURE_OPENAI_MODEL")
 
 	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "2025-03-01-preview")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Create the first response
 	firstResponse, err := client.Responses.New(
@@ -176,23 +179,23 @@ func Example_responsesApiChaining() {
 // - Clean up by deleting the response
 //
 // The example uses environment variables for configuration:
-// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 // - AZURE_OPENAI_MODEL: The deployment name of your model (e.g., "gpt-4o")
 func Example_responsesApiStreaming() {
-	if !CheckRequiredEnvVars("AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 	model := os.Getenv("AZURE_OPENAI_MODEL")
 
 	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "2025-03-01-preview")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Create a streaming response
 	stream := client.Responses.NewStreaming(
@@ -211,7 +214,7 @@ func Example_responsesApiStreaming() {
 	for stream.Next() {
 		event := stream.Current()
 		if event.Type == "response.output_text.delta" {
-			fmt.Fprintf(os.Stderr, "%s", event.Delta.OfString)
+			fmt.Fprintf(os.Stderr, "%s", event.Delta)
 		}
 	}
 
@@ -232,23 +235,23 @@ func Example_responsesApiStreaming() {
 // - Delete the responses to clean up
 //
 // The example uses environment variables for configuration:
-// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 // - AZURE_OPENAI_MODEL: The deployment name of your model (e.g., "gpt-4o")
 func Example_responsesApiFunctionCalling() {
-	if !CheckRequiredEnvVars("AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 	model := os.Getenv("AZURE_OPENAI_MODEL")
 
 	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "2025-03-01-preview")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Define the get_weather function parameters as a JSON schema
 	paramSchema := map[string]interface{}{
@@ -319,7 +322,9 @@ func Example_responsesApiFunctionCalling() {
 						{
 							OfFunctionCallOutput: &responses.ResponseInputItemFunctionCallOutputParam{
 								CallID: functionCallID,
-								Output: functionOutput,
+								Output: responses.ResponseInputItemFunctionCallOutputOutputUnionParam{
+									OfString: openai.String(functionOutput),
+								},
 							},
 						},
 					},
@@ -355,26 +360,26 @@ func Example_responsesApiFunctionCalling() {
 // - Process the response
 //
 // The example uses environment variables for configuration:
-// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 // - AZURE_OPENAI_MODEL: The deployment name of your model (e.g., "gpt-4o")
 //
 // Note: This example fetches and encodes an image from a URL because there is a known issue with image url
 // based image input. Currently only base64 encoded images are supported.
 func Example_responsesApiImageInput() {
-	if !CheckRequiredEnvVars("AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 	model := os.Getenv("AZURE_OPENAI_MODEL")
 
 	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "2025-03-01-preview")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Image URL to fetch and encode, you can also use a local file path
 	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
@@ -386,7 +391,12 @@ func Example_responsesApiImageInput() {
 		fmt.Fprintf(os.Stderr, "ERROR fetching image: %s\n", err)
 		return
 	}
-	defer httpResp.Body.Close()
+
+	defer func() {
+		if err := httpResp.Body.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+		}
+	}()
 
 	imgBytes, err := io.ReadAll(httpResp.Body)
 	if err != nil {
@@ -464,23 +474,23 @@ func Example_responsesApiImageInput() {
 // - Process the response
 //
 // The example uses environment variables for configuration:
-// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 // - AZURE_OPENAI_MODEL: The deployment name of your model (e.g., "gpt-4o")
 func Example_responsesApiReasoning() {
-	if !CheckRequiredEnvVars("AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 	model := os.Getenv("AZURE_OPENAI_MODEL")
 
 	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "2025-03-01-preview")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Create a response with reasoning enabled
 	// This will make the model show its step-by-step reasoning

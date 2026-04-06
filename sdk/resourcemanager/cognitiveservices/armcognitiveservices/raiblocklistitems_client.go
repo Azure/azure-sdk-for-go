@@ -27,7 +27,7 @@ type RaiBlocklistItemsClient struct {
 // NewRaiBlocklistItemsClient creates a new instance of RaiBlocklistItemsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRaiBlocklistItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiBlocklistItemsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewRaiBlocklistItemsClient(subscriptionID string, credential azcore.TokenCr
 // BatchAdd - Batch operation to add blocklist items.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
@@ -96,7 +96,7 @@ func (client *RaiBlocklistItemsClient) batchAddCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiBlocklistItems); err != nil {
@@ -117,7 +117,7 @@ func (client *RaiBlocklistItemsClient) batchAddHandleResponse(resp *http.Respons
 // BatchDelete - Batch operation to delete blocklist items.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
@@ -169,7 +169,7 @@ func (client *RaiBlocklistItemsClient) batchDeleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiBlocklistItemsNames); err != nil {
@@ -181,7 +181,7 @@ func (client *RaiBlocklistItemsClient) batchDeleteCreateRequest(ctx context.Cont
 // CreateOrUpdate - Update the state of specified blocklist item associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
@@ -239,7 +239,7 @@ func (client *RaiBlocklistItemsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiBlocklistItem); err != nil {
@@ -260,7 +260,7 @@ func (client *RaiBlocklistItemsClient) createOrUpdateHandleResponse(resp *http.R
 // BeginDelete - Deletes the specified blocklist Item associated with the custom blocklist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
@@ -288,7 +288,7 @@ func (client *RaiBlocklistItemsClient) BeginDelete(ctx context.Context, resource
 // Delete - Deletes the specified blocklist Item associated with the custom blocklist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 func (client *RaiBlocklistItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiBlocklistItemsClient.BeginDelete"
@@ -338,7 +338,7 @@ func (client *RaiBlocklistItemsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,7 +347,7 @@ func (client *RaiBlocklistItemsClient) deleteCreateRequest(ctx context.Context, 
 // Get - Gets the specified custom blocklist Item associated with the custom blocklist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
@@ -403,7 +403,7 @@ func (client *RaiBlocklistItemsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -420,7 +420,7 @@ func (client *RaiBlocklistItemsClient) getHandleResponse(resp *http.Response) (R
 
 // NewListPager - Gets the blocklist items associated with the custom blocklist.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
@@ -473,7 +473,7 @@ func (client *RaiBlocklistItemsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,5 +1,51 @@
 # Release History
 
+## 3.1.0-beta.3 (2025-10-09)
+### Breaking Changes
+
+- Function `*APIKeysClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *APIKeysClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, DeploymentAPIKeyRequest, *APIKeysClientCreateOrUpdateOptions)`
+- Function `*CertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *CertificatesClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, Certificate, *CertificatesClientBeginCreateOrUpdateOptions)`
+- Function `*ConfigurationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *ConfigurationsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, ConfigurationRequest, *ConfigurationsClientBeginCreateOrUpdateOptions)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, *DeploymentsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Deployment, *DeploymentsClientBeginCreateOrUpdateOptions)`
+- Function `*DeploymentsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, *DeploymentsClientBeginUpdateOptions)` to `(context.Context, string, string, DeploymentUpdateParameters, *DeploymentsClientBeginUpdateOptions)`
+- Type of `OperationListResult.Value` has been changed from `[]*OperationResult` to `[]*Operation`
+- Struct `OperationResult` has been removed
+- Field `Body` of struct `APIKeysClientCreateOrUpdateOptions` has been removed
+- Field `Body` of struct `CertificatesClientBeginCreateOrUpdateOptions` has been removed
+- Field `Body` of struct `ConfigurationsClientBeginCreateOrUpdateOptions` has been removed
+- Field `Body` of struct `DeploymentsClientBeginCreateOrUpdateOptions` has been removed
+- Field `Body` of struct `DeploymentsClientBeginUpdateOptions` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `NginxDeploymentWafPolicyApplyingStatusCode` with values `NginxDeploymentWafPolicyApplyingStatusCodeApplying`, `NginxDeploymentWafPolicyApplyingStatusCodeFailed`, `NginxDeploymentWafPolicyApplyingStatusCodeNotApplied`, `NginxDeploymentWafPolicyApplyingStatusCodeRemoving`, `NginxDeploymentWafPolicyApplyingStatusCodeSucceeded`
+- New enum type `NginxDeploymentWafPolicyCompilingStatusCode` with values `NginxDeploymentWafPolicyCompilingStatusCodeFailed`, `NginxDeploymentWafPolicyCompilingStatusCodeInProgress`, `NginxDeploymentWafPolicyCompilingStatusCodeNotStarted`, `NginxDeploymentWafPolicyCompilingStatusCodeSucceeded`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New function `*ClientFactory.NewDefaultWafPolicyClient() *DefaultWafPolicyClient`
+- New function `*ClientFactory.NewWafPolicyClient() *WafPolicyClient`
+- New function `NewDefaultWafPolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DefaultWafPolicyClient, error)`
+- New function `*DefaultWafPolicyClient.List(context.Context, string, string, *DefaultWafPolicyClientListOptions) (DefaultWafPolicyClientListResponse, error)`
+- New function `NewWafPolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WafPolicyClient, error)`
+- New function `*WafPolicyClient.BeginCreate(context.Context, string, string, string, DeploymentWafPolicy, *WafPolicyClientBeginCreateOptions) (*runtime.Poller[WafPolicyClientCreateResponse], error)`
+- New function `*WafPolicyClient.BeginDelete(context.Context, string, string, string, *WafPolicyClientBeginDeleteOptions) (*runtime.Poller[WafPolicyClientDeleteResponse], error)`
+- New function `*WafPolicyClient.Get(context.Context, string, string, string, *WafPolicyClientGetOptions) (WafPolicyClientGetResponse, error)`
+- New function `*WafPolicyClient.NewListPager(string, string, *WafPolicyClientListOptions) *runtime.Pager[WafPolicyClientListResponse]`
+- New struct `DeploymentDefaultWafPolicyListResponse`
+- New struct `DeploymentDefaultWafPolicyProperties`
+- New struct `DeploymentWafPolicy`
+- New struct `DeploymentWafPolicyApplyingStatus`
+- New struct `DeploymentWafPolicyCompilingStatus`
+- New struct `DeploymentWafPolicyListResponse`
+- New struct `DeploymentWafPolicyMetadata`
+- New struct `DeploymentWafPolicyMetadataProperties`
+- New struct `DeploymentWafPolicyProperties`
+- New struct `Operation`
+- New field `SystemData` in struct `DeploymentAPIKeyRequest`
+- New field `SystemData` in struct `DeploymentAPIKeyResponse`
+- New field `WafRelease` in struct `WebApplicationFirewallStatus`
+
+
 ## 3.1.0-beta.2 (2025-02-27)
 ### Breaking Changes
 

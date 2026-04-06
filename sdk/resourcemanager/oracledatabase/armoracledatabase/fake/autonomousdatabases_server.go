@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -20,6 +20,10 @@ import (
 
 // AutonomousDatabasesServer is a fake server for instances of the armoracledatabase.AutonomousDatabasesClient type.
 type AutonomousDatabasesServer struct {
+	// BeginAction is the fake for method AutonomousDatabasesClient.BeginAction
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginAction func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.AutonomousDatabaseLifecycleAction, options *armoracledatabase.AutonomousDatabasesClientBeginActionOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientActionResponse], errResp azfake.ErrorResponder)
+
 	// BeginChangeDisasterRecoveryConfiguration is the fake for method AutonomousDatabasesClient.BeginChangeDisasterRecoveryConfiguration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginChangeDisasterRecoveryConfiguration func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.DisasterRecoveryConfigurationDetails, options *armoracledatabase.AutonomousDatabasesClientBeginChangeDisasterRecoveryConfigurationOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientChangeDisasterRecoveryConfigurationResponse], errResp azfake.ErrorResponder)
@@ -75,6 +79,7 @@ type AutonomousDatabasesServer struct {
 func NewAutonomousDatabasesServerTransport(srv *AutonomousDatabasesServer) *AutonomousDatabasesServerTransport {
 	return &AutonomousDatabasesServerTransport{
 		srv:                                      srv,
+		beginAction:                              newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientActionResponse]](),
 		beginChangeDisasterRecoveryConfiguration: newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientChangeDisasterRecoveryConfigurationResponse]](),
 		beginCreateOrUpdate:                      newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse]](),
 		beginDelete:                              newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientDeleteResponse]](),
@@ -92,6 +97,7 @@ func NewAutonomousDatabasesServerTransport(srv *AutonomousDatabasesServer) *Auto
 // Don't use this type directly, use NewAutonomousDatabasesServerTransport instead.
 type AutonomousDatabasesServerTransport struct {
 	srv                                      *AutonomousDatabasesServer
+	beginAction                              *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientActionResponse]]
 	beginChangeDisasterRecoveryConfiguration *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientChangeDisasterRecoveryConfigurationResponse]]
 	beginCreateOrUpdate                      *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse]]
 	beginDelete                              *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientDeleteResponse]]
@@ -127,6 +133,8 @@ func (a *AutonomousDatabasesServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
+			case "AutonomousDatabasesClient.BeginAction":
+				res.resp, res.err = a.dispatchBeginAction(req)
 			case "AutonomousDatabasesClient.BeginChangeDisasterRecoveryConfiguration":
 				res.resp, res.err = a.dispatchBeginChangeDisasterRecoveryConfiguration(req)
 			case "AutonomousDatabasesClient.BeginCreateOrUpdate":
@@ -168,6 +176,54 @@ func (a *AutonomousDatabasesServerTransport) dispatchToMethodFake(req *http.Requ
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (a *AutonomousDatabasesServerTransport) dispatchBeginAction(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginAction == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAction not implemented")}
+	}
+	beginAction := a.beginAction.get(req)
+	if beginAction == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/action`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.AutonomousDatabaseLifecycleAction](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginAction(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginAction = &respr
+		a.beginAction.add(req, beginAction)
+	}
+
+	resp, err := server.PollerResponderNext(beginAction, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginAction.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginAction) {
+		a.beginAction.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (a *AutonomousDatabasesServerTransport) dispatchBeginChangeDisasterRecoveryConfiguration(req *http.Request) (*http.Response, error) {

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -13,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/require"
 	"golang.org/x/net/http2"
 )
 
@@ -225,7 +223,7 @@ func TestComplexResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 	if string(r) != body {
 		t.Fatalf("unexpected response body %s", string(r))
 	}
@@ -259,7 +257,7 @@ func TestComplexResponseTLS(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 	if string(r) != body {
 		t.Fatalf("unexpected response body %s", string(r))
 	}
@@ -297,7 +295,7 @@ func TestTLSServerConfig(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 	if string(r) != body {
 		t.Fatalf("unexpected response body %s", string(r))
 	}
@@ -322,7 +320,7 @@ func TestBodyReadError(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error reading response body")
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 }
 
 func TestPredicateSuccess(t *testing.T) {

@@ -33,8 +33,7 @@ func ParseTypeSpecTemplates(templateDir, outputDir string, data map[string]any, 
 		}
 		defer w.Close()
 
-		err = tpl.ExecuteTemplate(w, t.Name(), data)
-		if err != nil {
+		if err = tpl.ExecuteTemplate(w, t.Name(), data); err != nil {
 			return err
 		}
 	}

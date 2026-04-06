@@ -113,6 +113,30 @@ func (c *ClientFactory) NewDatabaseClient() *DatabaseClient {
 	}
 }
 
+// NewFleetClient creates a new instance of FleetClient.
+func (c *ClientFactory) NewFleetClient() *FleetClient {
+	return &FleetClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFleetspaceAccountClient creates a new instance of FleetspaceAccountClient.
+func (c *ClientFactory) NewFleetspaceAccountClient() *FleetspaceAccountClient {
+	return &FleetspaceAccountClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFleetspaceClient creates a new instance of FleetspaceClient.
+func (c *ClientFactory) NewFleetspaceClient() *FleetspaceClient {
+	return &FleetspaceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewGremlinResourcesClient creates a new instance of GremlinResourcesClient.
 func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 	return &GremlinResourcesClient{

@@ -73,6 +73,13 @@ type AutonomousDatabaseVersionsClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AutonomousDatabasesClientBeginActionOptions contains the optional parameters for the AutonomousDatabasesClient.BeginAction
+// method.
+type AutonomousDatabasesClientBeginActionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // AutonomousDatabasesClientBeginChangeDisasterRecoveryConfigurationOptions contains the optional parameters for the AutonomousDatabasesClient.BeginChangeDisasterRecoveryConfiguration
 // method.
 type AutonomousDatabasesClientBeginChangeDisasterRecoveryConfigurationOptions struct {
@@ -155,6 +162,13 @@ type AutonomousDatabasesClientListBySubscriptionOptions struct {
 // CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions contains the optional parameters for the CloudExadataInfrastructuresClient.BeginAddStorageCapacity
 // method.
 type CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CloudExadataInfrastructuresClientBeginConfigureExascaleOptions contains the optional parameters for the CloudExadataInfrastructuresClient.BeginConfigureExascale
+// method.
+type CloudExadataInfrastructuresClientBeginConfigureExascaleOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -311,8 +325,76 @@ type DbSystemShapesClientGetOptions struct {
 // DbSystemShapesClientListByLocationOptions contains the optional parameters for the DbSystemShapesClient.NewListByLocationPager
 // method.
 type DbSystemShapesClientListByLocationOptions struct {
+	// Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
+	ShapeAttribute *string
+
 	// Filters the result for the given Azure Availability Zone
 	Zone *string
+}
+
+// DbSystemsClientBeginCreateOrUpdateOptions contains the optional parameters for the DbSystemsClient.BeginCreateOrUpdate
+// method.
+type DbSystemsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DbSystemsClientBeginDeleteOptions contains the optional parameters for the DbSystemsClient.BeginDelete method.
+type DbSystemsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DbSystemsClientBeginUpdateOptions contains the optional parameters for the DbSystemsClient.BeginUpdate method.
+type DbSystemsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DbSystemsClientGetOptions contains the optional parameters for the DbSystemsClient.Get method.
+type DbSystemsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DbSystemsClientListByResourceGroupOptions contains the optional parameters for the DbSystemsClient.NewListByResourceGroupPager
+// method.
+type DbSystemsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DbSystemsClientListBySubscriptionOptions contains the optional parameters for the DbSystemsClient.NewListBySubscriptionPager
+// method.
+type DbSystemsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DbVersionsClientGetOptions contains the optional parameters for the DbVersionsClient.Get method.
+type DbVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DbVersionsClientListByLocationOptions contains the optional parameters for the DbVersionsClient.NewListByLocationPager
+// method.
+type DbVersionsClientListByLocationOptions struct {
+	// The DB system AzureId. If provided, filters the results to the set of database versions which are supported for the DB
+	// system.
+	DbSystemID *string
+
+	// If provided, filters the results to the set of database versions which are supported for the given shape. e.g., VM.Standard.E5.Flex
+	DbSystemShape *BaseDbSystemShapes
+
+	// If true, filters the results to the set of Oracle Database versions that are supported for the database software images.
+	IsDatabaseSoftwareImageSupported *bool
+
+	// If true, filters the results to the set of database versions which are supported for Upgrade.
+	IsUpgradeSupported *bool
+
+	// If provided, filters the results to the set of database versions which are supported for the given shape family.
+	ShapeFamily *ShapeFamilyType
+
+	// The DB system storage management option. Used to list database versions available for that storage manager. Valid values
+	// are ASM and LVM.
+	StorageManagement *StorageManagementType
 }
 
 // ExadbVMClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ExadbVMClustersClient.BeginCreateOrUpdate
@@ -451,8 +533,47 @@ type GiVersionsClientListByLocationOptions struct {
 	// If provided, filters the results for the given shape
 	Shape *SystemShapes
 
+	// Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
+	ShapeAttribute *string
+
 	// Filters the result for the given Azure Availability Zone
 	Zone *string
+}
+
+// NetworkAnchorsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkAnchorsClient.BeginCreateOrUpdate
+// method.
+type NetworkAnchorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkAnchorsClientBeginDeleteOptions contains the optional parameters for the NetworkAnchorsClient.BeginDelete method.
+type NetworkAnchorsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkAnchorsClientBeginUpdateOptions contains the optional parameters for the NetworkAnchorsClient.BeginUpdate method.
+type NetworkAnchorsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkAnchorsClientGetOptions contains the optional parameters for the NetworkAnchorsClient.Get method.
+type NetworkAnchorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkAnchorsClientListByResourceGroupOptions contains the optional parameters for the NetworkAnchorsClient.NewListByResourceGroupPager
+// method.
+type NetworkAnchorsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkAnchorsClientListBySubscriptionOptions contains the optional parameters for the NetworkAnchorsClient.NewListBySubscriptionPager
+// method.
+type NetworkAnchorsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -517,6 +638,42 @@ type OracleSubscriptionsClientGetOptions struct {
 // OracleSubscriptionsClientListBySubscriptionOptions contains the optional parameters for the OracleSubscriptionsClient.NewListBySubscriptionPager
 // method.
 type OracleSubscriptionsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceAnchorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceAnchorsClient.BeginCreateOrUpdate
+// method.
+type ResourceAnchorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ResourceAnchorsClientBeginDeleteOptions contains the optional parameters for the ResourceAnchorsClient.BeginDelete method.
+type ResourceAnchorsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ResourceAnchorsClientBeginUpdateOptions contains the optional parameters for the ResourceAnchorsClient.BeginUpdate method.
+type ResourceAnchorsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ResourceAnchorsClientGetOptions contains the optional parameters for the ResourceAnchorsClient.Get method.
+type ResourceAnchorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceAnchorsClientListByResourceGroupOptions contains the optional parameters for the ResourceAnchorsClient.NewListByResourceGroupPager
+// method.
+type ResourceAnchorsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceAnchorsClientListBySubscriptionOptions contains the optional parameters for the ResourceAnchorsClient.NewListBySubscriptionPager
+// method.
+type ResourceAnchorsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

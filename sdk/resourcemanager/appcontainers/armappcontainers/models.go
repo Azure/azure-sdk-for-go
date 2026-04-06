@@ -281,6 +281,9 @@ type AzureFileProperties struct {
 	// Storage account key for azure file.
 	AccountKey *string
 
+	// Storage account key stored as an Azure Key Vault secret.
+	AccountKeyVaultProperties *SecretKeyVaultProperties
+
 	// Storage account name for azure file.
 	AccountName *string
 
@@ -431,6 +434,9 @@ type CertificateProperties struct {
 	// PFX or PEM blob
 	Value []byte
 
+	// READ-ONLY; Any errors that occurred during deployment or deployment validation
+	DeploymentErrors *string
+
 	// READ-ONLY; Certificate expiration date.
 	ExpirationDate *time.Time
 
@@ -558,6 +564,12 @@ type ConnectedEnvironmentCollection struct {
 	NextLink *string
 }
 
+// ConnectedEnvironmentPatchResource - Connected environment patch properties
+type ConnectedEnvironmentPatchResource struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // ConnectedEnvironmentProperties - ConnectedEnvironment resource specific properties
 type ConnectedEnvironmentProperties struct {
 	// Custom domain configuration for the environment
@@ -601,6 +613,12 @@ type ConnectedEnvironmentStorage struct {
 type ConnectedEnvironmentStorageProperties struct {
 	// Azure file properties
 	AzureFile *AzureFileProperties
+
+	// READ-ONLY; Any errors that occurred during deployment or deployment validation
+	DeploymentErrors *string
+
+	// READ-ONLY; Provisioning state of the storage.
+	ProvisioningState *ConnectedEnvironmentStorageProvisioningState
 }
 
 // ConnectedEnvironmentStoragesCollection - Collection of Storage for Environments
@@ -647,6 +665,9 @@ type ContainerApp struct {
 	// managed identities for the Container App to interact with other Azure services without maintaining any secrets or credentials
 	// in code.
 	Identity *ManagedServiceIdentity
+
+	// Metadata to represent the container app kind, representing if a container app is workflowapp or functionapp.
+	Kind *Kind
 
 	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
 	// Azure resource. If this is present, complete mode deployment will not
@@ -1048,6 +1069,9 @@ type CustomScaleRule struct {
 
 // Dapr - Container App Dapr configuration.
 type Dapr struct {
+	// Dapr application health check configuration
+	AppHealth *DaprAppHealth
+
 	// Dapr application identifier
 	AppID *string
 
@@ -1072,6 +1096,27 @@ type Dapr struct {
 
 	// Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
 	LogLevel *LogLevel
+
+	// Maximum number of concurrent requests, events handled by the Dapr sidecar
+	MaxConcurrency *int32
+}
+
+// DaprAppHealth - Dapr application health check configuration
+type DaprAppHealth struct {
+	// Boolean indicating if the health probe is enabled
+	Enabled *bool
+
+	// Path for the health probe
+	Path *string
+
+	// Interval for the health probe in seconds
+	ProbeIntervalSeconds *int32
+
+	// Timeout for the health probe in milliseconds
+	ProbeTimeoutMilliseconds *int32
+
+	// Threshold for the health probe
+	Threshold *int32
 }
 
 // DaprComponent - Dapr Component.
@@ -1117,6 +1162,12 @@ type DaprComponentProperties struct {
 
 	// Component version
 	Version *string
+
+	// READ-ONLY; Any errors that occurred during deployment or deployment validation
+	DeploymentErrors *string
+
+	// READ-ONLY; Provisioning state of the Dapr Component.
+	ProvisioningState *DaprComponentProvisioningState
 }
 
 // DaprComponentsCollection - Dapr Components ARM resource.
@@ -1450,6 +1501,33 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// ErrorEntity - Body of the error response returned from the API.
+type ErrorEntity struct {
+	// Basic error code.
+	Code *string
+
+	// Error Details.
+	Details []*ErrorEntity
+
+	// Type of error.
+	ExtendedCode *string
+
+	// Inner errors.
+	InnerErrors []*ErrorEntity
+
+	// Any details of the error.
+	Message *string
+
+	// Message template.
+	MessageTemplate *string
+
+	// Parameters for the template.
+	Parameters []*string
+
+	// The error target.
+	Target *string
+}
+
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
@@ -1562,6 +1640,114 @@ type Google struct {
 
 	// The configuration settings of the Azure Active Directory token validation flow.
 	Validation *AllowedAudiencesValidation
+}
+
+// HTTPRoute - Http Routes, including paths to match on and whether or not rewrites are to be done.
+type HTTPRoute struct {
+	// Once route is matched, what is the desired action
+	Action *HTTPRouteAction
+
+	// Conditions route will match on
+	Match *HTTPRouteMatch
+}
+
+// HTTPRouteAction - Action to perform once matching of routes is done
+type HTTPRouteAction struct {
+	// Rewrite prefix, default is no rewrites
+	PrefixRewrite *string
+}
+
+// HTTPRouteConfig - A set of host names and http request routing rules for a Container App Environment
+type HTTPRouteConfig struct {
+	// Http Route Config properties
+	Properties *HTTPRouteConfigProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// HTTPRouteConfigCollection - Collection of rule based Http Route Config resources.
+type HTTPRouteConfigCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*HTTPRouteConfig
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// HTTPRouteConfigProperties - Http Route Config properties
+type HTTPRouteConfigProperties struct {
+	// Custom domain bindings for Http Routes' hostnames.
+	CustomDomains []*CustomDomain
+
+	// Routing Rules for the Http Route resource.
+	Rules []*HTTPRouteRule
+
+	// READ-ONLY; FQDN of the route resource.
+	Fqdn *string
+
+	// READ-ONLY; List of errors when trying to reconcile http routes
+	ProvisioningErrors []*HTTPRouteProvisioningErrors
+
+	// READ-ONLY; The provisioning state of the Http Route Config
+	ProvisioningState *HTTPRouteProvisioningState
+}
+
+// HTTPRouteMatch - Criteria to match on
+type HTTPRouteMatch struct {
+	// path case sensitive, default is true
+	CaseSensitive *bool
+
+	// match on exact path
+	Path *string
+
+	// match on all prefix's. Not exact
+	PathSeparatedPrefix *string
+
+	// match on all prefix's. Not exact
+	Prefix *string
+}
+
+// HTTPRouteProvisioningErrors - List of provisioning errors for a Http Route Config object
+type HTTPRouteProvisioningErrors struct {
+	// READ-ONLY; Description or error message
+	Message *string
+
+	// READ-ONLY; Timestamp error occured at
+	Timestamp *time.Time
+}
+
+// HTTPRouteRule - A set of routing conditions and targets.
+type HTTPRouteRule struct {
+	// Description of rule. Optional.
+	Description *string
+
+	// Routing configuration that will allow matches on specific paths/headers.
+	Routes []*HTTPRoute
+
+	// Targets- container apps, revisions, labels
+	Targets []*HTTPRouteTarget
+}
+
+// HTTPRouteTarget - Targets - Container App Names, Revision Names, Labels.
+type HTTPRouteTarget struct {
+	// REQUIRED; Container App Name to route requests to
+	ContainerApp *string
+
+	// Label to route requests to
+	Label *string
+
+	// Revision to route requests to
+	Revision *string
 }
 
 // HTTPScaleRule - Container App container Http scaling rule.
@@ -1693,6 +1879,21 @@ type Ingress struct {
 
 	// READ-ONLY; Hostname.
 	Fqdn *string
+}
+
+// IngressConfiguration - Settings for the ingress component, including workload profile, scaling, and connection handling.
+type IngressConfiguration struct {
+	// Maximum number of headers per request allowed by the ingress. Must be at least 1. Defaults to 100.
+	HeaderCountLimit *int32
+
+	// Duration (in minutes) before idle requests are timed out. Must be between 4 and 30 inclusive. Defaults to 4 minutes.
+	RequestIdleTimeout *int32
+
+	// Time (in seconds) to allow active connections to complete on termination. Must be between 0 and 3600. Defaults to 480 seconds.
+	TerminationGracePeriodSeconds *int32
+
+	// Name of the workload profile used by the ingress component. Required.
+	WorkloadProfileName *string
 }
 
 // IngressPortMapping - Port mappings of container app ingress
@@ -2148,6 +2349,21 @@ type LogAnalyticsConfiguration struct {
 	SharedKey *string
 }
 
+// LogicApp - A logic app extension resource
+type LogicApp struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // Login - The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization.
 type Login struct {
 	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part
@@ -2181,6 +2397,33 @@ type LoginRoutes struct {
 type LoginScopes struct {
 	// A list of the scopes that should be requested while authenticating.
 	Scopes []*string
+}
+
+// MaintenanceConfigurationCollection - The response of list maintenance configuration resources.
+type MaintenanceConfigurationCollection struct {
+	// Results of the list maintenance configuration resources.
+	Value []*MaintenanceConfigurationResource
+
+	// READ-ONLY; Link for next page of results.
+	NextLink *string
+}
+
+// MaintenanceConfigurationResource - Information about the Maintenance Configuration resource.
+type MaintenanceConfigurationResource struct {
+	// The resource-specific properties for this resource.
+	Properties *ScheduledEntries
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ManagedCertificate - Managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment
@@ -2293,6 +2536,9 @@ type ManagedEnvironmentProperties struct {
 	// subscription as the subnet.
 	InfrastructureResourceGroup *string
 
+	// Ingress configuration for the Managed Environment.
+	IngressConfiguration *IngressConfiguration
+
 	// The configuration of Keda component.
 	KedaConfiguration *KedaConfiguration
 
@@ -2301,6 +2547,9 @@ type ManagedEnvironmentProperties struct {
 
 	// Peer traffic settings for the Managed Environment
 	PeerTrafficConfiguration *ManagedEnvironmentPropertiesPeerTrafficConfiguration
+
+	// Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled'.
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Vnet configuration for the environment
 	VnetConfiguration *VnetConfiguration
@@ -2319,6 +2568,9 @@ type ManagedEnvironmentProperties struct {
 
 	// READ-ONLY; The endpoint of the eventstream of the Environment.
 	EventStreamEndpoint *string
+
+	// READ-ONLY; Private endpoint connections to the resource.
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the Environment.
 	ProvisioningState *EnvironmentProvisioningState
@@ -2523,6 +2775,106 @@ type OperationDisplay struct {
 	Resource *string
 }
 
+// PrivateEndpoint - The Private Endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for Private Endpoint
+	ID *string
+}
+
+// PrivateEndpointConnection - The Private Endpoint Connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified resource
+type PrivateEndpointConnectionListResult struct {
+	// Array of private endpoint connections
+	Value []*PrivateEndpointConnection
+
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The resource of private end point.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkResource - A private link resource
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// Array of private link resources
+	Value []*PrivateLinkResource
+
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
@@ -2673,6 +3025,12 @@ type Resource struct {
 	Type *string
 }
 
+// ResourceTags - List of key value pairs that describe the resource. This will overwrite the existing tags.
+type ResourceTags struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // Revision - Container App Revision.
 type Revision struct {
 	// Revision resource specific properties
@@ -2803,6 +3161,24 @@ type ScaleRuleAuth struct {
 	TriggerParameter *string
 }
 
+// ScheduledEntries - List of maintenance schedules for a managed environment.
+type ScheduledEntries struct {
+	// REQUIRED; List of maintenance schedules for a managed environment.
+	ScheduledEntries []*ScheduledEntry
+}
+
+// ScheduledEntry - Maintenance schedule entry for a managed environment.
+type ScheduledEntry struct {
+	// REQUIRED; Length of maintenance window range from 8 to 24 hours.
+	DurationHours *int32
+
+	// REQUIRED; Start hour after which managed environment maintenance can start from 0 to 23 hour.
+	StartHourUTC *int32
+
+	// REQUIRED; Day of the week when a managed environment can be patched.
+	WeekDay *WeekDay
+}
+
 // Secret definition.
 type Secret struct {
 	// Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned identity.
@@ -2816,6 +3192,15 @@ type Secret struct {
 
 	// Secret Value.
 	Value *string
+}
+
+// SecretKeyVaultProperties - Properties for a secret stored in a Key Vault.
+type SecretKeyVaultProperties struct {
+	// Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned identity.
+	Identity *string
+
+	// URL pointing to the Azure Key Vault secret.
+	KeyVaultURL *string
 }
 
 // SecretVolumeItem - Secret to be added to volume.
@@ -3371,6 +3756,57 @@ type VolumeMount struct {
 
 	// This must match the Name of a Volume.
 	VolumeName *string
+}
+
+// WorkflowEnvelope - Schema for the workflow object.
+type WorkflowEnvelope struct {
+	// Gets the logic app hybrid workflow kind.
+	Kind *WorkflowKind
+
+	// Additional workflow properties.
+	Properties *WorkflowEnvelopeProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkflowEnvelopeCollection - Collection of workflow information elements.
+type WorkflowEnvelopeCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*WorkflowEnvelope
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// WorkflowEnvelopeProperties - Additional workflow properties.
+type WorkflowEnvelopeProperties struct {
+	// Gets or sets the files.
+	Files any
+
+	// Gets or sets the state of the workflow.
+	FlowState *WorkflowState
+
+	// Gets or sets workflow health.
+	Health *WorkflowHealth
+}
+
+// WorkflowHealth - Represents the workflow health.
+type WorkflowHealth struct {
+	// REQUIRED; Gets or sets the workflow health state.
+	State *WorkflowHealthState
+
+	// Gets or sets the workflow error.
+	Error *ErrorEntity
 }
 
 // WorkloadProfile - Workload profile to scope container app execution.

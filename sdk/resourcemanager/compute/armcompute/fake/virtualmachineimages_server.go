@@ -12,8 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -46,26 +45,22 @@ type VirtualMachineImagesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSKUs func(ctx context.Context, location string, publisherName string, offer string, options *armcompute.VirtualMachineImagesClientListSKUsOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListSKUsResponse], errResp azfake.ErrorResponder)
 
-	// NewListWithPropertiesPager is the fake for method VirtualMachineImagesClient.NewListWithPropertiesPager
+	// ListWithProperties is the fake for method VirtualMachineImagesClient.ListWithProperties
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListWithPropertiesPager func(location string, publisherName string, offer string, skus string, expand armcompute.Expand, options *armcompute.VirtualMachineImagesClientListWithPropertiesOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineImagesClientListWithPropertiesResponse])
+	ListWithProperties func(ctx context.Context, location string, publisherName string, offer string, skus string, expand string, options *armcompute.VirtualMachineImagesClientListWithPropertiesOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListWithPropertiesResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineImagesServerTransport creates a new instance of VirtualMachineImagesServerTransport with the provided implementation.
 // The returned VirtualMachineImagesServerTransport instance is connected to an instance of armcompute.VirtualMachineImagesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineImagesServerTransport(srv *VirtualMachineImagesServer) *VirtualMachineImagesServerTransport {
-	return &VirtualMachineImagesServerTransport{
-		srv:                        srv,
-		newListWithPropertiesPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineImagesClientListWithPropertiesResponse]](),
-	}
+	return &VirtualMachineImagesServerTransport{srv: srv}
 }
 
 // VirtualMachineImagesServerTransport connects instances of armcompute.VirtualMachineImagesClient to instances of VirtualMachineImagesServer.
 // Don't use this type directly, use NewVirtualMachineImagesServerTransport instead.
 type VirtualMachineImagesServerTransport struct {
-	srv                        *VirtualMachineImagesServer
-	newListWithPropertiesPager *tracker[azfake.PagerResponder[armcompute.VirtualMachineImagesClientListWithPropertiesResponse]]
+	srv *VirtualMachineImagesServer
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineImagesServerTransport.
@@ -103,8 +98,8 @@ func (v *VirtualMachineImagesServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = v.dispatchListPublishers(req)
 			case "VirtualMachineImagesClient.ListSKUs":
 				res.resp, res.err = v.dispatchListSKUs(req)
-			case "VirtualMachineImagesClient.NewListWithPropertiesPager":
-				res.resp, res.err = v.dispatchNewListWithPropertiesPager(req)
+			case "VirtualMachineImagesClient.ListWithProperties":
+				res.resp, res.err = v.dispatchListWithProperties(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -131,7 +126,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchGet(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<skus>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
+	if len(matches) < 7 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -176,7 +171,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchList(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<skus>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -250,7 +245,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListByEdgeZone(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/edgeZones/(?P<edgeZone>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmimages`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -283,7 +278,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListOffers(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -316,7 +311,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListPublishers(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -345,7 +340,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListSKUs(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -375,88 +370,74 @@ func (v *VirtualMachineImagesServerTransport) dispatchListSKUs(req *http.Request
 	return resp, nil
 }
 
-func (v *VirtualMachineImagesServerTransport) dispatchNewListWithPropertiesPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListWithPropertiesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListWithPropertiesPager not implemented")}
+func (v *VirtualMachineImagesServerTransport) dispatchListWithProperties(req *http.Request) (*http.Response, error) {
+	if v.srv.ListWithProperties == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListWithProperties not implemented")}
 	}
-	newListWithPropertiesPager := v.newListWithPropertiesPager.get(req)
-	if newListWithPropertiesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<skus>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		publisherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
-		if err != nil {
-			return nil, err
-		}
-		offerParam, err := url.PathUnescape(matches[regex.SubexpIndex("offer")])
-		if err != nil {
-			return nil, err
-		}
-		skusParam, err := url.PathUnescape(matches[regex.SubexpIndex("skus")])
-		if err != nil {
-			return nil, err
-		}
-		expandParam, err := parseWithCast(qp.Get("$expand"), func(v string) (armcompute.Expand, error) {
-			p, unescapeErr := url.QueryUnescape(v)
-			if unescapeErr != nil {
-				return "", unescapeErr
-			}
-			return armcompute.Expand(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		orderbyUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
-		if err != nil {
-			return nil, err
-		}
-		orderbyParam := getOptional(orderbyUnescaped)
-		var options *armcompute.VirtualMachineImagesClientListWithPropertiesOptions
-		if topParam != nil || orderbyParam != nil {
-			options = &armcompute.VirtualMachineImagesClientListWithPropertiesOptions{
-				Top:     topParam,
-				Orderby: orderbyParam,
-			}
-		}
-		resp := v.srv.NewListWithPropertiesPager(locationParam, publisherNameParam, offerParam, skusParam, expandParam, options)
-		newListWithPropertiesPager = &resp
-		v.newListWithPropertiesPager.add(req, newListWithPropertiesPager)
-		server.PagerResponderInjectNextLinks(newListWithPropertiesPager, req, func(page *armcompute.VirtualMachineImagesClientListWithPropertiesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<skus>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListWithPropertiesPager, req)
+	qp := req.URL.Query()
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListWithPropertiesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	publisherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListWithPropertiesPager) {
-		v.newListWithPropertiesPager.remove(req)
+	offerParam, err := url.PathUnescape(matches[regex.SubexpIndex("offer")])
+	if err != nil {
+		return nil, err
+	}
+	skusParam, err := url.PathUnescape(matches[regex.SubexpIndex("skus")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	orderbyUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+	if err != nil {
+		return nil, err
+	}
+	orderbyParam := getOptional(orderbyUnescaped)
+	var options *armcompute.VirtualMachineImagesClientListWithPropertiesOptions
+	if topParam != nil || orderbyParam != nil {
+		options = &armcompute.VirtualMachineImagesClientListWithPropertiesOptions{
+			Top:     topParam,
+			Orderby: orderbyParam,
+		}
+	}
+	respr, errRespr := v.srv.ListWithProperties(req.Context(), locationParam, publisherNameParam, offerParam, skusParam, expandParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageArray, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

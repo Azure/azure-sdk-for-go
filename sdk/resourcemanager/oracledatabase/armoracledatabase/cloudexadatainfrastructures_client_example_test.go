@@ -6,13 +6,168 @@ package armoracledatabase_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/exaInfra_addStorageCapacity.json
-func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity() {
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_AddStorageCapacity_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity_performAddStorageCapacityOnExadataInfraGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginAddStorageCapacity(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			DefinedFileSystemConfiguration: []*armoracledatabase.DefinedFileSystemConfiguration{
+	// 				{
+	// 					IsBackupPartition: to.Ptr(true),
+	// 					IsResizable: to.Ptr(true),
+	// 					MinSizeGb: to.Ptr[int32](15),
+	// 					MountPoint: to.Ptr("bizrfpzrqrf"),
+	// 				},
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](10),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("noreply@oracle.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 			DatabaseServerType: to.Ptr("ghnehafjgxkfpirwkmrgzphwhnftkktamoawnawztevnhbszjgkyvqvtxrnmbjqvfsthaptqbjtozuwdswkgrhmifljzjruvedeshwfdyrbzgapyyhkgxrulpttbarqsbgzoigggrsdjjlfmazpinyzmtcpugkgaiitvccklieodrscikvitdfdwczpko"),
+	// 			StorageServerType: to.Ptr("ikmrpsmpkbrnxpaaemmljvtvyxbtcjijsowrpislrwkgjhucszljohrnvfotgbiknehciipnkfcqkrqseqz"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Name: to.Ptr("pcamaimewrohbhwjetbq"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_AddStorageCapacity_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity_performAddStorageCapacityOnExadataInfraGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginAddStorageCapacity(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/exaInfra_addStorageCapacity.json
+func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity_cloudExadataInfrastructuresAddStorageCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -34,6 +189,1634 @@ func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](0),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("noreply@oracle.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_ConfigureExascale_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginConfigureExascale_cloudExadataInfrastructuresConfigureExascaleMaximumSetGenGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginConfigureExascale(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", armoracledatabase.ConfigureExascaleCloudExadataInfrastructureDetails{
+		TotalStorageInGbs: to.Ptr[int32](19),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			DefinedFileSystemConfiguration: []*armoracledatabase.DefinedFileSystemConfiguration{
+	// 				{
+	// 					IsBackupPartition: to.Ptr(true),
+	// 					IsResizable: to.Ptr(true),
+	// 					MinSizeGb: to.Ptr[int32](22),
+	// 					MountPoint: to.Ptr("ktnexudiktm"),
+	// 				},
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](28),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("noreply@oracle.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 			DatabaseServerType: to.Ptr("pcgjkxrqqwfqdjowkwwgtlecpyddpyhdslnmylfhkivixuvotjshbadyztxhlmvfmignlgfokwxvnogmuphimggobbvunqjjiamgxfionfgvdgnfdskgsdfjnzldafahpbqoycdjbscuujuxlgymyrreaurzikpxcmyqcctmlmgfwjehvkwjgfxwbfyrqomixwnwhbypqdgaostjtmkbgfrnpnuaancynfoncaki"),
+	// 			StorageServerType: to.Ptr("ajqpeotqnvnlynnuhabhboijncnuxyzjkfjntwkbxhbdtjluvfziaumerwobvswgchnk"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 			ExascaleConfig: &armoracledatabase.ExascaleConfigDetails{
+	// 				TotalStorageInGbs: to.Ptr[int32](12),
+	// 				AvailableStorageInGbs: to.Ptr[int32](16),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Name: to.Ptr("lynsnjhvtooqmjjmxgqmqc"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("rdgrqaozkch"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-21T18:06:51.061Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("umigyxuejoghnaouxxcluome"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-21T18:06:51.061Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_ConfigureExascale_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginConfigureExascale_cloudExadataInfrastructuresConfigureExascaleMaximumSetGenGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginConfigureExascale(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", armoracledatabase.ConfigureExascaleCloudExadataInfrastructureDetails{
+		TotalStorageInGbs: to.Ptr[int32](19),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		Location: to.Ptr("eastus"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate_createExadataInfrastructureGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginCreateOrUpdate(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", armoracledatabase.CloudExadataInfrastructure{
+		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+			ComputeCount: to.Ptr[int32](100),
+			StorageCount: to.Ptr[int32](10),
+			Shape:        to.Ptr("EXADATA.X9M"),
+			DisplayName:  to.Ptr("infra 1"),
+			Ocid:         to.Ptr("ocid1..aaaaaa"),
+			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+				Months: []*armoracledatabase.Month{
+					{
+						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+					},
+				},
+				WeeksOfMonth: []*int32{
+					to.Ptr[int32](0),
+				},
+				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+					{
+						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+					},
+				},
+				HoursOfDay: []*int32{
+					to.Ptr[int32](0),
+				},
+				LeadTimeInWeeks:              to.Ptr[int32](10),
+				PatchingMode:                 to.Ptr(armoracledatabase.PatchingModeRolling),
+				CustomActionTimeoutInMins:    to.Ptr[int32](120),
+				IsCustomActionTimeoutEnabled: to.Ptr(true),
+				IsMonthlyPatchingEnabled:     to.Ptr(true),
+			},
+			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{},
+			CustomerContacts: []*armoracledatabase.CustomerContact{
+				{
+					Email: to.Ptr("noreply@oracle.com"),
+				},
+			},
+			LifecycleState:       to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+			DatabaseServerType:   to.Ptr("ghnehafjgxkfpirwkmrgzphwhnftkktamoawnawztevnhbszjgkyvqvtxrnmbjqvfsthaptqbjtozuwdswkgrhmifljzjruvedeshwfdyrbzgapyyhkgxrulpttbarqsbgzoigggrsdjjlfmazpinyzmtcpugkgaiitvccklieodrscikvitdfdwczpko"),
+			StorageServerType:    to.Ptr("ikmrpsmpkbrnxpaaemmljvtvyxbtcjijsowrpislrwkgjhucszljohrnvfotgbiknehciipnkfcqkrqseqz"),
+			ComputeModel:         to.Ptr(armoracledatabase.ComputeModelECPU),
+		},
+		Location: to.Ptr("eastus"),
+		Tags:     map[string]*string{},
+		Zones: []*string{
+			to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			DefinedFileSystemConfiguration: []*armoracledatabase.DefinedFileSystemConfiguration{
+	// 				{
+	// 					IsBackupPartition: to.Ptr(true),
+	// 					IsResizable: to.Ptr(true),
+	// 					MinSizeGb: to.Ptr[int32](15),
+	// 					MountPoint: to.Ptr("bizrfpzrqrf"),
+	// 				},
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](10),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("noreply@oracle.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 			DatabaseServerType: to.Ptr("ghnehafjgxkfpirwkmrgzphwhnftkktamoawnawztevnhbszjgkyvqvtxrnmbjqvfsthaptqbjtozuwdswkgrhmifljzjruvedeshwfdyrbzgapyyhkgxrulpttbarqsbgzoigggrsdjjlfmazpinyzmtcpugkgaiitvccklieodrscikvitdfdwczpko"),
+	// 			StorageServerType: to.Ptr("ikmrpsmpkbrnxpaaemmljvtvyxbtcjijsowrpislrwkgjhucszljohrnvfotgbiknehciipnkfcqkrqseqz"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Name: to.Ptr("pcamaimewrohbhwjetbq"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_CreateOrUpdate_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate_createExadataInfrastructureGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginCreateOrUpdate(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", armoracledatabase.CloudExadataInfrastructure{
+		Location: to.Ptr("eastus"),
+		Zones: []*string{
+			to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/exaInfra_create.json
+func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate_cloudExadataInfrastructuresCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginCreateOrUpdate(ctx, "rg000", "infra1", armoracledatabase.CloudExadataInfrastructure{
+		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+			ComputeCount: to.Ptr[int32](100),
+			StorageCount: to.Ptr[int32](10),
+			Shape:        to.Ptr("EXADATA.X9M"),
+			DisplayName:  to.Ptr("infra 1"),
+		},
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"tagK1": to.Ptr("tagV1"),
+		},
+		Zones: []*string{
+			to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](0),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("noreply@oracle.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_Delete_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginDelete_deleteExadataInfrastructureGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginDelete(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_Delete_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginDelete_deleteExadataInfrastructureGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginDelete(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/exaInfra_delete.json
+func ExampleCloudExadataInfrastructuresClient_BeginDelete_cloudExadataInfrastructuresDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginDelete(ctx, "rg000", "infra1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_Get_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_Get_getExadataInfrastructureGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudExadataInfrastructuresClient().Get(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientGetResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			DefinedFileSystemConfiguration: []*armoracledatabase.DefinedFileSystemConfiguration{
+	// 				{
+	// 					IsBackupPartition: to.Ptr(true),
+	// 					IsResizable: to.Ptr(true),
+	// 					MinSizeGb: to.Ptr[int32](15),
+	// 					MountPoint: to.Ptr("bizrfpzrqrf"),
+	// 				},
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](10),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("noreply@oracle.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 			DatabaseServerType: to.Ptr("ghnehafjgxkfpirwkmrgzphwhnftkktamoawnawztevnhbszjgkyvqvtxrnmbjqvfsthaptqbjtozuwdswkgrhmifljzjruvedeshwfdyrbzgapyyhkgxrulpttbarqsbgzoigggrsdjjlfmazpinyzmtcpugkgaiitvccklieodrscikvitdfdwczpko"),
+	// 			StorageServerType: to.Ptr("ikmrpsmpkbrnxpaaemmljvtvyxbtcjijsowrpislrwkgjhucszljohrnvfotgbiknehciipnkfcqkrqseqz"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Name: to.Ptr("pcamaimewrohbhwjetbq"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_Get_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_Get_getExadataInfrastructureGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudExadataInfrastructuresClient().Get(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientGetResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/exaInfra_get.json
+func ExampleCloudExadataInfrastructuresClient_Get_cloudExadataInfrastructuresGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudExadataInfrastructuresClient().Get(ctx, "rg000", "infra1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientGetResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](0),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("noreply@oracle.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_NewListByResourceGroupPager_listExadataInfrastructureByResourceGroupGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudExadataInfrastructuresClient().NewListByResourceGroupPager("rgopenapi", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudExadataInfrastructuresClientListByResourceGroupResponse{
+		// 	CloudExadataInfrastructureListResult: armoracledatabase.CloudExadataInfrastructureListResult{
+		// 		Value: []*armoracledatabase.CloudExadataInfrastructure{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaaaa"),
+		// 					ComputeCount: to.Ptr[int32](100),
+		// 					StorageCount: to.Ptr[int32](10),
+		// 					TotalStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+		// 					LifecycleDetails: to.Ptr("none"),
+		// 					MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+		// 						Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+		// 						Months: []*armoracledatabase.Month{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+		// 							},
+		// 						},
+		// 						WeeksOfMonth: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						DaysOfWeek: []*armoracledatabase.DayOfWeek{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+		// 							},
+		// 						},
+		// 						HoursOfDay: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						LeadTimeInWeeks: to.Ptr[int32](30),
+		// 						PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+		// 						CustomActionTimeoutInMins: to.Ptr[int32](120),
+		// 						IsCustomActionTimeoutEnabled: to.Ptr(true),
+		// 						IsMonthlyPatchingEnabled: to.Ptr(true),
+		// 					},
+		// 					EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+		// 						EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+		// 						TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+		// 					},
+		// 					CustomerContacts: []*armoracledatabase.CustomerContact{
+		// 						{
+		// 							Email: to.Ptr("noreply@oracle.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					OciURL: to.Ptr("https://url"),
+		// 					CPUCount: to.Ptr[int32](10),
+		// 					MaxCPUCount: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](100),
+		// 					MaxMemoryInGbs: to.Ptr[int32](1000),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					MaxDataStorageInTbs: to.Ptr[float64](1000),
+		// 					DbServerVersion: to.Ptr("19.0.0.0"),
+		// 					StorageServerVersion: to.Ptr("0.0"),
+		// 					ActivatedStorageCount: to.Ptr[int32](1),
+		// 					AdditionalStorageCount: to.Ptr[int32](1),
+		// 					DisplayName: to.Ptr("infra 1"),
+		// 					LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+		// 					NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+		// 					MonthlyDbServerVersion: to.Ptr("aaaa"),
+		// 					MonthlyStorageServerVersion: to.Ptr("aaaa"),
+		// 					DefinedFileSystemConfiguration: []*armoracledatabase.DefinedFileSystemConfiguration{
+		// 						{
+		// 							IsBackupPartition: to.Ptr(true),
+		// 							IsResizable: to.Ptr(true),
+		// 							MinSizeGb: to.Ptr[int32](15),
+		// 							MountPoint: to.Ptr("bizrfpzrqrf"),
+		// 						},
+		// 					},
+		// 					LifecycleState: to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+		// 					DatabaseServerType: to.Ptr("sdgbdcvlgkalfergergalvtfuqgemsqxraqsyzpkjnxxonqrvmxjdidozwftfzbxvmjioibomxysvsrjpbwhsvnxlkmakeyhgkifbuvmlyxdmcjbnqcszvgrvxavfcxxdaqxcipfaqakyhrflvxlqbbzwgnszilqjdprrinqwhgz"),
+		// 					StorageServerType: to.Ptr("rvjlnuklijzmtvyypfpkafywcxxwzrsgszhbojwkckpgmdqodlxwigliatkjdiomzpwleexgyzaiuczzpij"),
+		// 					ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 				Name: to.Ptr("zyrjp"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_NewListByResourceGroupPager_listExadataInfrastructureByResourceGroupGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudExadataInfrastructuresClient().NewListByResourceGroupPager("rgopenapi", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudExadataInfrastructuresClientListByResourceGroupResponse{
+		// 	CloudExadataInfrastructureListResult: armoracledatabase.CloudExadataInfrastructureListResult{
+		// 		Value: []*armoracledatabase.CloudExadataInfrastructure{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/exaInfra_listByResourceGroup.json
+func ExampleCloudExadataInfrastructuresClient_NewListByResourceGroupPager_cloudExadataInfrastructuresListByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudExadataInfrastructuresClient().NewListByResourceGroupPager("rg000", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudExadataInfrastructuresClientListByResourceGroupResponse{
+		// 	CloudExadataInfrastructureListResult: armoracledatabase.CloudExadataInfrastructureListResult{
+		// 		Value: []*armoracledatabase.CloudExadataInfrastructure{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"tagK1": to.Ptr("tagV1"),
+		// 				},
+		// 				Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaaaa"),
+		// 					ComputeCount: to.Ptr[int32](100),
+		// 					StorageCount: to.Ptr[int32](10),
+		// 					TotalStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+		// 					LifecycleDetails: to.Ptr("none"),
+		// 					MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+		// 						Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+		// 						Months: []*armoracledatabase.Month{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+		// 							},
+		// 						},
+		// 						WeeksOfMonth: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						DaysOfWeek: []*armoracledatabase.DayOfWeek{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+		// 							},
+		// 						},
+		// 						HoursOfDay: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						LeadTimeInWeeks: to.Ptr[int32](0),
+		// 						PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+		// 						CustomActionTimeoutInMins: to.Ptr[int32](120),
+		// 						IsCustomActionTimeoutEnabled: to.Ptr(true),
+		// 						IsMonthlyPatchingEnabled: to.Ptr(true),
+		// 					},
+		// 					EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+		// 						EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+		// 						TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+		// 					},
+		// 					CustomerContacts: []*armoracledatabase.CustomerContact{
+		// 						{
+		// 							Email: to.Ptr("noreply@oracle.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					OciURL: to.Ptr("https://url"),
+		// 					CPUCount: to.Ptr[int32](10),
+		// 					MaxCPUCount: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](100),
+		// 					MaxMemoryInGbs: to.Ptr[int32](1000),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					MaxDataStorageInTbs: to.Ptr[float64](1000),
+		// 					DbServerVersion: to.Ptr("19.0.0.0"),
+		// 					StorageServerVersion: to.Ptr("0.0"),
+		// 					ActivatedStorageCount: to.Ptr[int32](1),
+		// 					AdditionalStorageCount: to.Ptr[int32](1),
+		// 					DisplayName: to.Ptr("infra 1"),
+		// 					LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+		// 					NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+		// 					MonthlyDbServerVersion: to.Ptr("aaaa"),
+		// 					MonthlyStorageServerVersion: to.Ptr("aaaa"),
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_ListBySubscription_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_NewListBySubscriptionPager_listExadataInfrastructureBySubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudExadataInfrastructuresClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudExadataInfrastructuresClientListBySubscriptionResponse{
+		// 	CloudExadataInfrastructureListResult: armoracledatabase.CloudExadataInfrastructureListResult{
+		// 		Value: []*armoracledatabase.CloudExadataInfrastructure{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaaaa"),
+		// 					ComputeCount: to.Ptr[int32](100),
+		// 					StorageCount: to.Ptr[int32](10),
+		// 					TotalStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+		// 					LifecycleDetails: to.Ptr("none"),
+		// 					MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+		// 						Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+		// 						Months: []*armoracledatabase.Month{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+		// 							},
+		// 						},
+		// 						WeeksOfMonth: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						DaysOfWeek: []*armoracledatabase.DayOfWeek{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+		// 							},
+		// 						},
+		// 						HoursOfDay: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						LeadTimeInWeeks: to.Ptr[int32](30),
+		// 						PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+		// 						CustomActionTimeoutInMins: to.Ptr[int32](120),
+		// 						IsCustomActionTimeoutEnabled: to.Ptr(true),
+		// 						IsMonthlyPatchingEnabled: to.Ptr(true),
+		// 					},
+		// 					EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+		// 						EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+		// 						TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+		// 					},
+		// 					CustomerContacts: []*armoracledatabase.CustomerContact{
+		// 						{
+		// 							Email: to.Ptr("noreply@oracle.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					OciURL: to.Ptr("https://url"),
+		// 					CPUCount: to.Ptr[int32](10),
+		// 					MaxCPUCount: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](100),
+		// 					MaxMemoryInGbs: to.Ptr[int32](1000),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					MaxDataStorageInTbs: to.Ptr[float64](1000),
+		// 					DbServerVersion: to.Ptr("19.0.0.0"),
+		// 					StorageServerVersion: to.Ptr("0.0"),
+		// 					ActivatedStorageCount: to.Ptr[int32](1),
+		// 					AdditionalStorageCount: to.Ptr[int32](1),
+		// 					DisplayName: to.Ptr("infra 1"),
+		// 					LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+		// 					NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+		// 					MonthlyDbServerVersion: to.Ptr("aaaa"),
+		// 					MonthlyStorageServerVersion: to.Ptr("aaaa"),
+		// 					DefinedFileSystemConfiguration: []*armoracledatabase.DefinedFileSystemConfiguration{
+		// 						{
+		// 							IsBackupPartition: to.Ptr(true),
+		// 							IsResizable: to.Ptr(true),
+		// 							MinSizeGb: to.Ptr[int32](15),
+		// 							MountPoint: to.Ptr("bizrfpzrqrf"),
+		// 						},
+		// 					},
+		// 					LifecycleState: to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+		// 					DatabaseServerType: to.Ptr("sdgbdcvlgkalfergergalvtfuqgemsqxraqsyzpkjnxxonqrvmxjdidozwftfzbxvmjioibomxysvsrjpbwhsvnxlkmakeyhgkifbuvmlyxdmcjbnqcszvgrvxavfcxxdaqxcipfaqakyhrflvxlqbbzwgnszilqjdprrinqwhgz"),
+		// 					StorageServerType: to.Ptr("rvjlnuklijzmtvyypfpkafywcxxwzrsgszhbojwkckpgmdqodlxwigliatkjdiomzpwleexgyzaiuczzpij"),
+		// 					ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 				Name: to.Ptr("zyrjp"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_ListBySubscription_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_NewListBySubscriptionPager_listExadataInfrastructureBySubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudExadataInfrastructuresClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudExadataInfrastructuresClientListBySubscriptionResponse{
+		// 	CloudExadataInfrastructureListResult: armoracledatabase.CloudExadataInfrastructureListResult{
+		// 		Value: []*armoracledatabase.CloudExadataInfrastructure{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/exaInfra_listBySubscription.json
+func ExampleCloudExadataInfrastructuresClient_NewListBySubscriptionPager_cloudExadataInfrastructuresListBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudExadataInfrastructuresClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudExadataInfrastructuresClientListBySubscriptionResponse{
+		// 	CloudExadataInfrastructureListResult: armoracledatabase.CloudExadataInfrastructureListResult{
+		// 		Value: []*armoracledatabase.CloudExadataInfrastructure{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"tagK1": to.Ptr("tagV1"),
+		// 				},
+		// 				Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaaaa"),
+		// 					ComputeCount: to.Ptr[int32](100),
+		// 					StorageCount: to.Ptr[int32](10),
+		// 					TotalStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+		// 					LifecycleDetails: to.Ptr("none"),
+		// 					MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+		// 						Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+		// 						Months: []*armoracledatabase.Month{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+		// 							},
+		// 						},
+		// 						WeeksOfMonth: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						DaysOfWeek: []*armoracledatabase.DayOfWeek{
+		// 							{
+		// 								Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+		// 							},
+		// 						},
+		// 						HoursOfDay: []*int32{
+		// 							to.Ptr[int32](0),
+		// 						},
+		// 						LeadTimeInWeeks: to.Ptr[int32](0),
+		// 						PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+		// 						CustomActionTimeoutInMins: to.Ptr[int32](120),
+		// 						IsCustomActionTimeoutEnabled: to.Ptr(true),
+		// 						IsMonthlyPatchingEnabled: to.Ptr(true),
+		// 					},
+		// 					EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+		// 						EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+		// 						EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+		// 						TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+		// 					},
+		// 					CustomerContacts: []*armoracledatabase.CustomerContact{
+		// 						{
+		// 							Email: to.Ptr("noreply@oracle.com"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					OciURL: to.Ptr("https://url"),
+		// 					CPUCount: to.Ptr[int32](10),
+		// 					MaxCPUCount: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](100),
+		// 					MaxMemoryInGbs: to.Ptr[int32](1000),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					MaxDataStorageInTbs: to.Ptr[float64](1000),
+		// 					DbServerVersion: to.Ptr("19.0.0.0"),
+		// 					StorageServerVersion: to.Ptr("0.0"),
+		// 					ActivatedStorageCount: to.Ptr[int32](1),
+		// 					AdditionalStorageCount: to.Ptr[int32](1),
+		// 					DisplayName: to.Ptr("infra 1"),
+		// 					LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+		// 					NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+		// 					MonthlyDbServerVersion: to.Ptr("aaaa"),
+		// 					MonthlyStorageServerVersion: to.Ptr("aaaa"),
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_Update_MaximumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginUpdate_patchExadataInfrastructureGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginUpdate(ctx, "rgopenapi", "cloudexaInfra1", armoracledatabase.CloudExadataInfrastructureUpdate{
+		Zones: []*string{
+			to.Ptr("wl"),
+		},
+		Tags: map[string]*string{
+			"key831": to.Ptr("mymrssvjc"),
+		},
+		Properties: &armoracledatabase.CloudExadataInfrastructureUpdateProperties{
+			ComputeCount: to.Ptr[int32](9),
+			StorageCount: to.Ptr[int32](4),
+			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+				Months: []*armoracledatabase.Month{
+					{
+						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+					},
+				},
+				WeeksOfMonth: []*int32{
+					to.Ptr[int32](0),
+				},
+				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+					{
+						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+					},
+				},
+				HoursOfDay: []*int32{
+					to.Ptr[int32](0),
+				},
+				LeadTimeInWeeks:              to.Ptr[int32](10),
+				PatchingMode:                 to.Ptr(armoracledatabase.PatchingModeRolling),
+				CustomActionTimeoutInMins:    to.Ptr[int32](120),
+				IsCustomActionTimeoutEnabled: to.Ptr(true),
+				IsMonthlyPatchingEnabled:     to.Ptr(true),
+			},
+			CustomerContacts: []*armoracledatabase.CustomerContact{
+				{
+					Email: to.Ptr("dummyemail@microsoft.com"),
+				},
+			},
+			DisplayName: to.Ptr("displayName"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
+	// 			ComputeCount: to.Ptr[int32](100),
+	// 			StorageCount: to.Ptr[int32](10),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			DisplayName: to.Ptr("infra 1"),
+	// 			DefinedFileSystemConfiguration: []*armoracledatabase.DefinedFileSystemConfiguration{
+	// 				{
+	// 					IsBackupPartition: to.Ptr(true),
+	// 					IsResizable: to.Ptr(true),
+	// 					MinSizeGb: to.Ptr[int32](15),
+	// 					MountPoint: to.Ptr("bizrfpzrqrf"),
+	// 				},
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			TotalStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			AvailableStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr("2023-02-01T01:01:00"),
+	// 			LifecycleDetails: to.Ptr("none"),
+	// 			MaintenanceWindow: &armoracledatabase.MaintenanceWindow{
+	// 				Preference: to.Ptr(armoracledatabase.PreferenceNoPreference),
+	// 				Months: []*armoracledatabase.Month{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.MonthNameJanuary),
+	// 					},
+	// 				},
+	// 				WeeksOfMonth: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				DaysOfWeek: []*armoracledatabase.DayOfWeek{
+	// 					{
+	// 						Name: to.Ptr(armoracledatabase.DayOfWeekNameMonday),
+	// 					},
+	// 				},
+	// 				HoursOfDay: []*int32{
+	// 					to.Ptr[int32](0),
+	// 				},
+	// 				LeadTimeInWeeks: to.Ptr[int32](10),
+	// 				PatchingMode: to.Ptr(armoracledatabase.PatchingModeRolling),
+	// 				CustomActionTimeoutInMins: to.Ptr[int32](120),
+	// 				IsCustomActionTimeoutEnabled: to.Ptr(true),
+	// 				IsMonthlyPatchingEnabled: to.Ptr(true),
+	// 			},
+	// 			EstimatedPatchingTime: &armoracledatabase.EstimatedPatchingTime{
+	// 				EstimatedDbServerPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedNetworkSwitchesPatchingTime: to.Ptr[int32](3000),
+	// 				EstimatedStorageServerPatchingTime: to.Ptr[int32](3000),
+	// 				TotalEstimatedPatchingTime: to.Ptr[int32](3000),
+	// 			},
+	// 			CustomerContacts: []*armoracledatabase.CustomerContact{
+	// 				{
+	// 					Email: to.Ptr("dummyemail@microsoft.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudExadataInfrastructureLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://url"),
+	// 			CPUCount: to.Ptr[int32](10),
+	// 			MaxCPUCount: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			MaxDbNodeStorageSizeInGbs: to.Ptr[int32](10),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			MaxDataStorageInTbs: to.Ptr[float64](1000),
+	// 			DbServerVersion: to.Ptr("19.0.0.0"),
+	// 			StorageServerVersion: to.Ptr("0.0"),
+	// 			ActivatedStorageCount: to.Ptr[int32](1),
+	// 			AdditionalStorageCount: to.Ptr[int32](1),
+	// 			LastMaintenanceRunID: to.Ptr("ocid1..aaaaa"),
+	// 			NextMaintenanceRunID: to.Ptr("ocid1..aaaaaa"),
+	// 			MonthlyDbServerVersion: to.Ptr("aaaa"),
+	// 			MonthlyStorageServerVersion: to.Ptr("aaaa"),
+	// 			DatabaseServerType: to.Ptr("ghnehafjgxkfpirwkmrgzphwhnftkktamoawnawztevnhbszjgkyvqvtxrnmbjqvfsthaptqbjtozuwdswkgrhmifljzjruvedeshwfdyrbzgapyyhkgxrulpttbarqsbgzoigggrsdjjlfmazpinyzmtcpugkgaiitvccklieodrscikvitdfdwczpko"),
+	// 			StorageServerType: to.Ptr("ikmrpsmpkbrnxpaaemmljvtvyxbtcjijsowrpislrwkgjhucszljohrnvfotgbiknehciipnkfcqkrqseqz"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Name: to.Ptr("pcamaimewrohbhwjetbq"),
+	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudExadataInfrastructures_Update_MinimumSet_Gen.json
+func ExampleCloudExadataInfrastructuresClient_BeginUpdate_patchExadataInfrastructureGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginUpdate(ctx, "rgopenapi", "cloudexainfra1", armoracledatabase.CloudExadataInfrastructureUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse{
+	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/exaInfra_patch.json
+func ExampleCloudExadataInfrastructuresClient_BeginUpdate_cloudExadataInfrastructuresUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudExadataInfrastructuresClient().BeginUpdate(ctx, "rg000", "infra1", armoracledatabase.CloudExadataInfrastructureUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse{
 	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),

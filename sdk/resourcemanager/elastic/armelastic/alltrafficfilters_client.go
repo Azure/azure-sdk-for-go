@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,10 +49,10 @@ func NewAllTrafficFiltersClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// List - Get the list of all traffic filters for the account.
+// List - List all traffic filters associated with your Elastic monitor resource, helping you manage network traffic control.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - AllTrafficFiltersClientListOptions contains the optional parameters for the AllTrafficFiltersClient.List method.
@@ -82,7 +79,7 @@ func (client *AllTrafficFiltersClient) List(ctx context.Context, resourceGroupNa
 }
 
 // listCreateRequest creates the List request.
-func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *AllTrafficFiltersClientListOptions) (*policy.Request, error) {
+func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *AllTrafficFiltersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listAllTrafficFilters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -101,7 +98,7 @@ func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

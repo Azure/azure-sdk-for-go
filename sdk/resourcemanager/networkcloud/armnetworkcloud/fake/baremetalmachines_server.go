@@ -18,6 +18,7 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
+	"strconv"
 )
 
 // BareMetalMachinesServer is a fake server for instances of the armnetworkcloud.BareMetalMachinesClient type.
@@ -70,6 +71,10 @@ type BareMetalMachinesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRunDataExtracts func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters armnetworkcloud.BareMetalMachineRunDataExtractsParameters, options *armnetworkcloud.BareMetalMachinesClientBeginRunDataExtractsOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsResponse], errResp azfake.ErrorResponder)
 
+	// BeginRunDataExtractsRestricted is the fake for method BareMetalMachinesClient.BeginRunDataExtractsRestricted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRunDataExtractsRestricted func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters armnetworkcloud.BareMetalMachineRunDataExtractsParameters, options *armnetworkcloud.BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsRestrictedResponse], errResp azfake.ErrorResponder)
+
 	// BeginRunReadCommands is the fake for method BareMetalMachinesClient.BeginRunReadCommands
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRunReadCommands func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters armnetworkcloud.BareMetalMachineRunReadCommandsParameters, options *armnetworkcloud.BareMetalMachinesClientBeginRunReadCommandsOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunReadCommandsResponse], errResp azfake.ErrorResponder)
@@ -92,44 +97,46 @@ type BareMetalMachinesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBareMetalMachinesServerTransport(srv *BareMetalMachinesServer) *BareMetalMachinesServerTransport {
 	return &BareMetalMachinesServerTransport{
-		srv:                         srv,
-		beginCordon:                 newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCordonResponse]](),
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]](),
-		beginPowerOff:               newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse]](),
-		beginReimage:                newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReimageResponse]](),
-		beginReplace:                newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReplaceResponse]](),
-		beginRestart:                newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRestartResponse]](),
-		beginRunCommand:             newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunCommandResponse]](),
-		beginRunDataExtracts:        newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsResponse]](),
-		beginRunReadCommands:        newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunReadCommandsResponse]](),
-		beginStart:                  newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientStartResponse]](),
-		beginUncordon:               newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUncordonResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUpdateResponse]](),
+		srv:                            srv,
+		beginCordon:                    newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCordonResponse]](),
+		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCreateOrUpdateResponse]](),
+		beginDelete:                    newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientDeleteResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]](),
+		beginPowerOff:                  newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse]](),
+		beginReimage:                   newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReimageResponse]](),
+		beginReplace:                   newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReplaceResponse]](),
+		beginRestart:                   newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRestartResponse]](),
+		beginRunCommand:                newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunCommandResponse]](),
+		beginRunDataExtracts:           newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsResponse]](),
+		beginRunDataExtractsRestricted: newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsRestrictedResponse]](),
+		beginRunReadCommands:           newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunReadCommandsResponse]](),
+		beginStart:                     newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientStartResponse]](),
+		beginUncordon:                  newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUncordonResponse]](),
+		beginUpdate:                    newTracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUpdateResponse]](),
 	}
 }
 
 // BareMetalMachinesServerTransport connects instances of armnetworkcloud.BareMetalMachinesClient to instances of BareMetalMachinesServer.
 // Don't use this type directly, use NewBareMetalMachinesServerTransport instead.
 type BareMetalMachinesServerTransport struct {
-	srv                         *BareMetalMachinesServer
-	beginCordon                 *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCordonResponse]]
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]]
-	beginPowerOff               *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse]]
-	beginReimage                *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReimageResponse]]
-	beginReplace                *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReplaceResponse]]
-	beginRestart                *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRestartResponse]]
-	beginRunCommand             *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunCommandResponse]]
-	beginRunDataExtracts        *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsResponse]]
-	beginRunReadCommands        *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunReadCommandsResponse]]
-	beginStart                  *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientStartResponse]]
-	beginUncordon               *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUncordonResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUpdateResponse]]
+	srv                            *BareMetalMachinesServer
+	beginCordon                    *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCordonResponse]]
+	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCreateOrUpdateResponse]]
+	beginDelete                    *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientDeleteResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse]]
+	beginPowerOff                  *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse]]
+	beginReimage                   *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReimageResponse]]
+	beginReplace                   *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReplaceResponse]]
+	beginRestart                   *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRestartResponse]]
+	beginRunCommand                *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunCommandResponse]]
+	beginRunDataExtracts           *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsResponse]]
+	beginRunDataExtractsRestricted *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsRestrictedResponse]]
+	beginRunReadCommands           *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunReadCommandsResponse]]
+	beginStart                     *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientStartResponse]]
+	beginUncordon                  *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUncordonResponse]]
+	beginUpdate                    *tracker[azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for BareMetalMachinesServerTransport.
@@ -179,6 +186,8 @@ func (b *BareMetalMachinesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = b.dispatchBeginRunCommand(req)
 			case "BareMetalMachinesClient.BeginRunDataExtracts":
 				res.resp, res.err = b.dispatchBeginRunDataExtracts(req)
+			case "BareMetalMachinesClient.BeginRunDataExtractsRestricted":
+				res.resp, res.err = b.dispatchBeginRunDataExtractsRestricted(req)
 			case "BareMetalMachinesClient.BeginRunReadCommands":
 				res.resp, res.err = b.dispatchBeginRunReadCommands(req)
 			case "BareMetalMachinesClient.BeginStart":
@@ -215,7 +224,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCordon(req *http.Request
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cordon`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineCordonParameters](req)
@@ -269,7 +278,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachine](req)
@@ -326,7 +335,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginDelete(req *http.Request
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -377,7 +386,7 @@ func (b *BareMetalMachinesServerTransport) dispatchGet(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -412,14 +421,41 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListByResourceGroupPager(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
 		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.BareMetalMachinesClientListByResourceGroupResponse, createLink func() string) {
@@ -449,10 +485,37 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListBySubscriptionPager(re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := b.srv.NewListBySubscriptionPager(nil)
+		qp := req.URL.Query()
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := b.srv.NewListBySubscriptionPager(options)
 		newListBySubscriptionPager = &resp
 		b.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse, createLink func() string) {
@@ -482,7 +545,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginPowerOff(req *http.Reque
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/powerOff`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachinePowerOffParameters](req)
@@ -536,7 +599,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReimage(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -580,7 +643,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReplace(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replace`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineReplaceParameters](req)
@@ -634,7 +697,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRestart(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -678,7 +741,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunCommand(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineRunCommandParameters](req)
@@ -726,7 +789,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtracts(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runDataExtracts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineRunDataExtractsParameters](req)
@@ -765,6 +828,54 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtracts(req *htt
 	return resp, nil
 }
 
+func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtractsRestricted(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginRunDataExtractsRestricted == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRunDataExtractsRestricted not implemented")}
+	}
+	beginRunDataExtractsRestricted := b.beginRunDataExtractsRestricted.get(req)
+	if beginRunDataExtractsRestricted == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runDataExtractsRestricted`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineRunDataExtractsParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bareMetalMachineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bareMetalMachineName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginRunDataExtractsRestricted(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRunDataExtractsRestricted = &respr
+		b.beginRunDataExtractsRestricted.add(req, beginRunDataExtractsRestricted)
+	}
+
+	resp, err := server.PollerResponderNext(beginRunDataExtractsRestricted, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginRunDataExtractsRestricted.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRunDataExtractsRestricted) {
+		b.beginRunDataExtractsRestricted.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (b *BareMetalMachinesServerTransport) dispatchBeginRunReadCommands(req *http.Request) (*http.Response, error) {
 	if b.srv.BeginRunReadCommands == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRunReadCommands not implemented")}
@@ -774,7 +885,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunReadCommands(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runReadCommands`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineRunReadCommandsParameters](req)
@@ -822,7 +933,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginStart(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -866,7 +977,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUncordon(req *http.Reque
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/uncordon`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -910,7 +1021,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUpdate(req *http.Request
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/bareMetalMachines/(?P<bareMetalMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachinePatchParameters](req)

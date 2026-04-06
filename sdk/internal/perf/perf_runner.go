@@ -185,8 +185,9 @@ func (r *perfRunner) cleanup() error {
 // print an update for the last second
 func (r *perfRunner) printStatus() error {
 	if !r.warmupPrinted {
-		finishedWarmup := r.printWarmupStatus()
-		if !finishedWarmup {
+		if finishedWarmup, err := r.printWarmupStatus(); err != nil {
+			return err
+		} else if !finishedWarmup {
 			return nil
 		}
 	}
@@ -197,7 +198,9 @@ func (r *perfRunner) printStatus() error {
 			return err
 		}
 		r.operationStatusTracker = 0
-		fmt.Fprintln(r.w, "\nCurrent\tTotal\tAverage\t")
+		if _, err := fmt.Fprintln(r.w, "\nCurrent\tTotal\tAverage\t"); err != nil {
+			return err
+		}
 	}
 	totalOperations := r.totalOperations(false)
 
@@ -216,16 +219,18 @@ func (r *perfRunner) printStatus() error {
 }
 
 // return true if all warmup information has been printed
-func (r *perfRunner) printWarmupStatus() bool {
+func (r *perfRunner) printWarmupStatus() (bool, error) {
 	if r.warmupOperationStatusTracker == -1 {
 		r.warmupOperationStatusTracker = 0
 		fmt.Println("===== WARMUP =====")
-		fmt.Fprintln(r.w, "\nCurrent\tTotal\tAverage\t")
+		if _, err := fmt.Fprintln(r.w, "\nCurrent\tTotal\tAverage\t"); err != nil {
+			return false, err
+		}
 	}
 	totalOperations := r.totalOperations(true)
 
 	if r.warmupOperationStatusTracker == totalOperations {
-		return true
+		return true, nil
 	}
 
 	_, err := fmt.Fprintf(
@@ -236,14 +241,14 @@ func (r *perfRunner) printWarmupStatus() bool {
 		r.messagePrinter.Sprintf("%.2f", r.opsPerSecond(true)),
 	)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
 	r.warmupOperationStatusTracker = totalOperations
 	err = r.w.Flush()
 	if err != nil {
-		panic(err)
+		return false, err
 	}
-	return false
+	return false, nil
 }
 
 // totalOperations iterates over all options structs to get the number of operations completed

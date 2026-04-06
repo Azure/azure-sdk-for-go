@@ -86,7 +86,7 @@ func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 
 		// Segment Header (10 bytes)
 		_ = binary.Write(&buf, binary.LittleEndian, uint16(i+1))
-		_ = binary.Write(&buf, binary.LittleEndian, int64(len(segData)))
+		_ = binary.Write(&buf, binary.LittleEndian, uint64(len(segData)))
 
 		// Segment Data
 		_, _ = buf.Write(segData)
@@ -276,6 +276,7 @@ type SMEncoder struct {
 	msgCRC     hash64 // message-level CRC hasher
 	pending    []byte // buffered framing bytes (headers/footers) being drained
 	pendingOff int    // read offset into pending
+	pos        int64  // current read position in the encoded output
 }
 
 // NewSMEncoder creates a streaming encoder that wraps the given content source.
@@ -286,16 +287,13 @@ func NewSMEncoder(inner io.ReadSeeker, contentLen int64, segmentSize int) *SMEnc
 		segmentSize = SMDefaultSegmentSize
 	}
 
-	// Compute segment count using int64 arithmetic to avoid overflow on 32-bit architectures.
-	segSize64 := int64(segmentSize)
-	numSegments64 := contentLen / segSize64
-	if contentLen%segSize64 != 0 {
-		numSegments64++
+	numSegments := int(contentLen) / segmentSize
+	if int(contentLen)%segmentSize != 0 {
+		numSegments++
 	}
-	if numSegments64 == 0 {
-		numSegments64 = 1
+	if numSegments == 0 {
+		numSegments = 1
 	}
-	numSegments := int(numSegments64)
 
 	// Calculate total encoded length
 	encodedLen := int64(SMHeaderSize)
@@ -329,6 +327,7 @@ func (e *SMEncoder) initState() {
 	e.msgCRC = crc64.New(CRC64Table)
 	e.pending = nil
 	e.pendingOff = 0
+	e.pos = 0
 
 	// Build the 13-byte message header
 	hdr := make([]byte, SMHeaderSize)
@@ -351,6 +350,7 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 		case encStateHeader:
 			n := e.drainPending(p[totalRead:])
 			totalRead += n
+			e.pos += int64(n)
 			if e.pendingOff >= len(e.pending) {
 				e.advanceToNextSegment()
 			}
@@ -358,6 +358,7 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 		case encStateSegHeader:
 			n := e.drainPending(p[totalRead:])
 			totalRead += n
+			e.pos += int64(n)
 			if e.pendingOff >= len(e.pending) {
 				e.state = encStateSegData
 			}
@@ -373,6 +374,7 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 				_, _ = e.segCRC.Write(p[totalRead : totalRead+n])
 				_, _ = e.msgCRC.Write(p[totalRead : totalRead+n])
 				totalRead += n
+				e.pos += int64(n)
 				e.segRemain -= int64(n)
 			}
 			if e.segRemain == 0 {
@@ -390,6 +392,7 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 		case encStateSegFooter:
 			n := e.drainPending(p[totalRead:])
 			totalRead += n
+			e.pos += int64(n)
 			if e.pendingOff >= len(e.pending) {
 				e.advanceToNextSegment()
 			}
@@ -397,6 +400,7 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 		case encStateTrailer:
 			n := e.drainPending(p[totalRead:])
 			totalRead += n
+			e.pos += int64(n)
 			if e.pendingOff >= len(e.pending) {
 				e.state = encStateDone
 			}
@@ -454,16 +458,9 @@ func (e *SMEncoder) Seek(offset int64, whence int) (int64, error) {
 	if offset == 0 && whence == io.SeekEnd {
 		return e.encodedLen, nil
 	}
-	// Support Seek(0, SeekCurrent) to report current position (used for position validation).
+	// Support Seek(0, SeekCurrent) to report current position in the encoded output.
 	if offset == 0 && whence == io.SeekCurrent {
-		// If we're in the initial header state with pendingOff==0, we're at position 0.
-		// Otherwise, exact position tracking is complex; return 0 only if we haven't started.
-		if e.state == encStateHeader && e.pendingOff == 0 {
-			return 0, nil
-		}
-		// For non-zero positions, we don't track exact offset — but the only caller
-		// (validateSeekableStreamAt0) checks pos != 0, so return non-zero to indicate we've started.
-		return -1, nil
+		return e.pos, nil
 	}
 	if offset != 0 || whence != io.SeekStart {
 		return 0, fmt.Errorf("SMEncoder: unsupported Seek(%d, %d); only Seek(0, SeekStart), Seek(0, SeekEnd), and Seek(0, SeekCurrent) are supported", offset, whence)
@@ -669,12 +666,6 @@ func (d *SMDecoder) parseHeader() error {
 	d.flags = binary.LittleEndian.Uint16(buf[9:11])
 	d.numSegments = binary.LittleEndian.Uint16(buf[11:13])
 	d.hasCRC = d.flags&SMFlagCRC64 != 0
-
-	// Validate msgLen: must be at least header + (per segment: header + footer) + trailer.
-	minMsgLen := uint64(SMHeaderSize) + uint64(d.numSegments)*uint64(SMSegmentHeaderSize+SMSegmentFooterSize) + uint64(SMMessageTrailerSize)
-	if d.msgLen < minMsgLen {
-		return fmt.Errorf("structured message length %d is too small for %d segments (minimum %d)", d.msgLen, d.numSegments, minMsgLen)
-	}
 
 	if d.hasCRC {
 		d.msgCRC = crc64.New(CRC64Table)

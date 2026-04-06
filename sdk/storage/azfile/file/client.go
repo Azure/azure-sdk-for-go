@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -267,7 +264,7 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 		return UploadRangeResponse{}, err
 	}
 
-	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, body, uploadRangeOptions, leaseAccessConditions)
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, uploadRangeOptions, leaseAccessConditions)
 	return resp, err
 }
 
@@ -281,7 +278,7 @@ func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options
 		return ClearRangeResponse{}, err
 	}
 
-	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, nil, nil, leaseAccessConditions)
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, nil, leaseAccessConditions)
 	return resp, err
 }
 

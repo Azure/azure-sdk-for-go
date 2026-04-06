@@ -73,6 +73,11 @@ type ApplicationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ApplicationsClientFetchHealthResponse contains the response from method ApplicationsClient.BeginFetchHealth.
+type ApplicationsClientFetchHealthResponse struct {
+	// placeholder for future response values
+}
+
 // ApplicationsClientGetResponse contains the response from method ApplicationsClient.Get.
 type ApplicationsClientGetResponse struct {
 	// The application resource.
@@ -90,6 +95,11 @@ type ApplicationsClientReadUpgradeResponse struct {
 	// placeholder for future response values
 }
 
+// ApplicationsClientRestartDeployedCodePackageResponse contains the response from method ApplicationsClient.BeginRestartDeployedCodePackage.
+type ApplicationsClientRestartDeployedCodePackageResponse struct {
+	// placeholder for future response values
+}
+
 // ApplicationsClientResumeUpgradeResponse contains the response from method ApplicationsClient.BeginResumeUpgrade.
 type ApplicationsClientResumeUpgradeResponse struct {
 	// placeholder for future response values
@@ -100,10 +110,15 @@ type ApplicationsClientStartRollbackResponse struct {
 	// placeholder for future response values
 }
 
-// ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.Update.
+// ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.BeginUpdate.
 type ApplicationsClientUpdateResponse struct {
 	// The application resource.
 	ApplicationResource
+}
+
+// ApplicationsClientUpdateUpgradeResponse contains the response from method ApplicationsClient.BeginUpdateUpgrade.
+type ApplicationsClientUpdateUpgradeResponse struct {
+	// placeholder for future response values
 }
 
 // ManagedApplyMaintenanceWindowClientPostResponse contains the response from method ManagedApplyMaintenanceWindowClient.Post.
@@ -150,12 +165,6 @@ type ManagedClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientGetFaultSimulationResponse contains the response from method ManagedClustersClient.GetFaultSimulation.
-type ManagedClustersClientGetFaultSimulationResponse struct {
-	// Fault simulation object with status.
-	FaultSimulation
-}
-
 // ManagedClustersClientGetResponse contains the response from method ManagedClustersClient.Get.
 type ManagedClustersClientGetResponse struct {
 	// The managed cluster resource
@@ -174,25 +183,7 @@ type ManagedClustersClientListBySubscriptionResponse struct {
 	ManagedClusterListResult
 }
 
-// ManagedClustersClientListFaultSimulationResponse contains the response from method ManagedClustersClient.NewListFaultSimulationPager.
-type ManagedClustersClientListFaultSimulationResponse struct {
-	// Fault simulation list results
-	FaultSimulationListResult
-}
-
-// ManagedClustersClientStartFaultSimulationResponse contains the response from method ManagedClustersClient.BeginStartFaultSimulation.
-type ManagedClustersClientStartFaultSimulationResponse struct {
-	// Fault simulation object with status.
-	FaultSimulation
-}
-
-// ManagedClustersClientStopFaultSimulationResponse contains the response from method ManagedClustersClient.BeginStopFaultSimulation.
-type ManagedClustersClientStopFaultSimulationResponse struct {
-	// Fault simulation object with status.
-	FaultSimulation
-}
-
-// ManagedClustersClientUpdateResponse contains the response from method ManagedClustersClient.Update.
+// ManagedClustersClientUpdateResponse contains the response from method ManagedClustersClient.BeginUpdate.
 type ManagedClustersClientUpdateResponse struct {
 	// The managed cluster resource
 	ManagedCluster
@@ -243,12 +234,6 @@ type NodeTypesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// NodeTypesClientGetFaultSimulationResponse contains the response from method NodeTypesClient.GetFaultSimulation.
-type NodeTypesClientGetFaultSimulationResponse struct {
-	// Fault simulation object with status.
-	FaultSimulation
-}
-
 // NodeTypesClientGetResponse contains the response from method NodeTypesClient.Get.
 type NodeTypesClientGetResponse struct {
 	// Describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
@@ -259,12 +244,6 @@ type NodeTypesClientGetResponse struct {
 type NodeTypesClientListByManagedClustersResponse struct {
 	// The response of a NodeType list operation.
 	NodeTypeListResult
-}
-
-// NodeTypesClientListFaultSimulationResponse contains the response from method NodeTypesClient.NewListFaultSimulationPager.
-type NodeTypesClientListFaultSimulationResponse struct {
-	// Fault simulation list results
-	FaultSimulationListResult
 }
 
 // NodeTypesClientRedeployResponse contains the response from method NodeTypesClient.BeginRedeploy.
@@ -282,21 +261,9 @@ type NodeTypesClientRestartResponse struct {
 	// placeholder for future response values
 }
 
-// NodeTypesClientStartFaultSimulationResponse contains the response from method NodeTypesClient.BeginStartFaultSimulation.
-type NodeTypesClientStartFaultSimulationResponse struct {
-	// Fault simulation object with status.
-	FaultSimulation
-}
-
 // NodeTypesClientStartResponse contains the response from method NodeTypesClient.BeginStart.
 type NodeTypesClientStartResponse struct {
 	// placeholder for future response values
-}
-
-// NodeTypesClientStopFaultSimulationResponse contains the response from method NodeTypesClient.BeginStopFaultSimulation.
-type NodeTypesClientStopFaultSimulationResponse struct {
-	// Fault simulation object with status.
-	FaultSimulation
 }
 
 // NodeTypesClientUpdateResponse contains the response from method NodeTypesClient.BeginUpdate.
@@ -344,6 +311,11 @@ type ServicesClientGetResponse struct {
 type ServicesClientListByApplicationsResponse struct {
 	// The list of service resources.
 	ServiceResourceList
+}
+
+// ServicesClientRestartReplicaResponse contains the response from method ServicesClient.BeginRestartReplica.
+type ServicesClientRestartReplicaResponse struct {
+	// placeholder for future response values
 }
 
 // ServicesClientUpdateResponse contains the response from method ServicesClient.Update.

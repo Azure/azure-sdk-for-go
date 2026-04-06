@@ -1,5 +1,17 @@
 # Release History
 
+## 1.0.2 (2025-09-09)
+
+### Other Changes
+
+- This module is now DEPRECATED. The latest supported version of this module is at [github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwright/armplaywright](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwright/armplaywright)
+
+## 1.0.1 (2025-09-08)
+
+### Other Changes
+
+- This module is now DEPRECATED. The latest supported version of this module is at [github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwright/armplaywright](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwright/armplaywright)
+
 ## 1.0.0 (2024-12-26)
 ### Breaking Changes
 

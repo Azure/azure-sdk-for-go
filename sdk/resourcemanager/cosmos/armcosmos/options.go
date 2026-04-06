@@ -386,6 +386,94 @@ type DatabaseClientListUsagesOptions struct {
 	Filter *string
 }
 
+// FleetClientBeginDeleteOptions contains the optional parameters for the FleetClient.BeginDelete method.
+type FleetClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetClientCreateOptions contains the optional parameters for the FleetClient.Create method.
+type FleetClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetClientGetOptions contains the optional parameters for the FleetClient.Get method.
+type FleetClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetClientListByResourceGroupOptions contains the optional parameters for the FleetClient.NewListByResourceGroupPager
+// method.
+type FleetClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetClientListOptions contains the optional parameters for the FleetClient.NewListPager method.
+type FleetClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetClientUpdateOptions contains the optional parameters for the FleetClient.Update method.
+type FleetClientUpdateOptions struct {
+	// The parameters to provide for the current fleet.
+	Body *FleetResourceUpdate
+}
+
+// FleetspaceAccountClientBeginCreateOptions contains the optional parameters for the FleetspaceAccountClient.BeginCreate
+// method.
+type FleetspaceAccountClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetspaceAccountClientBeginDeleteOptions contains the optional parameters for the FleetspaceAccountClient.BeginDelete
+// method.
+type FleetspaceAccountClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetspaceAccountClientGetOptions contains the optional parameters for the FleetspaceAccountClient.Get method.
+type FleetspaceAccountClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetspaceAccountClientListOptions contains the optional parameters for the FleetspaceAccountClient.NewListPager method.
+type FleetspaceAccountClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetspaceClientBeginCreateOptions contains the optional parameters for the FleetspaceClient.BeginCreate method.
+type FleetspaceClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetspaceClientBeginDeleteOptions contains the optional parameters for the FleetspaceClient.BeginDelete method.
+type FleetspaceClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetspaceClientBeginUpdateOptions contains the optional parameters for the FleetspaceClient.BeginUpdate method.
+type FleetspaceClientBeginUpdateOptions struct {
+	// The parameters to provide for the current fleetspace.
+	Body *FleetspaceUpdate
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetspaceClientGetOptions contains the optional parameters for the FleetspaceClient.Get method.
+type FleetspaceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetspaceClientListOptions contains the optional parameters for the FleetspaceClient.NewListPager method.
+type FleetspaceClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions contains the optional parameters for the GremlinResourcesClient.BeginCreateUpdateGremlinDatabase
 // method.
 type GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions struct {

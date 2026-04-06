@@ -88,7 +88,6 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
 	// now recover like normal
-
 	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
@@ -235,7 +234,7 @@ func TestLinkFailure(t *testing.T) {
 func TestLinksManagementRetry(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 	ns, links := newLinksForTest(t)
-	defer ns.Close(context.Background(), true)
+	defer func() { _ = ns.Close(context.Background(), true) }()
 	defer test.RequireClose(t, links)
 
 	var prevLWID LinkWithID[amqpwrap.RPCLink]

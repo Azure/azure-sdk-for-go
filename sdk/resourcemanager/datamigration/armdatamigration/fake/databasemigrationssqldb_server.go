@@ -36,6 +36,10 @@ type DatabaseMigrationsSQLDbServer struct {
 	// Get is the fake for method DatabaseMigrationsSQLDbClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *armdatamigration.DatabaseMigrationsSQLDbClientGetOptions) (resp azfake.Responder[armdatamigration.DatabaseMigrationsSQLDbClientGetResponse], errResp azfake.ErrorResponder)
+
+	// BeginRetry is the fake for method DatabaseMigrationsSQLDbClient.BeginRetry
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRetry func(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput armdatamigration.MigrationOperationInput, options *armdatamigration.DatabaseMigrationsSQLDbClientBeginRetryOptions) (resp azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientRetryResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDatabaseMigrationsSQLDbServerTransport creates a new instance of DatabaseMigrationsSQLDbServerTransport with the provided implementation.
@@ -47,6 +51,7 @@ func NewDatabaseMigrationsSQLDbServerTransport(srv *DatabaseMigrationsSQLDbServe
 		beginCancel:         newTracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientCancelResponse]](),
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientDeleteResponse]](),
+		beginRetry:          newTracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientRetryResponse]](),
 	}
 }
 
@@ -57,6 +62,7 @@ type DatabaseMigrationsSQLDbServerTransport struct {
 	beginCancel         *tracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientCancelResponse]]
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientDeleteResponse]]
+	beginRetry          *tracker[azfake.PollerResponder[armdatamigration.DatabaseMigrationsSQLDbClientRetryResponse]]
 }
 
 // Do implements the policy.Transporter interface for DatabaseMigrationsSQLDbServerTransport.
@@ -90,6 +96,8 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DatabaseMigrationsSQLDbClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
+			case "DatabaseMigrationsSQLDbClient.BeginRetry":
+				res.resp, res.err = d.dispatchBeginRetry(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +126,7 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchBeginCancel(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<sqlDbInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataMigration/databaseMigrations/(?P<targetDbName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdatamigration.MigrationOperationInput](req)
@@ -170,7 +178,7 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchBeginCreateOrUpdate(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<sqlDbInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataMigration/databaseMigrations/(?P<targetDbName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdatamigration.DatabaseMigrationSQLDb](req)
@@ -222,7 +230,7 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchBeginDelete(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<sqlDbInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataMigration/databaseMigrations/(?P<targetDbName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -283,7 +291,7 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchGet(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<sqlDbInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataMigration/databaseMigrations/(?P<targetDbName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -328,6 +336,58 @@ func (d *DatabaseMigrationsSQLDbServerTransport) dispatchGet(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (d *DatabaseMigrationsSQLDbServerTransport) dispatchBeginRetry(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginRetry == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRetry not implemented")}
+	}
+	beginRetry := d.beginRetry.get(req)
+	if beginRetry == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<sqlDbInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataMigration/databaseMigrations/(?P<targetDbName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retry`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatamigration.MigrationOperationInput](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		sqlDbInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sqlDbInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		targetDbNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginRetry(req.Context(), resourceGroupNameParam, sqlDbInstanceNameParam, targetDbNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRetry = &respr
+		d.beginRetry.add(req, beginRetry)
+	}
+
+	resp, err := server.PollerResponderNext(beginRetry, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginRetry.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRetry) {
+		d.beginRetry.remove(req)
+	}
+
 	return resp, nil
 }
 

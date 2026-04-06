@@ -5,8 +5,11 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
 )
 
 // PartitionKey represents a logical partition key value.
@@ -77,26 +80,50 @@ func (pk PartitionKey) AppendNull() PartitionKey {
 func (pk *PartitionKey) toJsonString() (string, error) {
 	var completeJson strings.Builder
 	completeJson.Grow(256)
-	completeJson.WriteString("[")
+	fmt.Fprint(&completeJson, "[")
 	for index, i := range pk.values {
 		switch v := i.(type) {
 		case string:
 			// json marshall does not support escaping ASCII as an option
 			escaped := strconv.QuoteToASCII(v)
-			completeJson.WriteString(escaped)
+			fmt.Fprint(&completeJson, escaped)
 		default:
 			res, err := json.Marshal(v)
 			if err != nil {
 				return "", err
 			}
-			completeJson.WriteString(string(res))
+			fmt.Fprint(&completeJson, string(res))
 		}
 
 		if index < len(pk.values)-1 {
-			completeJson.WriteString(",")
+			fmt.Fprint(&completeJson, ",")
 		}
 	}
 
-	completeJson.WriteString("]")
+	fmt.Fprint(&completeJson, "]")
 	return completeJson.String(), nil
+}
+
+// computeEffectivePartitionKey computes the effective partition key hash for
+// this partition key value.
+func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, version int) epk.EffectivePartitionKey {
+	values := make([]interface{}, len(pk.values))
+	copy(values, pk.values)
+
+	// Empty values → undefined partition key
+	if len(values) == 0 {
+		values = []interface{}{epk.UndefinedMarker{}}
+	}
+
+	var epkStr string
+	switch {
+	case version == 1:
+		epkStr = epk.ComputeV1(values)
+	case kind == PartitionKeyKindMultiHash:
+		epkStr = epk.ComputeV2MultiHash(values)
+	default:
+		epkStr = epk.ComputeV2Hash(values)
+	}
+
+	return epk.EffectivePartitionKey{EPK: epkStr}
 }

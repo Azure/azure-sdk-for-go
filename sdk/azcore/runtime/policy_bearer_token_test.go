@@ -518,6 +518,45 @@ func TestBearerTokenPolicy_CAEChallengeHandling(t *testing.T) {
 		require.Equal(t, 2, tkReqs, "policy shouldn't handle a second CAE challenge for the same request")
 		require.Equal(t, 2, srv.Requests(), "policy shouldn't handle a second CAE challenge for the same request")
 	})
+
+	t.Run("errors non-retriable", func(t *testing.T) {
+		srv, close := mock.NewTLSServer()
+		defer close()
+		srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+		srv.AppendResponse(
+			mock.WithHeader(shared.HeaderWWWAuthenticate, `Bearer error="insufficient_claims", claims="ey=="`),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+
+		called := false
+		expectedErr := errors.New("something went wrong")
+		cred := mockCredential{
+			getTokenImpl: func(context.Context, policy.TokenRequestOptions) (exported.AccessToken, error) {
+				if called {
+					return exported.AccessToken{}, expectedErr
+				}
+				called = true
+				return exported.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
+			},
+		}
+		counter := &countingPolicy{}
+		btp := NewBearerTokenPolicy(cred, []string{scope}, nil)
+		pl := newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{counter, btp}, Transport: srv})
+
+		req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+		require.NoError(t, err)
+		_, err = pl.Do(req)
+		require.NoError(t, err)
+
+		req, err = NewRequest(context.Background(), http.MethodGet, srv.URL())
+		require.NoError(t, err)
+		_, err = pl.Do(req)
+		require.EqualError(t, err, expectedErr.Error())
+		require.ErrorAs(t, err, new(errorinfo.NonRetriable))
+		// this is the crucial assertion; the retry policy would have retried the request
+		// if BearerTokenPolicy didn't make the credential's error NonRetriable
+		require.Equal(t, 2, counter.count, "BearerTokenPolicy should make the authentication error NonRetriable")
+	})
 }
 
 func TestBearerTokenPolicy_RequiresHTTPS(t *testing.T) {

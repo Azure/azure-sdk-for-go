@@ -26,7 +26,7 @@ type BranchesClient struct {
 // NewBranchesClient creates a new instance of BranchesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBranchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BranchesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -190,7 +190,6 @@ func (client *BranchesClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -335,94 +334,4 @@ func (client *BranchesClient) listHandleResponse(resp *http.Response) (BranchesC
 		return BranchesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a Branch
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - organizationName - Name of the Neon Organizations resource
-//   - projectName - The name of the Project
-//   - branchName - The name of the Branch
-//   - properties - The resource properties to be updated.
-//   - options - BranchesClientBeginUpdateOptions contains the optional parameters for the BranchesClient.BeginUpdate method.
-func (client *BranchesClient) BeginUpdate(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, properties Branch, options *BranchesClientBeginUpdateOptions) (*runtime.Poller[BranchesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, organizationName, projectName, branchName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BranchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BranchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Branch
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
-func (client *BranchesClient) update(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, properties Branch, options *BranchesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BranchesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, organizationName, projectName, branchName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *BranchesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, properties Branch, _ *BranchesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if branchName == "" {
-		return nil, errors.New("parameter branchName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{branchName}", url.PathEscape(branchName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -6,12 +6,11 @@ package armcarbonoptimization_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
+	"log"
+	"time"
 )
 
 // Generated from example definition: 2025-04-01/carbonEmissionsDataAvailableDateRange.json
@@ -69,8 +68,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionLo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType:  to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
 		OrderBy:       to.Ptr(armcarbonoptimization.OrderByColumnEnumLatestMonthEmissions),
@@ -196,8 +195,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-03-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 	}, nil)
 	if err != nil {
@@ -268,8 +267,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionMo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-03-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		LocationList: []*string{
 			to.Ptr("east us"),
@@ -351,8 +350,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-06-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-06-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-01"); return t }()),
 		},
 	}, nil)
 	if err != nil {
@@ -403,8 +402,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-06-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-06-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-01"); return t }()),
 		},
 		LocationList: []*string{
 			to.Ptr("east us"),
@@ -474,8 +473,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType:  to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
 		OrderBy:       to.Ptr(armcarbonoptimization.OrderByColumnEnumLatestMonthEmissions),
@@ -619,8 +618,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType:  to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
 		OrderBy:       to.Ptr(armcarbonoptimization.OrderByColumnEnumLatestMonthEmissions),
@@ -780,8 +779,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType:  to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
 		OrderBy:       to.Ptr(armcarbonoptimization.OrderByColumnEnumLatestMonthEmissions),
@@ -941,8 +940,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType:  to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
 		OrderBy:       to.Ptr(armcarbonoptimization.OrderByColumnEnumLatestMonthEmissions),
@@ -1076,8 +1075,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionSu
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType:  to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
 		OrderBy:       to.Ptr(armcarbonoptimization.OrderByColumnEnumLatestMonthEmissions),
@@ -1211,8 +1210,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-03-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
 		TopItems:     to.Ptr[int32](2),
@@ -1359,8 +1358,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumLocation),
 		TopItems:     to.Ptr[int32](5),
@@ -1492,8 +1491,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-03-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
 		TopItems:     to.Ptr[int32](2),
@@ -1652,8 +1651,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceGroup),
 		TopItems:     to.Ptr[int32](5),
@@ -1795,8 +1794,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-03-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
 		TopItems:     to.Ptr[int32](2),
@@ -1961,8 +1960,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResource),
 		TopItems:     to.Ptr[int32](5),
@@ -2109,8 +2108,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-03-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
 		TopItems:     to.Ptr[int32](2),
@@ -2257,8 +2256,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumResourceType),
 		TopItems:     to.Ptr[int32](5),
@@ -2390,8 +2389,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-03-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
 		TopItems:     to.Ptr[int32](2),
@@ -2538,8 +2537,8 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 			to.Ptr(armcarbonoptimization.EmissionScopeEnumScope3),
 		},
 		DateRange: &armcarbonoptimization.DateRange{
-			Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
-			End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-05-01"); return t }()),
+			Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
+			End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-01"); return t }()),
 		},
 		CategoryType: to.Ptr(armcarbonoptimization.CategoryTypeEnumSubscription),
 		TopItems:     to.Ptr[int32](5),

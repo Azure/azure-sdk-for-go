@@ -87,6 +87,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// CreatorCanAdmin - The creator will have admin access for the Grafana instance.
+type CreatorCanAdmin string
+
+const (
+	// CreatorCanAdminDisabled - Creator admin access is disabled
+	CreatorCanAdminDisabled CreatorCanAdmin = "Disabled"
+	// CreatorCanAdminEnabled - Creator admin access is enabled
+	CreatorCanAdminEnabled CreatorCanAdmin = "Enabled"
+)
+
+// PossibleCreatorCanAdminValues returns the possible values for the CreatorCanAdmin const type.
+func PossibleCreatorCanAdminValues() []CreatorCanAdmin {
+	return []CreatorCanAdmin{
+		CreatorCanAdminDisabled,
+		CreatorCanAdminEnabled,
+	}
+}
+
 type DeterministicOutboundIP string
 
 const (
@@ -271,6 +289,24 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+	}
+}
+
+// Size - Specifies the capacity tier of the Grafana instance.
+type Size string
+
+const (
+	// SizeX1 - X1 capacity tier
+	SizeX1 Size = "X1"
+	// SizeX2 - X2 capacity tier
+	SizeX2 Size = "X2"
+)
+
+// PossibleSizeValues returns the possible values for the Size const type.
+func PossibleSizeValues() []Size {
+	return []Size{
+		SizeX1,
+		SizeX2,
 	}
 }
 

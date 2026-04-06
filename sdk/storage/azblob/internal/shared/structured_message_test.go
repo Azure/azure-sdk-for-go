@@ -518,12 +518,12 @@ func TestStreamingEncoderSeekSupport(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, int64(0), pos)
 
-	// After reading some data, SeekCurrent returns non-zero
+	// After reading some data, SeekCurrent returns exact position
 	buf := make([]byte, 1)
 	_, _ = enc.Read(buf)
 	pos, err = enc.Seek(0, io.SeekCurrent)
 	require.NoError(t, err)
-	require.NotEqual(t, int64(0), pos)
+	require.Equal(t, int64(1), pos)
 
 	// Non-zero offset should fail
 	_, err = enc.Seek(1, io.SeekStart)

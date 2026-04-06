@@ -30,6 +30,11 @@ extends:
   ${{ else }}:
     template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
+    featureFlags:
+      golang:
+        # New pipelines are not auto-onboarded so we have to opt-in to the module proxy
+        internalModuleProxy:
+          enabled: true
     ${{ if eq(parameters.oneESTemplateTag, 'canary') }}:
       # Enable 1es template team to verify validation has been run on canary
       customBuildTags:
@@ -47,9 +52,11 @@ extends:
         os: windows
       credscan:
         suppressionsFile: '$(Build.SourcesDirectory)/eng/CredScanSuppression.json'
-        toolVersion: '2.3.12.23'
       # Turn off the build warnings caused by disabling some sdl checks
       createAdoIssuesForJustificationsForDisablement: false
+      componentgovernance:
+        enabled: false
+        justificationForDisabling: "To reduce redundant CG runs across all our pipeline jobs we are disabling and only running in our main build job."
       eslint:
         enabled: false
         justificationForDisabling: "ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3556850"

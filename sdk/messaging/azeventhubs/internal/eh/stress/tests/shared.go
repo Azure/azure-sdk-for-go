@@ -267,7 +267,7 @@ func initCheckpointStore(ctx context.Context, containerName string, testData *st
 		return nil, err
 	}
 
-	defer producerClient.Close(ctx)
+	defer func() { _ = producerClient.Close(ctx) }()
 
 	hubProps, err := producerClient.GetEventHubProperties(ctx, nil)
 

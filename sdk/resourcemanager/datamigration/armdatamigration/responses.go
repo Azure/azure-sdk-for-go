@@ -73,6 +73,12 @@ type DatabaseMigrationsSQLDbClientGetResponse struct {
 	DatabaseMigrationSQLDb
 }
 
+// DatabaseMigrationsSQLDbClientRetryResponse contains the response from method DatabaseMigrationsSQLDbClient.BeginRetry.
+type DatabaseMigrationsSQLDbClientRetryResponse struct {
+	// Database Migration Resource for SQL Database.
+	DatabaseMigrationSQLDb
+}
+
 // DatabaseMigrationsSQLMiClientCancelResponse contains the response from method DatabaseMigrationsSQLMiClient.BeginCancel.
 type DatabaseMigrationsSQLMiClientCancelResponse struct {
 	// placeholder for future response values
@@ -87,6 +93,12 @@ type DatabaseMigrationsSQLMiClientCreateOrUpdateResponse struct {
 // DatabaseMigrationsSQLMiClientCutoverResponse contains the response from method DatabaseMigrationsSQLMiClient.BeginCutover.
 type DatabaseMigrationsSQLMiClientCutoverResponse struct {
 	// placeholder for future response values
+}
+
+// DatabaseMigrationsSQLMiClientDeleteResponse contains the response from method DatabaseMigrationsSQLMiClient.BeginDelete.
+type DatabaseMigrationsSQLMiClientDeleteResponse struct {
+	// Database Migration Resource for SQL Managed Instance.
+	DatabaseMigrationSQLMi
 }
 
 // DatabaseMigrationsSQLMiClientGetResponse contains the response from method DatabaseMigrationsSQLMiClient.Get.
@@ -109,6 +121,12 @@ type DatabaseMigrationsSQLVMClientCreateOrUpdateResponse struct {
 // DatabaseMigrationsSQLVMClientCutoverResponse contains the response from method DatabaseMigrationsSQLVMClient.BeginCutover.
 type DatabaseMigrationsSQLVMClientCutoverResponse struct {
 	// placeholder for future response values
+}
+
+// DatabaseMigrationsSQLVMClientDeleteResponse contains the response from method DatabaseMigrationsSQLVMClient.BeginDelete.
+type DatabaseMigrationsSQLVMClientDeleteResponse struct {
+	// Database Migration Resource for SQL Virtual Machine.
+	DatabaseMigrationSQLVM
 }
 
 // DatabaseMigrationsSQLVMClientGetResponse contains the response from method DatabaseMigrationsSQLVMClient.Get.

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -67,6 +64,23 @@ func recordMITest(t *testing.T) (azcore.ClientOptions, string) {
 		require.NoError(t, err)
 	}
 	return opts, scope
+}
+
+// triggerLiveTest sends a request to managed-id-test at the given URL and fails the test if the response isn't OK
+func triggerLiveTest(t *testing.T, url string) {
+	t.Parallel()
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	require.NoError(t, err)
+	res, err := http.DefaultClient.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, res)
+	if res.StatusCode != http.StatusOK {
+		b, err := azruntime.Payload(res)
+		require.NoError(t, err)
+		t.Fatal("test application returned an error: " + string(b))
+	}
 }
 
 func writeArcKeyFile(t *testing.T, content string) string {
@@ -260,13 +274,7 @@ func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
 	if ip == "" {
 		t.Skip("set AZIDENTITY_ACI_IP to run this test")
 	}
-	res, err := http.Get("http://" + ip)
-	require.NoError(t, err)
-	if res.StatusCode != http.StatusOK {
-		b, err := azruntime.Payload(res)
-		require.NoError(t, err)
-		t.Fatal("test application returned an error: " + string(b))
-	}
+	triggerLiveTest(t, "http://"+ip)
 }
 
 func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
@@ -277,13 +285,7 @@ func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
 		t.Skip("set AZIDENTITY_FUNCTION_NAME to run this test")
 	}
 	url := fmt.Sprintf("https://%s.azurewebsites.net/api/HttpTrigger", fn)
-	res, err := http.Get(url)
-	require.NoError(t, err)
-	if res.StatusCode != http.StatusOK {
-		b, err := azruntime.Payload(res)
-		require.NoError(t, err)
-		t.Fatal("test application returned an error: " + string(b))
-	}
+	triggerLiveTest(t, url)
 }
 
 func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {
@@ -554,52 +556,13 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 }
 
 func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds {
-		t.Skip("set IDENTITY_IMDS_AVAILABLE to run this test")
+	// This test triggers the managed identity test app deployed to a VM.
+	// See the bicep file and test resources scripts for details.
+	ip := os.Getenv("AZIDENTITY_VM_IP")
+	if ip == "" {
+		t.Skip("set AZIDENTITY_VM_IP to run this test")
 	}
-
-	t.Run("client ID", func(t *testing.T) {
-		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.clientID == "" {
-			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
-		}
-		opts, scope := recordMITest(t)
-		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
-			ClientOptions: opts, ID: ClientID(liveManagedIdentity.clientID)},
-		)
-		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, scope)
-	})
-
-	t.Run("object ID", func(t *testing.T) {
-		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.objectID == "" {
-			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID to run this test")
-		}
-		opts, scope := recordMITest(t)
-		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
-			ClientOptions: opts, ID: ObjectID(liveManagedIdentity.objectID)},
-		)
-		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, scope)
-	})
-
-	t.Run("resource ID", func(t *testing.T) {
-		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.resourceID == "" {
-			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
-		}
-		opts, scope := recordMITest(t)
-		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
-			ClientOptions: opts, ID: ResourceID(liveManagedIdentity.resourceID)},
-		)
-		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, scope)
-	})
-
-	t.Run("system assigned", func(t *testing.T) {
-		opts, scope := recordMITest(t)
-		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
-		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, scope)
-	})
+	triggerLiveTest(t, "http://"+ip)
 }
 
 func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {

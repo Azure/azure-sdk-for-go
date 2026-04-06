@@ -43,7 +43,7 @@ func NewContainerAppsSessionPoolsClient(subscriptionID string, credential azcore
 // BeginCreateOrUpdate - Create or update a session pool with the given properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - sessionPoolEnvelope - Properties used to create a session pool
@@ -70,7 +70,7 @@ func (client *ContainerAppsSessionPoolsClient) BeginCreateOrUpdate(ctx context.C
 // CreateOrUpdate - Create or update a session pool with the given properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 func (client *ContainerAppsSessionPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, sessionPoolName string, sessionPoolEnvelope SessionPool, options *ContainerAppsSessionPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerAppsSessionPoolsClient.BeginCreateOrUpdate"
@@ -112,7 +112,7 @@ func (client *ContainerAppsSessionPoolsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sessionPoolEnvelope); err != nil {
@@ -124,7 +124,7 @@ func (client *ContainerAppsSessionPoolsClient) createOrUpdateCreateRequest(ctx c
 // BeginDelete - Delete the session pool with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - options - ContainerAppsSessionPoolsClientBeginDeleteOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.BeginDelete
@@ -150,7 +150,7 @@ func (client *ContainerAppsSessionPoolsClient) BeginDelete(ctx context.Context, 
 // Delete - Delete the session pool with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 func (client *ContainerAppsSessionPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, sessionPoolName string, options *ContainerAppsSessionPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerAppsSessionPoolsClient.BeginDelete"
@@ -192,7 +192,7 @@ func (client *ContainerAppsSessionPoolsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +201,7 @@ func (client *ContainerAppsSessionPoolsClient) deleteCreateRequest(ctx context.C
 // Get - Get the properties of a session pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - options - ContainerAppsSessionPoolsClientGetOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.Get
@@ -248,7 +248,7 @@ func (client *ContainerAppsSessionPoolsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *ContainerAppsSessionPoolsClient) getHandleResponse(resp *http.Resp
 
 // NewListByResourceGroupPager - Get the session pools in a given resource group of a subscription.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ContainerAppsSessionPoolsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.NewListByResourceGroupPager
 //     method.
@@ -308,7 +308,7 @@ func (client *ContainerAppsSessionPoolsClient) listByResourceGroupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -325,7 +325,7 @@ func (client *ContainerAppsSessionPoolsClient) listByResourceGroupHandleResponse
 
 // NewListBySubscriptionPager - Get the session pools in a given subscription.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - options - ContainerAppsSessionPoolsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *ContainerAppsSessionPoolsClient) NewListBySubscriptionPager(options *ContainerAppsSessionPoolsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsSessionPoolsClientListBySubscriptionResponse] {
@@ -363,7 +363,7 @@ func (client *ContainerAppsSessionPoolsClient) listBySubscriptionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +381,7 @@ func (client *ContainerAppsSessionPoolsClient) listBySubscriptionHandleResponse(
 // BeginUpdate - Patches a session pool using JSON merge patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - sessionPoolEnvelope - Properties used to create a session pool
@@ -408,7 +408,7 @@ func (client *ContainerAppsSessionPoolsClient) BeginUpdate(ctx context.Context, 
 // Update - Patches a session pool using JSON merge patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 func (client *ContainerAppsSessionPoolsClient) update(ctx context.Context, resourceGroupName string, sessionPoolName string, sessionPoolEnvelope SessionPoolUpdatableProperties, options *ContainerAppsSessionPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerAppsSessionPoolsClient.BeginUpdate"
@@ -450,7 +450,7 @@ func (client *ContainerAppsSessionPoolsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sessionPoolEnvelope); err != nil {

@@ -27,7 +27,7 @@ type PercentileClient struct {
 // NewPercentileClient creates a new instance of PercentileClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPercentileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PercentileClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPercentileClient(subscriptionID string, credential azcore.TokenCredentia
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account. This url is
 // only for PBS and Replication Latency data
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
@@ -96,7 +96,7 @@ func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, re
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

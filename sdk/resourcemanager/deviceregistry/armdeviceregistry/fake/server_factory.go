@@ -24,11 +24,35 @@ type ServerFactory struct {
 	// BillingContainersServer contains the fakes for client BillingContainersClient
 	BillingContainersServer BillingContainersServer
 
+	// NamespaceAssetsServer contains the fakes for client NamespaceAssetsClient
+	NamespaceAssetsServer NamespaceAssetsServer
+
+	// NamespaceDevicesServer contains the fakes for client NamespaceDevicesClient
+	NamespaceDevicesServer NamespaceDevicesServer
+
+	// NamespaceDiscoveredAssetsServer contains the fakes for client NamespaceDiscoveredAssetsClient
+	NamespaceDiscoveredAssetsServer NamespaceDiscoveredAssetsServer
+
+	// NamespaceDiscoveredDevicesServer contains the fakes for client NamespaceDiscoveredDevicesClient
+	NamespaceDiscoveredDevicesServer NamespaceDiscoveredDevicesServer
+
+	// NamespacesServer contains the fakes for client NamespacesClient
+	NamespacesServer NamespacesServer
+
 	// OperationStatusServer contains the fakes for client OperationStatusClient
 	OperationStatusServer OperationStatusServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// SchemaRegistriesServer contains the fakes for client SchemaRegistriesClient
+	SchemaRegistriesServer SchemaRegistriesServer
+
+	// SchemaVersionsServer contains the fakes for client SchemaVersionsClient
+	SchemaVersionsServer SchemaVersionsServer
+
+	// SchemasServer contains the fakes for client SchemasClient
+	SchemasServer SchemasServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -43,13 +67,21 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdeviceregistry.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                           *ServerFactory
-	trMu                          sync.Mutex
-	trAssetEndpointProfilesServer *AssetEndpointProfilesServerTransport
-	trAssetsServer                *AssetsServerTransport
-	trBillingContainersServer     *BillingContainersServerTransport
-	trOperationStatusServer       *OperationStatusServerTransport
-	trOperationsServer            *OperationsServerTransport
+	srv                                *ServerFactory
+	trMu                               sync.Mutex
+	trAssetEndpointProfilesServer      *AssetEndpointProfilesServerTransport
+	trAssetsServer                     *AssetsServerTransport
+	trBillingContainersServer          *BillingContainersServerTransport
+	trNamespaceAssetsServer            *NamespaceAssetsServerTransport
+	trNamespaceDevicesServer           *NamespaceDevicesServerTransport
+	trNamespaceDiscoveredAssetsServer  *NamespaceDiscoveredAssetsServerTransport
+	trNamespaceDiscoveredDevicesServer *NamespaceDiscoveredDevicesServerTransport
+	trNamespacesServer                 *NamespacesServerTransport
+	trOperationStatusServer            *OperationStatusServerTransport
+	trOperationsServer                 *OperationsServerTransport
+	trSchemaRegistriesServer           *SchemaRegistriesServerTransport
+	trSchemaVersionsServer             *SchemaVersionsServerTransport
+	trSchemasServer                    *SchemasServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -78,6 +110,29 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewBillingContainersServerTransport(&s.srv.BillingContainersServer)
 		})
 		resp, err = s.trBillingContainersServer.Do(req)
+	case "NamespaceAssetsClient":
+		initServer(s, &s.trNamespaceAssetsServer, func() *NamespaceAssetsServerTransport {
+			return NewNamespaceAssetsServerTransport(&s.srv.NamespaceAssetsServer)
+		})
+		resp, err = s.trNamespaceAssetsServer.Do(req)
+	case "NamespaceDevicesClient":
+		initServer(s, &s.trNamespaceDevicesServer, func() *NamespaceDevicesServerTransport {
+			return NewNamespaceDevicesServerTransport(&s.srv.NamespaceDevicesServer)
+		})
+		resp, err = s.trNamespaceDevicesServer.Do(req)
+	case "NamespaceDiscoveredAssetsClient":
+		initServer(s, &s.trNamespaceDiscoveredAssetsServer, func() *NamespaceDiscoveredAssetsServerTransport {
+			return NewNamespaceDiscoveredAssetsServerTransport(&s.srv.NamespaceDiscoveredAssetsServer)
+		})
+		resp, err = s.trNamespaceDiscoveredAssetsServer.Do(req)
+	case "NamespaceDiscoveredDevicesClient":
+		initServer(s, &s.trNamespaceDiscoveredDevicesServer, func() *NamespaceDiscoveredDevicesServerTransport {
+			return NewNamespaceDiscoveredDevicesServerTransport(&s.srv.NamespaceDiscoveredDevicesServer)
+		})
+		resp, err = s.trNamespaceDiscoveredDevicesServer.Do(req)
+	case "NamespacesClient":
+		initServer(s, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
+		resp, err = s.trNamespacesServer.Do(req)
 	case "OperationStatusClient":
 		initServer(s, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
 			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)
@@ -86,6 +141,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SchemaRegistriesClient":
+		initServer(s, &s.trSchemaRegistriesServer, func() *SchemaRegistriesServerTransport {
+			return NewSchemaRegistriesServerTransport(&s.srv.SchemaRegistriesServer)
+		})
+		resp, err = s.trSchemaRegistriesServer.Do(req)
+	case "SchemaVersionsClient":
+		initServer(s, &s.trSchemaVersionsServer, func() *SchemaVersionsServerTransport {
+			return NewSchemaVersionsServerTransport(&s.srv.SchemaVersionsServer)
+		})
+		resp, err = s.trSchemaVersionsServer.Do(req)
+	case "SchemasClient":
+		initServer(s, &s.trSchemasServer, func() *SchemasServerTransport { return NewSchemasServerTransport(&s.srv.SchemasServer) })
+		resp, err = s.trSchemasServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

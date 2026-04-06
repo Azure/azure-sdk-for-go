@@ -21,7 +21,7 @@ func TestEnumFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,14 +43,14 @@ func TestFuncFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	FilterChangelog(changelog, FuncFilter)
 
-	excepted := "### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n"
+	excepted := "### Breaking Changes\n\n- Function `*Client.Get` return value(s) have been changed from `(error)` to `(ClientGetResponse, error)`\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(resourceGroupName string, options *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n- New struct `ClientGetResponse`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -65,7 +65,7 @@ func TestLROFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -87,7 +87,7 @@ func TestPageableFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +109,7 @@ func TestInterfaceToAnyFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -131,7 +131,7 @@ func TestNonExportedFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -139,5 +139,28 @@ func TestNonExportedFilter(t *testing.T) {
 	FilterChangelog(changelog, NonExportedFilter)
 
 	excepted := "### Breaking Changes\n\n- Function `*Public.PublicMethod` has been removed\n\n### Features Added\n\n- New function `*Public.NewPublicMethos() `\n"
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
+func TestParamNameToUnderscoreFilter(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/paramname")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/paramname")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := getChangelog(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	FilterChangelog(changelog, ParamNameToUnderscoreFilter)
+
+	// Expected: Only changes that are NOT just parameter name to underscore
+	excepted := "### Breaking Changes\n\n- Function `*Client.NameChangeNotToUnderscore` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string)` to `(ctx context.Context, groupName string)`\n- Function `*Client.TypeAndNameChange` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string)` to `(ctx context.Context, _ int)`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }

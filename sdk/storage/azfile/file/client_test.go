@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -44,12 +41,13 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running file Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &FileRecordedTestsSuite{})
 		suite.Run(t, &FileUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &FileRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &FileRecordedTestsSuite{})
 	}
 }
@@ -335,6 +333,135 @@ func (f *FileRecordedTestsSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 		_require.NotNil(val)
 		_require.Equal(*v, *val)
 	}
+}
+
+type readSeekNopCloser struct{ *bytes.Reader }
+
+func (r readSeekNopCloser) Close() error { return nil }
+
+func (f *FileRecordedTestsSuite) TestFileCreateWithBodyUsingSharedKey() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName + "/" + dirName + "/" + fileName
+
+	options := &file.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClient, err := file.NewClientWithSharedKeyCredential(fileURL, cred, options)
+	_require.NoError(err)
+
+	// Create the parent dir
+	testcommon.CreateNewDirectory(context.Background(), _require, dirName, shareClient)
+
+	// Body content
+	content := []byte("hello azure file sdk")
+	body := readSeekNopCloser{bytes.NewReader(content)}
+
+	resp, err := fileClient.Create(context.Background(), int64(len(content)), &file.CreateOptions{
+		OptionalBody:  body,
+		ContentLength: to.Ptr(int64(len(content))),
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+
+	_require.Equal(resp.FileCreationTime.IsZero(), false)
+	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
+	_require.Equal(resp.FileChangeTime.IsZero(), false)
+
+	// Read file back to ensure content uploaded
+	downloadResp, err := fileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloaded, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(string(content), string(downloaded))
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateWithEmptyBody() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName + "/" + dirName + "/" + fileName
+
+	options := &file.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClient, err := file.NewClientWithSharedKeyCredential(fileURL, cred, options)
+	_require.NoError(err)
+
+	testcommon.CreateNewDirectory(context.Background(), _require, dirName, shareClient)
+
+	// Create with nil OptionalBody but length > 0
+	createOpts := &file.CreateOptions{
+		OptionalBody:  nil,
+		ContentLength: to.Ptr(int64(512)),
+	}
+	resp, err := fileClient.Create(context.Background(), 512, createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Should be empty file (length 512, but no content written)
+	props, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*props.ContentLength, int64(512))
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateBackwardCompatibility() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName + "/" + dirName + "/" + fileName
+
+	options := &file.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClient, err := file.NewClientWithSharedKeyCredential(fileURL, cred, options)
+	_require.NoError(err)
+
+	testcommon.CreateNewDirectory(context.Background(), _require, dirName, shareClient)
+
+	resp, err := fileClient.Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// File exists with length 1024
+	props, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*props.ContentLength, int64(1024))
 }
 
 func (f *FileRecordedTestsSuite) TestFileCreateRenameFilePermissionFormatDefault() {
@@ -5035,7 +5162,7 @@ func TestDownloadSmallChunkSize(t *testing.T) {
 	// download to a temp file and verify contents
 	tmp, err := os.CreateTemp("", "")
 	_require.NoError(err)
-	defer tmp.Close()
+	defer func() { _ = tmp.Close() }()
 
 	_, err = fileClient.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{ChunkSize: chunkSize})
 	_require.NoError(err)

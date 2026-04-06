@@ -4,11 +4,6 @@
 
 package armdurabletask
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdurabletask"
-	moduleVersion = "v0.2.0"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -107,7 +102,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type PurgeableOrchestrationState string
 
 const (
-	// PurgeableOrchestrationStateCanceled - The orchestration is terminated
+	// PurgeableOrchestrationStateCanceled - The orchestration is canceled
 	PurgeableOrchestrationStateCanceled PurgeableOrchestrationState = "Canceled"
 	// PurgeableOrchestrationStateCompleted - The orchestration is completed
 	PurgeableOrchestrationStateCompleted PurgeableOrchestrationState = "Completed"
@@ -142,5 +137,23 @@ func PossibleRedundancyStateValues() []RedundancyState {
 	return []RedundancyState{
 		RedundancyStateNone,
 		RedundancyStateZone,
+	}
+}
+
+// SchedulerSKUName - The name of the Stock Keeping Unit (SKU) of a Durable Task Scheduler
+type SchedulerSKUName string
+
+const (
+	// SchedulerSKUNameConsumption - Consumption SKU
+	SchedulerSKUNameConsumption SchedulerSKUName = "Consumption"
+	// SchedulerSKUNameDedicated - Dedicated SKU
+	SchedulerSKUNameDedicated SchedulerSKUName = "Dedicated"
+)
+
+// PossibleSchedulerSKUNameValues returns the possible values for the SchedulerSKUName const type.
+func PossibleSchedulerSKUNameValues() []SchedulerSKUName {
+	return []SchedulerSKUName{
+		SchedulerSKUNameConsumption,
+		SchedulerSKUNameDedicated,
 	}
 }

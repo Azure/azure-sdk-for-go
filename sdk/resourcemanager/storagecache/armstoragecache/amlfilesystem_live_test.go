@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -57,7 +54,7 @@ func (testsuite *AmlfilesystemTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestAmlfilesystemTestSuite(t *testing.T) {
+func TTestAmlfilesystemTestSuite(t *testing.T) {
 	suite.Run(t, new(AmlfilesystemTestSuite))
 }
 

@@ -5,6 +5,7 @@ package delta
 
 import (
 	"sort"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 )
@@ -243,15 +244,19 @@ func GetFuncSigChanges(lhs, rhs exports.Content) map[string]FuncSig {
 			continue
 		}
 		sig := FuncSig{}
-		if !safeStrCmp(lhs.Funcs[rhsKey].Params, rhsValue.Params) {
+		lhsValue := lhs.Funcs[rhsKey]
+
+		// Check for parameter changes
+		if !paramsEqual(lhsValue.Params, rhsValue.Params) {
 			sig.Params = &Signature{
-				From: safeFuncSig(lhs.Funcs[rhsKey].Params),
-				To:   safeFuncSig(rhsValue.Params),
+				From: paramsToString(lhsValue.Params),
+				To:   paramsToString(rhsValue.Params),
 			}
 		}
-		if !safeStrCmp(lhs.Funcs[rhsKey].Returns, rhsValue.Returns) {
+
+		if !safeStrCmp(lhsValue.Returns, rhsValue.Returns) {
 			sig.Returns = &Signature{
-				From: safeFuncSig(lhs.Funcs[rhsKey].Returns),
+				From: safeFuncSig(lhsValue.Returns),
 				To:   safeFuncSig(rhsValue.Returns),
 			}
 		}
@@ -285,10 +290,10 @@ func GetInterfaceMethodSigChanges(lhs, rhs exports.Content) map[string]Interface
 				continue
 			}
 			sig := FuncSig{}
-			if !safeStrCmp(lhs.Interfaces[rhsKey].Methods[rhsMethod].Params, rhsSig.Params) {
+			if !paramsEqual(lhs.Interfaces[rhsKey].Methods[rhsMethod].Params, rhsSig.Params) {
 				sig.Params = &Signature{
-					From: safeFuncSig(lhs.Interfaces[rhsKey].Methods[rhsMethod].Params),
-					To:   safeFuncSig(rhsSig.Params),
+					From: paramsToString(lhs.Interfaces[rhsKey].Methods[rhsMethod].Params),
+					To:   paramsToString(rhsSig.Params),
 				}
 			}
 			if !safeStrCmp(lhs.Interfaces[rhsKey].Methods[rhsMethod].Returns, rhsSig.Returns) {
@@ -367,4 +372,43 @@ func safeStrCmp(lhs, rhs *string) bool {
 		return false
 	}
 	return *lhs == *rhs
+}
+
+// paramsEqual checks if two parameter lists are equal.
+// Parameters are considered equal only if they have the same types in the same order
+// with the same names in the same order.
+func paramsEqual(lhs, rhs []exports.Param) bool {
+	if len(lhs) != len(rhs) {
+		return false
+	}
+
+	for i := range lhs {
+		// Types must match exactly
+		if lhs[i].Type != rhs[i].Type {
+			return false
+		}
+		// Names must match exactly
+		if lhs[i].Name != rhs[i].Name {
+			return false
+		}
+	}
+
+	return true
+}
+
+// paramsToString converts a parameter list to a comma-delimited string with names and types.
+func paramsToString(params []exports.Param) string {
+	if len(params) == 0 {
+		return None
+	}
+
+	var parts []string
+	for _, p := range params {
+		if p.Name != "" {
+			parts = append(parts, p.Name+" "+p.Type)
+		} else {
+			parts = append(parts, p.Type)
+		}
+	}
+	return strings.Join(parts, ", ")
 }

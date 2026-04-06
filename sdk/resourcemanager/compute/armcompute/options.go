@@ -46,7 +46,7 @@ type AvailabilitySetsClientListAvailableSizesOptions struct {
 // AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.NewListBySubscriptionPager
 // method.
 type AvailabilitySetsClientListBySubscriptionOptions struct {
-	// The expand expression to apply to the operation. Allowed values are 'virtualMachines/$ref'.
+	// The expand expression to apply to the operation. Allowed values are 'instanceView'.
 	Expand *string
 }
 
@@ -884,6 +884,68 @@ type GalleryInVMAccessControlProfilesClientListByGalleryOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GalleryScriptVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryScriptVersionsClient.BeginCreateOrUpdate
+// method.
+type GalleryScriptVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GalleryScriptVersionsClientBeginDeleteOptions contains the optional parameters for the GalleryScriptVersionsClient.BeginDelete
+// method.
+type GalleryScriptVersionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GalleryScriptVersionsClientBeginUpdateOptions contains the optional parameters for the GalleryScriptVersionsClient.BeginUpdate
+// method.
+type GalleryScriptVersionsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GalleryScriptVersionsClientGetOptions contains the optional parameters for the GalleryScriptVersionsClient.Get method.
+type GalleryScriptVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GalleryScriptVersionsClientListByGalleryScriptOptions contains the optional parameters for the GalleryScriptVersionsClient.NewListByGalleryScriptPager
+// method.
+type GalleryScriptVersionsClientListByGalleryScriptOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GalleryScriptsClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryScriptsClient.BeginCreateOrUpdate
+// method.
+type GalleryScriptsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GalleryScriptsClientBeginDeleteOptions contains the optional parameters for the GalleryScriptsClient.BeginDelete method.
+type GalleryScriptsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GalleryScriptsClientBeginUpdateOptions contains the optional parameters for the GalleryScriptsClient.BeginUpdate method.
+type GalleryScriptsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GalleryScriptsClientGetOptions contains the optional parameters for the GalleryScriptsClient.Get method.
+type GalleryScriptsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GalleryScriptsClientListByGalleryOptions contains the optional parameters for the GalleryScriptsClient.NewListByGalleryPager
+// method.
+type GalleryScriptsClientListByGalleryOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GallerySharingProfileClientBeginUpdateOptions contains the optional parameters for the GallerySharingProfileClient.BeginUpdate
 // method.
 type GallerySharingProfileClientBeginUpdateOptions struct {
@@ -1271,7 +1333,7 @@ type VirtualMachineImagesClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachineImagesClientListWithPropertiesOptions contains the optional parameters for the VirtualMachineImagesClient.NewListWithPropertiesPager
+// VirtualMachineImagesClientListWithPropertiesOptions contains the optional parameters for the VirtualMachineImagesClient.ListWithProperties
 // method.
 type VirtualMachineImagesClientListWithPropertiesOptions struct {
 	Orderby *string
@@ -1612,9 +1674,7 @@ type VirtualMachineScaleSetVMsClientGetInstanceViewOptions struct {
 // method.
 type VirtualMachineScaleSetVMsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of the virtual machine.
-	// 'UserData' will retrieve the UserData of the virtual machine. 'resiliencyView'
-	// will retrieve the instance view of the Virtual machine (if applicable) and include 'resilientVMDeletionStatus' as part
-	// of it.
+	// 'UserData' will retrieve the UserData of the virtual machine.
 	Expand *InstanceViewTypes
 }
 
@@ -1777,6 +1837,13 @@ type VirtualMachineScaleSetsClientBeginRestartOptions struct {
 	VMInstanceIDs *VirtualMachineScaleSetVMInstanceIDs
 }
 
+// VirtualMachineScaleSetsClientBeginScaleOutOptions contains the optional parameters for the VirtualMachineScaleSetsClient.BeginScaleOut
+// method.
+type VirtualMachineScaleSetsClientBeginScaleOutOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // VirtualMachineScaleSetsClientBeginSetOrchestrationServiceStateOptions contains the optional parameters for the VirtualMachineScaleSetsClient.BeginSetOrchestrationServiceState
 // method.
 type VirtualMachineScaleSetsClientBeginSetOrchestrationServiceStateOptions struct {
@@ -1934,13 +2001,7 @@ type VirtualMachinesClientBeginDeallocateOptions struct {
 
 // VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete method.
 type VirtualMachinesClientBeginDeleteOptions struct {
-	// Optional parameter to force delete virtual machines. NOTE: As of api-version 2024-11-01, we are rolling out a feature where
-	// if the forceDeletion parameter is unspecified OR not explicitly set to
-	// false, AND all of the VM's attached disks including the OS disk are marked with the delete option, then the VM will be
-	// force deleted. For more details on how to configure delete options for a VM's
-	// resources, see Delete a VM and attached resources [https://learn.microsoft.com/en-us/azure/virtual-machines/delete]. To
-	// avoid defaulting to force delete, ensure that the forceDeletion parameter is
-	// explicitly set to false. This feature is expected to rollout by end of March 2025.
+	// Optional parameter to force delete virtual machines.
 	ForceDeletion *bool
 
 	// Resumes the long-running operation from the provided token.

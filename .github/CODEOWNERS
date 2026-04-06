@@ -1,650 +1,676 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
 # https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
 
-#############
-# SDK (track2)
-#############
+####################
+# Client Libraries
+####################
 
-# Catch all for non-code project files and unowned files | folders
-/**                           @rickwinter @jhendrixMSFT
-/sdk/                         @rickwinter @chlowell @richardpark-msft
+/**                                                                @jhendrixMSFT @rickwinter
 
-# Samples
-/sdk/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
+/sdk/                                                              @chlowell @richardpark-msft @rickwinter
 
-# AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %Azure.Core
-# PRLabel: %Azure.Core
-/sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
+/sdk/samples/                                                      @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
 
-# AzureSDKOwners: @chlowell
-# ServiceLabel: %Azure.Identity
-# PRLabel: %Azure.Identity
-/sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter @Azure/azure-sdk-write-identity
-
-# AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %OpenAI
-# PRLabel: %OpenAI
-/sdk/ai                       @richardpark-msft @jhendrixMSFT @chlowell
-
-# AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %OpenAI
-# ServiceOwner: @glecaros
-# PRLabel: %OpenAI
-/sdk/ai/azopenai                       @richardpark-msft @achauhan-scc @PratibhaShrivastav18 @kingernupur @glecaros
-
-# AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %Internal
-# PRLabel: %Internal
-/sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
-
-# AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %App Configuration
 # PRLabel: %App Configuration
-/sdk/data/azappconfig/        @jhendrixMSFT @rickwinter
+/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820
 
-# AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @Pilchie
-# ServiceLabel: %Cosmos
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %App Configuration
+# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
+
+# ServiceLabel: %App Configuration
+# ServiceOwners:                                                   @avanigupta @shenmuxiaosen
+
+# PRLabel: %Azure.Core
+/sdk/azcore/                                                       @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
+
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %Azure.Core
+# ServiceOwners:                                                   @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
+
+# PRLabel: %Azure.Identity
+/sdk/azidentity/                                                   @Azure/azure-sdk-write-identity @chlowell @jhendrixMSFT @rickwinter
+
+# AzureSdkOwners:                                                  @chlowell
+# ServiceLabel: %Azure.Identity
+# ServiceOwners:                                                   @Azure/azure-sdk-write-identity @chlowell @jhendrixMSFT @rickwinter
+
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @kirankumarkolli @simorenoh @kushagraThapar @Pilchie @analogrelay
+/sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
 
-# AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %Tables
-# PRLabel: %Tables
-/sdk/data/aztables/           @jhendrixMSFT @richardpark-msft
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %Cosmos
+# ServiceOwners:                                                   @analogrelay @kirankumarkolli @kushagraThapar @Pilchie @simorenoh
 
-# AzureSDKOwners: @gracewilcox
-# ServiceLabel: %KeyVault
-# PRLabel: %KeyVault
-/sdk/security/keyvault/       @chlowell @jhendrixMSFT @gracewilcox
+# ServiceLabel: %Cosmos
+# ServiceOwners:                                                   @MehaKaushik @Pilchie @Wmengmsft
 
-# AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %Service Bus
-# PRLabel: %Service Bus
-/sdk/messaging/azservicebus/  @richardpark-msft @chlowell @jhendrixMSFT
+# PRLabel: %EngSys
+/sdk/template/                                                     @benbp @weshaggard
 
-# AzureSDKOwners: @shankarsama @rajeshka
-# ServiceLabel: %Event Grid
+# AzureSdkOwners:                                                  @benbp
+# ServiceLabel: %EngSys
+# ServiceOwners:                                                   @benbp @weshaggard
+
 # PRLabel: %Event Grid
-/sdk/messaging/eventgrid/  @shankarsama @rajeshka
+/sdk/messaging/eventgrid/                                          @rajeshka @shankarsama
 
-# AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %Event Hubs
+# AzureSdkOwners:                                                  @rajeshka @shankarsama
+# ServiceLabel: %Event Grid
+# ServiceOwners:                                                   @rajeshka @shankarsama
+
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
+/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak
 
-# AzureSDKOwners: @vicancy
-# ServiceLabel: %WebPubSub
-# PRLabel: %WebPubSub
-/sdk/messaging/azwebpubsub/  @vicancy @chenkennt @jhendrixMSFT
+# ServiceLabel: %Event Hubs
+# ServiceOwners:                                                   @axisc @hmlam @sjkwak
 
-# AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %Service Bus
-# PRLabel: %Service Bus
-/sdk/messaging/stress/   @richardpark-msft @chlowell @jhendrixMSFT
+# PRLabel: %Internal
+/sdk/internal/                                                     @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
 
-# AzureSDKOwners: @gracewilcox
-# ServiceLabel: %Monitor
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %Internal
+# ServiceOwners:                                                   @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
+
+# PRLabel: %KeyVault
+/sdk/security/keyvault/                                            @Azure/azure-sdk-write-keyvault
+
+# ServiceLabel: %KeyVault
+# ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault @chen-karen
+
 # PRLabel: %Monitor
-/sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT @Azure/azure-sdk-write-monitor-data-plane
+/sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @chlowell @gracewilcox @jhendrixMSFT
 
-# AzureSDKOwners: @lirenhe
-# ServiceLabel: %Mgmt
-# PRLabel: %Mgmt
-/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
+# PRLabel: %Monitor
+/sdk/monitor/ingestion/azlogs/                                     @Azure/azure-sdk-write-monitor-data-plane
 
-# AzureSDKOwners: @jhendrixMSFT
-# ServiceOwners: @tanyasethi-msft
-# ServiceLabel: %Storage
+# PRLabel: %Monitor
+/sdk/monitor/query/azmetrics/                                      @Azure/azure-sdk-write-monitor-query-metrics
+
+# AzureSdkOwners:                                                  @gracewilcox
+# ServiceLabel: %Monitor
+# ServiceOwners:                                                   @Azure/azure-sdk-write-monitor-data-plane @chlowell @gracewilcox @jhendrixMSFT
+
+# ServiceLabel: %Monitor
+# ServiceOwners:                                                   @AzmonActionG @AzmonAlerts @AzMonEssential @AzmonLogA @dadunl @SameergMS
+
+# PRLabel: %OpenAI
+/sdk/ai                                                            @achauhan-scc @chlowell @glecaros @jhendrixMSFT @kingernupur @PratibhaShrivastav18 @richardpark-msft
+
+# AzureSdkOwners:                                                  @richardpark-msft
+# ServiceLabel: %OpenAI
+# ServiceOwners:                                                   @achauhan-scc @chlowell @glecaros @jhendrixMSFT @kingernupur @PratibhaShrivastav18 @richardpark-msft
+
+# PRLabel: %OpenTelemetry
+/sdk/tracing/azotel                                                @jhendrixMSFT @rickwinter
+
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %OpenTelemetry
+# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
+
+# PRLabel: %Service Bus
+/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft
+
+# PRLabel: %Service Bus
+/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft
+
+# ServiceLabel: %Service Bus
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
 
 # PRLabel: %Storage
-/sdk/storage/                 @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
-
-# AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %OpenTelemetry
-# PRLabel: %OpenTelemetry
-/sdk/tracing/azotel           @jhendrixMSFT @rickwinter
-
-# AzureSDKOwners: @benbp
-# ServiceLabel: %EngSys
-# PRLabel: %EngSys
-/sdk/template/                @benbp @weshaggard
-
-# ServiceLabel: %AAD
-#/<NotInRepo>/          @adamedx
-
-# ServiceLabel: %AKS
-#/<NotInRepo>/          @Azure/aks-pm
-
-# ServiceLabel: %Alerts Management
-#/<NotInRepo>/          @liadtal @yairgil
-
-# ServiceLabel: %ARM
-#/<NotInRepo>/          @armleads-azure
-
-# ServiceLabel: %ARM - Templates
-#/<NotInRepo>/          @armleads-azure
-
-# ServiceLabel: %ARM - Tags
-#/<NotInRepo>/          @armleads-azure
-
-# ServiceLabel: %ARM - Core
-#/<NotInRepo>/          @armleads-azure
-
-# ServiceLabel: %ARM - Managed Applications
-#/<NotInRepo>/          @armleads-azure
-
-# ServiceLabel: %ARM - Service Catalog
-#/<NotInRepo>/          @armleads-azure
-
-# ServiceLabel: %ARM - RBAC
-#/<NotInRepo>/          @armleads-azure
-
-# ServiceLabel: %Advisor
-#/<NotInRepo>/          @mojayara @Prasanna-Padmanabhan
-
-# ServiceLabel: %Analysis Services
-#/<NotInRepo>/          @athipp @taiwu @minghan
-
-# ServiceLabel: %API Management
-#/<NotInRepo>/          @miaojiang
-
-# ServiceLabel: %Monitor - ApplicationInsights
-#/<NotInRepo>/          @azmonapplicationinsights
-
-# ServiceLabel: %App Services
-#/<NotInRepo>/          @antcp @AzureAppServiceCLI
-
-# ServiceLabel: %App Configuration
-#/<NotInRepo>/          @shenmuxiaosen @avanigupta
-
-# ServiceLabel: %ARO
-#/<NotInRepo>/          @mjudeikis @jim-minter @julienstroheker @amanohar
-
-# ServiceLabel: %Attestation
-#/<NotInRepo>/          @anilba06
-
-# ServiceLabel: %Authorization
-#/<NotInRepo>/          @darshanhs90 @AshishGargMicrosoft
-
-# ServiceLabel: %Automation
-#/<NotInRepo>/          @zjalexander
-
-# ServiceLabel: %AVS
-#/<NotInRepo>/          @divka78 @amitchat @aishu
-
-# ServiceLabel: %Azure Stack
-#/<NotInRepo>/          @sarathys @bganapa @rakku-ms
-
-# ServiceLabel: %Batch
-#/<NotInRepo>/          @mksuni @bgklein @mscurrell @dpwatrous @gingi @paterasMSFT @cRui861
-
-# ServiceLabel: %BatchAI
-#/<NotInRepo>/          @matthchr
-
-# ServiceLabel: %Billing
-#/<NotInRepo>/          @cabbpt
-
-# ServiceLabel: %Blueprint
-#/<NotInRepo>/          @alex-frankel @filizt
-
-# ServiceLabel: %Bot Service
-#/<NotInRepo>/          @sgellock
-
-# ServiceLabel: %Cloud Shell
-#/<NotInRepo>/          @maertendMSFT
-
-# ServiceLabel: %Cognitive - Text Analytics
-#/<NotInRepo>/          @assafi
-
-# ServiceLabel: %Cognitive - Form Recognizer
-#/<NotInRepo>/          @ctstone @anrothMSFT
-
-# ServiceLabel: %Cognitive - Anomaly Detector
-#/<NotInRepo>/          @yingqunpku @bowgong
-
-# ServiceLabel: %Cognitive - Custom Vision
-#/<NotInRepo>/          @areddish @tburns10
-
-# ServiceLabel: %Cognitive - Computer Vision
-#/<NotInRepo>/          @ryogok @TFR258 @tburns10
-
-# ServiceLabel: %Cognitive - Face
-#/<NotInRepo>/          @JinyuID @dipidoo @SteveMSFT
-
-# ServiceLabel: %Cognitive - QnA Maker
-#/<NotInRepo>/          @bingisbestest @nerajput1607
-
-# ServiceLabel: %Cognitive - Translator
-#/<NotInRepo>/          @swmachan
-
-# ServiceLabel: %Cognitive - Speech
-#/<NotInRepo>/          @robch @oscholz
-
-# ServiceLabel: %Cognitive - LUIS
-#/<NotInRepo>/          @cahann @kayousef
-
-# ServiceLabel: %Cognitive - Content Moderator
-#/<NotInRepo>/          @swiftarrow11
-
-# ServiceLabel: %Cognitive - Personalizer
-#/<NotInRepo>/          @dwaijam
-
-# ServiceLabel: %Cognitive - Immersive Reader
-#/<NotInRepo>/          @metanMSFT
-
-# ServiceLabel: %Cognitive - Ink Recognizer
-#/<NotInRepo>/          @olduroja
-
-# ServiceLabel: %Cognitive - Bing
-#/<NotInRepo>/          @jaggerbodas-ms @arwong
-
-# ServiceLabel: %Cognitive - Mgmt
-#/<NotInRepo>/          @yangyuan
-
-# ServiceLabel: %Commerce
-#/<NotInRepo>/          @ms-premp @qiaozha
-
-# ServiceLabel: %Compute
-#/<NotInRepo>/          @Drewm3 @avirishuv @vaibhav-agar @amjads1
-
-# ServiceLabel: %Compute - Extensions
-#/<NotInRepo>/          @Drewm3 @amjads1
-
-# ServiceLabel: %Compute - Images
-#/<NotInRepo>/          @Drewm3 @vaibhav-agar
-
-# ServiceLabel: %Compute - Managed Disks
-#/<NotInRepo>/          @Drewm3 @vaibhav-agar
-
-# ServiceLabel: %Compute - RDFE
-#/<NotInRepo>/          @Drewm3 @avirishuv
-
-# ServiceLabel: %Compute - VM
-#/<NotInRepo>/          @Drewm3 @avirishuv
-
-# ServiceLabel: %Compute - VMSS
-#/<NotInRepo>/          @Drewm3 @avirishuv
-
-# ServiceLabel: %Connected Kubernetes
-#/<NotInRepo>/          @akashkeshari
-
-# ServiceLabel: %Container Instances
-#/<NotInRepo>/          @macolso
-
-# ServiceLabel: %Container Registry
-#/<NotInRepo>/          @toddysm @northtyphoon
-
-# ServiceLabel: %Container Service
-#/<NotInRepo>/          @qike-ms @jwilder @thomas1206 @seanmck
-
-# ServiceLabel: %Cosmos
-#/<NotInRepo>/          @Wmengmsft @MehaKaushik @Pilchie
-
-# ServiceLabel: %Customer Insights
-#/<NotInRepo>/          @shefymk
-
-# ServiceLabel: %Custom Providers
-#/<NotInRepo>/          @manoharp @MSEvanhi
-
-# ServiceLabel: %CycleCloud
-#/<NotInRepo>/          @adriankjohnson
-
-# ServiceLabel: %Data Bricks
-#/<NotInRepo>/          @arindamc
-
-# ServiceLabel: %DataBox
-#/<NotInRepo>/          @tmvishwajit @matdickson @manuaery @madhurinms
-
-# ServiceLabel: %DataBox Edge
-#/<NotInRepo>/          @a-t-mason @ganzee @manuaery
-
-# ServiceLabel: %Data Catalog
-#/<NotInRepo>/          @ingave
-
-# ServiceLabel: %Data Factory
-#/<NotInRepo>/          @Jingshu923 @zhangyd2015 @Frey-Wang
-
-# ServiceLabel: %Data Lake
-#/<NotInRepo>/          @sumantmehtams
-
-# ServiceLabel: %Data Lake Storage Gen1
-#/<NotInRepo>/          @sumantmehtams
-
-# ServiceLabel: %Data Lake Storage Gen2
-#/<NotInRepo>/          @sumantmehtams
-
-# ServiceLabel: %Data Lake Analytics
-#/<NotInRepo>/          @idear1203
-
-# ServiceLabel: %Data Lake Store
-#/<NotInRepo>/          @sumantmehtams
-
-# ServiceLabel: %Data Migration
-#/<NotInRepo>/          @radjaram @kavitham10
-
-# ServiceLabel: %Data Share
-#/<NotInRepo>/          @raedJarrar @jifems
-
-# ServiceLabel: %DevOps
-#/<NotInRepo>/          @narula0781 @ashishonce @romil07
-
-# ServiceLabel: %Dev Spaces
-#/<NotInRepo>/          @yuzorMa @johnsta @greenie-msft
-
-# ServiceLabel: %Devtestlab
-#/<NotInRepo>/          @Tanmayeekamath
-
-# ServiceLabel: %Device Provisioning Service
-#/<NotInRepo>/          @nberdy
-
-# ServiceLabel: %Digital Twins
-#/<NotInRepo>/          @sourabhguha @inesk-vt
-
-# ServiceLabel: %Functions
-#/<NotInRepo>/          @ahmedelnably @fabiocav
-
-# ServiceLabel: %Graph.Microsoft
-#/<NotInRepo>/          @dkershaw10 @baywet
-
-# ServiceLabel: %Guest Configuration
-#/<NotInRepo>/          @mgreenegit @vivlingaiah
-
-# ServiceLabel: %HDInsight
-#/<NotInRepo>/          @aim-for-better @idear1203 @deshriva
-
-# ServiceLabel: %HPC Cache
-#/<NotInRepo>/          @romahamu @omzevall
-
-# ServiceLabel: %Import Export
-#/<NotInRepo>/          @madhurinms
-
-# ServiceLabel: %Insights
-#/<NotInRepo>/          @AzmonLogA
-
-# ServiceLabel: %KeyVault
-#/<NotInRepo>/          @cheathamb36 @chen-karen @lgonsoulin @vickm
-
-# ServiceLabel: %Kubernetes Configuration
-#/<NotInRepo>/          @NarayanThiru
-
-# ServiceLabel: %Azure Data Explorer
-#/<NotInRepo>/          @ilayrn @orhasban @zoharHenMicrosoft
-
-# ServiceLabel: %Lab Services
-#/<NotInRepo>/          @Tanmayeekamath
-
-# ServiceLabel: %Logic App
-#/<NotInRepo>/          @Azure/azure-logicapps-team
-
-# ServiceLabel: %LOUIS
-#/<NotInRepo>/          @minamnmik
-
-# ServiceLabel: %Managed Identity
-#/<NotInRepo>/          @varunkch
-
-# ServiceLabel: %Machine Learning
-#/<NotInRepo>/          @azureml-github
-
-# ServiceLabel: %Machine Learning Compute
-#/<NotInRepo>/          @azureml-github
-
-# ServiceLabel: %Machine Learning Experimentation
-#/<NotInRepo>/          @aashishb
-
-# ServiceLabel: %ManagedServices
-#/<NotInRepo>/          @Lighthouse-Azure
-
-# ServiceLabel: %MariaDB
-#/<NotInRepo>/          @ambhatna @savjani
-
-# ServiceLabel: %Marketplace Ordering
-#/<NotInRepo>/          @prbansa
-
-# ServiceLabel: %Media Services
-#/<NotInRepo>/          @akucer
-
-# ServiceLabel: %Migrate
-#/<NotInRepo>/          @shijojoy
-
-# ServiceLabel: %Mobile Engagement
-#/<NotInRepo>/          @kpiteira
-
-# ServiceLabel: %Monitor
-#/<NotInRepo>/          @SameergMS @dadunl @AzMonEssential @AzmonAlerts @AzmonActionG @AzmonLogA
-
-# ServiceLabel: %Monitor - ApplicationInsights
-#/<NotInRepo>/          @azmonapplicationinsights
-
-# ServiceLabel: %Monitor - Exporter
-#/<NotInRepo>/          @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra
-
-# ServiceLabel: %MySQL
-#/<NotInRepo>/          @ambhatna @savjani
-
-# ServiceLabel: %Network
-#/<NotInRepo>/          @aznetsuppgithub
-
-# ServiceLabel: %Network - Application Gateway
-#/<NotInRepo>/          @appgwsuppgithub
-
-# ServiceLabel: %Network - CDN
-#/<NotInRepo>/          @cdnfdsuppgithub
-
-# ServiceLabel: %Network - DDOS Protection
-#/<NotInRepo>/          @ddossuppgithub
-
-# ServiceLabel: %Network - ExpressRoute
-#/<NotInRepo>/          @exrsuppgithub
-
-# ServiceLabel: %Network - Firewall
-#/<NotInRepo>/          @fwsuppgithub
-
-# ServiceLabel: %Network - Front Door
-#/<NotInRepo>/          @cdnfdsuppgithub
-
-# ServiceLabel: %Network - Load Balancer
-#/<NotInRepo>/          @slbsupportgithub
-
-# ServiceLabel: %Network - Virtual Network NAT
-#/<NotInRepo>/          @vnetsuppgithub
-
-# ServiceLabel: %Network - Network Watcher
-#/<NotInRepo>/          @netwatchsuppgithub
-
-# ServiceLabel: %Network - DNS
-#/<NotInRepo>/          @dnssuppgithub
-
-# ServiceLabel: %Network - Traffic Manager
-#/<NotInRepo>/          @tmsuppgithub
-
-# ServiceLabel: %Network - VPN Gateway
-#/<NotInRepo>/          @vpngwsuppgithub
-
-# ServiceLabel: %Notification Hub
-#/<NotInRepo>/          @tjsomasundaram
-
-# ServiceLabel: %Operator Nexus - Network Cloud
-#/<NotInRepo>/           @Azure/azure-sdk-write-networkcloud
-
-
-# ServiceLabel: %Policy
-#/<NotInRepo>/          @aperezcloud @kenieva
-
-# ServiceLabel: %Policy Insights
-#/<NotInRepo>/          @kenieva
-
-# ServiceLabel: %PostgreSQL
-#/<NotInRepo>/          @sunilagarwal @lfittl-msft @sr-msft @niklarin
-
-# ServiceLabel: %Recovery Services Backup
-#/<NotInRepo>/          @pvrk @adityabalaji-msft
-
-# ServiceLabel: %Recovery Services Site-Recovery
-#/<NotInRepo>/          @Sharmistha-Rai
-
-# ServiceLabel: %Redis Cache
-#/<NotInRepo>/          @yegu-ms
-
-# ServiceLabel: %Reservations
-#/<NotInRepo>/          @Rkapso
-
-# ServiceLabel: %Resource Authorization
-#/<NotInRepo>/          @darshanhs90 @AshishGargMicrosoft
-
-# ServiceLabel: %Resource Graph
-#/<NotInRepo>/          @chiragg4u
-
-# ServiceLabel: %Resource Health
-#/<NotInRepo>/          @stephbaron
-
-# ServiceLabel: %Scheduler
-#/<NotInRepo>/          @derek1ee
-
-# ServiceLabel: %Search
-#/<NotInRepo>/          @bleroy @tjacobhi @markheff @miwelsh
-
-# ServiceLabel: %Security
-#/<NotInRepo>/          @chlahav
-
-# ServiceLabel: %Service Bus
-#/<NotInRepo>/          @EldertGrootenboer
-
-# ServiceLabel: %Service Fabric
-#/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket
-
-# ServiceLabel: %Schema Registry
-#/<NotInRepo>/          @arerlend @alzimmermsft
-
-# ServiceLabel: %SignalR
-#/<NotInRepo>/          @sffamily @chenkennt
-
-# ServiceLabel: %SQL
-#/<NotInRepo>/          @azureSQLGitHub
-
-# ServiceLabel: %SQL - VM
-#/<NotInRepo>/          @azureSQLGitHub
-
-# ServiceLabel: %SQL - Backup & Restore
-#/<NotInRepo>/          @azureSQLGitHub
-
-# ServiceLabel: %SQL - Data Security
-#/<NotInRepo>/          @azureSQLGitHub
-
-# ServiceLabel: %SQL - Elastic Jobs
-#/<NotInRepo>/          @azureSQLGitHub
-
-# ServiceLabel: %SQL - Managed Instance
-#/<NotInRepo>/          @azureSQLGitHub
-
-# ServiceLabel: %SQL - Replication & Failover
-#/<NotInRepo>/          @azureSQLGitHub
+/sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft @vibhansa-msft
+
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %Storage
+# ServiceOwners:                                                   @tanyasethi-msft
 
 # ServiceLabel: %Storage
-#/<NotInRepo>/          @xgithubtriage
+# ServiceOwners:                                                   @xgithubtriage
 
-# ServiceLabel: %Storsimple
-#/<NotInRepo>/          @anoobbacker @ganzee @manuaery
+# PRLabel: %Tables
+/sdk/data/aztables/                                                @jhendrixMSFT @richardpark-msft
 
-# ServiceLabel: %Stream Analytics
-#/<NotInRepo>/          @atpham256
-
-# ServiceLabel: %Subscription
-#/<NotInRepo>/          @anuragdalmia @shilpigautam @ramaganesan-rg
-
-# ServiceLabel: %Support
-#/<NotInRepo>/          @shahbj79 @mit2nil @aygoya @ganganarayanan
-
-# ServiceLabel: %Synapse
-#/<NotInRepo>/          @zesluo
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %Tables
+# ServiceOwners:                                                   @jhendrixMSFT @richardpark-msft
 
 # ServiceLabel: %Tables
-#/<NotInRepo>/          @klaaslanghout
+# ServiceOwners:                                                   @klaaslanghout
 
-# ServiceLabel: %TimeseriesInsights
-#/<NotInRepo>/          @Shipra1Mishra
+# PRLabel: %WebPubSub
+/sdk/messaging/azwebpubsub/                                        @chenkennt @jhendrixMSFT @vicancy
 
-# ServiceLabel: %Web Apps
-#/<NotInRepo>/          @AzureAppServiceCLI @antcp
+# AzureSdkOwners:                                                  @vicancy
+# ServiceLabel: %WebPubSub
+# ServiceOwners:                                                   @chenkennt @jhendrixMSFT @vicancy
 
-# ServiceLabel: %Network - Virtual Network
-#/<NotInRepo>/          @vnetsuppgithub
+# ServiceLabel: %AAD
+# ServiceOwners:                                                   @adamedx
 
-# ServiceLabel: %Network - Virtual WAN
-#/<NotInRepo>/          @vwansuppgithub
+# ServiceLabel: %Advisor
+# ServiceOwners:                                                   @mojayara @Prasanna-Padmanabhan
 
-# ServiceLabel: %Network - Network Virtual Appliance
-#/<NotInRepo>/          @nvasuppgithub
+# ServiceLabel: %AKS
+# ServiceOwners:                                                   @Azure/aks-pm
 
-# ServiceLabel: %Network - Bastion
-#/<NotInRepo>/          @bastionsuppgithub
+# ServiceLabel: %Alerts Management
+# ServiceOwners:                                                   @liadtal @yairgil
 
-# ServiceLabel: %Azure.Spring - Cosmos
-#/<NotInRepo>/          @kushagraThapar @Pilchie
+# ServiceLabel: %Analysis Services
+# ServiceOwners:                                                   @athipp @minghan @taiwu
 
-# ServiceLabel: %Network - Private Link
-#/<NotInRepo>/          @privlinksuppgithub
+# ServiceLabel: %API Management
+# ServiceOwners:                                                   @miaojiang
+
+# ServiceLabel: %App Services
+# ServiceOwners:                                                   @antcp @AzureAppServiceCLI
+
+# ServiceLabel: %ARO
+# ServiceOwners:                                                   @amanohar @jim-minter @julienstroheker @mjudeikis
+
+# ServiceLabel: %Attestation
+# ServiceOwners:                                                   @anilba06
+
+# ServiceLabel: %Authorization
+# ServiceOwners:                                                   @AshishGargMicrosoft @darshanhs90
+
+# ServiceLabel: %Automation
+# ServiceOwners:                                                   @zjalexander
+
+# ServiceLabel: %AVS
+# ServiceOwners:                                                   @aishu @amitchat @divka78
 
 # ServiceLabel: %Azure Arc enabled servers
-#/<NotInRepo>/          @rpsqrd @edyoung
+# ServiceOwners:                                                   @edyoung @rpsqrd
 
-# ServiceLabel: %SecurityInsights
-#/<NotInRepo>/          @amirkeren
+# ServiceLabel: %Azure Data Explorer
+# ServiceOwners:                                                   @ilayrn @orhasban @zoharHenMicrosoft
 
-# ServiceLabel: %IoT - CLI
-#/<NotInRepo>/          @Azure/azure-iot-cli-triage
+# ServiceLabel: %Azure Stack
+# ServiceOwners:                                                   @bganapa @rakku-ms @sarathys
+
+# ServiceLabel: %Azure.Spring - Cosmos
+# ServiceOwners:                                                   @kushagraThapar @Pilchie
+
+# ServiceLabel: %Batch
+# ServiceOwners:                                                   @bgklein @cRui861 @dpwatrous @gingi @mksuni @mscurrell @paterasMSFT
+
+# ServiceLabel: %BatchAI
+# ServiceOwners:                                                   @matthchr
+
+# ServiceLabel: %Billing
+# ServiceOwners:                                                   @cabbpt
+
+# ServiceLabel: %Blueprint
+# ServiceOwners:                                                   @alex-frankel @filizt
+
+# ServiceLabel: %Bot Service
+# ServiceOwners:                                                   @sgellock
+
+# ServiceLabel: %Cloud Shell
+# ServiceOwners:                                                   @maertendMSFT
+
+# ServiceLabel: %Cognitive - Anomaly Detector
+# ServiceOwners:                                                   @bowgong @yingqunpku
+
+# ServiceLabel: %Cognitive - Bing
+# ServiceOwners:                                                   @arwong @jaggerbodas-ms
+
+# ServiceLabel: %Cognitive - Computer Vision
+# ServiceOwners:                                                   @ryogok @tburns10 @TFR258
+
+# ServiceLabel: %Cognitive - Content Moderator
+# ServiceOwners:                                                   @swiftarrow11
+
+# ServiceLabel: %Cognitive - Custom Vision
+# ServiceOwners:                                                   @areddish @tburns10
+
+# ServiceLabel: %Cognitive - Face
+# ServiceOwners:                                                   @dipidoo @JinyuID @SteveMSFT
+
+# ServiceLabel: %Cognitive - Form Recognizer
+# ServiceOwners:                                                   @anrothMSFT @ctstone
+
+# ServiceLabel: %Cognitive - Immersive Reader
+# ServiceOwners:                                                   @metanMSFT
+
+# ServiceLabel: %Cognitive - Ink Recognizer
+# ServiceOwners:                                                   @olduroja
+
+# ServiceLabel: %Cognitive - LUIS
+# ServiceOwners:                                                   @cahann @kayousef
+
+# ServiceLabel: %Cognitive - Mgmt
+# ServiceOwners:                                                   @yangyuan
+
+# ServiceLabel: %Cognitive - Personalizer
+# ServiceOwners:                                                   @dwaijam
+
+# ServiceLabel: %Cognitive - QnA Maker
+# ServiceOwners:                                                   @bingisbestest @nerajput1607
+
+# ServiceLabel: %Cognitive - Speech
+# ServiceOwners:                                                   @oscholz
+
+# ServiceLabel: %Cognitive - Text Analytics
+# ServiceOwners:                                                   @assafi
+
+# ServiceLabel: %Cognitive - Translator
+# ServiceOwners:                                                   @swmachan
+
+# ServiceLabel: %Commerce
+# ServiceOwners:                                                   @ms-premp @qiaozha
 
 # ServiceLabel: %Communication
-#/<NotInRepo>/          @acsdevx-msft
+# ServiceOwners:                                                   @acsdevx-msft
 
-# ServiceLabel: %Cost Management - Budget
-#/<NotInRepo>/          @ccmaxpcrew
+# ServiceLabel: %Compute
+# ServiceOwners:                                                   @amjads1 @avirishuv @Drewm3 @vaibhav-agar
 
-# ServiceLabel: %Consumption - Budget
-#/<NotInRepo>/          @ccmaxpcrew
+# ServiceLabel: %Compute - Extensions
+# ServiceOwners:                                                   @amjads1 @Drewm3
 
-# ServiceLabel: %Cost Management - Query
-#/<NotInRepo>/          @ccmixpdevs
+# ServiceLabel: %Compute - Images
+# ServiceOwners:                                                   @Drewm3 @vaibhav-agar
 
-# ServiceLabel: %Consumption - Query
-#/<NotInRepo>/          @ccmixpdevs
+# ServiceLabel: %Compute - Managed Disks
+# ServiceOwners:                                                   @Drewm3 @vaibhav-agar
 
-# ServiceLabel: %Cost Management - Billing
-#/<NotInRepo>/          @ccmbpxpcrew
+# ServiceLabel: %Compute - RDFE
+# ServiceOwners:                                                   @avirishuv @Drewm3
+
+# ServiceLabel: %Compute - VM
+# ServiceOwners:                                                   @avirishuv @Drewm3
+
+# ServiceLabel: %Compute - VMSS
+# ServiceOwners:                                                   @avirishuv @Drewm3
+
+# ServiceLabel: %Connected Kubernetes
+# ServiceOwners:                                                   @akashkeshari
 
 # ServiceLabel: %Consumption - Billing
-#/<NotInRepo>/          @ccmbpxpcrew
+# ServiceOwners:                                                   @ccmbpxpcrew
 
-# ServiceLabel: %Cost Management - UsageDetailsAndExport
-#/<NotInRepo>/          @TiagoCrewGitHubIssues
+# ServiceLabel: %Consumption - Budget
+# ServiceOwners:                                                   @ccmaxpcrew
 
-# ServiceLabel: %Consumption - UsageDetailsAndExport
-#/<NotInRepo>/          @TiagoCrewGitHubIssues
-
-# ServiceLabel: %Cost Management - RIandShowBack
-#/<NotInRepo>/          @ccmshowbackdevs
+# ServiceLabel: %Consumption - Query
+# ServiceOwners:                                                   @ccmixpdevs
 
 # ServiceLabel: %Consumption - RIandShowBack
-#/<NotInRepo>/          @ccmshowbackdevs
+# ServiceOwners:                                                   @ccmshowbackdevs
+
+# ServiceLabel: %Consumption - UsageDetailsAndExport
+# ServiceOwners:                                                   @TiagoCrewGitHubIssues
+
+# ServiceLabel: %Container Instances
+# ServiceOwners:                                                   @macolso
+
+# ServiceLabel: %Container Registry
+# ServiceOwners:                                                   @northtyphoon @toddysm
+
+# ServiceLabel: %Container Service
+# ServiceOwners:                                                   @jwilder @qike-ms @seanmck @thomas1206
+
+# ServiceLabel: %Cost Management - Billing
+# ServiceOwners:                                                   @ccmbpxpcrew
+
+# ServiceLabel: %Cost Management - Budget
+# ServiceOwners:                                                   @ccmaxpcrew
+
+# ServiceLabel: %Cost Management - Query
+# ServiceOwners:                                                   @ccmixpdevs
+
+# ServiceLabel: %Cost Management - RIandShowBack
+# ServiceOwners:                                                   @ccmshowbackdevs
+
+# ServiceLabel: %Cost Management - UsageDetailsAndExport
+# ServiceOwners:                                                   @TiagoCrewGitHubIssues
+
+# ServiceLabel: %Custom Providers
+# ServiceOwners:                                                   @manoharp @MSEvanhi
+
+# ServiceLabel: %Customer Insights
+# ServiceOwners:                                                   @shefymk
+
+# ServiceLabel: %CycleCloud
+# ServiceOwners:                                                   @adriankjohnson
+
+# ServiceLabel: %Data Bricks
+# ServiceOwners:                                                   @arindamc
+
+# ServiceLabel: %Data Catalog
+# ServiceOwners:                                                   @ingave
+
+# ServiceLabel: %Data Factory
+# ServiceOwners:                                                   @Frey-Wang @Jingshu923 @zhangyd2015
+
+# ServiceLabel: %Data Lake
+# ServiceOwners:                                                   @sumantmehtams
+
+# ServiceLabel: %Data Lake Analytics
+# ServiceOwners:                                                   @idear1203
+
+# ServiceLabel: %Data Lake Storage Gen1
+# ServiceOwners:                                                   @sumantmehtams
+
+# ServiceLabel: %Data Lake Storage Gen2
+# ServiceOwners:                                                   @sumantmehtams
+
+# ServiceLabel: %Data Lake Store
+# ServiceOwners:                                                   @sumantmehtams
+
+# ServiceLabel: %Data Migration
+# ServiceOwners:                                                   @kavitham10 @radjaram
+
+# ServiceLabel: %Data Share
+# ServiceOwners:                                                   @jifems @raedJarrar
+
+# ServiceLabel: %DataBox
+# ServiceOwners:                                                   @madhurinms @manuaery @matdickson @tmvishwajit
+
+# ServiceLabel: %DataBox Edge
+# ServiceOwners:                                                   @a-t-mason @ganzee @manuaery
+
+# ServiceLabel: %Dev Spaces
+# ServiceOwners:                                                   @greenie-msft @johnsta @yuzorMa
+
+# ServiceLabel: %Device Provisioning Service
+# ServiceOwners:                                                   @nberdy
+
+# ServiceLabel: %DevOps
+# ServiceOwners:                                                   @ashishonce @narula0781 @romil07
+
+# ServiceLabel: %Devtestlab
+# ServiceOwners:                                                   @Tanmayeekamath
+
+# ServiceLabel: %Digital Twins
+# ServiceOwners:                                                   @inesk-vt @sourabhguha
+
+# ServiceLabel: %Functions
+# ServiceOwners:                                                   @ahmedelnably @fabiocav
+
+# ServiceLabel: %Graph.Microsoft
+# ServiceOwners:                                                   @baywet @dkershaw10
+
+# ServiceLabel: %Guest Configuration
+# ServiceOwners:                                                   @mgreenegit @vivlingaiah
+
+# ServiceLabel: %HDInsight
+# ServiceOwners:                                                   @aim-for-better @deshriva @idear1203
+
+# ServiceLabel: %HPC Cache
+# ServiceOwners:                                                   @omzevall @romahamu
+
+# ServiceLabel: %Import Export
+# ServiceOwners:                                                   @madhurinms
+
+# ServiceLabel: %Insights
+# ServiceOwners:                                                   @AzmonLogA
+
+# ServiceLabel: %IoT - CLI
+# ServiceOwners:                                                   @Azure/azure-iot-cli-triage
+
+# ServiceLabel: %Kubernetes Configuration
+# ServiceOwners:                                                   @NarayanThiru
+
+# ServiceLabel: %Lab Services
+# ServiceOwners:                                                   @Tanmayeekamath
+
+# ServiceLabel: %Logic App
+# ServiceOwners:                                                   @Azure/azure-logicapps-team
+
+# ServiceLabel: %LOUIS
+# ServiceOwners:                                                   @minamnmik
+
+# ServiceLabel: %Machine Learning
+# ServiceOwners:                                                   @azureml-github
+
+# ServiceLabel: %Machine Learning Compute
+# ServiceOwners:                                                   @azureml-github
+
+# ServiceLabel: %Machine Learning Experimentation
+# ServiceOwners:                                                   @aashishb
+
+# ServiceLabel: %Managed Identity
+# ServiceOwners:                                                   @varunkch
+
+# ServiceLabel: %ManagedServices
+# ServiceOwners:                                                   @Lighthouse-Azure
+
+# ServiceLabel: %MariaDB
+# ServiceOwners:                                                   @ambhatna @savjani
+
+# ServiceLabel: %Marketplace Ordering
+# ServiceOwners:                                                   @prbansa
+
+# ServiceLabel: %Media Services
+# ServiceOwners:                                                   @akucer
+
+# ServiceLabel: %Migrate
+# ServiceOwners:                                                   @shijojoy
+
+# ServiceLabel: %Mobile Engagement
+# ServiceOwners:                                                   @kpiteira
+
+# ServiceLabel: %Monitor - ApplicationInsights
+# ServiceOwners:                                                   @azmonapplicationinsights
+
+# ServiceLabel: %Monitor - ApplicationInsights
+# ServiceOwners:                                                   @azmonapplicationinsights
+
+# ServiceLabel: %Monitor - Exporter
+# ServiceOwners:                                                   @cijothomas @rajkumar-rangaraj @reyang @TimothyMothra
+
+# ServiceLabel: %MySQL
+# ServiceOwners:                                                   @ambhatna @savjani
+
+# ServiceLabel: %Network
+# ServiceOwners:                                                   @aznetsuppgithub
+
+# ServiceLabel: %Network - Application Gateway
+# ServiceOwners:                                                   @appgwsuppgithub
+
+# ServiceLabel: %Network - Bastion
+# ServiceOwners:                                                   @bastionsuppgithub
+
+# ServiceLabel: %Network - CDN
+# ServiceOwners:                                                   @cdnfdsuppgithub
+
+# ServiceLabel: %Network - DDOS Protection
+# ServiceOwners:                                                   @ddossuppgithub
+
+# ServiceLabel: %Network - DNS
+# ServiceOwners:                                                   @dnssuppgithub
+
+# ServiceLabel: %Network - ExpressRoute
+# ServiceOwners:                                                   @exrsuppgithub
+
+# ServiceLabel: %Network - Firewall
+# ServiceOwners:                                                   @fwsuppgithub
+
+# ServiceLabel: %Network - Front Door
+# ServiceOwners:                                                   @cdnfdsuppgithub
+
+# ServiceLabel: %Network - Load Balancer
+# ServiceOwners:                                                   @slbsupportgithub
+
+# ServiceLabel: %Network - Network Virtual Appliance
+# ServiceOwners:                                                   @nvasuppgithub
+
+# ServiceLabel: %Network - Network Watcher
+# ServiceOwners:                                                   @netwatchsuppgithub
+
+# ServiceLabel: %Network - Private Link
+# ServiceOwners:                                                   @privlinksuppgithub
+
+# ServiceLabel: %Network - Traffic Manager
+# ServiceOwners:                                                   @tmsuppgithub
+
+# ServiceLabel: %Network - Virtual Network
+# ServiceOwners:                                                   @vnetsuppgithub
+
+# ServiceLabel: %Network - Virtual Network NAT
+# ServiceOwners:                                                   @vnetsuppgithub
+
+# ServiceLabel: %Network - Virtual WAN
+# ServiceOwners:                                                   @vwansuppgithub
+
+# ServiceLabel: %Network - VPN Gateway
+# ServiceOwners:                                                   @vpngwsuppgithub
+
+# ServiceLabel: %Notification Hub
+# ServiceOwners:                                                   @tjsomasundaram
+
+# ServiceLabel: %Operator Nexus - Network Cloud
+# ServiceOwners:                                                   @Azure/azure-sdk-write-networkcloud
+
+# ServiceLabel: %Policy
+# ServiceOwners:                                                   @aperezcloud @kenieva
+
+# ServiceLabel: %Policy Insights
+# ServiceOwners:                                                   @kenieva
+
+# ServiceLabel: %PostgreSQL
+# ServiceOwners:                                                   @lfittl-msft @niklarin @sr-msft @sunilagarwal
+
+# ServiceLabel: %Recovery Services Backup
+# ServiceOwners:                                                   @adityabalaji-msft @pvrk
+
+# ServiceLabel: %Recovery Services Site-Recovery
+# ServiceOwners:                                                   @Sharmistha-Rai
+
+# ServiceLabel: %Redis Cache
+# ServiceOwners:                                                   @ArthurMa1978 @m-nash @yegu-ms
+
+# ServiceLabel: %Reservations
+# ServiceOwners:                                                   @Rkapso
+
+# ServiceLabel: %Resource Authorization
+# ServiceOwners:                                                   @AshishGargMicrosoft @darshanhs90
+
+# ServiceLabel: %Resource Graph
+# ServiceOwners:                                                   @chiragg4u
+
+# ServiceLabel: %Resource Health
+# ServiceOwners:                                                   @stephbaron
+
+# ServiceLabel: %Scheduler
+# ServiceOwners:                                                   @derek1ee
+
+# ServiceLabel: %Schema Registry
+# ServiceOwners:                                                   @axisc @hmlam @sjkwak
+
+# ServiceLabel: %Search
+# ServiceOwners:                                                   @markheff @miwelsh @tjacobhi
+
+# ServiceLabel: %Security
+# ServiceOwners:                                                   @chlahav
+
+# ServiceLabel: %SecurityInsights
+# ServiceOwners:                                                   @amirkeren
+
+# ServiceLabel: %Service Fabric
+# ServiceOwners:                                                   @juhacket @QingChenmsft @vaishnavk
+
+# ServiceLabel: %SignalR
+# ServiceOwners:                                                   @chenkennt @sffamily
+
+# ServiceLabel: %SQL
+# ServiceOwners:                                                   @azureSQLGitHub
+
+# ServiceLabel: %SQL - Backup & Restore
+# ServiceOwners:                                                   @azureSQLGitHub
+
+# ServiceLabel: %SQL - Data Security
+# ServiceOwners:                                                   @azureSQLGitHub
+
+# ServiceLabel: %SQL - Elastic Jobs
+# ServiceOwners:                                                   @azureSQLGitHub
+
+# ServiceLabel: %SQL - Managed Instance
+# ServiceOwners:                                                   @azureSQLGitHub
+
+# ServiceLabel: %SQL - Replication & Failover
+# ServiceOwners:                                                   @azureSQLGitHub
+
+# ServiceLabel: %SQL - VM
+# ServiceOwners:                                                   @azureSQLGitHub
+
+# ServiceLabel: %Storsimple
+# ServiceOwners:                                                   @anoobbacker @ganzee @manuaery
+
+# ServiceLabel: %Stream Analytics
+# ServiceOwners:                                                   @atpham256
+
+# ServiceLabel: %Subscription
+# ServiceOwners:                                                   @anuragdalmia @ramaganesan-rg @shilpigautam
+
+# ServiceLabel: %Support
+# ServiceOwners:                                                   @aygoya @ganganarayanan @mit2nil @shahbj79
+
+# ServiceLabel: %Synapse
+# ServiceOwners:                                                   @zesluo
+
+# ServiceLabel: %TimeseriesInsights
+# ServiceOwners:                                                   @Shipra1Mishra
+
+# ServiceLabel: %Web Apps
+# ServiceOwners:                                                   @antcp @AzureAppServiceCLI
+
+####################
+# Management Libraries
+####################
+
+# ServiceLabel: %ARM
+# ServiceOwners:                                                   @armleads-azure
+
+# ServiceLabel: %ARM - Core
+# ServiceOwners:                                                   @armleads-azure
+
+# ServiceLabel: %ARM - Managed Applications
+# ServiceOwners:                                                   @armleads-azure
+
+# ServiceLabel: %ARM - RBAC
+# ServiceOwners:                                                   @armleads-azure
+
+# ServiceLabel: %ARM - Service Catalog
+# ServiceOwners:                                                   @armleads-azure
+
+# ServiceLabel: %ARM - Tags
+# ServiceOwners:                                                   @armleads-azure
+
+# ServiceLabel: %ARM - Templates
+# ServiceOwners:                                                   @armleads-azure
+
+# PRLabel: %Mgmt
+/sdk/resourcemanager/                                              @lirenhe @tadelesh @JiaqiZhang-Dev
+
+# ServiceLabel: %Mgmt
+# AzureSdkOwners:                                                  @lirenhe
+# ServiceOwners:                                                   @lirenhe @tadelesh @JiaqiZhang-Dev
 
 ###########
 # Eng Sys
 ###########
-/eng/                         @benbp @weshaggard
-/eng/common/                  @Azure/azure-sdk-eng
-/eng/config.json              @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
-/.config/1espt/               @benbp @weshaggard
-/.github/workflows/           @Azure/azure-sdk-eng
-/.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+/eng/                              @benbp @weshaggard
+/eng/common/                       @Azure/azure-sdk-eng
+/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/.config/1espt/                    @benbp @weshaggard
+/.github/workflows/                @Azure/azure-sdk-eng
+/.github/CODEOWNERS                @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+/.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos
 
 # Add owners for go sdk tool
-/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
-/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/scripts/automation_init.sh @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/scripts/build.ps1          @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/generator            @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/internal             @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/swagger_to_sdk_config.json @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
-/eng/emitter-package-lock.json  @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
-/eng/emitter-package.json       @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
 
 
 # Add owners for notifications for specific pipelines

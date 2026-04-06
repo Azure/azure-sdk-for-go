@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/GlobalReachConnections_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/GlobalReachConnections_CreateOrUpdate.json
 func ExampleGlobalReachConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleGlobalReachConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/GlobalReachConnections_Delete.json
+// Generated from example definition: 2025-09-01/GlobalReachConnections_Delete.json
 func ExampleGlobalReachConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleGlobalReachConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/GlobalReachConnections_Get.json
+// Generated from example definition: 2025-09-01/GlobalReachConnections_Get.json
 func ExampleGlobalReachConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleGlobalReachConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/GlobalReachConnections_List.json
+// Generated from example definition: 2025-09-01/GlobalReachConnections_List.json
 func ExampleGlobalReachConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -45,7 +45,7 @@ func NewFileServicesClient(subscriptionID string, credential azcore.TokenCredent
 // Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -94,7 +94,7 @@ func (client *FileServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +113,7 @@ func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *http.
 // used in recommendations and bursting formula.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -163,7 +163,7 @@ func (client *FileServicesClient) getServiceUsageCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +181,7 @@ func (client *FileServicesClient) getServiceUsageHandleResponse(resp *http.Respo
 // List - List all file services in storage accounts
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -228,7 +228,7 @@ func (client *FileServicesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *FileServicesClient) listHandleResponse(resp *http.Response) (FileS
 
 // NewListServiceUsagesPager - Gets the usages of file service in storage account.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -298,7 +298,7 @@ func (client *FileServicesClient) listServiceUsagesCreateRequest(ctx context.Con
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
-	reqQP.Set("api-version", "2024-01-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -317,7 +317,7 @@ func (client *FileServicesClient) listServiceUsagesHandleResponse(resp *http.Res
 // Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -367,7 +367,7 @@ func (client *FileServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

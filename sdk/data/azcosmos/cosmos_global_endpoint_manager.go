@@ -131,9 +131,7 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		return accountProperties{}, err
 	}
 
-	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Raw().Header.Set(headerXmsVersion, apiVersion)
-	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+	addDefaultHeaders(req)
 
 	req.SetOperationValue(operationContext)
 

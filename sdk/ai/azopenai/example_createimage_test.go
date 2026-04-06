@@ -10,7 +10,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
 )
 
 // Example_createImage demonstrates how to generate images using Azure OpenAI's DALL-E model.
@@ -23,6 +25,7 @@ import (
 // The example uses environment variables for configuration:
 // - AOAI_DALLE_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AOAI_DALLE_MODEL: The deployment name of your DALL-E model
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Image generation is useful for:
 // - Creating custom illustrations and artwork
@@ -30,20 +33,20 @@ import (
 // - Prototyping design concepts
 // - Producing visual aids for documentation
 func Example_createImage() {
-	if !CheckRequiredEnvVars("AOAI_DALLE_ENDPOINT", "AOAI_DALLE_MODEL") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_DALLE_ENDPOINT")
 	model := os.Getenv("AOAI_DALLE_MODEL")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	// Initialize OpenAI client with Azure configurations using token credential
-	client, err := CreateOpenAIClientWithToken(endpoint, "2024-12-01-preview")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	resp, err := client.Images.Generate(context.TODO(), openai.ImageGenerateParams{
 		Prompt:         "a cat",
@@ -64,7 +67,12 @@ func Example_createImage() {
 			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 			return
 		}
-		defer resp.Body.Close()
+
+		defer func() {
+			if err := resp.Body.Close(); err != nil {
+				fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			}
+		}()
 
 		if resp.StatusCode != http.StatusOK {
 			// Handle non-200 status code

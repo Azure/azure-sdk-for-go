@@ -65,7 +65,8 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			retryContext.useWriteEndpoint = false
-			if response.StatusCode == http.StatusForbidden {
+			switch response.StatusCode {
+			case http.StatusForbidden:
 				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation, &retryContext)
 				if err != nil {
 					return nil, err
@@ -73,11 +74,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
-			} else if response.StatusCode == http.StatusNotFound {
+			case http.StatusNotFound:
 				if !p.attemptRetryOnSessionUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
-			} else if response.StatusCode == http.StatusServiceUnavailable {
+			case http.StatusServiceUnavailable:
 				if !p.attemptRetryOnServiceUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}

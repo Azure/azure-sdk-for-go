@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,10 +49,10 @@ func NewMonitorClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
-// BeginUpgrade - Upgradable version for a monitor resource.
+// BeginUpgrade - Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorClientBeginUpgradeOptions contains the optional parameters for the MonitorClient.BeginUpgrade method.
@@ -76,10 +73,10 @@ func (client *MonitorClient) BeginUpgrade(ctx context.Context, resourceGroupName
 	}
 }
 
-// Upgrade - Upgradable version for a monitor resource.
+// Upgrade - Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 func (client *MonitorClient) upgrade(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorClient.BeginUpgrade"
@@ -121,7 +118,7 @@ func (client *MonitorClient) upgradeCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

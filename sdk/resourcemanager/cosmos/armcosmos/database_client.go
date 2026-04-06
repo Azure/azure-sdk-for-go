@@ -27,7 +27,7 @@ type DatabaseClient struct {
 // NewDatabaseClient creates a new instance of DatabaseClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListMetricDefinitionsPager - Retrieves metric definitions for the given database.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -96,7 +96,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +113,7 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and database.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -171,7 +171,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (Da
 
 // NewListUsagesPager - Retrieves the usages (most recent data) for the given database.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -244,7 +244,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

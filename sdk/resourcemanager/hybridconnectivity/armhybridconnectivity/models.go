@@ -28,6 +28,12 @@ type AwsCloudProfile struct {
 	IsOrganizationalAccount *bool
 }
 
+// AwsCloudProfileUpdate - cloud profile for AWS.
+type AwsCloudProfileUpdate struct {
+	// List of AWS accounts which need to be excluded.
+	ExcludedAccounts []*string
+}
+
 // EndpointAccessResource - The endpoint access for the target resource.
 type EndpointAccessResource struct {
 	// Azure relay hybrid connection access properties
@@ -51,11 +57,11 @@ type EndpointResource struct {
 	// The endpoint properties.
 	Properties *EndpointProperties
 
-	// READ-ONLY; The endpoint name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -76,13 +82,10 @@ type EndpointsList struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info *ErrorAdditionalInfoInfo
+	Info any
 
 	// READ-ONLY; The additional info type.
 	Type *string
-}
-
-type ErrorAdditionalInfoInfo struct {
 }
 
 // ErrorDetail - The error detail.
@@ -110,6 +113,10 @@ type GenerateAwsTemplateRequest struct {
 
 	// The list of solution types and their settings
 	SolutionTypes []*SolutionTypeSettings
+}
+
+// GenerateAwsTemplateResponse - The HybridConnectivity post operation response
+type GenerateAwsTemplateResponse struct {
 }
 
 // IngressGatewayResource - The ingress gateway access credentials
@@ -156,11 +163,11 @@ type InventoryResource struct {
 	// The resource-specific properties for this resource.
 	Properties *InventoryProperties
 
-	// READ-ONLY; Inventory resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -212,7 +219,9 @@ type ManagedProxyResource struct {
 	Proxy *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -233,7 +242,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -291,9 +300,6 @@ type OperationStatusResult struct {
 	ResourceID *string
 }
 
-type PostResponse struct {
-}
-
 // PublicCloudConnector - Public Cloud Connector
 type PublicCloudConnector struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -305,11 +311,11 @@ type PublicCloudConnector struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Represent public cloud connectors resource.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -340,6 +346,33 @@ type PublicCloudConnectorProperties struct {
 
 	// READ-ONLY; The resource provisioning state.
 	ProvisioningState *ResourceProvisioningState
+}
+
+// PublicCloudConnectorPropertiesUpdate - Properties of public cloud connectors.
+type PublicCloudConnectorPropertiesUpdate struct {
+	// Cloud profile for AWS.
+	AwsCloudProfile *AwsCloudProfileUpdate
+}
+
+// PublicCloudConnectorUpdate - Public Cloud Connector
+type PublicCloudConnectorUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *PublicCloudConnectorPropertiesUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // RelayNamespaceAccessProperties - Azure relay hybrid connection access properties
@@ -398,11 +431,11 @@ type ServiceConfigurationResource struct {
 	// The service configuration properties.
 	Properties *ServiceConfigurationProperties
 
-	// READ-ONLY; The service name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -422,11 +455,11 @@ type SolutionConfiguration struct {
 	// The resource-specific properties for this resource.
 	Properties *SolutionConfigurationProperties
 
-	// READ-ONLY; Represent Solution Configuration Resource.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -465,6 +498,33 @@ type SolutionConfigurationProperties struct {
 	StatusDetails *string
 }
 
+// SolutionConfigurationPropertiesUpdate - Solution configuration resource.
+type SolutionConfigurationPropertiesUpdate struct {
+	// Solution settings
+	SolutionSettings *SolutionSettings
+
+	// The type of the solution
+	SolutionType *string
+}
+
+// SolutionConfigurationUpdate - Solution Configuration
+type SolutionConfigurationUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *SolutionConfigurationPropertiesUpdate
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // SolutionSettings - Solution settings
 type SolutionSettings struct {
 	AdditionalProperties map[string]*string
@@ -490,11 +550,11 @@ type SolutionTypeResource struct {
 	// The resource-specific properties for this resource.
 	Properties *SolutionTypeProperties
 
-	// READ-ONLY; Solution Type resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

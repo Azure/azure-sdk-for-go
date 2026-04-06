@@ -26,7 +26,7 @@ type HcxEnterpriseSitesClient struct {
 // NewHcxEnterpriseSitesClient creates a new instance of HcxEnterpriseSitesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HcxEnterpriseSitesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenC
 // CreateOrUpdate - Create a HcxEnterpriseSite
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site
@@ -95,7 +95,7 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -117,7 +117,7 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateHandleResponse(resp *http.
 // Delete - Delete a HcxEnterpriseSite
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site
@@ -168,16 +168,15 @@ func (client *HcxEnterpriseSitesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a HcxEnterpriseSite
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site
@@ -228,7 +227,7 @@ func (client *HcxEnterpriseSitesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +244,7 @@ func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - List HcxEnterpriseSite resources by PrivateCloud
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.NewListPager
@@ -293,7 +292,7 @@ func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/ManagedClusterPutOperation_example_max.json
+// Generated from example definition: 2026-02-01/ManagedClusterPutOperation_example_max.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,8 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 						to.Ptr("eastus2"),
 						to.Ptr("usnorth"),
 					},
-					Service: to.Ptr("Microsoft.Storage"),
+					Service:           to.Ptr("Microsoft.Storage"),
+					NetworkIdentifier: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/publicIPAddresses/myPublicIP"),
 				},
 			},
 			UpgradeDescription: &armservicefabricmanagedclusters.ClusterUpgradePolicy{
@@ -162,9 +163,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 					UpgradeTimeout:            to.Ptr("12:00:00"),
 				},
 			},
-			UseCustomVnet:   to.Ptr(true),
-			ZonalResiliency: to.Ptr(true),
-			ZonalUpdateMode: to.Ptr(armservicefabricmanagedclusters.ZonalUpdateModeFast),
+			UseCustomVnet:               to.Ptr(true),
+			ZonalResiliency:             to.Ptr(true),
+			ZonalUpdateMode:             to.Ptr(armservicefabricmanagedclusters.ZonalUpdateModeFast),
+			EnableOutboundOnlyNodeTypes: to.Ptr(true),
+			SkipManagedNsgAssignment:    to.Ptr(true),
 		},
 		SKU: &armservicefabricmanagedclusters.SKU{
 			Name: to.Ptr(armservicefabricmanagedclusters.SKUNameBasic),
@@ -312,6 +315,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// 						to.Ptr("usnorth"),
 	// 					},
 	// 					Service: to.Ptr("Microsoft.Storage"),
+	// 					NetworkIdentifier: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/publicIPAddresses/myPublicIP"),
 	// 				},
 	// 			},
 	// 			UpgradeDescription: &armservicefabricmanagedclusters.ClusterUpgradePolicy{
@@ -337,6 +341,8 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// 			UseCustomVnet: to.Ptr(true),
 	// 			ZonalResiliency: to.Ptr(true),
 	// 			ZonalUpdateMode: to.Ptr(armservicefabricmanagedclusters.ZonalUpdateModeFast),
+	// 			EnableOutboundOnlyNodeTypes: to.Ptr(true),
+	// 			SkipManagedNsgAssignment: to.Ptr(true),
 	// 		},
 	// 		SKU: &armservicefabricmanagedclusters.SKU{
 	// 			Name: to.Ptr(armservicefabricmanagedclusters.SKUNameBasic),
@@ -347,7 +353,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ManagedClusterPutOperation_example_min.json
+// Generated from example definition: 2026-02-01/ManagedClusterPutOperation_example_min.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +442,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumPara
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ManagedClusterDeleteOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterDeleteOperation_example.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +463,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/ManagedClusterGetOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterGetOperation_example.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,7 +547,7 @@ func ExampleManagedClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ManagedClusterListByResourceGroupOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterListByResourceGroupOperation_example.json
 func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -655,7 +661,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/ManagedClusterListBySubscriptionOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterListBySubscriptionOperation_example.json
 func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -769,8 +775,8 @@ func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/ManagedClusterPatchOperation_example.json
-func ExampleManagedClustersClient_Update() {
+// Generated from example definition: 2026-02-01/ManagedClusterPatchOperation_example.json
+func ExampleManagedClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -780,13 +786,17 @@ func ExampleManagedClustersClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagedClustersClient().Update(ctx, "resRg", "myCluster", armservicefabricmanagedclusters.ManagedClusterUpdateParameters{
+	poller, err := clientFactory.NewManagedClustersClient().BeginUpdate(ctx, "resRg", "myCluster", armservicefabricmanagedclusters.ManagedClusterUpdateParameters{
 		Tags: map[string]*string{
 			"a": to.Ptr("b"),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

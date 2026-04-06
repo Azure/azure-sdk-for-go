@@ -507,7 +507,7 @@ func TestConsumerClient_Detaches(t *testing.T) {
 	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
-	defer producerClient.Close(context.Background())
+	defer func() { _ = producerClient.Close(context.Background()) }()
 
 	sendEvent := func(msg string) error {
 		batch, err := producerClient.NewEventDataBatch(context.Background(), nil)

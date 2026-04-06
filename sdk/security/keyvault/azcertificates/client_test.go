@@ -44,7 +44,7 @@ func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
 	for i := 0; i < 12; i++ {
 		err = fn()
 		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+		if !errors.As(err, &respErr) || respErr.StatusCode != expectedStatus {
 			break
 		}
 		if i < 11 {
@@ -649,12 +649,11 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 
 	getResp, err := client.GetCertificatePolicy(ctx, certName, nil)
 	require.NoError(t, err)
-	require.Equal(t, policy.IssuerParameters, getResp.CertificatePolicy.IssuerParameters)
-	require.Equal(t, policy.KeyProperties, getResp.CertificatePolicy.KeyProperties)
-	require.Equal(t, policy.LifetimeActions, getResp.CertificatePolicy.LifetimeActions)
-	require.Equal(t, policy.SecretProperties, getResp.CertificatePolicy.SecretProperties)
-	require.Equal(t, policy.X509CertificateProperties, getResp.CertificatePolicy.X509CertificateProperties)
-
+	require.Equal(t, policy.IssuerParameters, getResp.IssuerParameters)
+	require.Equal(t, policy.KeyProperties, getResp.KeyProperties)
+	require.Equal(t, policy.LifetimeActions, getResp.LifetimeActions)
+	require.Equal(t, policy.SecretProperties, getResp.SecretProperties)
+	require.Equal(t, policy.X509CertificateProperties, getResp.X509CertificateProperties)
 	updatedPolicy := azcertificates.CertificatePolicy{
 		KeyProperties: &azcertificates.KeyProperties{
 			Curve:      to.Ptr(azcertificates.CurveNameP256K),
@@ -666,11 +665,11 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 	}
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, updatedPolicy, nil)
 	require.NoError(t, err)
-	require.Equal(t, policy.IssuerParameters, updateResp.CertificatePolicy.IssuerParameters)
-	require.Equal(t, updatedPolicy.KeyProperties, updateResp.CertificatePolicy.KeyProperties)
-	require.Equal(t, policy.LifetimeActions, updateResp.CertificatePolicy.LifetimeActions)
-	require.Equal(t, policy.SecretProperties, updateResp.CertificatePolicy.SecretProperties)
-	require.Equal(t, policy.X509CertificateProperties, updateResp.CertificatePolicy.X509CertificateProperties)
+	require.Equal(t, policy.IssuerParameters, updateResp.IssuerParameters)
+	require.Equal(t, updatedPolicy.KeyProperties, updateResp.KeyProperties)
+	require.Equal(t, policy.LifetimeActions, updateResp.LifetimeActions)
+	require.Equal(t, policy.SecretProperties, updateResp.SecretProperties)
+	require.Equal(t, policy.X509CertificateProperties, updateResp.X509CertificateProperties)
 }
 
 func TestAPIVersion(t *testing.T) {
@@ -699,4 +698,40 @@ func TestAPIVersion(t *testing.T) {
 
 	_, err = client.GetCertificate(context.Background(), "name", "", nil)
 	require.NoError(t, err)
+}
+
+func TestSubjectAlternativeNames(t *testing.T) {
+	client := startTest(t)
+
+	// Test certificate with all SAN fields including new IPAddresses and URIs
+	certName := getName(t, "allsans")
+	policy := azcertificates.CertificatePolicy{
+		IssuerParameters: &azcertificates.IssuerParameters{Name: to.Ptr("self")},
+		X509CertificateProperties: &azcertificates.X509CertificateProperties{
+			Subject: to.Ptr("CN=SANTest"),
+			SubjectAlternativeNames: &azcertificates.SubjectAlternativeNames{
+				DNSNames:           []*string{to.Ptr("localhost"), to.Ptr("example.com")},
+				Emails:             []*string{to.Ptr("admin@example.com")},
+				IPAddresses:        []*string{to.Ptr("192.168.1.1"), to.Ptr("2001:0db8::1")}, // IPv4 and IPv6
+				URIs:               []*string{to.Ptr("https://example.com"), to.Ptr("https://test.com/path")},
+				UserPrincipalNames: []*string{to.Ptr("user@domain.com")},
+			},
+		},
+	}
+
+	// Create certificate and verify SANs are preserved
+	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
+	testSerde(t, &createParams)
+	_, err := client.CreateCertificate(ctx, certName, createParams, nil)
+	require.NoError(t, err)
+	pollCertOperation(t, client, certName)
+	defer cleanUpCert(t, client, certName)
+
+	// Verify all SANs are retrieved correctly
+	getResp, err := client.GetCertificate(ctx, certName, "", nil)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Policy)
+	require.NotNil(t, getResp.Policy.X509CertificateProperties)
+	require.NotNil(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
+	testSerde(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
 }

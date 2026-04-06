@@ -28,7 +28,7 @@ type LoadBalancerLoadBalancingRulesClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancerLoadBalancingRulesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string, credential a
 // Get - Gets the specified load balancer load balancing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - loadBalancingRuleName - The name of the load balancing rule.
@@ -96,7 +96,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,7 +114,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *http
 // BeginHealth - Get health details of a load balancing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2025-05-01
 //   - groupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - loadBalancingRuleName - The name of the load balancing rule.
@@ -141,7 +141,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) BeginHealth(ctx context.Cont
 // Health - Get health details of a load balancing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2025-05-01
 func (client *LoadBalancerLoadBalancingRulesClient) health(ctx context.Context, groupName string, loadBalancerName string, loadBalancingRuleName string, options *LoadBalancerLoadBalancingRulesClientBeginHealthOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancerLoadBalancingRulesClient.BeginHealth"
@@ -187,7 +187,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) healthCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -195,7 +195,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) healthCreateRequest(ctx cont
 
 // NewListPager - Gets all the load balancing rules in a load balancer.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerLoadBalancingRulesClientListOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.NewListPager
@@ -243,7 +243,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

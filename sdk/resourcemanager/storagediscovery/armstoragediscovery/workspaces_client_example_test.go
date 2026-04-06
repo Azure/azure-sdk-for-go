@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/StorageDiscoveryWorkspaces_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_CreateOrUpdate.json
 func ExampleWorkspacesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageDiscoveryWorkspaces_Delete.json
+// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_Delete.json
 func ExampleWorkspacesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleWorkspacesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageDiscoveryWorkspaces_Get.json
+// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_Get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageDiscoveryWorkspaces_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_ListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +296,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Properties: &armstoragediscovery.WorkspaceProperties{
 		// 					ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),
-		// 					SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+		// 					SKU: to.Ptr(armstoragediscovery.SKUFree),
 		// 					WorkspaceRoots: []*string{
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
@@ -323,7 +323,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageDiscoveryWorkspaces_ListBySubscription.json
+// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_ListBySubscription.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Properties: &armstoragediscovery.WorkspaceProperties{
 		// 					ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),
-		// 					SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+		// 					SKU: to.Ptr(armstoragediscovery.SKUFree),
 		// 					WorkspaceRoots: []*string{
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
@@ -436,7 +436,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/StorageDiscoveryWorkspaces_Update.json
+// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_Update.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,7 +449,7 @@ func ExampleWorkspacesClient_Update() {
 	}
 	res, err := clientFactory.NewWorkspacesClient().Update(ctx, "sample-rg", "Sample-Storage-Workspace", armstoragediscovery.WorkspaceUpdate{
 		Properties: &armstoragediscovery.WorkspacePropertiesUpdate{
-			SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+			SKU: to.Ptr(armstoragediscovery.SKUFree),
 			WorkspaceRoots: []*string{
 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 			},
@@ -490,7 +490,7 @@ func ExampleWorkspacesClient_Update() {
 	// 		},
 	// 		Properties: &armstoragediscovery.WorkspaceProperties{
 	// 			ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),
-	// 			SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+	// 			SKU: to.Ptr(armstoragediscovery.SKUFree),
 	// 			WorkspaceRoots: []*string{
 	// 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 	// 			},

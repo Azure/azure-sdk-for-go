@@ -26,7 +26,7 @@ type PrivateEndpointConnectionsClient struct {
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginApprove - Manual approve private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - privateEndpointConnectionName - The private endpoint connection name of Azure Managed Grafana.
@@ -68,7 +68,7 @@ func (client *PrivateEndpointConnectionsClient) BeginApprove(ctx context.Context
 // Approve - Manual approve private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 func (client *PrivateEndpointConnectionsClient) approve(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, body PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginApproveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginApprove"
@@ -114,7 +114,7 @@ func (client *PrivateEndpointConnectionsClient) approveCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -127,7 +127,7 @@ func (client *PrivateEndpointConnectionsClient) approveCreateRequest(ctx context
 // BeginDelete - Delete private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - privateEndpointConnectionName - The private endpoint connection name of Azure Managed Grafana.
@@ -153,7 +153,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // Delete - Delete private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -199,16 +199,15 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get private endpoint connections.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - privateEndpointConnectionName - The private endpoint connection name of Azure Managed Grafana.
@@ -260,7 +259,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +276,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - Get private endpoint connection
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
@@ -325,7 +324,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

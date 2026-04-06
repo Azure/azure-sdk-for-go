@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Purview module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2
 ```
 
 ## Authorization

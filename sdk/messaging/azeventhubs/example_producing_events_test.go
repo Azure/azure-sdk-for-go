@@ -34,7 +34,7 @@ func Example_producingEventsUsingProducerClient() {
 		panic(err)
 	}
 
-	defer producerClient.Close(context.TODO())
+	defer func() { _ = producerClient.Close(context.TODO()) }()
 
 	events := createEventsForSample()
 

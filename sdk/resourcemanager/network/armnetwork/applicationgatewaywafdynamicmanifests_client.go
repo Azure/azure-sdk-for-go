@@ -28,7 +28,7 @@ type ApplicationGatewayWafDynamicManifestsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGatewayWafDynamicManifestsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, crede
 
 // NewGetPager - Gets the regional application gateway waf manifest.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2025-05-01
 //   - location - The region where the nrp are located at.
 //   - options - ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.NewGetPager
 //     method.
@@ -86,7 +86,7 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,7 +27,7 @@ type CommitmentTiersClient struct {
 // NewCommitmentTiersClient creates a new instance of CommitmentTiersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommitmentTiersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListPager - List Commitment Tiers.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - location - Resource location.
 //   - options - CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.NewListPager
 //     method.
@@ -85,7 +85,7 @@ func (client *CommitmentTiersClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

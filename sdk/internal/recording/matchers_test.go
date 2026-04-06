@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -49,7 +46,7 @@ func TestMatchers(t *testing.T) {
 
 func (s *matchersTests) SetupSuite() {
 	// Ignore manual start in pipeline tests, we always want to exercise install
-	os.Setenv(proxyManualStartEnv, "false")
+	require.NoError(s.T(), os.Setenv(proxyManualStartEnv, "false"))
 	proxy, err := StartTestProxy("", nil)
 	s.proxy = proxy
 	require.NoError(s.T(), err)

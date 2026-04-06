@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/07c350e6126e53f3a25fe75536c4b3324f91475b/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-11-05/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-02-06/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -19,10 +19,11 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
+honor-body-placement: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2025-11-05
+### Updating service version to 2026-02-06
 
 ```yaml
 directive:
@@ -34,9 +35,10 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2025-07-05"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{"2025-11-05"}`, `[]string{ServiceVersion}`);
 ```
-### Changing casing of NfsFileType
+### Changing casing of NfsFileType, Nfs, ShareNfsSettingsEncryptionInTransit and ShareNfsSettings
+
 ```yaml
 directive:
 - from: 
@@ -45,10 +47,14 @@ directive:
   - zz_response_types.go
   - zz_file_client.go
   - zz_directory_client.go
+  - zz_models.go
   where: $
   transform: >-
     return $.
-      replaceAll(`NfsFileType`, `NFSFileType`);
+      replaceAll(`NfsFileType`, `NFSFileType`).
+      replaceAll(`ShareNfsSettings`, `ShareNFSSettings`).
+      replaceAll(`ShareNfsSettingsEncryptionInTransit`, `ShareNFSSettingsEncryptionInTransit`).
+      replaceAll(`Nfs *`, `NFS *`);
 ```
 
 ### Updating Header Names XMSFileShareSnapshotUsageBytes and XMSFileShareUsageBytes
@@ -188,13 +194,28 @@ directive:
   - zz_file_client.go
   - zz_models.go
   - zz_options.go
+  - zz_share_client.go
+  - zz_response_types.go
   where: $
   transform: >-
     return $.
       replace(/SmbMultichannel/g, `SMBMultichannel`).
       replace(/copyFileSmbInfo/g, `copyFileSMBInfo`).
       replace(/CopyFileSmbInfo/g, `CopyFileSMBInfo`).
-      replace(/Smb\s+\*ShareSMBSettings/g, `SMB *ShareSMBSettings`);
+      replace(/Smb\s+\*ShareSMBSettings/g, `SMB *ShareSMBSettings`).
+      replace(/EnableSmbDirectoryLease/g, `EnableSMBDirectoryLease`); 
+```
+
+### Fixing casing of SignedTid and SignedOid
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/SignedOid\s+\*string/g, `SignedOID *string`).
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
 ```
 
 ### Rename models - remove `Item` and `Internal` suffix

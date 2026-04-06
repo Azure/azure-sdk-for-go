@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -80,7 +77,10 @@ func TestAPIVersionPolicy(t *testing.T) {
 		// ctor via NewPipeline(). The policy should return an error when the user specifies a version
 		// the policy can't set because the service client didn't identify the header/query param.
 		{version: version, err: true},
-		{location: 2, version: version, err: true},
+		{location: 3, version: version, err: true},
+
+		// for APIVersionLocationPath the policy does nothing
+		{location: APIVersionLocationPath},
 	} {
 		t.Run("no-op", func(t *testing.T) {
 			p := newAPIVersionPolicy(test.version, &APIVersionOptions{Location: test.location, Name: test.name})

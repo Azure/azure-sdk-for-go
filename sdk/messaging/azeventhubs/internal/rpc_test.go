@@ -345,7 +345,7 @@ func TestRPCLinkBroadcastErrorWhenClosed(t *testing.T) {
 				rpcTesterProperty: []*rpcTestResp{},
 			},
 		})
-		require.ErrorIs(t, err, RPCLinkClosedErr)
+		require.ErrorIs(t, err, ErrRPCLinkClosed)
 	}()
 
 	<-tester.RPCLoopStarted
@@ -353,14 +353,14 @@ func TestRPCLinkBroadcastErrorWhenClosed(t *testing.T) {
 	require.NoError(t, link.Close(context.Background()))
 	<-ch
 
-	// and the error is cached so further calls also get RPCLinkClosedErr
+	// and the error is cached so further calls also get ErrRPCLinkClosed
 	// similar to what we do in go-amqp.
 	_, err = link.RPC(context.Background(), &amqp.Message{
 		ApplicationProperties: map[string]any{
 			rpcTesterProperty: []*rpcTestResp{},
 		},
 	})
-	require.ErrorIs(t, err, RPCLinkClosedErr)
+	require.ErrorIs(t, err, ErrRPCLinkClosed)
 }
 
 func TestRPCLinkCancelClientSideWait(t *testing.T) {

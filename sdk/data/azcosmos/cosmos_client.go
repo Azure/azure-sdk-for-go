@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 const (
@@ -75,10 +76,26 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	scope, err := createScopeFromEndpoint(endpointUrl)
-	if err != nil {
-		return nil, err
+
+	var scope []string
+
+	if o != nil && o.Cloud.Services != nil {
+		if svcCfg, ok := o.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
+			audience := svcCfg.Audience
+			scope = []string{audience + "/.default"}
+			log.Write(azlog.EventRequest, fmt.Sprintf("Using custom scope for authentication: %s", scope[0]))
+		}
 	}
+
+	if scope == nil {
+		// Fallback to account-scope
+		scope, err = createScopeFromEndpoint(endpointUrl)
+		if err != nil {
+			return nil, err
+		}
+		log.Write(azlog.EventRequest, fmt.Sprintf("Using account scope from endpoint for authentication: %s", scope[0]))
+	}
+
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {
@@ -475,9 +492,7 @@ func (c *Client) createRequest(
 		}
 	}
 
-	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Raw().Header.Set(headerXmsVersion, apiVersion)
-	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+	addDefaultHeaders(req)
 
 	req.SetOperationValue(operationContext)
 
@@ -541,6 +556,15 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+}
+
+func addDefaultHeaders(req *policy.Request) {
+	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
+	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+	if activityID, err := uuid.New(); err == nil {
+		req.Raw().Header.Set(cosmosHeaderActivityId, activityID.String())
+	}
 }
 
 func getAllowedHeaders() []string {

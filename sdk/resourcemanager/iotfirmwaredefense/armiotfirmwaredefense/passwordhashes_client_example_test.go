@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/PasswordHashes_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/PasswordHashes_ListByFirmware_MaximumSet_Gen.json
 func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -38,23 +38,23 @@ func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirm
 		// 		Value: []*armiotfirmwaredefense.PasswordHashResource{
 		// 			{
 		// 				Properties: &armiotfirmwaredefense.PasswordHash{
-		// 					PasswordHashID: to.Ptr("ienatyatysgeausjguxcia"),
-		// 					FilePath: to.Ptr("bczxamptzxenhaiudkydsmgom"),
-		// 					Salt: to.Ptr("vcbxzqv"),
-		// 					Hash: to.Ptr("fulifazs"),
-		// 					Context: to.Ptr("dchhnbajhsmdidriovtvzn"),
-		// 					Username: to.Ptr("uhmctmzelkycgsogqftiqlyctbqh"),
-		// 					Algorithm: to.Ptr("shejfmusfsjflplcixgh"),
+		// 					PasswordHashID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					FilePath: to.Ptr("/path/to/file/containing/hash"),
+		// 					Salt: to.Ptr("okk8R3sJ"),
+		// 					Hash: to.Ptr("nOWjEHqTyMwLHT7puB6VM1"),
+		// 					Context: to.Ptr("FoundUserName:$1$okk8R3sJ$nOWjEHqTyMwLHT7puB6VM1:14073:0:99999:7:::"),
+		// 					Username: to.Ptr("FoundUserName"),
+		// 					Algorithm: to.Ptr("MD5"),
 		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-		// 				Name: to.Ptr("snglublgbvyjhfcuxozfionclonuh"),
-		// 				Type: to.Ptr("pwpp"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000/passwordHashes/00000000-0000-0000-0000-000000000000"),
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares/passwordHashes"),
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
-		// 					CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("of"),
+		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 		// 				},
@@ -66,7 +66,7 @@ func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirm
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/PasswordHashes_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/PasswordHashes_ListByFirmware_MinimumSet_Gen.json
 func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExamplePasswordHashesClient_NewListByFirmwarePager_passwordHashesListByFirm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPasswordHashesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000", nil)
+	pager := clientFactory.NewPasswordHashesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "00000000-0000-0000-0000-000000000000", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

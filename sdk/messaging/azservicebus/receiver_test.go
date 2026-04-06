@@ -1411,6 +1411,122 @@ SendLoop:
 	}
 }
 
+func TestReceiver_SettleWithOnlyLockToken(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	setup := func(t *testing.T, body string) (receiver *Receiver, lockToken [16]byte, sequenceNumber int64) {
+		err = sender.SendMessage(context.Background(), &Message{Body: []byte(body)}, nil)
+		require.NoError(t, err)
+
+		receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, messages)
+
+		require.Equal(t, []string{body}, getSortedBodies(messages))
+
+		require.False(t, shouldSettleOnReceiver(&ReceivedMessage{LockToken: lockToken}), messages[0].LockToken)
+		require.True(t, shouldSettleOnMgmtLink(nil, &ReceivedMessage{LockToken: lockToken}), messages[0].LockToken)
+
+		// close the existing receiver and create a new one, to prove that you can settle on a completely
+		// different Receiver.
+		err = receiver.Close(context.Background())
+		require.NoError(t, err)
+
+		receiver, err = serviceBusClient.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		// real quick, make sure we can also renew the lock with just a lock token.
+		{
+			rm := &ReceivedMessage{
+				LockToken: messages[0].LockToken,
+			}
+
+			err = receiver.RenewMessageLock(context.Background(), rm, nil)
+			require.NoError(t, err)
+			require.NotNil(t, rm.LockedUntil)
+		}
+
+		return receiver, messages[0].LockToken, *messages[0].SequenceNumber
+	}
+
+	requireQueueEmpty := func(t *testing.T, receiver *Receiver) {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+
+		shouldBeEmpty, err := receiver.ReceiveMessages(ctx, 1, nil)
+		require.ErrorIs(t, err, context.DeadlineExceeded)
+		require.Empty(t, shouldBeEmpty)
+	}
+
+	t.Run("Complete", func(t *testing.T) {
+		receiver, lockToken, _ := setup(t, "complete test")
+
+		err = receiver.CompleteMessage(context.Background(), &ReceivedMessage{LockToken: lockToken}, nil)
+		require.NoError(t, err)
+
+		requireQueueEmpty(t, receiver)
+	})
+
+	t.Run("DeadLetter", func(t *testing.T) {
+		receiver, lockToken, _ := setup(t, "dead letter test")
+
+		err = receiver.DeadLetterMessage(context.Background(), &ReceivedMessage{LockToken: lockToken}, nil)
+		require.NoError(t, err)
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+
+		shouldBeEmpty, err := receiver.ReceiveMessages(ctx, 1, nil)
+		require.ErrorIs(t, err, context.DeadlineExceeded)
+		require.Empty(t, shouldBeEmpty)
+
+		// check the dead letter queue
+		dlReceiver, err := serviceBusClient.NewReceiverForQueue(queueName, &ReceiverOptions{
+			SubQueue: SubQueueDeadLetter,
+		})
+		require.NoError(t, err)
+
+		dlMessages, err := dlReceiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+
+		require.Equal(t, []string{"dead letter test"}, getSortedBodies(dlMessages))
+	})
+
+	t.Run("Abandon", func(t *testing.T) {
+		receiver, lockToken, _ := setup(t, "abandon test")
+
+		err = receiver.AbandonMessage(context.Background(), &ReceivedMessage{LockToken: lockToken}, nil)
+		require.NoError(t, err)
+
+		redeliveredMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
+		require.Equal(t, uint32(2), redeliveredMessages[0].DeliveryCount)
+		require.Equal(t, []string{"abandon test"}, getSortedBodies(redeliveredMessages))
+	})
+
+	t.Run("Defer", func(t *testing.T) {
+		receiver, lockToken, sequenceNumber := setup(t, "defer test")
+
+		err = receiver.DeferMessage(context.Background(), &ReceivedMessage{LockToken: lockToken}, nil)
+		require.NoError(t, err)
+
+		requireQueueEmpty(t, receiver)
+
+		deferredMessages, err := receiver.ReceiveDeferredMessages(context.Background(), []int64{sequenceNumber}, nil)
+		require.NoError(t, err)
+
+		require.Equal(t, []string{"defer test"}, getSortedBodies(deferredMessages))
+	})
+}
+
 type receivedMessageSlice []*ReceivedMessage
 
 func (messages receivedMessageSlice) Len() int {

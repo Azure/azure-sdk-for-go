@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -9,15 +6,16 @@ package azqueue_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
@@ -1404,6 +1402,44 @@ func (s *UnrecordedTestSuite) TestQueueGetSASURL2() {
 	_, err = queueClient2.Create(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationFailure)
+}
+
+func (s *UnrecordedTestSuite) TestQueueUserDelegationSAS_WithSduoid() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	now := time.Now().UTC().Add(-time.Minute)
+	expiry := now.Add(30 * time.Minute)
+	serviceCode := "q"
+	version := sas.Version
+	oid := "00000000-0000-0000-0000-000000000000"
+	tid := "11111111-1111-1111-1111-111111111111"
+	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
+
+	udk := exported.UserDelegationKey{
+		SignedStart:   &now,
+		SignedExpiry:  &expiry,
+		SignedService: &serviceCode,
+		SignedVersion: &version,
+		SignedOID:     &oid,
+		SignedTID:     &tid,
+		Value:         val,
+	}
+	udc := exported.NewUserDelegationCredential("testaccount", udk)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	sv := sas.QueueSignatureValues{
+		Protocol:                    sas.ProtocolHTTPS,
+		StartTime:                   now,
+		ExpiryTime:                  expiry,
+		Permissions:                 (&sas.QueuePermissions{Read: true, Add: true}).String(),
+		QueueName:                   queueName,
+		SignedDelegatedUserObjectID: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+	}
+	qp, err := sv.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	enc := qp.Encode()
+	_require.Contains(enc, "sduoid=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 }
 
 func (s *UnrecordedTestSuite) TestServiceSASEnqueueMessage() {

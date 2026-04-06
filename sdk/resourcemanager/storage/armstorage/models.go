@@ -29,11 +29,17 @@ type Account struct {
 	// The identity of the resource.
 	Identity *Identity
 
+	// Optional. Gets or sets the zonal placement details for the storage account.
+	Placement *Placement
+
 	// Properties of the storage account.
 	Properties *AccountProperties
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// Optional. Gets or sets the pinned logical availability zone for the storage account.
+	Zones []*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -81,6 +87,9 @@ type AccountCreateParameters struct {
 	// The identity of the resource.
 	Identity *Identity
 
+	// Optional. Gets or sets the zonal placement details for the storage account.
+	Placement *Placement
+
 	// The parameters used to create the storage account.
 	Properties *AccountPropertiesCreateParameters
 
@@ -89,6 +98,37 @@ type AccountCreateParameters struct {
 	// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than
 	// 256 characters.
 	Tags map[string]*string
+
+	// Optional. Gets or sets the pinned logical availability zone for the storage account.
+	Zones []*string
+}
+
+// AccountIPv6Endpoints - The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object
+// via an IPv6 endpoint.
+type AccountIPv6Endpoints struct {
+	// Gets the internet routing storage endpoints
+	InternetEndpoints *AccountInternetEndpoints
+
+	// Gets the microsoft routing storage endpoints.
+	MicrosoftEndpoints *AccountMicrosoftEndpoints
+
+	// READ-ONLY; Gets the blob endpoint.
+	Blob *string
+
+	// READ-ONLY; Gets the dfs endpoint.
+	Dfs *string
+
+	// READ-ONLY; Gets the file endpoint.
+	File *string
+
+	// READ-ONLY; Gets the queue endpoint.
+	Queue *string
+
+	// READ-ONLY; Gets the table endpoint.
+	Table *string
+
+	// READ-ONLY; Gets the web endpoint.
+	Web *string
 }
 
 // AccountImmutabilityPolicyProperties - This defines account-level immutability policy properties.
@@ -196,7 +236,7 @@ type AccountMicrosoftEndpoints struct {
 // AccountMigration - The parameters or status associated with an ongoing or enqueued storage account migration in order to
 // update its current SKU or region.
 type AccountMigration struct {
-	// REQUIRED; The properties of a storage account’s ongoing or enqueued migration.
+	// REQUIRED; The properties of a storage account's ongoing or enqueued migration.
 	StorageAccountMigrationDetails *AccountMigrationProperties
 
 	// current value is 'default' for customer initiated migration
@@ -209,7 +249,7 @@ type AccountMigration struct {
 	ID *string
 }
 
-// AccountMigrationProperties - The properties of a storage account’s ongoing or enqueued migration.
+// AccountMigrationProperties - The properties of a storage account's ongoing or enqueued migration.
 type AccountMigrationProperties struct {
 	// REQUIRED; Target sku name for the account
 	TargetSKUName *SKUName
@@ -255,6 +295,9 @@ type AccountProperties struct {
 	// for this property.
 	DefaultToOAuthAuthentication *bool
 
+	// Maintains information about the Internet protocol opted by the user.
+	DualStackEndpointPreference *DualStackEndpointPreference
+
 	// Enables extended group support with local users feature, if set to true
 	EnableExtendedGroups *bool
 
@@ -263,6 +306,9 @@ type AccountProperties struct {
 
 	// NFS 3.0 protocol support enabled if set to true.
 	EnableNfsV3 *bool
+
+	// Status indicating whether Geo Priority Replication is enabled for the account.
+	GeoPriorityReplicationStatus *GeoPriorityReplicationStatus
 
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
 	// level immutability for all the containers in the account by default.
@@ -408,6 +454,9 @@ type AccountPropertiesCreateParameters struct {
 	// for this property.
 	DefaultToOAuthAuthentication *bool
 
+	// Maintains information about the Internet protocol opted by the user.
+	DualStackEndpointPreference *DualStackEndpointPreference
+
 	// Enables extended group support with local users feature, if set to true
 	EnableExtendedGroups *bool
 
@@ -419,6 +468,9 @@ type AccountPropertiesCreateParameters struct {
 
 	// Encryption settings to be used for server-side encryption for the storage account.
 	Encryption *Encryption
+
+	// Status indicating whether Geo Priority Replication is enabled for the account.
+	GeoPriorityReplicationStatus *GeoPriorityReplicationStatus
 
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
 	// level immutability for all the new containers in the account by default.
@@ -498,6 +550,9 @@ type AccountPropertiesUpdateParameters struct {
 	// for this property.
 	DefaultToOAuthAuthentication *bool
 
+	// Maintains information about the Internet protocol opted by the user.
+	DualStackEndpointPreference *DualStackEndpointPreference
+
 	// Enables extended group support with local users feature, if set to true
 	EnableExtendedGroups *bool
 
@@ -506,6 +561,9 @@ type AccountPropertiesUpdateParameters struct {
 
 	// Not applicable. Azure Storage encryption at rest is enabled by default for all storage accounts and cannot be disabled.
 	Encryption *Encryption
+
+	// Status indicating whether Geo Priority Replication is enabled for the account.
+	GeoPriorityReplicationStatus *GeoPriorityReplicationStatus
 
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
 	// level immutability for all the containers in the account by default.
@@ -601,6 +659,9 @@ type AccountUpdateParameters struct {
 	// Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server.
 	Kind *Kind
 
+	// Optional. Gets or sets the zonal placement details for the storage account.
+	Placement *Placement
+
 	// The parameters used when updating a storage account.
 	Properties *AccountPropertiesUpdateParameters
 
@@ -612,6 +673,9 @@ type AccountUpdateParameters struct {
 	// resource (across resource groups). A maximum of 15 tags can be provided for a
 	// resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
 	Tags map[string]*string
+
+	// Optional. Gets or sets the pinned logical availability zone for the storage account.
+	Zones []*string
 }
 
 // AccountUsage - Usage of provisioned storage, IOPS, bandwidth and number of file shares across all live shares and soft-deleted
@@ -644,28 +708,47 @@ type AccountUsageElements struct {
 
 // ActiveDirectoryProperties - Settings properties for Active Directory (AD).
 type ActiveDirectoryProperties struct {
-	// REQUIRED; Specifies the domain GUID.
-	DomainGUID *string
-
-	// REQUIRED; Specifies the primary domain that the AD DNS server is authoritative for.
-	DomainName *string
-
-	// Specifies the Active Directory account type for Azure Storage.
+	// Specifies the Active Directory account type for Azure Storage. If directoryServiceOptions is set to AD (AD DS authentication),
+	// this property is optional. If provided, samAccountName should also be
+	// provided. For directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra authentication), this property
+	// can be omitted.
 	AccountType *ActiveDirectoryPropertiesAccountType
 
-	// Specifies the security identifier (SID) for Azure Storage.
+	// Specifies the security identifier (SID) for Azure Storage. If directoryServiceOptions is set to AD (AD DS authentication),
+	// this property is required. Otherwise, it can be omitted.
 	AzureStorageSid *string
 
-	// Specifies the security identifier (SID).
+	// Specifies the domain GUID. If directoryServiceOptions is set to AD (AD DS authentication), this property is required. If
+	// directoryServiceOptions is set to AADDS (Entra DS authentication), this
+	// property can be omitted. If directoryServiceOptions is set to AADKERB (Entra authentication), this property is optional;
+	// it is needed to support configuration of directory- and file-level permissions
+	// via Windows File Explorer, but is not required for authentication.
+	DomainGUID *string
+
+	// Specifies the primary domain that the AD DNS server is authoritative for. This property is required if directoryServiceOptions
+	// is set to AD (AD DS authentication). If directoryServiceOptions is set to
+	// AADDS (Entra DS authentication), providing this property is optional, as it will be inferred automatically if omitted.
+	// If directoryServiceOptions is set to AADKERB (Entra authentication), this
+	// property is optional; it is needed to support configuration of directory- and file-level permissions via Windows File Explorer,
+	// but is not required for authentication.
+	DomainName *string
+
+	// Specifies the security identifier (SID) of the AD domain. If directoryServiceOptions is set to AD (AD DS authentication),
+	// this property is required. Otherwise, it can be omitted.
 	DomainSid *string
 
-	// Specifies the Active Directory forest to get.
+	// Specifies the Active Directory forest to get. If directoryServiceOptions is set to AD (AD DS authentication), this property
+	// is required. Otherwise, it can be omitted.
 	ForestName *string
 
-	// Specifies the NetBIOS domain name.
+	// Specifies the NetBIOS domain name. If directoryServiceOptions is set to AD (AD DS authentication), this property is required.
+	// Otherwise, it can be omitted.
 	NetBiosDomainName *string
 
-	// Specifies the Active Directory SAMAccountName for Azure Storage.
+	// Specifies the Active Directory SAMAccountName for Azure Storage. If directoryServiceOptions is set to AD (AD DS authentication),
+	// this property is optional. If provided, accountType should also be
+	// provided. For directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra authentication), this property
+	// can be omitted.
 	SamAccountName *string
 }
 
@@ -689,11 +772,16 @@ type AzureFilesIdentityBasedAuthentication struct {
 	// REQUIRED; Indicates the directory service used. Note that this enum may be extended in the future.
 	DirectoryServiceOptions *DirectoryServiceOptions
 
-	// Required if directoryServiceOptions are AD, optional if they are AADKERB.
+	// Additional information about the directory service. Required if directoryServiceOptions is AD (AD DS authentication). Optional
+	// for directoryServiceOptions AADDS (Entra DS authentication) and AADKERB
+	// (Entra authentication).
 	ActiveDirectoryProperties *ActiveDirectoryProperties
 
 	// Default share permission for users using Kerberos authentication if RBAC role is not assigned.
 	DefaultSharePermission *DefaultSharePermission
+
+	// Required for Managed Identities access using OAuth over SMB.
+	SmbOAuthSettings *SmbOAuthSettings
 }
 
 // BlobContainer - Properties of the blob container, including Id, resource name, resource type, Etag.
@@ -1188,6 +1276,12 @@ type Dimension struct {
 	Name *string
 }
 
+// DualStackEndpointPreference - Dual-stack endpoint preference defines whether IPv6 endpoints are going to be published.
+type DualStackEndpointPreference struct {
+	// A boolean flag which indicates whether IPv6 storage endpoints are to be published.
+	PublishIPv6Endpoint *bool
+}
+
 // Encryption - The encryption settings on the storage account.
 type Encryption struct {
 	// The identity to be used with service-side encryption at rest.
@@ -1215,6 +1309,12 @@ type EncryptionIdentity struct {
 
 	// Resource identifier of the UserAssigned identity to be associated with server-side encryption on the storage account.
 	EncryptionUserAssignedIdentity *string
+}
+
+// EncryptionInTransit - Encryption in transit setting.
+type EncryptionInTransit struct {
+	// Indicates whether encryption in transit is required
+	Required *bool
 }
 
 // EncryptionScope - The Encryption Scope resource.
@@ -1312,6 +1412,9 @@ type EncryptionServices struct {
 
 // Endpoints - The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object.
 type Endpoints struct {
+	// Gets the IPv6 storage endpoints.
+	IPv6Endpoints *AccountIPv6Endpoints
+
 	// Gets the internet routing storage endpoints
 	InternetEndpoints *AccountInternetEndpoints
 
@@ -1704,6 +1807,12 @@ type FileShareRecommendations struct {
 	IoScalar *float64
 }
 
+// GeoPriorityReplicationStatus - Geo Priority Replication enablement status for the storage account.
+type GeoPriorityReplicationStatus struct {
+	// Indicates whether Blob Geo Priority Replication is enabled for the storage account.
+	IsBlobEnabled *bool
+}
+
 // GeoReplicationStats - Statistics related to replication for storage account's Blob, Table, Queue and File services. It
 // is only available when geo-redundant replication is enabled for the storage account.
 type GeoReplicationStats struct {
@@ -1737,7 +1846,7 @@ type IPRule struct {
 	// Field has constant value "Allow", any specified value is ignored.
 	Action *string
 
-	// REQUIRED; Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+	// REQUIRED; Specifies the IP or IP range in CIDR format.
 	IPAddressOrRange *string
 }
 
@@ -2339,6 +2448,9 @@ type NetworkRuleSet struct {
 	// Sets the IP ACL rules
 	IPRules []*IPRule
 
+	// Sets the IPv6 ACL rules.
+	IPv6Rules []*IPRule
+
 	// Sets the resource access rules
 	ResourceAccessRules []*ResourceAccessRule
 
@@ -2430,6 +2542,12 @@ type NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation struct {
 	Name *string
 }
 
+// NfsSetting - Setting for NFS protocol
+type NfsSetting struct {
+	// Encryption in transit setting.
+	EncryptionInTransit *EncryptionInTransit
+}
+
 // NspAccessRule - Information of Access Rule in Network Security Perimeter profile
 type NspAccessRule struct {
 	// Name of the resource
@@ -2507,6 +2625,9 @@ type ObjectReplicationPolicyProperties struct {
 	// Optional. The object replication policy metrics feature options.
 	Metrics *ObjectReplicationPolicyPropertiesMetrics
 
+	// Optional. The object replication policy priority replication feature options.
+	PriorityReplication *ObjectReplicationPolicyPropertiesPriorityReplication
+
 	// The storage account object replication rules.
 	Rules []*ObjectReplicationPolicyRule
 
@@ -2520,6 +2641,13 @@ type ObjectReplicationPolicyProperties struct {
 // ObjectReplicationPolicyPropertiesMetrics - Optional. The object replication policy metrics feature options.
 type ObjectReplicationPolicyPropertiesMetrics struct {
 	// Indicates whether object replication metrics feature is enabled for the policy.
+	Enabled *bool
+}
+
+// ObjectReplicationPolicyPropertiesPriorityReplication - Optional. The object replication policy priority replication feature
+// options.
+type ObjectReplicationPolicyPropertiesPriorityReplication struct {
+	// Indicates whether object replication priority replication feature is enabled for the policy.
 	Enabled *bool
 }
 
@@ -2591,6 +2719,12 @@ type PermissionScope struct {
 
 	// REQUIRED; The service used by the local user, e.g. blob, file.
 	Service *string
+}
+
+// Placement - The complex type of the zonal placement details.
+type Placement struct {
+	// The availability zone pinning policy for the storage account.
+	ZonePlacementPolicy *ZonePlacementPolicy
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
@@ -2691,6 +2825,9 @@ type ProtectedAppendWritesHistory struct {
 
 // ProtocolSettings - Protocol settings for file service
 type ProtocolSettings struct {
+	// Setting for NFS protocol
+	Nfs *NfsSetting
+
 	// Setting for SMB protocol
 	Smb *SmbSetting
 }
@@ -2895,7 +3032,8 @@ type SKUCapability struct {
 type SKUInformation struct {
 	// REQUIRED; The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called
 	// accountType.
-	Name *SKUName
+	Name         *SKUName
+	LocationInfo []*SKUInformationLocationInfoItem
 
 	// The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
 	Restrictions []*Restriction
@@ -2916,6 +3054,14 @@ type SKUInformation struct {
 
 	// READ-ONLY; The SKU tier. This is based on the SKU name.
 	Tier *SKUTier
+}
+
+type SKUInformationLocationInfoItem struct {
+	// READ-ONLY; Describes the location for the product where storage account resource can be created.
+	Location *string
+
+	// READ-ONLY; Describes the available zones for the product where storage account resource can be created.
+	Zones []*string
 }
 
 // SKUListResult - The response from the List Storage SKUs operation.
@@ -3017,6 +3163,12 @@ type SignedIdentifier struct {
 	ID *string
 }
 
+// SmbOAuthSettings - Setting property for Managed Identity access over SMB using OAuth
+type SmbOAuthSettings struct {
+	// Specifies if managed identities can access SMB shares using OAuth. The default interpretation is false for this property.
+	IsSmbOAuthEnabled *bool
+}
+
 // SmbSetting - Setting for SMB protocol
 type SmbSetting struct {
 	// SMB authentication methods supported by server. Valid values are NTLMv2, Kerberos. Should be passed as a string with delimiter
@@ -3026,6 +3178,9 @@ type SmbSetting struct {
 	// SMB channel encryption supported by server. Valid values are AES-128-CCM, AES-128-GCM, AES-256-GCM. Should be passed as
 	// a string with delimiter ';'.
 	ChannelEncryption *string
+
+	// Encryption in transit setting.
+	EncryptionInTransit *EncryptionInTransit
 
 	// Kerberos ticket encryption supported by server. Valid values are RC4-HMAC, AES-256. Should be passed as a string with delimiter
 	// ';'
@@ -3371,12 +3526,6 @@ type TrackedResource struct {
 
 // TriggerParameters - The trigger parameters update for the storage task assignment execution
 type TriggerParameters struct {
-	// CONSTANT; Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule';
-	// this property should not be present when ExecutionTrigger.properties.type is
-	// 'RunOnce'
-	// Field has constant value "Days", any specified value is ignored.
-	IntervalUnit *string
-
 	// When to end task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this property
 	// should not be present when ExecutionTrigger.properties.type is 'RunOnce'
 	EndBy *time.Time
@@ -3384,6 +3533,11 @@ type TriggerParameters struct {
 	// Run interval of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this property
 	// should not be present when ExecutionTrigger.properties.type is 'RunOnce'
 	Interval *int32
+
+	// Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this
+	// property should not be present when ExecutionTrigger.properties.type is
+	// 'RunOnce'
+	IntervalUnit *IntervalUnit
 
 	// When to start task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this property
 	// should not be present when ExecutionTrigger.properties.type is 'RunOnce'
@@ -3396,12 +3550,6 @@ type TriggerParameters struct {
 
 // TriggerParametersUpdate - The trigger parameters update for the storage task assignment execution
 type TriggerParametersUpdate struct {
-	// CONSTANT; Run interval unit of task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule';
-	// this property should not be present when ExecutionTrigger.properties.type is
-	// 'RunOnce'
-	// Field has constant value "Days", any specified value is ignored.
-	IntervalUnit *string
-
 	// When to end task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this property
 	// should not be present when ExecutionTrigger.properties.type is 'RunOnce'
 	EndBy *time.Time
@@ -3409,6 +3557,11 @@ type TriggerParametersUpdate struct {
 	// Run interval of task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this property
 	// should not be present when ExecutionTrigger.properties.type is 'RunOnce'
 	Interval *int32
+
+	// Run interval unit of task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this
+	// property should not be present when ExecutionTrigger.properties.type is
+	// 'RunOnce'
+	IntervalUnit *IntervalUnit
 
 	// When to start task execution. This is a mutable field when ExecutionTrigger.properties.type is 'OnSchedule'; this property
 	// should not be present when ExecutionTrigger.properties.type is 'RunOnce'

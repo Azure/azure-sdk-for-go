@@ -32,22 +32,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewCacheNodesOperationsClient creates a new instance of CacheNodesOperationsClient.
-func (c *ClientFactory) NewCacheNodesOperationsClient() *CacheNodesOperationsClient {
-	return &CacheNodesOperationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewEnterpriseCustomerOperationsClient creates a new instance of EnterpriseCustomerOperationsClient.
-func (c *ClientFactory) NewEnterpriseCustomerOperationsClient() *EnterpriseCustomerOperationsClient {
-	return &EnterpriseCustomerOperationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewEnterpriseMccCacheNodesOperationsClient creates a new instance of EnterpriseMccCacheNodesOperationsClient.
 func (c *ClientFactory) NewEnterpriseMccCacheNodesOperationsClient() *EnterpriseMccCacheNodesOperationsClient {
 	return &EnterpriseMccCacheNodesOperationsClient{

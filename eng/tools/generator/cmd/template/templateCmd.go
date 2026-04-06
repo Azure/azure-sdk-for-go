@@ -59,7 +59,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.String("package-version", "", "Specify the version number of this release")
 }
 
@@ -72,7 +71,6 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		Commit:         flags.GetString(flagSet, "commit"),
 		ReleaseDate:    flags.GetString(flagSet, "release-date"),
 		PackageConfig:  flags.GetString(flagSet, "package-config"),
-		GoVersion:      flags.GetString(flagSet, "go-version"),
 		PackageVersion: flags.GetString(flagSet, "package-version"),
 	}
 }
@@ -85,7 +83,6 @@ type Flags struct {
 	Commit         string
 	ReleaseDate    string
 	PackageConfig  string
-	GoVersion      string
 	PackageVersion string
 }
 
@@ -107,7 +104,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	}
 
 	// build the replaceMap
-	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate, flags.GoVersion, flags.PackageVersion)
+	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate, flags.PackageVersion)
 
 	// copy everything to destination directory
 	for _, file := range fileList {
@@ -131,7 +128,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	return nil
 }
 
-func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate, goVersion, packageVersion string) {
+func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate, packageVersion string) {
 	replaceMap = make(map[string]string)
 
 	replaceMap[RPNameKey] = rpName
@@ -144,7 +141,6 @@ func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID,
 	} else {
 		replaceMap[ReleaseDate] = releaseDate
 	}
-	replaceMap[GoVersion] = goVersion
 	replaceMap[PackageVersion] = packageVersion
 }
 
@@ -188,6 +184,5 @@ const (
 	FilenameSuffix   = ".tpl"
 	ReleaseDate      = "{{releaseDate}}"
 	PackageConfigKey = "{{packageConfig}}"
-	GoVersion        = "{{goVersion}}"
 	PackageVersion   = "{{packageVersion}}"
 )

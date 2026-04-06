@@ -52,9 +52,9 @@ const (
 )
 
 const (
-	linkKeyword        = "**Link**: "
-	tagKeyword         = "**Readme Tag**: "
-	releaseDateKeyword = "**Target release date**: "
+	linkKeyword        = `(\*\*API spec pull request link\*\*: )|(\*\*Link\*\*: )`
+	tagKeyword         = `\*\*Readme Tag\*\*: `
+	releaseDateKeyword = `\*\*Target release date\*\*: `
 )
 
 type issueError struct {
@@ -114,7 +114,6 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	if err != nil {
 		releaseDate = time.Now()
 	}
-
 	return &ReleaseRequestIssue{
 		IssueLink:   issue.GetHTMLURL(),
 		TargetLink:  parseLink(contents[linkKeyword]),
@@ -137,7 +136,13 @@ func getRawContent(lines []string, keywords []string) map[string]string {
 	return result
 }
 
-func getContentByPrefix(line, prefix string) string {
+func getContentByPrefix(line, regexExp string) string {
+	regex := regexp.MustCompile(regexExp)
+	r := regex.FindStringSubmatch(line)
+	if len(r) < 1 {
+		return ""
+	}
+	prefix := r[0]
 	if strings.HasPrefix(line, prefix) {
 		return strings.TrimSpace(strings.TrimPrefix(line, prefix))
 	}

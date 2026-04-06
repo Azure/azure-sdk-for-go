@@ -24,6 +24,10 @@ func ExampleDiscoverySourcesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDiscoverySourcesClient().BeginCreateOrUpdate(ctx, "rgdependencyMap", "mapsTest1", "sourceTest1", armdependencymap.DiscoverySourceResource{
+		Properties: &armdependencymap.OffAzureDiscoverySourceResourceProperties{
+			SourceType: to.Ptr(armdependencymap.SourceTypeOffAzure),
+			SourceID:   to.Ptr("wzlrkzumplzjmixbqv"),
+		},
 		Tags:     map[string]*string{},
 		Location: to.Ptr("y"),
 	}, nil)
@@ -39,6 +43,11 @@ func ExampleDiscoverySourcesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdependencymap.DiscoverySourcesClientCreateOrUpdateResponse{
 	// 	DiscoverySourceResource: &armdependencymap.DiscoverySourceResource{
+	// 		Properties: &armdependencymap.OffAzureDiscoverySourceResourceProperties{
+	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
+	// 			SourceType: to.Ptr(armdependencymap.SourceTypeOffAzure),
+	// 			SourceID: to.Ptr("wzlrkzumplzjmixbqv"),
+	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("y"),
@@ -98,6 +107,11 @@ func ExampleDiscoverySourcesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdependencymap.DiscoverySourcesClientGetResponse{
 	// 	DiscoverySourceResource: &armdependencymap.DiscoverySourceResource{
+	// 		Properties: &armdependencymap.OffAzureDiscoverySourceResourceProperties{
+	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
+	// 			SourceType: to.Ptr(armdependencymap.SourceTypeOffAzure),
+	// 			SourceID: to.Ptr("wzlrkzumplzjmixbqv"),
+	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("y"),
@@ -142,6 +156,11 @@ func ExampleDiscoverySourcesClient_NewListByMapsResourcePager() {
 		// 	DiscoverySourceResourceListResult: armdependencymap.DiscoverySourceResourceListResult{
 		// 		Value: []*armdependencymap.DiscoverySourceResource{
 		// 			{
+		// 				Properties: &armdependencymap.OffAzureDiscoverySourceResourceProperties{
+		// 					ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
+		// 					SourceType: to.Ptr(armdependencymap.SourceTypeOffAzure),
+		// 					SourceID: to.Ptr("wzlrkzumplzjmixbqv"),
+		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
 		// 				Location: to.Ptr("y"),
@@ -190,6 +209,11 @@ func ExampleDiscoverySourcesClient_BeginUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdependencymap.DiscoverySourcesClientUpdateResponse{
 	// 	DiscoverySourceResource: &armdependencymap.DiscoverySourceResource{
+	// 		Properties: &armdependencymap.OffAzureDiscoverySourceResourceProperties{
+	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
+	// 			SourceType: to.Ptr(armdependencymap.SourceTypeOffAzure),
+	// 			SourceID: to.Ptr("wzlrkzumplzjmixbqv"),
+	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("y"),

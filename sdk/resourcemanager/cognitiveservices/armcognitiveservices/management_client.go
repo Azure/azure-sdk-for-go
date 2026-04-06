@@ -27,7 +27,7 @@ type ManagementClient struct {
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // CalculateModelCapacity - Model capacity calculator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - parameters - Check Domain Availability parameter.
 //   - options - ManagementClientCalculateModelCapacityOptions contains the optional parameters for the ManagementClient.CalculateModelCapacity
 //     method.
@@ -81,7 +81,7 @@ func (client *ManagementClient) calculateModelCapacityCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -102,7 +102,7 @@ func (client *ManagementClient) calculateModelCapacityHandleResponse(resp *http.
 // CheckDomainAvailability - Check whether a domain is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - parameters - Check Domain Availability parameter.
 //   - options - ManagementClientCheckDomainAvailabilityOptions contains the optional parameters for the ManagementClient.CheckDomainAvailability
 //     method.
@@ -140,7 +140,7 @@ func (client *ManagementClient) checkDomainAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -161,7 +161,7 @@ func (client *ManagementClient) checkDomainAvailabilityHandleResponse(resp *http
 // CheckSKUAvailability - Check available SKUs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - location - Resource location.
 //   - parameters - Check SKU Availability POST body.
 //   - options - ManagementClientCheckSKUAvailabilityOptions contains the optional parameters for the ManagementClient.CheckSKUAvailability
@@ -204,7 +204,7 @@ func (client *ManagementClient) checkSKUAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

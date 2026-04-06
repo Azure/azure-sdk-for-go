@@ -1,5 +1,72 @@
 # Release History
 
+## 1.0.0 (2026-02-24)
+### Breaking Changes
+
+- Enum `FaultKind` has been removed
+- Enum `FaultSimulationStatus` has been removed
+- Enum `SfmcOperationStatus` has been removed
+- Function `*FaultSimulationContent.GetFaultSimulationContent` has been removed
+- Function `*ManagedClustersClient.GetFaultSimulation` has been removed
+- Function `*ManagedClustersClient.NewListFaultSimulationPager` has been removed
+- Function `*ManagedClustersClient.BeginStartFaultSimulation` has been removed
+- Function `*ManagedClustersClient.BeginStopFaultSimulation` has been removed
+- Function `*ZoneFaultSimulationContent.GetFaultSimulationContent` has been removed
+- Function `*NodeTypesClient.GetFaultSimulation` has been removed
+- Function `*NodeTypesClient.NewListFaultSimulationPager` has been removed
+- Function `*NodeTypesClient.BeginStartFaultSimulation` has been removed
+- Function `*NodeTypesClient.BeginStopFaultSimulation` has been removed
+- Struct `FaultSimulation` has been removed
+- Struct `FaultSimulationConstraints` has been removed
+- Struct `FaultSimulationContentWrapper` has been removed
+- Struct `FaultSimulationDetails` has been removed
+- Struct `FaultSimulationIDContent` has been removed
+- Struct `FaultSimulationListResult` has been removed
+- Struct `NodeTypeFaultSimulation` has been removed
+- Struct `ZoneFaultSimulationContent` has been removed
+
+### Features Added
+
+- New field `SkipManagedNsgAssignment` in struct `ManagedClusterProperties`
+- New field `EnableResilientEphemeralOsDisk` in struct `NodeTypeProperties`
+
+
+## 0.6.0 (2025-11-10)
+### Breaking Changes
+
+- Operation `*ApplicationsClient.Update` has been changed to LRO, use `*ApplicationsClient.BeginUpdate` instead.
+- Operation `*ManagedClustersClient.Update` has been changed to LRO, use `*ManagedClustersClient.BeginUpdate` instead.
+
+### Features Added
+
+- New enum type `HealthFilter` with values `HealthFilterAll`, `HealthFilterDefault`, `HealthFilterError`, `HealthFilterNone`, `HealthFilterOk`, `HealthFilterWarning`
+- New enum type `RestartKind` with values `RestartKindSimultaneous`
+- New enum type `RuntimeFailureAction` with values `RuntimeFailureActionManual`, `RuntimeFailureActionRollback`
+- New enum type `RuntimeRollingUpgradeMode` with values `RuntimeRollingUpgradeModeMonitored`, `RuntimeRollingUpgradeModeUnmonitoredAuto`, `RuntimeRollingUpgradeModeUnmonitoredManual`
+- New enum type `RuntimeUpgradeKind` with values `RuntimeUpgradeKindRolling`
+- New function `*ApplicationsClient.BeginFetchHealth(context.Context, string, string, string, ApplicationFetchHealthRequest, *ApplicationsClientBeginFetchHealthOptions) (*runtime.Poller[ApplicationsClientFetchHealthResponse], error)`
+- New function `*ApplicationsClient.BeginRestartDeployedCodePackage(context.Context, string, string, string, RestartDeployedCodePackageRequest, *ApplicationsClientBeginRestartDeployedCodePackageOptions) (*runtime.Poller[ApplicationsClientRestartDeployedCodePackageResponse], error)`
+- New function `*ApplicationsClient.BeginUpdateUpgrade(context.Context, string, string, string, RuntimeUpdateApplicationUpgradeParameters, *ApplicationsClientBeginUpdateUpgradeOptions) (*runtime.Poller[ApplicationsClientUpdateUpgradeResponse], error)`
+- New function `*ServicesClient.BeginRestartReplica(context.Context, string, string, string, string, RestartReplicaRequest, *ServicesClientBeginRestartReplicaOptions) (*runtime.Poller[ServicesClientRestartReplicaResponse], error)`
+- New struct `ApplicationFetchHealthRequest`
+- New struct `ApplicationUpdateParametersProperties`
+- New struct `RestartDeployedCodePackageRequest`
+- New struct `RestartReplicaRequest`
+- New struct `RuntimeApplicationHealthPolicy`
+- New struct `RuntimeRollingUpgradeUpdateMonitoringPolicy`
+- New struct `RuntimeServiceTypeHealthPolicy`
+- New struct `RuntimeUpdateApplicationUpgradeParameters`
+- New field `Properties` in struct `ApplicationUpdateParameters`
+
+
+## 0.5.0 (2025-08-12)
+### Features Added
+
+- New field `EnableOutboundOnlyNodeTypes` in struct `ManagedClusterProperties`
+- New field `IsOutboundOnly` in struct `NodeTypeProperties`
+- New field `NetworkIdentifier` in struct `ServiceEndpoint`
+
+
 ## 0.4.0 (2025-06-24)
 ### Breaking Changes
 

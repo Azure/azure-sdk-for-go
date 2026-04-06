@@ -301,7 +301,7 @@ func (e *ExperimentsServerTransport) dispatchExecutionDetails(req *http.Request)
 	if e.srv.ExecutionDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExecutionDetails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executions/(?P<executionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionDetails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/experiments/(?P<experimentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executions/(?P<executionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getExecutionDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

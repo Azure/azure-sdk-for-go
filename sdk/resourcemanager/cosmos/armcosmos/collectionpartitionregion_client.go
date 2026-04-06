@@ -27,7 +27,7 @@ type CollectionPartitionRegionClient struct {
 // NewCollectionPartitionRegionClient creates a new instance of CollectionPartitionRegionClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCollectionPartitionRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectionPartitionRegionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewCollectionPartitionRegionClient(subscriptionID string, credential azcore
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given collection and region, split by
 // partition.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - region - Cosmos DB region, with spaces between words and each word capitalized.
@@ -111,7 +111,7 @@ func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx cont
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

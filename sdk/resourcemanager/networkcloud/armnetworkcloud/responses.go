@@ -137,6 +137,12 @@ type BareMetalMachinesClientRunDataExtractsResponse struct {
 	OperationStatusResult
 }
 
+// BareMetalMachinesClientRunDataExtractsRestrictedResponse contains the response from method BareMetalMachinesClient.BeginRunDataExtractsRestricted.
+type BareMetalMachinesClientRunDataExtractsRestrictedResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // BareMetalMachinesClientRunReadCommandsResponse contains the response from method BareMetalMachinesClient.BeginRunReadCommands.
 type BareMetalMachinesClientRunReadCommandsResponse struct {
 	// The current status of an async operation.
@@ -193,10 +199,9 @@ type BmcKeySetsClientUpdateResponse struct {
 
 // CloudServicesNetworksClientCreateOrUpdateResponse contains the response from method CloudServicesNetworksClient.BeginCreateOrUpdate.
 type CloudServicesNetworksClientCreateOrUpdateResponse struct {
-	// Upon creation, the additional services that are provided by the platform will be allocated and
-	// represented in the status of this resource. All resources associated with this cloud services network will be part
-	// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
-	// virtual machines and/or Hybrid AKS clusters.
+	// Upon creation, the additional services that are provided by the platform will be allocated and represented in the status
+	// of this resource. All resources associated with this cloud services network will be part of the same layer 2 (L2) isolation
+	// domain. At least one service network must be created but may be reused across many virtual machines and/or Hybrid AKS clusters.
 	CloudServicesNetwork
 }
 
@@ -208,10 +213,9 @@ type CloudServicesNetworksClientDeleteResponse struct {
 
 // CloudServicesNetworksClientGetResponse contains the response from method CloudServicesNetworksClient.Get.
 type CloudServicesNetworksClientGetResponse struct {
-	// Upon creation, the additional services that are provided by the platform will be allocated and
-	// represented in the status of this resource. All resources associated with this cloud services network will be part
-	// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
-	// virtual machines and/or Hybrid AKS clusters.
+	// Upon creation, the additional services that are provided by the platform will be allocated and represented in the status
+	// of this resource. All resources associated with this cloud services network will be part of the same layer 2 (L2) isolation
+	// domain. At least one service network must be created but may be reused across many virtual machines and/or Hybrid AKS clusters.
 	CloudServicesNetwork
 }
 
@@ -229,10 +233,9 @@ type CloudServicesNetworksClientListBySubscriptionResponse struct {
 
 // CloudServicesNetworksClientUpdateResponse contains the response from method CloudServicesNetworksClient.BeginUpdate.
 type CloudServicesNetworksClientUpdateResponse struct {
-	// Upon creation, the additional services that are provided by the platform will be allocated and
-	// represented in the status of this resource. All resources associated with this cloud services network will be part
-	// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
-	// virtual machines and/or Hybrid AKS clusters.
+	// Upon creation, the additional services that are provided by the platform will be allocated and represented in the status
+	// of this resource. All resources associated with this cloud services network will be part of the same layer 2 (L2) isolation
+	// domain. At least one service network must be created but may be reused across many virtual machines and/or Hybrid AKS clusters.
 	CloudServicesNetwork
 }
 
@@ -632,6 +635,12 @@ type StorageAppliancesClientListBySubscriptionResponse struct {
 	StorageApplianceList
 }
 
+// StorageAppliancesClientRunReadCommandsResponse contains the response from method StorageAppliancesClient.BeginRunReadCommands.
+type StorageAppliancesClientRunReadCommandsResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // StorageAppliancesClientUpdateResponse contains the response from method StorageAppliancesClient.BeginUpdate.
 type StorageAppliancesClientUpdateResponse struct {
 	// StorageAppliance represents on-premises Network Cloud storage appliance.
@@ -672,6 +681,12 @@ type TrunkedNetworksClientListBySubscriptionResponse struct {
 type TrunkedNetworksClientUpdateResponse struct {
 	// TrunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to create a trunked network.
 	TrunkedNetwork
+}
+
+// VirtualMachinesClientAssignRelayResponse contains the response from method VirtualMachinesClient.BeginAssignRelay.
+type VirtualMachinesClientAssignRelayResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // VirtualMachinesClientCreateOrUpdateResponse contains the response from method VirtualMachinesClient.BeginCreateOrUpdate.

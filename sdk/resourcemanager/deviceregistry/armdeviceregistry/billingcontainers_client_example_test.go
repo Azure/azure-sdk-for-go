@@ -7,11 +7,11 @@ package armdeviceregistry_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
 	"log"
 )
 
-// Generated from example definition: 2024-11-01/Get_BillingContainer.json
+// Generated from example definition: 2025-10-01/Get_BillingContainer.json
 func ExampleBillingContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleBillingContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/List_BillingContainers_Subscription.json
+// Generated from example definition: 2025-10-01/List_BillingContainers_BySubscription.json
 func ExampleBillingContainersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

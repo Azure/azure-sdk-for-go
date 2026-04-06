@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,30 +25,80 @@ import (
 
 // ServerFactory is a fake server for instances of the armelastic.ClientFactory type.
 type ServerFactory struct {
-	AllTrafficFiltersServer            AllTrafficFiltersServer
-	AssociateTrafficFilterServer       AssociateTrafficFilterServer
-	BillingInfoServer                  BillingInfoServer
-	ConnectedPartnerResourcesServer    ConnectedPartnerResourcesServer
-	CreateAndAssociateIPFilterServer   CreateAndAssociateIPFilterServer
-	CreateAndAssociatePLFilterServer   CreateAndAssociatePLFilterServer
-	DeploymentInfoServer               DeploymentInfoServer
+	// AllTrafficFiltersServer contains the fakes for client AllTrafficFiltersClient
+	AllTrafficFiltersServer AllTrafficFiltersServer
+
+	// AssociateTrafficFilterServer contains the fakes for client AssociateTrafficFilterClient
+	AssociateTrafficFilterServer AssociateTrafficFilterServer
+
+	// BillingInfoServer contains the fakes for client BillingInfoClient
+	BillingInfoServer BillingInfoServer
+
+	// ConnectedPartnerResourcesServer contains the fakes for client ConnectedPartnerResourcesClient
+	ConnectedPartnerResourcesServer ConnectedPartnerResourcesServer
+
+	// CreateAndAssociateIPFilterServer contains the fakes for client CreateAndAssociateIPFilterClient
+	CreateAndAssociateIPFilterServer CreateAndAssociateIPFilterServer
+
+	// CreateAndAssociatePLFilterServer contains the fakes for client CreateAndAssociatePLFilterClient
+	CreateAndAssociatePLFilterServer CreateAndAssociatePLFilterServer
+
+	// DeploymentInfoServer contains the fakes for client DeploymentInfoClient
+	DeploymentInfoServer DeploymentInfoServer
+
+	// DetachAndDeleteTrafficFilterServer contains the fakes for client DetachAndDeleteTrafficFilterClient
 	DetachAndDeleteTrafficFilterServer DetachAndDeleteTrafficFilterServer
-	DetachTrafficFilterServer          DetachTrafficFilterServer
-	ExternalUserServer                 ExternalUserServer
+
+	// DetachTrafficFilterServer contains the fakes for client DetachTrafficFilterClient
+	DetachTrafficFilterServer DetachTrafficFilterServer
+
+	// ExternalUserServer contains the fakes for client ExternalUserClient
+	ExternalUserServer ExternalUserServer
+
+	// ListAssociatedTrafficFiltersServer contains the fakes for client ListAssociatedTrafficFiltersClient
 	ListAssociatedTrafficFiltersServer ListAssociatedTrafficFiltersServer
-	MonitorServer                      MonitorServer
-	MonitoredResourcesServer           MonitoredResourcesServer
-	MonitorsServer                     MonitorsServer
-	OpenAIServer                       OpenAIServer
-	OperationsServer                   OperationsServer
-	OrganizationsServer                OrganizationsServer
-	TagRulesServer                     TagRulesServer
-	TrafficFiltersServer               TrafficFiltersServer
-	UpgradableVersionsServer           UpgradableVersionsServer
-	VMCollectionServer                 VMCollectionServer
-	VMHostServer                       VMHostServer
-	VMIngestionServer                  VMIngestionServer
-	VersionsServer                     VersionsServer
+
+	// MonitorServer contains the fakes for client MonitorClient
+	MonitorServer MonitorServer
+
+	// MonitoredResourcesServer contains the fakes for client MonitoredResourcesClient
+	MonitoredResourcesServer MonitoredResourcesServer
+
+	// MonitoredSubscriptionsServer contains the fakes for client MonitoredSubscriptionsClient
+	MonitoredSubscriptionsServer MonitoredSubscriptionsServer
+
+	// MonitorsServer contains the fakes for client MonitorsClient
+	MonitorsServer MonitorsServer
+
+	// OpenAIServer contains the fakes for client OpenAIClient
+	OpenAIServer OpenAIServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// OrganizationsServer contains the fakes for client OrganizationsClient
+	OrganizationsServer OrganizationsServer
+
+	// TagRulesServer contains the fakes for client TagRulesClient
+	TagRulesServer TagRulesServer
+
+	// TrafficFiltersServer contains the fakes for client TrafficFiltersClient
+	TrafficFiltersServer TrafficFiltersServer
+
+	// UpgradableVersionsServer contains the fakes for client UpgradableVersionsClient
+	UpgradableVersionsServer UpgradableVersionsServer
+
+	// VMCollectionServer contains the fakes for client VMCollectionClient
+	VMCollectionServer VMCollectionServer
+
+	// VMHostServer contains the fakes for client VMHostClient
+	VMHostServer VMHostServer
+
+	// VMIngestionServer contains the fakes for client VMIngestionClient
+	VMIngestionServer VMIngestionServer
+
+	// VersionsServer contains the fakes for client VersionsClient
+	VersionsServer VersionsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -81,6 +128,7 @@ type ServerFactoryTransport struct {
 	trListAssociatedTrafficFiltersServer *ListAssociatedTrafficFiltersServerTransport
 	trMonitorServer                      *MonitorServerTransport
 	trMonitoredResourcesServer           *MonitoredResourcesServerTransport
+	trMonitoredSubscriptionsServer       *MonitoredSubscriptionsServerTransport
 	trMonitorsServer                     *MonitorsServerTransport
 	trOpenAIServer                       *OpenAIServerTransport
 	trOperationsServer                   *OperationsServerTransport
@@ -166,6 +214,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMonitoredResourcesServerTransport(&s.srv.MonitoredResourcesServer)
 		})
 		resp, err = s.trMonitoredResourcesServer.Do(req)
+	case "MonitoredSubscriptionsClient":
+		initServer(s, &s.trMonitoredSubscriptionsServer, func() *MonitoredSubscriptionsServerTransport {
+			return NewMonitoredSubscriptionsServerTransport(&s.srv.MonitoredSubscriptionsServer)
+		})
+		resp, err = s.trMonitoredSubscriptionsServer.Do(req)
 	case "MonitorsClient":
 		initServer(s, &s.trMonitorsServer, func() *MonitorsServerTransport { return NewMonitorsServerTransport(&s.srv.MonitorsServer) })
 		resp, err = s.trMonitorsServer.Do(req)

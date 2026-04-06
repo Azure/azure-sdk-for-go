@@ -1,5 +1,85 @@
 # Release History
 
+## 3.0.0-beta.2 (2025-12-03)
+### Features Added
+
+- New enum type `AdoptionPolicy` with values `AdoptionPolicyAlways`, `AdoptionPolicyIfIdentical`, `AdoptionPolicyNever`
+- New enum type `DeletePolicy` with values `DeletePolicyDelete`, `DeletePolicyKeep`
+- New enum type `FleetManagedNamespaceProvisioningState` with values `FleetManagedNamespaceProvisioningStateCanceled`, `FleetManagedNamespaceProvisioningStateCreating`, `FleetManagedNamespaceProvisioningStateDeleting`, `FleetManagedNamespaceProvisioningStateFailed`, `FleetManagedNamespaceProvisioningStateSucceeded`, `FleetManagedNamespaceProvisioningStateUpdating`
+- New enum type `LabelSelectorOperator` with values `LabelSelectorOperatorDoesNotExist`, `LabelSelectorOperatorExists`, `LabelSelectorOperatorIn`, `LabelSelectorOperatorNotIn`
+- New enum type `PlacementType` with values `PlacementTypePickAll`, `PlacementTypePickFixed`
+- New enum type `PolicyRule` with values `PolicyRuleAllowAll`, `PolicyRuleAllowSameNamespace`, `PolicyRuleDenyAll`
+- New enum type `PropagationType` with values `PropagationTypePlacement`
+- New enum type `PropertySelectorOperator` with values `PropertySelectorOperatorEq`, `PropertySelectorOperatorGe`, `PropertySelectorOperatorGt`, `PropertySelectorOperatorLe`, `PropertySelectorOperatorLt`, `PropertySelectorOperatorNe`
+- New enum type `TaintEffect` with values `TaintEffectNoSchedule`
+- New enum type `TolerationOperator` with values `TolerationOperatorEqual`, `TolerationOperatorExists`
+- New function `*ClientFactory.NewFleetManagedNamespacesClient() *FleetManagedNamespacesClient`
+- New function `NewFleetManagedNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetManagedNamespacesClient, error)`
+- New function `*FleetManagedNamespacesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientCreateOrUpdateResponse], error)`
+- New function `*FleetManagedNamespacesClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*runtime.Poller[FleetManagedNamespacesClientDeleteResponse], error)`
+- New function `*FleetManagedNamespacesClient.Get(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientGetOptions) (FleetManagedNamespacesClientGetResponse, error)`
+- New function `*FleetManagedNamespacesClient.NewListByFleetPager(resourceGroupName string, fleetName string, options *FleetManagedNamespacesClientListByFleetOptions) *runtime.Pager[FleetManagedNamespacesClientListByFleetResponse]`
+- New function `*FleetManagedNamespacesClient.BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientUpdateResponse], error)`
+- New struct `Affinity`
+- New struct `ClusterAffinity`
+- New struct `ClusterResourcePlacementSpec`
+- New struct `ClusterSelector`
+- New struct `ClusterSelectorTerm`
+- New struct `FleetManagedNamespace`
+- New struct `FleetManagedNamespaceListResult`
+- New struct `FleetManagedNamespacePatch`
+- New struct `FleetManagedNamespaceProperties`
+- New struct `FleetManagedNamespaceStatus`
+- New struct `LabelSelector`
+- New struct `LabelSelectorRequirement`
+- New struct `ManagedNamespaceProperties`
+- New struct `NetworkPolicy`
+- New struct `PlacementPolicy`
+- New struct `PlacementProfile`
+- New struct `PropagationPolicy`
+- New struct `PropertySelector`
+- New struct `PropertySelectorRequirement`
+- New struct `ResourceQuota`
+- New struct `Toleration`
+
+
+## 3.0.0-beta.1 (2025-08-07)
+### Breaking Changes
+
+- Struct `ErrorAdditionalInfoInfo` has been removed
+
+### Features Added
+
+- Type of `ErrorAdditionalInfo.Info` has been changed from `*ErrorAdditionalInfoInfo` to `any`
+- New value `UpdateStatePending` added to enum type `UpdateState`
+- New value `UpgradeChannelTargetKubernetesVersion` added to enum type `UpgradeChannel`
+- New enum type `GateProvisioningState` with values `GateProvisioningStateCanceled`, `GateProvisioningStateFailed`, `GateProvisioningStateSucceeded`
+- New enum type `GateState` with values `GateStateCompleted`, `GateStatePending`, `GateStateSkipped`
+- New enum type `GateType` with values `GateTypeApproval`
+- New enum type `Timing` with values `TimingAfter`, `TimingBefore`
+- New function `*ClientFactory.NewGatesClient() *GatesClient`
+- New function `NewGatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GatesClient, error)`
+- New function `*GatesClient.Get(context.Context, string, string, string, *GatesClientGetOptions) (GatesClientGetResponse, error)`
+- New function `*GatesClient.NewListByFleetPager(string, string, *GatesClientListByFleetOptions) *runtime.Pager[GatesClientListByFleetResponse]`
+- New function `*GatesClient.BeginUpdate(context.Context, string, string, string, GatePatch, *GatesClientBeginUpdateOptions) (*runtime.Poller[GatesClientUpdateResponse], error)`
+- New struct `Gate`
+- New struct `GateConfiguration`
+- New struct `GateListResult`
+- New struct `GatePatch`
+- New struct `GatePatchProperties`
+- New struct `GateProperties`
+- New struct `GateTarget`
+- New struct `UpdateRunGateStatus`
+- New struct `UpdateRunGateTargetProperties`
+- New field `LongTermSupport`, `TargetKubernetesVersion` in struct `AutoUpgradeProfileProperties`
+- New field `Labels` in struct `FleetMemberProperties`
+- New field `Labels` in struct `FleetMemberUpdateProperties`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateGroup`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateGroupStatus`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateStage`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateStageStatus`
+
+
 ## 2.0.0 (2025-04-15)
 ### Breaking Changes
 

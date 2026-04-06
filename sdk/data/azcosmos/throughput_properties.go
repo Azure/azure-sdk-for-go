@@ -71,23 +71,23 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString("\"content\":")
+	fmt.Fprint(buffer, "\"content\":")
 	buffer.Write(offer)
 
 	if tp.offerResourceId != "" {
-		buffer.WriteString(fmt.Sprintf(",\"offerResourceId\":\"%s\"", tp.offerResourceId))
+		fmt.Fprintf(buffer, ",\"offerResourceId\":\"%s\"", tp.offerResourceId)
 	}
 
 	if tp.offerId != "" {
-		buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", tp.offerId))
-		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.offerId))
+		fmt.Fprintf(buffer, ",\"id\":\"%s\"", tp.offerId)
+		fmt.Fprintf(buffer, ",\"_rid\":\"%s\"", tp.offerId)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"offerType\":\"%s\"", tp.offerType))
-	buffer.WriteString(fmt.Sprintf(",\"offerVersion\":\"%s\"", tp.version))
+	fmt.Fprintf(buffer, ",\"offerType\":\"%s\"", tp.offerType)
+	fmt.Fprintf(buffer, ",\"offerVersion\":\"%s\"", tp.version)
 
 	if tp.ETag != nil {
-		buffer.WriteString(",\"_etag\":")
+		fmt.Fprint(buffer, ",\"_etag\":")
 		etag, err := json.Marshal(tp.ETag)
 		if err != nil {
 			return nil, err
@@ -96,18 +96,18 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	if tp.selfLink != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.selfLink))
+		fmt.Fprintf(buffer, ",\"_self\":\"%s\"", tp.selfLink)
 	}
 
 	if tp.resource != "" {
-		buffer.WriteString(fmt.Sprintf(",\"resource\":\"%s\"", tp.resource))
+		fmt.Fprintf(buffer, ",\"resource\":\"%s\"", tp.resource)
 	}
 
 	if !tp.LastModified.IsZero() {
-		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10)))
+		fmt.Fprintf(buffer, ",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10))
 	}
 
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 

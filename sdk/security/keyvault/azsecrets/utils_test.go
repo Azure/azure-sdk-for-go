@@ -147,7 +147,7 @@ func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
 	for i := 0; i < 12; i++ {
 		err = fn()
 		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+		if !errors.As(err, &respErr) || respErr.StatusCode != expectedStatus {
 			break
 		}
 		if i < 11 {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01-preview/Dashboard_Create.json
+// Generated from example definition: 2025-08-01/Dashboard_Create.json
 func ExampleManagedDashboardsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleManagedDashboardsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Dashboard_Delete.json
+// Generated from example definition: 2025-08-01/Dashboard_Delete.json
 func ExampleManagedDashboardsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleManagedDashboardsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Dashboard_Get.json
+// Generated from example definition: 2025-08-01/Dashboard_Get.json
 func ExampleManagedDashboardsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleManagedDashboardsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Dashboard_ListByResourceGroup.json
+// Generated from example definition: 2025-08-01/Dashboard_ListByResourceGroup.json
 func ExampleManagedDashboardsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleManagedDashboardsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/Dashboard_List.json
+// Generated from example definition: 2025-08-01/Dashboard_List.json
 func ExampleManagedDashboardsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleManagedDashboardsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/Dashboard_Update.json
+// Generated from example definition: 2025-08-01/Dashboard_Update.json
 func ExampleManagedDashboardsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

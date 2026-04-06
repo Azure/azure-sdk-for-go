@@ -27,7 +27,7 @@ type RaiContentFiltersClient struct {
 // NewRaiContentFiltersClient creates a new instance of RaiContentFiltersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRaiContentFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiContentFiltersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewRaiContentFiltersClient(subscriptionID string, credential azcore.TokenCr
 // Get - Get Content Filters by Name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - location - Resource location.
 //   - filterName - The name of the RAI Content Filter.
 //   - options - RaiContentFiltersClientGetOptions contains the optional parameters for the RaiContentFiltersClient.Get method.
@@ -89,7 +89,7 @@ func (client *RaiContentFiltersClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +106,7 @@ func (client *RaiContentFiltersClient) getHandleResponse(resp *http.Response) (R
 
 // NewListPager - List Content Filters types.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - location - Resource location.
 //   - options - RaiContentFiltersClientListOptions contains the optional parameters for the RaiContentFiltersClient.NewListPager
 //     method.
@@ -149,7 +149,7 @@ func (client *RaiContentFiltersClient) listCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

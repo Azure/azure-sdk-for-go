@@ -27,7 +27,7 @@ type ProjectCapabilityHostsClient struct {
 // NewProjectCapabilityHostsClient creates a new instance of ProjectCapabilityHostsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectCapabilityHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectCapabilityHostsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewProjectCapabilityHostsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -51,7 +51,7 @@ func NewProjectCapabilityHostsClient(subscriptionID string, credential azcore.To
 //   - capabilityHost - CapabilityHost definition.
 //   - options - ProjectCapabilityHostsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectCapabilityHostsClient.BeginCreateOrUpdate
 //     method.
-func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost CapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProjectCapabilityHostsClientCreateOrUpdateResponse], error) {
+func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost ProjectCapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProjectCapabilityHostsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, projectName, capabilityHostName, capabilityHost, options)
 		if err != nil {
@@ -72,8 +72,8 @@ func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
-func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost CapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2025-09-01
+func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost ProjectCapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -95,7 +95,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost CapabilityHost, _ *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost ProjectCapabilityHost, _ *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -122,7 +122,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, capabilityHost); err != nil {
@@ -134,7 +134,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -162,7 +162,7 @@ func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, res
 // Delete - Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 func (client *ProjectCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginDelete"
@@ -212,7 +212,7 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 // Get - Get project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -278,7 +278,7 @@ func (client *ProjectCapabilityHostsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -287,8 +287,78 @@ func (client *ProjectCapabilityHostsClient) getCreateRequest(ctx context.Context
 // getHandleResponse handles the Get response.
 func (client *ProjectCapabilityHostsClient) getHandleResponse(resp *http.Response) (ProjectCapabilityHostsClientGetResponse, error) {
 	result := ProjectCapabilityHostsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityHost); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectCapabilityHost); err != nil {
 		return ProjectCapabilityHostsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List capabilityHost.
+//
+// Generated from API version 2025-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - projectName - The name of Cognitive Services account's project.
+//   - options - ProjectCapabilityHostsClientListOptions contains the optional parameters for the ProjectCapabilityHostsClient.NewListPager
+//     method.
+func (client *ProjectCapabilityHostsClient) NewListPager(resourceGroupName string, accountName string, projectName string, options *ProjectCapabilityHostsClientListOptions) *runtime.Pager[ProjectCapabilityHostsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProjectCapabilityHostsClientListResponse]{
+		More: func(page ProjectCapabilityHostsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ProjectCapabilityHostsClientListResponse) (ProjectCapabilityHostsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProjectCapabilityHostsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, options)
+			}, nil)
+			if err != nil {
+				return ProjectCapabilityHostsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ProjectCapabilityHostsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, _ *ProjectCapabilityHostsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ProjectCapabilityHostsClient) listHandleResponse(resp *http.Response) (ProjectCapabilityHostsClientListResponse, error) {
+	result := ProjectCapabilityHostsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectCapabilityHostResourceArmPaginatedResult); err != nil {
+		return ProjectCapabilityHostsClientListResponse{}, err
 	}
 	return result, nil
 }

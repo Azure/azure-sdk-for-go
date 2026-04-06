@@ -11,8 +11,6 @@ import (
 	"os"
 	"regexp"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/internal/gopls"
 )
 
 var filesToDelete = []string{
@@ -21,23 +19,70 @@ var filesToDelete = []string{
 	"clientdeleteme_client.go",
 }
 
+func deleteType(name string, modelsGo string, modelsSerdeGo string) (newModelsGo string, newModelsSerdeGo string) {
+	// get rid of the type in models.go
+
+	// ex:
+	// '// ACSCallParticipantEventData - Schema of common properties of all participant events'
+	deleteModelTypeRE := regexp.MustCompile(fmt.Sprintf(`(?si)// %s .+?\n}\n`, name))
+	modelsGo = deleteModelTypeRE.ReplaceAllString(modelsGo, "")
+
+	// now get rid of the marshallers
+
+	// NOTE: sometimes these _wrap_, so make sure you account for that.
+	// '// MarshalJSON implements the json.Marshaller interface for type ACSCallParticipantEventData.'
+	// '// UnmarshalJSON implements the json.Unmarshaller interface for type ACSCallParticipantEventData.'
+
+	deleteSerdeRE := regexp.MustCompile(fmt.Sprintf(`(?si)// (MarshalJSON|UnmarshalJSON) implements the json\.(Unmarshaller|Marshaller) interface for type %s.+?\n}\n`, name))
+	modelsSerdeGo = deleteSerdeRE.ReplaceAllString(modelsSerdeGo, "")
+
+	return modelsGo, modelsSerdeGo
+}
+
 func main() {
 	fn := func() error {
-		if err := swapErrorTypes(); err != nil {
-			return err
+		// NOTE: the renaming of the error type is done in the propertyNameOverrideGo.tsp (AcsMessageChannelEventError)
+		modelsGoBytes, err := os.ReadFile(modelsGoFile)
+
+		if err != nil {
+			return fmt.Errorf("failed to read file %s: %w", modelsGoFile, err)
 		}
 
-		if err := deleteUnneededTypes(); err != nil {
-			return err
+		modelsSerdeGoBytes, err := os.ReadFile(modelsSerdeGoFile)
+
+		if err != nil {
+			return fmt.Errorf("failed to read file %s: %w", modelsSerdeGoFile, err)
 		}
 
-		if err := generateSystemEventEnum(); err != nil {
-			return err
+		modelsGo := string(modelsGoBytes)
+		modelsSerdeGo := string(modelsSerdeGoBytes)
+
+		modelsGo, modelsSerdeGo, err = swapErrorTypes(modelsGo, modelsSerdeGo)
+
+		if err != nil {
+			return fmt.Errorf("failed to swap error types: %w", err)
+		}
+
+		modelsGo, modelsSerdeGo = deleteUnneededTypes(modelsGo, modelsSerdeGo)
+
+		if err := generateSystemEventEnum(modelsGo); err != nil {
+			return fmt.Errorf("generateSystemEventEnum: %w", err)
 		}
 
 		deleteUnneededFiles()
+
+		if err := os.WriteFile(modelsGoFile, []byte(modelsGo), 0644); err != nil {
+			return fmt.Errorf("failed to write %s: %w", modelsGoFile, err)
+		}
+
+		if err := os.WriteFile(modelsSerdeGoFile, []byte(modelsSerdeGo), 0644); err != nil {
+			return fmt.Errorf("failed to write %s: %w", modelsSerdeGoFile, err)
+		}
+
 		return nil
 	}
+
+	fmt.Printf("Running customizations in azsystemevents/internal/generate...\n")
 
 	if err := fn(); err != nil {
 		fmt.Printf("./internal/generate: Failed with error: %s\n", err)
@@ -52,7 +97,7 @@ func main() {
 // parent object is not needed.
 // NOTE: this is a workaround, I'm running into some conflicting behavior as I move between tsp-client
 // and my "homebrew" version calling the powershell scripts directly.
-func deleteUnneededTypes() error {
+func deleteUnneededTypes(modelsGo string, modelsSerdeGo string) (newModelsGo string, newModelsSerdeGo string) {
 	typesToDelete := []string{
 		"ACSCallParticipantEventData",
 		"ACSChatEventBaseProperties",
@@ -84,129 +129,57 @@ func deleteUnneededTypes() error {
 		"ResourceNotificationsResourceUpdatedEventData",
 	}
 
+	newModelsGo = modelsGo
+	newModelsSerdeGo = modelsSerdeGo
+
 	for _, typeToDelete := range typesToDelete {
 		// ex: // ACSChatEventBaseProperties - Schema of common properties of all chat events
-		if err := replaceAll("models.go", fmt.Sprintf("(?is)// %s.+?\n}\n", typeToDelete), ""); err != nil {
-			return err
-		}
+		modelsRE := regexp.MustCompile(fmt.Sprintf("(?is)// %s.+?\n}\n", typeToDelete))
+		newModelsGo = modelsRE.ReplaceAllString(newModelsGo, "")
 
 		// ex: // MarshalJSON implements the json.Marshaller interface for type ACSChatEventBaseProperties.
 		// ex: // UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatEventBaseProperties.
-		if err := replaceAll("models_serde.go",
-			fmt.Sprintf("(?is)// (?:Marshal|Unmarshal)JSON\\s*implements\\s*the\\s*json\\.(?:Marshaller|Unmarshaller)\\s*interface\\s*for\\s*type\\s*%s.+?\n}\n", typeToDelete), ""); err != nil {
-			return err
-		}
+		modelsSerdeRE := regexp.MustCompile(fmt.Sprintf("(?is)// (?:Marshal|Unmarshal)JSON\\s*implements\\s*the\\s*json\\.(?:Marshaller|Unmarshaller)\\s*interface\\s*for\\s*type\\s*%s.+?\n}\n", typeToDelete))
+		newModelsSerdeGo = modelsSerdeRE.ReplaceAllString(newModelsSerdeGo, "")
 	}
 
-	return nil
-}
-
-func replaceAll(filename string, re string, replacement string) error {
-	buff, err := os.ReadFile(filename)
-
-	if err != nil {
-		return err
-	}
-
-	modelsRE := regexp.MustCompile(re)
-	buff = modelsRE.ReplaceAll(buff, []byte(replacement))
-
-	return os.WriteFile(filename, buff, 0600)
+	return
 }
 
 // swapErrorTypes handles turning most of the auto-generated errors into a single consistent error type.
 // The key is that the Error type doesn't export human readable strings as fields - it's all contained in
 // the Error() field.
-func swapErrorTypes() error {
-	syms, err := gopls.Symbols(modelsGoFile)
+func swapErrorTypes(origModelsGo string, origModelsSerdeGo string) (newModelsGo string, newModelsSerdeGo string, err error) {
+	newModelsGo = origModelsGo
+	newModelsSerdeGo = origModelsSerdeGo
 
-	if err != nil {
-		return err
-	}
+	// unexport the errors.
+	newModelsGo = strings.ReplaceAll(newModelsGo, "InternalACSMessageChannelEventError", "internalACSMessageChannelEventError")
+	newModelsGo = strings.ReplaceAll(newModelsGo, "InternalACSRouterCommunicationError", "internalACSRouterCommunicationError")
+	newModelsSerdeGo = strings.ReplaceAll(newModelsSerdeGo, "InternalACSMessageChannelEventError", "internalACSMessageChannelEventError")
+	newModelsSerdeGo = strings.ReplaceAll(newModelsSerdeGo, "InternalACSRouterCommunicationError", "internalACSRouterCommunicationError")
 
-	// NOTE: the renaming of the error type is done in the propertyNameOverrideGo.tsp (AcsMessageChannelEventError)
+	// replace the types with the package level Error type that we use.
+	newModelsGo = strings.ReplaceAll(newModelsGo, "Error *internalACSMessageChannelEventError", "Error *Error")
+	newModelsGo = strings.ReplaceAll(newModelsGo, "Errors []internalACSRouterCommunicationError", "Errors []*Error")
 
-	// NOTE: there appears to be a bug where my type name is automatically being capitalized, even though I marked it as internal.
-	// Filed as https://github.com/Azure/autorest.go/issues/1467.
-	if err := gopls.Rename(syms.Get("InternalACSMessageChannelEventError"), "internalACSMessageChannelEventError"); err != nil {
-		return err
-	}
+	newModelsSerdeGo = UseCustomUnpopulate(newModelsSerdeGo, "ACSMessageReceivedEventData.Error", "unmarshalInternalACSMessageChannelEventError")
+	newModelsSerdeGo = UseCustomUnpopulate(newModelsSerdeGo, "ACSMessageDeliveryStatusUpdatedEventData.Error", "unmarshalInternalACSMessageChannelEventError")
 
-	if err := gopls.Rename(syms.Get("InternalACSRouterCommunicationError"), "internalACSRouterCommunicationError"); err != nil {
-		return err
-	}
+	newModelsSerdeGo = UseCustomUnpopulate(newModelsSerdeGo, "ACSRouterJobClassificationFailedEventData.Errors.Errors", "unmarshalInternalACSRouterCommunicationError")
 
-	// TODO: do I really need to handle these myself? Can I not use TypeSpec to do it?
-	{
-		if err := SwapType(syms.Get("AcsMessageReceivedEventData.Error"), "*Error"); err != nil {
-			return err
-		}
-
-		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSMessageReceivedEventData.Error", "unmarshalInternalACSMessageChannelEventError"); err != nil {
-			return err
-		}
-	}
-
-	{
-		if err := SwapType(syms.Get("ACSMessageDeliveryStatusUpdatedEventData.Error"), "*Error"); err != nil {
-			return err
-		}
-
-		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSMessageDeliveryStatusUpdatedEventData.Error", "unmarshalInternalACSMessageChannelEventError"); err != nil {
-			return err
-		}
-	}
-
-	{
-		if err := SwapType(syms.Get("AcsRouterJobClassificationFailedEventData.Errors"), "[]*Error"); err != nil {
-			return err
-		}
-
-		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSRouterJobClassificationFailedEventData.Errors", "unmarshalInternalACSRouterCommunicationError"); err != nil {
-			return err
-		}
-	}
-
-	syms, err = gopls.Symbols(modelsGoFile)
-
-	if err != nil {
-		return err
-	}
-
-	allowedErrs := map[string]bool{
-		"MediaJobError": true,
-	}
-
-	for _, sym := range syms.All() {
-		if allowedErrs[sym.Name] {
-			continue
-		}
-
-		if strings.HasSuffix(sym.Name, "Error") && !strings.HasPrefix(sym.Name, "internal") && sym.Type == "Struct" {
-			return fmt.Errorf("found error type which should have been deleted/renamed %q", sym.Name)
-		}
-	}
-
-	return nil
+	return newModelsGo, newModelsSerdeGo, nil
 }
 
-func generateSystemEventEnum() error {
-	reader, err := os.Open(modelsGoFile)
+func generateSystemEventEnum(modelsGo string) error {
+	constants, err := getConstantValues(modelsGo)
 
 	if err != nil {
-		return fmt.Errorf("Failed to open %s: %w", modelsGoFile, err)
-	}
-
-	defer reader.Close()
-
-	constants, err := getConstantValues(reader)
-
-	if err != nil {
-		return fmt.Errorf("Failed to get constant values from file: %w", err)
+		return fmt.Errorf("failed to get constant values from file: %w", err)
 	}
 
 	if err := writeConstantsFile(systemEventsGoFile, constants); err != nil {
-		return fmt.Errorf("Failed to write constants file %s: %w", systemEventsGoFile, err)
+		return fmt.Errorf("failed to write constants file %s: %w", systemEventsGoFile, err)
 	}
 
 	return nil

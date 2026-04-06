@@ -5,11 +5,6 @@
 
 package armappcontainers
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
-	moduleVersion = "v3.1.0"
-)
-
 // AccessMode - Access mode for storage
 type AccessMode string
 
@@ -112,6 +107,7 @@ func PossibleApplicabilityValues() []Applicability {
 type BindingType string
 
 const (
+	BindingTypeAuto       BindingType = "Auto"
 	BindingTypeDisabled   BindingType = "Disabled"
 	BindingTypeSniEnabled BindingType = "SniEnabled"
 )
@@ -119,6 +115,7 @@ const (
 // PossibleBindingTypeValues returns the possible values for the BindingType const type.
 func PossibleBindingTypeValues() []BindingType {
 	return []BindingType{
+		BindingTypeAuto,
 		BindingTypeDisabled,
 		BindingTypeSniEnabled,
 	}
@@ -130,6 +127,7 @@ type CertificateProvisioningState string
 const (
 	CertificateProvisioningStateCanceled     CertificateProvisioningState = "Canceled"
 	CertificateProvisioningStateDeleteFailed CertificateProvisioningState = "DeleteFailed"
+	CertificateProvisioningStateDeleting     CertificateProvisioningState = "Deleting"
 	CertificateProvisioningStateFailed       CertificateProvisioningState = "Failed"
 	CertificateProvisioningStatePending      CertificateProvisioningState = "Pending"
 	CertificateProvisioningStateSucceeded    CertificateProvisioningState = "Succeeded"
@@ -140,6 +138,7 @@ func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState
 	return []CertificateProvisioningState{
 		CertificateProvisioningStateCanceled,
 		CertificateProvisioningStateDeleteFailed,
+		CertificateProvisioningStateDeleting,
 		CertificateProvisioningStateFailed,
 		CertificateProvisioningStatePending,
 		CertificateProvisioningStateSucceeded,
@@ -187,6 +186,28 @@ func PossibleConnectedEnvironmentProvisioningStateValues() []ConnectedEnvironmen
 		ConnectedEnvironmentProvisioningStateScheduledForDelete,
 		ConnectedEnvironmentProvisioningStateSucceeded,
 		ConnectedEnvironmentProvisioningStateWaiting,
+	}
+}
+
+// ConnectedEnvironmentStorageProvisioningState - Provisioning state of the storage.
+type ConnectedEnvironmentStorageProvisioningState string
+
+const (
+	ConnectedEnvironmentStorageProvisioningStateCanceled   ConnectedEnvironmentStorageProvisioningState = "Canceled"
+	ConnectedEnvironmentStorageProvisioningStateDeleting   ConnectedEnvironmentStorageProvisioningState = "Deleting"
+	ConnectedEnvironmentStorageProvisioningStateFailed     ConnectedEnvironmentStorageProvisioningState = "Failed"
+	ConnectedEnvironmentStorageProvisioningStateInProgress ConnectedEnvironmentStorageProvisioningState = "InProgress"
+	ConnectedEnvironmentStorageProvisioningStateSucceeded  ConnectedEnvironmentStorageProvisioningState = "Succeeded"
+)
+
+// PossibleConnectedEnvironmentStorageProvisioningStateValues returns the possible values for the ConnectedEnvironmentStorageProvisioningState const type.
+func PossibleConnectedEnvironmentStorageProvisioningStateValues() []ConnectedEnvironmentStorageProvisioningState {
+	return []ConnectedEnvironmentStorageProvisioningState{
+		ConnectedEnvironmentStorageProvisioningStateCanceled,
+		ConnectedEnvironmentStorageProvisioningStateDeleting,
+		ConnectedEnvironmentStorageProvisioningStateFailed,
+		ConnectedEnvironmentStorageProvisioningStateInProgress,
+		ConnectedEnvironmentStorageProvisioningStateSucceeded,
 	}
 }
 
@@ -345,6 +366,28 @@ func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
 	}
 }
 
+// DaprComponentProvisioningState - Provisioning state of the Dapr Component.
+type DaprComponentProvisioningState string
+
+const (
+	DaprComponentProvisioningStateCanceled   DaprComponentProvisioningState = "Canceled"
+	DaprComponentProvisioningStateDeleting   DaprComponentProvisioningState = "Deleting"
+	DaprComponentProvisioningStateFailed     DaprComponentProvisioningState = "Failed"
+	DaprComponentProvisioningStateInProgress DaprComponentProvisioningState = "InProgress"
+	DaprComponentProvisioningStateSucceeded  DaprComponentProvisioningState = "Succeeded"
+)
+
+// PossibleDaprComponentProvisioningStateValues returns the possible values for the DaprComponentProvisioningState const type.
+func PossibleDaprComponentProvisioningStateValues() []DaprComponentProvisioningState {
+	return []DaprComponentProvisioningState{
+		DaprComponentProvisioningStateCanceled,
+		DaprComponentProvisioningStateDeleting,
+		DaprComponentProvisioningStateFailed,
+		DaprComponentProvisioningStateInProgress,
+		DaprComponentProvisioningStateSucceeded,
+	}
+}
+
 // EnvironmentProvisioningState - Provisioning state of the Environment.
 type EnvironmentProvisioningState string
 
@@ -406,6 +449,32 @@ func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
 		ForwardProxyConventionCustom,
 		ForwardProxyConventionNoProxy,
 		ForwardProxyConventionStandard,
+	}
+}
+
+// HTTPRouteProvisioningState - The current provisioning state.
+type HTTPRouteProvisioningState string
+
+const (
+	HTTPRouteProvisioningStateCanceled  HTTPRouteProvisioningState = "Canceled"
+	HTTPRouteProvisioningStateDeleting  HTTPRouteProvisioningState = "Deleting"
+	HTTPRouteProvisioningStateFailed    HTTPRouteProvisioningState = "Failed"
+	HTTPRouteProvisioningStatePending   HTTPRouteProvisioningState = "Pending"
+	HTTPRouteProvisioningStateSucceeded HTTPRouteProvisioningState = "Succeeded"
+	HTTPRouteProvisioningStateUpdating  HTTPRouteProvisioningState = "Updating"
+	HTTPRouteProvisioningStateWaiting   HTTPRouteProvisioningState = "Waiting"
+)
+
+// PossibleHTTPRouteProvisioningStateValues returns the possible values for the HTTPRouteProvisioningState const type.
+func PossibleHTTPRouteProvisioningStateValues() []HTTPRouteProvisioningState {
+	return []HTTPRouteProvisioningState{
+		HTTPRouteProvisioningStateCanceled,
+		HTTPRouteProvisioningStateDeleting,
+		HTTPRouteProvisioningStateFailed,
+		HTTPRouteProvisioningStatePending,
+		HTTPRouteProvisioningStateSucceeded,
+		HTTPRouteProvisioningStateUpdating,
+		HTTPRouteProvisioningStateWaiting,
 	}
 }
 
@@ -558,6 +627,22 @@ func PossibleJobProvisioningStateValues() []JobProvisioningState {
 	}
 }
 
+// Kind - Metadata to represent the container app kind, representing if a container app is workflowapp or functionapp.
+type Kind string
+
+const (
+	KindFunctionapp Kind = "functionapp"
+	KindWorkflowapp Kind = "workflowapp"
+)
+
+// PossibleKindValues returns the possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{
+		KindFunctionapp,
+		KindWorkflowapp,
+	}
+}
+
 // LifecycleType - The lifecycle type of the session pool.
 type LifecycleType string
 
@@ -645,6 +730,68 @@ func PossiblePoolManagementTypeValues() []PoolManagementType {
 	return []PoolManagementType{
 		PoolManagementTypeDynamic,
 		PoolManagementTypeManual,
+	}
+}
+
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCanceled  PrivateEndpointConnectionProvisioningState = "Canceled"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStatePending   PrivateEndpointConnectionProvisioningState = "Pending"
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+	PrivateEndpointConnectionProvisioningStateUpdating  PrivateEndpointConnectionProvisioningState = "Updating"
+	PrivateEndpointConnectionProvisioningStateWaiting   PrivateEndpointConnectionProvisioningState = "Waiting"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCanceled,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStatePending,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+		PrivateEndpointConnectionProvisioningStateUpdating,
+		PrivateEndpointConnectionProvisioningStateWaiting,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = "Disconnected"
+	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusDisconnected,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// PublicNetworkAccess - Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled'.
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
 	}
 }
 
@@ -859,5 +1006,93 @@ func PossibleUnauthenticatedClientActionV2Values() []UnauthenticatedClientAction
 		UnauthenticatedClientActionV2RedirectToLoginPage,
 		UnauthenticatedClientActionV2Return401,
 		UnauthenticatedClientActionV2Return403,
+	}
+}
+
+// WeekDay - Day of the week when a managed environment can be patched.
+type WeekDay string
+
+const (
+	WeekDayFriday    WeekDay = "Friday"
+	WeekDayMonday    WeekDay = "Monday"
+	WeekDaySaturday  WeekDay = "Saturday"
+	WeekDaySunday    WeekDay = "Sunday"
+	WeekDayThursday  WeekDay = "Thursday"
+	WeekDayTuesday   WeekDay = "Tuesday"
+	WeekDayWednesday WeekDay = "Wednesday"
+)
+
+// PossibleWeekDayValues returns the possible values for the WeekDay const type.
+func PossibleWeekDayValues() []WeekDay {
+	return []WeekDay{
+		WeekDayFriday,
+		WeekDayMonday,
+		WeekDaySaturday,
+		WeekDaySunday,
+		WeekDayThursday,
+		WeekDayTuesday,
+		WeekDayWednesday,
+	}
+}
+
+// WorkflowHealthState - Gets or sets the workflow health state.
+type WorkflowHealthState string
+
+const (
+	WorkflowHealthStateHealthy      WorkflowHealthState = "Healthy"
+	WorkflowHealthStateNotSpecified WorkflowHealthState = "NotSpecified"
+	WorkflowHealthStateUnhealthy    WorkflowHealthState = "Unhealthy"
+	WorkflowHealthStateUnknown      WorkflowHealthState = "Unknown"
+)
+
+// PossibleWorkflowHealthStateValues returns the possible values for the WorkflowHealthState const type.
+func PossibleWorkflowHealthStateValues() []WorkflowHealthState {
+	return []WorkflowHealthState{
+		WorkflowHealthStateHealthy,
+		WorkflowHealthStateNotSpecified,
+		WorkflowHealthStateUnhealthy,
+		WorkflowHealthStateUnknown,
+	}
+}
+
+// WorkflowKind - Gets the logic app hybrid workflow kind.
+type WorkflowKind string
+
+const (
+	WorkflowKindAgentic   WorkflowKind = "Agentic"
+	WorkflowKindStateful  WorkflowKind = "Stateful"
+	WorkflowKindStateless WorkflowKind = "Stateless"
+)
+
+// PossibleWorkflowKindValues returns the possible values for the WorkflowKind const type.
+func PossibleWorkflowKindValues() []WorkflowKind {
+	return []WorkflowKind{
+		WorkflowKindAgentic,
+		WorkflowKindStateful,
+		WorkflowKindStateless,
+	}
+}
+
+// WorkflowState - The workflow state.
+type WorkflowState string
+
+const (
+	WorkflowStateCompleted    WorkflowState = "Completed"
+	WorkflowStateDeleted      WorkflowState = "Deleted"
+	WorkflowStateDisabled     WorkflowState = "Disabled"
+	WorkflowStateEnabled      WorkflowState = "Enabled"
+	WorkflowStateNotSpecified WorkflowState = "NotSpecified"
+	WorkflowStateSuspended    WorkflowState = "Suspended"
+)
+
+// PossibleWorkflowStateValues returns the possible values for the WorkflowState const type.
+func PossibleWorkflowStateValues() []WorkflowState {
+	return []WorkflowState{
+		WorkflowStateCompleted,
+		WorkflowStateDeleted,
+		WorkflowStateDisabled,
+		WorkflowStateEnabled,
+		WorkflowStateNotSpecified,
+		WorkflowStateSuspended,
 	}
 }

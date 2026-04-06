@@ -11,9 +11,6 @@ type DeploymentSafeguard struct {
 	// The resource-specific properties for this resource.
 	Properties *Properties
 
-	// READ-ONLY; Required default name
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -22,6 +19,9 @@ type DeploymentSafeguard struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -62,7 +62,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string

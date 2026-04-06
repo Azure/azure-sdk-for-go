@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-// QuotasClient contains the methods for the Quotas group.
+// QuotasClient - Operations for managing Playwright quota resources at the subscription level.
 // Don't use this type directly, use NewQuotasClient() instead.
 type QuotasClient struct {
 	internal       *arm.Client
@@ -26,7 +26,7 @@ type QuotasClient struct {
 // NewQuotasClient creates a new instance of QuotasClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotasClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -39,10 +39,10 @@ func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// Get - Get subscription-level location-based Playwright quota resource by name.
+// Get - Gets a subscription-level location-based Playwright quota resource by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - playwrightQuotaName - The name of the PlaywrightQuota
 //   - options - QuotasClientGetOptions contains the optional parameters for the QuotasClient.Get method.
@@ -88,7 +88,7 @@ func (client *QuotasClient) getCreateRequest(ctx context.Context, location strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,9 +103,9 @@ func (client *QuotasClient) getHandleResponse(resp *http.Response) (QuotasClient
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List Playwright quota resources for a given subscription Id.
+// NewListBySubscriptionPager - Lists Playwright quota resources for a given subscription ID.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - QuotasClientListBySubscriptionOptions contains the optional parameters for the QuotasClient.NewListBySubscriptionPager
 //     method.
@@ -148,7 +148,7 @@ func (client *QuotasClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

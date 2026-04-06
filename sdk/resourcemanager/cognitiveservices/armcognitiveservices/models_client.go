@@ -27,7 +27,7 @@ type ModelsClient struct {
 // NewModelsClient creates a new instance of ModelsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewModelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ModelsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewModelsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - List Models.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - location - Resource location.
 //   - options - ModelsClientListOptions contains the optional parameters for the ModelsClient.NewListPager method.
 func (client *ModelsClient) NewListPager(location string, options *ModelsClientListOptions) *runtime.Pager[ModelsClientListResponse] {
@@ -84,7 +84,7 @@ func (client *ModelsClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

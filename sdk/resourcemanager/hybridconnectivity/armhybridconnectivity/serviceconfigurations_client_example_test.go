@@ -6,6 +6,7 @@ package armhybridconnectivity_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
 	"log"
@@ -22,7 +23,12 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResource{}, nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResource{
+		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
+			Port:        to.Ptr[int64](22),
+			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameSSH),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,7 +59,12 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutW
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "WAC", armhybridconnectivity.ServiceConfigurationResource{}, nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "WAC", armhybridconnectivity.ServiceConfigurationResource{
+		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
+			Port:        to.Ptr[int64](6516),
+			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameWAC),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -213,7 +224,11 @@ func ExampleServiceConfigurationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResourcePatch{}, nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResourcePatch{
+		Properties: &armhybridconnectivity.ServiceConfigurationPropertiesPatch{
+			Port: to.Ptr[int64](22),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

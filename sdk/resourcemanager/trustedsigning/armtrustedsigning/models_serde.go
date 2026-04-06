@@ -8,7 +8,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AccountSKU.
@@ -38,10 +40,38 @@ func (a *AccountSKU) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AccountSKUPatch.
+func (a AccountSKUPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", a.Name)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccountSKUPatch.
+func (a *AccountSKUPatch) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &a.Name)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Certificate.
 func (c Certificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "createdDate", c.CreatedDate)
+	populate(objectMap, "enhancedKeyUsage", c.EnhancedKeyUsage)
 	populate(objectMap, "expiryDate", c.ExpiryDate)
 	populate(objectMap, "revocation", c.Revocation)
 	populate(objectMap, "serialNumber", c.SerialNumber)
@@ -62,6 +92,9 @@ func (c *Certificate) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "createdDate":
 			err = unpopulate(val, "CreatedDate", &c.CreatedDate)
+			delete(rawMsg, key)
+		case "enhancedKeyUsage":
+			err = unpopulate(val, "EnhancedKeyUsage", &c.EnhancedKeyUsage)
 			delete(rawMsg, key)
 		case "expiryDate":
 			err = unpopulate(val, "ExpiryDate", &c.ExpiryDate)
@@ -167,24 +200,15 @@ func (c *CertificateProfileListResult) UnmarshalJSON(data []byte) error {
 func (c CertificateProfileProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificates", c.Certificates)
-	populate(objectMap, "city", c.City)
-	populate(objectMap, "commonName", c.CommonName)
-	populate(objectMap, "country", c.Country)
-	populate(objectMap, "enhancedKeyUsage", c.EnhancedKeyUsage)
 	populate(objectMap, "identityValidationId", c.IdentityValidationID)
 	populate(objectMap, "includeCity", c.IncludeCity)
 	populate(objectMap, "includeCountry", c.IncludeCountry)
 	populate(objectMap, "includePostalCode", c.IncludePostalCode)
 	populate(objectMap, "includeState", c.IncludeState)
 	populate(objectMap, "includeStreetAddress", c.IncludeStreetAddress)
-	populate(objectMap, "organization", c.Organization)
-	populate(objectMap, "organizationUnit", c.OrganizationUnit)
-	populate(objectMap, "postalCode", c.PostalCode)
 	populate(objectMap, "profileType", c.ProfileType)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "state", c.State)
 	populate(objectMap, "status", c.Status)
-	populate(objectMap, "streetAddress", c.StreetAddress)
 	return json.Marshal(objectMap)
 }
 
@@ -199,18 +223,6 @@ func (c *CertificateProfileProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "certificates":
 			err = unpopulate(val, "Certificates", &c.Certificates)
-			delete(rawMsg, key)
-		case "city":
-			err = unpopulate(val, "City", &c.City)
-			delete(rawMsg, key)
-		case "commonName":
-			err = unpopulate(val, "CommonName", &c.CommonName)
-			delete(rawMsg, key)
-		case "country":
-			err = unpopulate(val, "Country", &c.Country)
-			delete(rawMsg, key)
-		case "enhancedKeyUsage":
-			err = unpopulate(val, "EnhancedKeyUsage", &c.EnhancedKeyUsage)
 			delete(rawMsg, key)
 		case "identityValidationId":
 			err = unpopulate(val, "IdentityValidationID", &c.IdentityValidationID)
@@ -230,29 +242,14 @@ func (c *CertificateProfileProperties) UnmarshalJSON(data []byte) error {
 		case "includeStreetAddress":
 			err = unpopulate(val, "IncludeStreetAddress", &c.IncludeStreetAddress)
 			delete(rawMsg, key)
-		case "organization":
-			err = unpopulate(val, "Organization", &c.Organization)
-			delete(rawMsg, key)
-		case "organizationUnit":
-			err = unpopulate(val, "OrganizationUnit", &c.OrganizationUnit)
-			delete(rawMsg, key)
-		case "postalCode":
-			err = unpopulate(val, "PostalCode", &c.PostalCode)
-			delete(rawMsg, key)
 		case "profileType":
 			err = unpopulate(val, "ProfileType", &c.ProfileType)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
 			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, "State", &c.State)
-			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &c.Status)
-			delete(rawMsg, key)
-		case "streetAddress":
-			err = unpopulate(val, "StreetAddress", &c.StreetAddress)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -266,6 +263,7 @@ func (c *CertificateProfileProperties) UnmarshalJSON(data []byte) error {
 func (c CheckNameAvailability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "name", c.Name)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -280,6 +278,9 @@ func (c *CheckNameAvailability) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "name":
 			err = unpopulate(val, "Name", &c.Name)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &c.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -615,11 +616,11 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Revocation.
 func (r Revocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "effectiveAt", r.EffectiveAt)
+	populateTime[datetime.RFC3339](objectMap, "effectiveAt", r.EffectiveAt)
 	populate(objectMap, "failureReason", r.FailureReason)
 	populate(objectMap, "reason", r.Reason)
 	populate(objectMap, "remarks", r.Remarks)
-	populateDateTimeRFC3339(objectMap, "requestedAt", r.RequestedAt)
+	populateTime[datetime.RFC3339](objectMap, "requestedAt", r.RequestedAt)
 	populate(objectMap, "status", r.Status)
 	return json.Marshal(objectMap)
 }
@@ -634,7 +635,7 @@ func (r *Revocation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "effectiveAt":
-			err = unpopulateDateTimeRFC3339(val, "EffectiveAt", &r.EffectiveAt)
+			err = unpopulateTime[datetime.RFC3339](val, "EffectiveAt", &r.EffectiveAt)
 			delete(rawMsg, key)
 		case "failureReason":
 			err = unpopulate(val, "FailureReason", &r.FailureReason)
@@ -646,7 +647,7 @@ func (r *Revocation) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Remarks", &r.Remarks)
 			delete(rawMsg, key)
 		case "requestedAt":
-			err = unpopulateDateTimeRFC3339(val, "RequestedAt", &r.RequestedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "RequestedAt", &r.RequestedAt)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &r.Status)
@@ -662,7 +663,7 @@ func (r *Revocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RevokeCertificate.
 func (r RevokeCertificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "effectiveAt", r.EffectiveAt)
+	populateTime[datetime.RFC3339](objectMap, "effectiveAt", r.EffectiveAt)
 	populate(objectMap, "reason", r.Reason)
 	populate(objectMap, "remarks", r.Remarks)
 	populate(objectMap, "serialNumber", r.SerialNumber)
@@ -680,7 +681,7 @@ func (r *RevokeCertificate) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "effectiveAt":
-			err = unpopulateDateTimeRFC3339(val, "EffectiveAt", &r.EffectiveAt)
+			err = unpopulateTime[datetime.RFC3339](val, "EffectiveAt", &r.EffectiveAt)
 			delete(rawMsg, key)
 		case "reason":
 			err = unpopulate(val, "Reason", &r.Reason)
@@ -705,10 +706,10 @@ func (r *RevokeCertificate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -724,7 +725,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -733,7 +734,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
@@ -759,6 +760,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -767,4 +779,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

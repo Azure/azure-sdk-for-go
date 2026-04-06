@@ -7,11 +7,11 @@ package armdeviceregistry_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
 	"log"
 )
 
-// Generated from example definition: 2024-11-01/List_Operations.json
+// Generated from example definition: 2025-10-01/List_Operations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 	OperationListResult: armdeviceregistry.OperationListResult{
 		// 		Value: []*armdeviceregistry.Operation{
 		// 			{
-		// 				Name: to.Ptr("Microsoft.DeviceRegistry/assets/write"),
+		// 				Name: to.Ptr("Microsoft.DeviceRegistry/namespaces/assets/write"),
 		// 				Display: &armdeviceregistry.OperationDisplay{
 		// 					Provider: to.Ptr("Microsoft Azure Device Registry"),
 		// 					Resource: to.Ptr("Asset"),

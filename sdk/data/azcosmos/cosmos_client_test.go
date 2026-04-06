@@ -6,17 +6,21 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 func TestNewClientFromConnStrReturnErrorOnWrongDelimiter(t *testing.T) {
@@ -119,7 +123,7 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 	if err.Error() != asError.Error() {
 		t.Errorf("Expected %v, but got %v", err.Error(), asError.Error())
 	}
-	asError.RawResponse.Body.Close()
+	_ = asError.RawResponse.Body.Close()
 }
 
 func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {
@@ -729,6 +733,81 @@ func TestSpanResponseAttributes(t *testing.T) {
 	}
 }
 
+func TestAADScope_UsesAudienceFromClientOptions(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	endpoint := srv.URL()
+	audience := "https://custom.audience.example.com"
+	expectedScope := audience + "/.default"
+
+	clientOptions := &ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud: cloud.Configuration{
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					ServiceName: {Audience: audience},
+				},
+			},
+			Transport: srv,
+		},
+	}
+
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			if scope != expectedScope {
+				t.Fatalf("expected scope %q from client options, got %q", expectedScope, scope)
+			}
+			return tokenOK(), nil
+		},
+	}
+
+	client, err := NewClient(endpoint, cred, clientOptions)
+	if err != nil {
+		t.Fatalf("expected client creation to succeed, got: %v", err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	if _, err := client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestAADScope_UsesAccountScope_WhenNoAudienceProvided(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	endpoint := srv.URL()
+	u, _ := url.Parse(endpoint)
+	expectedScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
+
+	clientOptions := &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: srv},
+	}
+
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			if scope != expectedScope {
+				t.Fatalf("expected fallback account scope %q, got %q", expectedScope, scope)
+			}
+			return tokenOK(), nil
+		},
+	}
+
+	client, err := NewClient(endpoint, cred, clientOptions)
+	if err != nil {
+		t.Fatalf("expected client creation to succeed, got: %v", err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	if _, err := client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
 type pipelineVerifier struct {
 	requests []pipelineVerifierRequest
 }
@@ -755,4 +834,58 @@ func (p *pipelineVerifier) Do(req *policy.Request) (*http.Response, error) {
 	pr.isQuery = req.Raw().Method == http.MethodPost && req.Raw().Header.Get(cosmosHeaderQuery) == "True"
 	p.requests = append(p.requests, pr)
 	return req.Next()
+}
+
+type stubCred struct {
+	t     *testing.T
+	calls []string
+	onGet func(scope string) (azcore.AccessToken, error)
+}
+
+func (s *stubCred) GetToken(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if len(tro.Scopes) != 1 {
+		s.t.Fatalf("expected exactly 1 scope, got %d", len(tro.Scopes))
+	}
+	scope := tro.Scopes[0]
+	s.calls = append(s.calls, scope)
+	return s.onGet(scope)
+}
+
+func tokenOK() azcore.AccessToken {
+	return azcore.AccessToken{
+		Token:     "mock-token",
+		ExpiresOn: time.Now().Add(time.Hour),
+	}
+}
+
+func TestAddDefaultHeadersSetsActivityID(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	if err != nil {
+		t.Fatal(err)
+	}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	activityID := verifier.requests[0].headers.Get(cosmosHeaderActivityId)
+	if activityID == "" {
+		t.Fatal("expected x-ms-activity-id header to be set on the request")
+	}
+
+	if _, err := uuid.Parse(activityID); err != nil {
+		t.Errorf("expected activity id to be a valid UUID, but got %v: %v", activityID, err)
+	}
 }

@@ -43,7 +43,7 @@ func NewFilesClient(subscriptionID string, credential azcore.TokenCredential, op
 // CreateOrUpdate - The PUT method creates a new file or updates an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -100,7 +100,7 @@ func (client *FilesClient) createOrUpdateCreateRequest(ctx context.Context, grou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -121,7 +121,7 @@ func (client *FilesClient) createOrUpdateHandleResponse(resp *http.Response) (Fi
 // Delete - This method deletes a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -176,7 +176,7 @@ func (client *FilesClient) deleteCreateRequest(ctx context.Context, groupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -186,7 +186,7 @@ func (client *FilesClient) deleteCreateRequest(ctx context.Context, groupName st
 // retrieves information about a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -242,7 +242,7 @@ func (client *FilesClient) getCreateRequest(ctx context.Context, groupName strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +260,7 @@ func (client *FilesClient) getHandleResponse(resp *http.Response) (FilesClientGe
 // NewListPager - The project resource is a nested resource representing a stored migration project. This method returns a
 // list of files owned by a project resource.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -312,7 +312,7 @@ func (client *FilesClient) listCreateRequest(ctx context.Context, groupName stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +330,7 @@ func (client *FilesClient) listHandleResponse(resp *http.Response) (FilesClientL
 // Read - This method is used for requesting storage information using which contents of the file can be downloaded.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -386,7 +386,7 @@ func (client *FilesClient) readCreateRequest(ctx context.Context, groupName stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -404,7 +404,7 @@ func (client *FilesClient) readHandleResponse(resp *http.Response) (FilesClientR
 // ReadWrite - This method is used for requesting information for reading and writing the file content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -460,7 +460,7 @@ func (client *FilesClient) readWriteCreateRequest(ctx context.Context, groupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -478,7 +478,7 @@ func (client *FilesClient) readWriteHandleResponse(resp *http.Response) (FilesCl
 // Update - This method updates an existing file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -535,7 +535,7 @@ func (client *FilesClient) updateCreateRequest(ctx context.Context, groupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

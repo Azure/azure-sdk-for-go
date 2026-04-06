@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -152,11 +152,17 @@ func (g *GiVersionsServerTransport) dispatchNewListByLocationPager(req *http.Req
 			return nil, err
 		}
 		zoneParam := getOptional(zoneUnescaped)
+		shapeAttributeUnescaped, err := url.QueryUnescape(qp.Get("shapeAttribute"))
+		if err != nil {
+			return nil, err
+		}
+		shapeAttributeParam := getOptional(shapeAttributeUnescaped)
 		var options *armoracledatabase.GiVersionsClientListByLocationOptions
-		if shapeParam != nil || zoneParam != nil {
+		if shapeParam != nil || zoneParam != nil || shapeAttributeParam != nil {
 			options = &armoracledatabase.GiVersionsClientListByLocationOptions{
-				Shape: shapeParam,
-				Zone:  zoneParam,
+				Shape:          shapeParam,
+				Zone:           zoneParam,
+				ShapeAttribute: shapeAttributeParam,
 			}
 		}
 		resp := g.srv.NewListByLocationPager(locationParam, options)

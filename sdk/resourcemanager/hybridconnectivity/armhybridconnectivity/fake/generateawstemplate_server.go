@@ -87,7 +87,7 @@ func (g *GenerateAwsTemplateServerTransport) dispatchPost(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/generateAwsTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.GenerateAwsTemplateRequest](req)
@@ -102,7 +102,7 @@ func (g *GenerateAwsTemplateServerTransport) dispatchPost(req *http.Request) (*h
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PostResponse, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenerateAwsTemplateResponse, req)
 	if err != nil {
 		return nil, err
 	}

@@ -19,8 +19,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -221,6 +220,22 @@ func (c *ClientFactory) NewGalleryInVMAccessControlProfileVersionsClient() *Gall
 // NewGalleryInVMAccessControlProfilesClient creates a new instance of GalleryInVMAccessControlProfilesClient.
 func (c *ClientFactory) NewGalleryInVMAccessControlProfilesClient() *GalleryInVMAccessControlProfilesClient {
 	return &GalleryInVMAccessControlProfilesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewGalleryScriptVersionsClient creates a new instance of GalleryScriptVersionsClient.
+func (c *ClientFactory) NewGalleryScriptVersionsClient() *GalleryScriptVersionsClient {
+	return &GalleryScriptVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewGalleryScriptsClient creates a new instance of GalleryScriptsClient.
+func (c *ClientFactory) NewGalleryScriptsClient() *GalleryScriptsClient {
+	return &GalleryScriptsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

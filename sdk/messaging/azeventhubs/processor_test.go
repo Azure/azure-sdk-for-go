@@ -238,7 +238,7 @@ func TestProcessor_RunNotConcurrent(t *testing.T) {
 		defer wg.Done()
 
 		if err := proc.Run(ctx); err != nil {
-			require.EqualError(t, err, "the Processor is currently running. Concurrent calls to Run() are not allowed.")
+			require.EqualError(t, err, "the Processor is currently running, concurrent calls to Run() are not allowed")
 			atomic.AddInt32(&errors, 1)
 		}
 	}()
@@ -247,7 +247,7 @@ func TestProcessor_RunNotConcurrent(t *testing.T) {
 		defer wg.Done()
 
 		if err := proc.Run(ctx); err != nil {
-			require.EqualError(t, err, "the Processor is currently running. Concurrent calls to Run() are not allowed.")
+			require.EqualError(t, err, "the Processor is currently running, concurrent calls to Run() are not allowed")
 			atomic.AddInt32(&errors, 1)
 		}
 	}()
@@ -751,10 +751,10 @@ func printOwnerships(ctx context.Context, t *testing.T, cps azeventhubs.Checkpoi
 
 	for o, parts := range owners {
 		sort.Strings(parts)
-		sb.WriteString(fmt.Sprintf("  [%s (%d)] %s\n", o, len(parts), strings.Join(parts, ",")))
+		fmt.Fprintf(&sb, "  [%s (%d)] %s\n", o, len(parts), strings.Join(parts, ","))
 	}
 
-	sb.WriteString(fmt.Sprintf("  Unowned (%d): %s\n", len(unowned), strings.Join(unowned, ",")))
+	fmt.Fprintf(&sb, "  Unowned (%d): %s\n", len(unowned), strings.Join(unowned, ","))
 
 	sort.Strings(partitionIDs)
 

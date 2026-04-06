@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -40,7 +37,7 @@ func Test_authenticationClient_ExchangeAADAccessTokenForACRRefreshToken(t *testi
 		AccessToken: &accessToken.Token,
 	})
 	require.NoError(t, err)
-	require.NotEmpty(t, *resp.ACRRefreshToken.RefreshToken)
+	require.NotEmpty(t, *resp.RefreshToken)
 }
 
 func Test_authenticationClient_ExchangeAADAccessTokenForACRRefreshToken_fail(t *testing.T) {
@@ -87,10 +84,10 @@ func Test_authenticationClient_ExchangeACRRefreshTokenForACRAccessToken(t *testi
 		AccessToken: &accessToken.Token,
 	})
 	require.NoError(t, err)
-	require.NotEmpty(t, *refreshResp.ACRRefreshToken.RefreshToken)
-	accessResp, err := client.ExchangeACRRefreshTokenForACRAccessToken(ctx, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*", *refreshResp.ACRRefreshToken.RefreshToken, &AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypeRefreshToken)})
+	require.NotEmpty(t, *refreshResp.RefreshToken)
+	accessResp, err := client.ExchangeACRRefreshTokenForACRAccessToken(ctx, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*", *refreshResp.RefreshToken, &AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypeRefreshToken)})
 	require.NoError(t, err)
-	require.NotEmpty(t, *accessResp.ACRAccessToken.AccessToken)
+	require.NotEmpty(t, *accessResp.AccessToken)
 }
 
 func Test_authenticationClient_ExchangeACRRefreshTokenForACRAccessToken_fail(t *testing.T) {

@@ -1,5 +1,52 @@
 # Release History
 
+## 3.0.0 (2025-10-24)
+### Breaking Changes
+
+- Field `Maxpagesize` of struct `TaskAssignmentsClientListOptions` has been removed
+
+### Features Added
+
+- New struct `GeoPriorityReplicationStatus`
+- New struct `ObjectReplicationPolicyPropertiesPriorityReplication`
+- New field `GeoPriorityReplicationStatus` in struct `AccountProperties`
+- New field `GeoPriorityReplicationStatus` in struct `AccountPropertiesCreateParameters`
+- New field `GeoPriorityReplicationStatus` in struct `AccountPropertiesUpdateParameters`
+- New field `PriorityReplication` in struct `ObjectReplicationPolicyProperties`
+- New field `Top` in struct `TaskAssignmentsClientListOptions`
+
+
+## 2.0.0 (2025-09-25)
+### Breaking Changes
+
+- Type of `TriggerParameters.IntervalUnit` has been changed from `*string` to `*IntervalUnit`
+- Type of `TriggerParametersUpdate.IntervalUnit` has been changed from `*string` to `*IntervalUnit`
+
+### Features Added
+
+- New enum type `IntervalUnit` with values `IntervalUnitDays`
+- New enum type `ZonePlacementPolicy` with values `ZonePlacementPolicyAny`, `ZonePlacementPolicyNone`
+- New struct `AccountIPv6Endpoints`
+- New struct `DualStackEndpointPreference`
+- New struct `EncryptionInTransit`
+- New struct `NfsSetting`
+- New struct `Placement`
+- New struct `SKUInformationLocationInfoItem`
+- New struct `SmbOAuthSettings`
+- New field `Placement`, `Zones` in struct `Account`
+- New field `Placement`, `Zones` in struct `AccountCreateParameters`
+- New field `DualStackEndpointPreference` in struct `AccountProperties`
+- New field `DualStackEndpointPreference` in struct `AccountPropertiesCreateParameters`
+- New field `DualStackEndpointPreference` in struct `AccountPropertiesUpdateParameters`
+- New field `Placement`, `Zones` in struct `AccountUpdateParameters`
+- New field `SmbOAuthSettings` in struct `AzureFilesIdentityBasedAuthentication`
+- New field `IPv6Endpoints` in struct `Endpoints`
+- New field `IPv6Rules` in struct `NetworkRuleSet`
+- New field `Nfs` in struct `ProtocolSettings`
+- New field `LocationInfo` in struct `SKUInformation`
+- New field `EncryptionInTransit` in struct `SmbSetting`
+
+
 ## 1.8.1 (2025-06-30)
 ### Other Changes
 

@@ -1,5 +1,12 @@
 # Release History
 
+## 3.0.1 (2025-12-17)
+
+### Other Changes
+
+- Consolidate package version used in test.
+- All things related to `*DeploymentOperationsClient` and `*DeploymentsClient` have been moved to package `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments@v0.2.0`
+
 ## 3.0.0 (2025-06-10)
 ### Breaking Changes
 
@@ -192,6 +199,7 @@
 
 
 ## 1.0.0 (2022-05-16)
+## Other Changes
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
 

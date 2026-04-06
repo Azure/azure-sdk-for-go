@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/PlaywrightQuotas_Get.json
+// Generated from example definition: 2025-09-01/PlaywrightQuotas_Get.json
 func ExampleQuotasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleQuotasClient_Get() {
 	// res = armplaywright.QuotasClientGetResponse{
 	// 	Quota: &armplaywright.Quota{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.LoadTestService/locations/eastus/PlaywrightQuotas/ExecutionMinutes"),
-	// 		Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+	// 		Name: to.Ptr("ExecutionMinutes"),
 	// 		Type: to.Ptr("Microsoft.LoadTestService/Locations/PlaywrightQuotas"),
 	// 		Properties: &armplaywright.QuotaProperties{
 	// 			FreeTrial: &armplaywright.FreeTrialProperties{
@@ -45,7 +45,7 @@ func ExampleQuotasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/PlaywrightQuotas_ListBySubscription.json
+// Generated from example definition: 2025-09-01/PlaywrightQuotas_ListBySubscription.json
 func ExampleQuotasClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleQuotasClient_NewListBySubscriptionPager() {
 		// 		Value: []*armplaywright.Quota{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.LoadTestService/locations/eastus/PlaywrightQuotas/ExecutionMinutes"),
-		// 				Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+		// 				Name: to.Ptr("ExecutionMinutes"),
 		// 				Type: to.Ptr("Microsoft.LoadTestService/Locations/PlaywrightQuotas"),
 		// 				Properties: &armplaywright.QuotaProperties{
 		// 					FreeTrial: &armplaywright.FreeTrialProperties{

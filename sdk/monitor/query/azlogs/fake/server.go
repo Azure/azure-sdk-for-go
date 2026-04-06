@@ -8,15 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strings"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strings"
 )
 
 // Server is a fake server for instances of the azlogs.Client type.
@@ -27,11 +26,11 @@ type Server struct {
 
 	// QueryResource is the fake for method Client.QueryResource
 	// HTTP status codes to indicate success: http.StatusOK
-	QueryResource func(ctx context.Context, resourceID string, body azlogs.QueryBody, opts *azlogs.QueryResourceOptions) (resp azfake.Responder[azlogs.QueryResourceResponse], errResp azfake.ErrorResponder)
+	QueryResource func(ctx context.Context, resourceID string, body azlogs.QueryBody, options *azlogs.QueryResourceOptions) (resp azfake.Responder[azlogs.QueryResourceResponse], errResp azfake.ErrorResponder)
 
 	// QueryWorkspace is the fake for method Client.QueryWorkspace
 	// HTTP status codes to indicate success: http.StatusOK
-	QueryWorkspace func(ctx context.Context, workspaceID string, body azlogs.QueryBody, opts *azlogs.QueryWorkspaceOptions) (resp azfake.Responder[azlogs.QueryWorkspaceResponse], errResp azfake.ErrorResponder)
+	QueryWorkspace func(ctx context.Context, workspaceID string, body azlogs.QueryBody, options *azlogs.QueryWorkspaceOptions) (resp azfake.Responder[azlogs.QueryWorkspaceResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -137,13 +136,13 @@ func (s *ServerTransport) dispatchQueryResource(req *http.Request) (*http.Respon
 		return nil, err
 	}
 	optionsParam := getOptional(getHeaderValue(req.Header, "Prefer"))
-	var opts *azlogs.QueryResourceOptions
+	var options *azlogs.QueryResourceOptions
 	if optionsParam != nil {
-		opts = &azlogs.QueryResourceOptions{
+		options = &azlogs.QueryResourceOptions{
 			Options: preferHeaderToQueryOptions(*optionsParam),
 		}
 	}
-	respr, errRespr := s.srv.QueryResource(req.Context(), resourceIDParam, body, opts)
+	respr, errRespr := s.srv.QueryResource(req.Context(), resourceIDParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -177,13 +176,13 @@ func (s *ServerTransport) dispatchQueryWorkspace(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	optionsParam := getOptional(getHeaderValue(req.Header, "Prefer"))
-	var opts *azlogs.QueryWorkspaceOptions
+	var options *azlogs.QueryWorkspaceOptions
 	if optionsParam != nil {
-		opts = &azlogs.QueryWorkspaceOptions{
+		options = &azlogs.QueryWorkspaceOptions{
 			Options: preferHeaderToQueryOptions(*optionsParam),
 		}
 	}
-	respr, errRespr := s.srv.QueryWorkspace(req.Context(), workspaceIDParam, body, opts)
+	respr, errRespr := s.srv.QueryWorkspace(req.Context(), workspaceIDParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

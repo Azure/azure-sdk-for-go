@@ -13,7 +13,7 @@ param(
     [switch]$removeUnreferencedTypes,
     [switch]$factoryGatherCommonParams,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.73",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.75",
     [string]$filePrefix,
     [string]$outputFolder
 )
@@ -91,8 +91,12 @@ function Process-Sdk ()
 
     if ($tidy)
     {
-        Write-Host "##[command]Executing go get -u ./... toolchain@none in " $currentDirectory
-        go get -u ./... toolchain@none
+        Write-Host "##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0 in " $currentDirectory
+        go get github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
+        
+        Write-Host "##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0 in " $currentDirectory
+        go get github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
         
         Write-Host "##[command]Executing go mod tidy in " $currentDirectory
@@ -110,8 +114,15 @@ function Process-Sdk ()
 
     if ($vet)
     {
-        Write-Host "##[command]Executing go vet ./... in " $currentDirectory
-        go vet ./...
+        $goVetArgs = ""
+        if ($IsWindows -and $currentDirectory -like "*\sdk\storage\*")
+        {
+            # there's a false positive in mmf_windows.go for storage
+            $goVetArgs = "--unsafeptr=false"
+        }
+        Write-Host "##[command]Executing go vet $goVetArgs ./... in " $currentDirectory
+        go vet $goVetArgs ./...
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 }
 

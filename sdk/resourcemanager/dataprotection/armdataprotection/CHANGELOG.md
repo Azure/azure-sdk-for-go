@@ -1,5 +1,47 @@
 # Release History
 
+## 4.0.0 (2025-10-13)
+### Breaking Changes
+
+- Struct `AzureBackupFindRestorableTimeRangesRequestResource` has been removed
+- Struct `ClientDiscoveryDisplay` has been removed
+- Struct `ClientDiscoveryForLogSpecification` has been removed
+- Struct `ClientDiscoveryForProperties` has been removed
+- Struct `ClientDiscoveryForServiceSpecification` has been removed
+- Struct `ClientDiscoveryResponse` has been removed
+- Struct `ClientDiscoveryValueForSingleAPI` has been removed
+- Struct `DppBaseTrackedResource` has been removed
+- Struct `DppProxyResource` has been removed
+- Struct `DppResource` has been removed
+- Struct `DppResourceList` has been removed
+- Struct `DppTrackedResource` has been removed
+- Struct `DppTrackedResourceList` has been removed
+- Struct `DppWorkerRequest` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `RecoveryPointsFilters` has been removed
+- Field `ClientDiscoveryResponse` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New enum type `AKSVolumeTypes` with values `AKSVolumeTypesAzureDisk`, `AKSVolumeTypesAzureFileShareSMB`
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New function `*AdlsBlobBackupDatasourceParameters.GetBackupDatasourceParameters() *BackupDatasourceParameters`
+- New function `*AdlsBlobBackupDatasourceParameters.GetBlobBackupDatasourceParameters() *BlobBackupDatasourceParameters`
+- New function `*BackupInstancesClient.BeginValidateForModifyBackup(context.Context, string, string, string, ValidateForModifyBackupRequest, *BackupInstancesClientBeginValidateForModifyBackupOptions) (*runtime.Poller[BackupInstancesClientValidateForModifyBackupResponse], error)`
+- New function `*BlobBackupDatasourceParameters.GetBlobBackupDatasourceParameters() *BlobBackupDatasourceParameters`
+- New struct `AdlsBlobBackupDatasourceParameters`
+- New struct `Operation`
+- New struct `OperationDisplay`
+- New struct `OperationListResult`
+- New struct `ValidateForModifyBackupRequest`
+- New field `SystemData` in struct `DppBaseResource`
+- New field `RenameTo` in struct `ItemPathBasedRestoreCriteria`
+- New field `IncludedVolumeTypes` in struct `KubernetesClusterBackupDatasourceParameters`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+
+
 ## 3.1.0 (2024-07-26)
 ### Features Added
 

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -11,5 +8,5 @@ const (
 	Module = "internal"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v3.1.1"
+	Version = "v3.1.2-beta.1"
 )

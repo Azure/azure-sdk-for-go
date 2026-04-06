@@ -21,7 +21,7 @@ type CarbonServiceClient struct {
 
 // NewCarbonServiceClient creates a new instance of CarbonServiceClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCarbonServiceClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CarbonServiceClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

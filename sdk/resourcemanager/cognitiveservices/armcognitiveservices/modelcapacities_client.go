@@ -27,7 +27,7 @@ type ModelCapacitiesClient struct {
 // NewModelCapacitiesClient creates a new instance of ModelCapacitiesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewModelCapacitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ModelCapacitiesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewModelCapacitiesClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListPager - List ModelCapacities.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - modelFormat - The format of the Model
 //   - modelName - The name of the Model
 //   - modelVersion - The version of the Model
@@ -83,7 +83,7 @@ func (client *ModelCapacitiesClient) listCreateRequest(ctx context.Context, mode
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	reqQP.Set("modelFormat", modelFormat)
 	reqQP.Set("modelName", modelName)
 	reqQP.Set("modelVersion", modelVersion)

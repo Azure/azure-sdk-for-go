@@ -36,6 +36,10 @@ type ServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByApplicationsPager func(resourceGroupName string, clusterName string, applicationName string, options *armservicefabricmanagedclusters.ServicesClientListByApplicationsOptions) (resp azfake.PagerResponder[armservicefabricmanagedclusters.ServicesClientListByApplicationsResponse])
 
+	// BeginRestartReplica is the fake for method ServicesClient.BeginRestartReplica
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestartReplica func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters armservicefabricmanagedclusters.RestartReplicaRequest, options *armservicefabricmanagedclusters.ServicesClientBeginRestartReplicaOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.ServicesClientRestartReplicaResponse], errResp azfake.ErrorResponder)
+
 	// Update is the fake for method ServicesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters armservicefabricmanagedclusters.ServiceUpdateParameters, options *armservicefabricmanagedclusters.ServicesClientUpdateOptions) (resp azfake.Responder[armservicefabricmanagedclusters.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -50,6 +54,7 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ServicesClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ServicesClientDeleteResponse]](),
 		newListByApplicationsPager: newTracker[azfake.PagerResponder[armservicefabricmanagedclusters.ServicesClientListByApplicationsResponse]](),
+		beginRestartReplica:        newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ServicesClientRestartReplicaResponse]](),
 	}
 }
 
@@ -60,6 +65,7 @@ type ServicesServerTransport struct {
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ServicesClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ServicesClientDeleteResponse]]
 	newListByApplicationsPager *tracker[azfake.PagerResponder[armservicefabricmanagedclusters.ServicesClientListByApplicationsResponse]]
+	beginRestartReplica        *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ServicesClientRestartReplicaResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServicesServerTransport.
@@ -93,6 +99,8 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = s.dispatchGet(req)
 			case "ServicesClient.NewListByApplicationsPager":
 				res.resp, res.err = s.dispatchNewListByApplicationsPager(req)
+			case "ServicesClient.BeginRestartReplica":
+				res.resp, res.err = s.dispatchBeginRestartReplica(req)
 			case "ServicesClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -305,6 +313,62 @@ func (s *ServicesServerTransport) dispatchNewListByApplicationsPager(req *http.R
 	if !server.PagerResponderMore(newListByApplicationsPager) {
 		s.newListByApplicationsPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchBeginRestartReplica(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRestartReplica == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestartReplica not implemented")}
+	}
+	beginRestartReplica := s.beginRestartReplica.get(req)
+	if beginRestartReplica == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/services/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restartReplica`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.RestartReplicaRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		applicationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRestartReplica(req.Context(), resourceGroupNameParam, clusterNameParam, applicationNameParam, serviceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestartReplica = &respr
+		s.beginRestartReplica.add(req, beginRestartReplica)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestartReplica, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginRestartReplica.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestartReplica) {
+		s.beginRestartReplica.remove(req)
+	}
+
 	return resp, nil
 }
 

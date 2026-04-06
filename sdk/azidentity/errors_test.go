@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -14,6 +11,8 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 // testing our custom Error interface for the authentication failed error type
@@ -61,13 +60,12 @@ func TestAuthenticationFailedErrorInterface(t *testing.T) {
 }
 
 func TestAuthenticationFailedErrorWithoutResponse(t *testing.T) {
-	err := newAuthenticationFailedError(credNameAzureCLI, "error message", nil)
-	if _, ok := err.(*AuthenticationFailedError); !ok {
-		t.Fatalf("expected AuthenticationFailedError, received %T", err)
-	}
-	errMsg := err.Error()
-	if errMsg != "AzureCLICredential: error message" {
-		t.Fatalf("unexpected error message returned: %s", errMsg)
+	msg := "it didn't work"
+	for cred, anchor := range tsgAnchors {
+		expected := fmt.Sprintf("%s: %s. To troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#%s", cred, msg, anchor)
+		err := newAuthenticationFailedError(cred, msg, nil)
+		require.IsType(t, &AuthenticationFailedError{}, err)
+		require.EqualError(t, err, expected)
 	}
 }
 

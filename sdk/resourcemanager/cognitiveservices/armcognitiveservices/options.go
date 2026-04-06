@@ -24,6 +24,12 @@ type AccountCapabilityHostsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AccountCapabilityHostsClientListOptions contains the optional parameters for the AccountCapabilityHostsClient.NewListPager
+// method.
+type AccountCapabilityHostsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AccountConnectionsClientCreateOptions contains the optional parameters for the AccountConnectionsClient.Create method.
 type AccountConnectionsClientCreateOptions struct {
 	// The object for creating or updating a new account connection
@@ -412,6 +418,12 @@ type ProjectCapabilityHostsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ProjectCapabilityHostsClientListOptions contains the optional parameters for the ProjectCapabilityHostsClient.NewListPager
+// method.
+type ProjectCapabilityHostsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ProjectConnectionsClientCreateOptions contains the optional parameters for the ProjectConnectionsClient.Create method.
 type ProjectConnectionsClientCreateOptions struct {
 	// The object for creating or updating a new account connection
@@ -471,6 +483,27 @@ type ProjectsClientGetOptions struct {
 
 // ProjectsClientListOptions contains the optional parameters for the ProjectsClient.NewListPager method.
 type ProjectsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaTiersClientCreateOrUpdateOptions contains the optional parameters for the QuotaTiersClient.CreateOrUpdate method.
+type QuotaTiersClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaTiersClientGetOptions contains the optional parameters for the QuotaTiersClient.Get method.
+type QuotaTiersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaTiersClientListBySubscriptionOptions contains the optional parameters for the QuotaTiersClient.NewListBySubscriptionPager
+// method.
+type QuotaTiersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaTiersClientUpdateOptions contains the optional parameters for the QuotaTiersClient.Update method.
+type QuotaTiersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -557,6 +590,27 @@ type RaiPoliciesClientGetOptions struct {
 
 // RaiPoliciesClientListOptions contains the optional parameters for the RaiPoliciesClient.NewListPager method.
 type RaiPoliciesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiTopicsClientBeginDeleteOptions contains the optional parameters for the RaiTopicsClient.BeginDelete method.
+type RaiTopicsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RaiTopicsClientCreateOrUpdateOptions contains the optional parameters for the RaiTopicsClient.CreateOrUpdate method.
+type RaiTopicsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiTopicsClientGetOptions contains the optional parameters for the RaiTopicsClient.Get method.
+type RaiTopicsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiTopicsClientListOptions contains the optional parameters for the RaiTopicsClient.NewListPager method.
+type RaiTopicsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

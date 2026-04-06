@@ -86,6 +86,162 @@ type BillingContainersClientListBySubscriptionResponse struct {
 	BillingContainerListResult
 }
 
+// NamespaceAssetsClientCreateOrReplaceResponse contains the response from method NamespaceAssetsClient.BeginCreateOrReplace.
+type NamespaceAssetsClientCreateOrReplaceResponse struct {
+	// Asset definition.
+	NamespaceAsset
+}
+
+// NamespaceAssetsClientDeleteResponse contains the response from method NamespaceAssetsClient.BeginDelete.
+type NamespaceAssetsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceAssetsClientGetResponse contains the response from method NamespaceAssetsClient.Get.
+type NamespaceAssetsClientGetResponse struct {
+	// Asset definition.
+	NamespaceAsset
+}
+
+// NamespaceAssetsClientListByResourceGroupResponse contains the response from method NamespaceAssetsClient.NewListByResourceGroupPager.
+type NamespaceAssetsClientListByResourceGroupResponse struct {
+	// The response of a NamespaceAsset list operation.
+	NamespaceAssetListResult
+}
+
+// NamespaceAssetsClientUpdateResponse contains the response from method NamespaceAssetsClient.BeginUpdate.
+type NamespaceAssetsClientUpdateResponse struct {
+	// Asset definition.
+	NamespaceAsset
+}
+
+// NamespaceDevicesClientCreateOrReplaceResponse contains the response from method NamespaceDevicesClient.BeginCreateOrReplace.
+type NamespaceDevicesClientCreateOrReplaceResponse struct {
+	// Device definition.
+	NamespaceDevice
+}
+
+// NamespaceDevicesClientDeleteResponse contains the response from method NamespaceDevicesClient.BeginDelete.
+type NamespaceDevicesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceDevicesClientGetResponse contains the response from method NamespaceDevicesClient.Get.
+type NamespaceDevicesClientGetResponse struct {
+	// Device definition.
+	NamespaceDevice
+}
+
+// NamespaceDevicesClientListByResourceGroupResponse contains the response from method NamespaceDevicesClient.NewListByResourceGroupPager.
+type NamespaceDevicesClientListByResourceGroupResponse struct {
+	// The response of a NamespaceDevice list operation.
+	NamespaceDeviceListResult
+}
+
+// NamespaceDevicesClientUpdateResponse contains the response from method NamespaceDevicesClient.BeginUpdate.
+type NamespaceDevicesClientUpdateResponse struct {
+	// Device definition.
+	NamespaceDevice
+}
+
+// NamespaceDiscoveredAssetsClientCreateOrReplaceResponse contains the response from method NamespaceDiscoveredAssetsClient.BeginCreateOrReplace.
+type NamespaceDiscoveredAssetsClientCreateOrReplaceResponse struct {
+	// Discovered asset definition.
+	NamespaceDiscoveredAsset
+}
+
+// NamespaceDiscoveredAssetsClientDeleteResponse contains the response from method NamespaceDiscoveredAssetsClient.BeginDelete.
+type NamespaceDiscoveredAssetsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceDiscoveredAssetsClientGetResponse contains the response from method NamespaceDiscoveredAssetsClient.Get.
+type NamespaceDiscoveredAssetsClientGetResponse struct {
+	// Discovered asset definition.
+	NamespaceDiscoveredAsset
+}
+
+// NamespaceDiscoveredAssetsClientListByResourceGroupResponse contains the response from method NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager.
+type NamespaceDiscoveredAssetsClientListByResourceGroupResponse struct {
+	// The response of a NamespaceDiscoveredAsset list operation.
+	NamespaceDiscoveredAssetListResult
+}
+
+// NamespaceDiscoveredAssetsClientUpdateResponse contains the response from method NamespaceDiscoveredAssetsClient.BeginUpdate.
+type NamespaceDiscoveredAssetsClientUpdateResponse struct {
+	// Discovered asset definition.
+	NamespaceDiscoveredAsset
+}
+
+// NamespaceDiscoveredDevicesClientCreateOrReplaceResponse contains the response from method NamespaceDiscoveredDevicesClient.BeginCreateOrReplace.
+type NamespaceDiscoveredDevicesClientCreateOrReplaceResponse struct {
+	// Discovered device definition.
+	NamespaceDiscoveredDevice
+}
+
+// NamespaceDiscoveredDevicesClientDeleteResponse contains the response from method NamespaceDiscoveredDevicesClient.BeginDelete.
+type NamespaceDiscoveredDevicesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceDiscoveredDevicesClientGetResponse contains the response from method NamespaceDiscoveredDevicesClient.Get.
+type NamespaceDiscoveredDevicesClientGetResponse struct {
+	// Discovered device definition.
+	NamespaceDiscoveredDevice
+}
+
+// NamespaceDiscoveredDevicesClientListByResourceGroupResponse contains the response from method NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager.
+type NamespaceDiscoveredDevicesClientListByResourceGroupResponse struct {
+	// The response of a NamespaceDiscoveredDevice list operation.
+	NamespaceDiscoveredDeviceListResult
+}
+
+// NamespaceDiscoveredDevicesClientUpdateResponse contains the response from method NamespaceDiscoveredDevicesClient.BeginUpdate.
+type NamespaceDiscoveredDevicesClientUpdateResponse struct {
+	// Discovered device definition.
+	NamespaceDiscoveredDevice
+}
+
+// NamespacesClientCreateOrReplaceResponse contains the response from method NamespacesClient.BeginCreateOrReplace.
+type NamespacesClientCreateOrReplaceResponse struct {
+	// Namespace definition.
+	Namespace
+}
+
+// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
+type NamespacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
+type NamespacesClientGetResponse struct {
+	// Namespace definition.
+	Namespace
+}
+
+// NamespacesClientListByResourceGroupResponse contains the response from method NamespacesClient.NewListByResourceGroupPager.
+type NamespacesClientListByResourceGroupResponse struct {
+	// The response of a Namespace list operation.
+	NamespaceListResult
+}
+
+// NamespacesClientListBySubscriptionResponse contains the response from method NamespacesClient.NewListBySubscriptionPager.
+type NamespacesClientListBySubscriptionResponse struct {
+	// The response of a Namespace list operation.
+	NamespaceListResult
+}
+
+// NamespacesClientMigrateResponse contains the response from method NamespacesClient.BeginMigrate.
+type NamespacesClientMigrateResponse struct {
+	// placeholder for future response values
+}
+
+// NamespacesClientUpdateResponse contains the response from method NamespacesClient.BeginUpdate.
+type NamespacesClientUpdateResponse struct {
+	// Namespace definition.
+	Namespace
+}
+
 // OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
 type OperationStatusClientGetResponse struct {
 	// The current status of an async operation.
@@ -96,4 +252,85 @@ type OperationStatusClientGetResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// SchemaRegistriesClientCreateOrReplaceResponse contains the response from method SchemaRegistriesClient.BeginCreateOrReplace.
+type SchemaRegistriesClientCreateOrReplaceResponse struct {
+	// Schema registry definition.
+	SchemaRegistry
+}
+
+// SchemaRegistriesClientDeleteResponse contains the response from method SchemaRegistriesClient.BeginDelete.
+type SchemaRegistriesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SchemaRegistriesClientGetResponse contains the response from method SchemaRegistriesClient.Get.
+type SchemaRegistriesClientGetResponse struct {
+	// Schema registry definition.
+	SchemaRegistry
+}
+
+// SchemaRegistriesClientListByResourceGroupResponse contains the response from method SchemaRegistriesClient.NewListByResourceGroupPager.
+type SchemaRegistriesClientListByResourceGroupResponse struct {
+	// The response of a SchemaRegistry list operation.
+	SchemaRegistryListResult
+}
+
+// SchemaRegistriesClientListBySubscriptionResponse contains the response from method SchemaRegistriesClient.NewListBySubscriptionPager.
+type SchemaRegistriesClientListBySubscriptionResponse struct {
+	// The response of a SchemaRegistry list operation.
+	SchemaRegistryListResult
+}
+
+// SchemaRegistriesClientUpdateResponse contains the response from method SchemaRegistriesClient.BeginUpdate.
+type SchemaRegistriesClientUpdateResponse struct {
+	// Schema registry definition.
+	SchemaRegistry
+}
+
+// SchemaVersionsClientCreateOrReplaceResponse contains the response from method SchemaVersionsClient.CreateOrReplace.
+type SchemaVersionsClientCreateOrReplaceResponse struct {
+	// Schema version's definition.
+	SchemaVersion
+}
+
+// SchemaVersionsClientDeleteResponse contains the response from method SchemaVersionsClient.BeginDelete.
+type SchemaVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SchemaVersionsClientGetResponse contains the response from method SchemaVersionsClient.Get.
+type SchemaVersionsClientGetResponse struct {
+	// Schema version's definition.
+	SchemaVersion
+}
+
+// SchemaVersionsClientListBySchemaResponse contains the response from method SchemaVersionsClient.NewListBySchemaPager.
+type SchemaVersionsClientListBySchemaResponse struct {
+	// The response of a SchemaVersion list operation.
+	SchemaVersionListResult
+}
+
+// SchemasClientCreateOrReplaceResponse contains the response from method SchemasClient.CreateOrReplace.
+type SchemasClientCreateOrReplaceResponse struct {
+	// Schema definition.
+	Schema
+}
+
+// SchemasClientDeleteResponse contains the response from method SchemasClient.BeginDelete.
+type SchemasClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SchemasClientGetResponse contains the response from method SchemasClient.Get.
+type SchemasClientGetResponse struct {
+	// Schema definition.
+	Schema
+}
+
+// SchemasClientListBySchemaRegistryResponse contains the response from method SchemasClient.NewListBySchemaRegistryPager.
+type SchemasClientListBySchemaRegistryResponse struct {
+	// The response of a Schema list operation.
+	SchemaListResult
 }

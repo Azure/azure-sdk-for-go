@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
+// Generated from example definition: 2025-11-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleRetentionPoliciesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/RetentionPolicies_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-11-01/RetentionPolicies_Delete_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleRetentionPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/RetentionPolicies_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-11-01/RetentionPolicies_Get_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleRetentionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
+// Generated from example definition: 2025-11-01/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_NewListBySchedulerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleRetentionPoliciesClient_NewListBySchedulerPager() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/RetentionPolicies_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-11-01/RetentionPolicies_Update_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

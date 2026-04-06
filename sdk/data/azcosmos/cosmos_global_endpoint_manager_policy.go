@@ -30,6 +30,9 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 			_ = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
 		}()
 	}
+	if p.gem.CanUseMultipleWriteLocations() {
+		req.Raw().Header.Set(cosmosHeaderAllowTentativeWrites, "true")
+	}
 	if err != nil {
 		return nil, err
 	}

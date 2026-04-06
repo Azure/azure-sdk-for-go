@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +21,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -58,21 +55,40 @@ func (l *ListAssociatedTrafficFiltersServerTransport) Do(req *http.Request) (*ht
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return l.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ListAssociatedTrafficFiltersClient.List":
-		resp, err = l.dispatchList(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (l *ListAssociatedTrafficFiltersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if listAssociatedTrafficFiltersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = listAssociatedTrafficFiltersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ListAssociatedTrafficFiltersClient.List":
+				res.resp, res.err = l.dispatchList(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (l *ListAssociatedTrafficFiltersServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
@@ -82,7 +98,7 @@ func (l *ListAssociatedTrafficFiltersServerTransport) dispatchList(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAssociatedTrafficFilters`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -106,4 +122,10 @@ func (l *ListAssociatedTrafficFiltersServerTransport) dispatchList(req *http.Req
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ListAssociatedTrafficFiltersServerTransport
+var listAssociatedTrafficFiltersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

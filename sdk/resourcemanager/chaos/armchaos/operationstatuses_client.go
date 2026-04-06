@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-// OperationStatusesClient contains the methods for the OperationStatuses group.
+// OperationStatusesClient - Chaos Studio async operation status resource operations.
 // Don't use this type directly, use NewOperationStatusesClient() instead.
 type OperationStatusesClient struct {
 	internal       *arm.Client
@@ -26,7 +26,7 @@ type OperationStatusesClient struct {
 // NewOperationStatusesClient creates a new instance of OperationStatusesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

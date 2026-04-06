@@ -4,79 +4,6 @@
 
 package armconnectedcache
 
-// CacheNodesOperationsClientCreateorUpdateResponse contains the response from method CacheNodesOperationsClient.BeginCreateorUpdate.
-type CacheNodesOperationsClientCreateorUpdateResponse struct {
-	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
-	CacheNodePreviewResource
-}
-
-// CacheNodesOperationsClientDeleteResponse contains the response from method CacheNodesOperationsClient.Delete.
-type CacheNodesOperationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// CacheNodesOperationsClientGetResponse contains the response from method CacheNodesOperationsClient.Get.
-type CacheNodesOperationsClientGetResponse struct {
-	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
-	CacheNodePreviewResource
-}
-
-// CacheNodesOperationsClientListByResourceGroupResponse contains the response from method CacheNodesOperationsClient.NewListByResourceGroupPager.
-type CacheNodesOperationsClientListByResourceGroupResponse struct {
-	// The response of a CacheNodePreviewResource list operation.
-	CacheNodePreviewResourceListResult
-}
-
-// CacheNodesOperationsClientListBySubscriptionResponse contains the response from method CacheNodesOperationsClient.NewListBySubscriptionPager.
-type CacheNodesOperationsClientListBySubscriptionResponse struct {
-	// The response of a CacheNodePreviewResource list operation.
-	CacheNodePreviewResourceListResult
-}
-
-// CacheNodesOperationsClientUpdateResponse contains the response from method CacheNodesOperationsClient.Update.
-type CacheNodesOperationsClientUpdateResponse struct {
-	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
-	CacheNodePreviewResource
-}
-
-// EnterpriseCustomerOperationsClientCreateOrUpdateResponse contains the response from method EnterpriseCustomerOperationsClient.BeginCreateOrUpdate.
-type EnterpriseCustomerOperationsClientCreateOrUpdateResponse struct {
-	// ConnectedCache Resource. Represents the high level Nodes needed to provision CacheNode and customer resources used in private
-	// preview
-	EnterprisePreviewResource
-}
-
-// EnterpriseCustomerOperationsClientDeleteResponse contains the response from method EnterpriseCustomerOperationsClient.Delete.
-type EnterpriseCustomerOperationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// EnterpriseCustomerOperationsClientGetResponse contains the response from method EnterpriseCustomerOperationsClient.Get.
-type EnterpriseCustomerOperationsClientGetResponse struct {
-	// ConnectedCache Resource. Represents the high level Nodes needed to provision CacheNode and customer resources used in private
-	// preview
-	EnterprisePreviewResource
-}
-
-// EnterpriseCustomerOperationsClientListByResourceGroupResponse contains the response from method EnterpriseCustomerOperationsClient.NewListByResourceGroupPager.
-type EnterpriseCustomerOperationsClientListByResourceGroupResponse struct {
-	// The response of a EnterprisePreviewResource list operation.
-	EnterprisePreviewResourceListResult
-}
-
-// EnterpriseCustomerOperationsClientListBySubscriptionResponse contains the response from method EnterpriseCustomerOperationsClient.NewListBySubscriptionPager.
-type EnterpriseCustomerOperationsClientListBySubscriptionResponse struct {
-	// The response of a EnterprisePreviewResource list operation.
-	EnterprisePreviewResourceListResult
-}
-
-// EnterpriseCustomerOperationsClientUpdateResponse contains the response from method EnterpriseCustomerOperationsClient.Update.
-type EnterpriseCustomerOperationsClientUpdateResponse struct {
-	// ConnectedCache Resource. Represents the high level Nodes needed to provision CacheNode and customer resources used in private
-	// preview
-	EnterprisePreviewResource
-}
-
 // EnterpriseMccCacheNodesOperationsClientCreateOrUpdateResponse contains the response from method EnterpriseMccCacheNodesOperationsClient.BeginCreateOrUpdate.
 type EnterpriseMccCacheNodesOperationsClientCreateOrUpdateResponse struct {
 	// Represents the high level Nodes needed to provision cache node resources
@@ -88,10 +15,28 @@ type EnterpriseMccCacheNodesOperationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse contains the response from method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory.
+type EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse struct {
+	// Mcc cache node resource auto update history.
+	MccCacheNodeAutoUpdateHistory
+}
+
 // EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse contains the response from method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeInstallDetails.
 type EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse struct {
 	// Mcc cache node resource all install details.
 	MccCacheNodeInstallDetails
+}
+
+// EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse contains the response from method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory.
+type EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse struct {
+	// Mcc cache node resource issue history.
+	MccCacheNodeIssueHistory
+}
+
+// EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse contains the response from method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeTLSCertificateHistory.
+type EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse struct {
+	// Mcc cache node resource Tls certificate history details.
+	MccCacheNodeTLSCertificateHistory
 }
 
 // EnterpriseMccCacheNodesOperationsClientGetResponse contains the response from method EnterpriseMccCacheNodesOperationsClient.Get.
@@ -164,10 +109,22 @@ type IspCacheNodesOperationsClientGetBgpCidrsResponse struct {
 	MccCacheNodeBgpCidrDetails
 }
 
+// IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse contains the response from method IspCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory.
+type IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse struct {
+	// Mcc cache node resource auto update history.
+	MccCacheNodeAutoUpdateHistory
+}
+
 // IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse contains the response from method IspCacheNodesOperationsClient.GetCacheNodeInstallDetails.
 type IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse struct {
 	// Mcc cache node resource all install details.
 	MccCacheNodeInstallDetails
+}
+
+// IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse contains the response from method IspCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory.
+type IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse struct {
+	// Mcc cache node resource issue history.
+	MccCacheNodeIssueHistory
 }
 
 // IspCacheNodesOperationsClientGetResponse contains the response from method IspCacheNodesOperationsClient.Get.

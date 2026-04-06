@@ -150,6 +150,7 @@ func ExampleWatchersClient_Get() {
 	// 			ProvisioningState: to.Ptr(armdatabasewatcher.ProvisioningStateSucceeded),
 	// 		},
 	// 		Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+	// 			Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 	// 			UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 	// 			},
 	// 			PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -206,6 +207,7 @@ func ExampleWatchersClient_NewListByResourceGroupPager() {
 		// 				Tags: map[string]*string{
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -254,6 +256,7 @@ func ExampleWatchersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -290,6 +293,7 @@ func ExampleWatchersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -326,6 +330,7 @@ func ExampleWatchersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -362,6 +367,7 @@ func ExampleWatchersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -406,6 +412,7 @@ func ExampleWatchersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -434,6 +441,7 @@ func ExampleWatchersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -535,6 +543,7 @@ func ExampleWatchersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -571,6 +580,7 @@ func ExampleWatchersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -607,6 +617,7 @@ func ExampleWatchersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -643,6 +654,7 @@ func ExampleWatchersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -687,6 +699,7 @@ func ExampleWatchersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),
@@ -715,6 +728,7 @@ func ExampleWatchersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				Identity: &armdatabasewatcher.ManagedServiceIdentityV4{
+		// 					Type: to.Ptr(armdatabasewatcher.ManagedServiceIdentityType("SystemAssignedIdentity")),
 		// 					UserAssignedIdentities: map[string]*armdatabasewatcher.UserAssignedIdentity{
 		// 					},
 		// 					PrincipalID: to.Ptr("49e0fbd3-75e8-44e7-96fd-5b64d9ad818d"),

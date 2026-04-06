@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2025-03-01/Operations_List_MaximumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
+func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -43,7 +43,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 					Provider: to.Ptr("lottcde"),
 		// 					Resource: to.Ptr("lchjffakidtthnuaa"),
 		// 					Operation: to.Ptr("ipqvheuesyujwjqhnmg"),
-		// 					Description: to.Ptr("gicugbypsgqayjlfyrxvnietwzx"),
+		// 					Description: to.Ptr("xjijlfawuqufbocpw"),
 		// 				},
 		// 				Origin: to.Ptr(armneonpostgres.OriginUser),
 		// 				ActionType: to.Ptr(armneonpostgres.ActionTypeInternal),
@@ -56,7 +56,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 }
 
 // Generated from example definition: 2025-03-01/Operations_List_MinimumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
+func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

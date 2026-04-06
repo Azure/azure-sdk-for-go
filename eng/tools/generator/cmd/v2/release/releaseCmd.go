@@ -63,7 +63,6 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 }
 
 type Flags struct {
-	VersionNumber       string
 	SwaggerRepo         string
 	PackageTitle        string
 	SDKRepo             string
@@ -72,15 +71,14 @@ type Flags struct {
 	SkipCreateBranch    bool
 	SkipGenerateExample bool
 	PackageConfig       string
-	GoVersion           string
 	Token               string
+	ForceStableVersion  bool
 	TypeSpecConfig      string
 	TypeSpecGoOption    string
 	TspClientOption     []string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
-	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("package-title", "", "Specifies the title of this package")
 	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
@@ -89,8 +87,8 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
+	flagSet.Bool("force-stable-version", false, "Even if input-files contains preview files, they are forced to be generated as stable versions. At the same time, the tag must not contain preview.")
 	flagSet.String("tsp-config", "", "The path of the typespec tspconfig.yaml")
 	flagSet.String("tsp-option", "", "Emit typespec-go options, only valid when tsp-config is configured. e: option1=value1;option2=value2")
 	flagSet.StringSlice("tsp-client-option", nil, "The tsp-client(@azure-tools/typespec-client-generator-cli) init options. e: --save-inputs,--debug")
@@ -98,7 +96,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber:       flags.GetString(flagSet, "version-number"),
 		PackageTitle:        flags.GetString(flagSet, "package-title"),
 		SDKRepo:             flags.GetString(flagSet, "sdk-repo"),
 		SwaggerRepo:         flags.GetString(flagSet, "spec-repo"),
@@ -107,8 +104,8 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
 		PackageConfig:       flags.GetString(flagSet, "package-config"),
-		GoVersion:           flags.GetString(flagSet, "go-version"),
 		Token:               flags.GetString(flagSet, "token"),
+		ForceStableVersion:  flags.GetBool(flagSet, "force-stable-version"),
 		TypeSpecConfig:      flags.GetString(flagSet, "tsp-config"),
 		TypeSpecGoOption:    flags.GetString(flagSet, "tsp-option"),
 		TspClientOption:     flags.GetStringSlice(flagSet, "tsp-client-option"),
@@ -169,11 +166,9 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			SpecificPackageTitle: c.flags.PackageTitle,
-			SpecificVersion:      c.flags.VersionNumber,
 			SpecRPName:           c.flags.SpecRPName,
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,
-			GoVersion:            c.flags.GoVersion,
 			TypeSpecEmitOption:   c.flags.TypeSpecGoOption,
 			TspClientOptions:     c.flags.TspClientOption,
 		})
@@ -190,11 +185,10 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			NamespaceName:        c.namespaceName,
 			NamespaceConfig:      c.flags.PackageConfig,
 			SpecificPackageTitle: c.flags.PackageTitle,
-			SpecificVersion:      c.flags.VersionNumber,
 			SpecRPName:           c.flags.SpecRPName,
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,
-			GoVersion:            c.flags.GoVersion,
+			ForceStableVersion:   c.flags.ForceStableVersion,
 		})
 		if len(errs) > 0 {
 			// GenerateFromSwagger is a batch run function, one error means one package is failed.
@@ -268,8 +262,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			if info.ReleaseDate != nil {
 				c.flags.ReleaseDate = info.ReleaseDate.Format("2006-01-02")
 			}
-			err = c.generate(sdkRepo, specCommitHash)
-			if err != nil {
+			if err = c.generate(sdkRepo, specCommitHash); err != nil {
 				generateErr = append(generateErr, err)
 				continue
 			}
@@ -312,8 +305,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			if packageInfo.ReleaseDate != nil {
 				c.flags.ReleaseDate = packageInfo.ReleaseDate.Format("2006-01-02")
 			}
-			err = c.generate(sdkRepo, specCommitHash)
-			if err != nil {
+			if err = c.generate(sdkRepo, specCommitHash); err != nil {
 				generateErr = append(generateErr, err)
 				continue
 			}
@@ -364,14 +356,12 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 
 			log.Printf("Leave a comment in %s...\n", issue)
 			issueNumber := strings.Split(issue.requestLink, "/")
-			err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], fmt.Sprintf(confirmComment, pullRequestUrl), c.flags.Token)
-			if err != nil {
+			if err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], fmt.Sprintf(confirmComment, pullRequestUrl), c.flags.Token); err != nil {
 				return err
 			}
 
 			log.Printf("Add Labels...\n")
-			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready", issue.pullRequestLabel})
-			if err != nil {
+			if err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready", issue.pullRequestLabel}); err != nil {
 				return err
 			}
 		}

@@ -22,7 +22,7 @@ All generated client operation names follow the pattern `xxxClient.XXXOperation`
 For long-running operations (LROs), the initial HTTP response does not return `200 OK`. Only subsequent polling requests return `200`. The `HasStatusCode` check on the initial response intentionally omits `http.StatusOK`. The fake server may define a `200` handler, but that is used by the polling logic, not the initial response path. Do not suggest adding `http.StatusOK` to the initial response status code check.
 
 ### Comments come from the API spec
-All doc comments in generated code are copied verbatim from the original API specification (TypeSpec or Swagger). Even if they appear incorrect, misleading, or inconsistent, they must not be modified in the SDK. Fixes should be made in the upstream API spec repository (`azure-rest-api-specs`) instead.
+All doc comments in generated code are copied verbatim from the original API specification (TypeSpec or Swagger). Even if they appear incorrect, misleading, or inconsistent, they must not be modified in the SDK. Do not suggest edits to these comments.
 
 ### Example values must not be changed
 Example values in generated example test files (e.g., placeholder GUIDs, resource names, property values) are produced directly from the API spec's example definitions. Do not suggest changing these values for consistency or style, even if they look like placeholders or differ from other examples.
@@ -31,7 +31,7 @@ Example values in generated example test files (e.g., placeholder GUIDs, resourc
 The `moduleName` constant in `version.go` intentionally omits the major version path suffix (e.g., it is `"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo"` rather than `".../armfoo/v2"`). This is by design. Do not suggest appending the version suffix to `moduleName`.
 
 ### Constant values are defined by the service team
-Constant values (enum members, endpoint types, etc.) in the generated code are defined by the service team in the API spec. Their casing and naming must not be changed in the SDK, even if they appear to violate the repo's acronym-casing convention. Fixes should be made in the upstream API spec instead.
+Constant values (enum members, endpoint types, etc.) in the generated code are defined by the service team in the API spec. Their casing and naming must not be changed in the SDK, even if they appear to violate the repo's acronym-casing convention. Do not suggest renaming or changing these constant values.
 
 ### Path parameters may intentionally contain URL-special characters
 Some path parameters (e.g., `resourceUri`) are intentionally inserted into the URL path without `url.PathEscape()` because they represent multi-segment resource IDs that contain slashes. This is by design. Do not suggest escaping these parameters.

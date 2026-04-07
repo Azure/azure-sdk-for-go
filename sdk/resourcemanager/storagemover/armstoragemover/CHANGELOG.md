@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0 (2026-04-06)
+## 2.4.0 (2026-04-07)
 ### Features Added
 
 - New value `CredentialTypeAzureKeyVaultS3WithHMAC` added to enum type `CredentialType`

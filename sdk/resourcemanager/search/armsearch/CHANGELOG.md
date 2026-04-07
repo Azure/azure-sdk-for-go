@@ -1,5 +1,30 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-03-27)
+### Features Added
+
+- New value `SKUNameServerless` added to enum type `SKUName`
+- New value `SearchBypassAzurePortal` added to enum type `SearchBypass`
+- New enum type `KnowledgeRetrieval` with values `KnowledgeRetrievalFree`, `KnowledgeRetrievalStandard`
+- New function `*ClientFactory.NewOfferingsClient() *OfferingsClient`
+- New function `*DataIdentity.GetDataIdentity() *DataIdentity`
+- New function `*DataNoneIdentity.GetDataIdentity() *DataIdentity`
+- New function `*DataUserAssignedIdentity.GetDataIdentity() *DataIdentity`
+- New function `NewOfferingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OfferingsClient, error)`
+- New function `*OfferingsClient.List(ctx context.Context, options *OfferingsClientListOptions) (OfferingsClientListResponse, error)`
+- New struct `AzureActiveDirectoryApplicationCredentials`
+- New struct `DataNoneIdentity`
+- New struct `DataUserAssignedIdentity`
+- New struct `FeatureOffering`
+- New struct `OfferingsByRegion`
+- New struct `OfferingsListResult`
+- New struct `ResourceEncryptionKey`
+- New struct `SKULimits`
+- New struct `SKUOffering`
+- New field `ServiceLevelEncryptionKey` in struct `EncryptionWithCmk`
+- New field `KnowledgeRetrieval` in struct `ServiceProperties`
+
+
 ## 2.0.0-beta.1 (2026-03-09)
 ### Breaking Changes
 

@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // SKUsClient contains the methods for the SKUs group.
@@ -43,7 +42,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // Get - Get SKU resource details within a offer of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - publisherName - The name of the publisher available within HCI cluster.
@@ -107,7 +106,7 @@ func (client *SKUsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -124,7 +123,7 @@ func (client *SKUsClient) getHandleResponse(resp *http.Response) (SKUsClientGetR
 
 // NewListByOfferPager - List Skus available for a offer within the HCI Cluster.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - publisherName - The name of the publisher available within HCI cluster.
@@ -184,7 +183,7 @@ func (client *SKUsClient) listByOfferCreateRequest(ctx context.Context, resource
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

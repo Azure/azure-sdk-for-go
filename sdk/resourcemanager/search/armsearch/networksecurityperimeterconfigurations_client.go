@@ -7,14 +7,13 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
@@ -43,7 +42,7 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 // Get - Gets a network security perimeter configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - nspConfigName - The network security perimeter configuration name.
@@ -95,7 +94,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +111,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getHandleResponse(re
 
 // NewListByServicePager - Gets a list of network security perimeter configurations for a search service.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - options - NetworkSecurityPerimeterConfigurationsClientListByServiceOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.NewListByServicePager
@@ -160,7 +159,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByServiceCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -179,7 +178,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByServiceHandleR
 // a manual resync with network security perimeter configurations by ensuring the search service carries the latest configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - nspConfigName - The network security perimeter configuration name.
@@ -206,7 +205,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcile(ctx c
 // a manual resync with network security perimeter configurations by ensuring the search service carries the latest configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx context.Context, resourceGroupName string, searchServiceName string, nspConfigName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile"
@@ -252,7 +251,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

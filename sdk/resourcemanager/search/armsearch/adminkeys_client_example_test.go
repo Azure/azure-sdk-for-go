@@ -6,13 +6,12 @@ package armsearch_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"log"
 )
 
-// Generated from example definition: 2025-05-01/SearchGetAdminKeys.json
+// Generated from example definition: 2026-03-01-preview/SearchGetAdminKeys.json
 func ExampleAdminKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +37,7 @@ func ExampleAdminKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/SearchRegenerateAdminKey.json
+// Generated from example definition: 2026-03-01-preview/SearchRegenerateAdminKey.json
 func ExampleAdminKeysClient_Regenerate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

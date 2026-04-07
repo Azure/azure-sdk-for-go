@@ -7,14 +7,13 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
@@ -42,7 +41,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // NewListSupportedPager - Gets a list of all supported private link resource types for the given service.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - options - PrivateLinkResourcesClientListSupportedOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListSupportedPager
@@ -90,7 +89,7 @@ func (client *PrivateLinkResourcesClient) listSupportedCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {

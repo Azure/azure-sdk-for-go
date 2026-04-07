@@ -40,6 +40,14 @@ func (c *ClientFactory) NewAgentsClient() *AgentsClient {
 	}
 }
 
+// NewConnectionsClient creates a new instance of ConnectionsClient.
+func (c *ClientFactory) NewConnectionsClient() *ConnectionsClient {
+	return &ConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewEndpointsClient creates a new instance of EndpointsClient.
 func (c *ClientFactory) NewEndpointsClient() *EndpointsClient {
 	return &EndpointsClient{

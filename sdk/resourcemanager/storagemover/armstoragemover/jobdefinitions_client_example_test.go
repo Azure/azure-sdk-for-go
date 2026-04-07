@@ -10,9 +10,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover/v2"
 	"log"
+	"time"
 )
 
-// Generated from example definition: 2025-07-01/JobDefinitions_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01/JobDefinitions_CreateOrUpdate.json
 func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,6 +34,9 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdate() {
 			SourceSubpath: to.Ptr("/"),
 			TargetName:    to.Ptr("examples-targetEndpointName"),
 			TargetSubpath: to.Ptr("/"),
+			Connections: []*string{
+				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -57,12 +61,16 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdate() {
 	// 			TargetName: to.Ptr("examples-targetEndpointName"),
 	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-targetEndpointName"),
 	// 			TargetSubpath: to.Ptr("/"),
+	// 			Connections: []*string{
+	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+	// 			},
+	// 			PreservePermissions: to.Ptr(false),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobDefinitions_CreateOrUpdate_CloudToCloud.json
+// Generated from example definition: 2025-12-01/JobDefinitions_CreateOrUpdate_CloudToCloud.json
 func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateCloudToCloud() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,6 +91,9 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateClou
 			TargetName:    to.Ptr("examples-targetEndpointName"),
 			TargetSubpath: to.Ptr("/"),
 			AgentName:     to.Ptr("dummy-agent"),
+			Connections: []*string{
+				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -108,12 +119,102 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateClou
 	// 			TargetSubpath: to.Ptr("/"),
 	// 			AgentName: to.Ptr("migration-agent"),
 	// 			AgentResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
+	// 			Connections: []*string{
+	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobDefinitions_Delete.json
+// Generated from example definition: 2025-12-01/JobDefinitions_CreateOrUpdate_With_Schedule.json
+func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateWithSchedule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("60bcfc77-6589-4da2-b7fd-f9ec9322cf95", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewJobDefinitionsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", "examples-jobDefinitionName", armstoragemover.JobDefinition{
+		Properties: &armstoragemover.JobDefinitionProperties{
+			Description:   to.Ptr("Example Job Definition Description"),
+			CopyMode:      to.Ptr(armstoragemover.CopyModeAdditive),
+			JobType:       to.Ptr(armstoragemover.JobTypeCloudToCloud),
+			SourceName:    to.Ptr("examples-sourceEndpointName"),
+			SourceSubpath: to.Ptr("/"),
+			TargetName:    to.Ptr("examples-targetEndpointName"),
+			TargetSubpath: to.Ptr("/"),
+			AgentName:     to.Ptr("dummy-agent"),
+			Connections: []*string{
+				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+			},
+			Schedule: &armstoragemover.ScheduleInfo{
+				Frequency: to.Ptr(armstoragemover.FrequencyWeekly),
+				IsActive:  to.Ptr(true),
+				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-01T00:00:00Z"); return t }()),
+				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T12:00:00Z"); return t }()),
+				ExecutionTime: &armstoragemover.Time{
+					Hour:   to.Ptr[int32](9),
+					Minute: to.Ptr(armstoragemover.MinuteZero),
+				},
+				DaysOfWeek: []*string{
+					to.Ptr("Monday"),
+					to.Ptr("Wednesday"),
+					to.Ptr("Friday"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragemover.JobDefinitionsClientCreateOrUpdateResponse{
+	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName/jobDefinitions/examples-jobDefinitionName"),
+	// 		Name: to.Ptr("examples-jobDefinitionName"),
+	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projectName/jobDefinitionName"),
+	// 		Properties: &armstoragemover.JobDefinitionProperties{
+	// 			Description: to.Ptr("Example Job Definition Description"),
+	// 			CopyMode: to.Ptr(armstoragemover.CopyModeAdditive),
+	// 			JobType: to.Ptr(armstoragemover.JobTypeCloudToCloud),
+	// 			SourceName: to.Ptr("examples-sourceEndpointName"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-sourceEndpointName"),
+	// 			SourceSubpath: to.Ptr("/"),
+	// 			TargetName: to.Ptr("examples-targetEndpointName"),
+	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-targetEndpointName"),
+	// 			TargetSubpath: to.Ptr("/"),
+	// 			AgentName: to.Ptr("migration-agent"),
+	// 			AgentResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
+	// 			Connections: []*string{
+	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+	// 			},
+	// 			Schedule: &armstoragemover.ScheduleInfo{
+	// 				Frequency: to.Ptr(armstoragemover.FrequencyWeekly),
+	// 				IsActive: to.Ptr(true),
+	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-01T00:00:00Z"); return t}()),
+	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T12:00:00Z"); return t}()),
+	// 				ExecutionTime: &armstoragemover.Time{
+	// 					Hour: to.Ptr[int32](9),
+	// 					Minute: to.Ptr(				armstoragemover.MinuteZero),
+	// 				},
+	// 				DaysOfWeek: []*string{
+	// 					to.Ptr("Monday"),
+	// 					to.Ptr("Wednesday"),
+	// 					to.Ptr("Friday"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01/JobDefinitions_Delete.json
 func ExampleJobDefinitionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,8 +240,8 @@ func ExampleJobDefinitionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobDefinitions_Get.json
-func ExampleJobDefinitionsClient_Get() {
+// Generated from example definition: 2025-12-01/JobDefinitions_Get.json
+func ExampleJobDefinitionsClient_Get_jobDefinitionsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -173,12 +274,72 @@ func ExampleJobDefinitionsClient_Get() {
 	// 			TargetName: to.Ptr("examples-targetEndpointName"),
 	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-targetEndpointName"),
 	// 			TargetSubpath: to.Ptr("/"),
+	// 			Connections: []*string{
+	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobDefinitions_List.json
+// Generated from example definition: 2025-12-01/JobDefinitions_Get_With_Schedule.json
+func ExampleJobDefinitionsClient_Get_jobDefinitionsGetWithSchedule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("60bcfc77-6589-4da2-b7fd-f9ec9322cf95", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewJobDefinitionsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", "examples-jobDefinitionName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragemover.JobDefinitionsClientGetResponse{
+	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 		Name: to.Ptr("examples-jobDefinitionName"),
+	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/jobDefinitions"),
+	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/jobDefinitions/examples-jobDefinitionName"),
+	// 		Properties: &armstoragemover.JobDefinitionProperties{
+	// 			Description: to.Ptr("Example Job Definition Description"),
+	// 			AgentName: to.Ptr("migration-agent"),
+	// 			AgentResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
+	// 			CopyMode: to.Ptr(armstoragemover.CopyModeAdditive),
+	// 			SourceName: to.Ptr("examples-sourceEndpointName"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-sourceEndpointName"),
+	// 			SourceSubpath: to.Ptr("/"),
+	// 			TargetName: to.Ptr("examples-targetEndpointName"),
+	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-targetEndpointName"),
+	// 			TargetSubpath: to.Ptr("/"),
+	// 			Connections: []*string{
+	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+	// 			},
+	// 			Schedule: &armstoragemover.ScheduleInfo{
+	// 				Frequency: to.Ptr(armstoragemover.FrequencyWeekly),
+	// 				IsActive: to.Ptr(true),
+	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-01T00:00:00Z"); return t}()),
+	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T12:00:00Z"); return t}()),
+	// 				ExecutionTime: &armstoragemover.Time{
+	// 					Hour: to.Ptr[int32](9),
+	// 					Minute: to.Ptr(				armstoragemover.MinuteZero),
+	// 				},
+	// 				DaysOfWeek: []*string{
+	// 					to.Ptr("Monday"),
+	// 					to.Ptr("Wednesday"),
+	// 					to.Ptr("Friday"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01/JobDefinitions_List.json
 func ExampleJobDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,6 +380,9 @@ func ExampleJobDefinitionsClient_NewListPager() {
 		// 					TargetName: to.Ptr("examples-targetEndpointName1"),
 		// 					TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-targetEndpointName1"),
 		// 					TargetSubpath: to.Ptr("/"),
+		// 					Connections: []*string{
+		// 						to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection1"),
+		// 					},
 		// 				},
 		// 			},
 		// 			{
@@ -236,6 +400,9 @@ func ExampleJobDefinitionsClient_NewListPager() {
 		// 					TargetName: to.Ptr("examples-targetEndpointName2"),
 		// 					TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-targetEndpointName2"),
 		// 					TargetSubpath: to.Ptr("/"),
+		// 					Connections: []*string{
+		// 						to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection2"),
+		// 					},
 		// 				},
 		// 				SystemData: &armstoragemover.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T01:01:01.1075056Z"); return t}()),
@@ -261,6 +428,9 @@ func ExampleJobDefinitionsClient_NewListPager() {
 		// 					TargetName: to.Ptr("examples-targetEndpointName3"),
 		// 					TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-targetEndpointName3"),
 		// 					TargetSubpath: to.Ptr("/"),
+		// 					Connections: []*string{
+		// 						to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection3"),
+		// 					},
 		// 				},
 		// 			},
 		// 		},
@@ -269,7 +439,7 @@ func ExampleJobDefinitionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/JobDefinitions_StartJob.json
+// Generated from example definition: 2025-12-01/JobDefinitions_StartJob.json
 func ExampleJobDefinitionsClient_StartJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +464,7 @@ func ExampleJobDefinitionsClient_StartJob() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobDefinitions_StopJob.json
+// Generated from example definition: 2025-12-01/JobDefinitions_StopJob.json
 func ExampleJobDefinitionsClient_StopJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +489,7 @@ func ExampleJobDefinitionsClient_StopJob() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobDefinitions_Update.json
+// Generated from example definition: 2025-12-01/JobDefinitions_Update.json
 func ExampleJobDefinitionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,6 +504,9 @@ func ExampleJobDefinitionsClient_Update() {
 		Properties: &armstoragemover.JobDefinitionUpdateProperties{
 			Description: to.Ptr("Updated Job Definition Description"),
 			AgentName:   to.Ptr("updatedAgentName"),
+			Connections: []*string{
+				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -358,6 +531,9 @@ func ExampleJobDefinitionsClient_Update() {
 	// 			TargetName: to.Ptr("updatedTarget"),
 	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/updatedTarget"),
 	// 			TargetSubpath: to.Ptr("/"),
+	// 			Connections: []*string{
+	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
+	// 			},
 	// 		},
 	// 	},
 	// }

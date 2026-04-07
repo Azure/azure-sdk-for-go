@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ExtensionsClient contains the methods for the Extensions group.
@@ -43,7 +42,7 @@ func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Create Extension for HCI cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
@@ -70,7 +69,7 @@ func (client *ExtensionsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Create - Create Extension for HCI cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 func (client *ExtensionsClient) create(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, extension Extension, options *ExtensionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginCreate"
@@ -120,7 +119,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +132,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 // BeginDelete - Delete particular Arc Extension of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
@@ -160,7 +159,7 @@ func (client *ExtensionsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete particular Arc Extension of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 func (client *ExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, options *ExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginDelete"
@@ -210,7 +209,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -218,7 +217,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get particular Arc Extension of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
@@ -274,7 +273,7 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +290,7 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 
 // NewListByArcSettingPager - List all Extensions under ArcSetting resource.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
@@ -344,7 +343,7 @@ func (client *ExtensionsClient) listByArcSettingCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -362,7 +361,7 @@ func (client *ExtensionsClient) listByArcSettingHandleResponse(resp *http.Respon
 // BeginUpdate - Update Extension for HCI cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
@@ -390,7 +389,7 @@ func (client *ExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - Update Extension for HCI cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 func (client *ExtensionsClient) update(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, extension ExtensionPatch, options *ExtensionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginUpdate"
@@ -440,7 +439,7 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -453,7 +452,7 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 // BeginUpgrade - Upgrade a particular Arc Extension of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
@@ -480,7 +479,7 @@ func (client *ExtensionsClient) BeginUpgrade(ctx context.Context, resourceGroupN
 // Upgrade - Upgrade a particular Arc Extension of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 func (client *ExtensionsClient) upgrade(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, extensionUpgradeParameters ExtensionUpgradeParameters, options *ExtensionsClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginUpgrade"
@@ -530,7 +529,7 @@ func (client *ExtensionsClient) upgradeCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, extensionUpgradeParameters); err != nil {

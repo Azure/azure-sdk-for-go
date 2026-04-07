@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/PutSecuritySettings.json
+// Generated from example definition: 2026-02-01/PutSecuritySettings.json
 func ExampleSecuritySettingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +69,7 @@ func ExampleSecuritySettingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteSecuritySettings.json
+// Generated from example definition: 2026-02-01/DeleteSecuritySettings.json
 func ExampleSecuritySettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +90,7 @@ func ExampleSecuritySettingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/GetSecuritySettings.json
+// Generated from example definition: 2026-02-01/GetSecuritySettings.json
 func ExampleSecuritySettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +137,7 @@ func ExampleSecuritySettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListSecuritySettingsByCluster.json
+// Generated from example definition: 2026-02-01/ListSecuritySettingsByCluster.json
 func ExampleSecuritySettingsClient_NewListByClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -7,11 +7,10 @@ package fake
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strings"
 	"sync"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServerFactory is a fake server for instances of the armazurestackhci.ClientFactory type.
@@ -19,17 +18,11 @@ type ServerFactory struct {
 	// ArcSettingsServer contains the fakes for client ArcSettingsClient
 	ArcSettingsServer ArcSettingsServer
 
-	// ClusterJobsServer contains the fakes for client ClusterJobsClient
-	ClusterJobsServer ClusterJobsServer
-
 	// ClustersServer contains the fakes for client ClustersClient
 	ClustersServer ClustersServer
 
 	// DeploymentSettingsServer contains the fakes for client DeploymentSettingsClient
 	DeploymentSettingsServer DeploymentSettingsServer
-
-	// DevicePoolsServer contains the fakes for client DevicePoolsClient
-	DevicePoolsServer DevicePoolsServer
 
 	// EdgeDeviceJobsServer contains the fakes for client EdgeDeviceJobsClient
 	EdgeDeviceJobsServer EdgeDeviceJobsServer
@@ -37,17 +30,8 @@ type ServerFactory struct {
 	// EdgeDevicesServer contains the fakes for client EdgeDevicesClient
 	EdgeDevicesServer EdgeDevicesServer
 
-	// EdgeMachineJobsServer contains the fakes for client EdgeMachineJobsClient
-	EdgeMachineJobsServer EdgeMachineJobsServer
-
-	// EdgeMachinesServer contains the fakes for client EdgeMachinesClient
-	EdgeMachinesServer EdgeMachinesServer
-
 	// ExtensionsServer contains the fakes for client ExtensionsClient
 	ExtensionsServer ExtensionsServer
-
-	// KubernetesVersionsServer contains the fakes for client KubernetesVersionsClient
-	KubernetesVersionsServer KubernetesVersionsServer
 
 	// OffersServer contains the fakes for client OffersClient
 	OffersServer OffersServer
@@ -55,35 +39,17 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
-	// OsImagesServer contains the fakes for client OsImagesClient
-	OsImagesServer OsImagesServer
-
-	// OwnershipVouchersServer contains the fakes for client OwnershipVouchersClient
-	OwnershipVouchersServer OwnershipVouchersServer
-
-	// PlatformUpdatesServer contains the fakes for client PlatformUpdatesClient
-	PlatformUpdatesServer PlatformUpdatesServer
-
-	// PublishersServer contains the fakes for client PublishersClient
-	PublishersServer PublishersServer
-
 	// SKUsServer contains the fakes for client SKUsClient
 	SKUsServer SKUsServer
 
 	// SecuritySettingsServer contains the fakes for client SecuritySettingsClient
 	SecuritySettingsServer SecuritySettingsServer
 
-	// UpdateContentsServer contains the fakes for client UpdateContentsClient
-	UpdateContentsServer UpdateContentsServer
-
 	// UpdateRunsServer contains the fakes for client UpdateRunsClient
 	UpdateRunsServer UpdateRunsServer
 
 	// UpdateSummariesServer contains the fakes for client UpdateSummariesClient
 	UpdateSummariesServer UpdateSummariesServer
-
-	// UpdateSummariesOperationGroupServer contains the fakes for client UpdateSummariesOperationGroupClient
-	UpdateSummariesOperationGroupServer UpdateSummariesOperationGroupServer
 
 	// UpdatesServer contains the fakes for client UpdatesClient
 	UpdatesServer UpdatesServer
@@ -104,33 +70,22 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armazurestackhci.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                   *ServerFactory
-	trMu                                  sync.Mutex
-	trArcSettingsServer                   *ArcSettingsServerTransport
-	trClusterJobsServer                   *ClusterJobsServerTransport
-	trClustersServer                      *ClustersServerTransport
-	trDeploymentSettingsServer            *DeploymentSettingsServerTransport
-	trDevicePoolsServer                   *DevicePoolsServerTransport
-	trEdgeDeviceJobsServer                *EdgeDeviceJobsServerTransport
-	trEdgeDevicesServer                   *EdgeDevicesServerTransport
-	trEdgeMachineJobsServer               *EdgeMachineJobsServerTransport
-	trEdgeMachinesServer                  *EdgeMachinesServerTransport
-	trExtensionsServer                    *ExtensionsServerTransport
-	trKubernetesVersionsServer            *KubernetesVersionsServerTransport
-	trOffersServer                        *OffersServerTransport
-	trOperationsServer                    *OperationsServerTransport
-	trOsImagesServer                      *OsImagesServerTransport
-	trOwnershipVouchersServer             *OwnershipVouchersServerTransport
-	trPlatformUpdatesServer               *PlatformUpdatesServerTransport
-	trPublishersServer                    *PublishersServerTransport
-	trSKUsServer                          *SKUsServerTransport
-	trSecuritySettingsServer              *SecuritySettingsServerTransport
-	trUpdateContentsServer                *UpdateContentsServerTransport
-	trUpdateRunsServer                    *UpdateRunsServerTransport
-	trUpdateSummariesServer               *UpdateSummariesServerTransport
-	trUpdateSummariesOperationGroupServer *UpdateSummariesOperationGroupServerTransport
-	trUpdatesServer                       *UpdatesServerTransport
-	trValidatedSolutionRecipesServer      *ValidatedSolutionRecipesServerTransport
+	srv                              *ServerFactory
+	trMu                             sync.Mutex
+	trArcSettingsServer              *ArcSettingsServerTransport
+	trClustersServer                 *ClustersServerTransport
+	trDeploymentSettingsServer       *DeploymentSettingsServerTransport
+	trEdgeDeviceJobsServer           *EdgeDeviceJobsServerTransport
+	trEdgeDevicesServer              *EdgeDevicesServerTransport
+	trExtensionsServer               *ExtensionsServerTransport
+	trOffersServer                   *OffersServerTransport
+	trOperationsServer               *OperationsServerTransport
+	trSKUsServer                     *SKUsServerTransport
+	trSecuritySettingsServer         *SecuritySettingsServerTransport
+	trUpdateRunsServer               *UpdateRunsServerTransport
+	trUpdateSummariesServer          *UpdateSummariesServerTransport
+	trUpdatesServer                  *UpdatesServerTransport
+	trValidatedSolutionRecipesServer *ValidatedSolutionRecipesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -149,9 +104,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ArcSettingsClient":
 		initServer(&s.trMu, &s.trArcSettingsServer, func() *ArcSettingsServerTransport { return NewArcSettingsServerTransport(&s.srv.ArcSettingsServer) })
 		resp, err = s.trArcSettingsServer.Do(req)
-	case "ClusterJobsClient":
-		initServer(&s.trMu, &s.trClusterJobsServer, func() *ClusterJobsServerTransport { return NewClusterJobsServerTransport(&s.srv.ClusterJobsServer) })
-		resp, err = s.trClusterJobsServer.Do(req)
 	case "ClustersClient":
 		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
 		resp, err = s.trClustersServer.Do(req)
@@ -160,9 +112,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDeploymentSettingsServerTransport(&s.srv.DeploymentSettingsServer)
 		})
 		resp, err = s.trDeploymentSettingsServer.Do(req)
-	case "DevicePoolsClient":
-		initServer(&s.trMu, &s.trDevicePoolsServer, func() *DevicePoolsServerTransport { return NewDevicePoolsServerTransport(&s.srv.DevicePoolsServer) })
-		resp, err = s.trDevicePoolsServer.Do(req)
 	case "EdgeDeviceJobsClient":
 		initServer(&s.trMu, &s.trEdgeDeviceJobsServer, func() *EdgeDeviceJobsServerTransport {
 			return NewEdgeDeviceJobsServerTransport(&s.srv.EdgeDeviceJobsServer)
@@ -171,44 +120,15 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "EdgeDevicesClient":
 		initServer(&s.trMu, &s.trEdgeDevicesServer, func() *EdgeDevicesServerTransport { return NewEdgeDevicesServerTransport(&s.srv.EdgeDevicesServer) })
 		resp, err = s.trEdgeDevicesServer.Do(req)
-	case "EdgeMachineJobsClient":
-		initServer(&s.trMu, &s.trEdgeMachineJobsServer, func() *EdgeMachineJobsServerTransport {
-			return NewEdgeMachineJobsServerTransport(&s.srv.EdgeMachineJobsServer)
-		})
-		resp, err = s.trEdgeMachineJobsServer.Do(req)
-	case "EdgeMachinesClient":
-		initServer(&s.trMu, &s.trEdgeMachinesServer, func() *EdgeMachinesServerTransport { return NewEdgeMachinesServerTransport(&s.srv.EdgeMachinesServer) })
-		resp, err = s.trEdgeMachinesServer.Do(req)
 	case "ExtensionsClient":
 		initServer(&s.trMu, &s.trExtensionsServer, func() *ExtensionsServerTransport { return NewExtensionsServerTransport(&s.srv.ExtensionsServer) })
 		resp, err = s.trExtensionsServer.Do(req)
-	case "KubernetesVersionsClient":
-		initServer(&s.trMu, &s.trKubernetesVersionsServer, func() *KubernetesVersionsServerTransport {
-			return NewKubernetesVersionsServerTransport(&s.srv.KubernetesVersionsServer)
-		})
-		resp, err = s.trKubernetesVersionsServer.Do(req)
 	case "OffersClient":
 		initServer(&s.trMu, &s.trOffersServer, func() *OffersServerTransport { return NewOffersServerTransport(&s.srv.OffersServer) })
 		resp, err = s.trOffersServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "OsImagesClient":
-		initServer(&s.trMu, &s.trOsImagesServer, func() *OsImagesServerTransport { return NewOsImagesServerTransport(&s.srv.OsImagesServer) })
-		resp, err = s.trOsImagesServer.Do(req)
-	case "OwnershipVouchersClient":
-		initServer(&s.trMu, &s.trOwnershipVouchersServer, func() *OwnershipVouchersServerTransport {
-			return NewOwnershipVouchersServerTransport(&s.srv.OwnershipVouchersServer)
-		})
-		resp, err = s.trOwnershipVouchersServer.Do(req)
-	case "PlatformUpdatesClient":
-		initServer(&s.trMu, &s.trPlatformUpdatesServer, func() *PlatformUpdatesServerTransport {
-			return NewPlatformUpdatesServerTransport(&s.srv.PlatformUpdatesServer)
-		})
-		resp, err = s.trPlatformUpdatesServer.Do(req)
-	case "PublishersClient":
-		initServer(&s.trMu, &s.trPublishersServer, func() *PublishersServerTransport { return NewPublishersServerTransport(&s.srv.PublishersServer) })
-		resp, err = s.trPublishersServer.Do(req)
 	case "SKUsClient":
 		initServer(&s.trMu, &s.trSKUsServer, func() *SKUsServerTransport { return NewSKUsServerTransport(&s.srv.SKUsServer) })
 		resp, err = s.trSKUsServer.Do(req)
@@ -217,11 +137,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSecuritySettingsServerTransport(&s.srv.SecuritySettingsServer)
 		})
 		resp, err = s.trSecuritySettingsServer.Do(req)
-	case "UpdateContentsClient":
-		initServer(&s.trMu, &s.trUpdateContentsServer, func() *UpdateContentsServerTransport {
-			return NewUpdateContentsServerTransport(&s.srv.UpdateContentsServer)
-		})
-		resp, err = s.trUpdateContentsServer.Do(req)
 	case "UpdateRunsClient":
 		initServer(&s.trMu, &s.trUpdateRunsServer, func() *UpdateRunsServerTransport { return NewUpdateRunsServerTransport(&s.srv.UpdateRunsServer) })
 		resp, err = s.trUpdateRunsServer.Do(req)
@@ -230,11 +145,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewUpdateSummariesServerTransport(&s.srv.UpdateSummariesServer)
 		})
 		resp, err = s.trUpdateSummariesServer.Do(req)
-	case "UpdateSummariesOperationGroupClient":
-		initServer(&s.trMu, &s.trUpdateSummariesOperationGroupServer, func() *UpdateSummariesOperationGroupServerTransport {
-			return NewUpdateSummariesOperationGroupServerTransport(&s.srv.UpdateSummariesOperationGroupServer)
-		})
-		resp, err = s.trUpdateSummariesOperationGroupServer.Do(req)
 	case "UpdatesClient":
 		initServer(&s.trMu, &s.trUpdatesServer, func() *UpdatesServerTransport { return NewUpdatesServerTransport(&s.srv.UpdatesServer) })
 		resp, err = s.trUpdatesServer.Do(req)

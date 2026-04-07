@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // UpdatesClient contains the methods for the Updates group.
@@ -43,7 +42,7 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginDelete - Delete specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -68,7 +67,7 @@ func (client *UpdatesClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Delete specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 func (client *UpdatesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdatesClient.BeginDelete"
@@ -114,7 +113,7 @@ func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -122,7 +121,7 @@ func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -173,7 +172,7 @@ func (client *UpdatesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,7 +189,7 @@ func (client *UpdatesClient) getHandleResponse(resp *http.Response) (UpdatesClie
 
 // NewListPager - List all Updates
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - UpdatesClientListOptions contains the optional parameters for the UpdatesClient.NewListPager method.
@@ -237,7 +236,7 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +254,7 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 // BeginPost - Apply Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -281,7 +280,7 @@ func (client *UpdatesClient) BeginPost(ctx context.Context, resourceGroupName st
 // Post - Apply Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 func (client *UpdatesClient) post(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPostOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdatesClient.BeginPost"
@@ -327,86 +326,7 @@ func (client *UpdatesClient) postCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	return req, nil
-}
-
-// BeginPrepare - Prepare Update
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - updateName - The name of the Update
-//   - options - UpdatesClientBeginPrepareOptions contains the optional parameters for the UpdatesClient.BeginPrepare method.
-func (client *UpdatesClient) BeginPrepare(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPrepareOptions) (*runtime.Poller[UpdatesClientPrepareResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.prepare(ctx, resourceGroupName, clusterName, updateName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdatesClientPrepareResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdatesClientPrepareResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Prepare - Prepare Update
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
-func (client *UpdatesClient) prepare(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPrepareOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UpdatesClient.BeginPrepare"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.prepareCreateRequest(ctx, resourceGroupName, clusterName, updateName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// prepareCreateRequest creates the Prepare request.
-func (client *UpdatesClient) prepareCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginPrepareOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/prepare"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if updateName == "" {
-		return nil, errors.New("parameter updateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateName}", url.PathEscape(updateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -414,7 +334,7 @@ func (client *UpdatesClient) prepareCreateRequest(ctx context.Context, resourceG
 // Put - Put specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -466,7 +386,7 @@ func (client *UpdatesClient) putCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

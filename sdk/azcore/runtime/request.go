@@ -90,7 +90,11 @@ func JoinPaths(root string, paths ...string) string {
 	}
 
 	if qps != "" {
-		p = p + "?" + qps
+		if strings.Contains(p, "?") {
+			p = p + "&" + qps
+		} else {
+			p = p + "?" + qps
+		}
 	}
 
 	if strings.HasSuffix(root, "/") && strings.HasPrefix(p, "/") {

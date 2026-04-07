@@ -1,10 +1,14 @@
 # Release History
 
-## 0.4.8 (Unreleased)
+## 0.4.8 (2026-04-07)
 
 ### Features Added
 
 - Added `metadata` command to create required metadata files (ci.yml, README.md) for packages in inner loop scenarios.
+
+### Other Changes
+
+- Removed the validation that required both `apiVersion` and `sdkReleaseType` to be provided together for self-serve SDK generation. Either parameter can now be omitted and will use its default value.
 
 ### Bugs Fixed
 

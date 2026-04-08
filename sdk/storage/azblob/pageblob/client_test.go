@@ -3619,6 +3619,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		s.T().Skip("This test only runs in playback mode")
 	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -3660,6 +3661,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageDeleteImmutabilityPolicy() {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		s.T().Skip("This test only runs in playback mode")
 	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -3696,6 +3698,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetLegalHold() {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		s.T().Skip("This test only runs in playback mode")
 	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)

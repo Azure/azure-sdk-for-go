@@ -469,7 +469,7 @@ func ExampleClient_NewCheckSettingsPager_matchConditions() {
 	}, nil)
 
 	for pager.More() {
-		page, err := pager.NextPage(context.Background())
+		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", err)
@@ -490,7 +490,7 @@ func ExampleClient_NewCheckSettingsPager_matchConditions() {
 	})
 
 	for pager.More() {
-		page, err := pager.NextPage(context.Background())
+		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", err)

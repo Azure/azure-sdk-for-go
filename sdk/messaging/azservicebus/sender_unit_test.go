@@ -135,10 +135,10 @@ func TestSenderNewMessageBatch_VendorPropertyOverridesMaxMessageSize(t *testing.
 	require.NotNil(t, batch)
 
 	// The batch should use the vendor property (1 MB), not MaxMessageSize (100 MB).
-	// We verify indirectly: a message just over 1 MB should be rejected.
+	// A 1 MiB body plus AMQP envelope overhead exceeds the 1 MiB batch limit.
 	largeBody := make([]byte, 1048576)
 	err = batch.AddMessage(&Message{Body: largeBody}, nil)
-	require.ErrorIs(t, err, ErrMessageTooLarge, "A 1 MB message should exceed the vendor batch limit minus overhead")
+	require.ErrorIs(t, err, ErrMessageTooLarge, "A 1 MiB message should exceed the vendor batch limit minus overhead")
 }
 
 func TestSenderNewMessageBatch_FallsBackWhenVendorPropertyAbsent(t *testing.T) {

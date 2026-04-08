@@ -45,7 +45,22 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 		maxBytes := lwid.Sender.MaxMessageSize()
 		if props := lwid.Sender.Properties(); props != nil {
 			if v, ok := props["com.microsoft:max-message-batch-size"]; ok {
-				if batchSize, ok := v.(uint64); ok && batchSize > 0 {
+				var batchSize uint64
+				switch val := v.(type) {
+				case uint64:
+					batchSize = val
+				case uint32:
+					batchSize = uint64(val)
+				case int64:
+					if val > 0 {
+						batchSize = uint64(val)
+					}
+				case int:
+					if val > 0 {
+						batchSize = uint64(val)
+					}
+				}
+				if batchSize > 0 {
 					maxBytes = batchSize
 				}
 			}

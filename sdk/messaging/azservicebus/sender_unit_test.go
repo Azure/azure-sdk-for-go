@@ -106,20 +106,15 @@ func TestSenderNewMessageBatch_ConnectionClosed(t *testing.T) {
 	require.Nil(t, batch)
 }
 
-func TestNewMessageBatch_VendorPropertyOverridesMaxMessageSize(t *testing.T) {
+func TestSenderNewMessageBatch_VendorPropertyOverridesMaxMessageSize(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			return nil
 		},
 		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
 			if ms.Target != "$cbs" {
-				// Override: set MaxMessageSize to 100 MB (Premium large-message)
-				// and vendor property to 1 MB (correct batch limit).
-				// These are registered before the default expectations in mock_data_sender.go,
-				// but with AnyTimes() gomock uses the last registered matching call,
-				// so we need the defaults to NOT be registered or to use Times(0).
-				// Actually, in gomock, when multiple .AnyTimes() expectations match,
-				// the FIRST registered one is used. So pre-mock wins.
+				// Set MaxMessageSize to 100 MB and the vendor batch-size property to 1 MB
+				// so this test can verify the vendor property is used as the batch limit.
 				ms.EXPECT().MaxMessageSize().Return(uint64(100 * 1024 * 1024)).AnyTimes()
 				ms.EXPECT().Properties().Return(map[string]any{
 					"com.microsoft:max-message-batch-size": uint64(1048576),
@@ -146,7 +141,7 @@ func TestNewMessageBatch_VendorPropertyOverridesMaxMessageSize(t *testing.T) {
 	require.ErrorIs(t, err, ErrMessageTooLarge, "A 1 MB message should exceed the vendor batch limit minus overhead")
 }
 
-func TestNewMessageBatch_FallsBackWhenVendorPropertyAbsent(t *testing.T) {
+func TestSenderNewMessageBatch_FallsBackWhenVendorPropertyAbsent(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			return nil
@@ -176,7 +171,7 @@ func TestNewMessageBatch_FallsBackWhenVendorPropertyAbsent(t *testing.T) {
 	require.ErrorIs(t, err, ErrMessageTooLarge, "A 256 KB message should exceed the link limit minus overhead")
 }
 
-func TestNewMessageBatch_UserMaxBytesOverridesVendorProperty(t *testing.T) {
+func TestSenderNewMessageBatch_UserMaxBytesOverridesVendorProperty(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			return nil

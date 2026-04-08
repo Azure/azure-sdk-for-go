@@ -83,21 +83,21 @@ func buildBenchArrowStream(b *testing.B, n int) []byte {
 func buildBenchXMLStream(b *testing.B, n int) []byte {
 	b.Helper()
 	type xmlBlobProperties struct {
-		XMLName        xml.Name `xml:"Properties"`
-		CreationTime   string   `xml:"Creation-Time"`
-		LastModified   string   `xml:"Last-Modified"`
-		BlobType       string   `xml:"BlobType"`
-		Etag           string   `xml:"Etag"`
-		ContentLength  int64    `xml:"Content-Length"`
-		ContentType    string   `xml:"Content-Type"`
-		ServerEncrypted bool   `xml:"ServerEncrypted"`
-		AccessTier     string   `xml:"AccessTier"`
-		LeaseState     string   `xml:"LeaseState"`
-		LeaseStatus    string   `xml:"LeaseStatus"`
+		XMLName         xml.Name `xml:"Properties"`
+		CreationTime    string   `xml:"Creation-Time"`
+		LastModified    string   `xml:"Last-Modified"`
+		BlobType        string   `xml:"BlobType"`
+		Etag            string   `xml:"Etag"`
+		ContentLength   int64    `xml:"Content-Length"`
+		ContentType     string   `xml:"Content-Type"`
+		ServerEncrypted bool     `xml:"ServerEncrypted"`
+		AccessTier      string   `xml:"AccessTier"`
+		LeaseState      string   `xml:"LeaseState"`
+		LeaseStatus     string   `xml:"LeaseStatus"`
 	}
 	type xmlBlob struct {
-		Name       string             `xml:"Name"`
-		Properties xmlBlobProperties  `xml:"Properties"`
+		Name       string            `xml:"Name"`
+		Properties xmlBlobProperties `xml:"Properties"`
 	}
 	type xmlBlobs struct {
 		Blob []xmlBlob `xml:"Blob"`
@@ -112,16 +112,16 @@ func buildBenchXMLStream(b *testing.B, n int) []byte {
 		resp.Blobs.Blob = append(resp.Blobs.Blob, xmlBlob{
 			Name: fmt.Sprintf("blob-%05d.txt", i),
 			Properties: xmlBlobProperties{
-				CreationTime:   "Mon, 01 Jan 2024 00:00:00 GMT",
-				LastModified:   "Mon, 01 Jan 2024 00:00:00 GMT",
-				BlobType:       "BlockBlob",
-				Etag:           fmt.Sprintf("0x%08x", i),
-				ContentLength:  int64(1024 + i),
-				ContentType:    "application/octet-stream",
+				CreationTime:    "Mon, 01 Jan 2024 00:00:00 GMT",
+				LastModified:    "Mon, 01 Jan 2024 00:00:00 GMT",
+				BlobType:        "BlockBlob",
+				Etag:            fmt.Sprintf("0x%08x", i),
+				ContentLength:   int64(1024 + i),
+				ContentType:     "application/octet-stream",
 				ServerEncrypted: true,
-				AccessTier:     "Hot",
-				LeaseState:     "available",
-				LeaseStatus:    "unlocked",
+				AccessTier:      "Hot",
+				LeaseState:      "available",
+				LeaseStatus:     "unlocked",
 			},
 		})
 	}

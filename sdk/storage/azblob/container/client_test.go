@@ -3781,7 +3781,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowStartFromEn
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		UseArrowFormat: to.Ptr(true),
 		StartFrom:      &startFrom,
-		EndBefore:       &endBefore,
+		EndBefore:      &endBefore,
 	})
 
 	var names []string

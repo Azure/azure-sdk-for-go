@@ -39,7 +39,17 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 	var batch *MessageBatch
 
 	err := s.links.Retry(ctx, EventSender, "send", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		// Prefer the vendor property 'com.microsoft:max-message-batch-size' which
+		// correctly reports the batch size limit (e.g. 1 MB on Premium) independent
+		// of max-message-size (which can be up to 100 MB on large-message entities).
 		maxBytes := lwid.Sender.MaxMessageSize()
+		if props := lwid.Sender.Properties(); props != nil {
+			if v, ok := props["com.microsoft:max-message-batch-size"]; ok {
+				if batchSize, ok := v.(uint64); ok && batchSize > 0 {
+					maxBytes = batchSize
+				}
+			}
+		}
 
 		if options != nil && options.MaxBytes != 0 {
 			maxBytes = options.MaxBytes

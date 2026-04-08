@@ -3540,7 +3540,6 @@ func (s *ContainerRecordedTestsSuite) TestContainerClientCustomAudience() {
 }
 
 // Arrow format integration tests — require a Photon-enabled storage account.
-// Set AZURE_STORAGE_ACCOUNT_NAME and AZURE_STORAGE_ACCOUNT_KEY env vars to a preprod Photon-enabled account.
 
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowFormat() {
 	_require := require.New(s.T())

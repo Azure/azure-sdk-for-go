@@ -67,7 +67,7 @@ directive:
     $.items.enum.push("permissions");
 ```
 
-### Updating service version to 2026-10-06
+### Updating service version to 2026-06-06
 ```yaml
 directive:
 - from:

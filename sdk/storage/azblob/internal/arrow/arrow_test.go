@@ -238,7 +238,7 @@ func TestHandleHierarchyListResponse_SeparatesBlobsAndPrefixes(t *testing.T) {
 
 		// A blob prefix (virtual directory)
 		b.Field(0).(*arrowArray.StringBuilder).Append("folder/subfolder/")
-		b.Field(1).(*arrowArray.StringBuilder).Append("BlobPrefix")
+		b.Field(1).(*arrowArray.StringBuilder).Append("blobprefix")
 	})
 
 	resp := makeHTTPResponse(data, nil)

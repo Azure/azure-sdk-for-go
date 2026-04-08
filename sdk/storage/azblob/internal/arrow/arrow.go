@@ -30,7 +30,7 @@ const (
 	// resourceTypeBlobPrefix is the ResourceType value that identifies a virtual directory prefix
 	// in hierarchy listing responses. In XML, prefixes are separate <BlobPrefix> elements;
 	// in Arrow, all rows share the same schema and are distinguished by this field value.
-	resourceTypeBlobPrefix = "BlobPrefix"
+	resourceTypeBlobPrefix = "blobprefix"
 )
 
 // HandleFlatListResponse parses an Arrow IPC stream response into a ContainerClientListBlobFlatSegmentResponse.

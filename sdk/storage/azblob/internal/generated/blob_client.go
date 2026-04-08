@@ -36,6 +36,7 @@ func NewBlobClient(endpoint string, azClient *azcore.Client) *BlobClient {
 	client := &BlobClient{
 		internal: azClient,
 		endpoint: endpoint,
+		version:  ServiceVersion,
 	}
 	return client
 }

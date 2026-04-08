@@ -63,7 +63,7 @@ func buildSubRequest(req *policy.Request) []byte {
 		}
 	}
 
-	batchSubRequest.WriteString(httpNewline)
+	fmt.Fprint(&batchSubRequest, httpNewline)
 	return []byte(batchSubRequest.String())
 }
 

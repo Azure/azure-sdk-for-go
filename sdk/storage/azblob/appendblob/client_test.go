@@ -1318,6 +1318,10 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchTrue() {
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1356,6 +1360,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1389,6 +1397,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)

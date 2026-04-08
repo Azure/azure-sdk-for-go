@@ -34,9 +34,12 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
 	})
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*ServiceClient)(base.NewServiceClient(serviceURL, pl, nil)), nil
+	return (*ServiceClient)(base.NewServiceClient(serviceURL, azClient, nil)), nil
 }
 
 // NewServiceClientWithNoCredential creates an instance of ServiceClient with the specified values.
@@ -45,9 +48,12 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 //   - options - client options; pass nil to accept the default values
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*ServiceClient)(base.NewServiceClient(serviceURL, pl, nil)), nil
+	return (*ServiceClient)(base.NewServiceClient(serviceURL, azClient, nil)), nil
 }
 
 // NewServiceClientWithSharedKeyCredential creates an instance of ServiceClient with the specified values.
@@ -58,9 +64,12 @@ func NewServiceClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyC
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*ServiceClient)(base.NewServiceClient(serviceURL, pl, cred)), nil
+	return (*ServiceClient)(base.NewServiceClient(serviceURL, azClient, cred)), nil
 }
 
 // NewServiceClientFromConnectionString creates an instance of ServiceClient with the specified values.
@@ -149,7 +158,7 @@ func (s *ServiceClient) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[
 			if err != nil {
 				return ListQueuesResponse{}, err
 			}
-			resp, err := s.generated().Pipeline().Do(req)
+			resp, err := s.generated().InternalClient().Pipeline().Do(req)
 			if err != nil {
 				return ListQueuesResponse{}, err
 			}
@@ -166,7 +175,7 @@ func (s *ServiceClient) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[
 func (s *ServiceClient) NewQueueClient(queueName string) *QueueClient {
 	queueName = url.PathEscape(queueName)
 	queueURL := runtime.JoinPaths(s.URL(), queueName)
-	return (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
+	return (*QueueClient)(base.NewQueueClient(queueURL, s.generated().InternalClient(), s.sharedKey()))
 }
 
 // CreateQueue creates a new queue within a storage account. If a queue with the same name already exists, the operation fails.
@@ -174,7 +183,7 @@ func (s *ServiceClient) NewQueueClient(queueName string) *QueueClient {
 func (s *ServiceClient) CreateQueue(ctx context.Context, queueName string, options *CreateOptions) (CreateResponse, error) {
 	queueName = url.PathEscape(queueName)
 	queueURL := runtime.JoinPaths(s.URL(), queueName)
-	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
+	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().InternalClient(), s.sharedKey()))
 	return qC.Create(ctx, options)
 }
 
@@ -183,7 +192,7 @@ func (s *ServiceClient) CreateQueue(ctx context.Context, queueName string, optio
 func (s *ServiceClient) DeleteQueue(ctx context.Context, queueName string, options *DeleteOptions) (DeleteResponse, error) {
 	queueName = url.PathEscape(queueName)
 	queueURL := runtime.JoinPaths(s.URL(), queueName)
-	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
+	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().InternalClient(), s.sharedKey()))
 	return qC.Delete(ctx, options)
 }
 

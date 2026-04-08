@@ -7,19 +7,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-func (client *ServiceClient) Endpoint() string {
-	return client.endpoint
-}
-
-func (client *ServiceClient) InternalClient() *azcore.Client {
-	return client.internal
-}
-
-// NewServiceClient creates a new instance of ServiceClient with the specified values.
+// NewMessagesClient creates a new instance of MessagesClient with the specified values.
 //   - endpoint - The URL of the service account, queue, or message that is the target of the desired operation.
 //   - azClient - azcore.Client is a basic HTTP client. It consists of a pipeline and tracing provider.
-func NewServiceClient(endpoint string, azClient *azcore.Client) *ServiceClient {
-	client := &ServiceClient{
+func NewMessagesClient(endpoint string, azClient *azcore.Client) *MessagesClient {
+	client := &MessagesClient{
 		internal: azClient,
 		endpoint: endpoint,
 		version:  ServiceVersion,

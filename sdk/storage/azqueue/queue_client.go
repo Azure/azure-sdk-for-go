@@ -55,8 +55,11 @@ func NewQueueClient(queueURL string, cred azcore.TokenCredential, options *Clien
 	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &conOptions.ClientOptions)
-	return (*QueueClient)(base.NewQueueClient(queueURL, pl, nil)), nil
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return (*QueueClient)(base.NewQueueClient(queueURL, azClient, nil)), nil
 }
 
 // NewQueueClientWithNoCredential creates an instance of QueueClient with the specified values.
@@ -65,9 +68,12 @@ func NewQueueClient(queueURL string, cred azcore.TokenCredential, options *Clien
 //   - options - client options; pass nil to accept the default values
 func NewQueueClientWithNoCredential(queueURL string, options *ClientOptions) (*QueueClient, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*QueueClient)(base.NewQueueClient(queueURL, pl, nil)), nil
+	return (*QueueClient)(base.NewQueueClient(queueURL, azClient, nil)), nil
 }
 
 // NewQueueClientWithSharedKeyCredential creates an instance of ServiceClient with the specified values.
@@ -78,9 +84,12 @@ func NewQueueClientWithSharedKeyCredential(queueURL string, cred *SharedKeyCrede
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*QueueClient)(base.NewQueueClient(queueURL, pl, cred)), nil
+	return (*QueueClient)(base.NewQueueClient(queueURL, azClient, cred)), nil
 }
 
 // NewQueueClientFromConnectionString creates an instance of ServiceClient with the specified values.
@@ -179,7 +188,7 @@ func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptio
 func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
 	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), generated.ServiceVersion, q.queueClient().Pipeline())
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().InternalClient())
 	resp, err := messageClient.Update(ctx, popReceipt, message, opts)
 	return resp, err
 }
@@ -188,7 +197,7 @@ func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popRe
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-message2.
 func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, popReceipt string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
 	opts := o.format()
-	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), generated.ServiceVersion, q.queueClient().Pipeline())
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().InternalClient())
 	resp, err := messageClient.Delete(ctx, popReceipt, opts)
 	return resp, err
 }

@@ -47,17 +47,17 @@ func GetAudience(clOpts *ClientOptions) string {
 		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
 	}
 }
-func NewServiceClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
+func NewServiceClient(queueURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
 	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(queueURL, generated.ServiceVersion, pipeline),
+		inner:     generated.NewServiceClient(queueURL, azClient),
 		sharedKey: sharedKey,
 	}
 }
 
-func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
+func NewQueueClient(queueURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
 	return &CompositeClient[generated.QueueClient, generated.MessagesClient]{
-		innerT:    generated.NewQueueClient(queueURL, generated.ServiceVersion, pipeline),
-		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), generated.ServiceVersion, pipeline),
+		innerT:    generated.NewQueueClient(queueURL, azClient),
+		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), azClient),
 		sharedKey: sharedKey,
 	}
 }

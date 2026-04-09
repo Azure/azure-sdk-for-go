@@ -3541,7 +3541,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerClientCustomAudience() {
 
 // Arrow format integration tests — require a Photon-enabled storage account.
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowFormat() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowFormat() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3574,7 +3574,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowFormat() {
 	_require.Equal(blobCount, count)
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowFormatFallbackToXML() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowFormatFallbackToXML() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3598,7 +3598,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowFormatFallb
 	}
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowEmptyContainer() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowEmptyContainer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3619,7 +3619,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowEmptyContai
 	}
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithPrefix() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowWithPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3655,7 +3655,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithPrefix(
 	_require.Equal(3, count)
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithMetadata() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowWithMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3688,7 +3688,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithMetadat
 	}
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowPagination() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowPagination() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3721,7 +3721,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowPagination(
 	_require.GreaterOrEqual(pageCount, 2) // Should have at least 2 pages with max 3 per page
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsHierarchyArrowFormat() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsHierarchyArrowFormat() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3761,7 +3761,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsHierarchyArrowFormat
 	_require.Equal("dir2/", prefixNames[1])
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowStartFromEndBefore() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowStartFromEndBefore() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3797,7 +3797,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowStartFromEn
 	_require.Equal([]string{"b", "c"}, names)
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithSnapshots() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3837,7 +3837,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowWithSnapsho
 	_require.GreaterOrEqual(snapshotCount, 1) // At least 1 snapshot entry
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatArrowMatchesXML() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowMatchesXML() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

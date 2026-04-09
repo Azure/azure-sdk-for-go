@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 			Description: to.Ptr("kpqtgocs"),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 		Identity: &armiotoperations.ManagedServiceIdentity{
@@ -39,7 +39,7 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 			UserAssignedIdentities: map[string]*armiotoperations.UserAssignedIdentity{},
 		},
 		Tags:     map[string]*string{},
-		Location: to.Ptr("xvewadyhycrjpu"),
+		Location: to.Ptr("eastus2"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -59,10 +59,10 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			Description: to.Ptr("kpqtgocs"),
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
-	// 			Version: to.Ptr("vjjbmunthiphfmekvxgxcxkzdwjti"),
+	// 			Version: to.Ptr("1.2.0"),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		Identity: &armiotoperations.ManagedServiceIdentity{
@@ -74,15 +74,15 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("xvewadyhycrjpu"),
+	// 		Location: to.Ptr("eastus2"),
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123"),
 	// 		Name: to.Ptr("llptmlifnqqwairx"),
-	// 		Type: to.Ptr("qwrfzxjfxvismlqvigot"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -90,7 +90,7 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Instance_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/Instance_Delete_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleInstanceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Instance_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/Instance_Get_MaximumSet_Gen.json
 func ExampleInstanceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,10 +137,23 @@ func ExampleInstanceClient_Get() {
 	// 			},
 	// 			Description: to.Ptr("rlfvvnnhcypp"),
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
-	// 			Version: to.Ptr("vjjbmunthiphfmekvxgxcxkzdwjti"),
+	// 			Version: to.Ptr("1.2.0"),
+	// 			Features: map[string]*armiotoperations.InstanceFeature{
+	// 				"dataFlows": &armiotoperations.InstanceFeature{
+	// 					Mode: to.Ptr(armiotoperations.InstanceFeatureModeDisabled),
+	// 				},
+	// 				"akri": &armiotoperations.InstanceFeature{
+	// 					Mode: to.Ptr(armiotoperations.InstanceFeatureModePreview),
+	// 				},
+	// 				"mqttBroker": &armiotoperations.InstanceFeature{
+	// 					Settings: map[string]*armiotoperations.OperationalMode{
+	// 						"preview": to.Ptr(armiotoperations.OperationalModeEnabled),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		Identity: &armiotoperations.ManagedServiceIdentity{
@@ -152,15 +165,15 @@ func ExampleInstanceClient_Get() {
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("xvewadyhycrjpu"),
+	// 		Location: to.Ptr("eastus2"),
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123"),
 	// 		Name: to.Ptr("llptmlifnqqwairx"),
-	// 		Type: to.Ptr("qwrfzxjfxvismlqvigot"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -168,7 +181,7 @@ func ExampleInstanceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,14 +209,14 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Properties: &armiotoperations.InstanceProperties{
 		// 					ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
-		// 					Version: to.Ptr("vjjbmunthiphfmekvxgxcxkzdwjti"),
+		// 					Version: to.Ptr("1.2.0"),
 		// 					SchemaRegistryRef: &armiotoperations.SchemaRegistryRef{
 		// 						ResourceID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.DeviceRegistry/schemaRegistries/resource-name123"),
 		// 					},
-		// 					Description: to.Ptr("vmujggxdvxk"),
+		// 					Description: to.Ptr("A description"),
 		// 				},
 		// 				ExtendedLocation: &armiotoperations.ExtendedLocation{
-		// 					Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+		// 					Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 		// 					Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		// 				},
 		// 				Identity: &armiotoperations.ManagedServiceIdentity{
@@ -215,15 +228,15 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
-		// 				Location: to.Ptr("xvewadyhycrjpu"),
+		// 				Location: to.Ptr("eastus2"),
 		// 				ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123"),
 		// 				Name: to.Ptr("llptmlifnqqwairx"),
-		// 				Type: to.Ptr("qwrfzxjfxvismlqvigot"),
+		// 				Type: to.Ptr("Microsoft.IoTOperations/instances"),
 		// 				SystemData: &armiotoperations.SystemData{
-		// 					CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+		// 					CreatedBy: to.Ptr("contosouser"),
 		// 					CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("gnicpuszwd"),
+		// 					LastModifiedBy: to.Ptr("contosouser"),
 		// 					LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 		// 				},
@@ -235,7 +248,7 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Instance_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/Instance_ListBySubscription_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,14 +276,14 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 		// 			{
 		// 				Properties: &armiotoperations.InstanceProperties{
 		// 					ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
-		// 					Version: to.Ptr("vjjbmunthiphfmekvxgxcxkzdwjti"),
+		// 					Version: to.Ptr("1.2.0"),
 		// 					SchemaRegistryRef: &armiotoperations.SchemaRegistryRef{
 		// 						ResourceID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.DeviceRegistry/schemaRegistries/resource-name123"),
 		// 					},
 		// 					Description: to.Ptr("empgqmbhvklcqlyahmdsjemlep"),
 		// 				},
 		// 				ExtendedLocation: &armiotoperations.ExtendedLocation{
-		// 					Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+		// 					Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 		// 					Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		// 				},
 		// 				Identity: &armiotoperations.ManagedServiceIdentity{
@@ -282,15 +295,15 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
-		// 				Location: to.Ptr("xvewadyhycrjpu"),
+		// 				Location: to.Ptr("eastus2"),
 		// 				ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123"),
 		// 				Name: to.Ptr("llptmlifnqqwairx"),
-		// 				Type: to.Ptr("qwrfzxjfxvismlqvigot"),
+		// 				Type: to.Ptr("Microsoft.IoTOperations/instances"),
 		// 				SystemData: &armiotoperations.SystemData{
-		// 					CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+		// 					CreatedBy: to.Ptr("contosouser"),
 		// 					CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("gnicpuszwd"),
+		// 					LastModifiedBy: to.Ptr("contosouser"),
 		// 					LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 		// 				},
@@ -302,7 +315,7 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Instance_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/Instance_Update_MaximumSet_Gen.json
 func ExampleInstanceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,10 +347,10 @@ func ExampleInstanceClient_Update() {
 	// 			},
 	// 			Description: to.Ptr("wwihkapmgjbyrtyaj"),
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
-	// 			Version: to.Ptr("vjjbmunthiphfmekvxgxcxkzdwjti"),
+	// 			Version: to.Ptr("1.2.0"),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		Identity: &armiotoperations.ManagedServiceIdentity{
@@ -349,15 +362,15 @@ func ExampleInstanceClient_Update() {
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("xvewadyhycrjpu"),
+	// 		Location: to.Ptr("eastus2"),
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123"),
 	// 		Name: to.Ptr("llptmlifnqqwairx"),
-	// 		Type: to.Ptr("qwrfzxjfxvismlqvigot"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},

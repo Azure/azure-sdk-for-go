@@ -16,67 +16,67 @@ import (
 	"strings"
 )
 
-// DataflowProfileClient contains the methods for the DataflowProfile group.
-// Don't use this type directly, use NewDataflowProfileClient() instead.
-type DataflowProfileClient struct {
+// RegistryEndpointClient contains the methods for the RegistryEndpoint group.
+// Don't use this type directly, use NewRegistryEndpointClient() instead.
+type RegistryEndpointClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewDataflowProfileClient creates a new instance of DataflowProfileClient with the specified values.
+// NewRegistryEndpointClient creates a new instance of RegistryEndpointClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewDataflowProfileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataflowProfileClient, error) {
+func NewRegistryEndpointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryEndpointClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &DataflowProfileClient{
+	client := &RegistryEndpointClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a DataflowProfileResource
+// BeginCreateOrUpdate - Create a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
-//   - dataflowProfileName - Name of Instance dataflowProfile resource
+//   - registryEndpointName - Name of RegistryEndpoint resource
 //   - resource - Resource create parameters.
-//   - options - DataflowProfileClientBeginCreateOrUpdateOptions contains the optional parameters for the DataflowProfileClient.BeginCreateOrUpdate
+//   - options - RegistryEndpointClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryEndpointClient.BeginCreateOrUpdate
 //     method.
-func (client *DataflowProfileClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, resource DataflowProfileResource, options *DataflowProfileClientBeginCreateOrUpdateOptions) (*runtime.Poller[DataflowProfileClientCreateOrUpdateResponse], error) {
+func (client *RegistryEndpointClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, resource RegistryEndpointResource, options *RegistryEndpointClientBeginCreateOrUpdateOptions) (*runtime.Poller[RegistryEndpointClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, instanceName, dataflowProfileName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, instanceName, registryEndpointName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataflowProfileClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistryEndpointClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataflowProfileClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistryEndpointClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create a DataflowProfileResource
+// CreateOrUpdate - Create a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
-func (client *DataflowProfileClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, resource DataflowProfileResource, options *DataflowProfileClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *RegistryEndpointClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, resource RegistryEndpointResource, options *RegistryEndpointClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DataflowProfileClient.BeginCreateOrUpdate"
+	const operationName = "RegistryEndpointClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, instanceName, registryEndpointName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,8 +92,8 @@ func (client *DataflowProfileClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataflowProfileClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, resource DataflowProfileResource, _ *DataflowProfileClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}"
+func (client *RegistryEndpointClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, resource RegistryEndpointResource, _ *RegistryEndpointClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,10 +106,10 @@ func (client *DataflowProfileClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	if dataflowProfileName == "" {
-		return nil, errors.New("parameter dataflowProfileName cannot be empty")
+	if registryEndpointName == "" {
+		return nil, errors.New("parameter registryEndpointName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataflowProfileName}", url.PathEscape(dataflowProfileName))
+	urlPath = strings.ReplaceAll(urlPath, "{registryEndpointName}", url.PathEscape(registryEndpointName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -125,43 +125,43 @@ func (client *DataflowProfileClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// BeginDelete - Delete a DataflowProfileResource
+// BeginDelete - Delete a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
-//   - dataflowProfileName - Name of Instance dataflowProfile resource
-//   - options - DataflowProfileClientBeginDeleteOptions contains the optional parameters for the DataflowProfileClient.BeginDelete
+//   - registryEndpointName - Name of RegistryEndpoint resource
+//   - options - RegistryEndpointClientBeginDeleteOptions contains the optional parameters for the RegistryEndpointClient.BeginDelete
 //     method.
-func (client *DataflowProfileClient) BeginDelete(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, options *DataflowProfileClientBeginDeleteOptions) (*runtime.Poller[DataflowProfileClientDeleteResponse], error) {
+func (client *RegistryEndpointClient) BeginDelete(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, options *RegistryEndpointClientBeginDeleteOptions) (*runtime.Poller[RegistryEndpointClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, instanceName, dataflowProfileName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, instanceName, registryEndpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataflowProfileClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistryEndpointClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataflowProfileClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistryEndpointClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a DataflowProfileResource
+// Delete - Delete a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
-func (client *DataflowProfileClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, options *DataflowProfileClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistryEndpointClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, options *RegistryEndpointClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DataflowProfileClient.BeginDelete"
+	const operationName = "RegistryEndpointClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, instanceName, registryEndpointName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -177,8 +177,8 @@ func (client *DataflowProfileClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataflowProfileClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, _ *DataflowProfileClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}"
+func (client *RegistryEndpointClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, _ *RegistryEndpointClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -191,10 +191,10 @@ func (client *DataflowProfileClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	if dataflowProfileName == "" {
-		return nil, errors.New("parameter dataflowProfileName cannot be empty")
+	if registryEndpointName == "" {
+		return nil, errors.New("parameter registryEndpointName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataflowProfileName}", url.PathEscape(dataflowProfileName))
+	urlPath = strings.ReplaceAll(urlPath, "{registryEndpointName}", url.PathEscape(registryEndpointName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -205,39 +205,39 @@ func (client *DataflowProfileClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// Get - Get a DataflowProfileResource
+// Get - Get a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
-//   - dataflowProfileName - Name of Instance dataflowProfile resource
-//   - options - DataflowProfileClientGetOptions contains the optional parameters for the DataflowProfileClient.Get method.
-func (client *DataflowProfileClient) Get(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, options *DataflowProfileClientGetOptions) (DataflowProfileClientGetResponse, error) {
+//   - registryEndpointName - Name of RegistryEndpoint resource
+//   - options - RegistryEndpointClientGetOptions contains the optional parameters for the RegistryEndpointClient.Get method.
+func (client *RegistryEndpointClient) Get(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, options *RegistryEndpointClientGetOptions) (RegistryEndpointClientGetResponse, error) {
 	var err error
-	const operationName = "DataflowProfileClient.Get"
+	const operationName = "RegistryEndpointClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, instanceName, registryEndpointName, options)
 	if err != nil {
-		return DataflowProfileClientGetResponse{}, err
+		return RegistryEndpointClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DataflowProfileClientGetResponse{}, err
+		return RegistryEndpointClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return DataflowProfileClientGetResponse{}, err
+		return RegistryEndpointClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataflowProfileClient) getCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, _ *DataflowProfileClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}"
+func (client *RegistryEndpointClient) getCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, _ *RegistryEndpointClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -250,10 +250,10 @@ func (client *DataflowProfileClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	if dataflowProfileName == "" {
-		return nil, errors.New("parameter dataflowProfileName cannot be empty")
+	if registryEndpointName == "" {
+		return nil, errors.New("parameter registryEndpointName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataflowProfileName}", url.PathEscape(dataflowProfileName))
+	urlPath = strings.ReplaceAll(urlPath, "{registryEndpointName}", url.PathEscape(registryEndpointName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -266,47 +266,47 @@ func (client *DataflowProfileClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataflowProfileClient) getHandleResponse(resp *http.Response) (DataflowProfileClientGetResponse, error) {
-	result := DataflowProfileClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataflowProfileResource); err != nil {
-		return DataflowProfileClientGetResponse{}, err
+func (client *RegistryEndpointClient) getHandleResponse(resp *http.Response) (RegistryEndpointClientGetResponse, error) {
+	result := RegistryEndpointClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryEndpointResource); err != nil {
+		return RegistryEndpointClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List DataflowProfileResource resources by InstanceResource
+// NewListByInstanceResourcePager - List RegistryEndpointResource resources by InstanceResource
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
-//   - options - DataflowProfileClientListByResourceGroupOptions contains the optional parameters for the DataflowProfileClient.NewListByResourceGroupPager
+//   - options - RegistryEndpointClientListByInstanceResourceOptions contains the optional parameters for the RegistryEndpointClient.NewListByInstanceResourcePager
 //     method.
-func (client *DataflowProfileClient) NewListByResourceGroupPager(resourceGroupName string, instanceName string, options *DataflowProfileClientListByResourceGroupOptions) *runtime.Pager[DataflowProfileClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DataflowProfileClientListByResourceGroupResponse]{
-		More: func(page DataflowProfileClientListByResourceGroupResponse) bool {
+func (client *RegistryEndpointClient) NewListByInstanceResourcePager(resourceGroupName string, instanceName string, options *RegistryEndpointClientListByInstanceResourceOptions) *runtime.Pager[RegistryEndpointClientListByInstanceResourceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RegistryEndpointClientListByInstanceResourceResponse]{
+		More: func(page RegistryEndpointClientListByInstanceResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *DataflowProfileClientListByResourceGroupResponse) (DataflowProfileClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataflowProfileClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *RegistryEndpointClientListByInstanceResourceResponse) (RegistryEndpointClientListByInstanceResourceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistryEndpointClient.NewListByInstanceResourcePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, instanceName, options)
+				return client.listByInstanceResourceCreateRequest(ctx, resourceGroupName, instanceName, options)
 			}, nil)
 			if err != nil {
-				return DataflowProfileClientListByResourceGroupResponse{}, err
+				return RegistryEndpointClientListByInstanceResourceResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			return client.listByInstanceResourceHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DataflowProfileClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, _ *DataflowProfileClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles"
+// listByInstanceResourceCreateRequest creates the ListByInstanceResource request.
+func (client *RegistryEndpointClient) listByInstanceResourceCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, _ *RegistryEndpointClientListByInstanceResourceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -330,11 +330,11 @@ func (client *DataflowProfileClient) listByResourceGroupCreateRequest(ctx contex
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DataflowProfileClient) listByResourceGroupHandleResponse(resp *http.Response) (DataflowProfileClientListByResourceGroupResponse, error) {
-	result := DataflowProfileClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataflowProfileResourceListResult); err != nil {
-		return DataflowProfileClientListByResourceGroupResponse{}, err
+// listByInstanceResourceHandleResponse handles the ListByInstanceResource response.
+func (client *RegistryEndpointClient) listByInstanceResourceHandleResponse(resp *http.Response) (RegistryEndpointClientListByInstanceResourceResponse, error) {
+	result := RegistryEndpointClientListByInstanceResourceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryEndpointResourceListResult); err != nil {
+		return RegistryEndpointClientListByInstanceResourceResponse{}, err
 	}
 	return result, nil
 }

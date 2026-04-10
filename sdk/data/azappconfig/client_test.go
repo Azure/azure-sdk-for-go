@@ -35,21 +35,21 @@ var testId = "120823uid"
 // var testId = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
 
 func TestClient(t *testing.T) {
-const (
-key   = "key-TestClient"
-label = "label"
-)
+	const (
+		key   = "key-TestClient"
+		label = "label"
+	)
 
-contentType := "content-type"
-value := "value"
-client := NewClientFromConnectionString(t)
+	contentType := "content-type"
+	value := "value"
+	client := NewClientFromConnectionString(t)
 
-// Clean up any leftover setting from a previous test run
-client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
-Label: to.Ptr(label),
-})
+	// Clean up any leftover setting from a previous test run
+	client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+		Label: to.Ptr(label),
+	})
 
-addResp, err2 := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
+	addResp, err2 := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
 		Label:       to.Ptr(label),
 		ContentType: &contentType,
 	})

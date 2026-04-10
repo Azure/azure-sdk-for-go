@@ -309,10 +309,13 @@ func (c *Client) NewCheckSettingsPager(selector SettingSelector, options *CheckS
 				return CheckSettingsPageResponse{}, err
 			}
 
-			return CheckSettingsPageResponse{
-				ETag:      (*azcore.ETag)(page.ETag),
-				SyncToken: SyncToken(*page.SyncToken),
-			}, nil
+			resp := CheckSettingsPageResponse{
+				ETag: (*azcore.ETag)(page.ETag),
+			}
+			if page.SyncToken != nil {
+				resp.SyncToken = SyncToken(*page.SyncToken)
+			}
+			return resp, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
 	})

@@ -45,7 +45,7 @@ func TestClient(t *testing.T) {
 	client := NewClientFromConnectionString(t)
 
 	// Clean up any leftover setting from a previous test run
-	client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+	_, _ = client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
 		Label: to.Ptr(label),
 	})
 

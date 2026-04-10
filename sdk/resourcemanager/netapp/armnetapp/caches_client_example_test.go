@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Caches_CreateOrUpdate.json
+// Generated from example definition: 2025-12-15-preview/Caches_CreateOrUpdate.json
 func ExampleCachesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,7 +26,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewCachesClient().BeginCreateOrUpdate(ctx, "myRG", "account1", "pool1", "cache1", armnetapp.Cache{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetapp.CacheProperties{
-			Filepath:                to.Ptr("cache-west-us2-01"),
+			FilePath:                to.Ptr("cache-west-us2-01"),
 			Size:                    to.Ptr[int64](107374182400),
 			Ldap:                    to.Ptr(armnetapp.LdapStateEnabled),
 			LdapServerType:          to.Ptr(armnetapp.LdapServerTypeOpenLDAP),
@@ -61,7 +61,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.CacheProperties{
-	// 			Filepath: to.Ptr("cache-west-us2-01"),
+	// 			FilePath: to.Ptr("cache-west-us2-01"),
 	// 			Size: to.Ptr[int64](214748364800),
 	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
@@ -87,7 +87,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Caches_Delete.json
+// Generated from example definition: 2025-12-15-preview/Caches_Delete.json
 func ExampleCachesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleCachesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Caches_Get.json
+// Generated from example definition: 2025-12-15-preview/Caches_Get.json
 func ExampleCachesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleCachesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.CacheProperties{
-	// 			Filepath: to.Ptr("cache-west-us2-01"),
+	// 			FilePath: to.Ptr("cache-west-us2-01"),
 	// 			Size: to.Ptr[int64](107374182400),
 	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
@@ -159,7 +159,7 @@ func ExampleCachesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Caches_ListByCapacityPools.json
+// Generated from example definition: 2025-12-15-preview/Caches_ListByCapacityPools.json
 func ExampleCachesClient_NewListByCapacityPoolsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleCachesClient_NewListByCapacityPoolsPager() {
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armnetapp.CacheProperties{
-		// 					Filepath: to.Ptr("cache-west-us2-01"),
+		// 					FilePath: to.Ptr("cache-west-us2-01"),
 		// 					Size: to.Ptr[int64](107374182400),
 		// 					ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 		// 					CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
@@ -219,7 +219,7 @@ func ExampleCachesClient_NewListByCapacityPoolsPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Caches_ListPeeringPassphrases.json
+// Generated from example definition: 2025-12-15-preview/Caches_ListPeeringPassphrases.json
 func ExampleCachesClient_ListPeeringPassphrases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,13 +240,13 @@ func ExampleCachesClient_ListPeeringPassphrases() {
 	// res = armnetapp.CachesClientListPeeringPassphrasesResponse{
 	// 	PeeringPassphrases: &armnetapp.PeeringPassphrases{
 	// 		ClusterPeeringCommand: to.Ptr("cluster peer create -ipspace replication -encryption-protocol-proposed tls-psk -passphrase passphraseString -peer-addrs 192.0.2.10,192.0.2.11,192.0.2.12,192.0.2.13,192.0.2.14,192.0.2.15"),
-	// 		ClusterPeeringPassphrase: to.Ptr("f@&@B^#r!"),
+	// 		ClusterPeeringPassphrase: to.Ptr("<redacted>"),
 	// 		VserverPeeringCommand: to.Ptr("vserver peer accept -vserver {onPremiseSVMName} -peer-vserver {anfSVMName}"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Caches_PoolChange.json
+// Generated from example definition: 2025-12-15-preview/Caches_PoolChange.json
 func ExampleCachesClient_BeginPoolChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,33 @@ func ExampleCachesClient_BeginPoolChange() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Caches_Update.json
+// Generated from example definition: 2025-12-15-preview/Caches_ResetSmbPassword.json
+func ExampleCachesClient_BeginResetSmbPassword() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCachesClient().BeginResetSmbPassword(ctx, "myResourceGroup", "account1", "pool1", "cache1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.CachesClientResetSmbPasswordResponse{
+	// }
+}
+
+// Generated from example definition: 2025-12-15-preview/Caches_Update.json
 func ExampleCachesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +333,7 @@ func ExampleCachesClient_BeginUpdate() {
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.CacheProperties{
-	// 			Filepath: to.Ptr("cache-west-us2-01"),
+	// 			FilePath: to.Ptr("cache-west-us2-01"),
 	// 			Size: to.Ptr[int64](107374182400),
 	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
 	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),

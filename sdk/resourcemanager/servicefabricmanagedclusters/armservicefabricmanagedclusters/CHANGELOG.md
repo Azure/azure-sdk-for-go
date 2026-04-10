@@ -1,5 +1,36 @@
 # Release History
 
+## 1.0.0 (2026-02-24)
+### Breaking Changes
+
+- Enum `FaultKind` has been removed
+- Enum `FaultSimulationStatus` has been removed
+- Enum `SfmcOperationStatus` has been removed
+- Function `*FaultSimulationContent.GetFaultSimulationContent` has been removed
+- Function `*ManagedClustersClient.GetFaultSimulation` has been removed
+- Function `*ManagedClustersClient.NewListFaultSimulationPager` has been removed
+- Function `*ManagedClustersClient.BeginStartFaultSimulation` has been removed
+- Function `*ManagedClustersClient.BeginStopFaultSimulation` has been removed
+- Function `*ZoneFaultSimulationContent.GetFaultSimulationContent` has been removed
+- Function `*NodeTypesClient.GetFaultSimulation` has been removed
+- Function `*NodeTypesClient.NewListFaultSimulationPager` has been removed
+- Function `*NodeTypesClient.BeginStartFaultSimulation` has been removed
+- Function `*NodeTypesClient.BeginStopFaultSimulation` has been removed
+- Struct `FaultSimulation` has been removed
+- Struct `FaultSimulationConstraints` has been removed
+- Struct `FaultSimulationContentWrapper` has been removed
+- Struct `FaultSimulationDetails` has been removed
+- Struct `FaultSimulationIDContent` has been removed
+- Struct `FaultSimulationListResult` has been removed
+- Struct `NodeTypeFaultSimulation` has been removed
+- Struct `ZoneFaultSimulationContent` has been removed
+
+### Features Added
+
+- New field `SkipManagedNsgAssignment` in struct `ManagedClusterProperties`
+- New field `EnableResilientEphemeralOsDisk` in struct `NodeTypeProperties`
+
+
 ## 0.6.0 (2025-11-10)
 ### Breaking Changes
 

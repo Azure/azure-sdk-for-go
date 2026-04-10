@@ -976,6 +976,14 @@ func (c *ClientFactory) NewServiceEndpointPolicyDefinitionsClient() *ServiceEndp
 	}
 }
 
+// NewServiceGatewaysClient creates a new instance of ServiceGatewaysClient.
+func (c *ClientFactory) NewServiceGatewaysClient() *ServiceGatewaysClient {
+	return &ServiceGatewaysClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewServiceTagInformationClient creates a new instance of ServiceTagInformationClient.
 func (c *ClientFactory) NewServiceTagInformationClient() *ServiceTagInformationClient {
 	return &ServiceTagInformationClient{
@@ -1187,6 +1195,14 @@ func (c *ClientFactory) NewVirtualHubRouteTableV2SClient() *VirtualHubRouteTable
 // NewVirtualHubsClient creates a new instance of VirtualHubsClient.
 func (c *ClientFactory) NewVirtualHubsClient() *VirtualHubsClient {
 	return &VirtualHubsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVirtualNetworkAppliancesClient creates a new instance of VirtualNetworkAppliancesClient.
+func (c *ClientFactory) NewVirtualNetworkAppliancesClient() *VirtualNetworkAppliancesClient {
+	return &VirtualNetworkAppliancesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

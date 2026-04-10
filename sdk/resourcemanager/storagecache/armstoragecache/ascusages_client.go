@@ -27,7 +27,7 @@ type AscUsagesClient struct {
 // NewAscUsagesClient creates a new instance of AscUsagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AscUsagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential
 
 // NewListPager - Gets the quantity used and quota limit for resources
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - location - The name of the region to query for usage information.
 //   - options - AscUsagesClientListOptions contains the optional parameters for the AscUsagesClient.NewListPager method.
 func (client *AscUsagesClient) NewListPager(location string, options *AscUsagesClientListOptions) *runtime.Pager[AscUsagesClientListResponse] {
@@ -84,7 +84,7 @@ func (client *AscUsagesClient) listCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

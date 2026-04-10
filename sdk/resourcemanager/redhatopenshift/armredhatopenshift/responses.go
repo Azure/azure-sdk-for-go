@@ -5,35 +5,6 @@
 
 package armredhatopenshift
 
-// MachinePoolsClientCreateOrUpdateResponse contains the response from method MachinePoolsClient.CreateOrUpdate.
-type MachinePoolsClientCreateOrUpdateResponse struct {
-	// MachinePool represents a MachinePool
-	MachinePool
-}
-
-// MachinePoolsClientDeleteResponse contains the response from method MachinePoolsClient.Delete.
-type MachinePoolsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// MachinePoolsClientGetResponse contains the response from method MachinePoolsClient.Get.
-type MachinePoolsClientGetResponse struct {
-	// MachinePool represents a MachinePool
-	MachinePool
-}
-
-// MachinePoolsClientListResponse contains the response from method MachinePoolsClient.NewListPager.
-type MachinePoolsClientListResponse struct {
-	// MachinePoolList represents a list of MachinePools
-	MachinePoolList
-}
-
-// MachinePoolsClientUpdateResponse contains the response from method MachinePoolsClient.Update.
-type MachinePoolsClientUpdateResponse struct {
-	// MachinePool represents a MachinePool
-	MachinePool
-}
-
 // OpenShiftClustersClientCreateOrUpdateResponse contains the response from method OpenShiftClustersClient.BeginCreateOrUpdate.
 type OpenShiftClustersClientCreateOrUpdateResponse struct {
 	// OpenShiftCluster represents an Azure Red Hat OpenShift cluster.
@@ -81,6 +52,12 @@ type OpenShiftClustersClientUpdateResponse struct {
 	OpenShiftCluster
 }
 
+// OpenShiftVersionsClientGetResponse contains the response from method OpenShiftVersionsClient.Get.
+type OpenShiftVersionsClientGetResponse struct {
+	// OpenShiftVersion represents an OpenShift version that can be installed.
+	OpenShiftVersion
+}
+
 // OpenShiftVersionsClientListResponse contains the response from method OpenShiftVersionsClient.NewListPager.
 type OpenShiftVersionsClientListResponse struct {
 	// OpenShiftVersionList represents a List of available versions.
@@ -93,89 +70,15 @@ type OperationsClientListResponse struct {
 	OperationList
 }
 
-// SecretsClientCreateOrUpdateResponse contains the response from method SecretsClient.CreateOrUpdate.
-type SecretsClientCreateOrUpdateResponse struct {
-	// Secret represents a secret.
-	Secret
+// PlatformWorkloadIdentityRoleSetClientGetResponse contains the response from method PlatformWorkloadIdentityRoleSetClient.Get.
+type PlatformWorkloadIdentityRoleSetClientGetResponse struct {
+	// PlatformWorkloadIdentityRoleSet represents a mapping from the names of OCP operators to the built-in roles that should
+	// be assigned to those operator's corresponding managed identities for a particular OCP version.
+	PlatformWorkloadIdentityRoleSet
 }
 
-// SecretsClientDeleteResponse contains the response from method SecretsClient.Delete.
-type SecretsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecretsClientGetResponse contains the response from method SecretsClient.Get.
-type SecretsClientGetResponse struct {
-	// Secret represents a secret.
-	Secret
-}
-
-// SecretsClientListResponse contains the response from method SecretsClient.NewListPager.
-type SecretsClientListResponse struct {
-	// SecretList represents a list of Secrets
-	SecretList
-}
-
-// SecretsClientUpdateResponse contains the response from method SecretsClient.Update.
-type SecretsClientUpdateResponse struct {
-	// Secret represents a secret.
-	Secret
-}
-
-// SyncIdentityProvidersClientCreateOrUpdateResponse contains the response from method SyncIdentityProvidersClient.CreateOrUpdate.
-type SyncIdentityProvidersClientCreateOrUpdateResponse struct {
-	// SyncIdentityProvider represents a SyncIdentityProvider
-	SyncIdentityProvider
-}
-
-// SyncIdentityProvidersClientDeleteResponse contains the response from method SyncIdentityProvidersClient.Delete.
-type SyncIdentityProvidersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SyncIdentityProvidersClientGetResponse contains the response from method SyncIdentityProvidersClient.Get.
-type SyncIdentityProvidersClientGetResponse struct {
-	// SyncIdentityProvider represents a SyncIdentityProvider
-	SyncIdentityProvider
-}
-
-// SyncIdentityProvidersClientListResponse contains the response from method SyncIdentityProvidersClient.NewListPager.
-type SyncIdentityProvidersClientListResponse struct {
-	// SyncSetList represents a list of SyncSets
-	SyncIdentityProviderList
-}
-
-// SyncIdentityProvidersClientUpdateResponse contains the response from method SyncIdentityProvidersClient.Update.
-type SyncIdentityProvidersClientUpdateResponse struct {
-	// SyncIdentityProvider represents a SyncIdentityProvider
-	SyncIdentityProvider
-}
-
-// SyncSetsClientCreateOrUpdateResponse contains the response from method SyncSetsClient.CreateOrUpdate.
-type SyncSetsClientCreateOrUpdateResponse struct {
-	// SyncSet represents a SyncSet for an Azure Red Hat OpenShift Cluster.
-	SyncSet
-}
-
-// SyncSetsClientDeleteResponse contains the response from method SyncSetsClient.Delete.
-type SyncSetsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SyncSetsClientGetResponse contains the response from method SyncSetsClient.Get.
-type SyncSetsClientGetResponse struct {
-	// SyncSet represents a SyncSet for an Azure Red Hat OpenShift Cluster.
-	SyncSet
-}
-
-// SyncSetsClientListResponse contains the response from method SyncSetsClient.NewListPager.
-type SyncSetsClientListResponse struct {
-	// SyncSetList represents a list of SyncSets
-	SyncSetList
-}
-
-// SyncSetsClientUpdateResponse contains the response from method SyncSetsClient.Update.
-type SyncSetsClientUpdateResponse struct {
-	// SyncSet represents a SyncSet for an Azure Red Hat OpenShift Cluster.
-	SyncSet
+// PlatformWorkloadIdentityRoleSetsClientListResponse contains the response from method PlatformWorkloadIdentityRoleSetsClient.NewListPager.
+type PlatformWorkloadIdentityRoleSetsClientListResponse struct {
+	// PlatformWorkloadIdentityRoleSetList represents a List of role sets.
+	PlatformWorkloadIdentityRoleSetList
 }

@@ -93,7 +93,9 @@ func loadClientOptions(t *testing.T) (testVars, *azcore.ClientOptions) {
 			keyLogWriter, err := os.OpenFile(tv.KeyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
 			require.NoError(t, err)
 
-			t.Cleanup(func() { keyLogWriter.Close() })
+			t.Cleanup(func() {
+				require.NoError(t, keyLogWriter.Close())
+			})
 
 			tp := http.DefaultTransport.(*http.Transport).Clone()
 			tp.TLSClientConfig = &tls.Config{

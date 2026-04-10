@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/ElasticVolumes_CreateOrUpdate.json
+// Generated from example definition: 2025-12-15-preview/ElasticVolumes_CreateOrUpdate.json
 func ExampleElasticVolumesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleElasticVolumesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticVolumes_Delete.json
+// Generated from example definition: 2025-12-15-preview/ElasticVolumes_Delete.json
 func ExampleElasticVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleElasticVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticVolumes_Get.json
+// Generated from example definition: 2025-12-15-preview/ElasticVolumes_Get.json
 func ExampleElasticVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleElasticVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticVolumes_ListByElasticPool.json
+// Generated from example definition: 2025-12-15-preview/ElasticVolumes_ListByElasticPool.json
 func ExampleElasticVolumesClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleElasticVolumesClient_NewListByElasticPoolPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticVolumes_Revert.json
+// Generated from example definition: 2025-12-15-preview/ElasticVolumes_Revert.json
 func ExampleElasticVolumesClient_BeginRevert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +352,7 @@ func ExampleElasticVolumesClient_BeginRevert() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticVolumes_Update.json
+// Generated from example definition: 2025-12-15-preview/ElasticVolumes_Update.json
 func ExampleElasticVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

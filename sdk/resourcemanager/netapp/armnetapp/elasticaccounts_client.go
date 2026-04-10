@@ -42,7 +42,7 @@ func NewElasticAccountsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Create or update the specified NetApp Elastic Account within the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - body - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *ElasticAccountsClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create or update the specified NetApp Elastic Account within the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticAccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body ElasticAccount, options *ElasticAccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticAccountsClient.BeginCreateOrUpdate"
@@ -110,7 +110,7 @@ func (client *ElasticAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *ElasticAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete the specified NetApp elastic account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - options - ElasticAccountsClientBeginDeleteOptions contains the optional parameters for the ElasticAccountsClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *ElasticAccountsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete the specified NetApp elastic account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *ElasticAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticAccountsClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *ElasticAccountsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -198,7 +198,7 @@ func (client *ElasticAccountsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get the NetApp Elastic Account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - options - ElasticAccountsClientGetOptions contains the optional parameters for the ElasticAccountsClient.Get method.
@@ -244,7 +244,7 @@ func (client *ElasticAccountsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +261,7 @@ func (client *ElasticAccountsClient) getHandleResponse(resp *http.Response) (Ela
 
 // NewListByResourceGroupPager - List and describe all NetApp elastic accounts in the resource group.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ElasticAccountsClientListByResourceGroupOptions contains the optional parameters for the ElasticAccountsClient.NewListByResourceGroupPager
 //     method.
@@ -304,7 +304,7 @@ func (client *ElasticAccountsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *ElasticAccountsClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - List and describe all NetApp elastic accounts in the subscription.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - options - ElasticAccountsClientListBySubscriptionOptions contains the optional parameters for the ElasticAccountsClient.NewListBySubscriptionPager
 //     method.
 func (client *ElasticAccountsClient) NewListBySubscriptionPager(options *ElasticAccountsClientListBySubscriptionOptions) *runtime.Pager[ElasticAccountsClientListBySubscriptionResponse] {
@@ -359,7 +359,7 @@ func (client *ElasticAccountsClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,7 +377,7 @@ func (client *ElasticAccountsClient) listBySubscriptionHandleResponse(resp *http
 // BeginUpdate - Patch the specified NetApp Elastic Account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - body - The resource properties to be updated.
@@ -403,7 +403,7 @@ func (client *ElasticAccountsClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - Patch the specified NetApp Elastic Account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticAccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, body ElasticAccountUpdate, options *ElasticAccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticAccountsClient.BeginUpdate"
@@ -445,7 +445,7 @@ func (client *ElasticAccountsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

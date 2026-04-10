@@ -7,13 +7,16 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/audience"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/querynormalization"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/synctoken"
 )
 
@@ -37,9 +40,14 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 		return nil, err
 	}
 
-	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{
-		fmt.Sprintf("%s://%s/.default", u.Scheme, u.Host),
-	}, nil), options)
+	audience := fmt.Sprintf("%s://%s", u.Scheme, u.Host)
+	if options != nil && !reflect.ValueOf(options.Cloud).IsZero() {
+		if cfg, ok := options.Cloud.Services[ServiceName]; ok && cfg.Audience != "" {
+			audience = cfg.Audience
+		}
+	}
+
+	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{audience + "/.default"}, nil), options)
 }
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
@@ -57,9 +65,16 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 		options = &ClientOptions{}
 	}
 
+	audienceConfigured := false
+	if !reflect.ValueOf(options.Cloud).IsZero() {
+		if cfg, ok := options.Cloud.Services[ServiceName]; ok && cfg.Audience != "" {
+			audienceConfigured = true
+		}
+	}
+
 	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache)},
+		PerRetry: []policy.Policy{querynormalization.NewPolicy(), authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(audienceConfigured)},
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.AppConfig",
 		},
@@ -273,6 +288,35 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 				ETag:      (*azcore.ETag)(page.ETag),
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+// NewCheckSettingsPager creates a pager that uses HEAD requests to efficiently check for changes
+// in configuration settings that match the specified setting selector.
+func (c *Client) NewCheckSettingsPager(selector SettingSelector, options *CheckSettingsOptions) *runtime.Pager[CheckSettingsPageResponse] {
+	if options == nil {
+		options = &CheckSettingsOptions{}
+	}
+	pagerInternal := c.appConfigClient.NewCheckKeyValuesPagerWithMatchConditions(options.MatchConditions, selector.toGeneratedCheckKeyValues())
+	return runtime.NewPager(runtime.PagingHandler[CheckSettingsPageResponse]{
+		More: func(CheckSettingsPageResponse) bool {
+			return pagerInternal.More()
+		},
+		Fetcher: func(ctx context.Context, cur *CheckSettingsPageResponse) (CheckSettingsPageResponse, error) {
+			page, err := pagerInternal.NextPage(ctx)
+			if err != nil {
+				return CheckSettingsPageResponse{}, err
+			}
+
+			resp := CheckSettingsPageResponse{
+				ETag: (*azcore.ETag)(page.ETag),
+			}
+			if page.SyncToken != nil {
+				resp.SyncToken = SyncToken(*page.SyncToken)
+			}
+			return resp, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
 	})

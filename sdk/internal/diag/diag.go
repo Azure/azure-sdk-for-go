@@ -39,7 +39,7 @@ func StackTrace(skipFrames, totalFrames int) string {
 		sb.WriteString("()\n\t")
 		sb.WriteString(frame.File)
 		sb.WriteRune(':')
-		sb.WriteString(fmt.Sprintf("%d\n", frame.Line))
+		fmt.Fprintf(&sb, "%d\n", frame.Line)
 		if !more {
 			break
 		}

@@ -42,7 +42,7 @@ func NewElasticCapacityPoolsClient(subscriptionID string, credential azcore.Toke
 // BeginChangeZone - Moves pool to another zone
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -69,7 +69,7 @@ func (client *ElasticCapacityPoolsClient) BeginChangeZone(ctx context.Context, r
 // ChangeZone - Moves pool to another zone
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticCapacityPoolsClient) changeZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ChangeZoneRequest, options *ElasticCapacityPoolsClientBeginChangeZoneOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticCapacityPoolsClient.BeginChangeZone"
@@ -115,7 +115,7 @@ func (client *ElasticCapacityPoolsClient) changeZoneCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *ElasticCapacityPoolsClient) changeZoneCreateRequest(ctx context.Co
 // CheckVolumeFilePathAvailability - Check if an Elastic Volume file path is available within the given Elastic Capacity Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -181,7 +181,7 @@ func (client *ElasticCapacityPoolsClient) checkVolumeFilePathAvailabilityCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -204,7 +204,7 @@ func (client *ElasticCapacityPoolsClient) checkVolumeFilePathAvailabilityHandleR
 // Elastic Account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -232,7 +232,7 @@ func (client *ElasticCapacityPoolsClient) BeginCreateOrUpdate(ctx context.Contex
 // Account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticCapacityPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPool, options *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticCapacityPoolsClient.BeginCreateOrUpdate"
@@ -278,7 +278,7 @@ func (client *ElasticCapacityPoolsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -291,7 +291,7 @@ func (client *ElasticCapacityPoolsClient) createOrUpdateCreateRequest(ctx contex
 // BeginDelete - Delete the specified NetApp Elastic Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -317,7 +317,7 @@ func (client *ElasticCapacityPoolsClient) BeginDelete(ctx context.Context, resou
 // Delete - Delete the specified NetApp Elastic Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticCapacityPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *ElasticCapacityPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticCapacityPoolsClient.BeginDelete"
@@ -363,7 +363,7 @@ func (client *ElasticCapacityPoolsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -371,7 +371,7 @@ func (client *ElasticCapacityPoolsClient) deleteCreateRequest(ctx context.Contex
 // Get - Get the NetApp Elastic Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -423,7 +423,7 @@ func (client *ElasticCapacityPoolsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -440,7 +440,7 @@ func (client *ElasticCapacityPoolsClient) getHandleResponse(resp *http.Response)
 
 // NewListByElasticAccountPager - List and describe all NetApp Elastic Capacity Pools in the Elastic NetApp Account.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - options - ElasticCapacityPoolsClientListByElasticAccountOptions contains the optional parameters for the ElasticCapacityPoolsClient.NewListByElasticAccountPager
@@ -488,7 +488,7 @@ func (client *ElasticCapacityPoolsClient) listByElasticAccountCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -506,7 +506,7 @@ func (client *ElasticCapacityPoolsClient) listByElasticAccountHandleResponse(res
 // BeginUpdate - Patch the specified NetApp Elastic Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -533,7 +533,7 @@ func (client *ElasticCapacityPoolsClient) BeginUpdate(ctx context.Context, resou
 // Update - Patch the specified NetApp Elastic Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticCapacityPoolsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, body ElasticCapacityPoolUpdate, options *ElasticCapacityPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticCapacityPoolsClient.BeginUpdate"
@@ -579,7 +579,7 @@ func (client *ElasticCapacityPoolsClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

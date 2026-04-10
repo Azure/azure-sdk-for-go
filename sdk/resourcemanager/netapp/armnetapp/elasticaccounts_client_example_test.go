@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/ElasticAccounts_CreateOrUpdate.json
+// Generated from example definition: 2025-12-15-preview/ElasticAccounts_CreateOrUpdate.json
 func ExampleElasticAccountsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleElasticAccountsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticAccounts_Delete.json
+// Generated from example definition: 2025-12-15-preview/ElasticAccounts_Delete.json
 func ExampleElasticAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleElasticAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticAccounts_Get.json
+// Generated from example definition: 2025-12-15-preview/ElasticAccounts_Get.json
 func ExampleElasticAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleElasticAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticAccounts_ListByResourceGroup.json
+// Generated from example definition: 2025-12-15-preview/ElasticAccounts_ListByResourceGroup.json
 func ExampleElasticAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleElasticAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticAccounts_ListBySubscription.json
+// Generated from example definition: 2025-12-15-preview/ElasticAccounts_ListBySubscription.json
 func ExampleElasticAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,7 +249,7 @@ func ExampleElasticAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/ElasticAccounts_Update.json
+// Generated from example definition: 2025-12-15-preview/ElasticAccounts_Update.json
 func ExampleElasticAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

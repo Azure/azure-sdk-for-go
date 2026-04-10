@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.KubernetesConfiguration": "2025-04-01"
+  },
+  "emitterVersion": "0.10.2"
+}

@@ -275,10 +275,20 @@ func TestSetLogging(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(time.Second * 45)
+	var received GetPropertiesResponse
+	for range 3 {
+		recording.Sleep(time.Second * 45)
+		received, err = service.GetProperties(ctx, nil)
+		require.NoError(t, err)
 
-	received, err := service.GetProperties(ctx, nil)
-	require.NoError(t, err)
+		if *getResp.Logging.Read == *received.Logging.Read &&
+			*getResp.Logging.Write == *received.Logging.Write &&
+			*getResp.Logging.Delete == *received.Logging.Delete &&
+			*getResp.Logging.RetentionPolicy.Enabled == *received.Logging.RetentionPolicy.Enabled &&
+			*getResp.Logging.RetentionPolicy.Days == *received.Logging.RetentionPolicy.Days {
+			break
+		}
+	}
 
 	require.Equal(t, *getResp.Logging.Read, *received.Logging.Read)
 	require.Equal(t, *getResp.Logging.Write, *received.Logging.Write)
@@ -307,10 +317,19 @@ func TestSetHoursMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(time.Second * 45)
+	var received GetPropertiesResponse
+	for range 3 {
+		recording.Sleep(time.Second * 45)
+		received, err = service.GetProperties(ctx, nil)
+		require.NoError(t, err)
 
-	received, err := service.GetProperties(ctx, nil)
-	require.NoError(t, err)
+		if *getResp.HourMetrics.Enabled == *received.HourMetrics.Enabled &&
+			*getResp.HourMetrics.IncludeAPIs == *received.HourMetrics.IncludeAPIs &&
+			*getResp.HourMetrics.RetentionPolicy.Days == *received.HourMetrics.RetentionPolicy.Days &&
+			*getResp.HourMetrics.RetentionPolicy.Enabled == *received.HourMetrics.RetentionPolicy.Enabled {
+			break
+		}
+	}
 
 	require.Equal(t, *getResp.HourMetrics.Enabled, *received.HourMetrics.Enabled)
 	require.Equal(t, *getResp.HourMetrics.IncludeAPIs, *received.HourMetrics.IncludeAPIs)
@@ -338,10 +357,19 @@ func TestSetMinuteMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(time.Second * 45)
+	var received GetPropertiesResponse
+	for range 3 {
+		recording.Sleep(time.Second * 45)
+		received, err = service.GetProperties(ctx, nil)
+		require.NoError(t, err)
 
-	received, err := service.GetProperties(ctx, nil)
-	require.NoError(t, err)
+		if *getResp.MinuteMetrics.Enabled == *received.MinuteMetrics.Enabled &&
+			*getResp.MinuteMetrics.IncludeAPIs == *received.MinuteMetrics.IncludeAPIs &&
+			*getResp.MinuteMetrics.RetentionPolicy.Days == *received.MinuteMetrics.RetentionPolicy.Days &&
+			*getResp.MinuteMetrics.RetentionPolicy.Enabled == *received.MinuteMetrics.RetentionPolicy.Enabled {
+			break
+		}
+	}
 
 	require.Equal(t, *getResp.MinuteMetrics.Enabled, *received.MinuteMetrics.Enabled)
 	require.Equal(t, *getResp.MinuteMetrics.IncludeAPIs, *received.MinuteMetrics.IncludeAPIs)
@@ -369,10 +397,20 @@ func TestSetCors(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(time.Second * 45)
+	var received GetPropertiesResponse
+	for range 3 {
+		recording.Sleep(time.Second * 45)
+		received, err = service.GetProperties(ctx, nil)
+		require.NoError(t, err)
 
-	received, err := service.GetProperties(ctx, nil)
-	require.NoError(t, err)
+		if *getResp.Cors[0].AllowedHeaders == *received.Cors[0].AllowedHeaders &&
+			*getResp.Cors[0].AllowedMethods == *received.Cors[0].AllowedMethods &&
+			*getResp.Cors[0].AllowedOrigins == *received.Cors[0].AllowedOrigins &&
+			*getResp.Cors[0].ExposedHeaders == *received.Cors[0].ExposedHeaders &&
+			*getResp.Cors[0].MaxAgeInSeconds == *received.Cors[0].MaxAgeInSeconds {
+			break
+		}
+	}
 
 	require.Equal(t, *getResp.Cors[0].AllowedHeaders, *received.Cors[0].AllowedHeaders)
 	require.Equal(t, *getResp.Cors[0].AllowedMethods, *received.Cors[0].AllowedMethods)

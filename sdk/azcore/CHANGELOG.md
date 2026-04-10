@@ -1,5 +1,19 @@
 # Release History
 
+## 1.21.1-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+* Fixed an issue in `ResponseError.Error()` where the request URL path was being logged unescaped.
+* Redact query parameters when logging errors.
+* For `runtime.JoinPaths`, don't add a slash between root and paths when `paths` starts with `?` (query string).
+
+### Other Changes
+
 ## 1.21.0 (2026-01-12)
 
 ### Features Added

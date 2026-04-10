@@ -584,3 +584,36 @@ ERROR CODE: ErrorTooManyCheats
 	require.EqualValues(t, http.StatusInternalServerError, respErrDst.StatusCode)
 	require.EqualValues(t, want, respErrDst.Error())
 }
+
+func TestNewResponseErrorEscapedPath(t *testing.T) {
+	// Verify that escaped characters in the path do not get unescaped (like %09 into a literal tab)
+	// which can cause incredibly misleading error messages.
+	fakeURL, err := url.Parse("https://fakeurl.com/the/path%09tab?qp=removed")
+	require.NoError(t, err)
+
+	err = NewResponseError(&http.Response{
+		Status:     "the system is down",
+		StatusCode: http.StatusInternalServerError,
+		Body:       http.NoBody,
+		Request: &http.Request{
+			Method: http.MethodGet,
+			URL:    fakeURL,
+		},
+	})
+	re, ok := err.(*ResponseError)
+	if !ok {
+		t.Fatalf("unexpected error type %T", err)
+	}
+
+	const want = `GET https://fakeurl.com/the/path%09tab
+--------------------------------------------------------------------------------
+RESPONSE 500: the system is down
+ERROR CODE UNAVAILABLE
+--------------------------------------------------------------------------------
+Response contained no body
+--------------------------------------------------------------------------------
+`
+	if got := re.Error(); got != want {
+		t.Fatalf("\ngot:\n%s\nwant:\n%s\n", got, want)
+	}
+}

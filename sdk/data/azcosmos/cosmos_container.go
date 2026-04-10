@@ -461,9 +461,12 @@ func (c *ContainerClient) ReadManyItems(
 	if len(itemIdentities) == 0 {
 		return ReadManyItemsResponse{}, nil
 	}
-	correlatedActivityId, _ := uuid.New()
-	h := headerOptionsOverride{
-		correlatedActivityId: &correlatedActivityId,
+
+	// Validate all item IDs are non-empty
+	for i := range itemIdentities {
+		if itemIdentities[i].ID == "" {
+			return ReadManyItemsResponse{}, errors.New("item identity at index " + fmt.Sprint(i) + " has an empty ID")
+		}
 	}
 
 	readManyOptions := &ReadManyOptions{}
@@ -477,13 +480,7 @@ func (c *ContainerClient) ReadManyItems(
 		resourceAddress: c.link,
 	}
 
-	if readManyOptions.QueryEngine != nil {
-		// use correlated activity id header for read many queries
-		operationContext.headerOptionsOverride = &h
-		return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
-	}
-
-	return c.executeReadManyWithPointReads(itemIdentities, readManyOptions, operationContext, ctx)
+	return c.executeReadManyWithQueries(ctx, itemIdentities, readManyOptions, operationContext)
 }
 
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.

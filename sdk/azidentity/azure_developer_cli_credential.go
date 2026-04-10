@@ -112,8 +112,6 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 				mfaRequired+". Run this command then retry the operation: "+commandNoClaims,
 				nil,
 			)
-		case strings.Contains(msg, "azd auth login"):
-			err = newCredentialUnavailableError(credNameAzureDeveloperCLI, `please run "azd auth login" from a command prompt to authenticate before using this credential`)
 		}
 		err = unavailableIfInDAC(err, c.opts.inDefaultChain)
 		return at, err

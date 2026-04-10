@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
 func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithDiscoveredAssetRefs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithDiscovered
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Asset_With_ExternalAssetId.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Asset_With_ExternalAssetId.json
 func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithExternalAssetId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,7 +390,7 @@ func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithExternalAs
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Asset_Without_DisplayName.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Asset_Without_DisplayName.json
 func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithoutDisplayName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -574,7 +574,7 @@ func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithoutDisplay
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Asset_Without_ExternalAssetId.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Asset_Without_ExternalAssetId.json
 func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithoutExternalAssetId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,7 +758,7 @@ func ExampleAssetsClient_BeginCreateOrReplace_createOrReplaceAssetWithoutExterna
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_Asset.json
+// Generated from example definition: 2026-03-01-preview/Delete_Asset.json
 func ExampleAssetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -779,7 +779,7 @@ func ExampleAssetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_Asset.json
+// Generated from example definition: 2026-03-01-preview/Get_Asset.json
 func ExampleAssetsClient_Get_getAsset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -888,7 +888,7 @@ func ExampleAssetsClient_Get_getAsset() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Get_Asset_With_SyncStatus.json
+// Generated from example definition: 2026-03-01-preview/Get_Asset_With_SyncStatus.json
 func ExampleAssetsClient_Get_getAssetWithSyncStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1026,7 +1026,7 @@ func ExampleAssetsClient_Get_getAssetWithSyncStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_Assets_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_Assets_ByResourceGroup.json
 func ExampleAssetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1231,7 +1231,7 @@ func ExampleAssetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/List_Assets_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_Assets_BySubscription.json
 func ExampleAssetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1436,7 +1436,7 @@ func ExampleAssetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Update_Asset.json
+// Generated from example definition: 2026-03-01-preview/Update_Asset.json
 func ExampleAssetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
 )
 
-// Generated from example definition: 2025-05-01/checkVaultNameAvailability.json
+// Generated from example definition: 2026-02-01/checkVaultNameAvailability.json
 func ExampleVaultsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleVaultsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/createVault.json
+// Generated from example definition: 2026-02-01/createVault.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	// }
 }
 
-// Generated from example definition: 2025-05-01/createVaultWithNetworkAcls.json
+// Generated from example definition: 2026-02-01/createVaultWithNetworkAcls.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls
 	// }
 }
 
-// Generated from example definition: 2025-05-01/deleteVault.json
+// Generated from example definition: 2026-02-01/deleteVault.json
 func ExampleVaultsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExampleVaultsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/getVault.json
+// Generated from example definition: 2026-02-01/getVault.json
 func ExampleVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +471,7 @@ func ExampleVaultsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/getDeletedVault.json
+// Generated from example definition: 2026-02-01/getDeletedVault.json
 func ExampleVaultsClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -507,7 +507,7 @@ func ExampleVaultsClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/listVault.json
+// Generated from example definition: 2026-02-01/listVault.json
 func ExampleVaultsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -518,8 +518,7 @@ func ExampleVaultsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVaultsClient().NewListPager(&armkeyvault.VaultsClientListOptions{
-		Top: to.Ptr[int32](1)})
+	pager := clientFactory.NewVaultsClient().NewListPager(&armkeyvault.VaultsClientListOptions{Top: to.Ptr[int32](1)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -548,7 +547,7 @@ func ExampleVaultsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/listVaultByResourceGroup.json
+// Generated from example definition: 2026-02-01/listVaultByResourceGroup.json
 func ExampleVaultsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +572,7 @@ func ExampleVaultsClient_NewListByResourceGroupPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armkeyvault.VaultsClientListByResourceGroupResponse{
 		// 	VaultListResult: armkeyvault.VaultListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults?api-version=2025-05-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults?api-version=2026-02-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
 		// 		Value: []*armkeyvault.Vault{
 		// 			{
 		// 				Name: to.Ptr("sample-vault"),
@@ -663,7 +662,7 @@ func ExampleVaultsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/listVaultBySubscription.json
+// Generated from example definition: 2026-02-01/listVaultBySubscription.json
 func ExampleVaultsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,7 +687,7 @@ func ExampleVaultsClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armkeyvault.VaultsClientListBySubscriptionResponse{
 		// 	VaultListResult: armkeyvault.VaultListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resources?api-version=22025-05-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resources?api-version=22026-02-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
 		// 		Value: []*armkeyvault.Vault{
 		// 			{
 		// 				Name: to.Ptr("sample-vault"),
@@ -778,7 +777,7 @@ func ExampleVaultsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/listDeletedVaults.json
+// Generated from example definition: 2026-02-01/listDeletedVaults.json
 func ExampleVaultsClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +801,7 @@ func ExampleVaultsClient_NewListDeletedPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armkeyvault.VaultsClientListDeletedResponse{
 		// 	DeletedVaultListResult: armkeyvault.DeletedVaultListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/deletedVaults?api-version=2025-05-01&%24skiptoken=HY3RaoMwAEX%2fRcbeYhJrnRXKYNWOuqpME0sfNcYui0Yxade19N8ne7hcDlzOvVuKX81eKKmt4G4dooLQwgqsL2NGHUDYV6o68Z4rY1e388RtNvRQn2vNJjEaMSgNvcbneMUcsKg8BFwft8DndQ0w9hu2QOiFLRs4TsNFNHzSMBFsGvTQGvuD%2f5bVuTOw4R03vPkH%2fVqNAlzm5SxfOwh7ACOA8POTlvPjILlaU1ke8jImOc23JCppQVfZnna0DXc4ISc3vSVuRo5zJE6%2bj25C3vwk2v2kEV2mMn7PyOc1DbtNGkonnzuLym1G400uI5QRZj0efw%3d%3d"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/deletedVaults?api-version=2026-02-01&%24skiptoken=HY3RaoMwAEX%2fRcbeYhJrnRXKYNWOuqpME0sfNcYui0Yxade19N8ne7hcDlzOvVuKX81eKKmt4G4dooLQwgqsL2NGHUDYV6o68Z4rY1e388RtNvRQn2vNJjEaMSgNvcbneMUcsKg8BFwft8DndQ0w9hu2QOiFLRs4TsNFNHzSMBFsGvTQGvuD%2f5bVuTOw4R03vPkH%2fVqNAlzm5SxfOwh7ACOA8POTlvPjILlaU1ke8jImOc23JCppQVfZnna0DXc4ISc3vSVuRo5zJE6%2bj25C3vwk2v2kEV2mMn7PyOc1DbtNGkonnzuLym1G400uI5QRZj0efw%3d%3d"),
 		// 		Value: []*armkeyvault.DeletedVault{
 		// 			{
 		// 				Name: to.Ptr("vault-agile-drawer-6404"),
@@ -824,7 +823,7 @@ func ExampleVaultsClient_NewListDeletedPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/purgeDeletedVault.json
+// Generated from example definition: 2026-02-01/purgeDeletedVault.json
 func ExampleVaultsClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -850,7 +849,7 @@ func ExampleVaultsClient_BeginPurgeDeleted() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/updateVault.json
+// Generated from example definition: 2026-02-01/updateVault.json
 func ExampleVaultsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1048,7 +1047,7 @@ func ExampleVaultsClient_Update() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/updateAccessPoliciesAdd.json
+// Generated from example definition: 2026-02-01/updateAccessPoliciesAdd.json
 func ExampleVaultsClient_UpdateAccessPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

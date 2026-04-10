@@ -8,9 +8,6 @@ package armcontainerservicefleet
 type AutoUpgradeProfileOperationsClientGenerateUpdateRunResponse struct {
 	// GenerateResponse is the response of a generate request.
 	GenerateResponse
-
-	// The request should only proceed if an entity matches this string.
-	IfMatch *string
 }
 
 // AutoUpgradeProfilesClientCreateOrUpdateResponse contains the response from method AutoUpgradeProfilesClient.BeginCreateOrUpdate.

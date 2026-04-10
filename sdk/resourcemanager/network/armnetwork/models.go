@@ -7160,6 +7160,24 @@ type GetOutboundRoutesParameters struct {
 	ResourceURI *string
 }
 
+// GetServiceGatewayAddressLocationsResult - Response for get service gateway address locations.
+type GetServiceGatewayAddressLocationsResult struct {
+	// A list of address locations of service gateway.
+	Value []*ServiceGatewayAddressLocationResponse
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
+// GetServiceGatewayServicesResult - Response for get service gateway services.
+type GetServiceGatewayServicesResult struct {
+	// A list of services of service gateway.
+	Value []*ServiceGatewayService
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
 // GetVPNSitesConfigurationRequest - List of Vpn-Sites.
 type GetVPNSitesConfigurationRequest struct {
 	// REQUIRED; The sas-url to download the configurations for vpn-sites.
@@ -9378,6 +9396,9 @@ type NatGatewayPropertiesFormat struct {
 	// An array of public ip prefixes V6 associated with the nat gateway resource.
 	PublicIPPrefixesV6 []*SubResource
 
+	// Reference to an existing service gateway.
+	ServiceGateway *SubResource
+
 	// A reference to the source virtual network using this nat gateway resource.
 	SourceVirtualNetwork *SubResource
 
@@ -10507,6 +10528,9 @@ type PerimeterBasedAccessRule struct {
 
 // PolicySettings - Defines contents of a web application firewall global configuration.
 type PolicySettings struct {
+	// Web Application Firewall CAPTCHA Cookie Expiration time in minutes.
+	CaptchaCookieExpirationInMins *int32
+
 	// If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
 	CustomBlockResponseBody *string
 
@@ -11927,6 +11951,18 @@ type RouteTablePropertiesFormat struct {
 	Subnets []*Subnet
 }
 
+// RouteTargetAddressPropertiesFormat - Properties of route target address
+type RouteTargetAddressPropertiesFormat struct {
+	// The private IPv4 or IPv6 address of the service gateway route target address.
+	PrivateIPAddress *string
+
+	// The Private IP allocation method.
+	PrivateIPAllocationMethod *IPAllocationMethod
+
+	// The reference to the subnet resource.
+	Subnet *Subnet
+}
+
 // RoutingConfiguration - Routing Configuration indicating the associated and propagated route tables for this connection.
 type RoutingConfiguration struct {
 	// The resource id RouteTable associated with this RoutingConfiguration.
@@ -12918,6 +12954,166 @@ type ServiceEndpointPropertiesFormat struct {
 	ProvisioningState *ProvisioningState
 }
 
+// ServiceGateway resource.
+type ServiceGateway struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of service gateway.
+	Properties *ServiceGatewayPropertiesFormat
+
+	// The service gateway SKU.
+	SKU *ServiceGatewaySKU
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// A list of availability zones denoting the zone in which service gateway should be deployed.
+	// * The zone values must be provided as strings representing numeric identifiers like "1", "2", "3" etc.
+	Zones []*string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SecurityPerimeterSystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ServiceGatewayAddress - Properties of the service gateway address.
+type ServiceGatewayAddress struct {
+	// Address to update
+	Address *string
+
+	// Collection of services in address.
+	Services []*string
+}
+
+// ServiceGatewayAddressLocation - Properties of the service gateway address location.
+type ServiceGatewayAddressLocation struct {
+	// Location to update
+	AddressLocation *string
+
+	// Specifies the type of update operation to perform on addresses within the address location of service gateway.
+	// * FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
+	// not included will be removed.
+	// * PartialUpdate: Updates only the specified addresses.
+	AddressUpdateAction *AddressUpdateAction
+
+	// An array of addresses to create or update in locations.
+	Addresses []*ServiceGatewayAddress
+}
+
+// ServiceGatewayAddressLocationResponse - Properties of the service gateway address location.
+type ServiceGatewayAddressLocationResponse struct {
+	// Location to update
+	AddressLocation *string
+
+	// An array of addresses to create or update in locations.
+	Addresses []*ServiceGatewayAddress
+}
+
+// ServiceGatewayListResult - Response for ListServiceGateways API service call.
+type ServiceGatewayListResult struct {
+	// A list of service gateway in a resource group.
+	Value []*ServiceGateway
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
+// ServiceGatewayPropertiesFormat - Properties of the service gateway.
+type ServiceGatewayPropertiesFormat struct {
+	// Route Target address of Service gateway
+	RouteTargetAddress *RouteTargetAddressPropertiesFormat
+
+	// Route Target address V6 of Service gateway
+	RouteTargetAddressV6 *RouteTargetAddressPropertiesFormat
+
+	// Reference to an existing virtual network.
+	VirtualNetwork *VirtualNetwork
+
+	// READ-ONLY; The provisioning state of the service gateway resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resource GUID property of the service gateway resource.
+	ResourceGUID *string
+}
+
+// ServiceGatewaySKU - SKU of a service gateway.
+type ServiceGatewaySKU struct {
+	// Name of a service gateway SKU.
+	Name *ServiceGatewaySKUName
+
+	// Tier of a service gateway SKU.
+	Tier *ServiceGatewaySKUTier
+}
+
+// ServiceGatewayService - Properties of the service gateway service.
+type ServiceGatewayService struct {
+	// Name of the service
+	Name *string
+
+	// Properties of service gateway service.
+	Properties *ServiceGatewayServicePropertiesFormat
+}
+
+// ServiceGatewayServicePropertiesFormat - Properties of the service gateway service.
+type ServiceGatewayServicePropertiesFormat struct {
+	// Set to true to mark default service for inbound or outbound.
+	IsDefault *bool
+
+	// An array of load balancer backend address pools.
+	LoadBalancerBackendPools []*BackendAddressPool
+
+	// Azure Resource Id of public natgateway.
+	PublicNatGatewayID *string
+
+	// Name of the service.
+	ServiceType *ServiceType
+}
+
+// ServiceGatewayServiceRequest - Properties of the service gateway services request.
+type ServiceGatewayServiceRequest struct {
+	// Set to true to mark the service for deletion.
+	IsDelete *bool
+
+	// Service of service gateway.
+	Service *ServiceGatewayService
+}
+
+// ServiceGatewayUpdateAddressLocationsRequest - Properties of the service gateway update address locations request.
+type ServiceGatewayUpdateAddressLocationsRequest struct {
+	// Specifies the type of update operation to perform on address locations within the service gateway.
+	// * FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
+	// locations not included will be removed.
+	// * PartialUpdate: Updates only the specified address locations.
+	Action *UpdateAction
+
+	// An array of address locations to create or update.
+	AddressLocations []*ServiceGatewayAddressLocation
+}
+
+// ServiceGatewayUpdateServicesRequest - Properties of the service gateway update services request.
+type ServiceGatewayUpdateServicesRequest struct {
+	// Specifies the type of update operation to perform on services within the service gateway.
+	// * FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services
+	// not included will be removed.
+	// * PartialUpdate: Updates only the specified services.
+	Action *ServiceUpdateAction
+
+	// Collection of service updates.
+	ServiceRequests []*ServiceGatewayServiceRequest
+}
+
 // ServiceTagInformation - The service tag information.
 type ServiceTagInformation struct {
 	// READ-ONLY; The ID of service tag.
@@ -13270,6 +13466,9 @@ type SubnetPropertiesFormat struct {
 
 	// An array of service endpoints.
 	ServiceEndpoints []*ServiceEndpointPropertiesFormat
+
+	// Reference to an existing service gateway.
+	ServiceGateway *SubResource
 
 	// Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property can only
 	// be set if defaultOutboundAccess is set to false, both properties can only be set
@@ -15097,6 +15296,93 @@ type VirtualNetwork struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// VirtualNetworkAppliance - A virtual network appliance in a resource group.
+type VirtualNetworkAppliance struct {
+	// Resource ID.
+	ID *string
+
+	// Resource location.
+	Location *string
+
+	// Properties of the virtual network appliance.
+	Properties *VirtualNetworkAppliancePropertiesFormat
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// VirtualNetworkApplianceIPConfiguration - The virtual network appliance ip configuration.
+type VirtualNetworkApplianceIPConfiguration struct {
+	// Resource ID.
+	ID *string
+
+	// The name of virtual network appliance ip configuration.
+	Name *string
+
+	// Properties of the virtual network appliance ip configuration.
+	Properties *VirtualNetworkApplianceIPConfigurationProperties
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; The resource type.
+	Type *string
+}
+
+// VirtualNetworkApplianceIPConfigurationProperties - Properties of virtual network appliance IP configuration.
+type VirtualNetworkApplianceIPConfigurationProperties struct {
+	// Whether the ip configuration is primary or not.
+	Primary *bool
+
+	// The private IP address of the IP configuration.
+	PrivateIPAddress *string
+
+	// Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
+	PrivateIPAddressVersion *IPVersion
+
+	// The private IP address allocation method.
+	PrivateIPAllocationMethod *IPAllocationMethod
+
+	// READ-ONLY; The provisioning state of the private link service IP configuration resource.
+	ProvisioningState *ProvisioningState
+}
+
+// VirtualNetworkApplianceListResult - Response for the ListVirtualNetworkAppliance API service call.
+type VirtualNetworkApplianceListResult struct {
+	// A list of virtual network appliances in a resource group.
+	Value []*VirtualNetworkAppliance
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
+// VirtualNetworkAppliancePropertiesFormat - VirtualNetworkAppliance properties.
+type VirtualNetworkAppliancePropertiesFormat struct {
+	// Bandwidth of the VirtualNetworkAppliance resource in Gbps.
+	BandwidthInGbps *string
+
+	// The reference to the subnet resource.
+	Subnet *Subnet
+
+	// READ-ONLY; A list of IPConfigurations of the virtual network appliance.
+	IPConfigurations []*VirtualNetworkApplianceIPConfiguration
+
+	// READ-ONLY; The provisioning state of the virtual network appliance resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resource GUID property of the virtual network appliance resource.
+	ResourceGUID *string
 }
 
 // VirtualNetworkBgpCommunities - Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this

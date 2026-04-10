@@ -44,7 +44,7 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 // internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the vault.
 //   - secretName - The name of the secret.
@@ -96,7 +96,7 @@ func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -119,7 +119,7 @@ func (client *SecretsClient) createOrUpdateHandleResponse(resp *http.Response) (
 // REST service for interaction with vault secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the vault.
 //   - secretName - The name of the secret.
@@ -170,7 +170,7 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 // NewListPager - The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal
 // use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the vault.
 //   - options - SecretsClientListOptions contains the optional parameters for the SecretsClient.NewListPager method.
@@ -238,7 +238,7 @@ func (client *SecretsClient) listCreateRequest(ctx context.Context, resourceGrou
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +257,7 @@ func (client *SecretsClient) listHandleResponse(resp *http.Response) (SecretsCli
 // Users should use the data-plane REST service for interaction with vault secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the vault.
 //   - secretName - The name of the secret.
@@ -309,7 +309,7 @@ func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

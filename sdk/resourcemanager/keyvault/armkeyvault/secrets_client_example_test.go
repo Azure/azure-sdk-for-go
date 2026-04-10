@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/createSecret.json
+// Generated from example definition: 2026-02-01/createSecret.json
 func ExampleSecretsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleSecretsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/getSecret.json
+// Generated from example definition: 2026-02-01/getSecret.json
 func ExampleSecretsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleSecretsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/listSecrets.json
+// Generated from example definition: 2026-02-01/listSecrets.json
 func ExampleSecretsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleSecretsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/updateSecret.json
+// Generated from example definition: 2026-02-01/updateSecret.json
 func ExampleSecretsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

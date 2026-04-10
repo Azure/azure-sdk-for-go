@@ -27,7 +27,7 @@ type StorageTargetClient struct {
 // NewStorageTargetClient creates a new instance of StorageTargetClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageTargetClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCreden
 // target's namespace will return errors until the flush operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -72,7 +72,7 @@ func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroup
 // target's namespace will return errors until the flush operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetClient.BeginFlush"
@@ -118,7 +118,7 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -128,7 +128,7 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 // end on the next request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -156,7 +156,7 @@ func (client *StorageTargetClient) BeginInvalidate(ctx context.Context, resource
 // on the next request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *StorageTargetClient) invalidate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetClient.BeginInvalidate"
@@ -202,7 +202,7 @@ func (client *StorageTargetClient) invalidateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *StorageTargetClient) invalidateCreateRequest(ctx context.Context, 
 // BeginResume - Resumes client access to a previously suspended storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -238,7 +238,7 @@ func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGrou
 // Resume - Resumes client access to a previously suspended storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetClient.BeginResume"
@@ -284,7 +284,7 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -293,7 +293,7 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 // BeginSuspend - Suspends client access to a storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -320,7 +320,7 @@ func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGro
 // Suspend - Suspends client access to a storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetClient.BeginSuspend"
@@ -366,7 +366,7 @@ func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

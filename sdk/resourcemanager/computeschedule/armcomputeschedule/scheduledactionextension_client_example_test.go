@@ -43,7 +43,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
 		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse("15:04:05.999999999Z07:00", "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
 		// 						TimeZone: to.Ptr("g"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -133,7 +133,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
 		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse("15:04:05.999999999Z07:00", "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
 		// 						TimeZone: to.Ptr("g"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),

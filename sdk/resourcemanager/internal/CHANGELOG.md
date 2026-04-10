@@ -1,5 +1,11 @@
 # Release History
 
+## 3.2.0 (2026-04-02)
+
+### Features Added
+
+* Ignore `api-version` query parameter during playback matching to avoid unnecessary re-recording when API versions change
+
 ## 3.1.1 (2025-12-17)
 
 ### Other Changes

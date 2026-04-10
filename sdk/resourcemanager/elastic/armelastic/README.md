@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Elastic module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3
 ```
 
 ## Authorization

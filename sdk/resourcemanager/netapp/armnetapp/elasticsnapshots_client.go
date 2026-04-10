@@ -42,7 +42,7 @@ func NewElasticSnapshotsClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Create a ElasticSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -71,7 +71,7 @@ func (client *ElasticSnapshotsClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Create a ElasticSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticSnapshotsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body ElasticSnapshot, options *ElasticSnapshotsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticSnapshotsClient.BeginCreateOrUpdate"
@@ -125,7 +125,7 @@ func (client *ElasticSnapshotsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -138,7 +138,7 @@ func (client *ElasticSnapshotsClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Delete a ElasticSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -166,7 +166,7 @@ func (client *ElasticSnapshotsClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Delete a ElasticSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticSnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *ElasticSnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticSnapshotsClient.BeginDelete"
@@ -220,7 +220,7 @@ func (client *ElasticSnapshotsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -228,7 +228,7 @@ func (client *ElasticSnapshotsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Get a ElasticSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -289,7 +289,7 @@ func (client *ElasticSnapshotsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -306,7 +306,7 @@ func (client *ElasticSnapshotsClient) getHandleResponse(resp *http.Response) (El
 
 // NewListByElasticVolumePager - List ElasticSnapshot resources by ElasticVolume
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - poolName - The name of the ElasticCapacityPool
@@ -364,7 +364,7 @@ func (client *ElasticSnapshotsClient) listByElasticVolumeCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

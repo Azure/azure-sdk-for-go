@@ -1,5 +1,34 @@
 # Release History
 
+## 6.0.0-beta.2 (2026-03-11)
+### Breaking Changes
+
+- Field `XMSRequestID` of struct `BackupsLongTermRetentionClientStartResponse` has been removed
+- Field `XMSRequestID` of struct `ServersClientMigrateNetworkModeResponse` has been removed
+
+
+## 6.0.0-beta.1 (2026-02-27)
+### Breaking Changes
+
+- Type of `Operation.Properties` has been changed from `map[string]any` to `*OperationProperties`
+
+### Features Added
+
+- New value `HighAvailabilityModeDisabled` added to enum type `HighAvailabilityMode`
+- New value `RecommendationTypeEnumVacuumTable` added to enum type `RecommendationTypeEnum`
+- New value `RecommendationTypeParameterEnumVacuumTable` added to enum type `RecommendationTypeParameterEnum`
+- New enum type `NetworkMigrationState` with values `NetworkMigrationStateCancelInProgress`, `NetworkMigrationStateCancelled`, `NetworkMigrationStateFailed`, `NetworkMigrationStateInProgress`, `NetworkMigrationStatePending`, `NetworkMigrationStateSucceeded`
+- New function `*ServersClient.BeginMigrateNetworkMode(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginMigrateNetworkModeOptions) (*runtime.Poller[ServersClientMigrateNetworkModeResponse], error)`
+- New struct `LogSpecification`
+- New struct `MetricSpecification`
+- New struct `MigrateNetworkStatus`
+- New struct `OperationProperties`
+- New struct `ServiceSpecification`
+- New struct `TuningOptionsProperties`
+- New field `XMSRequestID` in struct `BackupsLongTermRetentionClientStartResponse`
+- New field `Properties` in struct `TuningOptions`
+
+
 ## 5.0.0 (2025-11-24)
 ### Breaking Changes
 

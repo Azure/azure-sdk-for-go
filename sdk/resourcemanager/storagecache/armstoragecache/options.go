@@ -230,6 +230,36 @@ type CachesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExpansionJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpansionJobsClient.BeginCreateOrUpdate
+// method.
+type ExpansionJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpansionJobsClientBeginDeleteOptions contains the optional parameters for the ExpansionJobsClient.BeginDelete method.
+type ExpansionJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpansionJobsClientBeginUpdateOptions contains the optional parameters for the ExpansionJobsClient.BeginUpdate method.
+type ExpansionJobsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpansionJobsClientGetOptions contains the optional parameters for the ExpansionJobsClient.Get method.
+type ExpansionJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpansionJobsClientListByAmlFilesystemOptions contains the optional parameters for the ExpansionJobsClient.NewListByAmlFilesystemPager
+// method.
+type ExpansionJobsClientListByAmlFilesystemOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ImportJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the ImportJobsClient.BeginCreateOrUpdate
 // method.
 type ImportJobsClientBeginCreateOrUpdateOptions struct {

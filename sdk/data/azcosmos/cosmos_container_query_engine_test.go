@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"testing"
 
-	azcosmosinternal "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/mock"
 )
 
 const (
@@ -28,10 +28,10 @@ const (
 
 var partitionKeys = [...]string{partition1Key, partition2Key, partition3Key}
 
-func generateMockItem(partitionIndex int, itemIndex int) azcosmosinternal.MockItem {
+func generateMockItem(partitionIndex int, itemIndex int) mock.MockItem {
 	// Reuse the partitionKeys defined above so generated items match the test partition names.
 	pk := partitionKeys[partitionIndex]
-	return azcosmosinternal.MockItem{
+	return mock.MockItem{
 		// make sure id and merge order are not the same
 		ID:           strconv.Itoa(partitionIndex*itemsPerPartition + itemIndex + 1),
 		PartitionKey: pk,
@@ -40,8 +40,8 @@ func generateMockItem(partitionIndex int, itemIndex int) azcosmosinternal.MockIt
 	}
 }
 
-func generateMockItems(partitions int, itemsPerPartition int) []azcosmosinternal.MockItem {
-	items := make([]azcosmosinternal.MockItem, 0, partitions*itemsPerPartition)
+func generateMockItems(partitions int, itemsPerPartition int) []mock.MockItem {
+	items := make([]mock.MockItem, 0, partitions*itemsPerPartition)
 	for i := 0; i < partitions; i++ {
 		for j := 0; j < itemsPerPartition; j++ {
 			items = append(items, generateMockItem(i, j))
@@ -50,7 +50,7 @@ func generateMockItems(partitions int, itemsPerPartition int) []azcosmosinternal
 	return items
 }
 
-func createTestItems(t *testing.T, database *DatabaseClient, items []azcosmosinternal.MockItem) (*ContainerClient, error) {
+func createTestItems(t *testing.T, database *DatabaseClient, items []mock.MockItem) (*ContainerClient, error) {
 	properties := ContainerProperties{
 		ID: "TestContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
@@ -98,7 +98,7 @@ func TestQueryViaQueryEngine(t *testing.T) {
 	}
 
 	options := &QueryOptions{
-		QueryEngine: azcosmosinternal.NewMockQueryEngine(),
+		QueryEngine: mock.NewMockQueryEngine(),
 	}
 	pager := container.NewQueryItemsPager("SELECT * FROM c ORDER BY c.mergeOrder", NewPartitionKey(), options)
 
@@ -112,7 +112,7 @@ func TestQueryViaQueryEngine(t *testing.T) {
 		}
 		for i, item := range response.Items {
 			itemCount++
-			var testItem azcosmosinternal.MockItem
+			var testItem mock.MockItem
 			if err := json.Unmarshal(item, &testItem); err != nil {
 				t.Fatalf("Failed to unmarshal item: %v", err)
 			}
@@ -147,20 +147,20 @@ func TestQueryOverrideWithoutParameters(t *testing.T) {
 	}
 
 	override := "SELECT * FROM c WHERE c.id = 'override'"
-	cfg := &azcosmosinternal.QueryRequestConfig{Query: &override, IncludeParameters: false}
-	engine := azcosmosinternal.WithQueryRequestConfig(cfg)
+	cfg := &mock.QueryRequestConfig{Query: &override, IncludeParameters: false}
+	engine := mock.WithQueryRequestConfig(cfg)
 
 	options := &QueryOptions{QueryEngine: engine}
 	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE c.id = @param1", NewPartitionKey(), options)
 
-	resultItems := make([]azcosmosinternal.MockItem, 0)
+	resultItems := make([]mock.MockItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {
 			t.Fatalf("failed to get next page: %v", err)
 		}
 		for _, it := range resp.Items {
-			var mi azcosmosinternal.MockItem
+			var mi mock.MockItem
 			if err := json.Unmarshal(it, &mi); err != nil {
 				t.Fatalf("failed to unmarshal item: %v", err)
 			}
@@ -185,8 +185,8 @@ func TestQueryOverrideWithParameters(t *testing.T) {
 	}
 
 	override := "SELECT * FROM c WHERE c.mergeOrder = @targetOrder"
-	cfg := &azcosmosinternal.QueryRequestConfig{Query: &override, IncludeParameters: true}
-	engine := azcosmosinternal.WithQueryRequestConfig(cfg)
+	cfg := &mock.QueryRequestConfig{Query: &override, IncludeParameters: true}
+	engine := mock.WithQueryRequestConfig(cfg)
 
 	// choose a target merge order present in the test data: use the first item's merge order (0)
 	if strconv.Itoa(items[0].MergeOrder) == items[0].ID {
@@ -198,14 +198,14 @@ func TestQueryOverrideWithParameters(t *testing.T) {
 	options := &QueryOptions{QueryEngine: engine, QueryParameters: []QueryParameter{{Name: "@targetOrder", Value: target}}}
 	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE c.id = @targetOrder", NewPartitionKey(), options)
 
-	resultItems := make([]azcosmosinternal.MockItem, 0)
+	resultItems := make([]mock.MockItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {
 			t.Fatalf("failed to get next page: %v", err)
 		}
 		for _, it := range resp.Items {
-			var mi azcosmosinternal.MockItem
+			var mi mock.MockItem
 			if err := json.Unmarshal(it, &mi); err != nil {
 				t.Fatalf("failed to unmarshal item: %v", err)
 			}
@@ -237,22 +237,22 @@ func TestNoQueryOverrideUsesOriginal(t *testing.T) {
 	}
 
 	// No override: Query = nil
-	cfg := &azcosmosinternal.QueryRequestConfig{Query: nil, IncludeParameters: false}
-	engine := azcosmosinternal.WithQueryRequestConfig(cfg)
+	cfg := &mock.QueryRequestConfig{Query: nil, IncludeParameters: false}
+	engine := mock.WithQueryRequestConfig(cfg)
 
 	// We will query by mergeOrder using a parameter
 	target := 0
 	options := &QueryOptions{QueryEngine: engine, QueryParameters: []QueryParameter{{Name: "@targetOrder", Value: target}}}
 	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE c.mergeOrder = @targetOrder", NewPartitionKey(), options)
 
-	resultItems := make([]azcosmosinternal.MockItem, 0)
+	resultItems := make([]mock.MockItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {
 			t.Fatalf("failed to get next page: %v", err)
 		}
 		for _, it := range resp.Items {
-			var mi azcosmosinternal.MockItem
+			var mi mock.MockItem
 			if err := json.Unmarshal(it, &mi); err != nil {
 				t.Fatalf("failed to unmarshal item: %v", err)
 			}

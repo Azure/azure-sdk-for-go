@@ -1,5 +1,70 @@
 # Release History
 
+## 4.0.0 (2026-02-11)
+### Breaking Changes
+
+- Function `*ApplicationClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, parameters Application, options *ApplicationClientCreateOptions)`
+- Function `*ApplicationPackageClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, parameters ApplicationPackage, options *ApplicationPackageClientCreateOptions)`
+- Enum `CertificateFormat` has been removed
+- Enum `CertificateProvisioningState` has been removed
+- Enum `CertificateStoreLocation` has been removed
+- Enum `CertificateVisibility` has been removed
+- Enum `NodeCommunicationMode` has been removed
+- Function `NewCertificateClient` has been removed
+- Function `*CertificateClient.CancelDeletion` has been removed
+- Function `*CertificateClient.Create` has been removed
+- Function `*CertificateClient.BeginDelete` has been removed
+- Function `*CertificateClient.Get` has been removed
+- Function `*CertificateClient.NewListByBatchAccountPager` has been removed
+- Function `*CertificateClient.Update` has been removed
+- Function `*ClientFactory.NewCertificateClient` has been removed
+- Struct `AzureProxyResource` has been removed
+- Struct `AzureResource` has been removed
+- Struct `Certificate` has been removed
+- Struct `CertificateBaseProperties` has been removed
+- Struct `CertificateCreateOrUpdateParameters` has been removed
+- Struct `CertificateCreateOrUpdateProperties` has been removed
+- Struct `CertificateProperties` has been removed
+- Struct `CertificateReference` has been removed
+- Struct `DeleteCertificateError` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ListCertificatesResult` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Field `Parameters` of struct `ApplicationClientCreateOptions` has been removed
+- Field `Parameters` of struct `ApplicationPackageClientCreateOptions` has been removed
+- Field `StorageAccountType` of struct `DataDisk` has been removed
+- Field `ApplicationLicenses`, `Certificates`, `CurrentNodeCommunicationMode`, `ResourceTags`, `TargetNodeCommunicationMode` of struct `PoolProperties` has been removed
+
+### Features Added
+
+- New value `SecurityEncryptionTypesDiskWithVMGuestState` added to enum type `SecurityEncryptionTypes`
+- New enum type `HostEndpointSettingsModeTypes` with values `HostEndpointSettingsModeTypesAudit`, `HostEndpointSettingsModeTypesEnforce`
+- New enum type `IPFamily` with values `IPFamilyIPv4`, `IPFamilyIPv6`
+- New enum type `JobDefaultOrder` with values `JobDefaultOrderCreationTime`, `JobDefaultOrderNone`
+- New struct `DiskCustomerManagedKey`
+- New struct `DiskEncryptionSetParameters`
+- New struct `HostEndpointSettings`
+- New struct `IPTag`
+- New struct `ProxyAgentSettings`
+- New field `SystemData` in struct `Account`
+- New field `SystemData` in struct `Application`
+- New field `SystemData` in struct `ApplicationPackage`
+- New field `ManagedDisk` in struct `DataDisk`
+- New field `SystemData` in struct `DetectorResponse`
+- New field `CustomerManagedKey` in struct `DiskEncryptionConfiguration`
+- New field `DiskEncryptionSet` in struct `ManagedDisk`
+- New field `SystemData` in struct `Pool`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `IPFamilies`, `IPTags` in struct `PublicIPAddressConfiguration`
+- New field `ProxyAgentSettings` in struct `SecurityProfile`
+- New field `JobDefaultOrder` in struct `TaskSchedulingPolicy`
+- New field `DiskEncryptionSet` in struct `VMDiskSecurityProfile`
+
+
 ## 3.0.1 (2025-12-17)
 ### Other Changes
 

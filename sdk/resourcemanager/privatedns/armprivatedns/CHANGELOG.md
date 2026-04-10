@@ -1,5 +1,21 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-03-16)
+### Breaking Changes
+
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New struct `SystemData`
+- New field `SystemData` in struct `PrivateZone`
+- New field `SystemData` in struct `RecordSet`
+- New field `SystemData` in struct `VirtualNetworkLink`
+
+
 ## 1.3.0 (2024-09-27)
 ### Features Added
 

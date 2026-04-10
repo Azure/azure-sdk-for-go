@@ -7,7 +7,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v9"
 )
 
 func unmarshalBaseAdminRuleClassification(rawMsg json.RawMessage) (armnetwork.BaseAdminRuleClassification, error) {

@@ -9,7 +9,7 @@
 
 ## Prerequisites
 
-Follow the environment set up instructions in [setup.md]. If generating a brand-new module, follow the prerequisite instructions for new SDKs, also in [setup.md].
+Follow the environment set up instructions in [setup.md][setup]. If generating a brand-new module, follow the prerequisite instructions for new SDKs, also in [setup.md][setup].
 
 If you are re-generating an existing module, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<prefix-path>/Azure/azure-sdk-for-go`.
 We use the `OneFlow` branching/workflow strategy with some minor variations.  See [repo branching][repo_branching] for further info.
@@ -92,7 +92,7 @@ This way, the changes are documented and preserved across regenerations.
 
 ## Testing
 
-Once your SDK code is generated, you'll need to write tests and examples for the module. See [testing.md] for more information.
+Once your SDK code is generated, you'll need to write tests and examples for the module. See [testing.md][testing] for more information.
 
 <!-- LINKS -->
 [api_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
@@ -100,3 +100,5 @@ Once your SDK code is generated, you'll need to write tests and examples for the
 [autorest_go]: https://www.npmjs.com/package/@autorest/go
 [autorest_intro]: https://github.com/Azure/autorest/blob/main/docs/readme.md
 [repo_branching]: https://github.com/Azure/azure-sdk/blob/main/docs/policies/repobranching.md
+[setup]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/setup.md
+[testing]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/testing.md

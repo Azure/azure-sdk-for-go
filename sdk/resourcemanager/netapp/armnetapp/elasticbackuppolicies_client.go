@@ -42,7 +42,7 @@ func NewElasticBackupPoliciesClient(subscriptionID string, credential azcore.Tok
 // BeginCreateOrUpdate - Create or update the specified Elastic Backup Policy in the NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - backupPolicyName - The name of the ElasticBackupPolicy
@@ -69,7 +69,7 @@ func (client *ElasticBackupPoliciesClient) BeginCreateOrUpdate(ctx context.Conte
 // CreateOrUpdate - Create or update the specified Elastic Backup Policy in the NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticBackupPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicy, options *ElasticBackupPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticBackupPoliciesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *ElasticBackupPoliciesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *ElasticBackupPoliciesClient) createOrUpdateCreateRequest(ctx conte
 // BeginDelete - Delete the specified Elastic Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - backupPolicyName - The name of the ElasticBackupPolicy
@@ -154,7 +154,7 @@ func (client *ElasticBackupPoliciesClient) BeginDelete(ctx context.Context, reso
 // Delete - Delete the specified Elastic Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticBackupPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *ElasticBackupPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticBackupPoliciesClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *ElasticBackupPoliciesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *ElasticBackupPoliciesClient) deleteCreateRequest(ctx context.Conte
 // Get - Get the Elastic Backup Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - backupPolicyName - The name of the ElasticBackupPolicy
@@ -260,7 +260,7 @@ func (client *ElasticBackupPoliciesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *ElasticBackupPoliciesClient) getHandleResponse(resp *http.Response
 
 // NewListByElasticAccountPager - List and describe all Elastic Backup Policies in the elastic account.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - options - ElasticBackupPoliciesClientListByElasticAccountOptions contains the optional parameters for the ElasticBackupPoliciesClient.NewListByElasticAccountPager
@@ -325,7 +325,7 @@ func (client *ElasticBackupPoliciesClient) listByElasticAccountCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *ElasticBackupPoliciesClient) listByElasticAccountHandleResponse(re
 // BeginUpdate - Patch the specified NetApp Elastic Backup Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the ElasticAccount
 //   - backupPolicyName - The name of the ElasticBackupPolicy
@@ -370,7 +370,7 @@ func (client *ElasticBackupPoliciesClient) BeginUpdate(ctx context.Context, reso
 // Update - Patch the specified NetApp Elastic Backup Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01-preview
+// Generated from API version 2025-12-15-preview
 func (client *ElasticBackupPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicyUpdate, options *ElasticBackupPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticBackupPoliciesClient.BeginUpdate"
@@ -416,7 +416,7 @@ func (client *ElasticBackupPoliciesClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", "2025-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -33,10 +33,11 @@ func SetBodilessMatcher(t *testing.T, options *MatcherOptions) error {
 type SetDefaultMatcherOptions struct {
 	RecordingOptions
 
-	CompareBodies       *bool
-	ExcludedHeaders     []string
-	IgnoredHeaders      []string
-	IgnoreQueryOrdering *bool
+	CompareBodies          *bool
+	ExcludedHeaders        []string
+	IgnoredHeaders         []string
+	IgnoredQueryParameters []string
+	IgnoreQueryOrdering    *bool
 }
 
 func (s *SetDefaultMatcherOptions) fillOptions() {
@@ -98,15 +99,17 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 	}
 
 	marshalled, err := json.MarshalIndent(struct {
-		CompareBodies       *bool  `json:"compareBodies,omitempty"`
-		ExcludedHeaders     string `json:"excludedHeaders,omitempty"`
-		IncludedHeaders     string `json:"includedHeaders,omitempty"`
-		IgnoreQueryOrdering *bool  `json:"ignoreQueryOrdering,omitempty"`
+		CompareBodies          *bool  `json:"compareBodies,omitempty"`
+		ExcludedHeaders        string `json:"excludedHeaders,omitempty"`
+		IncludedHeaders        string `json:"includedHeaders,omitempty"`
+		IgnoredQueryParameters string `json:"ignoredQueryParameters,omitempty"`
+		IgnoreQueryOrdering    *bool  `json:"ignoreQueryOrdering,omitempty"`
 	}{
-		CompareBodies:       options.CompareBodies,
-		ExcludedHeaders:     strings.Join(addDefaults(options.ExcludedHeaders), ","),
-		IncludedHeaders:     strings.Join(options.IgnoredHeaders, ","),
-		IgnoreQueryOrdering: options.IgnoreQueryOrdering,
+		CompareBodies:          options.CompareBodies,
+		ExcludedHeaders:        strings.Join(addDefaults(options.ExcludedHeaders), ","),
+		IncludedHeaders:        strings.Join(options.IgnoredHeaders, ","),
+		IgnoredQueryParameters: strings.Join(options.IgnoredQueryParameters, ","),
+		IgnoreQueryOrdering:    options.IgnoreQueryOrdering,
 	}, "", "")
 	if err != nil {
 		return err

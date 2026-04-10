@@ -1,5 +1,45 @@
 # Release History
 
+## 2.4.0 (2026-04-07)
+### Features Added
+
+- New value `CredentialTypeAzureKeyVaultS3WithHMAC` added to enum type `CredentialType`
+- New value `EndpointTypeS3WithHmac` added to enum type `EndpointType`
+- New enum type `ConnectionStatus` with values `ConnectionStatusApproved`, `ConnectionStatusDisconnected`, `ConnectionStatusPending`, `ConnectionStatusRejected`, `ConnectionStatusStale`
+- New enum type `DataIntegrityValidation` with values `DataIntegrityValidationNone`, `DataIntegrityValidationSaveFileMD5`, `DataIntegrityValidationSaveVerifyFileMD5`
+- New enum type `EndpointKind` with values `EndpointKindSource`, `EndpointKindTarget`
+- New enum type `Frequency` with values `FrequencyDaily`, `FrequencyMonthly`, `FrequencyNone`, `FrequencyOnetime`, `FrequencyWeekly`
+- New enum type `S3WithHmacSourceType` with values `S3WithHmacSourceTypeALIBABA`, `S3WithHmacSourceTypeDELLEMC`, `S3WithHmacSourceTypeGCS`, `S3WithHmacSourceTypeIBM`, `S3WithHmacSourceTypeMINIO`, `S3WithHmacSourceTypeOTHER`
+- New enum type `TriggerType` with values `TriggerTypeManual`, `TriggerTypeScheduled`
+- New function `*AzureKeyVaultS3WithHmacCredentials.GetCredentials() *Credentials`
+- New function `*ClientFactory.NewConnectionsClient() *ConnectionsClient`
+- New function `NewConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionsClient, error)`
+- New function `*ConnectionsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, storageMoverName string, connectionName string, connection Connection, options *ConnectionsClientCreateOrUpdateOptions) (ConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*ConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, storageMoverName string, connectionName string, options *ConnectionsClientBeginDeleteOptions) (*runtime.Poller[ConnectionsClientDeleteResponse], error)`
+- New function `*ConnectionsClient.Get(ctx context.Context, resourceGroupName string, storageMoverName string, connectionName string, options *ConnectionsClientGetOptions) (ConnectionsClientGetResponse, error)`
+- New function `*ConnectionsClient.NewListPager(resourceGroupName string, storageMoverName string, options *ConnectionsClientListOptions) *runtime.Pager[ConnectionsClientListResponse]`
+- New function `*S3WithHmacEndpointProperties.GetEndpointBaseProperties() *EndpointBaseProperties`
+- New function `*S3WithHmacEndpointUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New struct `AzureKeyVaultS3WithHmacCredentials`
+- New struct `Connection`
+- New struct `ConnectionList`
+- New struct `ConnectionProperties`
+- New struct `JobRunWarning`
+- New struct `S3WithHmacEndpointProperties`
+- New struct `S3WithHmacEndpointUpdateProperties`
+- New struct `ScheduleInfo`
+- New struct `SchedulerTime`
+- New field `EndpointKind` in struct `AzureMultiCloudConnectorEndpointProperties`
+- New field `EndpointKind` in struct `AzureStorageBlobContainerEndpointProperties`
+- New field `EndpointKind` in struct `AzureStorageNfsFileShareEndpointProperties`
+- New field `EndpointKind` in struct `AzureStorageSmbFileShareEndpointProperties`
+- New field `Connections`, `DataIntegrityValidation`, `PreservePermissions`, `Schedule` in struct `JobDefinitionProperties`
+- New field `Connections`, `DataIntegrityValidation`, `Schedule` in struct `JobDefinitionUpdateProperties`
+- New field `ScheduledExecutionTime`, `TriggerType`, `Warnings` in struct `JobRunProperties`
+- New field `EndpointKind` in struct `NfsMountEndpointProperties`
+- New field `EndpointKind` in struct `SmbMountEndpointProperties`
+
+
 ## 2.3.0 (2025-08-29)
 ### Features Added
 

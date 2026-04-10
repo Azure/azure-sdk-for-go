@@ -248,57 +248,6 @@ func PossibleFailureActionValues() []FailureAction {
 	}
 }
 
-// FaultKind - The kind of fault simulation.
-type FaultKind string
-
-const (
-	// FaultKindZone - Simulates an availability zone down.
-	FaultKindZone FaultKind = "Zone"
-)
-
-// PossibleFaultKindValues returns the possible values for the FaultKind const type.
-func PossibleFaultKindValues() []FaultKind {
-	return []FaultKind{
-		FaultKindZone,
-	}
-}
-
-// FaultSimulationStatus - Fault simulation status.
-type FaultSimulationStatus string
-
-const (
-	// FaultSimulationStatusActive - Indicates the fault simulation is active. The simulation will have this status after the
-	// start operation has completed successfully.
-	FaultSimulationStatusActive FaultSimulationStatus = "Active"
-	// FaultSimulationStatusDone - Indicates the fault simulation is done. The simulation will have this status after the stop
-	// operation has completed successfully.
-	FaultSimulationStatusDone FaultSimulationStatus = "Done"
-	// FaultSimulationStatusStartFailed - Indicates the fault simulation has failed on start. The simulation will have this status
-	// after the start operation fails.
-	FaultSimulationStatusStartFailed FaultSimulationStatus = "StartFailed"
-	// FaultSimulationStatusStarting - Indicates the fault simulation is starting. The simulation will have this status while
-	// the start operation is in progress.
-	FaultSimulationStatusStarting FaultSimulationStatus = "Starting"
-	// FaultSimulationStatusStopFailed - Indicates the fault simulation has failed on stop. The simulation will have this status
-	// after the stop operation fails.
-	FaultSimulationStatusStopFailed FaultSimulationStatus = "StopFailed"
-	// FaultSimulationStatusStopping - Indicates the fault simulation is stopping. The simulation will have this status while
-	// the stop operation is in progress.
-	FaultSimulationStatusStopping FaultSimulationStatus = "Stopping"
-)
-
-// PossibleFaultSimulationStatusValues returns the possible values for the FaultSimulationStatus const type.
-func PossibleFaultSimulationStatusValues() []FaultSimulationStatus {
-	return []FaultSimulationStatus{
-		FaultSimulationStatusActive,
-		FaultSimulationStatusDone,
-		FaultSimulationStatusStartFailed,
-		FaultSimulationStatusStarting,
-		FaultSimulationStatusStopFailed,
-		FaultSimulationStatusStopping,
-	}
-}
-
 // HealthFilter - Enum for filtering health events.
 type HealthFilter string
 
@@ -988,36 +937,6 @@ func PossibleServiceScalingTriggerKindValues() []ServiceScalingTriggerKind {
 	return []ServiceScalingTriggerKind{
 		ServiceScalingTriggerKindAveragePartitionLoadTrigger,
 		ServiceScalingTriggerKindAverageServiceLoadTrigger,
-	}
-}
-
-// SfmcOperationStatus - Sfmc operation status.
-type SfmcOperationStatus string
-
-const (
-	// SfmcOperationStatusAborted - Operation aborted.
-	SfmcOperationStatusAborted SfmcOperationStatus = "Aborted"
-	// SfmcOperationStatusCanceled - Operation canceled.
-	SfmcOperationStatusCanceled SfmcOperationStatus = "Canceled"
-	// SfmcOperationStatusCreated - Operation created.
-	SfmcOperationStatusCreated SfmcOperationStatus = "Created"
-	// SfmcOperationStatusFailed - Operation failed.
-	SfmcOperationStatusFailed SfmcOperationStatus = "Failed"
-	// SfmcOperationStatusStarted - Operation started.
-	SfmcOperationStatusStarted SfmcOperationStatus = "Started"
-	// SfmcOperationStatusSucceeded - Operation succeeded.
-	SfmcOperationStatusSucceeded SfmcOperationStatus = "Succeeded"
-)
-
-// PossibleSfmcOperationStatusValues returns the possible values for the SfmcOperationStatus const type.
-func PossibleSfmcOperationStatusValues() []SfmcOperationStatus {
-	return []SfmcOperationStatus{
-		SfmcOperationStatusAborted,
-		SfmcOperationStatusCanceled,
-		SfmcOperationStatusCreated,
-		SfmcOperationStatusFailed,
-		SfmcOperationStatusStarted,
-		SfmcOperationStatusSucceeded,
 	}
 }
 

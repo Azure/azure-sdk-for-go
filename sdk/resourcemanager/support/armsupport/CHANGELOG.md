@@ -1,5 +1,54 @@
 # Release History
 
+## 2.0.0-beta.4 (2026-03-16)
+### Breaking Changes
+
+- Function `NewProblemClassificationsClient` parameter(s) have been changed from `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)` to `(credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Type of `MessageProperties.ContentType` has been changed from `*TranscriptContentType` to `*string`
+- Enum `TranscriptContentType` has been removed
+- Function `*ClientFactory.NewLookUpResourceIDClient` has been removed
+- Function `*ClientFactory.NewProblemClassificationsNoSubscriptionClient` has been removed
+- Function `*ClientFactory.NewServiceClassificationsClient` has been removed
+- Function `*ClientFactory.NewServiceClassificationsNoSubscriptionClient` has been removed
+- Function `NewLookUpResourceIDClient` has been removed
+- Function `*LookUpResourceIDClient.Post` has been removed
+- Function `PossibleTranscriptContentTypeValues` has been removed
+- Function `*ProblemClassificationsClient.ClassifyProblems` has been removed
+- Function `NewProblemClassificationsNoSubscriptionClient` has been removed
+- Function `*ProblemClassificationsNoSubscriptionClient.ClassifyProblems` has been removed
+- Function `NewServiceClassificationsClient` has been removed
+- Function `*ServiceClassificationsClient.ClassifyServices` has been removed
+- Function `NewServiceClassificationsNoSubscriptionClient` has been removed
+- Function `*ServiceClassificationsNoSubscriptionClient.ClassifyServices` has been removed
+- Struct `ClassificationService` has been removed
+- Struct `LookUpResourceIDRequest` has been removed
+- Struct `LookUpResourceIDResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `ProblemClassificationsClassificationInput` has been removed
+- Struct `ProblemClassificationsClassificationOutput` has been removed
+- Struct `ProblemClassificationsClassificationResult` has been removed
+- Struct `ServiceClassificationAnswer` has been removed
+- Struct `ServiceClassificationOutput` has been removed
+- Struct `ServiceClassificationRequest` has been removed
+- Field `OperationsListResult` of struct `OperationsClientListResponse` has been removed
+- Field `Metadata`, `ParentProblemClassification` of struct `ProblemClassificationProperties` has been removed
+- Field `Metadata` of struct `ServiceProperties` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New struct `OperationListResult`
+- New field `SystemData` in struct `CommunicationDetails`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `SystemData` in struct `ProblemClassification`
+- New field `NextLink` in struct `ProblemClassificationsListResult`
+- New field `SystemData` in struct `Service`
+- New field `NextLink` in struct `ServicesListResult`
+- New field `SystemData` in struct `TicketDetails`
+
+
 ## 1.3.0 (2024-04-26)
 ### Features Added
 

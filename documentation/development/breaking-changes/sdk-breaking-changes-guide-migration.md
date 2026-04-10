@@ -596,7 +596,38 @@ New code:
 privateEndpointConnection.Etag = to.Ptr(azcore.ETag("*"))
 ```
 
-### 8. Removal of Unreferenced Types
+### 8. Parameter Group Changes
+
+**Changelog Pattern**:
+
+```md
+- Function `*ServicesClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *ServicesClientDeleteOptions)`
+- Field `ClientRequestID` of struct `SearchManagementRequestOptions` has been removed
+```
+
+**Reason**: TypeSpec moves optional parameters from parameter groups into the method's options type and keeps only required parameters in the named group. If no required parameters remain, the parameter group is removed entirely.
+
+**Impact**: This corrects the previous SDK behavior.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to adapt the new function signature.
+
+For example:
+
+Previous code:
+
+```go
+res, err = clientFactory.NewServicesClient().Delete(ctx, "rg1", "mysearchservice", &armsearch.SearchManagementRequestOptions{ClientRequestID: to.Ptr("test")}, nil)
+```
+
+New code:
+
+```go
+res, err := clientFactory.NewServicesClient().Delete(ctx, "rg1", "mysearchservice", &armsearch.ServicesClientDeleteOptions{ClientRequestID: to.Ptr("test")})
+```
+
+### 9. Removal of Unreferenced Types
 
 **Changelog Pattern**:
 
@@ -617,5 +648,3 @@ Multiple removals of unreferenced types that are typically not used in the SDK:
 **Impact**: No impact since these types are typically not used directly by users.
 
 **Resolution**: Accept these breaking changes.
-
-**Caution**: Since these types are unreferenced, their removal should not affect existing code. We will release these changes without a new major version.

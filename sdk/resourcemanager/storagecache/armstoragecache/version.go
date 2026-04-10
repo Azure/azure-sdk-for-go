@@ -6,5 +6,5 @@ package armstoragecache
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
-	moduleVersion = "v4.1.0"
+	moduleVersion = "v4.2.0"
 )

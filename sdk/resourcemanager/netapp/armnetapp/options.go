@@ -293,6 +293,12 @@ type CachesClientBeginPoolChangeOptions struct {
 	ResumeToken string
 }
 
+// CachesClientBeginResetSmbPasswordOptions contains the optional parameters for the CachesClient.BeginResetSmbPassword method.
+type CachesClientBeginResetSmbPasswordOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // CachesClientBeginUpdateOptions contains the optional parameters for the CachesClient.BeginUpdate method.
 type CachesClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -947,6 +953,9 @@ type VolumesClientBeginListGetGroupIDListForLdapUserOptions struct {
 
 // VolumesClientBeginListQuotaReportOptions contains the optional parameters for the VolumesClient.BeginListQuotaReport method.
 type VolumesClientBeginListQuotaReportOptions struct {
+	// The content of the action request
+	Body *QuotaReportFilterRequest
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

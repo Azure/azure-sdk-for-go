@@ -327,7 +327,7 @@ func (inf *processorStressTest) report(ctx context.Context, header string, endPo
 
 	stats := strings.Builder{}
 
-	stats.WriteString(fmt.Sprintf("=== Stats (%s) ===\n", header))
+	fmt.Fprintf(&stats, "=== Stats (%s) ===\n", header)
 
 	done := 0
 
@@ -355,7 +355,7 @@ func (inf *processorStressTest) report(ctx context.Context, header string, endPo
 			done++
 		}
 
-		stats.WriteString(fmt.Sprintf("  [%s] o:%s (last: %s), remaining: %d/%d\n", endProps.PartitionID, owner, lastUpdate, remaining, inf.eventsPerRound))
+		fmt.Fprintf(&stats, "  [%s] o:%s (last: %s), remaining: %d/%d\n", endProps.PartitionID, owner, lastUpdate, remaining, inf.eventsPerRound)
 	}
 
 	return stats.String(), done == len(endPositions), nil

@@ -10,7 +10,6 @@ permissions:
   pull-requests: read
   actions: read
   checks: read
-  statuses: read
 strict: false
 checkout:
   ref: ${{ github.event.pull_request.head.sha }}
@@ -59,14 +58,9 @@ Fetch the PR details. If the PR is in **draft** state, mark it as ready for revi
 
 ### Step 1 — Gather information
 
-1. Fetch PR details, changed files, and **both** check runs and commit statuses using GitHub MCP tools:
-   - **Check runs** (`check-runs` API): returns CI job results from Azure Pipelines and GitHub Actions.
-   - **Commit statuses** (`statuses` API): returns status contexts like `checkenforcer`. This is a separate API — check runs alone will NOT show `checkenforcer`.
-2. Identify the module path from the changed files (e.g., `sdk/resourcemanager/<service>/arm<package>/`).
-3. **Distinguish CI systems when reading check results:**
-   - **Azure DevOps pipelines** (app: `azure-pipelines`): NOT GitHub Actions. Do NOT call `get_job_logs` — it returns 404. Read success/failure from the check's `conclusion` field. Extract the real `target_url` for ADO log links. NEVER fabricate or use placeholder ADO URLs — omit the link if `target_url` is unavailable.
-   - **GitHub Actions** (app: `github-actions`): Use `get_job_logs` to fetch log content.
-   - **Policy checks** (app: `microsoft-github-policy-service`): e.g., `license/cla`. Read status only.
+1. Fetch PR details and changed files using GitHub MCP tools.
+2. Fetch **check runs** for the PR head commit. Find the `go - pullrequest` parent check and its child jobs (`go - pullrequest (Build <job_name>)`). These are **Azure DevOps pipeline** results — do NOT call `get_job_logs` (returns 404). Read success/failure from the `conclusion` field and extract the `target_url` for ADO log links. NEVER fabricate ADO URLs.
+3. Identify the module path from the changed files (e.g., `sdk/resourcemanager/<service>/arm<package>/`).
 
 ### Step 2 — Identify gaps to merge
 
@@ -104,14 +98,6 @@ These are scripts inside the Analyze job. They do NOT appear as separate check r
 | Link Verification | Markdown links valid | Fix broken URLs or append to `eng/ignore-links.txt` | Yes |
 | Verify Changelogs | CHANGELOG.md valid | Add changelog entries for unreleased changes | No |
 | Dependency Check | Module dependency rules | Review dependency errors | No |
-
-##### Other checks (outside the main pipeline)
-
-| Check Name | Source | What It Validates | Fix Action |
-|---|---|---|---|
-| `license/cla` | `microsoft-github-policy-service` | CLA signature | PR author must sign the CLA |
-| `https://aka.ms/azsdk/checkenforcer` | Commit **status** (not check run) | Meta-gate: waits for all checks to pass | Passes automatically when all others pass. `/check-enforcer override` to unblock if stuck |
-| `Handle pull_request_target ...` | GitHub Actions (`event-processor`) | PR event processing | Usually passes — ignore unless failing |
 
 For failures not covered above, reference the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/TROUBLESHOOTING.md).
 

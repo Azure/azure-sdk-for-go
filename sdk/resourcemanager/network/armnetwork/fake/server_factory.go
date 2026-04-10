@@ -370,9 +370,6 @@ type ServerFactory struct {
 	// ServiceEndpointPolicyDefinitionsServer contains the fakes for client ServiceEndpointPolicyDefinitionsClient
 	ServiceEndpointPolicyDefinitionsServer ServiceEndpointPolicyDefinitionsServer
 
-	// ServiceGatewaysServer contains the fakes for client ServiceGatewaysClient
-	ServiceGatewaysServer ServiceGatewaysServer
-
 	// ServiceTagInformationServer contains the fakes for client ServiceTagInformationClient
 	ServiceTagInformationServer ServiceTagInformationServer
 
@@ -453,9 +450,6 @@ type ServerFactory struct {
 
 	// VirtualHubsServer contains the fakes for client VirtualHubsClient
 	VirtualHubsServer VirtualHubsServer
-
-	// VirtualNetworkAppliancesServer contains the fakes for client VirtualNetworkAppliancesClient
-	VirtualNetworkAppliancesServer VirtualNetworkAppliancesServer
 
 	// VirtualNetworkGatewayConnectionsServer contains the fakes for client VirtualNetworkGatewayConnectionsClient
 	VirtualNetworkGatewayConnectionsServer VirtualNetworkGatewayConnectionsServer
@@ -626,7 +620,6 @@ type ServerFactoryTransport struct {
 	trServiceAssociationLinksServer                         *ServiceAssociationLinksServerTransport
 	trServiceEndpointPoliciesServer                         *ServiceEndpointPoliciesServerTransport
 	trServiceEndpointPolicyDefinitionsServer                *ServiceEndpointPolicyDefinitionsServerTransport
-	trServiceGatewaysServer                                 *ServiceGatewaysServerTransport
 	trServiceTagInformationServer                           *ServiceTagInformationServerTransport
 	trServiceTagsServer                                     *ServiceTagsServerTransport
 	trStaticCidrsServer                                     *StaticCidrsServerTransport
@@ -654,7 +647,6 @@ type ServerFactoryTransport struct {
 	trVirtualHubIPConfigurationServer                       *VirtualHubIPConfigurationServerTransport
 	trVirtualHubRouteTableV2SServer                         *VirtualHubRouteTableV2SServerTransport
 	trVirtualHubsServer                                     *VirtualHubsServerTransport
-	trVirtualNetworkAppliancesServer                        *VirtualNetworkAppliancesServerTransport
 	trVirtualNetworkGatewayConnectionsServer                *VirtualNetworkGatewayConnectionsServerTransport
 	trVirtualNetworkGatewayNatRulesServer                   *VirtualNetworkGatewayNatRulesServerTransport
 	trVirtualNetworkGatewaysServer                          *VirtualNetworkGatewaysServerTransport
@@ -1236,11 +1228,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewServiceEndpointPolicyDefinitionsServerTransport(&s.srv.ServiceEndpointPolicyDefinitionsServer)
 		})
 		resp, err = s.trServiceEndpointPolicyDefinitionsServer.Do(req)
-	case "ServiceGatewaysClient":
-		initServer(s, &s.trServiceGatewaysServer, func() *ServiceGatewaysServerTransport {
-			return NewServiceGatewaysServerTransport(&s.srv.ServiceGatewaysServer)
-		})
-		resp, err = s.trServiceGatewaysServer.Do(req)
 	case "ServiceTagInformationClient":
 		initServer(s, &s.trServiceTagInformationServer, func() *ServiceTagInformationServerTransport {
 			return NewServiceTagInformationServerTransport(&s.srv.ServiceTagInformationServer)
@@ -1358,11 +1345,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "VirtualHubsClient":
 		initServer(s, &s.trVirtualHubsServer, func() *VirtualHubsServerTransport { return NewVirtualHubsServerTransport(&s.srv.VirtualHubsServer) })
 		resp, err = s.trVirtualHubsServer.Do(req)
-	case "VirtualNetworkAppliancesClient":
-		initServer(s, &s.trVirtualNetworkAppliancesServer, func() *VirtualNetworkAppliancesServerTransport {
-			return NewVirtualNetworkAppliancesServerTransport(&s.srv.VirtualNetworkAppliancesServer)
-		})
-		resp, err = s.trVirtualNetworkAppliancesServer.Do(req)
 	case "VirtualNetworkGatewayConnectionsClient":
 		initServer(s, &s.trVirtualNetworkGatewayConnectionsServer, func() *VirtualNetworkGatewayConnectionsServerTransport {
 			return NewVirtualNetworkGatewayConnectionsServerTransport(&s.srv.VirtualNetworkGatewayConnectionsServer)

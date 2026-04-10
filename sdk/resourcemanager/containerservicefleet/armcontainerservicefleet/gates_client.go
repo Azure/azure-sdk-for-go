@@ -43,7 +43,7 @@ func NewGatesClient(subscriptionID string, credential azcore.TokenCredential, op
 // Get - Get a Gate
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - gateName - The name of the Gate resource, a GUID.
@@ -94,7 +94,7 @@ func (client *GatesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *GatesClient) getHandleResponse(resp *http.Response) (GatesClientGe
 
 // NewListByFleetPager - List Gate resources by Fleet
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - GatesClientListByFleetOptions contains the optional parameters for the GatesClient.NewListByFleetPager method.
@@ -167,7 +167,7 @@ func (client *GatesClient) listByFleetCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,7 +185,7 @@ func (client *GatesClient) listByFleetHandleResponse(resp *http.Response) (Gates
 // BeginUpdate - Update a Gate
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - gateName - The name of the Gate resource, a GUID.
@@ -212,7 +212,7 @@ func (client *GatesClient) BeginUpdate(ctx context.Context, resourceGroupName st
 // Update - Update a Gate
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *GatesClient) update(ctx context.Context, resourceGroupName string, fleetName string, gateName string, properties GatePatch, options *GatesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GatesClient.BeginUpdate"
@@ -258,7 +258,7 @@ func (client *GatesClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

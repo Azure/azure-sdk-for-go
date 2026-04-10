@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/FleetManagedNamespaces_CreateOrUpdate.json
+// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_CreateOrUpdate.json
 func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetManagedNamespaces_Delete.json
+// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_Delete.json
 func ExampleFleetManagedNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleFleetManagedNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetManagedNamespaces_Get.json
+// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_Get.json
 func ExampleFleetManagedNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,7 +356,7 @@ func ExampleFleetManagedNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetManagedNamespaces_ListByFleet.json
+// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_ListByFleet.json
 func ExampleFleetManagedNamespacesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleFleetManagedNamespacesClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetManagedNamespaces_Update.json
+// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_Update.json
 func ExampleFleetManagedNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,8 +12,86 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/Fleets_CreateOrUpdate.json
-func ExampleFleetsClient_BeginCreate() {
+// Generated from example definition: 2025-08-01-preview/Fleets_CreateOrUpdate.json
+func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFleetsClient().BeginCreate(ctx, "rg1", "fleet1", armcontainerservicefleet.Fleet{
+		Tags: map[string]*string{
+			"tier":   to.Ptr("production"),
+			"archv2": to.Ptr(""),
+		},
+		Location: to.Ptr("East US"),
+		Properties: &armcontainerservicefleet.FleetProperties{
+			HubProfile: &armcontainerservicefleet.FleetHubProfile{
+				DNSPrefix: to.Ptr("dnsprefix1"),
+				AgentProfile: &armcontainerservicefleet.AgentProfile{
+					VMSize: to.Ptr("Standard_DS1"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetsClientCreateResponse{
+	// 	Fleet: &armcontainerservicefleet.Fleet{
+	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1"),
+	// 		Name: to.Ptr("fleet-1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("someUser"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("someOtherUser"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tier": to.Ptr("production"),
+	// 			"archv2": to.Ptr(""),
+	// 		},
+	// 		Location: to.Ptr("East US"),
+	// 		ETag: to.Ptr("23ujdflewrj3="),
+	// 		Properties: &armcontainerservicefleet.FleetProperties{
+	// 			HubProfile: &armcontainerservicefleet.FleetHubProfile{
+	// 				DNSPrefix: to.Ptr("dnsprefix1"),
+	// 				Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+	// 				PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+	// 				KubernetesVersion: to.Ptr("1.22.4"),
+	// 				AgentProfile: &armcontainerservicefleet.AgentProfile{
+	// 					VMSize: to.Ptr("Standard_DS1"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateUpdating),
+	// 			Status: &armcontainerservicefleet.FleetStatus{
+	// 				LastOperationID: to.Ptr("operation-12345"),
+	// 				LastOperationError: &armcontainerservicefleet.ErrorDetail{
+	// 					Code: to.Ptr("None"),
+	// 					Message: to.Ptr("No error"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperationGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -109,8 +187,8 @@ func ExampleFleetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_Delete.json
-func ExampleFleetsClient_BeginDelete() {
+// Generated from example definition: 2025-08-01-preview/Fleets_Delete.json
+func ExampleFleetsClient_BeginDelete_deletesAFleetResourceAsynchronouslyWithALongRunningOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -135,8 +213,95 @@ func ExampleFleetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_Get.json
-func ExampleFleetsClient_Get() {
+// Generated from example definition: 2025-08-01-preview/Fleets_Delete_MaximumSet_Gen.json
+func ExampleFleetsClient_BeginDelete_deletesAFleetResourceAsynchronouslyWithALongRunningOperationGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFleetsClient().BeginDelete(ctx, "rgfleets", "fleet1", &armcontainerservicefleet.FleetsClientBeginDeleteOptions{
+		IfMatch: to.Ptr("crsgokrdxddjsvqxpplerummnmzav")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/Fleets_Get.json
+func ExampleFleetsClient_Get_getsAFleetResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFleetsClient().Get(ctx, "rg1", "fleet1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetsClientGetResponse{
+	// 	Fleet: &armcontainerservicefleet.Fleet{
+	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1"),
+	// 		Name: to.Ptr("fleet-1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("someUser"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("someOtherUser"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tier": to.Ptr("production"),
+	// 			"archv2": to.Ptr(""),
+	// 		},
+	// 		Location: to.Ptr("East US"),
+	// 		ETag: to.Ptr("23ujdflewrj3="),
+	// 		Properties: &armcontainerservicefleet.FleetProperties{
+	// 			HubProfile: &armcontainerservicefleet.FleetHubProfile{
+	// 				DNSPrefix: to.Ptr("dnsprefix1"),
+	// 				Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+	// 				PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+	// 				KubernetesVersion: to.Ptr("1.22.4"),
+	// 				AgentProfile: &armcontainerservicefleet.AgentProfile{
+	// 					VMSize: to.Ptr("Standard_DS1"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
+	// 			Status: &armcontainerservicefleet.FleetStatus{
+	// 				LastOperationID: to.Ptr("operation-12345"),
+	// 				LastOperationError: &armcontainerservicefleet.ErrorDetail{
+	// 					Code: to.Ptr("None"),
+	// 					Message: to.Ptr("No error"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/Fleets_Get_MaximumSet_Gen.json
+func ExampleFleetsClient_Get_getsAFleetResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -203,8 +368,77 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_ListByResourceGroup.json
-func ExampleFleetsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2025-08-01-preview/Fleets_ListByResourceGroup.json
+func ExampleFleetsClient_NewListByResourceGroupPager_listsTheFleetResourcesInAResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFleetsClient().NewListByResourceGroupPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservicefleet.FleetsClientListByResourceGroupResponse{
+		// 	FleetListResult: armcontainerservicefleet.FleetListResult{
+		// 		Value: []*armcontainerservicefleet.Fleet{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1"),
+		// 				Name: to.Ptr("fleet1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/fleets"),
+		// 				SystemData: &armcontainerservicefleet.SystemData{
+		// 					CreatedBy: to.Ptr("someUser"),
+		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("someOtherUser"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"tier": to.Ptr("production"),
+		// 					"archv2": to.Ptr(""),
+		// 				},
+		// 				Location: to.Ptr("East US"),
+		// 				ETag: to.Ptr("23ujdflewrj3="),
+		// 				Properties: &armcontainerservicefleet.FleetProperties{
+		// 					HubProfile: &armcontainerservicefleet.FleetHubProfile{
+		// 						DNSPrefix: to.Ptr("dnsprefix1"),
+		// 						Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						KubernetesVersion: to.Ptr("1.22.4"),
+		// 						AgentProfile: &armcontainerservicefleet.AgentProfile{
+		// 							VMSize: to.Ptr("Standard_DS1"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
+		// 					Status: &armcontainerservicefleet.FleetStatus{
+		// 						LastOperationID: to.Ptr("operation-12345"),
+		// 						LastOperationError: &armcontainerservicefleet.ErrorDetail{
+		// 							Code: to.Ptr("None"),
+		// 							Message: to.Ptr("No error"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleFleetsClient_NewListByResourceGroupPager_listsTheFleetResourcesInAResourceGroupGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -281,8 +515,77 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_ListBySub.json
-func ExampleFleetsClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2025-08-01-preview/Fleets_ListBySub.json
+func ExampleFleetsClient_NewListBySubscriptionPager_listsTheFleetResourcesInASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFleetsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservicefleet.FleetsClientListBySubscriptionResponse{
+		// 	FleetListResult: armcontainerservicefleet.FleetListResult{
+		// 		Value: []*armcontainerservicefleet.Fleet{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet1"),
+		// 				Name: to.Ptr("fleet-1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/fleets"),
+		// 				SystemData: &armcontainerservicefleet.SystemData{
+		// 					CreatedBy: to.Ptr("someUser"),
+		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("someOtherUser"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"tier": to.Ptr("production"),
+		// 					"archv2": to.Ptr(""),
+		// 				},
+		// 				Location: to.Ptr("East US"),
+		// 				ETag: to.Ptr("23ujdflewrj3="),
+		// 				Properties: &armcontainerservicefleet.FleetProperties{
+		// 					HubProfile: &armcontainerservicefleet.FleetHubProfile{
+		// 						DNSPrefix: to.Ptr("dnsprefix1"),
+		// 						Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						KubernetesVersion: to.Ptr("1.22.4"),
+		// 						AgentProfile: &armcontainerservicefleet.AgentProfile{
+		// 							VMSize: to.Ptr("Standard_DS1"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
+		// 					Status: &armcontainerservicefleet.FleetStatus{
+		// 						LastOperationID: to.Ptr("operation-12345"),
+		// 						LastOperationError: &armcontainerservicefleet.ErrorDetail{
+		// 							Code: to.Ptr("None"),
+		// 							Message: to.Ptr("No error"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
+func ExampleFleetsClient_NewListBySubscriptionPager_listsTheFleetResourcesInASubscriptionGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -359,8 +662,8 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_ListCredentialsResult.json
-func ExampleFleetsClient_ListCredentials() {
+// Generated from example definition: 2025-08-01-preview/Fleets_ListCredentialsResult.json
+func ExampleFleetsClient_ListCredentials_listsTheUserCredentialsOfAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -389,8 +692,38 @@ func ExampleFleetsClient_ListCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_PatchTags.json
-func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
+// Generated from example definition: 2025-08-01-preview/Fleets_ListCredentials_MaximumSet_Gen.json
+func ExampleFleetsClient_ListCredentials_listsTheUserCredentialsOfAFleetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFleetsClient().ListCredentials(ctx, "rgfleets", "fleet1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetsClientListCredentialsResponse{
+	// 	FleetCredentialResults: &armcontainerservicefleet.FleetCredentialResults{
+	// 		Kubeconfigs: []*armcontainerservicefleet.FleetCredentialResult{
+	// 			{
+	// 				Name: to.Ptr("credentialName1"),
+	// 				Value: []byte("Y3JlZGVudGlhbFZhbHVlMQ=="),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/Fleets_PatchTags.json
+func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -459,8 +792,8 @@ func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_Update.json
-func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
+// Generated from example definition: 2025-08-01-preview/Fleets_Update_MaximumSet_Gen.json
+func ExampleFleetsClient_BeginUpdateAsync_updateAFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

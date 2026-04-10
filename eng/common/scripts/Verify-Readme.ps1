@@ -9,7 +9,7 @@ param (
   [string]$SettingsPath
 )
 . (Join-Path $PSScriptRoot common.ps1)
-$DefaultDocWardenVersion = "0.7.3"
+$DefaultDocWardenVersion = "0.7.2"
 $script:FoundError = $false
 
 function Test-Readme-Files {

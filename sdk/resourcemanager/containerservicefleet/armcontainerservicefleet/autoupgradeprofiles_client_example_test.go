@@ -12,8 +12,60 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/AutoUpgradeProfiles_CreateOrUpdate.json
-func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_CreateOrUpdate.json
+func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradeProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginCreateOrUpdate(ctx, "rg1", "fleet1", "autoupgradeprofile1", armcontainerservicefleet.AutoUpgradeProfile{
+		Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+			TargetKubernetesVersion: to.Ptr(""),
+			LongTermSupport:         to.Ptr(false),
+			Channel:                 to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.AutoUpgradeProfilesClientCreateOrUpdateResponse{
+	// 	AutoUpgradeProfile: &armcontainerservicefleet.AutoUpgradeProfile{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
+	// 		Name: to.Ptr("autoupgradeprofile1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/autoUpgradeProfiles"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("@contoso.com"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 		},
+	// 		Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.AutoUpgradeProfileProvisioningStateSucceeded),
+	// 			TargetKubernetesVersion: to.Ptr(""),
+	// 			LongTermSupport: to.Ptr(false),
+	// 			Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+	// 		},
+	// 		ETag: to.Ptr("\"EtagValue\""),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradeProfileGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -72,8 +124,8 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/AutoUpgradeProfiles_Delete.json
-func ExampleAutoUpgradeProfilesClient_BeginDelete() {
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Delete.json
+func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -93,8 +145,70 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/AutoUpgradeProfiles_Get.json
-func ExampleAutoUpgradeProfilesClient_Get() {
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Delete_MaximumSet_Gen.json
+func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileResourceGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginDelete(ctx, "rgfleets", "fleet1", "autoupgradeprofile1", &armcontainerservicefleet.AutoUpgradeProfilesClientBeginDeleteOptions{
+		IfMatch: to.Ptr("tmlfhgsu")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Get.json
+func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAutoUpgradeProfilesClient().Get(ctx, "rg1", "fleet1", "autoupgradeprofile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.AutoUpgradeProfilesClientGetResponse{
+	// 	AutoUpgradeProfile: &armcontainerservicefleet.AutoUpgradeProfile{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
+	// 		Name: to.Ptr("autoupgradeprofile1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/autoUpgradeProfiles"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("@contoso.com"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 		},
+	// 		Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.AutoUpgradeProfileProvisioningStateSucceeded),
+	// 			Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+	// 		},
+	// 		ETag: to.Ptr("\"EtagValue\""),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Get_MaximumSet_Gen.json
+func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -138,8 +252,58 @@ func ExampleAutoUpgradeProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/AutoUpgradeProfiles_ListByFleet.json
-func ExampleAutoUpgradeProfilesClient_NewListByFleetPager() {
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_ListByFleet.json
+func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradeProfileResourcesByFleet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAutoUpgradeProfilesClient().NewListByFleetPager("rg1", "fleet1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservicefleet.AutoUpgradeProfilesClientListByFleetResponse{
+		// 	AutoUpgradeProfileListResult: armcontainerservicefleet.AutoUpgradeProfileListResult{
+		// 		Value: []*armcontainerservicefleet.AutoUpgradeProfile{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
+		// 				Name: to.Ptr("autoupgradeprofile1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/fleets/autoUpgradeProfiles"),
+		// 				SystemData: &armcontainerservicefleet.SystemData{
+		// 					CreatedBy: to.Ptr("@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 				},
+		// 				Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.AutoUpgradeProfileProvisioningStateSucceeded),
+		// 					Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+		// 				},
+		// 				ETag: to.Ptr("\"EtagValue\""),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("http://nextlink.contoso.com"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_ListByFleet_MaximumSet_Gen.json
+func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradeProfileResourcesByFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

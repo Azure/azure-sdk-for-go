@@ -42,10 +42,6 @@
     "updateVersionScript": {
       "command": "generator version {packagePath}",
       "path": ""
-    },
-    "updateMetadataScript": {
-      "command": "generator metadata {packagePath}",
-      "path": ""
     }
   }
 }

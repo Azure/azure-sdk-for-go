@@ -138,8 +138,7 @@ steps:
       condition: >-
         and(
           succeededOrFailed(),
-          not(endsWith(variables['Build.Repository.Name'], '-pr')),
-          not(endsWith(variables['Build.DefinitionName'], 'weekly'))
+          not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
   - pwsh: |

@@ -1,6 +1,4 @@
 {
-  "apiVersions": {
-    "Microsoft.DurableTask": "2026-02-01"
-  },
-  "emitterVersion": "0.10.2"
+  "apiVersion": "2025-11-01",
+  "emitterVersion": "0.9.0"
 }

@@ -5,9 +5,7 @@ package armmaps_test
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"strings"
 	"testing"
 	"time"
 
@@ -16,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -92,46 +90,6 @@ func (testsuite *MapsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 }
 
-func (testsuite *MapsTestSuite) waitForAccountTerminalProvisioningState(timeout time.Duration) {
-	accountsClient, err := armmaps.NewAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-
-	deadline := time.Now().Add(timeout)
-	for {
-		resp, err := accountsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
-		testsuite.Require().NoError(err)
-
-		if resp.Properties != nil && resp.Properties.ProvisioningState != nil {
-			state := *resp.Properties.ProvisioningState
-			if strings.EqualFold(state, "Succeeded") || strings.EqualFold(state, "Failed") {
-				return
-			}
-		}
-
-		if time.Now().After(deadline) {
-			testsuite.T().Fatalf("timed out waiting for account %s provisioning state to reach a terminal value", testsuite.accountName)
-		}
-
-		time.Sleep(10 * time.Second)
-	}
-}
-
-func isCreatorsAPINotAvailable(err error) bool {
-	var respErr *azcore.ResponseError
-	if errors.As(err, &respErr) && strings.EqualFold(respErr.ErrorCode, "NoRegisteredProviderFound") {
-		return strings.Contains(err.Error(), "accounts/creators")
-	}
-	return false
-}
-
-func isInvalidProvisioningStateError(err error) bool {
-	var respErr *azcore.ResponseError
-	if errors.As(err, &respErr) {
-		return strings.EqualFold(respErr.ErrorCode, "InvalidProvisoningState")
-	}
-	return false
-}
-
 // Microsoft.Maps/accounts/{accountName}
 func (testsuite *MapsTestSuite) TestAccounts() {
 	var err error
@@ -187,13 +145,18 @@ func (testsuite *MapsTestSuite) TestAccounts() {
 
 	// From step Accounts_Update
 	fmt.Println("Call operation: Accounts_Update")
-	testsuite.waitForAccountTerminalProvisioningState(3 * time.Minute)
 	_, err = accountsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armmaps.AccountUpdateParameters{
 		Tags: map[string]*string{
 			"specialTag": to.Ptr("true"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
+
+	// The current provisioningState must transition to a terminal state before the resource can be updated.
+	recordMode := recording.GetEnvVariable("AZURE_RECORD_MODE", "playback")
+	if recordMode == "record" {
+		time.Sleep(60 * time.Second)
+	}
 }
 
 // Microsoft.Maps/accounts/{accountName}/creators/{creatorName}
@@ -203,7 +166,6 @@ func (testsuite *MapsTestSuite) TestCreators() {
 	fmt.Println("Call operation: Creators_CreateOrUpdate")
 	creatorsClient, err := armmaps.NewCreatorsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	testsuite.waitForAccountTerminalProvisioningState(3 * time.Minute)
 	_, err = creatorsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.creatorName, armmaps.Creator{
 		Location: to.Ptr(testsuite.location),
 		Tags: map[string]*string{
@@ -213,9 +175,6 @@ func (testsuite *MapsTestSuite) TestCreators() {
 			StorageUnits: to.Ptr[int32](5),
 		},
 	}, nil)
-	if isCreatorsAPINotAvailable(err) {
-		testsuite.T().Skipf("skipping creators live test: %v", err)
-	}
 	testsuite.Require().NoError(err)
 
 	// From step Creators_ListByAccount
@@ -256,11 +215,6 @@ func (testsuite *MapsTestSuite) Cleanup() {
 	fmt.Println("Call operation: Accounts_Delete")
 	accountsClient, err := armmaps.NewAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	testsuite.waitForAccountTerminalProvisioningState(3 * time.Minute)
 	_, err = accountsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
-	if isInvalidProvisioningStateError(err) {
-		testsuite.waitForAccountTerminalProvisioningState(3 * time.Minute)
-		_, err = accountsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
-	}
 	testsuite.Require().NoError(err)
 }

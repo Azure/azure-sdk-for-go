@@ -19,7 +19,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -31,6 +31,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 		subscriptionID: subscriptionID,
 		internal:       internal,
 	}, nil
+}
+
+// NewMachinePoolsClient creates a new instance of MachinePoolsClient.
+func (c *ClientFactory) NewMachinePoolsClient() *MachinePoolsClient {
+	return &MachinePoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOpenShiftClustersClient creates a new instance of OpenShiftClustersClient.
@@ -56,17 +64,25 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewPlatformWorkloadIdentityRoleSetClient creates a new instance of PlatformWorkloadIdentityRoleSetClient.
-func (c *ClientFactory) NewPlatformWorkloadIdentityRoleSetClient() *PlatformWorkloadIdentityRoleSetClient {
-	return &PlatformWorkloadIdentityRoleSetClient{
+// NewSecretsClient creates a new instance of SecretsClient.
+func (c *ClientFactory) NewSecretsClient() *SecretsClient {
+	return &SecretsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewPlatformWorkloadIdentityRoleSetsClient creates a new instance of PlatformWorkloadIdentityRoleSetsClient.
-func (c *ClientFactory) NewPlatformWorkloadIdentityRoleSetsClient() *PlatformWorkloadIdentityRoleSetsClient {
-	return &PlatformWorkloadIdentityRoleSetsClient{
+// NewSyncIdentityProvidersClient creates a new instance of SyncIdentityProvidersClient.
+func (c *ClientFactory) NewSyncIdentityProvidersClient() *SyncIdentityProvidersClient {
+	return &SyncIdentityProvidersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSyncSetsClient creates a new instance of SyncSetsClient.
+func (c *ClientFactory) NewSyncSetsClient() *SyncSetsClient {
+	return &SyncSetsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

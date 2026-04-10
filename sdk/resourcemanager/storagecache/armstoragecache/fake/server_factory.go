@@ -34,9 +34,6 @@ type ServerFactory struct {
 	// CachesServer contains the fakes for client CachesClient
 	CachesServer CachesServer
 
-	// ExpansionJobsServer contains the fakes for client ExpansionJobsClient
-	ExpansionJobsServer ExpansionJobsServer
-
 	// ImportJobsServer contains the fakes for client ImportJobsClient
 	ImportJobsServer ImportJobsServer
 
@@ -79,7 +76,6 @@ type ServerFactoryTransport struct {
 	trAutoExportJobsServer *AutoExportJobsServerTransport
 	trAutoImportJobsServer *AutoImportJobsServerTransport
 	trCachesServer         *CachesServerTransport
-	trExpansionJobsServer  *ExpansionJobsServerTransport
 	trImportJobsServer     *ImportJobsServerTransport
 	trManagementServer     *ManagementServerTransport
 	trOperationsServer     *OperationsServerTransport
@@ -128,11 +124,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "CachesClient":
 		initServer(s, &s.trCachesServer, func() *CachesServerTransport { return NewCachesServerTransport(&s.srv.CachesServer) })
 		resp, err = s.trCachesServer.Do(req)
-	case "ExpansionJobsClient":
-		initServer(s, &s.trExpansionJobsServer, func() *ExpansionJobsServerTransport {
-			return NewExpansionJobsServerTransport(&s.srv.ExpansionJobsServer)
-		})
-		resp, err = s.trExpansionJobsServer.Do(req)
 	case "ImportJobsClient":
 		initServer(s, &s.trImportJobsServer, func() *ImportJobsServerTransport { return NewImportJobsServerTransport(&s.srv.ImportJobsServer) })
 		resp, err = s.trImportJobsServer.Do(req)

@@ -42,7 +42,7 @@ func NewFleetManagedNamespacesClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - managedNamespaceName - The name of the fleet managed namespace resource.
@@ -69,7 +69,7 @@ func (client *FleetManagedNamespacesClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Create a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *FleetManagedNamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetManagedNamespacesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *FleetManagedNamespacesClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -134,7 +134,7 @@ func (client *FleetManagedNamespacesClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - managedNamespaceName - The name of the fleet managed namespace resource.
@@ -160,7 +160,7 @@ func (client *FleetManagedNamespacesClient) BeginDelete(ctx context.Context, res
 // Delete - Delete a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *FleetManagedNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetManagedNamespacesClient.BeginDelete"
@@ -206,7 +206,7 @@ func (client *FleetManagedNamespacesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -217,7 +217,7 @@ func (client *FleetManagedNamespacesClient) deleteCreateRequest(ctx context.Cont
 // Get - Get a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - managedNamespaceName - The name of the fleet managed namespace resource.
@@ -269,7 +269,7 @@ func (client *FleetManagedNamespacesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,7 +286,7 @@ func (client *FleetManagedNamespacesClient) getHandleResponse(resp *http.Respons
 
 // NewListByFleetPager - List FleetManagedNamespace resources by Fleet
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - FleetManagedNamespacesClientListByFleetOptions contains the optional parameters for the FleetManagedNamespacesClient.NewListByFleetPager
@@ -334,7 +334,7 @@ func (client *FleetManagedNamespacesClient) listByFleetCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -352,7 +352,7 @@ func (client *FleetManagedNamespacesClient) listByFleetHandleResponse(resp *http
 // BeginUpdate - Update a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - managedNamespaceName - The name of the fleet managed namespace resource.
@@ -379,7 +379,7 @@ func (client *FleetManagedNamespacesClient) BeginUpdate(ctx context.Context, res
 // Update - Update a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *FleetManagedNamespacesClient) update(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetManagedNamespacesClient.BeginUpdate"
@@ -425,7 +425,7 @@ func (client *FleetManagedNamespacesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

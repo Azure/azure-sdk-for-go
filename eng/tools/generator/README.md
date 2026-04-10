@@ -6,10 +6,6 @@ This is a command line tool for generating new releases and managing automation 
 
 The generator tool provides several commands to support the Azure SDK for Go development lifecycle:
 
-- **Build**: Compile and validate Go packages using `go build` and `go vet`
-- **Changelog**: Generate and update changelog content for SDK packages
-- **Version**: Calculate and update version numbers across package files
-- **Metadata**: Create required metadata files (`ci.yml`, `README.md`) for packages
 - **Environment**: Check and validate development environment prerequisites
 - **Generate**: Generate individual SDK packages from TypeSpec specifications
 - **Issue Management**: Parse GitHub release request issues into configuration
@@ -42,7 +38,7 @@ generator build <folder-path>
 
 **Flags:**
 
-- `-v, --verbose`: Enable verbose output showing build details
+- `--verbose`: Enable verbose output showing build details
 - `-o, --output`: Output format, either "text" or "json" (default: "text")
 
 **What it does:**
@@ -80,7 +76,7 @@ generator changelog <package-path>
 
 **Flags:**
 
-- `-v, --verbose`: Enable verbose output
+- `--verbose`: Enable verbose output
 - `-o, --output`: Output format, either "text" or "json" (default: "text")
 
 **What it does:**
@@ -121,7 +117,7 @@ generator version <package-path>
 
 - `--sdkversion`: Specific SDK version to set (e.g., "1.2.0" or "1.2.0-beta.1")
 - `--sdkreleasetype`: SDK release type ("beta" or "stable"), only used when --sdkversion is not specified
-- `-v, --verbose`: Enable verbose output
+- `--verbose`: Enable verbose output
 - `-o, --output`: Output format, either "text" or "json" (default: "text")
 
 **What it does:**
@@ -159,49 +155,6 @@ Previous Version: 1.1.0
 New Version: 1.2.0
 ```
 
-#### The `metadata` command
-
-The `metadata` command creates required metadata files (`ci.yml`, `README.md`) for SDK packages if they don't already exist. This is used in inner loop scenarios to ensure packages have the necessary pipeline and documentation files.
-
-**Usage:**
-
-```bash
-generator metadata <package-path>
-```
-
-**Arguments:**
-
-- `package-path`: Absolute path to a Go module (containing go.mod file)
-
-**Flags:**
-
-- `--package-title`: Package title used in README.md (defaults to inferred from package name)
-- `-v, --verbose`: Enable verbose output
-- `-o, --output`: Output format, either "text" or "json" (default: "text")
-
-**What it does:**
-
-1. Creates `ci.yml` if it doesn't exist (for both data plane and management plane packages)
-2. Creates `README.md` if it doesn't exist (for management plane packages only)
-3. Skips files that already exist without modifying them
-4. Auto-infers package title from the package name (e.g., `armcompute` → `Compute`, `azblob` → `Blob`)
-
-**Examples:**
-
-```bash
-# Create metadata files for a management plane package
-generator metadata /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
-
-# Create metadata files for a data plane package (only ci.yml, no README.md)
-generator metadata /path/to/azure-sdk-for-go/sdk/messaging/azeventhubs
-
-# With custom package title
-generator metadata /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --package-title "Compute"
-
-# JSON output for automation
-generator metadata /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --output json
-```
-
 #### The `environment` command
 
 The `environment` command checks and validates environment prerequisites for Azure Go SDK generation. It verifies the installation and versions of required tools and can automatically install missing TypeSpec tools.
@@ -219,6 +172,7 @@ generator environment [flags]
 
 **What it checks:**
 
+- **Go**: Minimum version 1.23
 - **Node.js**: Minimum version 20.0.0
 - **TypeSpec compiler**: `@typespec/compiler` package
 - **TypeSpec client generator CLI**: `@azure-tools/typespec-client-generator-cli` package
@@ -531,24 +485,20 @@ The `template` command generates package templates and scaffolding for new SDK p
 **Usage:**
 
 ```bash
-generator template (<rpName> <packageName>) | <packagePath>
+generator template <service-name> [flags]
 ```
 
 **Arguments:**
 
-- `rpName`: Name of the resource provider (e.g., "compute", "network")
-- `packageName`: Name of the package (e.g., "armcompute")
-- `packagePath`: Alternative format using `rpName/packageName` (e.g., "compute/armcompute")
+- `service-name`: Name of the service to create a template for
 
 **Flags:**
 
-- `--go-sdk-folder`: Specifies the path of root of azure-sdk-for-go (default: ".")
-- `--template-path`: Specifies the path of the template (default: "eng/tools/generator/template/rpName/packageName")
-- `--package-title`: Specifies the title of this package (required)
-- `--commit`: Specifies the commit hash of azure-rest-api-specs (required)
-- `--release-date`: Specifies the release date in changelog
-- `--package-config`: Additional config for package
-- `--package-version`: Specify the version number of this release
+- `--output-dir`: Output directory for the generated template (default: current directory)
+- `--package-name`: Custom package name (default: derived from service name)
+- `--namespace`: Namespace for the service (default: arm + service name)
+- `--data-plane`: Generate data plane template instead of management plane
+- `--force`: Overwrite existing files if they exist
 
 **What it does:**
 
@@ -561,17 +511,15 @@ generator template (<rpName> <packageName>) | <packagePath>
 **Examples:**
 
 ```bash
-# Generate a template for a new service using two arguments
-generator template compute armcompute --package-title "Compute" --commit abc123
+# Generate a management plane template for a new service
+generator template myservice
 
-# Generate a template using package path format
-generator template compute/armcompute --package-title "Compute" --commit abc123
+# Generate a data plane template
+generator template myservice --data-plane
 
-# Generate with custom release date and version
-generator template network armnetwork --package-title "Network" --commit abc123 \
-  --release-date 2024-01-15 --package-version 1.0.0
+# Generate template with custom package name and output directory
+generator template myservice --package-name armmyservice --output-dir ./sdk/resourcemanager/myservice
 
-# Generate with custom SDK folder path
-generator template storage armstorage --package-title "Storage" --commit abc123 \
-  --go-sdk-folder /path/to/azure-sdk-for-go
+# Force overwrite existing files
+generator template myservice --force
 ```

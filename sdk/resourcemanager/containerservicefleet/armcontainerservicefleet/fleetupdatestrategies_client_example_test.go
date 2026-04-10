@@ -12,8 +12,82 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/UpdateStrategies_CreateOrUpdate.json
-func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateStrategyGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginCreateOrUpdate(ctx, "rgfleets", "fleet1", "fleet1", armcontainerservicefleet.FleetUpdateStrategy{
+		Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
+			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
+				Stages: []*armcontainerservicefleet.UpdateStage{
+					{
+						Name: to.Ptr("stage1"),
+						Groups: []*armcontainerservicefleet.UpdateGroup{
+							{
+								Name: to.Ptr("group-a"),
+							},
+						},
+						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+					},
+				},
+			},
+		},
+	}, &armcontainerservicefleet.FleetUpdateStrategiesClientBeginCreateOrUpdateOptions{
+		IfMatch:     to.Ptr("bttptpmhheves"),
+		IfNoneMatch: to.Ptr("tlx")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetUpdateStrategiesClientCreateOrUpdateResponse{
+	// 	FleetUpdateStrategy: &armcontainerservicefleet.FleetUpdateStrategy{
+	// 		Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
+	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
+	// 				Stages: []*armcontainerservicefleet.UpdateStage{
+	// 					{
+	// 						Name: to.Ptr("stage1"),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
+	// 							{
+	// 								Name: to.Ptr("group-a"),
+	// 							},
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
+	// 		},
+	// 		ETag: to.Ptr("\"EtagValue\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
+	// 		Name: to.Ptr("strategy1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateStrategies"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("someUser"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("someOtherUser"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_CreateOrUpdate.json
+func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateStrategy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,12 +102,10 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
 				Stages: []*armcontainerservicefleet.UpdateStage{
 					{
-						Name:           to.Ptr("stage1"),
-						MaxConcurrency: to.Ptr("20%"),
+						Name: to.Ptr("stage1"),
 						Groups: []*armcontainerservicefleet.UpdateGroup{
 							{
-								Name:           to.Ptr("group-a"),
-								MaxConcurrency: to.Ptr("5"),
+								Name: to.Ptr("group-a"),
 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 									{
 										DisplayName: to.Ptr("gate before group-a"),
@@ -95,11 +167,9 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// 				Stages: []*armcontainerservicefleet.UpdateStage{
 	// 					{
 	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr("20%"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr("5"),
 	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 	// 									{
 	// 										DisplayName: to.Ptr("gate before group-a"),
@@ -136,8 +206,35 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/UpdateStrategies_Delete.json
-func ExampleFleetUpdateStrategiesClient_BeginDelete() {
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_Delete_MaximumSet_Gen.json
+func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyResourceGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginDelete(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.FleetUpdateStrategiesClientBeginDeleteOptions{
+		IfMatch: to.Ptr("saqprswlk")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetUpdateStrategiesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_Delete.json
+func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -162,8 +259,60 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/UpdateStrategies_Get.json
-func ExampleFleetUpdateStrategiesClient_Get() {
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_Get_MaximumSet_Gen.json
+func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResourceGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFleetUpdateStrategiesClient().Get(ctx, "rgfleets", "fleet1", "fleet1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetUpdateStrategiesClientGetResponse{
+	// 	FleetUpdateStrategy: &armcontainerservicefleet.FleetUpdateStrategy{
+	// 		Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
+	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
+	// 				Stages: []*armcontainerservicefleet.UpdateStage{
+	// 					{
+	// 						Name: to.Ptr("stage1"),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
+	// 							{
+	// 								Name: to.Ptr("group-a"),
+	// 							},
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
+	// 		},
+	// 		ETag: to.Ptr("\"EtagValue\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
+	// 		Name: to.Ptr("strategy1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateStrategies"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("someUser"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("someOtherUser"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_Get.json
+func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -199,11 +348,9 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// 				Stages: []*armcontainerservicefleet.UpdateStage{
 	// 					{
 	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr("20%"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr("5"),
 	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 	// 									{
 	// 										DisplayName: to.Ptr("gate before group-a"),
@@ -240,8 +387,70 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/UpdateStrategies_ListByFleet.json
-func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_ListByFleet_MaximumSet_Gen.json
+func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateStrategyResourcesByFleetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFleetUpdateStrategiesClient().NewListByFleetPager("rgfleets", "fleet1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservicefleet.FleetUpdateStrategiesClientListByFleetResponse{
+		// 	FleetUpdateStrategyListResult: armcontainerservicefleet.FleetUpdateStrategyListResult{
+		// 		Value: []*armcontainerservicefleet.FleetUpdateStrategy{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
+		// 				Name: to.Ptr("strategy1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/fleets/updateStrategies"),
+		// 				SystemData: &armcontainerservicefleet.SystemData{
+		// 					CreatedBy: to.Ptr("@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 				},
+		// 				Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
+		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
+		// 					Strategy: &armcontainerservicefleet.UpdateRunStrategy{
+		// 						Stages: []*armcontainerservicefleet.UpdateStage{
+		// 							{
+		// 								Name: to.Ptr("stage1"),
+		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
+		// 									{
+		// 										Name: to.Ptr("group-a"),
+		// 									},
+		// 								},
+		// 								AfterStageWaitInSeconds: to.Ptr[int32](3600),
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 				ETag: to.Ptr("\"EtagValue\""),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("http://nextlink.contoso.com"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_ListByFleet.json
+func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateStrategyResourcesByFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -283,11 +492,9 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 		// 						Stages: []*armcontainerservicefleet.UpdateStage{
 		// 							{
 		// 								Name: to.Ptr("stage1"),
-		// 								MaxConcurrency: to.Ptr("20%"),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
 		// 									{
 		// 										Name: to.Ptr("group-a"),
-		// 										MaxConcurrency: to.Ptr("5"),
 		// 										BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 		// 											{
 		// 												DisplayName: to.Ptr("gate before group-a"),

@@ -8,9 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
-	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type CarbonEmissionData.
@@ -376,8 +374,8 @@ func (c *CarbonEmissionTopItemsSummaryData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DateRange.
 func (d DateRange) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.PlainDate](objectMap, "end", d.End)
-	populateTime[datetime.PlainDate](objectMap, "start", d.Start)
+	populateDateType(objectMap, "end", d.End)
+	populateDateType(objectMap, "start", d.Start)
 	return json.Marshal(objectMap)
 }
 
@@ -391,10 +389,10 @@ func (d *DateRange) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "end":
-			err = unpopulateTime[datetime.PlainDate](val, "End", &d.End)
+			err = unpopulateDateType(val, "End", &d.End)
 			delete(rawMsg, key)
 		case "start":
-			err = unpopulateTime[datetime.PlainDate](val, "Start", &d.Start)
+			err = unpopulateDateType(val, "Start", &d.Start)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1286,17 +1284,6 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
-	if t == nil {
-		return
-	} else if azcore.IsNullValue(t) {
-		m[k] = nil
-	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
-		m[k] = (*T)(&newTime)
-	}
-}
-
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -1305,21 +1292,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
-}
-
-func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
-	if data == nil || string(data) == "null" {
-		return nil
-	}
-	var aux T
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
-	}
-	newTime := time.Time(aux)
-	*t = &newTime
-	return nil
-}
-
-type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

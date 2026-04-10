@@ -6,7 +6,6 @@ package azidentity
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"os"
 	"os/exec"
@@ -43,24 +42,12 @@ var shellExec = func(ctx context.Context, credName, command string) ([]byte, err
 		return stdout, nil
 	}
 	if err != nil {
-		msg := strings.Trim(stderr.String(), "\r\n")
+		msg := stderr.String()
 		var exErr *exec.ExitError
 		if errors.As(err, &exErr) && exErr.ExitCode() == 127 || strings.Contains(msg, "' is not recognized") {
 			return nil, newCredentialUnavailableError(credName, "executable not found on path")
 		}
-		switch credName {
-		case credNameAzureDeveloperCLI:
-			// azd writes JSON error messages to stderr: {"type":"consoleMessage","data":{"message":"..."}}
-			// Try to extract the message field for cleaner errors
-			var obj struct {
-				Data struct {
-					Message string `json:"message"`
-				} `json:"data"`
-			}
-			if err := json.Unmarshal([]byte(msg), &obj); err == nil && obj.Data.Message != "" {
-				msg = strings.TrimSpace(obj.Data.Message)
-			}
-		case credNameAzurePowerShell:
+		if credName == credNameAzurePowerShell {
 			if strings.Contains(msg, "Connect-AzAccount") {
 				msg = `Please run "Connect-AzAccount" to set up an account`
 			}

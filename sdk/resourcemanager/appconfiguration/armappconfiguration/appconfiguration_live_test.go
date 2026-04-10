@@ -77,9 +77,6 @@ func (testsuite *AppconfigurationTestSuite) Prepare() {
 		SKU: &armappconfiguration.SKU{
 			Name: to.Ptr("Standard"),
 		},
-		Properties: &armappconfiguration.ConfigurationStoreProperties{
-			DisableLocalAuth: to.Ptr(true),
-		},
 	}, nil)
 	testsuite.Require().NoError(err)
 	var configurationStoresClientCreateResponse *armappconfiguration.ConfigurationStoresClientCreateResponse
@@ -168,19 +165,17 @@ func (testsuite *AppconfigurationTestSuite) TestConfigurationStores() {
 	for configurationStoresClientNewListKeysPager.More() {
 		nextResult, err := configurationStoresClientNewListKeysPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-		if len(nextResult.Value) > 0 {
-			keyId = *nextResult.Value[0].ID
-			break
-		}
+
+		keyId = *nextResult.Value[0].ID
+		break
 	}
-	if keyId != "" {
-		// From step ConfigurationStores_RegenerateKey
-		fmt.Println("Call operation: ConfigurationStores_RegenerateKey")
-		_, err = configurationStoresClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, armappconfiguration.RegenerateKeyParameters{
-			ID: to.Ptr(keyId),
-		}, nil)
-		testsuite.Require().NoError(err)
-	}
+
+	// From step ConfigurationStores_RegenerateKey
+	fmt.Println("Call operation: ConfigurationStores_RegenerateKey")
+	_, err = configurationStoresClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, armappconfiguration.RegenerateKeyParameters{
+		ID: to.Ptr(keyId),
+	}, nil)
+	testsuite.Require().NoError(err)
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}
@@ -220,7 +215,7 @@ func (testsuite *AppconfigurationTestSuite) TestReplicas() {
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}
-func (testsuite *AppconfigurationTestSuite) TestPrivateEndpointConnections() {
+func (testsuite *AppconfigurationTestSuite) TTestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
 	// From step Create_PrivateEndpoint

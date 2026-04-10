@@ -52,31 +52,20 @@ func TestSetAccessPolicy(t *testing.T) {
 	_, err := client.SetAccessPolicy(ctx, &param)
 	require.NoError(t, err)
 
-	var resp GetAccessPolicyResponse
-	for range 3 {
-		recording.Sleep(60 * time.Second)
-		resp, err = client.GetAccessPolicy(ctx, nil)
-		require.NoError(t, err)
-		if len(resp.SignedIdentifiers) == 1 {
-			break
-		}
-	}
+	recording.Sleep(60 * time.Second)
 
+	resp, err := client.GetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
 	require.Equal(t, 1, len(resp.SignedIdentifiers))
 
 	// set nil access policy
 	_, err = client.SetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
 
-	for range 3 {
-		recording.Sleep(60 * time.Second)
-		resp, err = client.GetAccessPolicy(ctx, nil)
-		require.NoError(t, err)
-		if len(resp.SignedIdentifiers) == 0 {
-			break
-		}
-	}
+	recording.Sleep(60 * time.Second)
 
+	resp, err = client.GetAccessPolicy(ctx, nil)
+	require.NoError(t, err)
 	require.Equal(t, 0, len(resp.SignedIdentifiers))
 }
 

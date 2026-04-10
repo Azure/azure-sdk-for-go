@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_CreateOrUpdate.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
 func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,12 +26,8 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewStandbyVirtualMachinePoolsClient().BeginCreateOrUpdate(ctx, "rgstandbypool", "pool", armstandbypool.StandbyVirtualMachinePoolResource{
 		Properties: &armstandbypool.StandbyVirtualMachinePoolResourceProperties{
 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
-				MaxReadyCapacity:      to.Ptr[int64](304),
-				MinReadyCapacity:      to.Ptr[int64](300),
-				PostProvisioningDelay: to.Ptr("PT2S"),
-				DynamicSizing: &armstandbypool.DynamicSizing{
-					Enabled: to.Ptr(true),
-				},
+				MaxReadyCapacity: to.Ptr[int64](304),
+				MinReadyCapacity: to.Ptr[int64](300),
 			},
 			VirtualMachineState:              to.Ptr(armstandbypool.VirtualMachineStateRunning),
 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -55,10 +51,6 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	// 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 	// 				MaxReadyCapacity: to.Ptr[int64](304),
 	// 				MinReadyCapacity: to.Ptr[int64](300),
-	// 				PostProvisioningDelay: to.Ptr("PT2S"),
-	// 				DynamicSizing: &armstandbypool.DynamicSizing{
-	// 					Enabled: to.Ptr(true),
-	// 				},
 	// 			},
 	// 			VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 	// 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -82,7 +74,7 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_Delete.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Delete.json
 func ExampleStandbyVirtualMachinePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +95,7 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_Get.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Get.json
 func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,10 +119,6 @@ func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	// 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 	// 				MaxReadyCapacity: to.Ptr[int64](304),
 	// 				MinReadyCapacity: to.Ptr[int64](300),
-	// 				PostProvisioningDelay: to.Ptr("PT2S"),
-	// 				DynamicSizing: &armstandbypool.DynamicSizing{
-	// 					Enabled: to.Ptr(true),
-	// 				},
 	// 			},
 	// 			VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 	// 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -154,7 +142,7 @@ func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_ListByResourceGroup.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_ListByResourceGroup.json
 func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,10 +172,6 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 		// 					ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 		// 						MaxReadyCapacity: to.Ptr[int64](304),
 		// 						MinReadyCapacity: to.Ptr[int64](300),
-		// 						PostProvisioningDelay: to.Ptr("PT2S"),
-		// 						DynamicSizing: &armstandbypool.DynamicSizing{
-		// 							Enabled: to.Ptr(true),
-		// 						},
 		// 					},
 		// 					VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 		// 					AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -215,7 +199,7 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_ListBySubscription.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_ListBySubscription.json
 func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,10 +229,6 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 		// 					ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 		// 						MaxReadyCapacity: to.Ptr[int64](304),
 		// 						MinReadyCapacity: to.Ptr[int64](300),
-		// 						PostProvisioningDelay: to.Ptr("PT2S"),
-		// 						DynamicSizing: &armstandbypool.DynamicSizing{
-		// 							Enabled: to.Ptr(true),
-		// 						},
 		// 					},
 		// 					VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 		// 					AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -276,7 +256,7 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_Update.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Update.json
 func ExampleStandbyVirtualMachinePoolsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,12 +271,8 @@ func ExampleStandbyVirtualMachinePoolsClient_Update() {
 		Tags: map[string]*string{},
 		Properties: &armstandbypool.StandbyVirtualMachinePoolResourceUpdateProperties{
 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
-				MaxReadyCapacity:      to.Ptr[int64](304),
-				MinReadyCapacity:      to.Ptr[int64](300),
-				PostProvisioningDelay: to.Ptr("PT2S"),
-				DynamicSizing: &armstandbypool.DynamicSizing{
-					Enabled: to.Ptr(true),
-				},
+				MaxReadyCapacity: to.Ptr[int64](304),
+				MinReadyCapacity: to.Ptr[int64](300),
 			},
 			VirtualMachineState:              to.Ptr(armstandbypool.VirtualMachineStateRunning),
 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -314,10 +290,6 @@ func ExampleStandbyVirtualMachinePoolsClient_Update() {
 	// 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 	// 				MaxReadyCapacity: to.Ptr[int64](304),
 	// 				MinReadyCapacity: to.Ptr[int64](300),
-	// 				PostProvisioningDelay: to.Ptr("PT2S"),
-	// 				DynamicSizing: &armstandbypool.DynamicSizing{
-	// 					Enabled: to.Ptr(true),
-	// 				},
 	// 			},
 	// 			VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 	// 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),

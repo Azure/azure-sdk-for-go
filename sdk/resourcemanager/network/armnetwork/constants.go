@@ -62,7 +62,6 @@ const (
 	ActionTypeAllow          ActionType = "Allow"
 	ActionTypeAnomalyScoring ActionType = "AnomalyScoring"
 	ActionTypeBlock          ActionType = "Block"
-	ActionTypeCAPTCHA        ActionType = "CAPTCHA"
 	ActionTypeJSChallenge    ActionType = "JSChallenge"
 	ActionTypeLog            ActionType = "Log"
 )
@@ -73,7 +72,6 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeAllow,
 		ActionTypeAnomalyScoring,
 		ActionTypeBlock,
-		ActionTypeCAPTCHA,
 		ActionTypeJSChallenge,
 		ActionTypeLog,
 	}
@@ -111,26 +109,6 @@ func PossibleAddressSpaceAggregationOptionValues() []AddressSpaceAggregationOpti
 	return []AddressSpaceAggregationOption{
 		AddressSpaceAggregationOptionManual,
 		AddressSpaceAggregationOptionNone,
-	}
-}
-
-// AddressUpdateAction - Specifies the type of update operation to perform on addresses within the address location of service
-// gateway.
-// * FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
-// not included will be removed.
-// * PartialUpdate: Updates only the specified addresses.
-type AddressUpdateAction string
-
-const (
-	AddressUpdateActionFullUpdate    AddressUpdateAction = "FullUpdate"
-	AddressUpdateActionPartialUpdate AddressUpdateAction = "PartialUpdate"
-)
-
-// PossibleAddressUpdateActionValues returns the possible values for the AddressUpdateAction const type.
-func PossibleAddressUpdateActionValues() []AddressUpdateAction {
-	return []AddressUpdateAction{
-		AddressUpdateActionFullUpdate,
-		AddressUpdateActionPartialUpdate,
 	}
 }
 
@@ -2202,28 +2180,23 @@ func PossibleFirewallPolicyIDPSSignatureSeverityValues() []FirewallPolicyIDPSSig
 	}
 }
 
-// FirewallPolicyIntrusionDetectionProfileType - Specifies the Intrusion Detection signature profile to apply.
-// Values:
-// * Off: IDPS profiles disabled; uses the same signature set that existed before profiles.
-// * Emerging: Signatures of the newest, most recent threats.
-// * Core: Complete, modern, standard set of signatures.
-// * Extended: Core signatures plus older legacy signatures for maximum coverage.
+// FirewallPolicyIntrusionDetectionProfileType - Possible Intrusion Detection profile values.
 type FirewallPolicyIntrusionDetectionProfileType string
 
 const (
-	FirewallPolicyIntrusionDetectionProfileTypeCore     FirewallPolicyIntrusionDetectionProfileType = "Core"
-	FirewallPolicyIntrusionDetectionProfileTypeEmerging FirewallPolicyIntrusionDetectionProfileType = "Emerging"
+	FirewallPolicyIntrusionDetectionProfileTypeAdvanced FirewallPolicyIntrusionDetectionProfileType = "Advanced"
+	FirewallPolicyIntrusionDetectionProfileTypeBasic    FirewallPolicyIntrusionDetectionProfileType = "Basic"
 	FirewallPolicyIntrusionDetectionProfileTypeExtended FirewallPolicyIntrusionDetectionProfileType = "Extended"
-	FirewallPolicyIntrusionDetectionProfileTypeOff      FirewallPolicyIntrusionDetectionProfileType = "Off"
+	FirewallPolicyIntrusionDetectionProfileTypeStandard FirewallPolicyIntrusionDetectionProfileType = "Standard"
 )
 
 // PossibleFirewallPolicyIntrusionDetectionProfileTypeValues returns the possible values for the FirewallPolicyIntrusionDetectionProfileType const type.
 func PossibleFirewallPolicyIntrusionDetectionProfileTypeValues() []FirewallPolicyIntrusionDetectionProfileType {
 	return []FirewallPolicyIntrusionDetectionProfileType{
-		FirewallPolicyIntrusionDetectionProfileTypeCore,
-		FirewallPolicyIntrusionDetectionProfileTypeEmerging,
+		FirewallPolicyIntrusionDetectionProfileTypeAdvanced,
+		FirewallPolicyIntrusionDetectionProfileTypeBasic,
 		FirewallPolicyIntrusionDetectionProfileTypeExtended,
-		FirewallPolicyIntrusionDetectionProfileTypeOff,
+		FirewallPolicyIntrusionDetectionProfileTypeStandard,
 	}
 }
 
@@ -4305,34 +4278,6 @@ func PossibleSensitivityTypeValues() []SensitivityType {
 	}
 }
 
-// ServiceGatewaySKUName - Name of a service gateway SKU.
-type ServiceGatewaySKUName string
-
-const (
-	ServiceGatewaySKUNameStandard ServiceGatewaySKUName = "Standard"
-)
-
-// PossibleServiceGatewaySKUNameValues returns the possible values for the ServiceGatewaySKUName const type.
-func PossibleServiceGatewaySKUNameValues() []ServiceGatewaySKUName {
-	return []ServiceGatewaySKUName{
-		ServiceGatewaySKUNameStandard,
-	}
-}
-
-// ServiceGatewaySKUTier - Tier of a service gateway SKU.
-type ServiceGatewaySKUTier string
-
-const (
-	ServiceGatewaySKUTierRegional ServiceGatewaySKUTier = "Regional"
-)
-
-// PossibleServiceGatewaySKUTierValues returns the possible values for the ServiceGatewaySKUTier const type.
-func PossibleServiceGatewaySKUTierValues() []ServiceGatewaySKUTier {
-	return []ServiceGatewaySKUTier{
-		ServiceGatewaySKUTierRegional,
-	}
-}
-
 // ServiceProviderProvisioningState - The ServiceProviderProvisioningState state of the resource.
 type ServiceProviderProvisioningState string
 
@@ -4350,43 +4295,6 @@ func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvision
 		ServiceProviderProvisioningStateNotProvisioned,
 		ServiceProviderProvisioningStateProvisioned,
 		ServiceProviderProvisioningStateProvisioning,
-	}
-}
-
-// ServiceType - Name of the service.
-type ServiceType string
-
-const (
-	ServiceTypeInbound         ServiceType = "Inbound"
-	ServiceTypeInboundOutbound ServiceType = "InboundOutbound"
-	ServiceTypeOutbound        ServiceType = "Outbound"
-)
-
-// PossibleServiceTypeValues returns the possible values for the ServiceType const type.
-func PossibleServiceTypeValues() []ServiceType {
-	return []ServiceType{
-		ServiceTypeInbound,
-		ServiceTypeInboundOutbound,
-		ServiceTypeOutbound,
-	}
-}
-
-// ServiceUpdateAction - Specifies the type of update operation to perform on services within the service gateway.
-// * FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services
-// not included will be removed.
-// * PartialUpdate: Updates only the specified services.
-type ServiceUpdateAction string
-
-const (
-	ServiceUpdateActionFullUpdate    ServiceUpdateAction = "FullUpdate"
-	ServiceUpdateActionPartialUpdate ServiceUpdateAction = "PartialUpdate"
-)
-
-// PossibleServiceUpdateActionValues returns the possible values for the ServiceUpdateAction const type.
-func PossibleServiceUpdateActionValues() []ServiceUpdateAction {
-	return []ServiceUpdateAction{
-		ServiceUpdateActionFullUpdate,
-		ServiceUpdateActionPartialUpdate,
 	}
 }
 
@@ -4506,25 +4414,6 @@ func PossibleTunnelConnectionStatusValues() []TunnelConnectionStatus {
 		TunnelConnectionStatusConnecting,
 		TunnelConnectionStatusNotConnected,
 		TunnelConnectionStatusUnknown,
-	}
-}
-
-// UpdateAction - Specifies the type of update operation to perform on address locations within the service gateway.
-// * FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
-// locations not included will be removed.
-// * PartialUpdate: Updates only the specified address locations.
-type UpdateAction string
-
-const (
-	UpdateActionFullUpdate    UpdateAction = "FullUpdate"
-	UpdateActionPartialUpdate UpdateAction = "PartialUpdate"
-)
-
-// PossibleUpdateActionValues returns the possible values for the UpdateAction const type.
-func PossibleUpdateActionValues() []UpdateAction {
-	return []UpdateAction{
-		UpdateActionFullUpdate,
-		UpdateActionPartialUpdate,
 	}
 }
 
@@ -5149,7 +5038,6 @@ type WebApplicationFirewallAction string
 const (
 	WebApplicationFirewallActionAllow       WebApplicationFirewallAction = "Allow"
 	WebApplicationFirewallActionBlock       WebApplicationFirewallAction = "Block"
-	WebApplicationFirewallActionCAPTCHA     WebApplicationFirewallAction = "CAPTCHA"
 	WebApplicationFirewallActionJSChallenge WebApplicationFirewallAction = "JSChallenge"
 	WebApplicationFirewallActionLog         WebApplicationFirewallAction = "Log"
 )
@@ -5159,7 +5047,6 @@ func PossibleWebApplicationFirewallActionValues() []WebApplicationFirewallAction
 	return []WebApplicationFirewallAction{
 		WebApplicationFirewallActionAllow,
 		WebApplicationFirewallActionBlock,
-		WebApplicationFirewallActionCAPTCHA,
 		WebApplicationFirewallActionJSChallenge,
 		WebApplicationFirewallActionLog,
 	}

@@ -369,9 +369,8 @@ func GenerateChangelog(modulePath string, sdkRepo repo.SDKRepository, isCurrentP
 		return ChangelogResult{}, err
 	}
 
-	// bypass the error if the module doesn't contain any exports, return empty content
 	newExports, err := exports.Get(modulePath)
-	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
+	if err != nil {
 		return ChangelogResult{}, err
 	}
 

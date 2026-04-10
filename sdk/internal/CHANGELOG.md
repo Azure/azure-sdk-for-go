@@ -4,8 +4,6 @@
 
 ### Features Added
 
-* Added `IgnoredQueryParameters` field to `SetDefaultMatcherOptions` for specifying query parameters to ignore during playback matching
-
 ### Breaking Changes
 
 ### Bugs Fixed

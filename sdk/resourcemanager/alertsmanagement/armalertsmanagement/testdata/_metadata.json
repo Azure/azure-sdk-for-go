@@ -1,6 +1,0 @@
-{
-  "apiVersions": {
-    "Microsoft.AlertsManagement": "2025-05-25-preview"
-  },
-  "emitterVersion": "0.10.2"
-}

@@ -1,6 +1,0 @@
-{
-  "apiVersions": {
-    "Microsoft.AzureStackHCI": "2026-03-01-preview"
-  },
-  "emitterVersion": "0.10.2"
-}

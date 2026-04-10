@@ -8,9 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
-	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type Addon.
@@ -343,9 +341,9 @@ func (a *AvailabilityProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvailableWindowForMaintenanceWhileRescheduleOperation.
 func (a AvailableWindowForMaintenanceWhileRescheduleOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endsAt", a.EndsAt)
+	populateDateTimeRFC3339(objectMap, "endsAt", a.EndsAt)
 	objectMap["kind"] = RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation
-	populateTime[datetime.RFC3339](objectMap, "startsAt", a.StartsAt)
+	populateDateTimeRFC3339(objectMap, "startsAt", a.StartsAt)
 	return json.Marshal(objectMap)
 }
 
@@ -359,13 +357,13 @@ func (a *AvailableWindowForMaintenanceWhileRescheduleOperation) UnmarshalJSON(da
 		var err error
 		switch key {
 		case "endsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "EndsAt", &a.EndsAt)
+			err = unpopulateDateTimeRFC3339(val, "EndsAt", &a.EndsAt)
 			delete(rawMsg, key)
 		case "kind":
 			err = unpopulate(val, "Kind", &a.Kind)
 			delete(rawMsg, key)
 		case "startsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "StartsAt", &a.StartsAt)
+			err = unpopulateDateTimeRFC3339(val, "StartsAt", &a.StartsAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -378,9 +376,9 @@ func (a *AvailableWindowForMaintenanceWhileRescheduleOperation) UnmarshalJSON(da
 // MarshalJSON implements the json.Marshaller interface for type AvailableWindowForMaintenanceWhileScheduleOperation.
 func (a AvailableWindowForMaintenanceWhileScheduleOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endsAt", a.EndsAt)
+	populateDateTimeRFC3339(objectMap, "endsAt", a.EndsAt)
 	objectMap["kind"] = ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation
-	populateTime[datetime.RFC3339](objectMap, "startsAt", a.StartsAt)
+	populateDateTimeRFC3339(objectMap, "startsAt", a.StartsAt)
 	return json.Marshal(objectMap)
 }
 
@@ -394,13 +392,13 @@ func (a *AvailableWindowForMaintenanceWhileScheduleOperation) UnmarshalJSON(data
 		var err error
 		switch key {
 		case "endsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "EndsAt", &a.EndsAt)
+			err = unpopulateDateTimeRFC3339(val, "EndsAt", &a.EndsAt)
 			delete(rawMsg, key)
 		case "kind":
 			err = unpopulate(val, "Kind", &a.Kind)
 			delete(rawMsg, key)
 		case "startsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "StartsAt", &a.StartsAt)
+			err = unpopulateDateTimeRFC3339(val, "StartsAt", &a.StartsAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -413,9 +411,9 @@ func (a *AvailableWindowForMaintenanceWhileScheduleOperation) UnmarshalJSON(data
 // MarshalJSON implements the json.Marshaller interface for type BlockedDatesConstraintTimeRange.
 func (b BlockedDatesConstraintTimeRange) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endsAt", b.EndsAt)
+	populateDateTimeRFC3339(objectMap, "endsAt", b.EndsAt)
 	populate(objectMap, "reason", b.Reason)
-	populateTime[datetime.RFC3339](objectMap, "startsAt", b.StartsAt)
+	populateDateTimeRFC3339(objectMap, "startsAt", b.StartsAt)
 	return json.Marshal(objectMap)
 }
 
@@ -429,13 +427,13 @@ func (b *BlockedDatesConstraintTimeRange) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "EndsAt", &b.EndsAt)
+			err = unpopulateDateTimeRFC3339(val, "EndsAt", &b.EndsAt)
 			delete(rawMsg, key)
 		case "reason":
 			err = unpopulate(val, "Reason", &b.Reason)
 			delete(rawMsg, key)
 		case "startsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "StartsAt", &b.StartsAt)
+			err = unpopulateDateTimeRFC3339(val, "StartsAt", &b.StartsAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2266,7 +2264,7 @@ func (m MaintenanceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "operations", m.Operations)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
 	populate(objectMap, "scheduledByMicrosoft", m.ScheduledByMicrosoft)
-	populateTime[datetime.RFC3339](objectMap, "scheduledStartTime", m.ScheduledStartTime)
+	populateDateTimeRFC3339(objectMap, "scheduledStartTime", m.ScheduledStartTime)
 	populate(objectMap, "state", m.State)
 	return json.Marshal(objectMap)
 }
@@ -2311,7 +2309,7 @@ func (m *MaintenanceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ScheduledByMicrosoft", &m.ScheduledByMicrosoft)
 			delete(rawMsg, key)
 		case "scheduledStartTime":
-			err = unpopulateTime[datetime.RFC3339](val, "ScheduledStartTime", &m.ScheduledStartTime)
+			err = unpopulateDateTimeRFC3339(val, "ScheduledStartTime", &m.ScheduledStartTime)
 			delete(rawMsg, key)
 		case "state":
 			err = unpopulate(val, "State", &m.State)
@@ -2328,7 +2326,7 @@ func (m *MaintenanceProperties) UnmarshalJSON(data []byte) error {
 func (m MaintenanceReadiness) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failedChecks", m.FailedChecks)
-	populateTime[datetime.RFC3339](objectMap, "lastUpdated", m.LastUpdated)
+	populateDateTimeRFC3339(objectMap, "lastUpdated", m.LastUpdated)
 	populate(objectMap, "message", m.Message)
 	populate(objectMap, "status", m.Status)
 	populate(objectMap, "type", m.Type)
@@ -2348,7 +2346,7 @@ func (m *MaintenanceReadiness) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FailedChecks", &m.FailedChecks)
 			delete(rawMsg, key)
 		case "lastUpdated":
-			err = unpopulateTime[datetime.RFC3339](val, "LastUpdated", &m.LastUpdated)
+			err = unpopulateDateTimeRFC3339(val, "LastUpdated", &m.LastUpdated)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &m.Message)
@@ -2418,7 +2416,7 @@ func (m *MaintenanceReadinessRefreshOperation) UnmarshalJSON(data []byte) error 
 func (m MaintenanceReschedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "message", m.Message)
-	populateTime[datetime.RFC3339](objectMap, "rescheduleTime", m.RescheduleTime)
+	populateDateTimeRFC3339(objectMap, "rescheduleTime", m.RescheduleTime)
 	return json.Marshal(objectMap)
 }
 
@@ -2435,7 +2433,7 @@ func (m *MaintenanceReschedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Message", &m.Message)
 			delete(rawMsg, key)
 		case "rescheduleTime":
-			err = unpopulateTime[datetime.RFC3339](val, "RescheduleTime", &m.RescheduleTime)
+			err = unpopulateDateTimeRFC3339(val, "RescheduleTime", &m.RescheduleTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2449,7 +2447,7 @@ func (m *MaintenanceReschedule) UnmarshalJSON(data []byte) error {
 func (m MaintenanceSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "message", m.Message)
-	populateTime[datetime.RFC3339](objectMap, "scheduleTime", m.ScheduleTime)
+	populateDateTimeRFC3339(objectMap, "scheduleTime", m.ScheduleTime)
 	return json.Marshal(objectMap)
 }
 
@@ -2466,7 +2464,7 @@ func (m *MaintenanceSchedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Message", &m.Message)
 			delete(rawMsg, key)
 		case "scheduleTime":
-			err = unpopulateTime[datetime.RFC3339](val, "ScheduleTime", &m.ScheduleTime)
+			err = unpopulateDateTimeRFC3339(val, "ScheduleTime", &m.ScheduleTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2479,10 +2477,10 @@ func (m *MaintenanceSchedule) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MaintenanceState.
 func (m MaintenanceState) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endedAt", m.EndedAt)
+	populateDateTimeRFC3339(objectMap, "endedAt", m.EndedAt)
 	populate(objectMap, "message", m.Message)
 	populate(objectMap, "name", m.Name)
-	populateTime[datetime.RFC3339](objectMap, "startedAt", m.StartedAt)
+	populateDateTimeRFC3339(objectMap, "startedAt", m.StartedAt)
 	return json.Marshal(objectMap)
 }
 
@@ -2496,7 +2494,7 @@ func (m *MaintenanceState) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endedAt":
-			err = unpopulateTime[datetime.RFC3339](val, "EndedAt", &m.EndedAt)
+			err = unpopulateDateTimeRFC3339(val, "EndedAt", &m.EndedAt)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &m.Message)
@@ -2505,7 +2503,7 @@ func (m *MaintenanceState) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &m.Name)
 			delete(rawMsg, key)
 		case "startedAt":
-			err = unpopulateTime[datetime.RFC3339](val, "StartedAt", &m.StartedAt)
+			err = unpopulateDateTimeRFC3339(val, "StartedAt", &m.StartedAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3969,9 +3967,9 @@ func (s *ScheduleOperationConstraint) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SchedulingWindow.
 func (s SchedulingWindow) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endsAt", s.EndsAt)
+	populateDateTimeRFC3339(objectMap, "endsAt", s.EndsAt)
 	objectMap["kind"] = ScheduleOperationConstraintKindSchedulingWindow
-	populateTime[datetime.RFC3339](objectMap, "startsAt", s.StartsAt)
+	populateDateTimeRFC3339(objectMap, "startsAt", s.StartsAt)
 	return json.Marshal(objectMap)
 }
 
@@ -3985,13 +3983,13 @@ func (s *SchedulingWindow) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "EndsAt", &s.EndsAt)
+			err = unpopulateDateTimeRFC3339(val, "EndsAt", &s.EndsAt)
 			delete(rawMsg, key)
 		case "kind":
 			err = unpopulate(val, "Kind", &s.Kind)
 			delete(rawMsg, key)
 		case "startsAt":
-			err = unpopulateTime[datetime.RFC3339](val, "StartsAt", &s.StartsAt)
+			err = unpopulateDateTimeRFC3339(val, "StartsAt", &s.StartsAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4197,7 +4195,7 @@ func (s ScriptExecutionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "errors", s.Errors)
 	populate(objectMap, "failureReason", s.FailureReason)
-	populateTime[datetime.RFC3339](objectMap, "finishedAt", s.FinishedAt)
+	populateDateTimeRFC3339(objectMap, "finishedAt", s.FinishedAt)
 	populate(objectMap, "hiddenParameters", s.HiddenParameters)
 	populate(objectMap, "information", s.Information)
 	populate(objectMap, "namedOutputs", s.NamedOutputs)
@@ -4206,8 +4204,8 @@ func (s ScriptExecutionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "retention", s.Retention)
 	populate(objectMap, "scriptCmdletId", s.ScriptCmdletID)
-	populateTime[datetime.RFC3339](objectMap, "startedAt", s.StartedAt)
-	populateTime[datetime.RFC3339](objectMap, "submittedAt", s.SubmittedAt)
+	populateDateTimeRFC3339(objectMap, "startedAt", s.StartedAt)
+	populateDateTimeRFC3339(objectMap, "submittedAt", s.SubmittedAt)
 	populate(objectMap, "timeout", s.Timeout)
 	populate(objectMap, "warnings", s.Warnings)
 	return json.Marshal(objectMap)
@@ -4229,7 +4227,7 @@ func (s *ScriptExecutionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FailureReason", &s.FailureReason)
 			delete(rawMsg, key)
 		case "finishedAt":
-			err = unpopulateTime[datetime.RFC3339](val, "FinishedAt", &s.FinishedAt)
+			err = unpopulateDateTimeRFC3339(val, "FinishedAt", &s.FinishedAt)
 			delete(rawMsg, key)
 		case "hiddenParameters":
 			s.HiddenParameters, err = unmarshalScriptExecutionParameterClassificationArray(val)
@@ -4256,10 +4254,10 @@ func (s *ScriptExecutionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ScriptCmdletID", &s.ScriptCmdletID)
 			delete(rawMsg, key)
 		case "startedAt":
-			err = unpopulateTime[datetime.RFC3339](val, "StartedAt", &s.StartedAt)
+			err = unpopulateDateTimeRFC3339(val, "StartedAt", &s.StartedAt)
 			delete(rawMsg, key)
 		case "submittedAt":
-			err = unpopulateTime[datetime.RFC3339](val, "SubmittedAt", &s.SubmittedAt)
+			err = unpopulateDateTimeRFC3339(val, "SubmittedAt", &s.SubmittedAt)
 			delete(rawMsg, key)
 		case "timeout":
 			err = unpopulate(val, "Timeout", &s.Timeout)
@@ -4590,10 +4588,10 @@ func (s *SpecializedHostProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -4609,7 +4607,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -4618,7 +4616,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTime[datetime.RFC3339](val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
@@ -4777,7 +4775,7 @@ func (v Vcf5License) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "broadcomContractNumber", v.BroadcomContractNumber)
 	populate(objectMap, "broadcomSiteId", v.BroadcomSiteID)
 	populate(objectMap, "cores", v.Cores)
-	populateTime[datetime.RFC3339](objectMap, "endDate", v.EndDate)
+	populateDateTimeRFC3339(objectMap, "endDate", v.EndDate)
 	objectMap["kind"] = VcfLicenseKindVcf5
 	populate(objectMap, "labels", v.Labels)
 	populate(objectMap, "licenseKey", v.LicenseKey)
@@ -4804,7 +4802,7 @@ func (v *Vcf5License) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Cores", &v.Cores)
 			delete(rawMsg, key)
 		case "endDate":
-			err = unpopulateTime[datetime.RFC3339](val, "EndDate", &v.EndDate)
+			err = unpopulateDateTimeRFC3339(val, "EndDate", &v.EndDate)
 			delete(rawMsg, key)
 		case "kind":
 			err = unpopulate(val, "Kind", &v.Kind)
@@ -5007,7 +5005,7 @@ func (v VmwareFirewallLicenseProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "broadcomContractNumber", v.BroadcomContractNumber)
 	populate(objectMap, "broadcomSiteId", v.BroadcomSiteID)
 	populate(objectMap, "cores", v.Cores)
-	populateTime[datetime.RFC3339](objectMap, "endDate", v.EndDate)
+	populateDateTimeRFC3339(objectMap, "endDate", v.EndDate)
 	objectMap["kind"] = LicenseKindVmwareFirewall
 	populate(objectMap, "labels", v.Labels)
 	populate(objectMap, "licenseKey", v.LicenseKey)
@@ -5034,7 +5032,7 @@ func (v *VmwareFirewallLicenseProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Cores", &v.Cores)
 			delete(rawMsg, key)
 		case "endDate":
-			err = unpopulateTime[datetime.RFC3339](val, "EndDate", &v.EndDate)
+			err = unpopulateDateTimeRFC3339(val, "EndDate", &v.EndDate)
 			delete(rawMsg, key)
 		case "kind":
 			err = unpopulate(val, "Kind", &v.Kind)
@@ -6392,17 +6390,6 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
-	if t == nil {
-		return
-	} else if azcore.IsNullValue(t) {
-		m[k] = nil
-	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
-		m[k] = (*T)(&newTime)
-	}
-}
-
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -6411,21 +6398,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
-}
-
-func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
-	if data == nil || string(data) == "null" {
-		return nil
-	}
-	var aux T
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
-	}
-	newTime := time.Time(aux)
-	*t = &newTime
-	return nil
-}
-
-type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

@@ -8,9 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
-	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type ActivationLinks.
@@ -278,7 +276,7 @@ func (a AutonomousDatabaseBackupProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	populate(objectMap, "retentionPeriodInDays", a.RetentionPeriodInDays)
 	populate(objectMap, "sizeInTbs", a.SizeInTbs)
-	populateTime[datetime.RFC3339](objectMap, "timeAvailableTil", a.TimeAvailableTil)
+	populateDateTimeRFC3339(objectMap, "timeAvailableTil", a.TimeAvailableTil)
 	populate(objectMap, "timeEnded", a.TimeEnded)
 	populate(objectMap, "timeStarted", a.TimeStarted)
 	return json.Marshal(objectMap)
@@ -333,7 +331,7 @@ func (a *AutonomousDatabaseBackupProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SizeInTbs", &a.SizeInTbs)
 			delete(rawMsg, key)
 		case "timeAvailableTil":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeAvailableTil", &a.TimeAvailableTil)
+			err = unpopulateDateTimeRFC3339(val, "TimeAvailableTil", &a.TimeAvailableTil)
 			delete(rawMsg, key)
 		case "timeEnded":
 			err = unpopulate(val, "TimeEnded", &a.TimeEnded)
@@ -447,7 +445,7 @@ func (a AutonomousDatabaseBaseProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "longTermBackupSchedule", a.LongTermBackupSchedule)
 	populate(objectMap, "memoryPerOracleComputeUnitInGbs", a.MemoryPerOracleComputeUnitInGbs)
 	populate(objectMap, "ncharacterSet", a.NcharacterSet)
-	populateTime[datetime.RFC3339](objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
+	populateDateTimeRFC3339(objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
 	populate(objectMap, "ociUrl", a.OciURL)
 	populate(objectMap, "ocid", a.Ocid)
 	populate(objectMap, "openMode", a.OpenMode)
@@ -467,13 +465,13 @@ func (a AutonomousDatabaseBaseProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "serviceConsoleUrl", a.ServiceConsoleURL)
 	populate(objectMap, "subnetId", a.SubnetID)
 	populate(objectMap, "supportedRegionsToCloneTo", a.SupportedRegionsToCloneTo)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", a.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", a.TimeCreated)
 	populate(objectMap, "timeDataGuardRoleChanged", a.TimeDataGuardRoleChanged)
 	populate(objectMap, "timeDeletionOfFreeAutonomousDatabase", a.TimeDeletionOfFreeAutonomousDatabase)
-	populateTime[datetime.RFC3339](objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
+	populateDateTimeRFC3339(objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
 	populate(objectMap, "timeLocalDataGuardEnabled", a.TimeLocalDataGuardEnabled)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
 	populate(objectMap, "timeOfLastFailover", a.TimeOfLastFailover)
 	populate(objectMap, "timeOfLastRefresh", a.TimeOfLastRefresh)
 	populate(objectMap, "timeOfLastRefreshPoint", a.TimeOfLastRefreshPoint)
@@ -619,7 +617,7 @@ func (a *AutonomousDatabaseBaseProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "NcharacterSet", &a.NcharacterSet)
 			delete(rawMsg, key)
 		case "nextLongTermBackupTimeStamp":
-			err = unpopulateTime[datetime.RFC3339](val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
 			delete(rawMsg, key)
 		case "ociUrl":
 			err = unpopulate(val, "OciURL", &a.OciURL)
@@ -679,7 +677,7 @@ func (a *AutonomousDatabaseBaseProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SupportedRegionsToCloneTo", &a.SupportedRegionsToCloneTo)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &a.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &a.TimeCreated)
 			delete(rawMsg, key)
 		case "timeDataGuardRoleChanged":
 			err = unpopulate(val, "TimeDataGuardRoleChanged", &a.TimeDataGuardRoleChanged)
@@ -688,16 +686,16 @@ func (a *AutonomousDatabaseBaseProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "TimeDeletionOfFreeAutonomousDatabase", &a.TimeDeletionOfFreeAutonomousDatabase)
 			delete(rawMsg, key)
 		case "timeDisasterRecoveryRoleChanged":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
+			err = unpopulateDateTimeRFC3339(val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
 			delete(rawMsg, key)
 		case "timeLocalDataGuardEnabled":
 			err = unpopulate(val, "TimeLocalDataGuardEnabled", &a.TimeLocalDataGuardEnabled)
 			delete(rawMsg, key)
 		case "timeMaintenanceBegin":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
 			delete(rawMsg, key)
 		case "timeMaintenanceEnd":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
 			delete(rawMsg, key)
 		case "timeOfLastFailover":
 			err = unpopulate(val, "TimeOfLastFailover", &a.TimeOfLastFailover)
@@ -882,7 +880,7 @@ func (a AutonomousDatabaseCloneProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "longTermBackupSchedule", a.LongTermBackupSchedule)
 	populate(objectMap, "memoryPerOracleComputeUnitInGbs", a.MemoryPerOracleComputeUnitInGbs)
 	populate(objectMap, "ncharacterSet", a.NcharacterSet)
-	populateTime[datetime.RFC3339](objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
+	populateDateTimeRFC3339(objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
 	populate(objectMap, "ociUrl", a.OciURL)
 	populate(objectMap, "ocid", a.Ocid)
 	populate(objectMap, "openMode", a.OpenMode)
@@ -906,13 +904,13 @@ func (a AutonomousDatabaseCloneProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sourceId", a.SourceID)
 	populate(objectMap, "subnetId", a.SubnetID)
 	populate(objectMap, "supportedRegionsToCloneTo", a.SupportedRegionsToCloneTo)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", a.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", a.TimeCreated)
 	populate(objectMap, "timeDataGuardRoleChanged", a.TimeDataGuardRoleChanged)
 	populate(objectMap, "timeDeletionOfFreeAutonomousDatabase", a.TimeDeletionOfFreeAutonomousDatabase)
-	populateTime[datetime.RFC3339](objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
+	populateDateTimeRFC3339(objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
 	populate(objectMap, "timeLocalDataGuardEnabled", a.TimeLocalDataGuardEnabled)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
 	populate(objectMap, "timeOfLastFailover", a.TimeOfLastFailover)
 	populate(objectMap, "timeOfLastRefresh", a.TimeOfLastRefresh)
 	populate(objectMap, "timeOfLastRefreshPoint", a.TimeOfLastRefreshPoint)
@@ -1068,7 +1066,7 @@ func (a *AutonomousDatabaseCloneProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "NcharacterSet", &a.NcharacterSet)
 			delete(rawMsg, key)
 		case "nextLongTermBackupTimeStamp":
-			err = unpopulateTime[datetime.RFC3339](val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
 			delete(rawMsg, key)
 		case "ociUrl":
 			err = unpopulate(val, "OciURL", &a.OciURL)
@@ -1140,7 +1138,7 @@ func (a *AutonomousDatabaseCloneProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SupportedRegionsToCloneTo", &a.SupportedRegionsToCloneTo)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &a.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &a.TimeCreated)
 			delete(rawMsg, key)
 		case "timeDataGuardRoleChanged":
 			err = unpopulate(val, "TimeDataGuardRoleChanged", &a.TimeDataGuardRoleChanged)
@@ -1149,16 +1147,16 @@ func (a *AutonomousDatabaseCloneProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "TimeDeletionOfFreeAutonomousDatabase", &a.TimeDeletionOfFreeAutonomousDatabase)
 			delete(rawMsg, key)
 		case "timeDisasterRecoveryRoleChanged":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
+			err = unpopulateDateTimeRFC3339(val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
 			delete(rawMsg, key)
 		case "timeLocalDataGuardEnabled":
 			err = unpopulate(val, "TimeLocalDataGuardEnabled", &a.TimeLocalDataGuardEnabled)
 			delete(rawMsg, key)
 		case "timeMaintenanceBegin":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
 			delete(rawMsg, key)
 		case "timeMaintenanceEnd":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
 			delete(rawMsg, key)
 		case "timeOfLastFailover":
 			err = unpopulate(val, "TimeOfLastFailover", &a.TimeOfLastFailover)
@@ -1243,7 +1241,7 @@ func (a AutonomousDatabaseCrossRegionDisasterRecoveryProperties) MarshalJSON() (
 	populate(objectMap, "longTermBackupSchedule", a.LongTermBackupSchedule)
 	populate(objectMap, "memoryPerOracleComputeUnitInGbs", a.MemoryPerOracleComputeUnitInGbs)
 	populate(objectMap, "ncharacterSet", a.NcharacterSet)
-	populateTime[datetime.RFC3339](objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
+	populateDateTimeRFC3339(objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
 	populate(objectMap, "ociUrl", a.OciURL)
 	populate(objectMap, "ocid", a.Ocid)
 	populate(objectMap, "openMode", a.OpenMode)
@@ -1268,13 +1266,13 @@ func (a AutonomousDatabaseCrossRegionDisasterRecoveryProperties) MarshalJSON() (
 	populate(objectMap, "sourceOcid", a.SourceOcid)
 	populate(objectMap, "subnetId", a.SubnetID)
 	populate(objectMap, "supportedRegionsToCloneTo", a.SupportedRegionsToCloneTo)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", a.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", a.TimeCreated)
 	populate(objectMap, "timeDataGuardRoleChanged", a.TimeDataGuardRoleChanged)
 	populate(objectMap, "timeDeletionOfFreeAutonomousDatabase", a.TimeDeletionOfFreeAutonomousDatabase)
-	populateTime[datetime.RFC3339](objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
+	populateDateTimeRFC3339(objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
 	populate(objectMap, "timeLocalDataGuardEnabled", a.TimeLocalDataGuardEnabled)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
 	populate(objectMap, "timeOfLastFailover", a.TimeOfLastFailover)
 	populate(objectMap, "timeOfLastRefresh", a.TimeOfLastRefresh)
 	populate(objectMap, "timeOfLastRefreshPoint", a.TimeOfLastRefreshPoint)
@@ -1423,7 +1421,7 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) UnmarshalJSON(
 			err = unpopulate(val, "NcharacterSet", &a.NcharacterSet)
 			delete(rawMsg, key)
 		case "nextLongTermBackupTimeStamp":
-			err = unpopulateTime[datetime.RFC3339](val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
 			delete(rawMsg, key)
 		case "ociUrl":
 			err = unpopulate(val, "OciURL", &a.OciURL)
@@ -1498,7 +1496,7 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) UnmarshalJSON(
 			err = unpopulate(val, "SupportedRegionsToCloneTo", &a.SupportedRegionsToCloneTo)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &a.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &a.TimeCreated)
 			delete(rawMsg, key)
 		case "timeDataGuardRoleChanged":
 			err = unpopulate(val, "TimeDataGuardRoleChanged", &a.TimeDataGuardRoleChanged)
@@ -1507,16 +1505,16 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) UnmarshalJSON(
 			err = unpopulate(val, "TimeDeletionOfFreeAutonomousDatabase", &a.TimeDeletionOfFreeAutonomousDatabase)
 			delete(rawMsg, key)
 		case "timeDisasterRecoveryRoleChanged":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
+			err = unpopulateDateTimeRFC3339(val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
 			delete(rawMsg, key)
 		case "timeLocalDataGuardEnabled":
 			err = unpopulate(val, "TimeLocalDataGuardEnabled", &a.TimeLocalDataGuardEnabled)
 			delete(rawMsg, key)
 		case "timeMaintenanceBegin":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
 			delete(rawMsg, key)
 		case "timeMaintenanceEnd":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
 			delete(rawMsg, key)
 		case "timeOfLastFailover":
 			err = unpopulate(val, "TimeOfLastFailover", &a.TimeOfLastFailover)
@@ -1598,7 +1596,7 @@ func (a AutonomousDatabaseFromBackupTimestampProperties) MarshalJSON() ([]byte, 
 	populate(objectMap, "longTermBackupSchedule", a.LongTermBackupSchedule)
 	populate(objectMap, "memoryPerOracleComputeUnitInGbs", a.MemoryPerOracleComputeUnitInGbs)
 	populate(objectMap, "ncharacterSet", a.NcharacterSet)
-	populateTime[datetime.RFC3339](objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
+	populateDateTimeRFC3339(objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
 	populate(objectMap, "ociUrl", a.OciURL)
 	populate(objectMap, "ocid", a.Ocid)
 	populate(objectMap, "openMode", a.OpenMode)
@@ -1620,19 +1618,19 @@ func (a AutonomousDatabaseFromBackupTimestampProperties) MarshalJSON() ([]byte, 
 	populate(objectMap, "sourceId", a.SourceID)
 	populate(objectMap, "subnetId", a.SubnetID)
 	populate(objectMap, "supportedRegionsToCloneTo", a.SupportedRegionsToCloneTo)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", a.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", a.TimeCreated)
 	populate(objectMap, "timeDataGuardRoleChanged", a.TimeDataGuardRoleChanged)
 	populate(objectMap, "timeDeletionOfFreeAutonomousDatabase", a.TimeDeletionOfFreeAutonomousDatabase)
-	populateTime[datetime.RFC3339](objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
+	populateDateTimeRFC3339(objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
 	populate(objectMap, "timeLocalDataGuardEnabled", a.TimeLocalDataGuardEnabled)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
 	populate(objectMap, "timeOfLastFailover", a.TimeOfLastFailover)
 	populate(objectMap, "timeOfLastRefresh", a.TimeOfLastRefresh)
 	populate(objectMap, "timeOfLastRefreshPoint", a.TimeOfLastRefreshPoint)
 	populate(objectMap, "timeOfLastSwitchover", a.TimeOfLastSwitchover)
 	populate(objectMap, "timeReclamationOfFreeAutonomousDatabase", a.TimeReclamationOfFreeAutonomousDatabase)
-	populateTime[datetime.RFC3339](objectMap, "timestamp", a.Timestamp)
+	populateDateTimeRFC3339(objectMap, "timestamp", a.Timestamp)
 	populate(objectMap, "useLatestAvailableBackupTimeStamp", a.UseLatestAvailableBackupTimeStamp)
 	populate(objectMap, "usedDataStorageSizeInGbs", a.UsedDataStorageSizeInGbs)
 	populate(objectMap, "usedDataStorageSizeInTbs", a.UsedDataStorageSizeInTbs)
@@ -1777,7 +1775,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) UnmarshalJSON(data []b
 			err = unpopulate(val, "NcharacterSet", &a.NcharacterSet)
 			delete(rawMsg, key)
 		case "nextLongTermBackupTimeStamp":
-			err = unpopulateTime[datetime.RFC3339](val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
 			delete(rawMsg, key)
 		case "ociUrl":
 			err = unpopulate(val, "OciURL", &a.OciURL)
@@ -1843,7 +1841,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) UnmarshalJSON(data []b
 			err = unpopulate(val, "SupportedRegionsToCloneTo", &a.SupportedRegionsToCloneTo)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &a.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &a.TimeCreated)
 			delete(rawMsg, key)
 		case "timeDataGuardRoleChanged":
 			err = unpopulate(val, "TimeDataGuardRoleChanged", &a.TimeDataGuardRoleChanged)
@@ -1852,16 +1850,16 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) UnmarshalJSON(data []b
 			err = unpopulate(val, "TimeDeletionOfFreeAutonomousDatabase", &a.TimeDeletionOfFreeAutonomousDatabase)
 			delete(rawMsg, key)
 		case "timeDisasterRecoveryRoleChanged":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
+			err = unpopulateDateTimeRFC3339(val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
 			delete(rawMsg, key)
 		case "timeLocalDataGuardEnabled":
 			err = unpopulate(val, "TimeLocalDataGuardEnabled", &a.TimeLocalDataGuardEnabled)
 			delete(rawMsg, key)
 		case "timeMaintenanceBegin":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
 			delete(rawMsg, key)
 		case "timeMaintenanceEnd":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
 			delete(rawMsg, key)
 		case "timeOfLastFailover":
 			err = unpopulate(val, "TimeOfLastFailover", &a.TimeOfLastFailover)
@@ -1879,7 +1877,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) UnmarshalJSON(data []b
 			err = unpopulate(val, "TimeReclamationOfFreeAutonomousDatabase", &a.TimeReclamationOfFreeAutonomousDatabase)
 			delete(rawMsg, key)
 		case "timestamp":
-			err = unpopulateTime[datetime.RFC3339](val, "Timestamp", &a.Timestamp)
+			err = unpopulateDateTimeRFC3339(val, "Timestamp", &a.Timestamp)
 			delete(rawMsg, key)
 		case "useLatestAvailableBackupTimeStamp":
 			err = unpopulate(val, "UseLatestAvailableBackupTimeStamp", &a.UseLatestAvailableBackupTimeStamp)
@@ -2107,7 +2105,7 @@ func (a AutonomousDatabaseProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "longTermBackupSchedule", a.LongTermBackupSchedule)
 	populate(objectMap, "memoryPerOracleComputeUnitInGbs", a.MemoryPerOracleComputeUnitInGbs)
 	populate(objectMap, "ncharacterSet", a.NcharacterSet)
-	populateTime[datetime.RFC3339](objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
+	populateDateTimeRFC3339(objectMap, "nextLongTermBackupTimeStamp", a.NextLongTermBackupTimeStamp)
 	populate(objectMap, "ociUrl", a.OciURL)
 	populate(objectMap, "ocid", a.Ocid)
 	populate(objectMap, "openMode", a.OpenMode)
@@ -2127,13 +2125,13 @@ func (a AutonomousDatabaseProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "serviceConsoleUrl", a.ServiceConsoleURL)
 	populate(objectMap, "subnetId", a.SubnetID)
 	populate(objectMap, "supportedRegionsToCloneTo", a.SupportedRegionsToCloneTo)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", a.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", a.TimeCreated)
 	populate(objectMap, "timeDataGuardRoleChanged", a.TimeDataGuardRoleChanged)
 	populate(objectMap, "timeDeletionOfFreeAutonomousDatabase", a.TimeDeletionOfFreeAutonomousDatabase)
-	populateTime[datetime.RFC3339](objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
+	populateDateTimeRFC3339(objectMap, "timeDisasterRecoveryRoleChanged", a.TimeDisasterRecoveryRoleChanged)
 	populate(objectMap, "timeLocalDataGuardEnabled", a.TimeLocalDataGuardEnabled)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceBegin", a.TimeMaintenanceBegin)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceEnd", a.TimeMaintenanceEnd)
 	populate(objectMap, "timeOfLastFailover", a.TimeOfLastFailover)
 	populate(objectMap, "timeOfLastRefresh", a.TimeOfLastRefresh)
 	populate(objectMap, "timeOfLastRefreshPoint", a.TimeOfLastRefreshPoint)
@@ -2279,7 +2277,7 @@ func (a *AutonomousDatabaseProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "NcharacterSet", &a.NcharacterSet)
 			delete(rawMsg, key)
 		case "nextLongTermBackupTimeStamp":
-			err = unpopulateTime[datetime.RFC3339](val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "NextLongTermBackupTimeStamp", &a.NextLongTermBackupTimeStamp)
 			delete(rawMsg, key)
 		case "ociUrl":
 			err = unpopulate(val, "OciURL", &a.OciURL)
@@ -2339,7 +2337,7 @@ func (a *AutonomousDatabaseProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SupportedRegionsToCloneTo", &a.SupportedRegionsToCloneTo)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &a.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &a.TimeCreated)
 			delete(rawMsg, key)
 		case "timeDataGuardRoleChanged":
 			err = unpopulate(val, "TimeDataGuardRoleChanged", &a.TimeDataGuardRoleChanged)
@@ -2348,16 +2346,16 @@ func (a *AutonomousDatabaseProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "TimeDeletionOfFreeAutonomousDatabase", &a.TimeDeletionOfFreeAutonomousDatabase)
 			delete(rawMsg, key)
 		case "timeDisasterRecoveryRoleChanged":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
+			err = unpopulateDateTimeRFC3339(val, "TimeDisasterRecoveryRoleChanged", &a.TimeDisasterRecoveryRoleChanged)
 			delete(rawMsg, key)
 		case "timeLocalDataGuardEnabled":
 			err = unpopulate(val, "TimeLocalDataGuardEnabled", &a.TimeLocalDataGuardEnabled)
 			delete(rawMsg, key)
 		case "timeMaintenanceBegin":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceBegin", &a.TimeMaintenanceBegin)
 			delete(rawMsg, key)
 		case "timeMaintenanceEnd":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceEnd", &a.TimeMaintenanceEnd)
 			delete(rawMsg, key)
 		case "timeOfLastFailover":
 			err = unpopulate(val, "TimeOfLastFailover", &a.TimeOfLastFailover)
@@ -3252,7 +3250,7 @@ func (c CloudVMClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "subnetId", c.SubnetID)
 	populate(objectMap, "subnetOcid", c.SubnetOcid)
 	populate(objectMap, "systemVersion", c.SystemVersion)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", c.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", c.TimeCreated)
 	populate(objectMap, "timeZone", c.TimeZone)
 	populate(objectMap, "vipIds", c.VipIDs)
 	populate(objectMap, "vnetId", c.VnetID)
@@ -3411,7 +3409,7 @@ func (c *CloudVMClusterProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SystemVersion", &c.SystemVersion)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &c.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &c.TimeCreated)
 			delete(rawMsg, key)
 		case "timeZone":
 			err = unpopulate(val, "TimeZone", &c.TimeZone)
@@ -3801,8 +3799,8 @@ func (d DNSPrivateViewProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ocid", d.Ocid)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "self", d.Self)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
-	populateTime[datetime.RFC3339](objectMap, "timeUpdated", d.TimeUpdated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeUpdated", d.TimeUpdated)
 	return json.Marshal(objectMap)
 }
 
@@ -3834,10 +3832,10 @@ func (d *DNSPrivateViewProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Self", &d.Self)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		case "timeUpdated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeUpdated", &d.TimeUpdated)
+			err = unpopulateDateTimeRFC3339(val, "TimeUpdated", &d.TimeUpdated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3930,7 +3928,7 @@ func (d DNSPrivateZoneProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "self", d.Self)
 	populate(objectMap, "serial", d.Serial)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
 	populate(objectMap, "version", d.Version)
 	populate(objectMap, "viewId", d.ViewID)
 	populate(objectMap, "zoneType", d.ZoneType)
@@ -3965,7 +3963,7 @@ func (d *DNSPrivateZoneProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Serial", &d.Serial)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		case "version":
 			err = unpopulate(val, "Version", &d.Version)
@@ -4284,9 +4282,9 @@ func (d DbNodeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ocid", d.Ocid)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "softwareStorageSizeInGb", d.SoftwareStorageSizeInGb)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceWindowEnd", d.TimeMaintenanceWindowEnd)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceWindowStart", d.TimeMaintenanceWindowStart)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceWindowEnd", d.TimeMaintenanceWindowEnd)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceWindowStart", d.TimeMaintenanceWindowStart)
 	populate(objectMap, "vnic2Id", d.Vnic2ID)
 	populate(objectMap, "vnicId", d.VnicID)
 	return json.Marshal(objectMap)
@@ -4356,13 +4354,13 @@ func (d *DbNodeProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SoftwareStorageSizeInGb", &d.SoftwareStorageSizeInGb)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		case "timeMaintenanceWindowEnd":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceWindowEnd", &d.TimeMaintenanceWindowEnd)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceWindowEnd", &d.TimeMaintenanceWindowEnd)
 			delete(rawMsg, key)
 		case "timeMaintenanceWindowStart":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceWindowStart", &d.TimeMaintenanceWindowStart)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceWindowStart", &d.TimeMaintenanceWindowStart)
 			delete(rawMsg, key)
 		case "vnic2Id":
 			err = unpopulate(val, "Vnic2ID", &d.Vnic2ID)
@@ -4457,8 +4455,8 @@ func (d DbServerPatchingDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "estimatedPatchDuration", d.EstimatedPatchDuration)
 	populate(objectMap, "patchingStatus", d.PatchingStatus)
-	populateTime[datetime.RFC3339](objectMap, "timePatchingEnded", d.TimePatchingEnded)
-	populateTime[datetime.RFC3339](objectMap, "timePatchingStarted", d.TimePatchingStarted)
+	populateDateTimeRFC3339(objectMap, "timePatchingEnded", d.TimePatchingEnded)
+	populateDateTimeRFC3339(objectMap, "timePatchingStarted", d.TimePatchingStarted)
 	return json.Marshal(objectMap)
 }
 
@@ -4478,10 +4476,10 @@ func (d *DbServerPatchingDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "PatchingStatus", &d.PatchingStatus)
 			delete(rawMsg, key)
 		case "timePatchingEnded":
-			err = unpopulateTime[datetime.RFC3339](val, "TimePatchingEnded", &d.TimePatchingEnded)
+			err = unpopulateDateTimeRFC3339(val, "TimePatchingEnded", &d.TimePatchingEnded)
 			delete(rawMsg, key)
 		case "timePatchingStarted":
-			err = unpopulateTime[datetime.RFC3339](val, "TimePatchingStarted", &d.TimePatchingStarted)
+			err = unpopulateDateTimeRFC3339(val, "TimePatchingStarted", &d.TimePatchingStarted)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4513,7 +4511,7 @@ func (d DbServerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ocid", d.Ocid)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "shape", d.Shape)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
 	populate(objectMap, "vmClusterIds", d.VMClusterIDs)
 	return json.Marshal(objectMap)
 }
@@ -4585,7 +4583,7 @@ func (d *DbServerProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Shape", &d.Shape)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		case "vmClusterIds":
 			err = unpopulate(val, "VMClusterIDs", &d.VMClusterIDs)
@@ -5436,7 +5434,7 @@ func (d DisasterRecoveryConfigurationDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "disasterRecoveryType", d.DisasterRecoveryType)
 	populate(objectMap, "isReplicateAutomaticBackups", d.IsReplicateAutomaticBackups)
 	populate(objectMap, "isSnapshotStandby", d.IsSnapshotStandby)
-	populateTime[datetime.RFC3339](objectMap, "timeSnapshotStandbyEnabledTill", d.TimeSnapshotStandbyEnabledTill)
+	populateDateTimeRFC3339(objectMap, "timeSnapshotStandbyEnabledTill", d.TimeSnapshotStandbyEnabledTill)
 	return json.Marshal(objectMap)
 }
 
@@ -5459,7 +5457,7 @@ func (d *DisasterRecoveryConfigurationDetails) UnmarshalJSON(data []byte) error 
 			err = unpopulate(val, "IsSnapshotStandby", &d.IsSnapshotStandby)
 			delete(rawMsg, key)
 		case "timeSnapshotStandbyEnabledTill":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeSnapshotStandbyEnabledTill", &d.TimeSnapshotStandbyEnabledTill)
+			err = unpopulateDateTimeRFC3339(val, "TimeSnapshotStandbyEnabledTill", &d.TimeSnapshotStandbyEnabledTill)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -6039,8 +6037,8 @@ func (e ExascaleDbNodeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "memorySizeInGbs", e.MemorySizeInGbs)
 	populate(objectMap, "ocid", e.Ocid)
 	populate(objectMap, "softwareStorageSizeInGb", e.SoftwareStorageSizeInGb)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceWindowEnd", e.TimeMaintenanceWindowEnd)
-	populateTime[datetime.RFC3339](objectMap, "timeMaintenanceWindowStart", e.TimeMaintenanceWindowStart)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceWindowEnd", e.TimeMaintenanceWindowEnd)
+	populateDateTimeRFC3339(objectMap, "timeMaintenanceWindowStart", e.TimeMaintenanceWindowStart)
 	populate(objectMap, "totalCpuCoreCount", e.TotalCPUCoreCount)
 	return json.Marshal(objectMap)
 }
@@ -6085,10 +6083,10 @@ func (e *ExascaleDbNodeProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SoftwareStorageSizeInGb", &e.SoftwareStorageSizeInGb)
 			delete(rawMsg, key)
 		case "timeMaintenanceWindowEnd":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceWindowEnd", &e.TimeMaintenanceWindowEnd)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceWindowEnd", &e.TimeMaintenanceWindowEnd)
 			delete(rawMsg, key)
 		case "timeMaintenanceWindowStart":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeMaintenanceWindowStart", &e.TimeMaintenanceWindowStart)
+			err = unpopulateDateTimeRFC3339(val, "TimeMaintenanceWindowStart", &e.TimeMaintenanceWindowStart)
 			delete(rawMsg, key)
 		case "totalCpuCoreCount":
 			err = unpopulate(val, "TotalCPUCoreCount", &e.TotalCPUCoreCount)
@@ -6766,7 +6764,7 @@ func (l LongTermBackUpScheduleDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isDisabled", l.IsDisabled)
 	populate(objectMap, "repeatCadence", l.RepeatCadence)
 	populate(objectMap, "retentionPeriodInDays", l.RetentionPeriodInDays)
-	populateTime[datetime.RFC3339](objectMap, "timeOfBackup", l.TimeOfBackup)
+	populateDateTimeRFC3339(objectMap, "timeOfBackup", l.TimeOfBackup)
 	return json.Marshal(objectMap)
 }
 
@@ -6789,7 +6787,7 @@ func (l *LongTermBackUpScheduleDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RetentionPeriodInDays", &l.RetentionPeriodInDays)
 			delete(rawMsg, key)
 		case "timeOfBackup":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeOfBackup", &l.TimeOfBackup)
+			err = unpopulateDateTimeRFC3339(val, "TimeOfBackup", &l.TimeOfBackup)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7950,7 +7948,7 @@ func (r *ResourceAnchorUpdate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RestoreAutonomousDatabaseDetails.
 func (r RestoreAutonomousDatabaseDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "timestamp", r.Timestamp)
+	populateDateTimeRFC3339(objectMap, "timestamp", r.Timestamp)
 	return json.Marshal(objectMap)
 }
 
@@ -7964,7 +7962,7 @@ func (r *RestoreAutonomousDatabaseDetails) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "timestamp":
-			err = unpopulateTime[datetime.RFC3339](val, "Timestamp", &r.Timestamp)
+			err = unpopulateDateTimeRFC3339(val, "Timestamp", &r.Timestamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7988,7 +7986,7 @@ func (s SaasSubscriptionDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "saasSubscriptionStatus", s.SaasSubscriptionStatus)
 	populate(objectMap, "subscriptionName", s.SubscriptionName)
 	populate(objectMap, "termUnit", s.TermUnit)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", s.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", s.TimeCreated)
 	return json.Marshal(objectMap)
 }
 
@@ -8035,7 +8033,7 @@ func (s *SaasSubscriptionDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "TermUnit", &s.TermUnit)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &s.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &s.TimeCreated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -8118,10 +8116,10 @@ func (s *ScheduledOperationsTypeUpdate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -8137,7 +8135,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -8146,7 +8144,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTime[datetime.RFC3339](val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
@@ -8346,7 +8344,7 @@ func (v VirtualNetworkAddressProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "lifecycleState", v.LifecycleState)
 	populate(objectMap, "ocid", v.Ocid)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
-	populateTime[datetime.RFC3339](objectMap, "timeAssigned", v.TimeAssigned)
+	populateDateTimeRFC3339(objectMap, "timeAssigned", v.TimeAssigned)
 	populate(objectMap, "vmOcid", v.VMOcid)
 	return json.Marshal(objectMap)
 }
@@ -8379,7 +8377,7 @@ func (v *VirtualNetworkAddressProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
 			delete(rawMsg, key)
 		case "timeAssigned":
-			err = unpopulateTime[datetime.RFC3339](val, "TimeAssigned", &v.TimeAssigned)
+			err = unpopulateDateTimeRFC3339(val, "TimeAssigned", &v.TimeAssigned)
 			delete(rawMsg, key)
 		case "vmOcid":
 			err = unpopulate(val, "VMOcid", &v.VMOcid)
@@ -8402,17 +8400,6 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
-	if t == nil {
-		return
-	} else if azcore.IsNullValue(t) {
-		m[k] = nil
-	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
-		m[k] = (*T)(&newTime)
-	}
-}
-
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -8421,21 +8408,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
-}
-
-func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
-	if data == nil || string(data) == "null" {
-		return nil
-	}
-	var aux T
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
-	}
-	newTime := time.Time(aux)
-	*t = &newTime
-	return nil
-}
-
-type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

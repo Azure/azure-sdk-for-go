@@ -34,12 +34,6 @@ type ContainerGroupProperties struct {
 	SubnetIDs []*Subnet
 }
 
-// DynamicSizing - Specifies the dynamic sizing configuration.
-type DynamicSizing struct {
-	// Indicates whether dynamic sizing is enabled for the standby pool.
-	Enabled *bool
-}
-
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -63,7 +57,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for an operation.
+// OperationDisplay - Localized display information for and operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -124,9 +118,6 @@ type PoolVirtualMachineStateCount struct {
 type StandbyContainerGroupPoolElasticityProfile struct {
 	// REQUIRED; Specifies maximum number of standby container groups in the standby pool.
 	MaxReadyCapacity *int64
-
-	// Specifies the dynamic sizing configuration.
-	DynamicSizing *DynamicSizing
 
 	// Specifies refill policy of the pool.
 	RefillPolicy *RefillPolicy
@@ -270,16 +261,9 @@ type StandbyVirtualMachinePoolElasticityProfile struct {
 	// REQUIRED; Specifies the maximum number of virtual machines in the standby virtual machine pool.
 	MaxReadyCapacity *int64
 
-	// Specifies the dynamic sizing configuration.
-	DynamicSizing *DynamicSizing
-
 	// Specifies the desired minimum number of virtual machines in the standby virtual machine pool. MinReadyCapacity cannot exceed
 	// MaxReadyCapacity.
 	MinReadyCapacity *int64
-
-	// Specifies the duration to wait after virtual machine provisioning before the virtual machine becomes available for use.
-	// The duration should be specified in ISO 8601 format (e.g., PT2S for 2 seconds).
-	PostProvisioningDelay *string
 }
 
 // StandbyVirtualMachinePoolForecastValues - Displays the forecast information of the standby pool.

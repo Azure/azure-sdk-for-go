@@ -182,7 +182,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 
 // runEngineRequests concurrently executes per-partition QueryRequests for either query or readMany pipelines.
 // prepareFn returns the query text, parameters, and a drain flag for each request.
-// Collects all results and calls ProvideData once with a single batch to reduce CGo overhead.
+// It serializes ProvideData calls through a single goroutine to preserve ordering guarantees required by the pipeline.
 func runEngineRequests(
 	ctx context.Context,
 	c *ContainerClient,
@@ -192,15 +192,32 @@ func runEngineRequests(
 	requests []queryengine.QueryRequest,
 	concurrency int,
 	prepareFn func(req queryengine.QueryRequest) (query string, params []QueryParameter, drain bool),
-) (float32, error) {
+) (totalCharge float32, err error) {
 	if len(requests) == 0 {
 		return 0, nil
 	}
 
 	jobs := make(chan queryengine.QueryRequest, len(requests))
+	provideCh := make(chan []queryengine.QueryResult)
 	errCh := make(chan error, 1)
 	done := make(chan struct{})
+	providerDone := make(chan struct{})
 	var wg sync.WaitGroup
+	var chargeMu sync.Mutex
+
+	// Provider goroutine ensures only one ProvideData executes at a time.
+	go func() {
+		defer close(providerDone)
+		for batch := range provideCh {
+			if perr := pipeline.ProvideData(batch); perr != nil {
+				select {
+				case errCh <- perr:
+				default:
+				}
+				return
+			}
+		}
+	}()
 
 	// Adjust concurrency.
 	workerCount := concurrency
@@ -211,15 +228,10 @@ func runEngineRequests(
 		workerCount = 1
 	}
 
-	// Per-worker request charge slots and result slices (lock-free updates)
-	charges := make([]float32, workerCount)
-	resultsSlices := make([][]queryengine.QueryResult, workerCount)
-
 	for w := 0; w < workerCount; w++ {
 		wg.Add(1)
-		go func(workerIndex int) {
+		go func() {
 			defer wg.Done()
-			localResults := make([]queryengine.QueryResult, 0, 8)
 			for {
 				select {
 				case <-done:
@@ -228,12 +240,12 @@ func runEngineRequests(
 					return
 				case req, ok := <-jobs:
 					if !ok {
-						// jobs exhausted
-						resultsSlices[workerIndex] = localResults
 						return
 					}
+
 					log.Writef(azlog.EventRequest, "Engine pipeline requested data for PKRange: %s", req.PartitionKeyRangeID)
 					queryText, params, drain := prepareFn(req)
+					// Pagination loop
 					fetchMorePages := true
 					for fetchMorePages {
 						qr := queryRequest(req)
@@ -253,6 +265,7 @@ func runEngineRequests(
 							}
 							return
 						}
+
 						qResp, err := newQueryResponse(azResponse)
 						if err != nil {
 							select {
@@ -261,7 +274,11 @@ func runEngineRequests(
 							}
 							return
 						}
-						charges[workerIndex] += qResp.RequestCharge
+						chargeMu.Lock()
+						totalCharge += qResp.RequestCharge
+						chargeMu.Unlock()
+
+						// Load the data into a buffer to send it to the pipeline
 						buf := new(bytes.Buffer)
 						if _, err := buf.ReadFrom(azResponse.Body); err != nil {
 							select {
@@ -273,17 +290,24 @@ func runEngineRequests(
 						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
 						data := buf.Bytes()
 						fetchMorePages = continuation != "" && drain
-						localResults = append(localResults, queryengine.QueryResult{
+
+						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
+						result := queryengine.QueryResult{
 							PartitionKeyRangeID: req.PartitionKeyRangeID,
 							NextContinuation:    continuation,
 							Data:                data,
 							RequestId:           req.Id,
-						})
+						}
 						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", req.PartitionKeyRangeID, continuation != "")
+						select {
+						case <-done:
+							return
+						case provideCh <- []queryengine.QueryResult{result}:
+						}
 					}
 				}
 			}
-		}(w)
+		}()
 	}
 
 	// Feed jobs
@@ -299,18 +323,8 @@ func runEngineRequests(
 		close(jobs)
 	}()
 
-	// Wait for workers to finish (or error/cancel)
-	workersDone := make(chan struct{})
-	go func() { wg.Wait(); close(workersDone) }()
-
-	// Helper to sum charges
-	sumCharges := func() float32 {
-		var total float32
-		for _, cval := range charges {
-			total += cval
-		}
-		return total
-	}
+	// Close provider after workers finish
+	go func() { wg.Wait(); close(provideCh) }()
 
 	// Wait for completion / error / cancellation
 	select {
@@ -320,33 +334,15 @@ func runEngineRequests(
 		default:
 			close(done)
 		}
-		return sumCharges(), e
+		return totalCharge, e
 	case <-ctx.Done():
 		select {
 		case <-done:
 		default:
 			close(done)
 		}
-		return sumCharges(), ctx.Err()
-	case <-workersDone:
-	}
-
-	totalCharge := sumCharges()
-
-	// Merge per-worker result slices deterministically
-	// Pre-size combined slice for efficiency
-	var combinedCount int
-	for _, rs := range resultsSlices {
-		combinedCount += len(rs)
-	}
-	if combinedCount > 0 {
-		all := make([]queryengine.QueryResult, 0, combinedCount)
-		for _, rs := range resultsSlices {
-			all = append(all, rs...)
-		}
-		if err := pipeline.ProvideData(all); err != nil {
-			return totalCharge, err
-		}
+		return totalCharge, ctx.Err()
+	case <-providerDone:
 	}
 
 	return totalCharge, nil

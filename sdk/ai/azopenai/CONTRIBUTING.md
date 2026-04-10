@@ -16,6 +16,7 @@ For code generation:
 - [TypeSpec compiler](https://github.com/Microsoft/typespec#getting-started).
 - [autorest](https://github.com/Azure/autorest/tree/main/packages/apps/autorest)
 - [PowerShell Core](https://github.com/PowerShell/PowerShell#get-powershell)
+- [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
 
 # Building
 

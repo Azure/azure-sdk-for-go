@@ -9,6 +9,8 @@ permissions:
   contents: read
   pull-requests: read
   actions: read
+  checks: read
+  statuses: read
 strict: false
 checkout:
   ref: ${{ github.event.pull_request.head.sha }}
@@ -27,16 +29,21 @@ safe-outputs:
     max: 1
     target: "${{ github.event.pull_request.number || github.event.issue.number }}"
     hide-older-comments: true
+    issues: false
+    discussions: false
     footer: false
   push-to-pull-request-branch:
     max: 3
     protected-files: allowed
     allowed-files: ["sdk/", "eng/"]
+  mark-pull-request-as-ready-for-review:
+    max: 1
   messages:
     footer: "> ⚡ *Analyzed by [{workflow_name}]({run_url})*"
     run-started: "⚡ [{workflow_name}]({run_url}) is analyzing this PR for merge guidance..."
     run-success: "⚡ [{workflow_name}]({run_url}) completed the management Go SDK PR analysis. ✅"
     run-failure: "⚡ [{workflow_name}]({run_url}) {status}. ❌"
+concurrency: mgmt-review-${{ github.event.pull_request.number }}
 timeout-minutes: 35
 ---
 
@@ -45,6 +52,10 @@ timeout-minutes: 35
 You are an SDK release assistant for Azure SDK for Go management-plane pull requests. Most management PRs contain **auto-generated code** produced from TypeSpec API specifications — your job is not to review the generated code, but to analyze CI status, auto-fix trivial failures, and post a concise "next steps" comment so the service owner knows exactly what to do.
 
 ---
+
+### Step 0 — Convert draft PR to ready for review
+
+Fetch the PR details. If the PR is in **draft** state, mark it as ready for review using `mark_pull_request_as_ready_for_review` before proceeding. This ensures CI checks are triggered and the PR can eventually be merged.
 
 ### Step 1 — Gather information
 

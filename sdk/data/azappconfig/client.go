@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/audience"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/querynormalization"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/synctoken"
 )
 
@@ -73,7 +74,7 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 
 	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(audienceConfigured)},
+		PerRetry: []policy.Policy{querynormalization.NewPolicy(), authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(audienceConfigured)},
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.AppConfig",
 		},

@@ -253,6 +253,123 @@ func TestQueryNormalizationPolicyURLEncodedChars(t *testing.T) {
 	require.Contains(t, capturedURL, expectedURL, "URL-encoded characters not handled correctly")
 }
 
+func TestQueryNormalizationPolicyCaseCollision(t *testing.T) {
+	// Test that different-cased keys that collide after lowercasing preserve
+	// their original positional order. This is critical for HMAC signing
+	// determinism: the same raw query must always produce the same output.
+	srv, close := mock.NewServer()
+	defer close()
+
+	var capturedURL string
+	pl := runtime.NewPipeline("azappconfig", "v0.1.0", runtime.PipelineOptions{
+		PerRetry: []policy.Policy{NewPolicy()},
+	}, &policy.ClientOptions{
+		Transport: &urlCapturingTransporter{
+			real: srv,
+			onRequest: func(req *http.Request) {
+				capturedURL = req.URL.String()
+			},
+		},
+	})
+
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL()+"/kv")
+	require.NoError(t, err)
+
+	// A=1 and a=2 collide after lowercasing; positional order must be preserved
+	req.Raw().URL.RawQuery = "A=1&a=2"
+
+	srv.AppendResponse()
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	// After lowercasing both become "a"; original order A=1 (index 0) then a=2 (index 1)
+	expectedURL := "/kv?a=1&a=2"
+	require.Contains(t, capturedURL, expectedURL, "case-collision ordering not deterministic")
+
+	// Run the same input multiple times to verify determinism
+	for i := 0; i < 20; i++ {
+		req, err = runtime.NewRequest(context.Background(), http.MethodGet, srv.URL()+"/kv")
+		require.NoError(t, err)
+		req.Raw().URL.RawQuery = "A=1&a=2"
+
+		srv.AppendResponse()
+		resp, err = pl.Do(req)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		require.Contains(t, capturedURL, expectedURL, "case-collision ordering not deterministic on iteration %d", i)
+	}
+}
+
+func TestQueryNormalizationPolicyCaseCollisionEncoded(t *testing.T) {
+	// Test that URL-encoded keys that collide after decoding and lowercasing
+	// preserve their original positional order.
+	srv, close := mock.NewServer()
+	defer close()
+
+	var capturedURL string
+	pl := runtime.NewPipeline("azappconfig", "v0.1.0", runtime.PipelineOptions{
+		PerRetry: []policy.Policy{NewPolicy()},
+	}, &policy.ClientOptions{
+		Transport: &urlCapturingTransporter{
+			real: srv,
+			onRequest: func(req *http.Request) {
+				capturedURL = req.URL.String()
+			},
+		},
+	})
+
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL()+"/kv")
+	require.NoError(t, err)
+
+	// %24Select and %24select collide after decoding ($Select/$select) and lowercasing
+	req.Raw().URL.RawQuery = "%24Select=key&%24select=value&api-version=2023-11-01"
+
+	srv.AppendResponse()
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	// Both become %24select after normalization; positional order preserved
+	expectedURL := "/kv?%24select=key&%24select=value&api-version=2023-11-01"
+	require.Contains(t, capturedURL, expectedURL, "encoded case-collision ordering not deterministic")
+}
+
+func TestQueryNormalizationPolicyCaseCollisionInterleaved(t *testing.T) {
+	// Test interleaved different-cased keys that collide after lowercasing,
+	// mixed with other keys.
+	srv, close := mock.NewServer()
+	defer close()
+
+	var capturedURL string
+	pl := runtime.NewPipeline("azappconfig", "v0.1.0", runtime.PipelineOptions{
+		PerRetry: []policy.Policy{NewPolicy()},
+	}, &policy.ClientOptions{
+		Transport: &urlCapturingTransporter{
+			real: srv,
+			onRequest: func(req *http.Request) {
+				capturedURL = req.URL.String()
+			},
+		},
+	})
+
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL()+"/kv")
+	require.NoError(t, err)
+
+	// B=x, A=1, b=y, a=2: after lowercasing, a and b each have two entries
+	// positional order: B=x(0), A=1(1), b=y(2), a=2(3)
+	// sorted by name: a group [A=1(1), a=2(3)], b group [B=x(0), b=y(2)]
+	req.Raw().URL.RawQuery = "B=x&A=1&b=y&a=2"
+
+	srv.AppendResponse()
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	expectedURL := "/kv?a=1&a=2&b=x&b=y"
+	require.Contains(t, capturedURL, expectedURL, "interleaved case-collision ordering not deterministic")
+}
+
 type urlCapturingTransporter struct {
 	onRequest func(*http.Request)
 	real      policy.Transporter

@@ -38,21 +38,33 @@ func (p *Policy) Do(req *policy.Request) (*http.Response, error) {
 		return req.Next()
 	}
 
-	queryParams := rawURL.Query()
-
-	// Build a flat list of paramEntry to preserve insertion order of duplicate values
+	// Parse RawQuery in positional order (split on '&', decode each pair)
+	// so the index assigned to each entry is deterministic across runs.
+	// This avoids url.URL.Query() which returns a map with nondeterministic
+	// iteration order, causing keys that collide after lowercasing (e.g. A=1&a=2)
+	// to produce nondeterministic output.
 	var params []paramEntry
-	idx := 0
-	for name, values := range queryParams {
-		lowerName := strings.ToLower(name)
-		for _, v := range values {
-			params = append(params, paramEntry{
-				lowercaseName: lowerName,
-				value:         v,
-				index:         idx,
-			})
-			idx++
+	for idx, pair := range strings.Split(rawURL.RawQuery, "&") {
+		if pair == "" {
+			continue
 		}
+
+		name, value, _ := strings.Cut(pair, "=")
+
+		decodedName, err := url.QueryUnescape(name)
+		if err != nil {
+			decodedName = name
+		}
+		decodedValue, err := url.QueryUnescape(value)
+		if err != nil {
+			decodedValue = value
+		}
+
+		params = append(params, paramEntry{
+			lowercaseName: strings.ToLower(decodedName),
+			value:         decodedValue,
+			index:         idx,
+		})
 	}
 
 	// Sort by lowercase name; use original index as tiebreaker to maintain

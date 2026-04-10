@@ -26,7 +26,7 @@ tools:
 safe-outputs:
   add-comment:
     max: 2
-    target: "${{ github.event.pull_request.number || github.event.issue.number }}"
+    target: "${{ github.event.pull_request.number }}"
     hide-older-comments: true
     issues: false
     discussions: false

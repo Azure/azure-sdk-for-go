@@ -1502,6 +1502,37 @@ func (s *RecordedTestSuite) TestFileGetSystemPropertiesWithACL() {
 	_require.NotNil(getSysResp.Group)
 }
 
+func (s *RecordedTestSuite) TestFileGetSystemPropertiesWithUPN() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := &file.GetSystemPropertiesOptions{
+		UPN: to.Ptr(true),
+	}
+	resp, err := fClient.GetSystemProperties(context.Background(), opts)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+	_require.NotNil(resp.Owner)
+	_require.NotNil(resp.Group)
+}
+
 func (s *UnrecordedTestSuite) TestFileGetAccessControlWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

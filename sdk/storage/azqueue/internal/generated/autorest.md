@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.45"
+use: "@autorest/go@4.0.0-preview.65"
 ```
 ### Updating service version to 2026-04-06
 ```yaml
@@ -70,7 +70,8 @@ directive:
     };
 ```
 
-### Fixing casing of SignedTid and SignedOid
+### Fixing casing of SignedTid and SignedOid,
+### and rename DelegatedUserTid and SignedDelegatedUserTid to DelegatedUserTenantID and DelegatedUserTenantID respectively
 
 ``` yaml
 directive:
@@ -79,7 +80,9 @@ directive:
   transform: >-
     return $.
       replace(/SignedOid\s+\*string/g, `SignedOID *string`).
-      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`).
+      replace(/DelegatedUserTid\s+\*string/g, `DelegatedUserTenantID *string`).
+      replace(/SignedDelegatedUserTid\s+\*string/g, `SignedDelegatedUserTenantID *string`);
 ```
 
 

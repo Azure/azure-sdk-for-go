@@ -386,7 +386,9 @@ directive:
   transform: >-
     return $.
       replace(/SignedOid\s+\*string/g, `SignedOID *string`).
-      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`).
+      replace(/DelegatedUserTid\s+\*string/g, `DelegatedUserTenantID *string`).
+      replace(/SignedDelegatedUserTid\s+\*string/g, `SignedDelegatedUserTenantID *string`);
 ```
 
 ### Fix up x-ms-content-crc64 header response name

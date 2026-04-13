@@ -61,35 +61,6 @@ type ArcSettingsClientUpdateResponse struct {
 	ArcSetting
 }
 
-// ClusterJobsClientCreateOrUpdateResponse contains the response from method ClusterJobsClient.BeginCreateOrUpdate.
-type ClusterJobsClientCreateOrUpdateResponse struct {
-	// Cluster Jobs resource
-	ClusterJob
-}
-
-// ClusterJobsClientDeleteResponse contains the response from method ClusterJobsClient.BeginDelete.
-type ClusterJobsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ClusterJobsClientGetResponse contains the response from method ClusterJobsClient.Get.
-type ClusterJobsClientGetResponse struct {
-	// Cluster Jobs resource
-	ClusterJob
-}
-
-// ClusterJobsClientListResponse contains the response from method ClusterJobsClient.NewListPager.
-type ClusterJobsClientListResponse struct {
-	// List of Cluster Job resources for the HCI cluster.
-	ClusterJobListResult
-}
-
-// ClustersClientChangeRingResponse contains the response from method ClustersClient.BeginChangeRing.
-type ClustersClientChangeRingResponse struct {
-	// Cluster details.
-	Cluster
-}
-
 // ClustersClientConfigureRemoteSupportResponse contains the response from method ClustersClient.BeginConfigureRemoteSupport.
 type ClustersClientConfigureRemoteSupportResponse struct {
 	// Cluster details.
@@ -183,51 +154,6 @@ type DeploymentSettingsClientListByClustersResponse struct {
 	DeploymentSettingListResult
 }
 
-// DevicePoolsClientClaimDevicesResponse contains the response from method DevicePoolsClient.BeginClaimDevices.
-type DevicePoolsClientClaimDevicesResponse struct {
-	// placeholder for future response values
-}
-
-// DevicePoolsClientCreateOrUpdateResponse contains the response from method DevicePoolsClient.BeginCreateOrUpdate.
-type DevicePoolsClientCreateOrUpdateResponse struct {
-	// DevicePool details.
-	DevicePool
-}
-
-// DevicePoolsClientDeleteResponse contains the response from method DevicePoolsClient.BeginDelete.
-type DevicePoolsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DevicePoolsClientGetResponse contains the response from method DevicePoolsClient.Get.
-type DevicePoolsClientGetResponse struct {
-	// DevicePool details.
-	DevicePool
-}
-
-// DevicePoolsClientListByResourceGroupResponse contains the response from method DevicePoolsClient.NewListByResourceGroupPager.
-type DevicePoolsClientListByResourceGroupResponse struct {
-	// The response of a DevicePool list operation.
-	DevicePoolListResult
-}
-
-// DevicePoolsClientListBySubscriptionResponse contains the response from method DevicePoolsClient.NewListBySubscriptionPager.
-type DevicePoolsClientListBySubscriptionResponse struct {
-	// The response of a DevicePool list operation.
-	DevicePoolListResult
-}
-
-// DevicePoolsClientReleaseDevicesResponse contains the response from method DevicePoolsClient.BeginReleaseDevices.
-type DevicePoolsClientReleaseDevicesResponse struct {
-	// placeholder for future response values
-}
-
-// DevicePoolsClientUpdateResponse contains the response from method DevicePoolsClient.BeginUpdate.
-type DevicePoolsClientUpdateResponse struct {
-	// DevicePool details.
-	DevicePool
-}
-
 // EdgeDeviceJobsClientCreateOrUpdateResponse contains the response from method EdgeDeviceJobsClient.BeginCreateOrUpdate.
 type EdgeDeviceJobsClientCreateOrUpdateResponse struct {
 	// EdgeDevice Jobs resource
@@ -280,64 +206,6 @@ type EdgeDevicesClientValidateResponse struct {
 	ValidateResponse
 }
 
-// EdgeMachineJobsClientCreateOrUpdateResponse contains the response from method EdgeMachineJobsClient.BeginCreateOrUpdate.
-type EdgeMachineJobsClientCreateOrUpdateResponse struct {
-	// Cluster Jobs resource
-	EdgeMachineJob
-}
-
-// EdgeMachineJobsClientDeleteResponse contains the response from method EdgeMachineJobsClient.BeginDelete.
-type EdgeMachineJobsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// EdgeMachineJobsClientGetResponse contains the response from method EdgeMachineJobsClient.Get.
-type EdgeMachineJobsClientGetResponse struct {
-	// Cluster Jobs resource
-	EdgeMachineJob
-}
-
-// EdgeMachineJobsClientListResponse contains the response from method EdgeMachineJobsClient.NewListPager.
-type EdgeMachineJobsClientListResponse struct {
-	// The response of a EdgeMachineJob list operation.
-	EdgeMachineJobListResult
-}
-
-// EdgeMachinesClientCreateOrUpdateResponse contains the response from method EdgeMachinesClient.BeginCreateOrUpdate.
-type EdgeMachinesClientCreateOrUpdateResponse struct {
-	// EdgeMachine details.
-	EdgeMachine
-}
-
-// EdgeMachinesClientDeleteResponse contains the response from method EdgeMachinesClient.BeginDelete.
-type EdgeMachinesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// EdgeMachinesClientGetResponse contains the response from method EdgeMachinesClient.Get.
-type EdgeMachinesClientGetResponse struct {
-	// EdgeMachine details.
-	EdgeMachine
-}
-
-// EdgeMachinesClientListByResourceGroupResponse contains the response from method EdgeMachinesClient.NewListByResourceGroupPager.
-type EdgeMachinesClientListByResourceGroupResponse struct {
-	// The response of a EdgeMachine list operation.
-	EdgeMachineListResult
-}
-
-// EdgeMachinesClientListBySubscriptionResponse contains the response from method EdgeMachinesClient.NewListBySubscriptionPager.
-type EdgeMachinesClientListBySubscriptionResponse struct {
-	// The response of a EdgeMachine list operation.
-	EdgeMachineListResult
-}
-
-// EdgeMachinesClientUpdateResponse contains the response from method EdgeMachinesClient.BeginUpdate.
-type EdgeMachinesClientUpdateResponse struct {
-	// EdgeMachine details.
-	EdgeMachine
-}
-
 // ExtensionsClientCreateResponse contains the response from method ExtensionsClient.BeginCreate.
 type ExtensionsClientCreateResponse struct {
 	// Details of a particular extension in HCI Cluster.
@@ -372,12 +240,6 @@ type ExtensionsClientUpgradeResponse struct {
 	// placeholder for future response values
 }
 
-// KubernetesVersionsClientListBySubscriptionLocationResourceResponse contains the response from method KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager.
-type KubernetesVersionsClientListBySubscriptionLocationResourceResponse struct {
-	// The response of a KubernetesVersion list operation.
-	KubernetesVersionListResult
-}
-
 // OffersClientGetResponse contains the response from method OffersClient.Get.
 type OffersClientGetResponse struct {
 	// Offer details.
@@ -400,48 +262,6 @@ type OffersClientListByPublisherResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
-}
-
-// OsImagesClientGetResponse contains the response from method OsImagesClient.Get.
-type OsImagesClientGetResponse struct {
-	// Represents a os image resource.
-	OsImage
-}
-
-// OsImagesClientListBySubscriptionLocationResourceResponse contains the response from method OsImagesClient.NewListBySubscriptionLocationResourcePager.
-type OsImagesClientListBySubscriptionLocationResourceResponse struct {
-	// The response of a OsImage list operation.
-	OsImageListResult
-}
-
-// OwnershipVouchersClientValidateResponse contains the response from method OwnershipVouchersClient.Validate.
-type OwnershipVouchersClientValidateResponse struct {
-	// Validate Ownership Voucher Response
-	ValidateOwnershipVouchersResponse
-}
-
-// PlatformUpdatesClientGetResponse contains the response from method PlatformUpdatesClient.Get.
-type PlatformUpdatesClientGetResponse struct {
-	// Represents a platform update resource.
-	PlatformUpdate
-}
-
-// PlatformUpdatesClientListResponse contains the response from method PlatformUpdatesClient.NewListPager.
-type PlatformUpdatesClientListResponse struct {
-	// The response of a PlatformUpdate list operation.
-	PlatformUpdateListResult
-}
-
-// PublishersClientGetResponse contains the response from method PublishersClient.Get.
-type PublishersClientGetResponse struct {
-	// Publisher details.
-	Publisher
-}
-
-// PublishersClientListByClusterResponse contains the response from method PublishersClient.NewListByClusterPager.
-type PublishersClientListByClusterResponse struct {
-	// List of Publisher proxy resources for the HCI cluster.
-	PublisherList
 }
 
 // SKUsClientGetResponse contains the response from method SKUsClient.Get.
@@ -477,18 +297,6 @@ type SecuritySettingsClientGetResponse struct {
 type SecuritySettingsClientListByClustersResponse struct {
 	// The response of a SecuritySetting list operation.
 	SecuritySettingListResult
-}
-
-// UpdateContentsClientGetResponse contains the response from method UpdateContentsClient.Get.
-type UpdateContentsClientGetResponse struct {
-	// Represents a update content.
-	UpdateContent
-}
-
-// UpdateContentsClientListResponse contains the response from method UpdateContentsClient.NewListPager.
-type UpdateContentsClientListResponse struct {
-	// The response of a UpdateContent list operation.
-	UpdateContentListResult
 }
 
 // UpdateRunsClientDeleteResponse contains the response from method UpdateRunsClient.BeginDelete.
@@ -537,16 +345,6 @@ type UpdateSummariesClientPutResponse struct {
 	UpdateSummaries
 }
 
-// UpdateSummariesOperationGroupClientCheckHealthResponse contains the response from method UpdateSummariesOperationGroupClient.BeginCheckHealth.
-type UpdateSummariesOperationGroupClientCheckHealthResponse struct {
-	// placeholder for future response values
-}
-
-// UpdateSummariesOperationGroupClientCheckUpdatesResponse contains the response from method UpdateSummariesOperationGroupClient.BeginCheckUpdates.
-type UpdateSummariesOperationGroupClientCheckUpdatesResponse struct {
-	// placeholder for future response values
-}
-
 // UpdatesClientDeleteResponse contains the response from method UpdatesClient.BeginDelete.
 type UpdatesClientDeleteResponse struct {
 	// placeholder for future response values
@@ -566,11 +364,6 @@ type UpdatesClientListResponse struct {
 
 // UpdatesClientPostResponse contains the response from method UpdatesClient.BeginPost.
 type UpdatesClientPostResponse struct {
-	// placeholder for future response values
-}
-
-// UpdatesClientPrepareResponse contains the response from method UpdatesClient.BeginPrepare.
-type UpdatesClientPrepareResponse struct {
 	// placeholder for future response values
 }
 

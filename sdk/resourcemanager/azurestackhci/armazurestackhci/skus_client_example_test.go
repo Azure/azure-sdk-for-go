@@ -6,13 +6,12 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/GetSku.json
+// Generated from example definition: 2026-02-01/GetSku.json
 func ExampleSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +54,7 @@ func ExampleSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListSkusByOffer.json
+// Generated from example definition: 2026-02-01/ListSkusByOffer.json
 func ExampleSKUsClient_NewListByOfferPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

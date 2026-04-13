@@ -56,6 +56,14 @@ func (c *ClientFactory) NewBillingContainersClient() *BillingContainersClient {
 	}
 }
 
+// NewCredentialsClient creates a new instance of CredentialsClient.
+func (c *ClientFactory) NewCredentialsClient() *CredentialsClient {
+	return &CredentialsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewNamespaceAssetsClient creates a new instance of NamespaceAssetsClient.
 func (c *ClientFactory) NewNamespaceAssetsClient() *NamespaceAssetsClient {
 	return &NamespaceAssetsClient{
@@ -108,6 +116,14 @@ func (c *ClientFactory) NewOperationStatusClient() *OperationStatusClient {
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewPoliciesClient creates a new instance of PoliciesClient.
+func (c *ClientFactory) NewPoliciesClient() *PoliciesClient {
+	return &PoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 

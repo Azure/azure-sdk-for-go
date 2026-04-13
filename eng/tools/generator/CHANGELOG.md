@@ -1,15 +1,23 @@
 # Release History
 
-## 0.4.8 (Unreleased)
+## 0.4.8 (2026-04-07)
 
 ### Features Added
 
 - Added `metadata` command to create required metadata files (ci.yml, README.md) for packages in inner loop scenarios.
 
+### Other Changes
+
+- Removed the validation that required both `apiVersion` and `sdkReleaseType` to be provided together for self-serve SDK generation. Either parameter can now be omitted and will use its default value.
+
 ### Bugs Fixed
 
 - Fixed wrong version calculation logic for previous version with breaking changes.
 - Fixed `build.go` deletion to only apply to ARM packages, preserving it for data plane packages that use it for customization.
+
+### Other Changes
+
+- Upgraded Go toolchain pin from `go@1.24.0` to `go@1.25.0` for dependency updates.
 
 ## 0.4.7 (2026-03-03)
 

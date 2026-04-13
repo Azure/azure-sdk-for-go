@@ -8,15 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // UpdatesServer is a fake server for instances of the armazurestackhci.UpdatesClient type.
@@ -37,10 +36,6 @@ type UpdatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPost func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *armazurestackhci.UpdatesClientBeginPostOptions) (resp azfake.PollerResponder[armazurestackhci.UpdatesClientPostResponse], errResp azfake.ErrorResponder)
 
-	// BeginPrepare is the fake for method UpdatesClient.BeginPrepare
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPrepare func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *armazurestackhci.UpdatesClientBeginPrepareOptions) (resp azfake.PollerResponder[armazurestackhci.UpdatesClientPrepareResponse], errResp azfake.ErrorResponder)
-
 	// Put is the fake for method UpdatesClient.Put
 	// HTTP status codes to indicate success: http.StatusOK
 	Put func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateProperties armazurestackhci.Update, options *armazurestackhci.UpdatesClientPutOptions) (resp azfake.Responder[armazurestackhci.UpdatesClientPutResponse], errResp azfake.ErrorResponder)
@@ -55,7 +50,6 @@ func NewUpdatesServerTransport(srv *UpdatesServer) *UpdatesServerTransport {
 		beginDelete:  newTracker[azfake.PollerResponder[armazurestackhci.UpdatesClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse]](),
 		beginPost:    newTracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPostResponse]](),
-		beginPrepare: newTracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPrepareResponse]](),
 	}
 }
 
@@ -66,7 +60,6 @@ type UpdatesServerTransport struct {
 	beginDelete  *tracker[azfake.PollerResponder[armazurestackhci.UpdatesClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse]]
 	beginPost    *tracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPostResponse]]
-	beginPrepare *tracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPrepareResponse]]
 }
 
 // Do implements the policy.Transporter interface for UpdatesServerTransport.
@@ -100,8 +93,6 @@ func (u *UpdatesServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = u.dispatchNewListPager(req)
 			case "UpdatesClient.BeginPost":
 				res.resp, res.err = u.dispatchBeginPost(req)
-			case "UpdatesClient.BeginPrepare":
-				res.resp, res.err = u.dispatchBeginPrepare(req)
 			case "UpdatesClient.Put":
 				res.resp, res.err = u.dispatchPut(req)
 			default:
@@ -292,54 +283,6 @@ func (u *UpdatesServerTransport) dispatchBeginPost(req *http.Request) (*http.Res
 	}
 	if !server.PollerResponderMore(beginPost) {
 		u.beginPost.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (u *UpdatesServerTransport) dispatchBeginPrepare(req *http.Request) (*http.Response, error) {
-	if u.srv.BeginPrepare == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPrepare not implemented")}
-	}
-	beginPrepare := u.beginPrepare.get(req)
-	if beginPrepare == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updates/(?P<updateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prepare`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		updateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := u.srv.BeginPrepare(req.Context(), resourceGroupNameParam, clusterNameParam, updateNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPrepare = &respr
-		u.beginPrepare.add(req, beginPrepare)
-	}
-
-	resp, err := server.PollerResponderNext(beginPrepare, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		u.beginPrepare.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPrepare) {
-		u.beginPrepare.remove(req)
 	}
 
 	return resp, nil

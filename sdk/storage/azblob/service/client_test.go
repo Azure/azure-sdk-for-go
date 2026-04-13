@@ -6,13 +6,14 @@ package service_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -1920,6 +1921,63 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientDefaultAudience() {
 	}
 }
 
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredentialError() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	// This is a dummy tenant ID
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:                 to.Ptr(start.Format(time.RFC3339)),
+		Expiry:                to.Ptr(expiry.Format(time.RFC3339)),
+		DelegatedUserTenantID: to.Ptr(dummyTenantID),
+	}
+
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredential() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	response, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+}
+
 func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1956,4 +2014,235 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 		_require.NotNil(resp.ContainerItems[0].Name)
 		_require.Equal(*resp.ContainerItems[0].Name, containerName)
 	}
+}
+
+// customRequestHeadersAndQueryParametersPolicy injects additional headers and query parameters into each request.
+type customRequestHeadersAndQueryParametersPolicy struct {
+	headers     map[string]string
+	queryParams map[string]string
+}
+
+func (p *customRequestHeadersAndQueryParametersPolicy) Do(req *policy.Request) (*http.Response, error) {
+	rawReq := req.Raw()
+	for k, v := range p.headers {
+		rawReq.Header.Set(k, v)
+	}
+
+	q := rawReq.URL.Query()
+	for k, v := range p.queryParams {
+		q.Set(k, v)
+	}
+	rawReq.URL.RawQuery = q.Encode()
+
+	return req.Next()
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParameters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, cntClient)
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.ContainerPermissions{Read: true}).String(),
+		ContainerName:                containerName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build SAS blob URL
+	parts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	blobURLWithSAS := parts.String()
+
+	// Create blob client with per-call policy that injects headers and query params
+	blobClientSAS, err := blob.NewClientWithNoCredential(blobURLWithSAS, &blob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{&customRequestHeadersAndQueryParametersPolicy{
+				headers:     requestHeaders,
+				queryParams: requestQueryParameters,
+			}},
+		},
+	})
+	_require.NoError(err)
+
+	// Act - GetProperties should succeed because the correct headers and query params are sent
+	resp, err := blobClientSAS.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParametersFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, cntClient)
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.ContainerPermissions{Read: true}).String(),
+		ContainerName:                containerName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build SAS blob URL
+	parts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	blobURLWithSAS := parts.String()
+
+	// Deliberately do NOT send the required headers and query parameters
+	blobClientSAS, err := blob.NewClientWithNoCredential(blobURLWithSAS, nil)
+	_require.NoError(err)
+
+	// Act - GetProperties should fail with AuthenticationFailed
+	_, err = blobClientSAS.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParametersRoundtrip() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, cntClient)
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.ContainerPermissions{Read: true}).String(),
+		ContainerName:                containerName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build original SAS URL
+	parts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	originalURL := parts.String()
+
+	// Parse the URL again (roundtrip)
+	roundtripParts, err := sas.ParseURL(originalURL)
+	_require.NoError(err)
+	roundtripURL := roundtripParts.String()
+
+	// Verify roundtrip URL matches original
+	_require.Equal(originalURL, roundtripURL)
+	_require.Equal(sasQueryParams.Encode(), roundtripParts.SAS.Encode())
 }

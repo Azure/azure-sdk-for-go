@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0 (2026-03-17)
+## 2.4.0 (2026-04-07)
 ### Features Added
 
 - New value `CredentialTypeAzureKeyVaultS3WithHMAC` added to enum type `CredentialType`
@@ -8,8 +8,8 @@
 - New enum type `ConnectionStatus` with values `ConnectionStatusApproved`, `ConnectionStatusDisconnected`, `ConnectionStatusPending`, `ConnectionStatusRejected`, `ConnectionStatusStale`
 - New enum type `DataIntegrityValidation` with values `DataIntegrityValidationNone`, `DataIntegrityValidationSaveFileMD5`, `DataIntegrityValidationSaveVerifyFileMD5`
 - New enum type `EndpointKind` with values `EndpointKindSource`, `EndpointKindTarget`
-- New enum type `Frequency` with values `FrequencyDaily`, `FrequencyMonthly`, `FrequencyOnetime`, `FrequencyWeekly`
-- New enum type `S3WithHmacSourceType` with values `S3WithHmacSourceTypeBACKBLAZE`, `S3WithHmacSourceTypeCLOUDFLARE`, `S3WithHmacSourceTypeGCS`, `S3WithHmacSourceTypeIBM`, `S3WithHmacSourceTypeMINIO`
+- New enum type `Frequency` with values `FrequencyDaily`, `FrequencyMonthly`, `FrequencyNone`, `FrequencyOnetime`, `FrequencyWeekly`
+- New enum type `S3WithHmacSourceType` with values `S3WithHmacSourceTypeALIBABA`, `S3WithHmacSourceTypeDELLEMC`, `S3WithHmacSourceTypeGCS`, `S3WithHmacSourceTypeIBM`, `S3WithHmacSourceTypeMINIO`, `S3WithHmacSourceTypeOTHER`
 - New enum type `TriggerType` with values `TriggerTypeManual`, `TriggerTypeScheduled`
 - New function `*AzureKeyVaultS3WithHmacCredentials.GetCredentials() *Credentials`
 - New function `*ClientFactory.NewConnectionsClient() *ConnectionsClient`
@@ -28,12 +28,13 @@
 - New struct `S3WithHmacEndpointProperties`
 - New struct `S3WithHmacEndpointUpdateProperties`
 - New struct `ScheduleInfo`
+- New struct `SchedulerTime`
 - New field `EndpointKind` in struct `AzureMultiCloudConnectorEndpointProperties`
 - New field `EndpointKind` in struct `AzureStorageBlobContainerEndpointProperties`
 - New field `EndpointKind` in struct `AzureStorageNfsFileShareEndpointProperties`
 - New field `EndpointKind` in struct `AzureStorageSmbFileShareEndpointProperties`
 - New field `Connections`, `DataIntegrityValidation`, `PreservePermissions`, `Schedule` in struct `JobDefinitionProperties`
-- New field `Connections`, `DataIntegrityValidation` in struct `JobDefinitionUpdateProperties`
+- New field `Connections`, `DataIntegrityValidation`, `Schedule` in struct `JobDefinitionUpdateProperties`
 - New field `ScheduledExecutionTime`, `TriggerType`, `Warnings` in struct `JobRunProperties`
 - New field `EndpointKind` in struct `NfsMountEndpointProperties`
 - New field `EndpointKind` in struct `SmbMountEndpointProperties`

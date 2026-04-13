@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
@@ -2818,7 +2818,7 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 
 	// This tests directory.NewClient
 	var respFromCtxDir *http.Response
-	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
+	ctxWithRespDir := policy.WithCaptureResponse(context.Background(), &respFromCtxDir)
 	resp2, err := dirClient.GetProperties(ctxWithRespDir, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -2828,7 +2828,7 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	// This tests filesystem.NewClient
 	dirClient = fsClient.NewDirectoryClient(dirName)
 	var respFromCtxFs *http.Response
-	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
+	ctxWithRespFs := policy.WithCaptureResponse(context.Background(), &respFromCtxFs)
 	resp2, err = dirClient.GetProperties(ctxWithRespFs, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -2841,7 +2841,7 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	fsClient = serviceClient.NewFileSystemClient(filesystemName)
 	dirClient = fsClient.NewDirectoryClient(dirName)
 	var respFromCtxService *http.Response
-	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
+	ctxWithRespService := policy.WithCaptureResponse(context.Background(), &respFromCtxService)
 	resp2, err = dirClient.GetProperties(ctxWithRespService, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)

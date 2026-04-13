@@ -4,8 +4,9 @@
 package sas
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestFileSystemPermissions_String(t *testing.T) {
@@ -246,4 +247,104 @@ func TestGetDirectoryDepth(t *testing.T) {
 	for _, c := range testdata {
 		require.Equal(t, c.expected, getDirectoryDepth(c.input))
 	}
+}
+
+func TestFormatSignedRequestHeaders(t *testing.T) {
+	testdata := []struct {
+		desc                  string
+		input                 map[string]string
+		expectedNames         string
+		expectedCanonicalized string
+	}{
+		{
+			desc:                  "nil map",
+			input:                 nil,
+			expectedNames:         "",
+			expectedCanonicalized: "",
+		},
+		{
+			desc:                  "empty map",
+			input:                 map[string]string{},
+			expectedNames:         "",
+			expectedCanonicalized: "",
+		},
+		{
+			desc:                  "single header",
+			input:                 map[string]string{"abra": "cadabra"},
+			expectedNames:         "abra",
+			expectedCanonicalized: "abra:cadabra\n",
+		},
+	}
+	for _, c := range testdata {
+		t.Run(c.desc, func(t *testing.T) {
+			names, canonicalized := formatSignedRequestHeaders(c.input)
+			require.Equal(t, c.expectedNames, names)
+			require.Equal(t, c.expectedCanonicalized, canonicalized)
+		})
+	}
+
+	// Multi-key test: we can't predict map iteration order, so validate both parts independently
+	t.Run("multiple headers", func(t *testing.T) {
+		input := map[string]string{"foo": "123", "bar": "456"}
+		names, canonicalized := formatSignedRequestHeaders(input)
+
+		// names should contain both keys comma-separated
+		require.Contains(t, names, "foo")
+		require.Contains(t, names, "bar")
+		require.Contains(t, names, ",")
+
+		// canonicalized should contain both key:value pairs each ending with \n
+		require.Contains(t, canonicalized, "foo:123\n")
+		require.Contains(t, canonicalized, "bar:456\n")
+	})
+}
+
+func TestFormatSignedRequestQueryParameters(t *testing.T) {
+	testdata := []struct {
+		desc                  string
+		input                 map[string]string
+		expectedNames         string
+		expectedCanonicalized string
+	}{
+		{
+			desc:                  "nil map",
+			input:                 nil,
+			expectedNames:         "",
+			expectedCanonicalized: "",
+		},
+		{
+			desc:                  "empty map",
+			input:                 map[string]string{},
+			expectedNames:         "",
+			expectedCanonicalized: "",
+		},
+		{
+			desc:                  "single param",
+			input:                 map[string]string{"foo": "123"},
+			expectedNames:         "foo",
+			expectedCanonicalized: "\nfoo:123",
+		},
+	}
+	for _, c := range testdata {
+		t.Run(c.desc, func(t *testing.T) {
+			names, canonicalized := formatSignedRequestQueryParameters(c.input)
+			require.Equal(t, c.expectedNames, names)
+			require.Equal(t, c.expectedCanonicalized, canonicalized)
+		})
+	}
+
+	// Multi-key test: validate both parts independently due to map iteration order
+	t.Run("multiple params", func(t *testing.T) {
+		input := map[string]string{"hello": "world", "abra": "cadabra"}
+		names, canonicalized := formatSignedRequestQueryParameters(input)
+
+		// names should contain both keys comma-separated
+		require.Contains(t, names, "hello")
+		require.Contains(t, names, "abra")
+		require.Contains(t, names, ",")
+
+		// canonicalized should contain both key:value pairs each prefixed with \n
+		require.Contains(t, canonicalized, "\nhello:world")
+		require.Contains(t, canonicalized, "\nabra:cadabra")
+	})
 }

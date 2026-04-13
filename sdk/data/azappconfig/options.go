@@ -60,6 +60,13 @@ type ListSettingsOptions struct {
 	MatchConditions []azcore.MatchConditions
 }
 
+// CheckSettingsOptions contains the optional parameters for the NewCheckSettingsPager method.
+type CheckSettingsOptions struct {
+	// The match conditions used when making the request.
+	// Conditions are applied to pages one by one in the order specified.
+	MatchConditions []azcore.MatchConditions
+}
+
 // SetReadOnlyOptions contains the optional parameters for the SetReadOnly method.
 type SetReadOnlyOptions struct {
 	// Configuration setting label.

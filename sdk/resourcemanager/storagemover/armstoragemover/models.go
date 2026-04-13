@@ -590,6 +590,9 @@ type JobDefinitionUpdateProperties struct {
 
 	// A description for the Job Definition.
 	Description *string
+
+	// Schedule information for the Job Definition.
+	Schedule *ScheduleInfo
 }
 
 // JobRun - The Job Run resource.
@@ -990,12 +993,6 @@ func (s *S3WithHmacEndpointUpdateProperties) GetEndpointBaseUpdateProperties() *
 
 // ScheduleInfo - Schedule information for the Job Definition.
 type ScheduleInfo struct {
-	// REQUIRED; Type of schedule — Monthly, Weekly, or Daily
-	Frequency *Frequency
-
-	// REQUIRED; Whether the schedule is currently active
-	IsActive *bool
-
 	// Optional CRON expression for advanced scheduling
 	CronExpression *string
 
@@ -1009,10 +1006,26 @@ type ScheduleInfo struct {
 	EndDate *time.Time
 
 	// Time of day to execute (hours and minutes)
-	ExecutionTime *Time
+	ExecutionTime *SchedulerTime
+
+	// Type of schedule — Monthly, Weekly, or Daily
+	Frequency *Frequency
+
+	// Whether the schedule is currently active
+	IsActive *bool
 
 	// Specific one-time execution date and time
 	StartDate *time.Time
+}
+
+// SchedulerTime - The time of day.
+type SchedulerTime struct {
+	// The hour element of the time. Allowed values range from 0 (start of the selected day) to 24 (end of the selected day).
+	// Hour value 24 cannot be combined with any other minute value but 0.
+	Hour *int32
+
+	// The minute element of the time. Allowed values are 0 and 30. If not specified, its value defaults to 0.
+	Minute *Minute
 }
 
 // SmbMountEndpointProperties - The properties of SMB share endpoint.

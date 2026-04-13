@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaceQuotas_Get.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaceQuotas_Get.json
 func ExampleWorkspaceQuotasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleWorkspaceQuotasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
 func ExampleWorkspaceQuotasClient_NewListByPlaywrightWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

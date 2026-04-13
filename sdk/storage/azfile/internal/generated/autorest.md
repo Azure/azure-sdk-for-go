@@ -206,7 +206,8 @@ directive:
       replace(/EnableSmbDirectoryLease/g, `EnableSMBDirectoryLease`); 
 ```
 
-### Fixing casing of SignedTid and SignedOid
+### Fixing casing of SignedTid and SignedOid, 
+### and rename DelegatedUserTid and SignedDelegatedUserTid to DelegatedUserTenantID and DelegatedUserTenantID respectively
 
 ``` yaml
 directive:
@@ -215,7 +216,9 @@ directive:
   transform: >-
     return $.
       replace(/SignedOid\s+\*string/g, `SignedOID *string`).
-      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`).
+      replace(/DelegatedUserTid\s+\*string/g, `DelegatedUserTenantID *string`).
+      replace(/SignedDelegatedUserTid\s+\*string/g, `SignedDelegatedUserTenantID *string`);
 ```
 
 ### Rename models - remove `Item` and `Internal` suffix

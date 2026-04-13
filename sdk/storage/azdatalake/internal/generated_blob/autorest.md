@@ -67,22 +67,6 @@ directive:
     $.items.enum.push("permissions");
 ```
 
-### Updating service version to 2026-04-06
-```yaml
-directive:
-- from: 
-  - zz_appendblob_client.go
-  - zz_blob_client.go
-  - zz_blockblob_client.go
-  - zz_container_client.go
-  - zz_pageblob_client.go
-  - zz_service_client.go
-  where: $
-  transform: >-
-    return $.
-      replaceAll(`[]string{"2026-04-06"}`, `[]string{ServiceVersion}`);
-```
-
 ### Fix CRC Response Header in PutBlob response
 ``` yaml
 directive:

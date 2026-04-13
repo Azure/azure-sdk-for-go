@@ -23,20 +23,6 @@ honor-body-placement: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
-### Updating service version to 2026-06-06
-
-```yaml
-directive:
-- from:
-  - zz_directory_client.go
-  - zz_file_client.go
-  - zz_share_client.go
-  - zz_service_client.go
-  where: $
-  transform: >-
-    return $.
-      replaceAll(`[]string{"2026-06-06"}`, `[]string{ServiceVersion}`);
-```
 ### Changing casing of NfsFileType, Nfs, ShareNfsSettingsEncryptionInTransit and ShareNfsSettings
 
 ```yaml

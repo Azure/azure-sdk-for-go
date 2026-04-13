@@ -6,14 +6,13 @@ package armsearch_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"log"
 )
 
-// Generated from example definition: 2025-05-01/DeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-03-01-preview/DeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,24 +32,24 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.PrivateEndpointConnectionsClientDeleteResponse{
 	// 	PrivateEndpointConnection: &armsearch.PrivateEndpointConnection{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Name: to.Ptr("testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Properties: &armsearch.PrivateEndpointConnectionProperties{
 	// 			PrivateEndpoint: &armsearch.PrivateEndpointConnectionPropertiesPrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
 	// 			},
 	// 			PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusDisconnected),
 	// 				Description: to.Ptr(""),
 	// 				ActionsRequired: to.Ptr("None"),
-	// 				Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusDisconnected),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01/GetPrivateEndpointConnection.json
+// Generated from example definition: 2026-03-01-preview/GetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,24 +69,24 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.PrivateEndpointConnectionsClientGetResponse{
 	// 	PrivateEndpointConnection: &armsearch.PrivateEndpointConnection{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Name: to.Ptr("testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Properties: &armsearch.PrivateEndpointConnectionProperties{
 	// 			PrivateEndpoint: &armsearch.PrivateEndpointConnectionPropertiesPrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
 	// 			},
 	// 			PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusApproved),
 	// 				Description: to.Ptr(""),
 	// 				ActionsRequired: to.Ptr("None"),
-	// 				Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusApproved),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ListPrivateEndpointConnectionsByService.json
+// Generated from example definition: 2026-03-01-preview/ListPrivateEndpointConnectionsByService.json
 func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,17 +112,17 @@ func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 		// 	PrivateEndpointConnectionListResult: armsearch.PrivateEndpointConnectionListResult{
 		// 		Value: []*armsearch.PrivateEndpointConnection{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 		// 				Name: to.Ptr("testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 		// 				Properties: &armsearch.PrivateEndpointConnectionProperties{
 		// 					PrivateEndpoint: &armsearch.PrivateEndpointConnectionPropertiesPrivateEndpoint{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
 		// 					},
 		// 					PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
+		// 						Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusApproved),
 		// 						Description: to.Ptr(""),
 		// 						ActionsRequired: to.Ptr("None"),
-		// 						Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusApproved),
 		// 					},
 		// 				},
 		// 			},
@@ -133,7 +132,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/UpdatePrivateEndpointConnection.json
+// Generated from example definition: 2026-03-01-preview/UpdatePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,8 +146,8 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Update(ctx, "rg1", "mysearchservice", "testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546", armsearch.PrivateEndpointConnection{
 		Properties: &armsearch.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
-				Description: to.Ptr("Rejected for some reason."),
 				Status:      to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
+				Description: to.Ptr("Connection is rejected due to lack of authorization or failure to meet security compliance requirements."),
 			},
 		},
 	}, nil)
@@ -160,17 +159,17 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.PrivateEndpointConnectionsClientUpdateResponse{
 	// 	PrivateEndpointConnection: &armsearch.PrivateEndpointConnection{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Name: to.Ptr("testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Properties: &armsearch.PrivateEndpointConnectionProperties{
 	// 			PrivateEndpoint: &armsearch.PrivateEndpointConnectionPropertiesPrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
 	// 			},
 	// 			PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
-	// 				Description: to.Ptr("Rejected for some reason."),
-	// 				ActionsRequired: to.Ptr("None"),
 	// 				Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
+	// 				Description: to.Ptr("Connection is rejected due to lack of authorization or failure to meet security compliance requirements."),
+	// 				ActionsRequired: to.Ptr("None"),
 	// 			},
 	// 		},
 	// 	},

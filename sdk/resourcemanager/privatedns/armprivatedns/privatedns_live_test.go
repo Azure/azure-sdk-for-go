@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns/v2"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -227,12 +227,12 @@ func (testsuite *PrivatednsTestSuite) TestVirtualnetworklink() {
 			},
 		},
 	}
-	params := map[string]interface{}{}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	params := map[string]*armdeployments.DeploymentParameter{}
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "NetworkAndSubnet_Create", &deployment)

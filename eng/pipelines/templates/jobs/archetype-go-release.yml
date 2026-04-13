@@ -123,6 +123,31 @@ stages:
               ReleaseSha: $(Build.SourceVersion)
               RepoId: Azure/azure-sdk-for-go
               WorkingDirectory: $(System.DefaultWorkingDirectory)
+          - download: current
+            artifact: 'packages'
+          - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+            parameters:
+              WorkingDirectory: $(Build.SourcesDirectory)
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'APIView prod deployment'
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+                New-APIViewFromCI `
+                  -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
+                  -ArtifactPath '$(Pipeline.Workspace)/packages' `
+                  -SourceBranch '$(Build.SourceBranchName)' `
+                  -DefaultBranch '$(DefaultBranch)' `
+                  -ConfigFileDir '$(Pipeline.Workspace)/packages/PackageInfo' `
+                  -BuildId $(Build.BuildId) `
+                  -RepoName '$(Build.Repository.Name)' `
+                  -MarkPackageAsShipped $true
+              pwsh: true
+              workingDirectory: $(Pipeline.Workspace)
+            displayName: Create API review for Go
+            condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
           - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml
             parameters:
               ConfigFileDir: $(Pipeline.Workspace)/PackageInfo

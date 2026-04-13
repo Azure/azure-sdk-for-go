@@ -6,5 +6,5 @@ package armextensions
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armextensions"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )

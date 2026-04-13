@@ -80,7 +80,7 @@ func PossibleAdminKeyKindValues() []AdminKeyKind {
 type ComputeType string
 
 const (
-	// ComputeTypeConfidential - Create the service with Azure Confidential Compute.
+	// ComputeTypeConfidential - Create the dedicated service with Azure Confidential Compute.
 	ComputeTypeConfidential ComputeType = "Confidential"
 	// ComputeTypeDefault - Create the service with the Default Compute.
 	ComputeTypeDefault ComputeType = "Default"
@@ -124,9 +124,9 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type HostingMode string
 
 const (
-	// HostingModeDefault - The limit on number of indexes is determined by the default limits for the SKU.
+	// HostingModeDefault - The maximum limit of indexes is determined by the SKU or pricing tier.
 	HostingModeDefault HostingMode = "Default"
-	// HostingModeHighDensity - Only application for standard3 SKU, where the search service can have up to 1000 indexes.
+	// HostingModeHighDensity - Only applies to the Standard3 (S3) SKU, where the search services can have up to 1,000 indexes.
 	HostingModeHighDensity HostingMode = "HighDensity"
 )
 
@@ -188,6 +188,28 @@ func PossibleIssueTypeValues() []IssueType {
 		IssueTypeMissingIdentityConfiguration,
 		IssueTypeMissingPerimeterConfiguration,
 		IssueTypeUnknown,
+	}
+}
+
+// KnowledgeRetrieval - Specifies the billing plan for agentic retrieval on the Azure AI Search service. This configuration
+// is only available for certain pricing tiers in certain regions.
+type KnowledgeRetrieval string
+
+const (
+	// KnowledgeRetrievalFree - Enables knowledge retrieval on a search service and indicates that it is to be used within the
+	// limits of the free plan. The free plan would cap the volume of knowledge retrieval requests and is offered at no extra
+	// charge.
+	KnowledgeRetrievalFree KnowledgeRetrieval = "free"
+	// KnowledgeRetrievalStandard - Enables knowledge retrieval on a search service as a billable feature after the free quota
+	// is exhausted, with higher throughput and volume of knowledge retrieval requests.
+	KnowledgeRetrievalStandard KnowledgeRetrieval = "standard"
+)
+
+// PossibleKnowledgeRetrievalValues returns the possible values for the KnowledgeRetrieval const type.
+func PossibleKnowledgeRetrievalValues() []KnowledgeRetrieval {
+	return []KnowledgeRetrieval{
+		KnowledgeRetrievalFree,
+		KnowledgeRetrievalStandard,
 	}
 }
 
@@ -313,7 +335,8 @@ type ProvisioningState string
 const (
 	// ProvisioningStateFailed - The last provisioning operation has failed.
 	ProvisioningStateFailed ProvisioningState = "failed"
-	// ProvisioningStateProvisioning - The search service is being provisioned or scaled up or down.
+	// ProvisioningStateProvisioning - The search service is being provisioned or scaled up or down. For dedicated search services
+	// only.
 	ProvisioningStateProvisioning ProvisioningState = "provisioning"
 	// ProvisioningStateSucceeded - The last provisioning operation has completed successfully.
 	ProvisioningStateSucceeded ProvisioningState = "succeeded"
@@ -380,7 +403,8 @@ func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMo
 // up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard,
 // but with more capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12 replicas
 // (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). 'storage_optimized_l1':
-// Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'
+// Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.
+// 'serverless': Serverless tier with auto-scaling capabilities.
 type SKUName string
 
 const (
@@ -388,6 +412,9 @@ const (
 	SKUNameBasic SKUName = "basic"
 	// SKUNameFree - Free tier, with no SLA guarantees and a subset of the features offered on billable tiers.
 	SKUNameFree SKUName = "free"
+	// SKUNameServerless - Serverless tier, offering low-touch, consumption-based, and pay-as-you-go experience, with auto-scaling
+	// capabilities.
+	SKUNameServerless SKUName = "serverless"
 	// SKUNameStandard - Billable tier for a dedicated service having up to 12 partitions and 12 replicas.
 	SKUNameStandard SKUName = "standard"
 	// SKUNameStandard2 - Similar to 'standard', but with more capacity per search unit.
@@ -406,6 +433,7 @@ func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameBasic,
 		SKUNameFree,
+		SKUNameServerless,
 		SKUNameStandard,
 		SKUNameStandard2,
 		SKUNameStandard3,
@@ -418,6 +446,9 @@ func PossibleSKUNameValues() []SKUName {
 type SearchBypass string
 
 const (
+	// SearchBypassAzurePortal - Indicates that requests originating from the Azure Portal can bypass the rules defined in the
+	// 'ipRules' section.
+	SearchBypassAzurePortal SearchBypass = "AzurePortal"
 	// SearchBypassAzureServices - Indicates that requests originating from Azure trusted services can bypass the rules defined
 	// in the 'ipRules' section.
 	SearchBypassAzureServices SearchBypass = "AzureServices"
@@ -428,6 +459,7 @@ const (
 // PossibleSearchBypassValues returns the possible values for the SearchBypass const type.
 func PossibleSearchBypassValues() []SearchBypass {
 	return []SearchBypass{
+		SearchBypassAzurePortal,
 		SearchBypassAzureServices,
 		SearchBypassNone,
 	}
@@ -493,19 +525,19 @@ func PossibleSearchEncryptionWithCmkValues() []SearchEncryptionWithCmk {
 	}
 }
 
-// SearchSemanticSearch - Sets options that control the availability of semantic search. This configuration is only possible
-// for certain Azure AI Search SKUs in certain locations.
+// SearchSemanticSearch - Specifies the availability and billing plan for semantic search on the Azure AI Search service.
+// This configuration is only available for certain pricing tiers in certain regions.
 type SearchSemanticSearch string
 
 const (
-	// SearchSemanticSearchDisabled - Indicates that semantic reranker is disabled for the search service. This is the default.
+	// SearchSemanticSearchDisabled - Indicates that semantic reranker is disabled for the search service.
 	SearchSemanticSearchDisabled SearchSemanticSearch = "disabled"
 	// SearchSemanticSearchFree - Enables semantic reranker on a search service and indicates that it is to be used within the
 	// limits of the free plan. The free plan would cap the volume of semantic ranking requests and is offered at no extra charge.
-	// This is the default for newly provisioned search services.
+	// This is the default for newly provisioned search services. This is the default.
 	SearchSemanticSearchFree SearchSemanticSearch = "free"
-	// SearchSemanticSearchStandard - Enables semantic reranker on a search service as a billable feature, with higher throughput
-	// and volume of semantically reranked queries.
+	// SearchSemanticSearchStandard - Enables semantic reranker on a search service as a billable feature after the free quota
+	// is exhausted, with higher throughput and volume of semantically reranked queries.
 	SearchSemanticSearchStandard SearchSemanticSearch = "standard"
 )
 
@@ -650,13 +682,13 @@ func PossibleUnavailableNameReasonValues() []UnavailableNameReason {
 	}
 }
 
-// UpgradeAvailable - Indicates if the search service has an upgrade available.
+// UpgradeAvailable - Indicates if the dedicated search service has an upgrade available.
 type UpgradeAvailable string
 
 const (
-	// UpgradeAvailableAvailable - There is an upgrade available for the service.
+	// UpgradeAvailableAvailable - There is an upgrade available for the dedicated service.
 	UpgradeAvailableAvailable UpgradeAvailable = "available"
-	// UpgradeAvailableNotAvailable - An upgrade is currently not available for the service.
+	// UpgradeAvailableNotAvailable - An upgrade is currently not available for the dedicated service.
 	UpgradeAvailableNotAvailable UpgradeAvailable = "notAvailable"
 )
 

@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateHciEdgeDevice.json
+// Generated from example definition: 2026-02-01/CreateHciEdgeDevice.json
 func ExampleEdgeDevicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +165,7 @@ func ExampleEdgeDevicesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteEdgeDevices.json
+// Generated from example definition: 2026-02-01/DeleteEdgeDevices.json
 func ExampleEdgeDevicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +186,7 @@ func ExampleEdgeDevicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/GetEdgeDevices.json
+// Generated from example definition: 2026-02-01/GetEdgeDevices.json
 func ExampleEdgeDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +243,7 @@ func ExampleEdgeDevicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListEdgeDevices.json
+// Generated from example definition: 2026-02-01/ListEdgeDevices.json
 func ExampleEdgeDevicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,11 +310,6 @@ func ExampleEdgeDevicesClient_NewListPager() {
 		// 									SwitchType: to.Ptr("External"),
 		// 								},
 		// 							},
-		// 							SdnProperties: &armazurestackhci.SdnProperties{
-		// 								SdnStatus: to.Ptr(armazurestackhci.SdnStatusEnabled),
-		// 								SdnDomainName: to.Ptr("cl-nc.fqdn"),
-		// 								SdnAPIAddress: to.Ptr("192.0.2.10"),
-		// 							},
 		// 						},
 		// 						OSProfile: &armazurestackhci.HciOsProfile{
 		// 							BootType: to.Ptr("UEFI"),
@@ -325,20 +319,6 @@ func ExampleEdgeDevicesClient_NewListPager() {
 		// 							Code: to.Ptr("NewerThanLatestPublished"),
 		// 							Message: to.Ptr("The SBE package at path 'C:\\SBE' with version 4.1.2312.10 is published later than the latest SBE manifest published for online discovery. "),
 		// 							SbeManifest: to.Ptr("PEFwcGxpY2Fi"),
-		// 						},
-		// 						LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
-		// 						ConfidentialVMProfile: &armazurestackhci.ConfidentialVMProfile{
-		// 							IgvmStatus: to.Ptr(armazurestackhci.IgvmStatusEnabled),
-		// 							StatusDetails: []*armazurestackhci.IgvmStatusDetail{
-		// 								{
-		// 									Code: to.Ptr("IgvmAgentDeployed"),
-		// 									Message: to.Ptr("IgvmAgent is deployed"),
-		// 								},
-		// 								{
-		// 									Code: to.Ptr("ConfidentialVmHardwareCapabilityFound"),
-		// 									Message: to.Ptr("Confidential VM supported hardware detected"),
-		// 								},
-		// 							},
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
@@ -350,7 +330,7 @@ func ExampleEdgeDevicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ValidateEdgeDevices.json
+// Generated from example definition: 2026-02-01/ValidateEdgeDevices.json
 func ExampleEdgeDevicesClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

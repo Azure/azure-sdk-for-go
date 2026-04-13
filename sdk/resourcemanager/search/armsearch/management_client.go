@@ -7,14 +7,13 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagementClient contains the methods for the Management group.
@@ -43,7 +42,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // UsageBySubscriptionSKU - Gets the quota usage for a search SKU in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-03-01-preview
 //   - location - The name of the Azure region.
 //   - skuName - The unique SKU name that identifies a billable tier.
 //   - options - ManagementClientUsageBySubscriptionSKUOptions contains the optional parameters for the ManagementClient.UsageBySubscriptionSKU
@@ -90,7 +89,7 @@ func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {

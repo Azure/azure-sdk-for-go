@@ -6,13 +6,12 @@ package armsearch_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"log"
 )
 
-// Generated from example definition: 2025-05-01/NetworkSecurityPerimeterConfigurationsGet.json
+// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,41 +31,41 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.NetworkSecurityPerimeterConfigurationsClientGetResponse{
 	// 	NetworkSecurityPerimeterConfiguration: &armsearch.NetworkSecurityPerimeterConfiguration{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/networkSecurityPerimeterConfigurations/00000001-2222-3333-4444-111144444444.assoc1"),
 	// 		Name: to.Ptr("00000001-2222-3333-4444-111144444444.assoc1"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/networkSecurityPerimeterConfigurations"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/networkSecurityPerimeterConfigurations/00000001-2222-3333-4444-111144444444.assoc1"),
 	// 		Properties: &armsearch.NetworkSecurityPerimeterConfigurationProperties{
+	// 			ProvisioningState: to.Ptr(armsearch.NetworkSecurityPerimeterConfigurationProvisioningStateAccepted),
 	// 			NetworkSecurityPerimeter: &armsearch.NetworkSecurityPerimeter{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
 	// 				Location: to.Ptr("westus"),
+	// 			},
+	// 			ResourceAssociation: &armsearch.ResourceAssociation{
+	// 				Name: to.Ptr("assoc1"),
+	// 				AccessMode: to.Ptr(armsearch.ResourceAssociationAccessModeEnforced),
 	// 			},
 	// 			Profile: &armsearch.NetworkSecurityProfile{
 	// 				Name: to.Ptr("profile1"),
+	// 				AccessRulesVersion: to.Ptr[int32](0),
 	// 				AccessRules: []*armsearch.AccessRule{
 	// 					{
 	// 						Name: to.Ptr("rule1"),
 	// 						Properties: &armsearch.AccessRuleProperties{
+	// 							Direction: to.Ptr(armsearch.AccessRuleDirectionInbound),
 	// 							AddressPrefixes: []*string{
 	// 								to.Ptr("148.0.0.0/8"),
 	// 								to.Ptr("152.4.6.0/24"),
 	// 							},
-	// 							Direction: to.Ptr(armsearch.AccessRuleDirectionInbound),
 	// 						},
 	// 					},
 	// 				},
-	// 				AccessRulesVersion: to.Ptr[int32](0),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armsearch.NetworkSecurityPerimeterConfigurationProvisioningStateAccepted),
-	// 			ResourceAssociation: &armsearch.ResourceAssociation{
-	// 				Name: to.Ptr("assoc1"),
-	// 				AccessMode: to.Ptr(armsearch.ResourceAssociationAccessModeEnforced),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01/NetworkSecurityPerimeterConfigurationsListByService.json
+// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsListByService.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,34 +91,34 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByServicePager()
 		// 	NetworkSecurityPerimeterConfigurationListResult: armsearch.NetworkSecurityPerimeterConfigurationListResult{
 		// 		Value: []*armsearch.NetworkSecurityPerimeterConfiguration{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/networkSecurityPerimeterConfigurations/00000001-2222-3333-4444-111144444444.assoc1"),
 		// 				Name: to.Ptr("00000001-2222-3333-4444-111144444444.assoc1"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices/networkSecurityPerimeterConfigurations"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/networkSecurityPerimeterConfigurations/00000001-2222-3333-4444-111144444444.assoc1"),
 		// 				Properties: &armsearch.NetworkSecurityPerimeterConfigurationProperties{
+		// 					ProvisioningState: to.Ptr(armsearch.NetworkSecurityPerimeterConfigurationProvisioningStateAccepted),
 		// 					NetworkSecurityPerimeter: &armsearch.NetworkSecurityPerimeter{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
 		// 						Location: to.Ptr("westus"),
+		// 					},
+		// 					ResourceAssociation: &armsearch.ResourceAssociation{
+		// 						Name: to.Ptr("assoc1"),
+		// 						AccessMode: to.Ptr(armsearch.ResourceAssociationAccessModeEnforced),
 		// 					},
 		// 					Profile: &armsearch.NetworkSecurityProfile{
 		// 						Name: to.Ptr("profile1"),
+		// 						AccessRulesVersion: to.Ptr[int32](0),
 		// 						AccessRules: []*armsearch.AccessRule{
 		// 							{
 		// 								Name: to.Ptr("rule1"),
 		// 								Properties: &armsearch.AccessRuleProperties{
+		// 									Direction: to.Ptr(armsearch.AccessRuleDirectionInbound),
 		// 									AddressPrefixes: []*string{
 		// 										to.Ptr("148.0.0.0/8"),
 		// 										to.Ptr("152.4.6.0/24"),
 		// 									},
-		// 									Direction: to.Ptr(armsearch.AccessRuleDirectionInbound),
 		// 								},
 		// 							},
 		// 						},
-		// 						AccessRulesVersion: to.Ptr[int32](0),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armsearch.NetworkSecurityPerimeterConfigurationProvisioningStateAccepted),
-		// 					ResourceAssociation: &armsearch.ResourceAssociation{
-		// 						Name: to.Ptr("assoc1"),
-		// 						AccessMode: to.Ptr(armsearch.ResourceAssociationAccessModeEnforced),
 		// 					},
 		// 				},
 		// 			},
@@ -129,7 +128,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByServicePager()
 	}
 }
 
-// Generated from example definition: 2025-05-01/NetworkSecurityPerimeterConfigurationsReconcile.json
+// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

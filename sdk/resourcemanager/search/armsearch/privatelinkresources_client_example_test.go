@@ -6,13 +6,12 @@ package armsearch_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"log"
 )
 
-// Generated from example definition: 2025-05-01/ListSupportedPrivateLinkResources.json
+// Generated from example definition: 2026-03-01-preview/ListSupportedPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,9 +37,9 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 	PrivateLinkResourcesResult: armsearch.PrivateLinkResourcesResult{
 		// 		Value: []*armsearch.PrivateLinkResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateLinkResources/searchService"),
 		// 				Name: to.Ptr("searchService"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices/privateLinkResources"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateLinkResources/searchService"),
 		// 				Properties: &armsearch.PrivateLinkResourceProperties{
 		// 					GroupID: to.Ptr("searchService"),
 		// 					RequiredMembers: []*string{
@@ -54,56 +53,56 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 							Name: to.Ptr("blob"),
 		// 							Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 								Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 								Description: to.Ptr("Azure AI Search indexers can connect to blobs in Azure Storage for reading data from an indexer data source, for writing intermediate results of indexer execution or for storing any knowledge store projections."),
 		// 								GroupID: to.Ptr("blob"),
+		// 								Description: to.Ptr("Azure AI Search indexers can make private connections to blobs in Azure Storage for reading data, writing to an enrichment cache, and writing to a knowledge store."),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("table"),
 		// 							Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 								Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 								Description: to.Ptr("Azure AI Search indexers can connect to tables in Azure Storage for reading data from an indexer data source, for writing intermediate results of indexer execution or for storing any knowledge store projections."),
 		// 								GroupID: to.Ptr("table"),
+		// 								Description: to.Ptr("Azure AI Search indexers can make private connections to tables in Azure Storage for reading data, writing to an enrichment cache, and writing to a knowledge store."),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("Sql"),
 		// 							Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 								Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
-		// 								Description: to.Ptr("Azure AI Search indexers can connect to Azure Cosmos DB API for NoSQL for reading data from an indexer data source."),
 		// 								GroupID: to.Ptr("Sql"),
+		// 								Description: to.Ptr("Azure AI Search indexers can connect privately to Azure Cosmos DB API for NoSQL for reading data from an indexer data source."),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("plr"),
 		// 							Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 								Type: to.Ptr("Microsoft.Sql/servers"),
-		// 								Description: to.Ptr("Azure AI Search indexers can connect to Azure SQL database on a server for reading data from an indexer data source."),
 		// 								GroupID: to.Ptr("sqlServer"),
+		// 								Description: to.Ptr("Azure AI Search indexers can connect privately to Azure SQL database on a server for reading data from an indexer data source."),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("vault"),
 		// 							Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 								Type: to.Ptr("Microsoft.KeyVault/vaults"),
-		// 								Description: to.Ptr("Azure AI Search can access keys in Azure Key Vault to encrypt sensitive data in a search index and synonym map data."),
 		// 								GroupID: to.Ptr("vault"),
+		// 								Description: to.Ptr("Azure AI Search can access keys over a private connection in Azure Key Vault to encrypt sensitive data in a search index and synonym map data."),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("plr"),
 		// 							Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 								Type: to.Ptr("Microsoft.DBforMySQL/servers"),
-		// 								Description: to.Ptr("Azure AI Search indexers can connect to MySQL databases for reading data from an indexer data source."),
 		// 								GroupID: to.Ptr("mysqlServer"),
+		// 								Description: to.Ptr("Azure AI Search indexers can connect privately to MySQL databases for reading data from an indexer data source."),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("site"),
 		// 							Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 								Type: to.Ptr("Microsoft.Web/sites"),
-		// 								Description: to.Ptr("For custom skills that connect to an app service, you can specify sites as the group ID."),
 		// 								GroupID: to.Ptr("sites"),
+		// 								Description: to.Ptr("For custom skills that connect to an app service, you can specify sites as the group ID."),
 		// 							},
 		// 						},
 		// 					},

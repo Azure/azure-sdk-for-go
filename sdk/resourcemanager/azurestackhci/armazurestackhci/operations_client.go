@@ -6,12 +6,11 @@ package armazurestackhci
 
 import (
 	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // OperationsClient contains the methods for the Operations group.
@@ -36,7 +35,7 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewListPager - List the operations for the provider
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-02-01
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -69,7 +68,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

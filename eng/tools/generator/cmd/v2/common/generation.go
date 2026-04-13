@@ -556,12 +556,12 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	}
 
 	if !generateParam.SkipUpdateDep {
-		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0 in %s\n", t.ModulePath)
-		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.24.0"); err != nil {
+		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.25.0 in %s\n", t.ModulePath)
+		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.25.0"); err != nil {
 			return nil, err
 		}
-		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0 in %s\n", t.ModulePath)
-		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.24.0"); err != nil {
+		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.25.0 in %s\n", t.ModulePath)
+		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.25.0"); err != nil {
 			return nil, err
 		}
 	}
@@ -648,6 +648,14 @@ func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 		override = new(bool)
 		*override = true
 	case utils.SDKReleaseTypeStable:
+		isPreview, err := version.IsCurrentPreviewVersion(t.PackagePath, *t.SDKRepo, nil)
+		if err != nil {
+			return err
+		}
+		if isPreview {
+			return fmt.Errorf("SDK release type is stable, but the generated code contains preview API versions. " +
+				"Please specify a stable API version or use beta release type")
+		}
 		override = new(bool)
 		*override = false
 	}

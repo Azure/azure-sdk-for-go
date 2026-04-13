@@ -445,3 +445,61 @@ func TestPreviousVersion(t *testing.T) {
 		})
 	}
 }
+
+func TestOutContentType(t *testing.T) {
+	vaultURL := "https://fakevault.vault.azure.net"
+	var verifyOutContentType = func(req *http.Request) bool {
+		octVal := req.URL.Query().Get("outContentType")
+		if octVal != string(azsecrets.ContentTypePEM) {
+			t.Errorf("unexpected outContentType: got %q, want %q", octVal, azsecrets.ContentTypePEM)
+			return false
+		}
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithBody([]byte(`{"value":"-----BEGIN PRIVATE KEY-----\nMIIE...\n-----END PRIVATE KEY-----","contentType":"application/x-pem-file","id":"https://fakevault.vault.azure.net/secrets/mysecret/abc123"}`)),
+		mock.WithPredicate(verifyOutContentType),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv,
+		},
+	}
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	outCT := azsecrets.ContentTypePEM
+	resp, err := client.GetSecret(context.Background(), "mysecret", "", &azsecrets.GetSecretOptions{OutContentType: &outCT})
+	require.NoError(t, err)
+	require.NotNil(t, resp.Value)
+	require.Contains(t, *resp.Value, "BEGIN PRIVATE KEY")
+}
+
+func TestPreviousVersionFromServer(t *testing.T) {
+	vaultURL := "https://fakevault.vault.azure.net"
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithBody([]byte(`{"value":"secretval","id":"https://fakevault.vault.azure.net/secrets/mysecret/v2","previousVersion":"v1"}`)),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv,
+		},
+	}
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	resp, err := client.GetSecret(context.Background(), "mysecret", "v2", nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp.PreviousVersion)
+	require.Equal(t, "v1", *resp.PreviousVersion)
+}

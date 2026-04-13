@@ -9,6 +9,7 @@ The generator tool provides several commands to support the Azure SDK for Go dev
 - **Build**: Compile and validate Go packages using `go build` and `go vet`
 - **Changelog**: Generate and update changelog content for SDK packages
 - **Version**: Calculate and update version numbers across package files
+- **Metadata**: Create required metadata files (`ci.yml`, `README.md`) for packages
 - **Environment**: Check and validate development environment prerequisites
 - **Generate**: Generate individual SDK packages from TypeSpec specifications
 - **Issue Management**: Parse GitHub release request issues into configuration
@@ -156,6 +157,49 @@ generator version /path/to/package --output json
 Package: /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 Previous Version: 1.1.0
 New Version: 1.2.0
+```
+
+#### The `metadata` command
+
+The `metadata` command creates required metadata files (`ci.yml`, `README.md`) for SDK packages if they don't already exist. This is used in inner loop scenarios to ensure packages have the necessary pipeline and documentation files.
+
+**Usage:**
+
+```bash
+generator metadata <package-path>
+```
+
+**Arguments:**
+
+- `package-path`: Absolute path to a Go module (containing go.mod file)
+
+**Flags:**
+
+- `--package-title`: Package title used in README.md (defaults to inferred from package name)
+- `-v, --verbose`: Enable verbose output
+- `-o, --output`: Output format, either "text" or "json" (default: "text")
+
+**What it does:**
+
+1. Creates `ci.yml` if it doesn't exist (for both data plane and management plane packages)
+2. Creates `README.md` if it doesn't exist (for management plane packages only)
+3. Skips files that already exist without modifying them
+4. Auto-infers package title from the package name (e.g., `armcompute` → `Compute`, `azblob` → `Blob`)
+
+**Examples:**
+
+```bash
+# Create metadata files for a management plane package
+generator metadata /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
+
+# Create metadata files for a data plane package (only ci.yml, no README.md)
+generator metadata /path/to/azure-sdk-for-go/sdk/messaging/azeventhubs
+
+# With custom package title
+generator metadata /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --package-title "Compute"
+
+# JSON output for automation
+generator metadata /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --output json
 ```
 
 #### The `environment` command
@@ -336,6 +380,8 @@ The input file should contain:
   "sdkReleaseType": "stable"
 }
 ```
+
+> **Note:** `apiVersion` and `sdkReleaseType` are optional. When `apiVersion` is omitted, the version defined in the TypeSpec project is used. When `sdkReleaseType` is omitted, it is auto-detected. If provided, `sdkReleaseType` must be `"stable"` or `"beta"`.
 
 **Output Format:**
 The command generates a JSON output file with generation results:

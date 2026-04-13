@@ -967,6 +967,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1867,6 +1871,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithTier() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)

@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/environment"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/generate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/metadata"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/template"
 	automation_v2 "github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/automation"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/readme"
@@ -52,6 +53,7 @@ func command() *cobra.Command {
 		environment.Command(),
 		generate.Command(),
 		issue.Command(),
+		metadata.Command(),
 		template.Command(),
 		version.Command(),
 		automation_v2.Command(),

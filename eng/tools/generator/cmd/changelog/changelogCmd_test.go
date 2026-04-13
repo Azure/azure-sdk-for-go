@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -35,12 +36,12 @@ func TestValidatePackagePath(t *testing.T) {
 		err = os.WriteFile(goModPath, []byte("module test\n\ngo 1.20\n"), 0644)
 		require.NoError(t, err)
 
-		err = validatePackagePath(packageDir)
+		err = utils.ValidatePackagePath(packageDir)
 		assert.NoError(t, err)
 	})
 
 	t.Run("Non-existent path", func(t *testing.T) {
-		err := validatePackagePath("/non/existent/path")
+		err := utils.ValidatePackagePath("/non/existent/path")
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "does not exist")
 	})
@@ -51,7 +52,7 @@ func TestValidatePackagePath(t *testing.T) {
 		err := os.MkdirAll(noGoModDir, 0755)
 		require.NoError(t, err)
 
-		err = validatePackagePath(noGoModDir)
+		err = utils.ValidatePackagePath(noGoModDir)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "does not contain a go.mod file")
 	})
@@ -62,7 +63,7 @@ func TestValidatePackagePath(t *testing.T) {
 		err := os.WriteFile(filePath, []byte("test"), 0644)
 		require.NoError(t, err)
 
-		err = validatePackagePath(filePath)
+		err = utils.ValidatePackagePath(filePath)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "does not exist or is not a directory")
 	})

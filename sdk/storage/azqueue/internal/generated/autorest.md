@@ -21,20 +21,6 @@ modelerfour:
 export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
-### Updating service version to 2026-04-06
-```yaml
-directive:
-- from: 
-  - zz_messageid_client.go
-  - zz_messages_client.go
-  - zz_queue_client.go
-  - zz_service_client.go
-
-  where: $
-  transform: >-
-    return $.
-      replaceAll(`[]string{"2026-02-04"}`, `[]string{"2026-04-06"}`);
-```
 
 ### Remove QueueName from parameter list since it is not needed
 

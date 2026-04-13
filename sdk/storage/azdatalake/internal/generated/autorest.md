@@ -325,16 +325,3 @@ directive:
         replace(/err = unpopulate\((.*), "ContentLength", &p\.ContentLength\)/g, 'var rawVal string\nerr = unpopulate(val, "ContentLength", &rawVal)\nintVal, _ := strconv.ParseInt(rawVal, 10, 64)\np.ContentLength = &intVal').
         replace(/err = unpopulate\((.*), "IsDirectory", &p\.IsDirectory\)/g, 'var rawVal string\nerr = unpopulate(val, "IsDirectory", &rawVal)\nboolVal, _ := strconv.ParseBool(rawVal)\np.IsDirectory = &boolVal');
 ```
-
-### Updating service version to 2026-06-06
-```yaml
-directive:
-- from:
-  - zz_service_client.go
-  - zz_filesystem_client.go
-  - zz_path_client.go
-  where: $
-  transform: >-
-    return $.
-      replaceAll(`[]string{"2026-06-06"}`, `[]string{ServiceVersion}`);
-```

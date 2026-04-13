@@ -118,7 +118,7 @@
 # ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
 
 # PRLabel: %Storage
-/sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft @vibhansa-msft
+/sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Storage

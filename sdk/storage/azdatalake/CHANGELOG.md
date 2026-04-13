@@ -1,5 +1,17 @@
 # Release History
 
+## 1.4.5-beta.2 (Unreleased)
+
+### Features Added
+* Added support for service version 2026-06-06.
+* Added `GetSystemProperties` API to file and directory clients for retrieving system-defined properties using the `getStatus` action.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.4.5-beta.1 (Unreleased)
 
 ### Features Added

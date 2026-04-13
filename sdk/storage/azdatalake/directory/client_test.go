@@ -1415,6 +1415,104 @@ func (s *RecordedTestSuite) TestDirGetAccessControl() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
+func (s *RecordedTestSuite) TestDirGetSystemProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.GetSystemProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+	_require.NotNil(resp.ResourceType)
+	_require.NotNil(resp.Owner)
+	_require.NotNil(resp.Group)
+}
+
+func (s *RecordedTestSuite) TestDirGetSystemPropertiesWithAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createResp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := &directory.GetSystemPropertiesOptions{
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfMatch: createResp.ETag,
+			},
+		},
+	}
+	resp, err := dirClient.GetSystemProperties(context.Background(), opts)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+}
+
+func (s *RecordedTestSuite) TestDirGetSystemPropertiesWithACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := &directory.CreateOptions{
+		ACL: &acl,
+	}
+	_, err = dirClient.Create(context.Background(), createOpts)
+	_require.NoError(err)
+
+	// verify GetAccessControl returns the ACL
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(acl, *getACLResp.ACL)
+
+	// verify GetSystemProperties returns permissions but not ACL
+	getSysResp, err := dirClient.GetSystemProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getSysResp.Permissions)
+	_require.NotNil(getSysResp.Owner)
+	_require.NotNil(getSysResp.Group)
+}
+
 func (s *UnrecordedTestSuite) TestDirGetAccessControlWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

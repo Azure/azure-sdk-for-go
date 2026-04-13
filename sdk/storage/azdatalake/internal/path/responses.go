@@ -18,6 +18,9 @@ type SetAccessControlResponse = generated.PathClientSetAccessControlResponse
 // GetAccessControlResponse contains the response fields for the GetAccessControl operation.
 type GetAccessControlResponse = generated.PathClientGetPropertiesResponse
 
+// GetSystemPropertiesResponse contains the response fields for the GetSystemProperties operation.
+type GetSystemPropertiesResponse = generated.PathClientGetPropertiesResponse
+
 // UpdateAccessControlResponse contains the response fields for the UpdateAccessControlRecursive operation.
 type UpdateAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
 

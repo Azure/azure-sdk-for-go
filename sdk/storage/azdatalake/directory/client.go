@@ -6,6 +6,11 @@ package directory
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -20,10 +25,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	"net/http"
-	"net/url"
-	"strings"
-	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -447,6 +448,14 @@ func (d *Client) RemoveAccessControlRecursive(ctx context.Context, acl string, o
 // GetAccessControl gets the owner, owning group, and permissions for a directory.
 func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	opts, lac, mac := path.FormatGetAccessControlOptions(options)
+	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// GetSystemProperties returns all system defined properties for a directory.
+func (d *Client) GetSystemProperties(ctx context.Context, options *GetSystemPropertiesOptions) (GetSystemPropertiesResponse, error) {
+	opts, lac, mac := path.FormatGetSystemPropertiesOptions(options)
 	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
 	err = exported.ConvertToDFSError(err)
 	return resp, err

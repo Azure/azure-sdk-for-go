@@ -5,11 +5,12 @@ package path
 
 import (
 	"errors"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"time"
 )
 
 // DeleteOptions contains the optional parameters when calling the Delete operation.
@@ -149,6 +150,30 @@ func FormatGetAccessControlOptions(o *GetAccessControlOptions) (*generated.PathC
 			Action: &action,
 		}, nil, nil
 	}
+	// call path formatter since we're hitting dfs in this operation
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	return &generated.PathClientGetPropertiesOptions{
+		Upn:    o.UPN,
+		Action: &action,
+	}, leaseAccessConditions, modifiedAccessConditions
+}
+
+// GetSystemPropertiesOptions contains the optional parameters when calling the GetSystemProperties operation.
+type GetSystemPropertiesOptions struct {
+	// UPN is the user principal name.
+	UPN *bool
+	// AccessConditions contains parameters for accessing the path.
+	AccessConditions *AccessConditions
+}
+
+func FormatGetSystemPropertiesOptions(o *GetSystemPropertiesOptions) (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+	action := generated.PathGetPropertiesActionGetStatus
+	if o == nil {
+		return &generated.PathClientGetPropertiesOptions{
+			Action: &action,
+		}, nil, nil
+	}
+
 	// call path formatter since we're hitting dfs in this operation
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientGetPropertiesOptions{

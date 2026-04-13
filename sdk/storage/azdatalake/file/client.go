@@ -339,6 +339,14 @@ func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 	return resp, err
 }
 
+// GetSystemProperties returns all system defined properties for a file.
+func (f *Client) GetSystemProperties(ctx context.Context, options *GetSystemPropertiesOptions) (GetSystemPropertiesResponse, error) {
+	opts, lac, mac := path.FormatGetSystemPropertiesOptions(options)
+	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
 // RemoveAccessControl removes the owner, owning group, and permissions for a file.
 func (f *Client) RemoveAccessControl(ctx context.Context, acl string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
 	opts, mode := options.format(acl)

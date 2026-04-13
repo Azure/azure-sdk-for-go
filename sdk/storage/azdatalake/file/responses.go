@@ -262,6 +262,9 @@ type SetHTTPHeadersResponse = path.SetHTTPHeadersResponse
 // GetAccessControlResponse contains the response fields for the GetAccessControl operation.
 type GetAccessControlResponse = path.GetAccessControlResponse
 
+// GetSystemPropertiesResponse contains the response fields for the GetSystemProperties operation.
+type GetSystemPropertiesResponse = path.GetSystemPropertiesResponse
+
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse = path.GetPropertiesResponse
 

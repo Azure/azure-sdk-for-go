@@ -129,6 +129,9 @@ type SetAccessControlOptions = path.SetAccessControlOptions
 // GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
 type GetAccessControlOptions = path.GetAccessControlOptions
 
+// GetSystemPropertiesOptions contains the optional parameters when calling the GetSystemProperties operation.
+type GetSystemPropertiesOptions = path.GetSystemPropertiesOptions
+
 // CPKInfo contains a group of parameters for client provided encryption key.
 type CPKInfo = path.CPKInfo
 

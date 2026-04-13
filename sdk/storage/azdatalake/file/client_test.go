@@ -1404,6 +1404,104 @@ func (s *RecordedTestSuite) TestFileGetAccessControl() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
+func (s *RecordedTestSuite) TestFileGetSystemProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := fClient.GetSystemProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+	_require.NotNil(resp.ResourceType)
+	_require.NotNil(resp.Owner)
+	_require.NotNil(resp.Group)
+}
+
+func (s *RecordedTestSuite) TestFileGetSystemPropertiesWithAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createResp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := &file.GetSystemPropertiesOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfMatch: createResp.ETag,
+			},
+		},
+	}
+	resp, err := fClient.GetSystemProperties(context.Background(), opts)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+}
+
+func (s *RecordedTestSuite) TestFileGetSystemPropertiesWithACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := &file.CreateOptions{
+		ACL: &acl,
+	}
+	_, err = fClient.Create(context.Background(), createOpts)
+	_require.NoError(err)
+
+	// verify GetAccessControl returns the ACL
+	getACLResp, err := fClient.GetAccessControl(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(acl, *getACLResp.ACL)
+
+	// verify GetSystemProperties returns permissions but not ACL
+	getSysResp, err := fClient.GetSystemProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getSysResp.Permissions)
+	_require.NotNil(getSysResp.Owner)
+	_require.NotNil(getSysResp.Group)
+}
+
 func (s *UnrecordedTestSuite) TestFileGetAccessControlWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

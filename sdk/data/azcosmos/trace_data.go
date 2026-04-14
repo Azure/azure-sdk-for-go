@@ -88,7 +88,7 @@ func addPointOperationStatisticsFromResponse(resp *http.Response, errorMessage s
 		ResponseTimeUTC:      time.Now().UTC(),
 		StatusCode:           resp.StatusCode,
 		SubStatusCode:        parseSubStatusCode(resp.Header.Get(cosmosHeaderSubstatus)),
-		RequestCharge:        newResponse(resp).RequestCharge,
+		RequestCharge:        readRequestCharge(resp),
 		RequestURI:           requestURI,
 		ErrorMessage:         errorMessage,
 		RequestSessionToken:  state.requestSessionToken,

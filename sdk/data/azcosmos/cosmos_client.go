@@ -526,8 +526,10 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 func (c *Client) executeAndEnsureSuccessResponse(ctx context.Context, request *policy.Request) (*http.Response, error) {
 	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
 	state := requestDiagnosticsStateFromContext(request.Raw().Context())
-	if state != nil && state.requestTrace != nil {
-		defer state.requestTrace.End()
+	finalizeRequestTrace := func() {
+		if state != nil && state.requestTrace != nil {
+			state.requestTrace.End()
+		}
 	}
 
 	response, err := c.internal.Pipeline().Do(request)
@@ -535,9 +537,11 @@ func (c *Client) executeAndEnsureSuccessResponse(ctx context.Context, request *p
 		var responseErr *azcore.ResponseError
 		if errors.As(err, &responseErr) && responseErr.RawResponse != nil {
 			addPointOperationStatisticsFromResponse(responseErr.RawResponse, responseErr.Error(), traceDatumKeyPointOperationStatistics)
+			finalizeRequestTrace()
 			return nil, err
 		}
 
+		finalizeRequestTrace()
 		return nil, wrapRequestError(err, diagnosticsFromContext(request.Raw().Context()))
 	}
 
@@ -546,10 +550,12 @@ func (c *Client) executeAndEnsureSuccessResponse(ctx context.Context, request *p
 	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
 	if successResponse {
 		addPointOperationStatisticsFromResponse(response, "", traceDatumKeyPointOperationStatistics)
+		finalizeRequestTrace()
 		return response, nil
 	}
 
 	addPointOperationStatisticsFromResponse(response, response.Status, traceDatumKeyPointOperationStatistics)
+	finalizeRequestTrace()
 	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 
@@ -560,7 +566,7 @@ func (c *Client) accountEndpointUrl() *url.URL {
 func (c *Client) addResponseValuesToSpan(ctx context.Context, resp *http.Response) {
 	span := c.internal.Tracer().SpanFromContext(ctx)
 	span.SetAttributes(
-		tracing.Attribute{Key: "db.cosmosdb.request_charge", Value: newResponse(resp).RequestCharge},
+		tracing.Attribute{Key: "db.cosmosdb.request_charge", Value: readRequestCharge(resp)},
 		tracing.Attribute{Key: "db.cosmosdb.status_code", Value: resp.StatusCode},
 	)
 }

@@ -5,6 +5,8 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"sync"
 	"time"
 
@@ -13,23 +15,22 @@ import (
 )
 
 type trace struct {
-	mu            sync.Mutex
-	name          string
-	startTime     time.Time
-	endTime       *time.Time
-	parent        *trace
-	children      []*trace
-	data          map[string]any
-	dataOrder     []string
-	isBeingWalked bool
-	summary       *traceSummary
-}
-
-type traceSnapshot struct {
+	mu        sync.Mutex
 	name      string
 	startTime time.Time
 	endTime   *time.Time
+	parent    *trace
 	children  []*trace
+	data      map[string]any
+	dataOrder []string
+	summary   *traceSummary
+}
+
+type finalizedTrace struct {
+	name      string
+	startTime time.Time
+	endTime   *time.Time
+	children  []*finalizedTrace
 	data      map[string]any
 	dataOrder []string
 }
@@ -82,34 +83,10 @@ func (t *trace) End() {
 	t.endTime = &endTime
 }
 
-func (t *trace) duration() time.Duration {
-	t.mu.Lock()
-	startTime := t.startTime
-	endTime := t.endTime
-	t.mu.Unlock()
-
-	if endTime != nil {
-		return endTime.Sub(startTime)
-	}
-
-	return time.Since(startTime)
-}
-
 func (t *trace) AddChild(child *trace) {
 	t.mu.Lock()
-	defer t.mu.Unlock()
-
-	if !t.isBeingWalked {
-		t.children = append(t.children, child)
-		return
-	}
-
-	child.setWalkingStateRecursively()
-
-	nextChildren := make([]*trace, 0, len(t.children)+1)
-	nextChildren = append(nextChildren, t.children...)
-	nextChildren = append(nextChildren, child)
-	t.children = nextChildren
+	t.children = append(t.children, child)
+	t.mu.Unlock()
 }
 
 func (t *trace) AddDatum(key string, value any) {
@@ -133,59 +110,82 @@ func (t *trace) addOrUpdateDatum(key string, value any, overwrite bool) {
 		return
 	}
 
-	if !t.isBeingWalked {
-		t.data[key] = value
-		if !exists {
-			t.dataOrder = append(t.dataOrder, key)
-		}
-		return
-	}
-
-	nextData := make(map[string]any, len(t.data)+1)
-	for k, v := range t.data {
-		nextData[k] = v
-	}
-	nextData[key] = value
-	t.data = nextData
-
+	t.data[key] = value
 	if !exists {
-		nextOrder := make([]string, 0, len(t.dataOrder)+1)
-		nextOrder = append(nextOrder, t.dataOrder...)
-		nextOrder = append(nextOrder, key)
-		t.dataOrder = nextOrder
+		t.dataOrder = append(t.dataOrder, key)
 	}
 }
 
-func (t *trace) setWalkingStateRecursively() {
-	t.mu.Lock()
-	if t.isBeingWalked {
-		t.mu.Unlock()
-		return
+func (t *trace) finalize(freezeTime time.Time) *finalizedTrace {
+	if t == nil {
+		return nil
 	}
 
+	t.mu.Lock()
+	name := t.name
+	startTime := t.startTime
+	endTime := cloneTraceTime(t.endTime, freezeTime)
 	children := append([]*trace(nil), t.children...)
+	dataOrder := append([]string(nil), t.dataOrder...)
+	data := make(map[string]any, len(dataOrder))
+	for _, key := range dataOrder {
+		data[key] = finalizeTraceDatum(t.data[key])
+	}
 	t.mu.Unlock()
 
-	for _, child := range children {
-		child.setWalkingStateRecursively()
+	finalizedChildren := make([]*finalizedTrace, len(children))
+	for index, child := range children {
+		finalizedChildren[index] = child.finalize(freezeTime)
 	}
 
-	t.mu.Lock()
-	t.isBeingWalked = true
-	t.mu.Unlock()
+	return &finalizedTrace{
+		name:      name,
+		startTime: startTime,
+		endTime:   endTime,
+		children:  finalizedChildren,
+		data:      data,
+		dataOrder: dataOrder,
+	}
 }
 
-func (t *trace) snapshot() traceSnapshot {
-	t.mu.Lock()
-	defer t.mu.Unlock()
+func cloneTraceTime(value *time.Time, freezeTime time.Time) *time.Time {
+	frozen := freezeTime.UTC()
+	if value != nil {
+		frozen = value.UTC()
+	}
+	return &frozen
+}
 
-	return traceSnapshot{
-		name:      t.name,
-		startTime: t.startTime,
-		endTime:   t.endTime,
-		children:  t.children,
-		data:      t.data,
-		dataOrder: t.dataOrder,
+func finalizeTraceDatum(value any) any {
+	switch typed := value.(type) {
+	case *clientSideRequestStatisticsTraceDatum:
+		return typed.snapshot()
+	case clientSideRequestStatisticsSnapshot:
+		return typed
+	case pointOperationStatisticsTraceDatum:
+		return typed
+	case *pointOperationStatisticsTraceDatum:
+		return *typed
+	case json.RawMessage:
+		return append(json.RawMessage(nil), typed...)
+	case string, float64, float32, int, int32, int64, bool, nil:
+		return typed
+	case []string:
+		return append([]string(nil), typed...)
+	case []any:
+		next := make([]any, len(typed))
+		for index, item := range typed {
+			next[index] = finalizeTraceDatum(item)
+		}
+		return next
+	case map[string]any:
+		next := make(map[string]any, len(typed))
+		for key, item := range typed {
+			next[key] = finalizeTraceDatum(item)
+		}
+		return next
+	default:
+		return fmt.Sprint(value)
 	}
 }
 

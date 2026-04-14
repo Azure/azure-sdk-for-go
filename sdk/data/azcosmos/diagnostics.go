@@ -12,9 +12,10 @@ import (
 )
 
 // Diagnostics contains request diagnostics for an Azure Cosmos DB operation.
-// The diagnostics string is materialized lazily when String is called.
+// The diagnostics string is materialized lazily when String is called from immutable finalized state.
 type Diagnostics struct {
-	root *trace
+	root               *finalizedTrace
+	failedRequestCount int
 }
 
 func newDiagnostics(t *trace) Diagnostics {
@@ -22,7 +23,20 @@ func newDiagnostics(t *trace) Diagnostics {
 		return Diagnostics{}
 	}
 
-	return Diagnostics{root: t.root()}
+	root := t.root()
+	if root == nil {
+		return Diagnostics{}
+	}
+
+	failedRequestCount := 0
+	if root.summary != nil {
+		failedRequestCount = root.summary.failedCount()
+	}
+
+	return Diagnostics{
+		root:               root.finalize(time.Now().UTC()),
+		failedRequestCount: failedRequestCount,
+	}
 }
 
 // String returns the lazily materialized diagnostics payload.
@@ -31,17 +45,16 @@ func (d Diagnostics) String() string {
 		return ""
 	}
 
-	d.root.setWalkingStateRecursively()
 	return writeTraceJSON(d.root)
 }
 
 // ClientElapsedTime returns the end-to-end duration of the request.
 func (d Diagnostics) ClientElapsedTime() time.Duration {
-	if d.root == nil {
+	if d.root == nil || d.root.endTime == nil {
 		return 0
 	}
 
-	return d.root.duration()
+	return d.root.endTime.Sub(d.root.startTime)
 }
 
 // StartTimeUTC returns the UTC start time of the request.
@@ -50,18 +63,17 @@ func (d Diagnostics) StartTimeUTC() *time.Time {
 		return nil
 	}
 
-	snapshot := d.root.snapshot()
-	start := snapshot.startTime
+	start := d.root.startTime
 	return &start
 }
 
 // FailedRequestCount returns the number of failed backend attempts recorded for the request.
 func (d Diagnostics) FailedRequestCount() int {
-	if d.root == nil || d.root.summary == nil {
+	if d.root == nil {
 		return 0
 	}
 
-	return d.root.summary.failedCount()
+	return d.failedRequestCount
 }
 
 // DiagnosticsFromError extracts diagnostics from an operation error, if present.

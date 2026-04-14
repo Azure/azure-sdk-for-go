@@ -25,15 +25,13 @@ type summaryDiagnostics struct {
 	regionURICount int
 }
 
-func writeTraceJSON(root *trace) string {
+func writeTraceJSON(root *finalizedTrace) string {
 	var buffer bytes.Buffer
 	writeTrace(&buffer, root, true)
 	return buffer.String()
 }
 
-func writeTrace(buffer *bytes.Buffer, current *trace, isRoot bool) {
-	snapshot := current.snapshot()
-
+func writeTrace(buffer *bytes.Buffer, current *finalizedTrace, isRoot bool) {
 	buffer.WriteByte('{')
 	firstField := true
 
@@ -54,29 +52,29 @@ func writeTrace(buffer *bytes.Buffer, current *trace, isRoot bool) {
 	}
 
 	writeField("name", func() {
-		writeJSONString(buffer, snapshot.name)
+		writeJSONString(buffer, current.name)
 	})
 
 	if isRoot {
 		writeField("start datetime", func() {
-			writeJSONString(buffer, snapshot.startTime.UTC().Format(rootTraceTimeFormat))
+			writeJSONString(buffer, current.startTime.UTC().Format(rootTraceTimeFormat))
 		})
 	}
 
 	writeField("duration in milliseconds", func() {
-		writeNumber(buffer, durationInMilliseconds(snapshot.startTime, snapshot.endTime))
+		writeNumber(buffer, durationInMilliseconds(current.startTime, current.endTime))
 	})
 
-	if len(snapshot.dataOrder) > 0 {
+	if len(current.dataOrder) > 0 {
 		writeField("data", func() {
-			writeTraceDataObject(buffer, snapshot.dataOrder, snapshot.data)
+			writeTraceDataObject(buffer, current.dataOrder, current.data)
 		})
 	}
 
-	if len(snapshot.children) > 0 {
+	if len(current.children) > 0 {
 		writeField("children", func() {
 			buffer.WriteByte('[')
-			for index, child := range snapshot.children {
+			for index, child := range current.children {
 				if index > 0 {
 					buffer.WriteByte(',')
 				}
@@ -89,7 +87,7 @@ func writeTrace(buffer *bytes.Buffer, current *trace, isRoot bool) {
 	buffer.WriteByte('}')
 }
 
-func writeSummaryDiagnostics(buffer *bytes.Buffer, root *trace) {
+func writeSummaryDiagnostics(buffer *bytes.Buffer, root *finalizedTrace) {
 	summary := collectSummaryDiagnostics(root)
 
 	buffer.WriteByte('{')
@@ -126,38 +124,35 @@ func writeSummaryDiagnostics(buffer *bytes.Buffer, root *trace) {
 	buffer.WriteByte('}')
 }
 
-func collectSummaryDiagnostics(root *trace) summaryDiagnostics {
+func collectSummaryDiagnostics(root *finalizedTrace) summaryDiagnostics {
 	summary := summaryDiagnostics{
 		directCalls:  map[[2]int]int{},
 		gatewayCalls: map[[2]int]int{},
 		regionsByURI: map[string]struct{}{},
 	}
 
-	var walk func(*trace)
-	walk = func(current *trace) {
-		snapshot := current.snapshot()
-		for _, key := range snapshot.dataOrder {
-			value := snapshot.data[key]
-			stats, ok := value.(*clientSideRequestStatisticsTraceDatum)
+	var walk func(*finalizedTrace)
+	walk = func(current *finalizedTrace) {
+		for _, key := range current.dataOrder {
+			stats, ok := current.data[key].(clientSideRequestStatisticsSnapshot)
 			if !ok {
 				continue
 			}
 
-			statsSnapshot := stats.snapshot()
-			for _, region := range statsSnapshot.regionsContacted {
+			for _, region := range stats.regionsContacted {
 				if _, exists := summary.regionsByURI[region.uri]; !exists {
 					summary.regionsByURI[region.uri] = struct{}{}
 					summary.regionURICount++
 				}
 			}
 
-			for _, gatewayCall := range statsSnapshot.httpResponseStatistics {
+			for _, gatewayCall := range stats.httpResponseStatistics {
 				key := [2]int{gatewayCall.statusCode, gatewayCall.subStatusCode}
 				summary.gatewayCalls[key]++
 			}
 		}
 
-		for _, child := range snapshot.children {
+		for _, child := range current.children {
 			walk(child)
 		}
 	}
@@ -207,6 +202,8 @@ func writeTraceDataObject(buffer *bytes.Buffer, order []string, values map[strin
 
 func writeTraceDatum(buffer *bytes.Buffer, value any) {
 	switch typed := value.(type) {
+	case clientSideRequestStatisticsSnapshot:
+		writeClientSideRequestStatistics(buffer, typed)
 	case *clientSideRequestStatisticsTraceDatum:
 		writeClientSideRequestStatistics(buffer, typed.snapshot())
 	case pointOperationStatisticsTraceDatum:
@@ -537,9 +534,9 @@ func writeNumber(buffer *bytes.Buffer, value float64) {
 }
 
 func durationInMilliseconds(start time.Time, end *time.Time) float64 {
-	if end != nil {
-		return float64(end.Sub(start)) / float64(time.Millisecond)
+	if end == nil {
+		return 0
 	}
 
-	return float64(time.Since(start)) / float64(time.Millisecond)
+	return float64(end.Sub(start)) / float64(time.Millisecond)
 }

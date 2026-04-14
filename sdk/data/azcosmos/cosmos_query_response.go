@@ -25,18 +25,21 @@ type QueryItemsResponse struct {
 }
 
 func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
+	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
+	if queryMetrics != "" {
+		recordQueryMetricsFromResponse(resp)
+	}
+
 	response := QueryItemsResponse{
 		Response: newResponse(resp),
 	}
 
-	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
 	if continuationToken != "" {
 		response.ContinuationToken = &continuationToken
 	}
-	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
 	if queryMetrics != "" {
 		response.QueryMetrics = &queryMetrics
-		recordQueryMetricsFromResponse(resp)
 	}
 	queryIndexUtilization := resp.Header.Get(cosmosHeaderIndexUtilization)
 	if queryIndexUtilization != "" {

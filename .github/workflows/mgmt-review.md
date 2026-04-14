@@ -16,7 +16,7 @@ tools:
     toolsets: [context, repos, pull_requests, actions]
 safe-outputs:
   add-comment:
-    max: 2
+    max: 1
     target: "${{ github.event.pull_request.number }}"
     hide-older-comments: true
     issues: false
@@ -52,8 +52,6 @@ Fetch the PR details. If the PR is in **draft** state, mark it as ready for revi
 ### Step 2 — Identify gaps to merge
 
 If the PR is mergeable (`Squash and merge` enabled), skip to Step 4 and comment `## PR is ready to merge`.
-
-If all `go - pullrequest` checks passed but the PR is still **not mergeable** (e.g., `Merging is blocked`), the `checkenforcer` status check is likely stuck. In that case, post a comment with exactly `/check-enforcer override` (nothing else in that comment) to unblock it, then proceed to Step 4.
 
 Otherwise, classify every blocking check using the reference table below. Also inspect the PR's changed files directly when useful (e.g., reading code for compile errors) and note any `Merging is blocked` messages.
 

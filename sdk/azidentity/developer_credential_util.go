@@ -96,27 +96,32 @@ func validScope(scope string) bool {
 // Prefer the structured "error" format, fall back to legacy consoleMessage.
 func extractAzdError(msg string) string {
 	lines := strings.Split(msg, "\n")
+	fallback := ""
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
+
 		var errObj struct {
 			Error string `json:"error"`
 		}
 		if json.Unmarshal([]byte(line), &errObj) == nil && errObj.Error != "" {
 			return errObj.Error
 		}
-	}
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		var obj struct {
-			Data struct {
-				Message string `json:"message"`
-			} `json:"data"`
-		}
-		if json.Unmarshal([]byte(line), &obj) == nil && obj.Data.Message != "" {
-			if m := strings.TrimSpace(obj.Data.Message); m != "" {
-				return m
+
+		if fallback == "" {
+			var obj struct {
+				Data struct {
+					Message string `json:"message"`
+				} `json:"data"`
+			}
+			if json.Unmarshal([]byte(line), &obj) == nil {
+				if m := strings.TrimSpace(obj.Data.Message); m != "" {
+					fallback = m
+				}
 			}
 		}
+	}
+	if fallback != "" {
+		return fallback
 	}
 	return msg
 }

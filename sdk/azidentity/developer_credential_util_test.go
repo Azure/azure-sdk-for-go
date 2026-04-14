@@ -45,7 +45,7 @@ func TestExtractAzdError(t *testing.T) {
 			expected: "some plain error text",
 		},
 		{
-			name:     "empty consoleMessage skipped",
+			name:     "empty consoleMessage not extracted",
 			stderr:   `{"type":"consoleMessage","data":{"message":"\n"}}`,
 			expected: `{"type":"consoleMessage","data":{"message":"\n"}}`,
 		},

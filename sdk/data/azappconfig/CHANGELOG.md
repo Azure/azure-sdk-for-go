@@ -6,12 +6,6 @@
 * Added new method `NewCheckSettingsPager` which can be used to check settings from the Azure App Configuration store using HEAD requests, returning only headers without the response body.
 * Added internal pipeline policy to normalize (case-insensitive alphabetical) ordering of query parameters for deterministic request URLs.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.1.0 (2026-02-06)
 
 ### Features Added

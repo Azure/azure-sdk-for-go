@@ -5,4 +5,4 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machine
 
 https://github.com/Azure/sdk-release-request/issues
 
-{run_url}
+%7Brun_url%7D

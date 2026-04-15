@@ -3254,6 +3254,35 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierSmart() {
 	_require.Equal(*getResp.AccessTier, string(blob.AccessTierSmart))
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestGetPropertiesSmartAccessTierHeader() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+
+	// Set tier to Smart
+	_, err = bbClient.SetTier(context.Background(), blob.AccessTierSmart, nil)
+	_require.NoError(err)
+
+	// Verify x-ms-smart-access-tier is returned in GetProperties response.
+	// This header is only returned for blobs in Smart tier and indicates the
+	// current sub-tier (Hot, Cool, or Cold) that data is placed in.
+	getResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getResp.AccessTier, string(blob.AccessTierSmart))
+	_require.NotNil(getResp.SmartAccessTier)
+	// SmartAccessTier should be one of Hot, Cool, or Cold
+	validSmartTiers := map[string]bool{"Hot": true, "Cool": true, "Cold": true}
+	_require.True(validSmartTiers[*getResp.SmartAccessTier], "SmartAccessTier should be Hot, Cool, or Cold but got: %s", *getResp.SmartAccessTier)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartListBlobs() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

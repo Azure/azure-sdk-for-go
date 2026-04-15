@@ -3277,10 +3277,7 @@ func (s *BlockBlobRecordedTestsSuite) TestGetPropertiesSmartAccessTierHeader() {
 	getResp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*getResp.AccessTier, string(blob.AccessTierSmart))
-	_require.NotNil(getResp.SmartAccessTier)
-	// SmartAccessTier should be one of Hot, Cool, or Cold
-	validSmartTiers := map[string]bool{"Hot": true, "Cool": true, "Cold": true}
-	_require.True(validSmartTiers[*getResp.SmartAccessTier], "SmartAccessTier should be Hot, Cool, or Cold but got: %s", *getResp.SmartAccessTier)
+	_require.Equal(*getResp.SmartAccessTier, string(blob.AccessTierHot)) // SmartAccessTier should default to Hot
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartListBlobs() {
@@ -3375,6 +3372,7 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartRehydrateListBlobs() {
 		RehydratePriority: &rehydratePriority,
 	})
 	_require.NoError(err)
+
 	_, err = bbClient2.SetTier(context.Background(), blob.AccessTierSmart, &blob.SetTierOptions{
 		RehydratePriority: &rehydratePriority,
 	})

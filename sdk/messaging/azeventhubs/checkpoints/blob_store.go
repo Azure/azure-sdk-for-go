@@ -218,7 +218,7 @@ func (b *BlobStore) setOwnershipMetadata(ctx context.Context, blobName string, o
 		return setMetadataResp.LastModified, *setMetadataResp.ETag, nil
 	}
 
-	log.Writef(azeventhubs.EventConsumer, "[%s] claiming ownership for %s with NO etags", ownership.PartitionID, ownership.OwnerID)
+	log.Writef(azeventhubs.EventConsumer, "[%s] claiming ownership for %s with NO etags", ownership.OwnerID, ownership.PartitionID)
 	uploadResp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte{})), &blockblob.UploadOptions{
 		Metadata: blobMetadata,
 		AccessConditions: &blob.AccessConditions{

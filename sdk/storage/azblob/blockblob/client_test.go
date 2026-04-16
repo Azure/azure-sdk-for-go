@@ -6313,3 +6313,373 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPKFail() {
 	})
 	_require.Error(err)
 }
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithUDSCreatePermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClient, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// StageBlock should succeed for a new blob (no existing blob)
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = bbClient.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithUDSCreatePermissionOverwriteFails() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Upload a blob first so it exists
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClientWithSAS, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// StageBlock should fail since blob already exists (UnauthorizedBlobOverwrite)
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = bbClientWithSAS.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.UnauthorizedBlobOverwrite)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithUDSCreatePermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create and upload a source blob with all permissions
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create SAS URL for source blob with Read permission
+	srcPerms := sas.BlobPermissions{Read: true}
+	srcSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   srcPerms.String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	srcBlobURLWithSAS := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, srcBlobName, srcSASParams.Encode())
+
+	// Create SAS URL for destination blob with Create-only permission
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destPerms := sas.BlobPermissions{Create: true}
+	destSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   destPerms.String(),
+		ContainerName: containerName,
+		BlobName:      destBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	destBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, destBlobName, destSASParams.Encode())
+
+	destBBClient, err := blockblob.NewClientWithNoCredential(destBlobURL, nil)
+	_require.NoError(err)
+
+	// StageBlockFromURL should succeed for a new blob
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = destBBClient.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithUDSCreatePermissionOverwriteFails() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create and upload a source blob
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Create the destination blob so it already exists
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+	_, err = destBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create SAS URL for source blob with Read permission
+	srcPerms := sas.BlobPermissions{Read: true}
+	srcSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   srcPerms.String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	srcBlobURLWithSAS := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, srcBlobName, srcSASParams.Encode())
+
+	// Create SAS URL for destination blob with Create-only permission
+	destPerms := sas.BlobPermissions{Create: true}
+	destSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   destPerms.String(),
+		ContainerName: containerName,
+		BlobName:      destBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	destBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, destBlobName, destSASParams.Encode())
+
+	destBBClient, err := blockblob.NewClientWithNoCredential(destBlobURL, nil)
+	_require.NoError(err)
+
+	// StageBlockFromURL should fail since destination blob already exists (UnauthorizedBlobOverwrite)
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = destBBClient.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.UnauthorizedBlobOverwrite)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestCommitBlockListWithUDSCreatePermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClient, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// CommitBlockList with empty block list should succeed for a new blob (no committed block list)
+	_, err = bbClient.CommitBlockList(context.Background(), []string{}, nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestCommitBlockListWithUDSCreatePermissionOverwriteFails() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// First, create the blob with a committed block list
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.CommitBlockList(context.Background(), []string{}, nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClientWithSAS, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// CommitBlockList should fail since blob already has a committed block list (UnauthorizedBlobOverwrite)
+	_, err = bbClientWithSAS.CommitBlockList(context.Background(), []string{}, nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.UnauthorizedBlobOverwrite)
+}

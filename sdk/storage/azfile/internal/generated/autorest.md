@@ -30,7 +30,7 @@ directive:
 - from: 
   - zz_constants.go
   - zz_options.go
-  - zz_response_types.go
+  - zz_responses.go
   - zz_file_client.go
   - zz_directory_client.go
   - zz_models.go
@@ -48,7 +48,7 @@ directive:
 ```yaml
 directive:
 - from: 
-  - zz_response_types.go
+  - zz_responses.go
   - zz_share_client.go
   where: $
   transform: >-
@@ -141,7 +141,7 @@ directive:
       replace(/import "time"/, `import (\n\t"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n)`).
       replace(/Etag\s+\*string/g, `ETag *azcore.ETag`);
 
-- from: zz_response_types.go
+- from: zz_responses.go
   where: $
   transform: >-
     return $.
@@ -181,7 +181,7 @@ directive:
   - zz_models.go
   - zz_options.go
   - zz_share_client.go
-  - zz_response_types.go
+  - zz_responses.go
   where: $
   transform: >-
     return $.
@@ -256,7 +256,7 @@ directive:
 - from:
   - zz_directory_client.go
   - zz_file_client.go
-  - zz_response_types.go
+  - zz_responses.go
   where: $
   transform: >-
     return $.

@@ -1076,6 +1076,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLSmartAccessTier() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1097,6 +1099,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLSmartAccessTier() {
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestCopyFromURLSmartAccessTier() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3232,6 +3236,11 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierAllTiersOnBlockBlob() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetTierSmart() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3255,6 +3264,11 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierSmart() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestGetPropertiesSmartAccessTierHeader() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3281,6 +3295,11 @@ func (s *BlockBlobRecordedTestsSuite) TestGetPropertiesSmartAccessTierHeader() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartListBlobs() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3316,6 +3335,11 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartListBlobs() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartRehydrate() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3346,6 +3370,11 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartRehydrate() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartRehydrateListBlobs() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3394,6 +3423,11 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartRehydrateListBlobs() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetTierOnBlobUploadSmart() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3420,6 +3454,11 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierOnBlobUploadSmart() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommitSmart() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3448,6 +3487,11 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommitSmart() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestStartCopyFromURLSmartAccessTier() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

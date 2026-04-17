@@ -2812,6 +2812,8 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFail
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierSmartUsingSharedKey() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

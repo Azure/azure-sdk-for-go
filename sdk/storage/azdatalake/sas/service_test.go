@@ -24,6 +24,7 @@ func TestFileSystemPermissions_String(t *testing.T) {
 		{input: FileSystemPermissions{Execute: true}, expected: "e"},
 		{input: FileSystemPermissions{ModifyOwnership: true}, expected: "o"},
 		{input: FileSystemPermissions{ModifyPermissions: true}, expected: "p"},
+		{input: FileSystemPermissions{Tag: true}, expected: "t"},
 		{input: FileSystemPermissions{
 			Read:              true,
 			Add:               true,
@@ -31,11 +32,12 @@ func TestFileSystemPermissions_String(t *testing.T) {
 			Write:             true,
 			Delete:            true,
 			List:              true,
+			Tag:               true,
 			Move:              true,
 			Execute:           true,
 			ModifyOwnership:   true,
 			ModifyPermissions: true,
-		}, expected: "racwdlmeop"},
+		}, expected: "racwdltmeop"},
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, c.input.String())
@@ -57,6 +59,7 @@ func TestFileSystemPermissions_Parse(t *testing.T) {
 		{expected: FileSystemPermissions{Execute: true}, input: "e"},
 		{expected: FileSystemPermissions{ModifyOwnership: true}, input: "o"},
 		{expected: FileSystemPermissions{ModifyPermissions: true}, input: "p"},
+		{expected: FileSystemPermissions{Tag: true}, input: "t"},
 		{expected: FileSystemPermissions{
 			Read:              true,
 			Add:               true,
@@ -64,11 +67,12 @@ func TestFileSystemPermissions_Parse(t *testing.T) {
 			Write:             true,
 			Delete:            true,
 			List:              true,
+			Tag:               true,
 			Move:              true,
 			Execute:           true,
 			ModifyOwnership:   true,
 			ModifyPermissions: true,
-		}, input: "racwdlmeop"},
+		}, input: "racwdltmeop"},
 		{expected: FileSystemPermissions{
 			Read:              true,
 			Add:               true,
@@ -76,11 +80,12 @@ func TestFileSystemPermissions_Parse(t *testing.T) {
 			Write:             true,
 			Delete:            true,
 			List:              true,
+			Tag:               true,
 			Move:              true,
 			Execute:           true,
 			ModifyOwnership:   true,
 			ModifyPermissions: true,
-		}, input: "cpwmreodal"}, // Wrong order parses correctly
+		}, input: "cpwmtreodal"}, // Wrong order parses correctly
 	}
 	for _, c := range testdata {
 		permissions, err := parseFileSystemPermissions(c.input)
@@ -110,6 +115,7 @@ func TestFilePermissions_String(t *testing.T) {
 		{input: FilePermissions{Execute: true}, expected: "e"},
 		{input: FilePermissions{Ownership: true}, expected: "o"},
 		{input: FilePermissions{Permissions: true}, expected: "p"},
+		{input: FilePermissions{Tag: true}, expected: "t"},
 		{input: FilePermissions{
 			Read:        true,
 			Add:         true,
@@ -117,11 +123,12 @@ func TestFilePermissions_String(t *testing.T) {
 			Write:       true,
 			Delete:      true,
 			List:        true,
+			Tag:         true,
 			Move:        true,
 			Execute:     true,
 			Ownership:   true,
 			Permissions: true,
-		}, expected: "racwdlmeop"},
+		}, expected: "racwdltmeop"},
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, c.input.String())
@@ -143,6 +150,7 @@ func TestFilePermissions_Parse(t *testing.T) {
 		{expected: FilePermissions{Execute: true}, input: "e"},
 		{expected: FilePermissions{Ownership: true}, input: "o"},
 		{expected: FilePermissions{Permissions: true}, input: "p"},
+		{expected: FilePermissions{Tag: true}, input: "t"},
 		{expected: FilePermissions{
 			Read:        true,
 			Add:         true,
@@ -150,11 +158,12 @@ func TestFilePermissions_Parse(t *testing.T) {
 			Write:       true,
 			Delete:      true,
 			List:        true,
+			Tag:         true,
 			Move:        true,
 			Execute:     true,
 			Ownership:   true,
 			Permissions: true,
-		}, input: "racwdlmeop"},
+		}, input: "racwdltmeop"},
 		{expected: FilePermissions{
 			Read:        true,
 			Add:         true,
@@ -162,11 +171,12 @@ func TestFilePermissions_Parse(t *testing.T) {
 			Write:       true,
 			Delete:      true,
 			List:        true,
+			Tag:         true,
 			Move:        true,
 			Execute:     true,
 			Ownership:   true,
 			Permissions: true,
-		}, input: "apwecrdlmo"}, // Wrong order parses correctly
+		}, input: "apwecrdtlmo"}, // Wrong order parses correctly
 	}
 	for _, c := range testdata {
 		permissions, err := parsePathPermissions(c.input)
@@ -190,6 +200,7 @@ func TestDirectoryPermissions_String(t *testing.T) {
 		{input: DirectoryPermissions{Execute: true}, expected: "e"},
 		{input: DirectoryPermissions{Ownership: true}, expected: "o"},
 		{input: DirectoryPermissions{Permissions: true}, expected: "p"},
+		{input: DirectoryPermissions{Tag: true}, expected: "t"},
 		{input: DirectoryPermissions{
 			Read:        true,
 			Add:         true,
@@ -197,11 +208,12 @@ func TestDirectoryPermissions_String(t *testing.T) {
 			Write:       true,
 			Delete:      true,
 			List:        true,
+			Tag:         true,
 			Move:        true,
 			Execute:     true,
 			Ownership:   true,
 			Permissions: true,
-		}, expected: "racwdlmeop"},
+		}, expected: "racwdltmeop"},
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, c.input.String())

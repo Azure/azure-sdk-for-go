@@ -314,6 +314,61 @@ func FormatSetMetadataOptions(o *SetMetadataOptions) *blob.SetMetadataOptions {
 	return opts
 }
 
+// GetTagsOptions contains the optional parameters for the Client.GetTags method.
+type GetTagsOptions struct {
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve.
+	Snapshot *string
+	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
+	// It's for service version 2019-10-10 and newer.
+	VersionID *string
+	// BlobAccessConditions contains parameters for accessing the path.
+	BlobAccessConditions *AccessConditions
+	// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
+	BlobModifiedAccessConditions *BlobModifiedAccessConditions
+}
+
+func FormatGetTagsOptions(o *GetTagsOptions) *blob.GetTagsOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &blob.GetTagsOptions{
+		Snapshot:                     o.Snapshot,
+		VersionID:                    o.VersionID,
+		BlobAccessConditions:         exported.FormatBlobAccessConditions(o.BlobAccessConditions),
+		BlobModifiedAccessConditions: o.BlobModifiedAccessConditions,
+	}
+}
+
+// SetTagsOptions contains the optional parameters for the Client.SetTags method.
+type SetTagsOptions struct {
+	// The version id parameter is an opaque DateTime value that, when present,
+	// specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
+	VersionID *string
+	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
+	TransactionalContentCRC64 []byte
+	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
+	TransactionalContentMD5 []byte
+	// AccessConditions contains parameters for accessing the path.
+	AccessConditions *AccessConditions
+	// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
+	BlobModifiedAccessConditions *BlobModifiedAccessConditions
+}
+
+func FormatSetTagsOptions(o *SetTagsOptions) *blob.SetTagsOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &blob.SetTagsOptions{
+		VersionID:                    o.VersionID,
+		TransactionalContentCRC64:    o.TransactionalContentCRC64,
+		TransactionalContentMD5:      o.TransactionalContentMD5,
+		AccessConditions:             exported.FormatBlobAccessConditions(o.AccessConditions),
+		BlobModifiedAccessConditions: o.BlobModifiedAccessConditions,
+	}
+}
+
 // ========================================= constants =========================================
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -333,6 +388,9 @@ type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
 // SourceModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type SourceModifiedAccessConditions = exported.SourceModifiedAccessConditions
+
+// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
+type BlobModifiedAccessConditions = exported.BlobModifiedAccessConditions
 
 // CPKScopeInfo contains a group of parameters for the Client.SetMetadata() method.
 type CPKScopeInfo = blob.CPKScopeInfo

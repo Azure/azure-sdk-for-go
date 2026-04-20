@@ -3169,3 +3169,198 @@ func (s *RecordedTestSuite) TestCreateDirWithPathTooDeep() {
 		}
 	}
 }
+
+func (s *RecordedTestSuite) TestDirGetSetTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = dirClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := dirClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	setOpts := &directory.SetTagsOptions{
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
+	_require.NoError(err)
+
+	getOpts := &directory.GetTagsOptions{
+		BlobAccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	getTagsResp, err := dirClient.GetTags(context.Background(), getOpts)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestDirGetTagsError() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// directory not created, should fail
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = dirClient.GetTags(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+}
+
+func (s *RecordedTestSuite) TestDirSetTagsError() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// directory not created, should fail
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+	}
+
+	_, err = dirClient.SetTags(context.Background(), tags, nil)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+}
+
+func (s *UnrecordedTestSuite) TestDirGetSetTagsWithSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Generate SAS with Tag permission
+	permissions := sas.DirectoryPermissions{
+		Read:  true,
+		Write: true,
+		Tag:   true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	sasURL, err := dirClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	sasClient, err := directory.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}

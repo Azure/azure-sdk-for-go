@@ -342,3 +342,9 @@ func FormatSetHTTPHeadersResponse(r *SetHTTPHeadersResponse, blobResp *blob.SetH
 	r.RequestID = blobResp.RequestID
 	r.Version = blobResp.Version
 }
+
+// GetTagsResponse contains the response fields for the GetTags operation.
+type GetTagsResponse = blob.GetTagsResponse
+
+// SetTagsResponse contains the response fields for the SetTags operation.
+type SetTagsResponse = blob.SetTagsResponse

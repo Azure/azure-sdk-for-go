@@ -373,6 +373,25 @@ func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	return newResp, err
 }
 
+// GetTags gets the tags associated with a file.
+func (f *Client) GetTags(ctx context.Context, options *GetTagsOptions) (GetTagsResponse, error) {
+	opts := path.FormatGetTagsOptions(options)
+	resp, err := f.blobClient().GetTags(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// SetTags sets tags on a file.
+// A file can have up to 10 tags. Tag keys must be between 1 and 128 characters. Tag values must be between 0 and 256 characters.
+// Valid tag key and value characters include lower and upper case letters, digits (0-9),
+// space (' '), plus ('+'), minus ('-'), period ('.'), forward slash ('/'), colon (':'), equals ('='), and underscore ('_').
+func (f *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
+	opts := path.FormatSetTagsOptions(options)
+	resp, err := f.blobClient().SetTags(ctx, tags, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {

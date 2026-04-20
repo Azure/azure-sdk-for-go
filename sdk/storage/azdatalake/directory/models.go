@@ -147,6 +147,12 @@ type HTTPHeaders = path.HTTPHeaders
 // SetMetadataOptions provides set of configurations for SetMetadata.
 type SetMetadataOptions = path.SetMetadataOptions
 
+// GetTagsOptions contains the optional parameters for the Client.GetTags method.
+type GetTagsOptions = path.GetTagsOptions
+
+// SetTagsOptions contains the optional parameters for the Client.SetTags method.
+type SetTagsOptions = path.SetTagsOptions
+
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = path.SharedKeyCredential
 

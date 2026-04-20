@@ -479,6 +479,25 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	return newResp, err
 }
 
+// GetTags gets the tags associated with a directory.
+func (d *Client) GetTags(ctx context.Context, options *GetTagsOptions) (GetTagsResponse, error) {
+	opts := path.FormatGetTagsOptions(options)
+	resp, err := d.blobClient().GetTags(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// SetTags sets tags on a directory.
+// A directory can have up to 10 tags. Tag keys must be between 1 and 128 characters. Tag values must be between 0 and 256 characters.
+// Valid tag key and value characters include lower and upper case letters, digits (0-9),
+// space (' '), plus ('+'), minus ('-'), period ('.'), forward slash ('/'), colon (':'), equals ('='), and underscore ('_').
+func (d *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
+	opts := path.FormatSetTagsOptions(options)
+	resp, err := d.blobClient().SetTags(ctx, tags, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at directory.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (d *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {

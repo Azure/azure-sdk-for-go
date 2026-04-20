@@ -271,6 +271,12 @@ type GetPropertiesResponse = path.GetPropertiesResponse
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = path.SetMetadataResponse
 
+// GetTagsResponse contains the response fields for the GetTags operation.
+type GetTagsResponse = path.GetTagsResponse
+
+// SetTagsResponse contains the response fields for the SetTags operation.
+type SetTagsResponse = path.SetTagsResponse
+
 // CreateResponse contains the response fields for the Create operation.
 type CreateResponse = path.CreateResponse
 

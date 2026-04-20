@@ -327,8 +327,8 @@ func getCanonicalName(account string, filesystemName string, fileName string, di
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type FileSystemPermissions struct {
-	Read, Add, Create, Write, Delete, List, Move bool
-	Execute, ModifyOwnership, ModifyPermissions  bool // Meant for hierarchical namespace accounts
+	Read, Add, Create, Write, Delete, List, Tag, Move bool
+	Execute, ModifyOwnership, ModifyPermissions       bool // Meant for hierarchical namespace accounts
 }
 
 // String produces the SAS permissions string for an Azure Storage container.
@@ -352,6 +352,9 @@ func (p *FileSystemPermissions) String() string {
 	}
 	if p.List {
 		b.WriteRune('l')
+	}
+	if p.Tag {
+		b.WriteRune('t')
 	}
 	if p.Move {
 		b.WriteRune('m')
@@ -385,6 +388,8 @@ func parseFileSystemPermissions(s string) (FileSystemPermissions, error) {
 			p.Delete = true
 		case 'l':
 			p.List = true
+		case 't':
+			p.Tag = true
 		case 'm':
 			p.Move = true
 		case 'e':
@@ -403,8 +408,8 @@ func parseFileSystemPermissions(s string) (FileSystemPermissions, error) {
 // FilePermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
 type FilePermissions struct {
-	Read, Add, Create, Write, Delete, List, Move bool
-	Execute, Ownership, Permissions              bool
+	Read, Add, Create, Write, Delete, List, Tag, Move bool
+	Execute, Ownership, Permissions                   bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
@@ -429,6 +434,9 @@ func (p *FilePermissions) String() string {
 	if p.List {
 		b.WriteRune('l')
 	}
+	if p.Tag {
+		b.WriteRune('t')
+	}
 	if p.Move {
 		b.WriteRune('m')
 	}
@@ -447,8 +455,8 @@ func (p *FilePermissions) String() string {
 // DirectoryPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
 type DirectoryPermissions struct {
-	Read, Add, Create, Write, Delete, List, Move bool
-	Execute, Ownership, Permissions              bool
+	Read, Add, Create, Write, Delete, List, Tag, Move bool
+	Execute, Ownership, Permissions                   bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
@@ -472,6 +480,9 @@ func (p *DirectoryPermissions) String() string {
 	}
 	if p.List {
 		b.WriteRune('l')
+	}
+	if p.Tag {
+		b.WriteRune('t')
 	}
 	if p.Move {
 		b.WriteRune('m')
@@ -505,6 +516,8 @@ func parsePathPermissions(s string) (FilePermissions, error) {
 			p.Delete = true
 		case 'l':
 			p.List = true
+		case 't':
+			p.Tag = true
 		case 'm':
 			p.Move = true
 		case 'e':

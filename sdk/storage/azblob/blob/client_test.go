@@ -28,6 +28,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -4062,4 +4063,224 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 		}
 	}
 	_require.True(found, "Tag not found")
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectorySASAllPermissions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	dirPaths := []string{"foo", "foo/bar", "foo/bar/hello"}
+	for _, dirPath := range dirPaths {
+		permissions := sas.BlobPermissions{
+			Read: true, Add: true, Create: true, Write: true, Delete: true,
+			DeletePreviousVersion: true, List: true, Tag: true,
+			Move: true, SetImmutabilityPolicy: true,
+		}
+
+		sasQueryParams, err := sas.BlobSignatureValues{
+			Protocol:      sas.ProtocolHTTPS,
+			StartTime:     time.Now().UTC().Add(-10 * time.Second),
+			ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+			Permissions:   permissions.String(),
+			ContainerName: containerName,
+			Directory:     dirPath,
+		}.SignWithSharedKey(credential)
+		_require.NoError(err)
+		_require.Equal("d", sasQueryParams.Resource())
+
+		sasToken := sasQueryParams.Encode()
+		_require.Contains(sasToken, "sr=d")
+		_require.Contains(sasToken, "sdd=")
+
+		// Test using same name as SAS directory path
+		accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+		blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, dirPath, sasToken)
+		abClient, err := appendblob.NewClientWithNoCredential(blobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient.Create(context.Background(), nil)
+		_require.NoError(err)
+
+		// Test using SAS directory path + suffix (child blob)
+		childBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s/test?%s", accountName, containerName, dirPath, sasToken)
+		abClient2, err := appendblob.NewClientWithNoCredential(childBlobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient2.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectorySASAllPermissionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	// Create a directory SAS for "foo/bar/hello"
+	permissions := sas.ContainerPermissions{
+		Read: true, Add: true, Create: true, Write: true, Delete: true, List: true,
+	}
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		Directory:     "foo/bar/hello",
+	}.SignWithSharedKey(credential)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	// Try to access "foo/bar" which is NOT a prefix of "foo/bar/hello" — it should fail
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	failBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/foo/bar?%s", accountName, containerName, sasToken)
+	abClient, err := appendblob.NewClientWithNoCredential(failBlobURL, nil)
+	_require.NoError(err)
+
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectoryIdentitySASAllPermissions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	dirPaths := []string{"foo", "foo/bar", "foo/bar/hello"}
+	for _, dirPath := range dirPaths {
+		permissions := sas.BlobPermissions{
+			Read: true, Add: true, Create: true, Write: true, Delete: true,
+			DeletePreviousVersion: true, List: true, Tag: true,
+			Move: true, SetImmutabilityPolicy: true,
+		}
+
+		sasQueryParams, err := sas.BlobSignatureValues{
+			Protocol:      sas.ProtocolHTTPS,
+			StartTime:     time.Now().UTC().Add(-10 * time.Second),
+			ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+			Permissions:   permissions.String(),
+			ContainerName: containerName,
+			Directory:     dirPath,
+		}.SignWithUserDelegation(udc)
+		_require.NoError(err)
+		_require.Equal("d", sasQueryParams.Resource())
+
+		sasToken := sasQueryParams.Encode()
+		_require.Contains(sasToken, "sr=d")
+		_require.Contains(sasToken, "sdd=")
+
+		// Test using same name as SAS directory path
+		blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, dirPath, sasToken)
+		abClient, err := appendblob.NewClientWithNoCredential(blobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient.Create(context.Background(), nil)
+		_require.NoError(err)
+
+		// Test using SAS directory path + suffix (child blob)
+		childBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s/test?%s", accountName, containerName, dirPath, sasToken)
+		abClient2, err := appendblob.NewClientWithNoCredential(childBlobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient2.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectoryIdentitySASAllPermissionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create a directory SAS for "foo/bar/hello"
+	permissions := sas.ContainerPermissions{
+		Read: true, Add: true, Create: true, Write: true, Delete: true, List: true,
+	}
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		Directory:     "foo/bar/hello",
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	// Try to access "foo/bar" which is NOT a prefix of "foo/bar/hello" — it should fail
+	failBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/foo/bar?%s", accountName, containerName, sasToken)
+	abClient, err := appendblob.NewClientWithNoCredential(failBlobURL, nil)
+	_require.NoError(err)
+
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }

@@ -2811,6 +2811,70 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFail
 	_require.Equal(ctrCool, 10)
 }
 
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierSmartUsingSharedKey() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := getBlobNameForBatch(i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.SetTier(bbName, blob.AccessTierSmart, nil)
+		_require.NoError(err)
+	}
+
+	// Verify all blobs are in Hot tier before batch
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	var ctrHot = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	for _, subResp := range resp.Responses {
+		_require.NotNil(subResp.ContentID)
+		_require.NotNil(subResp.ContainerName)
+		_require.NotNil(subResp.BlobName)
+		_require.NotNil(subResp.RequestID)
+		_require.NotNil(subResp.Version)
+		_require.NoError(subResp.Error)
+	}
+
+	// Verify all blobs are now in Smart tier
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	var ctrSmart = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierSmart {
+				ctrSmart++
+			}
+		}
+	}
+	_require.Equal(ctrSmart, 10)
+}
+
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

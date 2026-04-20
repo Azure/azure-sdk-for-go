@@ -243,6 +243,12 @@ func TestGetDirectoryDepth(t *testing.T) {
 		{input: "mydirectory", expected: "1"},
 		{input: "mydirectory/myfile", expected: "2"},
 		{input: "mydirectory/mysubdirectory", expected: "2"},
+		{input: "foo/bar/hello", expected: "3"},
+		{input: "a/b/c/d", expected: "4"},
+		{input: "/", expected: "0"},
+		{input: "foo/", expected: "1"},
+		{input: "/foo", expected: "1"},
+		{input: "/foo/bar/", expected: "2"},
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, getDirectoryDepth(c.input))

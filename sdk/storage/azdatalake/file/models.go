@@ -609,5 +609,8 @@ type ModifiedAccessConditions = path.ModifiedAccessConditions
 // SourceModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
+// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
+type BlobModifiedAccessConditions = path.BlobModifiedAccessConditions
+
 // CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
 type CPKScopeInfo = path.CPKScopeInfo

@@ -3238,20 +3238,16 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
 	setOpts := &directory.SetTagsOptions{
-		AccessConditions: &directory.AccessConditions{
-			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
-				IfModifiedSince: &currentTime,
-			},
+		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
 		},
 	}
 	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
 	_require.NoError(err)
 
 	getOpts := &directory.GetTagsOptions{
-		BlobAccessConditions: &directory.AccessConditions{
-			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
-				IfModifiedSince: &currentTime,
-			},
+		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
 		},
 	}
 	getTagsResp, err := dirClient.GetTags(context.Background(), getOpts)
@@ -3263,6 +3259,73 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	getOpts := &directory.GetTagsOptions{
+		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
+			IfModifiedSince: &futureTime,
+		},
+	}
+	_, err = dirClient.GetTags(context.Background(), getOpts)
+	_require.Error(err)
+}
+
+func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	setOpts := &directory.SetTagsOptions{
+		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
+			IfModifiedSince: &futureTime,
+		},
+	}
+	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
+	_require.Error(err)
 }
 
 func (s *RecordedTestSuite) TestDirGetTagsError() {
@@ -3789,75 +3852,4 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
-}
-
-func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	dirName := testcommon.GenerateDirName(testName)
-	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	resp, err := dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp)
-
-	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
-
-	getOpts := &directory.GetTagsOptions{
-		BlobAccessConditions: &directory.AccessConditions{
-			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
-				IfModifiedSince: &futureTime,
-			},
-		},
-	}
-	_, err = dirClient.GetTags(context.Background(), getOpts)
-	_require.Error(err)
-}
-
-func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	dirName := testcommon.GenerateDirName(testName)
-	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	resp, err := dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp)
-
-	tags := map[string]string{
-		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
-	}
-
-	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
-
-	setOpts := &directory.SetTagsOptions{
-		AccessConditions: &directory.AccessConditions{
-			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
-				IfModifiedSince: &futureTime,
-			},
-		},
-	}
-	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
-	_require.Error(err)
 }

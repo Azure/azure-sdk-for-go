@@ -171,6 +171,9 @@ type ModifiedAccessConditions = path.ModifiedAccessConditions
 // SourceModifiedAccessConditions contains a group of parameters for specifying source access conditions.
 type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
+// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
+type BlobModifiedAccessConditions = path.BlobModifiedAccessConditions
+
 // CPKScopeInfo contains a group of parameters for client provided encryption scope.
 type CPKScopeInfo path.CPKScopeInfo
 

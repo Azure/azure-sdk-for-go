@@ -5954,22 +5954,19 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
 	setOpts := &file.SetTagsOptions{
-		AccessConditions: &file.AccessConditions{
-			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-				IfModifiedSince: &currentTime,
-			},
+		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
 		},
 	}
 	_, err = fClient.SetTags(context.Background(), tags, setOpts)
 	_require.NoError(err)
 
 	getOpts := &file.GetTagsOptions{
-		BlobAccessConditions: &file.AccessConditions{
-			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-				IfModifiedSince: &currentTime,
-			},
+		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
 		},
 	}
+
 	getTagsResp, err := fClient.GetTags(context.Background(), getOpts)
 	_require.NoError(err)
 	_require.Len(getTagsResp.BlobTagSet, len(tags))
@@ -5979,6 +5976,73 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	getOpts := &file.GetTagsOptions{
+		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
+			IfModifiedSince: &futureTime,
+		},
+	}
+	_, err = fClient.GetTags(context.Background(), getOpts)
+	_require.Error(err)
+}
+
+func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	setOpts := &file.SetTagsOptions{
+		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
+			IfModifiedSince: &futureTime,
+		},
+	}
+	_, err = fClient.SetTags(context.Background(), tags, setOpts)
+	_require.Error(err)
 }
 
 func (s *RecordedTestSuite) TestFileGetTagsError() {
@@ -6085,59 +6149,6 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
-func (s *UnrecordedTestSuite) TestFileGetSetTagsWithSAS() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	resp, err := fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp)
-
-	// Generate SAS with Tag permission
-	permissions := sas.FilePermissions{
-		Read:  true,
-		Write: true,
-		Tag:   true,
-	}
-	expiry := time.Now().Add(time.Hour)
-
-	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
-	_require.NoError(err)
-
-	sasClient, err := file.NewClientWithNoCredential(sasURL, nil)
-	_require.NoError(err)
-
-	tags := map[string]string{
-		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
-	}
-
-	_, err = sasClient.SetTags(context.Background(), tags, nil)
-	_require.NoError(err)
-
-	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
-	_require.NoError(err)
-	_require.Len(getTagsResp.BlobTagSet, len(tags))
-	tagMap := make(map[string]string)
-	for _, tag := range getTagsResp.BlobTagSet {
-		tagMap[*tag.Key] = *tag.Value
-	}
-	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
-	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
-}
-
 func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -6223,6 +6234,59 @@ func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
 	}
 	_, err = fClient.SetTags(context.Background(), tags, setOpts)
 	_require.Error(err)
+}
+
+func (s *UnrecordedTestSuite) TestFileGetSetTagsWithSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Generate SAS with Tag permission
+	permissions := sas.FilePermissions{
+		Read:  true,
+		Write: true,
+		Tag:   true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	sasClient, err := file.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemSas() {
@@ -6460,75 +6524,4 @@ func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemIdentitySas() {
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
-}
-
-func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	resp, err := fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp)
-
-	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
-
-	getOpts := &file.GetTagsOptions{
-		BlobAccessConditions: &file.AccessConditions{
-			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-				IfModifiedSince: &futureTime,
-			},
-		},
-	}
-	_, err = fClient.GetTags(context.Background(), getOpts)
-	_require.Error(err)
-}
-
-func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	resp, err := fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp)
-
-	tags := map[string]string{
-		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
-	}
-
-	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
-
-	setOpts := &file.SetTagsOptions{
-		AccessConditions: &file.AccessConditions{
-			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-				IfModifiedSince: &futureTime,
-			},
-		},
-	}
-	_, err = fClient.SetTags(context.Background(), tags, setOpts)
-	_require.Error(err)
 }

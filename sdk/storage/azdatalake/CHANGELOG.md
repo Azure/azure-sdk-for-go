@@ -5,6 +5,7 @@
 ### Features Added
 * Added support for service version 2026-06-06.
 * Added `GetSystemProperties` API to file and directory clients for retrieving system-defined properties using the `getStatus` action.
+* Added `GetTags` and `SetTags` API to file and directory clients.
 
 ### Breaking Changes
 

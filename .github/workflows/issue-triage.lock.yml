@@ -76,13 +76,12 @@ run-name: "Agentic Triage"
 
 jobs:
   activation:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
-      discussions: write
       issues: write
-      pull-requests: write
+      pull-requests: read
     outputs:
       body: ${{ steps.sanitized.outputs.body }}
       comment_id: ""

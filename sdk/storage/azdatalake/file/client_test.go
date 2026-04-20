@@ -24,7 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
-	datalakeLease "github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -6007,6 +6006,7 @@ func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
 	}
 	_, err = fClient.GetTags(context.Background(), getOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
@@ -6043,6 +6043,7 @@ func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
 	}
 	_, err = fClient.SetTags(context.Background(), tags, setOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestFileGetTagsError() {
@@ -6064,7 +6065,7 @@ func (s *RecordedTestSuite) TestFileGetTagsError() {
 
 	_, err = fClient.GetTags(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *RecordedTestSuite) TestFileSetTagsError() {
@@ -6090,7 +6091,7 @@ func (s *RecordedTestSuite) TestFileSetTagsError() {
 
 	_, err = fClient.SetTags(context.Background(), tags, nil)
 	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
@@ -6109,19 +6110,12 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	resp, err := fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp)
-
-	// Acquire a lease
-	blobLeaseClient, err := datalakeLease.NewPathClient(fClient, &datalakeLease.PathClientOptions{
-		LeaseID: proposedLeaseIDs[0],
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
 	})
 	_require.NoError(err)
-
-	duration := int32(15)
-	_, err = blobLeaseClient.AcquireLease(context.Background(), duration, nil)
-	_require.NoError(err)
+	_require.NotNil(resp)
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
@@ -6165,17 +6159,10 @@ func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	_, err = fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	// Acquire a lease
-	blobLeaseClient, err := datalakeLease.NewPathClient(fClient, &datalakeLease.PathClientOptions{
-		LeaseID: proposedLeaseIDs[0],
+	_, err = fClient.Create(context.Background(), &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
 	})
-	_require.NoError(err)
-
-	duration := int32(15)
-	_, err = blobLeaseClient.AcquireLease(context.Background(), duration, nil)
 	_require.NoError(err)
 
 	// Use a wrong lease ID
@@ -6188,6 +6175,7 @@ func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
 	}
 	_, err = fClient.GetTags(context.Background(), getOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.LeaseIDMismatchWithPathOperation)
 }
 
 func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
@@ -6206,17 +6194,10 @@ func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	_, err = fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	// Acquire a lease
-	blobLeaseClient, err := datalakeLease.NewPathClient(fClient, &datalakeLease.PathClientOptions{
-		LeaseID: proposedLeaseIDs[0],
+	_, err = fClient.Create(context.Background(), &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
 	})
-	_require.NoError(err)
-
-	duration := int32(15)
-	_, err = blobLeaseClient.AcquireLease(context.Background(), duration, nil)
 	_require.NoError(err)
 
 	tags := map[string]string{
@@ -6234,6 +6215,7 @@ func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
 	}
 	_, err = fClient.SetTags(context.Background(), tags, setOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.LeaseIDMismatchWithPathOperation)
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsWithSAS() {

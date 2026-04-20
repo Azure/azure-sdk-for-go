@@ -12,7 +12,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
-	datalakeLease "github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -3290,6 +3289,7 @@ func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
 	}
 	_, err = dirClient.GetTags(context.Background(), getOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
@@ -3326,6 +3326,7 @@ func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
 	}
 	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestDirGetTagsError() {
@@ -3347,7 +3348,7 @@ func (s *RecordedTestSuite) TestDirGetTagsError() {
 
 	_, err = dirClient.GetTags(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *RecordedTestSuite) TestDirSetTagsError() {
@@ -3373,7 +3374,7 @@ func (s *RecordedTestSuite) TestDirSetTagsError() {
 
 	_, err = dirClient.SetTags(context.Background(), tags, nil)
 	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsWithSAS() {
@@ -3491,19 +3492,12 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithLease() {
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	resp, err := dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp)
-
-	// Acquire a lease
-	leaseClient, err := datalakeLease.NewPathClient(dirClient, &datalakeLease.PathClientOptions{
-		LeaseID: proposedLeaseIDs[0],
+	resp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
 	})
 	_require.NoError(err)
-
-	duration := int32(15)
-	_, err = leaseClient.AcquireLease(context.Background(), duration, nil)
-	_require.NoError(err)
+	_require.NotNil(resp)
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
@@ -3547,17 +3541,10 @@ func (s *RecordedTestSuite) TestDirGetTagsLeaseFailed() {
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	// Acquire a lease
-	leaseClient, err := datalakeLease.NewPathClient(dirClient, &datalakeLease.PathClientOptions{
-		LeaseID: proposedLeaseIDs[0],
+	_, err = dirClient.Create(context.Background(), &directory.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
 	})
-	_require.NoError(err)
-
-	duration := int32(15)
-	_, err = leaseClient.AcquireLease(context.Background(), duration, nil)
 	_require.NoError(err)
 
 	// Use a wrong lease ID
@@ -3570,6 +3557,7 @@ func (s *RecordedTestSuite) TestDirGetTagsLeaseFailed() {
 	}
 	_, err = dirClient.GetTags(context.Background(), getOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.LeaseIDMismatchWithPathOperation)
 }
 
 func (s *RecordedTestSuite) TestDirSetTagsLeaseFailed() {
@@ -3588,17 +3576,10 @@ func (s *RecordedTestSuite) TestDirSetTagsLeaseFailed() {
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	// Acquire a lease
-	leaseClient, err := datalakeLease.NewPathClient(dirClient, &datalakeLease.PathClientOptions{
-		LeaseID: proposedLeaseIDs[0],
+	_, err = dirClient.Create(context.Background(), &directory.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
 	})
-	_require.NoError(err)
-
-	duration := int32(15)
-	_, err = leaseClient.AcquireLease(context.Background(), duration, nil)
 	_require.NoError(err)
 
 	tags := map[string]string{
@@ -3616,6 +3597,7 @@ func (s *RecordedTestSuite) TestDirSetTagsLeaseFailed() {
 	}
 	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.LeaseIDMismatchWithPathOperation)
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemSas() {

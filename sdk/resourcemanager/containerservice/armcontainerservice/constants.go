@@ -24,24 +24,6 @@ func PossibleAccelerationModeValues() []AccelerationMode {
 	}
 }
 
-// AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
-type AddonAutoscaling string
-
-const (
-	// AddonAutoscalingDisabled - Feature to autoscale AKS-managed add-ons is disabled.
-	AddonAutoscalingDisabled AddonAutoscaling = "Disabled"
-	// AddonAutoscalingEnabled - Feature to autoscale AKS-managed add-ons is enabled. The default VPA update mode is Initial mode.
-	AddonAutoscalingEnabled AddonAutoscaling = "Enabled"
-)
-
-// PossibleAddonAutoscalingValues returns the possible values for the AddonAutoscaling const type.
-func PossibleAddonAutoscalingValues() []AddonAutoscaling {
-	return []AddonAutoscaling{
-		AddonAutoscalingDisabled,
-		AddonAutoscalingEnabled,
-	}
-}
-
 // AdoptionPolicy - Action if Kubernetes namespace with same name already exists.
 type AdoptionPolicy string
 
@@ -97,13 +79,6 @@ const (
 	// AgentPoolModeGateway - Gateway agent pools are dedicated to providing static egress IPs to pods. For more details, see
 	// https://aka.ms/aks/static-egress-gateway.
 	AgentPoolModeGateway AgentPoolMode = "Gateway"
-	// AgentPoolModeMachines - Machines agent pools are dedicated to hosting machines. Only limited operations, such as creation
-	// and deletion, are allowed at the pool level. Please use the machine APIs to manage the full machine lifecycle.
-	AgentPoolModeMachines AgentPoolMode = "Machines"
-	// AgentPoolModeManagedSystem - ManagedSystem is a system pool managed by AKS. The pool scales dynamically according to cluster
-	// usage, and has additional automated monitoring and healing capabilities. There can only be one ManagedSystem pool, and
-	// it is recommended to delete all other system pools for the best experience.
-	AgentPoolModeManagedSystem AgentPoolMode = "ManagedSystem"
 	// AgentPoolModeSystem - System agent pools are primarily for hosting critical system pods such as CoreDNS and metrics-server.
 	// System agent pools osType must be Linux. System agent pools VM SKU must have at least 2vCPUs and 4GB of memory.
 	AgentPoolModeSystem AgentPoolMode = "System"
@@ -115,8 +90,6 @@ const (
 func PossibleAgentPoolModeValues() []AgentPoolMode {
 	return []AgentPoolMode{
 		AgentPoolModeGateway,
-		AgentPoolModeMachines,
-		AgentPoolModeManagedSystem,
 		AgentPoolModeSystem,
 		AgentPoolModeUser,
 	}
@@ -128,8 +101,6 @@ type AgentPoolSSHAccess string
 const (
 	// AgentPoolSSHAccessDisabled - SSH service will be turned off on the node.
 	AgentPoolSSHAccessDisabled AgentPoolSSHAccess = "Disabled"
-	// AgentPoolSSHAccessEntraID - SSH to node with EntraId integration. More information can be found under https://aka.ms/aks/ssh/aad
-	AgentPoolSSHAccessEntraID AgentPoolSSHAccess = "EntraId"
 	// AgentPoolSSHAccessLocalUser - Can SSH onto the node as a local user using private key.
 	AgentPoolSSHAccessLocalUser AgentPoolSSHAccess = "LocalUser"
 )
@@ -138,7 +109,6 @@ const (
 func PossibleAgentPoolSSHAccessValues() []AgentPoolSSHAccess {
 	return []AgentPoolSSHAccess{
 		AgentPoolSSHAccessDisabled,
-		AgentPoolSSHAccessEntraID,
 		AgentPoolSSHAccessLocalUser,
 	}
 }
@@ -200,26 +170,6 @@ func PossibleBackendPoolTypeValues() []BackendPoolType {
 	}
 }
 
-// ClusterServiceLoadBalancerHealthProbeMode - The health probing behavior for External Traffic Policy Cluster services.
-type ClusterServiceLoadBalancerHealthProbeMode string
-
-const (
-	// ClusterServiceLoadBalancerHealthProbeModeServiceNodePort - Each External Traffic Policy Cluster service will have its own
-	// health probe targeting service nodePort.
-	ClusterServiceLoadBalancerHealthProbeModeServiceNodePort ClusterServiceLoadBalancerHealthProbeMode = "ServiceNodePort"
-	// ClusterServiceLoadBalancerHealthProbeModeShared - All External Traffic Policy Cluster services in a Standard Load Balancer
-	// will have a dedicated health probe targeting the backend nodes' kube-proxy health check port 10256.
-	ClusterServiceLoadBalancerHealthProbeModeShared ClusterServiceLoadBalancerHealthProbeMode = "Shared"
-)
-
-// PossibleClusterServiceLoadBalancerHealthProbeModeValues returns the possible values for the ClusterServiceLoadBalancerHealthProbeMode const type.
-func PossibleClusterServiceLoadBalancerHealthProbeModeValues() []ClusterServiceLoadBalancerHealthProbeMode {
-	return []ClusterServiceLoadBalancerHealthProbeMode{
-		ClusterServiceLoadBalancerHealthProbeModeServiceNodePort,
-		ClusterServiceLoadBalancerHealthProbeModeShared,
-	}
-}
-
 // Code - Tells whether the cluster is Running or Stopped
 type Code string
 
@@ -262,27 +212,6 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ContainerNetworkLogs - Configures container network logs ingestion with Azure Monitor. Which network logs to ingest is
-// controlled by the CRD found in the following links. No network logs are ingested by default. More information on container
-// network logs can be found at https://aka.ms/ContainerNetworkLogsDoc. More information on configuring container network
-// log can be found at https://aka.ms/acns/howtoenablecnl. If not specified, the default is Disabled.
-type ContainerNetworkLogs string
-
-const (
-	// ContainerNetworkLogsDisabled - Azure monitor ingestion of container network logs is disabled
-	ContainerNetworkLogsDisabled ContainerNetworkLogs = "Disabled"
-	// ContainerNetworkLogsEnabled - Azure monitor ingestion of container network logs is enabled
-	ContainerNetworkLogsEnabled ContainerNetworkLogs = "Enabled"
-)
-
-// PossibleContainerNetworkLogsValues returns the possible values for the ContainerNetworkLogs const type.
-func PossibleContainerNetworkLogsValues() []ContainerNetworkLogs {
-	return []ContainerNetworkLogs{
-		ContainerNetworkLogsDisabled,
-		ContainerNetworkLogsEnabled,
-	}
-}
-
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -322,46 +251,6 @@ func PossibleDeletePolicyValues() []DeletePolicy {
 	return []DeletePolicy{
 		DeletePolicyDelete,
 		DeletePolicyKeep,
-	}
-}
-
-// DriftAction - The drift action of the machine. Indicates whether a machine has deviated from its expected state due to
-// changes in managed cluster properties, requiring corrective action.
-type DriftAction string
-
-const (
-	// DriftActionRecreate - The machine has drifted and needs to be deleted and recreated.
-	DriftActionRecreate DriftAction = "Recreate"
-	// DriftActionSynced - The machine is up to date.
-	DriftActionSynced DriftAction = "Synced"
-)
-
-// PossibleDriftActionValues returns the possible values for the DriftAction const type.
-func PossibleDriftActionValues() []DriftAction {
-	return []DriftAction{
-		DriftActionRecreate,
-		DriftActionSynced,
-	}
-}
-
-// DriverType - Specify the type of GPU driver to install when creating Windows agent pools. If not provided, AKS selects
-// the driver based on system compatibility. This cannot be changed once the AgentPool has been created. This cannot be set
-// on Linux AgentPools. For Linux AgentPools, the driver is selected based on system compatibility.
-type DriverType string
-
-const (
-	// DriverTypeCUDA - Install the CUDA driver for the GPU, optimized for computational tasks in scientific computing and data-intensive
-	// applications.
-	DriverTypeCUDA DriverType = "CUDA"
-	// DriverTypeGRID - Install the GRID driver for the GPU, suitable for applications requiring virtualization support.
-	DriverTypeGRID DriverType = "GRID"
-)
-
-// PossibleDriverTypeValues returns the possible values for the DriverType const type.
-func PossibleDriverTypeValues() []DriverType {
-	return []DriverType{
-		DriverTypeCUDA,
-		DriverTypeGRID,
 	}
 }
 
@@ -492,25 +381,6 @@ func PossibleGatewayAPIIstioEnabledValues() []GatewayAPIIstioEnabled {
 	}
 }
 
-// GuardrailsSupport - Whether the version is preview or stable.
-type GuardrailsSupport string
-
-const (
-	// GuardrailsSupportPreview - The version is preview. It is not recommended to use preview versions on critical production
-	// clusters. The preview version may not support all use-cases.
-	GuardrailsSupportPreview GuardrailsSupport = "Preview"
-	// GuardrailsSupportStable - The version is stable and can be used on critical production clusters.
-	GuardrailsSupportStable GuardrailsSupport = "Stable"
-)
-
-// PossibleGuardrailsSupportValues returns the possible values for the GuardrailsSupport const type.
-func PossibleGuardrailsSupportValues() []GuardrailsSupport {
-	return []GuardrailsSupport{
-		GuardrailsSupportPreview,
-		GuardrailsSupportStable,
-	}
-}
-
 // IPFamily - To determine if address belongs IPv4 or IPv6 family
 type IPFamily string
 
@@ -529,75 +399,6 @@ func PossibleIPFamilyValues() []IPFamily {
 	}
 }
 
-// IdentityBindingProvisioningState - The provisioning state of the last accepted operation.
-type IdentityBindingProvisioningState string
-
-const (
-	// IdentityBindingProvisioningStateCanceled - Resource creation was canceled.
-	IdentityBindingProvisioningStateCanceled IdentityBindingProvisioningState = "Canceled"
-	// IdentityBindingProvisioningStateCreating - The identity binding is being created.
-	IdentityBindingProvisioningStateCreating IdentityBindingProvisioningState = "Creating"
-	// IdentityBindingProvisioningStateDeleting - The identity binding is being deleted.
-	IdentityBindingProvisioningStateDeleting IdentityBindingProvisioningState = "Deleting"
-	// IdentityBindingProvisioningStateFailed - Resource creation failed.
-	IdentityBindingProvisioningStateFailed IdentityBindingProvisioningState = "Failed"
-	// IdentityBindingProvisioningStateSucceeded - Resource has been created.
-	IdentityBindingProvisioningStateSucceeded IdentityBindingProvisioningState = "Succeeded"
-	// IdentityBindingProvisioningStateUpdating - The identity binding is being updated.
-	IdentityBindingProvisioningStateUpdating IdentityBindingProvisioningState = "Updating"
-)
-
-// PossibleIdentityBindingProvisioningStateValues returns the possible values for the IdentityBindingProvisioningState const type.
-func PossibleIdentityBindingProvisioningStateValues() []IdentityBindingProvisioningState {
-	return []IdentityBindingProvisioningState{
-		IdentityBindingProvisioningStateCanceled,
-		IdentityBindingProvisioningStateCreating,
-		IdentityBindingProvisioningStateDeleting,
-		IdentityBindingProvisioningStateFailed,
-		IdentityBindingProvisioningStateSucceeded,
-		IdentityBindingProvisioningStateUpdating,
-	}
-}
-
-// InfrastructureEncryption - Whether to enable encryption at rest of Kubernetes resource objects using service-managed keys.
-// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
-type InfrastructureEncryption string
-
-const (
-	// InfrastructureEncryptionDisabled - Encryption at rest of Kubernetes resource objects using service-managed keys is disabled.
-	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
-	InfrastructureEncryptionDisabled InfrastructureEncryption = "Disabled"
-	// InfrastructureEncryptionEnabled - Encryption at rest of Kubernetes resource objects using service-managed keys is enabled.
-	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
-	InfrastructureEncryptionEnabled InfrastructureEncryption = "Enabled"
-)
-
-// PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
-func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
-	return []InfrastructureEncryption{
-		InfrastructureEncryptionDisabled,
-		InfrastructureEncryptionEnabled,
-	}
-}
-
-// IpvsScheduler - IPVS scheduler, for more information please see http://www.linuxvirtualserver.org/docs/scheduling.html.
-type IpvsScheduler string
-
-const (
-	// IpvsSchedulerLeastConnection - Least Connection
-	IpvsSchedulerLeastConnection IpvsScheduler = "LeastConnection"
-	// IpvsSchedulerRoundRobin - Round Robin
-	IpvsSchedulerRoundRobin IpvsScheduler = "RoundRobin"
-)
-
-// PossibleIpvsSchedulerValues returns the possible values for the IpvsScheduler const type.
-func PossibleIpvsSchedulerValues() []IpvsScheduler {
-	return []IpvsScheduler{
-		IpvsSchedulerLeastConnection,
-		IpvsSchedulerRoundRobin,
-	}
-}
-
 // IstioIngressGatewayMode - Mode of an ingress gateway.
 type IstioIngressGatewayMode string
 
@@ -613,36 +414,6 @@ func PossibleIstioIngressGatewayModeValues() []IstioIngressGatewayMode {
 	return []IstioIngressGatewayMode{
 		IstioIngressGatewayModeExternal,
 		IstioIngressGatewayModeInternal,
-	}
-}
-
-// JWTAuthenticatorProvisioningState - The provisioning state of the last accepted operation.
-type JWTAuthenticatorProvisioningState string
-
-const (
-	// JWTAuthenticatorProvisioningStateCanceled - Resource creation was canceled.
-	JWTAuthenticatorProvisioningStateCanceled JWTAuthenticatorProvisioningState = "Canceled"
-	// JWTAuthenticatorProvisioningStateCreating - The JWT authenticator is being created.
-	JWTAuthenticatorProvisioningStateCreating JWTAuthenticatorProvisioningState = "Creating"
-	// JWTAuthenticatorProvisioningStateDeleting - The JWT authenticator is being deleted.
-	JWTAuthenticatorProvisioningStateDeleting JWTAuthenticatorProvisioningState = "Deleting"
-	// JWTAuthenticatorProvisioningStateFailed - Resource creation failed.
-	JWTAuthenticatorProvisioningStateFailed JWTAuthenticatorProvisioningState = "Failed"
-	// JWTAuthenticatorProvisioningStateSucceeded - Resource has been created.
-	JWTAuthenticatorProvisioningStateSucceeded JWTAuthenticatorProvisioningState = "Succeeded"
-	// JWTAuthenticatorProvisioningStateUpdating - The JWT authenticator is being updated.
-	JWTAuthenticatorProvisioningStateUpdating JWTAuthenticatorProvisioningState = "Updating"
-)
-
-// PossibleJWTAuthenticatorProvisioningStateValues returns the possible values for the JWTAuthenticatorProvisioningState const type.
-func PossibleJWTAuthenticatorProvisioningStateValues() []JWTAuthenticatorProvisioningState {
-	return []JWTAuthenticatorProvisioningState{
-		JWTAuthenticatorProvisioningStateCanceled,
-		JWTAuthenticatorProvisioningStateCreating,
-		JWTAuthenticatorProvisioningStateDeleting,
-		JWTAuthenticatorProvisioningStateFailed,
-		JWTAuthenticatorProvisioningStateSucceeded,
-		JWTAuthenticatorProvisioningStateUpdating,
 	}
 }
 
@@ -972,8 +743,8 @@ type ManagedGatewayType string
 const (
 	// ManagedGatewayTypeDisabled - Gateway API CRDs will not be reconciled on your cluster.
 	ManagedGatewayTypeDisabled ManagedGatewayType = "Disabled"
-	// ManagedGatewayTypeStandard - The latest Gateway CRD bundle from the standard channel that is compatible with your Kubernetes
-	// version will be reconciled onto your cluster. See https://gateway-api.sigs.k8s.io/concepts/versioning/ for more details.
+	// ManagedGatewayTypeStandard - Gateway API CRDs from the standard release channel will be reconciled onto your cluster. See
+	// https://aka.ms/gateway-api-versions to see which bundle will be installed for your Kubernetes version.
 	ManagedGatewayTypeStandard ManagedGatewayType = "Standard"
 )
 
@@ -982,99 +753,6 @@ func PossibleManagedGatewayTypeValues() []ManagedGatewayType {
 	return []ManagedGatewayType{
 		ManagedGatewayTypeDisabled,
 		ManagedGatewayTypeStandard,
-	}
-}
-
-// ManagementMode - The Managed GPU experience installs additional components, such as the Data Center GPU Manager (DCGM)
-// metrics for monitoring, on top of the GPU driver for you. For more details of what is installed, check out aka.ms/aks/managed-gpu.
-type ManagementMode string
-
-const (
-	// ManagementModeManaged - Managed GPU experience is enabled for NVIDIA GPUs.
-	ManagementModeManaged ManagementMode = "Managed"
-	// ManagementModeUnmanaged - Managed GPU experience is disabled for NVIDIA GPUs.
-	ManagementModeUnmanaged ManagementMode = "Unmanaged"
-)
-
-// PossibleManagementModeValues returns the possible values for the ManagementMode const type.
-func PossibleManagementModeValues() []ManagementMode {
-	return []ManagementMode{
-		ManagementModeManaged,
-		ManagementModeUnmanaged,
-	}
-}
-
-// MeshMembershipProvisioningState - The provisioning state of the last accepted operation.
-type MeshMembershipProvisioningState string
-
-const (
-	// MeshMembershipProvisioningStateCanceled - Resource creation was canceled.
-	MeshMembershipProvisioningStateCanceled MeshMembershipProvisioningState = "Canceled"
-	// MeshMembershipProvisioningStateCreating - The Mesh Membership is being created.
-	MeshMembershipProvisioningStateCreating MeshMembershipProvisioningState = "Creating"
-	// MeshMembershipProvisioningStateDeleting - The Mesh Membership is being deleted.
-	MeshMembershipProvisioningStateDeleting MeshMembershipProvisioningState = "Deleting"
-	// MeshMembershipProvisioningStateFailed - Resource creation failed.
-	MeshMembershipProvisioningStateFailed MeshMembershipProvisioningState = "Failed"
-	// MeshMembershipProvisioningStateSucceeded - Resource has been created.
-	MeshMembershipProvisioningStateSucceeded MeshMembershipProvisioningState = "Succeeded"
-	// MeshMembershipProvisioningStateUpdating - The Mesh Membership is being updated.
-	MeshMembershipProvisioningStateUpdating MeshMembershipProvisioningState = "Updating"
-)
-
-// PossibleMeshMembershipProvisioningStateValues returns the possible values for the MeshMembershipProvisioningState const type.
-func PossibleMeshMembershipProvisioningStateValues() []MeshMembershipProvisioningState {
-	return []MeshMembershipProvisioningState{
-		MeshMembershipProvisioningStateCanceled,
-		MeshMembershipProvisioningStateCreating,
-		MeshMembershipProvisioningStateDeleting,
-		MeshMembershipProvisioningStateFailed,
-		MeshMembershipProvisioningStateSucceeded,
-		MeshMembershipProvisioningStateUpdating,
-	}
-}
-
-// MigStrategy - Sets the MIG (Multi-Instance GPU) strategy that will be used for managed MIG support. For more information
-// about the different strategies, visit aka.ms/aks/managed-gpu. When not specified, the default is None.
-type MigStrategy string
-
-const (
-	// MigStrategyMixed - Set the MIG strategy for managed MIG as mixed.
-	MigStrategyMixed MigStrategy = "Mixed"
-	// MigStrategyNone - Don't set a MIG strategy. If you previously had one set, this will override it and set remove the set
-	// MIG strategy.
-	MigStrategyNone MigStrategy = "None"
-	// MigStrategySingle - Set the MIG strategy for managed MIG as single.
-	MigStrategySingle MigStrategy = "Single"
-)
-
-// PossibleMigStrategyValues returns the possible values for the MigStrategy const type.
-func PossibleMigStrategyValues() []MigStrategy {
-	return []MigStrategy{
-		MigStrategyMixed,
-		MigStrategyNone,
-		MigStrategySingle,
-	}
-}
-
-// Mode - Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES')
-type Mode string
-
-const (
-	// ModeIPTABLES - IPTables proxy mode
-	ModeIPTABLES Mode = "IPTABLES"
-	// ModeIPVS - IPVS proxy mode. Must be using Kubernetes version >= 1.22.
-	ModeIPVS Mode = "IPVS"
-	// ModeNFTABLES - NFTables proxy mode. Must be using Kubernetes version >= 1.33.
-	ModeNFTABLES Mode = "NFTABLES"
-)
-
-// PossibleModeValues returns the possible values for the Mode const type.
-func PossibleModeValues() []Mode {
-	return []Mode{
-		ModeIPTABLES,
-		ModeIPVS,
-		ModeNFTABLES,
 	}
 }
 
@@ -1356,12 +1034,6 @@ const (
 	OSSKUAzureLinux3 OSSKU = "AzureLinux3"
 	// OSSKUCBLMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
 	OSSKUCBLMariner OSSKU = "CBLMariner"
-	// OSSKUFlatcar - Use Flatcar Container Linux as the OS for node images. Flatcar is a container-optimized, security-focused
-	// Linux OS, with an immutable filesystem and part of the Cloud Native Computing Foundation (CNCF). For more information about
-	// Flatcar Container Linux for AKS, see aka.ms/aks/flatcar-container-linux-for-aks
-	OSSKUFlatcar OSSKU = "Flatcar"
-	// OSSKUMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
-	OSSKUMariner OSSKU = "Mariner"
 	// OSSKUUbuntu - Use Ubuntu as the OS for node images.
 	OSSKUUbuntu OSSKU = "Ubuntu"
 	// OSSKUUbuntu2204 - Use Ubuntu2204 as the OS for node images, however, Ubuntu 22.04 may not be supported for all nodepools.
@@ -1379,9 +1051,6 @@ const (
 	// OSSKUWindows2025 - Use Windows2025 as the OS for node images. Unsupported for system node pools. Windows2025 supports Windows2022
 	// and Windows 2025 containers; it cannot run Windows2019 containers and vice versa.
 	OSSKUWindows2025 OSSKU = "Windows2025"
-	// OSSKUWindowsAnnual - Use Windows Annual Channel version as the OS for node images. Unsupported for system node pools. Details
-	// about supported container images and kubernetes versions under different AKS Annual Channel versions could be seen in https://aka.ms/aks/windows-annual-channel-details.
-	OSSKUWindowsAnnual OSSKU = "WindowsAnnual"
 )
 
 // PossibleOSSKUValues returns the possible values for the OSSKU const type.
@@ -1390,15 +1059,12 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUAzureLinux,
 		OSSKUAzureLinux3,
 		OSSKUCBLMariner,
-		OSSKUFlatcar,
-		OSSKUMariner,
 		OSSKUUbuntu,
 		OSSKUUbuntu2204,
 		OSSKUUbuntu2404,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
 		OSSKUWindows2025,
-		OSSKUWindowsAnnual,
 	}
 }
 
@@ -1420,30 +1086,6 @@ func PossibleOSTypeValues() []OSType {
 	}
 }
 
-// Operator - operator represents a key's relationship to a set of values. Valid operators are In and NotIn
-type Operator string
-
-const (
-	// OperatorDoesNotExist - The value of the key should not exist.
-	OperatorDoesNotExist Operator = "DoesNotExist"
-	// OperatorExists - The value of the key should exist.
-	OperatorExists Operator = "Exists"
-	// OperatorIn - The value of the key should be in the given list.
-	OperatorIn Operator = "In"
-	// OperatorNotIn - The value of the key should not be in the given list.
-	OperatorNotIn Operator = "NotIn"
-)
-
-// PossibleOperatorValues returns the possible values for the Operator const type.
-func PossibleOperatorValues() []Operator {
-	return []Operator{
-		OperatorDoesNotExist,
-		OperatorExists,
-		OperatorIn,
-		OperatorNotIn,
-	}
-}
-
 // OutboundType - The outbound (egress) routing method. This can only be set at cluster creation time and cannot be changed
 // later. For more information see [egress outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
 type OutboundType string
@@ -1454,8 +1096,6 @@ const (
 	OutboundTypeLoadBalancer OutboundType = "loadBalancer"
 	// OutboundTypeManagedNATGateway - The AKS-managed NAT gateway is used for egress.
 	OutboundTypeManagedNATGateway OutboundType = "managedNATGateway"
-	// OutboundTypeManagedNATGatewayV2 - The AKS-managed NAT gateway V2 is used for egress.
-	OutboundTypeManagedNATGatewayV2 OutboundType = "managedNATGatewayV2"
 	// OutboundTypeNone - The AKS cluster is not set with any outbound-type. All AKS nodes follows Azure VM default outbound behavior.
 	// Please refer to https://azure.microsoft.com/en-us/updates/default-outbound-access-for-vms-in-azure-will-be-retired-transition-to-a-new-method-of-internet-access/
 	OutboundTypeNone OutboundType = "none"
@@ -1472,7 +1112,6 @@ func PossibleOutboundTypeValues() []OutboundType {
 	return []OutboundType{
 		OutboundTypeLoadBalancer,
 		OutboundTypeManagedNATGateway,
-		OutboundTypeManagedNATGatewayV2,
 		OutboundTypeNone,
 		OutboundTypeUserAssignedNATGateway,
 		OutboundTypeUserDefinedRouting,
@@ -1500,25 +1139,6 @@ func PossiblePodIPAllocationModeValues() []PodIPAllocationMode {
 	return []PodIPAllocationMode{
 		PodIPAllocationModeDynamicIndividual,
 		PodIPAllocationModeStaticBlock,
-	}
-}
-
-// PodLinkLocalAccess - Defines access to special link local addresses (Azure Instance Metadata Service, aka IMDS) for pods
-// with hostNetwork=false. If not specified, the default is 'IMDS'.
-type PodLinkLocalAccess string
-
-const (
-	// PodLinkLocalAccessIMDS - Pods with hostNetwork=false can access Azure Instance Metadata Service (IMDS) without restriction.
-	PodLinkLocalAccessIMDS PodLinkLocalAccess = "IMDS"
-	// PodLinkLocalAccessNone - Pods with hostNetwork=false cannot access Azure Instance Metadata Service (IMDS).
-	PodLinkLocalAccessNone PodLinkLocalAccess = "None"
-)
-
-// PossiblePodLinkLocalAccessValues returns the possible values for the PodLinkLocalAccess const type.
-func PossiblePodLinkLocalAccessValues() []PodLinkLocalAccess {
-	return []PodLinkLocalAccess{
-		PodLinkLocalAccessIMDS,
-		PodLinkLocalAccessNone,
 	}
 }
 
@@ -1615,8 +1235,6 @@ const (
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
 	// PublicNetworkAccessEnabled - Inbound/Outbound to the managedCluster is allowed.
 	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
-	// PublicNetworkAccessSecuredByPerimeter - Inbound/Outbound traffic is managed by Microsoft.Network/NetworkSecurityPerimeters.
-	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -1624,7 +1242,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
-		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 
@@ -1654,63 +1271,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ResourceSKUCapacityScaleType - The scale type applicable to the sku.
-type ResourceSKUCapacityScaleType string
-
-const (
-	// ResourceSKUCapacityScaleTypeAutomatic - Automatic scaling
-	ResourceSKUCapacityScaleTypeAutomatic ResourceSKUCapacityScaleType = "Automatic"
-	// ResourceSKUCapacityScaleTypeManual - Manual scaling
-	ResourceSKUCapacityScaleTypeManual ResourceSKUCapacityScaleType = "Manual"
-	// ResourceSKUCapacityScaleTypeNone - No scaling
-	ResourceSKUCapacityScaleTypeNone ResourceSKUCapacityScaleType = "None"
-)
-
-// PossibleResourceSKUCapacityScaleTypeValues returns the possible values for the ResourceSKUCapacityScaleType const type.
-func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType {
-	return []ResourceSKUCapacityScaleType{
-		ResourceSKUCapacityScaleTypeAutomatic,
-		ResourceSKUCapacityScaleTypeManual,
-		ResourceSKUCapacityScaleTypeNone,
-	}
-}
-
-// ResourceSKURestrictionsReasonCode - The reason for restriction.
-type ResourceSKURestrictionsReasonCode string
-
-const (
-	// ResourceSKURestrictionsReasonCodeNotAvailableForSubscription - Not available for subscription
-	ResourceSKURestrictionsReasonCodeNotAvailableForSubscription ResourceSKURestrictionsReasonCode = "NotAvailableForSubscription"
-	// ResourceSKURestrictionsReasonCodeQuotaID - Quota ID restriction
-	ResourceSKURestrictionsReasonCodeQuotaID ResourceSKURestrictionsReasonCode = "QuotaId"
-)
-
-// PossibleResourceSKURestrictionsReasonCodeValues returns the possible values for the ResourceSKURestrictionsReasonCode const type.
-func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictionsReasonCode {
-	return []ResourceSKURestrictionsReasonCode{
-		ResourceSKURestrictionsReasonCodeNotAvailableForSubscription,
-		ResourceSKURestrictionsReasonCodeQuotaID,
-	}
-}
-
-// ResourceSKURestrictionsType - The type of restrictions.
-type ResourceSKURestrictionsType string
-
-const (
-	// ResourceSKURestrictionsTypeLocation - Location restriction
-	ResourceSKURestrictionsTypeLocation ResourceSKURestrictionsType = "Location"
-	// ResourceSKURestrictionsTypeZone - Zone restriction
-	ResourceSKURestrictionsTypeZone ResourceSKURestrictionsType = "Zone"
-)
-
-// PossibleResourceSKURestrictionsTypeValues returns the possible values for the ResourceSKURestrictionsType const type.
-func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
-	return []ResourceSKURestrictionsType{
-		ResourceSKURestrictionsTypeLocation,
-		ResourceSKURestrictionsTypeZone,
-	}
-}
-
 // RestrictionLevel - The restriction level applied to the cluster's node resource group. If not specified, the default is
 // 'Unrestricted'
 type RestrictionLevel string
@@ -1727,25 +1287,6 @@ func PossibleRestrictionLevelValues() []RestrictionLevel {
 	return []RestrictionLevel{
 		RestrictionLevelReadOnly,
 		RestrictionLevelUnrestricted,
-	}
-}
-
-// SafeguardsSupport - Whether the version is preview or stable.
-type SafeguardsSupport string
-
-const (
-	// SafeguardsSupportPreview - The version is preview. It is not recommended to use preview versions on critical production
-	// clusters. The preview version may not support all use-cases.
-	SafeguardsSupportPreview SafeguardsSupport = "Preview"
-	// SafeguardsSupportStable - The version is stable and can be used on critical production clusters.
-	SafeguardsSupportStable SafeguardsSupport = "Stable"
-)
-
-// PossibleSafeguardsSupportValues returns the possible values for the SafeguardsSupport const type.
-func PossibleSafeguardsSupportValues() []SafeguardsSupport {
-	return []SafeguardsSupport{
-		SafeguardsSupportPreview,
-		SafeguardsSupportStable,
 	}
 }
 
@@ -1808,45 +1349,6 @@ func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 	}
 }
 
-// SchedulerConfigMode - The config customization mode for this scheduler instance.
-type SchedulerConfigMode string
-
-const (
-	// SchedulerConfigModeDefault - No config customization. Use default configuration.
-	SchedulerConfigModeDefault SchedulerConfigMode = "Default"
-	// SchedulerConfigModeManagedByCRD - Enable config customization. Customer can specify scheduler configuration via a CRD.
-	// See aka.ms/aks/scheduler-crd for details.
-	SchedulerConfigModeManagedByCRD SchedulerConfigMode = "ManagedByCRD"
-)
-
-// PossibleSchedulerConfigModeValues returns the possible values for the SchedulerConfigMode const type.
-func PossibleSchedulerConfigModeValues() []SchedulerConfigMode {
-	return []SchedulerConfigMode{
-		SchedulerConfigModeDefault,
-		SchedulerConfigModeManagedByCRD,
-	}
-}
-
-// SeccompDefault - Specifies the default seccomp profile applied to all workloads. If not specified, 'Unconfined' will be
-// used by default.
-type SeccompDefault string
-
-const (
-	// SeccompDefaultRuntimeDefault - The default seccomp profile for container runtime is applied, which restricts certain system
-	// calls for enhanced security.
-	SeccompDefaultRuntimeDefault SeccompDefault = "RuntimeDefault"
-	// SeccompDefaultUnconfined - No seccomp profile is applied, allowing all system calls.
-	SeccompDefaultUnconfined SeccompDefault = "Unconfined"
-)
-
-// PossibleSeccompDefaultValues returns the possible values for the SeccompDefault const type.
-func PossibleSeccompDefaultValues() []SeccompDefault {
-	return []SeccompDefault{
-		SeccompDefaultRuntimeDefault,
-		SeccompDefaultUnconfined,
-	}
-}
-
 // ServiceMeshMode - Mode of the service mesh.
 type ServiceMeshMode string
 
@@ -1869,8 +1371,6 @@ func PossibleServiceMeshModeValues() []ServiceMeshMode {
 type SnapshotType string
 
 const (
-	// SnapshotTypeManagedCluster - The snapshot is a snapshot of a managed cluster.
-	SnapshotTypeManagedCluster SnapshotType = "ManagedCluster"
 	// SnapshotTypeNodePool - The snapshot is a snapshot of a node pool.
 	SnapshotTypeNodePool SnapshotType = "NodePool"
 )
@@ -1878,7 +1378,6 @@ const (
 // PossibleSnapshotTypeValues returns the possible values for the SnapshotType const type.
 func PossibleSnapshotTypeValues() []SnapshotType {
 	return []SnapshotType{
-		SnapshotTypeManagedCluster,
 		SnapshotTypeNodePool,
 	}
 }
@@ -1888,9 +1387,6 @@ func PossibleSnapshotTypeValues() []SnapshotType {
 type TransitEncryptionType string
 
 const (
-	// TransitEncryptionTypeMTLS - Enables mTLS authentication and encryption for pod-to-pod traffic within the cluster. Refer
-	// to https://aka.ms/acnsciliummtls for relevant documentation.
-	TransitEncryptionTypeMTLS TransitEncryptionType = "mTLS"
 	// TransitEncryptionTypeNone - Disable Transit encryption
 	TransitEncryptionTypeNone TransitEncryptionType = "None"
 	// TransitEncryptionTypeWireGuard - Enable WireGuard encryption. Refer to https://docs.cilium.io/en/latest/security/network/encryption-wireguard/
@@ -1901,7 +1397,6 @@ const (
 // PossibleTransitEncryptionTypeValues returns the possible values for the TransitEncryptionType const type.
 func PossibleTransitEncryptionTypeValues() []TransitEncryptionType {
 	return []TransitEncryptionType{
-		TransitEncryptionTypeMTLS,
 		TransitEncryptionTypeNone,
 		TransitEncryptionTypeWireGuard,
 	}
@@ -2024,42 +1519,6 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 	}
 }
 
-// UpgradeStrategy - Defines the upgrade strategy for the agent pool. The default is Rolling.
-type UpgradeStrategy string
-
-const (
-	// UpgradeStrategyBlueGreen - Specifies that the agent pool will conduct blue-green upgrade.
-	UpgradeStrategyBlueGreen UpgradeStrategy = "BlueGreen"
-	// UpgradeStrategyRolling - Specifies that the agent pool will conduct rolling upgrade. This is the default upgrade strategy.
-	UpgradeStrategyRolling UpgradeStrategy = "Rolling"
-)
-
-// PossibleUpgradeStrategyValues returns the possible values for the UpgradeStrategy const type.
-func PossibleUpgradeStrategyValues() []UpgradeStrategy {
-	return []UpgradeStrategy{
-		UpgradeStrategyBlueGreen,
-		UpgradeStrategyRolling,
-	}
-}
-
-// VMState - Virtual machine state. Indicates the current state of the underlying virtual machine.
-type VMState string
-
-const (
-	// VMStateDeleted - The virtual machine has been deleted by the user or due to spot eviction.
-	VMStateDeleted VMState = "Deleted"
-	// VMStateRunning - The virtual machine is currently running.
-	VMStateRunning VMState = "Running"
-)
-
-// PossibleVMStateValues returns the possible values for the VMState const type.
-func PossibleVMStateValues() []VMState {
-	return []VMState{
-		VMStateDeleted,
-		VMStateRunning,
-	}
-}
-
 // WeekDay - The weekday enum.
 type WeekDay string
 
@@ -2097,11 +1556,6 @@ func PossibleWeekDayValues() []WeekDay {
 type WorkloadRuntime string
 
 const (
-	// WorkloadRuntimeKataMshvVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods (Preview).
-	// Due to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
-	// that support Nested Virtualization such as Dv3 series. This naming convention will be deprecated in future releases in
-	// favor of KataVmIsolation.
-	WorkloadRuntimeKataMshvVMIsolation WorkloadRuntime = "KataMshvVmIsolation"
 	// WorkloadRuntimeKataVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods. Due
 	// to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
 	// that support Nested Virtualization such as Dv3 series.
@@ -2115,7 +1569,6 @@ const (
 // PossibleWorkloadRuntimeValues returns the possible values for the WorkloadRuntime const type.
 func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
 	return []WorkloadRuntime{
-		WorkloadRuntimeKataMshvVMIsolation,
 		WorkloadRuntimeKataVMIsolation,
 		WorkloadRuntimeOCIContainer,
 		WorkloadRuntimeWasmWasi,

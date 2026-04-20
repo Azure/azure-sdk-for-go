@@ -3171,6 +3171,10 @@ func (s *RecordedTestSuite) TestCreateDirWithPathTooDeep() {
 }
 
 func (s *RecordedTestSuite) TestDirGetSetTags() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3210,6 +3214,10 @@ func (s *RecordedTestSuite) TestDirGetSetTags() {
 }
 
 func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3261,6 +3269,10 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
 }
 
 func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3293,6 +3305,10 @@ func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
 }
 
 func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3330,6 +3346,10 @@ func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
 }
 
 func (s *RecordedTestSuite) TestDirGetTagsError() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3352,6 +3372,10 @@ func (s *RecordedTestSuite) TestDirGetTagsError() {
 }
 
 func (s *RecordedTestSuite) TestDirSetTagsError() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3378,6 +3402,8 @@ func (s *RecordedTestSuite) TestDirSetTagsError() {
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsWithSAS() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3431,6 +3457,8 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsWithSAS() {
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsOAuth() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3477,6 +3505,10 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsOAuth() {
 }
 
 func (s *RecordedTestSuite) TestDirGetSetTagsWithLease() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3526,6 +3558,10 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithLease() {
 }
 
 func (s *RecordedTestSuite) TestDirGetTagsLeaseFailed() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3561,6 +3597,10 @@ func (s *RecordedTestSuite) TestDirGetTagsLeaseFailed() {
 }
 
 func (s *RecordedTestSuite) TestDirSetTagsLeaseFailed() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3601,6 +3641,8 @@ func (s *RecordedTestSuite) TestDirSetTagsLeaseFailed() {
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemSas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3655,6 +3697,8 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemSas() {
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsAccountSas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3708,6 +3752,8 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsAccountSas() {
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsDirIdentitySas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3773,6 +3819,8 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsDirIdentitySas() {
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

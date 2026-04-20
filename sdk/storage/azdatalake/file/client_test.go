@@ -5841,6 +5841,10 @@ func (s *UnrecordedTestSuite) TestFileClientAuthenticationFailure() {
 }
 
 func (s *RecordedTestSuite) TestFileGetSetTags() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -5880,6 +5884,8 @@ func (s *RecordedTestSuite) TestFileGetSetTags() {
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsOAuth() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -5926,6 +5932,10 @@ func (s *UnrecordedTestSuite) TestFileGetSetTagsOAuth() {
 }
 
 func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -5978,6 +5988,10 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
 }
 
 func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6010,6 +6024,10 @@ func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
 }
 
 func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6047,6 +6065,10 @@ func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
 }
 
 func (s *RecordedTestSuite) TestFileGetTagsError() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6069,6 +6091,10 @@ func (s *RecordedTestSuite) TestFileGetTagsError() {
 }
 
 func (s *RecordedTestSuite) TestFileSetTagsError() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6095,6 +6121,10 @@ func (s *RecordedTestSuite) TestFileSetTagsError() {
 }
 
 func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6144,6 +6174,10 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
 }
 
 func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6179,6 +6213,10 @@ func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
 }
 
 func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6219,6 +6257,8 @@ func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsWithSAS() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6272,6 +6312,8 @@ func (s *UnrecordedTestSuite) TestFileGetSetTagsWithSAS() {
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemSas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6327,6 +6369,8 @@ func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemSas() {
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsAccountSas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6380,6 +6424,8 @@ func (s *UnrecordedTestSuite) TestFileGetSetTagsAccountSas() {
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsFileIdentitySas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -6445,6 +6491,8 @@ func (s *UnrecordedTestSuite) TestFileGetSetTagsFileIdentitySas() {
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemIdentitySas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

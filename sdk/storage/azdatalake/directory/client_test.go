@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	datalakeLease "github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -3363,4 +3364,500 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsWithSAS() {
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestDirGetSetTagsOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
+
+	dirClient, err := directory.NewClient(dirURL, cred, nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = dirClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := dirClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestDirGetSetTagsWithLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Acquire a lease
+	leaseClient, err := datalakeLease.NewPathClient(dirClient, &datalakeLease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	duration := int32(15)
+	_, err = leaseClient.AcquireLease(context.Background(), duration, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	setOpts := &directory.SetTagsOptions{
+		AccessConditions: &directory.AccessConditions{
+			LeaseAccessConditions: &directory.LeaseAccessConditions{
+				LeaseID: proposedLeaseIDs[0],
+			},
+		},
+	}
+	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
+	_require.NoError(err)
+
+	getTagsResp, err := dirClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestDirGetTagsLeaseFailed() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Acquire a lease
+	leaseClient, err := datalakeLease.NewPathClient(dirClient, &datalakeLease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	duration := int32(15)
+	_, err = leaseClient.AcquireLease(context.Background(), duration, nil)
+	_require.NoError(err)
+
+	// Use a wrong lease ID
+	getOpts := &directory.GetTagsOptions{
+		BlobAccessConditions: &directory.AccessConditions{
+			LeaseAccessConditions: &directory.LeaseAccessConditions{
+				LeaseID: proposedLeaseIDs[1],
+			},
+		},
+	}
+	_, err = dirClient.GetTags(context.Background(), getOpts)
+	_require.Error(err)
+}
+
+func (s *RecordedTestSuite) TestDirSetTagsLeaseFailed() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Acquire a lease
+	leaseClient, err := datalakeLease.NewPathClient(dirClient, &datalakeLease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	duration := int32(15)
+	_, err = leaseClient.AcquireLease(context.Background(), duration, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	// Use a wrong lease ID
+	setOpts := &directory.SetTagsOptions{
+		AccessConditions: &directory.AccessConditions{
+			LeaseAccessConditions: &directory.LeaseAccessConditions{
+				LeaseID: proposedLeaseIDs[1],
+			},
+		},
+	}
+	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
+	_require.Error(err)
+}
+
+func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemSas() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	perms := sas.FileSystemPermissions{Read: true, Write: true, Tag: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		ExpiryTime:     time.Now().UTC().Add(time.Hour),
+		FileSystemName: filesystemName,
+		Permissions:    perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+	sasClient, err := directory.NewClientWithNoCredential(dirClient.DFSURL()+"?"+sasToken, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestDirGetSetTagsAccountSas() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(time.Hour),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, Write: true, Tag: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Service: true, Container: true, Object: true}).String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+	sasClient, err := directory.NewClientWithNoCredential(dirClient.DFSURL()+"?"+sasToken, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestDirGetSetTagsDirIdentitySas() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, fsClient)
+
+	// Get user delegation key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	expiryTime := currentTime.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiryTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	perms := sas.DirectoryPermissions{Read: true, Write: true, Tag: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		StartTime:      time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:     time.Now().UTC().Add(15 * time.Minute),
+		FileSystemName: filesystemName,
+		DirectoryPath:  dirName,
+		Permissions:    perms.String(),
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	sasURL := dirClient.DFSURL() + "?" + sasQueryParams.Encode()
+	sasClient, err := directory.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, fsClient)
+
+	// Get user delegation key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	expiryTime := currentTime.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiryTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	perms := sas.FileSystemPermissions{Read: true, Write: true, Tag: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		StartTime:      time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:     time.Now().UTC().Add(15 * time.Minute),
+		FileSystemName: filesystemName,
+		Permissions:    perms.String(),
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	sasURL := dirClient.DFSURL() + "?" + sasQueryParams.Encode()
+	sasClient, err := directory.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	getOpts := &directory.GetTagsOptions{
+		BlobAccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
+		},
+	}
+	_, err = dirClient.GetTags(context.Background(), getOpts)
+	_require.Error(err)
+}
+
+func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	setOpts := &directory.SetTagsOptions{
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
+		},
+	}
+	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
+	_require.Error(err)
 }

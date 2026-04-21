@@ -16,10 +16,15 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // FeaturesServer is a fake server for instances of the armcomputelimit.FeaturesClient type.
 type FeaturesServer struct {
+	// BeginDisable is the fake for method FeaturesClient.BeginDisable
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDisable func(ctx context.Context, location string, featureName string, options *armcomputelimit.FeaturesClientBeginDisableOptions) (resp azfake.PollerResponder[armcomputelimit.FeaturesClientDisableResponse], errResp azfake.ErrorResponder)
+
 	// BeginEnable is the fake for method FeaturesClient.BeginEnable
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginEnable func(ctx context.Context, location string, featureName string, options *armcomputelimit.FeaturesClientBeginEnableOptions) (resp azfake.PollerResponder[armcomputelimit.FeaturesClientEnableResponse], errResp azfake.ErrorResponder)
@@ -38,8 +43,9 @@ type FeaturesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFeaturesServerTransport(srv *FeaturesServer) *FeaturesServerTransport {
 	return &FeaturesServerTransport{
-		srv:         srv,
-		beginEnable: newTracker[azfake.PollerResponder[armcomputelimit.FeaturesClientEnableResponse]](),
+		srv:          srv,
+		beginDisable: newTracker[azfake.PollerResponder[armcomputelimit.FeaturesClientDisableResponse]](),
+		beginEnable:  newTracker[azfake.PollerResponder[armcomputelimit.FeaturesClientEnableResponse]](),
 		newListBySubscriptionLocationResourcePager: newTracker[azfake.PagerResponder[armcomputelimit.FeaturesClientListBySubscriptionLocationResourceResponse]](),
 	}
 }
@@ -48,6 +54,7 @@ func NewFeaturesServerTransport(srv *FeaturesServer) *FeaturesServerTransport {
 // Don't use this type directly, use NewFeaturesServerTransport instead.
 type FeaturesServerTransport struct {
 	srv                                        *FeaturesServer
+	beginDisable                               *tracker[azfake.PollerResponder[armcomputelimit.FeaturesClientDisableResponse]]
 	beginEnable                                *tracker[azfake.PollerResponder[armcomputelimit.FeaturesClientEnableResponse]]
 	newListBySubscriptionLocationResourcePager *tracker[azfake.PagerResponder[armcomputelimit.FeaturesClientListBySubscriptionLocationResourceResponse]]
 }
@@ -64,9 +71,7 @@ func (f *FeaturesServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (f *FeaturesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -75,6 +80,8 @@ func (f *FeaturesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
+			case "FeaturesClient.BeginDisable":
+				res.resp, res.err = f.dispatchBeginDisable(req)
 			case "FeaturesClient.BeginEnable":
 				res.resp, res.err = f.dispatchBeginEnable(req)
 			case "FeaturesClient.Get":
@@ -86,10 +93,7 @@ func (f *FeaturesServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -98,6 +102,50 @@ func (f *FeaturesServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (f *FeaturesServerTransport) dispatchBeginDisable(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginDisable == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDisable not implemented")}
+	}
+	beginDisable := f.beginDisable.get(req)
+	if beginDisable == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disable`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		featureNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("featureName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginDisable(req.Context(), locationParam, featureNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDisable = &respr
+		f.beginDisable.add(req, beginDisable)
+	}
+
+	resp, err := server.PollerResponderNext(beginDisable, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		f.beginDisable.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDisable) {
+		f.beginDisable.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (f *FeaturesServerTransport) dispatchBeginEnable(req *http.Request) (*http.Response, error) {
@@ -133,7 +181,7 @@ func (f *FeaturesServerTransport) dispatchBeginEnable(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		f.beginEnable.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -167,7 +215,7 @@ func (f *FeaturesServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Feature, req)
@@ -204,7 +252,7 @@ func (f *FeaturesServerTransport) dispatchNewListBySubscriptionLocationResourceP
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListBySubscriptionLocationResourcePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

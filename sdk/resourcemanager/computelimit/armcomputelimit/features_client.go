@@ -39,10 +39,85 @@ func NewFeaturesClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
+// BeginDisable - Disables a compute limit feature for the subscription at the specified location.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-30
+//   - location - The name of the Azure region.
+//   - featureName - The name of the Feature
+//   - options - FeaturesClientBeginDisableOptions contains the optional parameters for the FeaturesClient.BeginDisable method.
+func (client *FeaturesClient) BeginDisable(ctx context.Context, location string, featureName string, options *FeaturesClientBeginDisableOptions) (*runtime.Poller[FeaturesClientDisableResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.disable(ctx, location, featureName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FeaturesClientDisableResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FeaturesClientDisableResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Disable - Disables a compute limit feature for the subscription at the specified location.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-30
+func (client *FeaturesClient) disable(ctx context.Context, location string, featureName string, options *FeaturesClientBeginDisableOptions) (*http.Response, error) {
+	var err error
+	const operationName = "FeaturesClient.BeginDisable"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.disableCreateRequest(ctx, location, featureName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// disableCreateRequest creates the Disable request.
+func (client *FeaturesClient) disableCreateRequest(ctx context.Context, location string, featureName string, _ *FeaturesClientBeginDisableOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features/{featureName}/disable"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if featureName == "" {
+		return nil, errors.New("parameter featureName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{featureName}", url.PathEscape(featureName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-04-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // BeginEnable - Enables a compute limit feature for the subscription at the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - featureName - The name of the Feature
 //   - options - FeaturesClientBeginEnableOptions contains the optional parameters for the FeaturesClient.BeginEnable method.
@@ -66,7 +141,7 @@ func (client *FeaturesClient) BeginEnable(ctx context.Context, location string, 
 // Enable - Enables a compute limit feature for the subscription at the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 func (client *FeaturesClient) enable(ctx context.Context, location string, featureName string, options *FeaturesClientBeginEnableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FeaturesClient.BeginEnable"
@@ -108,7 +183,7 @@ func (client *FeaturesClient) enableCreateRequest(ctx context.Context, location 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-20")
+	reqQP.Set("api-version", "2026-04-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,7 +192,7 @@ func (client *FeaturesClient) enableCreateRequest(ctx context.Context, location 
 // Get - Gets the properties of a compute limit feature.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - featureName - The name of the Feature
 //   - options - FeaturesClientGetOptions contains the optional parameters for the FeaturesClient.Get method.
@@ -163,7 +238,7 @@ func (client *FeaturesClient) getCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-20")
+	reqQP.Set("api-version", "2026-04-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +255,7 @@ func (client *FeaturesClient) getHandleResponse(resp *http.Response) (FeaturesCl
 
 // NewListBySubscriptionLocationResourcePager - Lists all compute limit features for the subscription at the specified location.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - options - FeaturesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the FeaturesClient.NewListBySubscriptionLocationResourcePager
 //     method.
@@ -223,7 +298,7 @@ func (client *FeaturesClient) listBySubscriptionLocationResourceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-20")
+	reqQP.Set("api-version", "2026-04-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

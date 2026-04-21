@@ -4,6 +4,12 @@
 
 package armcomputelimit
 
+// FeaturesClientBeginDisableOptions contains the optional parameters for the FeaturesClient.BeginDisable method.
+type FeaturesClientBeginDisableOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // FeaturesClientBeginEnableOptions contains the optional parameters for the FeaturesClient.BeginEnable method.
 type FeaturesClientBeginEnableOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -66,4 +72,17 @@ type SharedLimitsClientGetOptions struct {
 // method.
 type SharedLimitsClientListBySubscriptionLocationResourceOptions struct {
 	// placeholder for future optional parameters
+}
+
+// VMFamiliesClientGetOptions contains the optional parameters for the VMFamiliesClient.Get method.
+type VMFamiliesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VMFamiliesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the VMFamiliesClient.NewListBySubscriptionLocationResourcePager
+// method.
+type VMFamiliesClientListBySubscriptionLocationResourceOptions struct {
+	// The filter to apply to the list operation. Filter can be applied to the 'category' property. Example: $filter=category
+	// eq 'generalPurposeCategory'.
+	Filter *string
 }

@@ -26,6 +26,9 @@ type ServerFactory struct {
 
 	// SharedLimitsServer contains the fakes for client SharedLimitsClient
 	SharedLimitsServer SharedLimitsServer
+
+	// VMFamiliesServer contains the fakes for client VMFamiliesClient
+	VMFamiliesServer VMFamiliesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -46,6 +49,7 @@ type ServerFactoryTransport struct {
 	trGuestSubscriptionsServer *GuestSubscriptionsServerTransport
 	trOperationsServer         *OperationsServerTransport
 	trSharedLimitsServer       *SharedLimitsServerTransport
+	trVMFamiliesServer         *VMFamiliesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -75,6 +79,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SharedLimitsClient":
 		initServer(&s.trMu, &s.trSharedLimitsServer, func() *SharedLimitsServerTransport { return NewSharedLimitsServerTransport(&s.srv.SharedLimitsServer) })
 		resp, err = s.trSharedLimitsServer.Do(req)
+	case "VMFamiliesClient":
+		initServer(&s.trMu, &s.trVMFamiliesServer, func() *VMFamiliesServerTransport { return NewVMFamiliesServerTransport(&s.srv.VMFamiliesServer) })
+		resp, err = s.trVMFamiliesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

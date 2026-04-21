@@ -11,7 +11,36 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-20/Features_Enable.json
+// Generated from example definition: 2026-04-30/Features_Disable.json
+func ExampleFeaturesClient_BeginDisable() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputelimit.NewClientFactory("74219ad7-63fc-442f-8037-4b43c627c07d", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFeaturesClient().BeginDisable(ctx, "eastus", "VmCategoryQuota", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcomputelimit.FeaturesClientDisableResponse{
+	// 	OperationStatusResult: armcomputelimit.OperationStatusResult{
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-30/Features_Enable.json
 func ExampleFeaturesClient_BeginEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,19 +57,19 @@ func ExampleFeaturesClient_BeginEnable() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputelimit.FeaturesClientEnableResponse{
-	// 	OperationStatusResult: &armcomputelimit.OperationStatusResult{
+	// 	OperationStatusResult: armcomputelimit.OperationStatusResult{
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-20/Features_Get.json
+// Generated from example definition: 2026-04-30/Features_Get.json
 func ExampleFeaturesClient_Get_getFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +88,7 @@ func ExampleFeaturesClient_Get_getFeature() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputelimit.FeaturesClientGetResponse{
-	// 	Feature: &armcomputelimit.Feature{
+	// 	Feature: armcomputelimit.Feature{
 	// 		ID: to.Ptr("/subscriptions/74219ad7-63fc-442f-8037-4b43c627c07d/providers/Microsoft.ComputeLimit/locations/eastus/features/VmCategoryQuota"),
 	// 		Name: to.Ptr("VmCategoryQuota"),
 	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/features"),
@@ -71,7 +100,7 @@ func ExampleFeaturesClient_Get_getFeature() {
 	// }
 }
 
-// Generated from example definition: 2026-03-20/Features_Get_SharedLimit.json
+// Generated from example definition: 2026-04-30/Features_Get_SharedLimit.json
 func ExampleFeaturesClient_Get_getSharedLimitFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +119,7 @@ func ExampleFeaturesClient_Get_getSharedLimitFeature() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputelimit.FeaturesClientGetResponse{
-	// 	Feature: &armcomputelimit.Feature{
+	// 	Feature: armcomputelimit.Feature{
 	// 		ID: to.Ptr("/subscriptions/74219ad7-63fc-442f-8037-4b43c627c07d/providers/Microsoft.ComputeLimit/locations/eastus/features/SharedLimit"),
 	// 		Name: to.Ptr("SharedLimit"),
 	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/features"),
@@ -102,7 +131,7 @@ func ExampleFeaturesClient_Get_getSharedLimitFeature() {
 	// }
 }
 
-// Generated from example definition: 2026-03-20/Features_List.json
+// Generated from example definition: 2026-04-30/Features_List.json
 func ExampleFeaturesClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

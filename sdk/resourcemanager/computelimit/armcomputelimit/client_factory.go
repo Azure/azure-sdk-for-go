@@ -62,3 +62,11 @@ func (c *ClientFactory) NewSharedLimitsClient() *SharedLimitsClient {
 		internal:       c.internal,
 	}
 }
+
+// NewVMFamiliesClient creates a new instance of VMFamiliesClient.
+func (c *ClientFactory) NewVMFamiliesClient() *VMFamiliesClient {
+	return &VMFamiliesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}

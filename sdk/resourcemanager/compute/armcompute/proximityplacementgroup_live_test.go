@@ -65,8 +65,8 @@ func (testsuite *ProximityPlacementGroupTestSuite) TestProximityPlacementGroups(
 		Properties: &armcompute.ProximityPlacementGroupProperties{
 			Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
 				VMSizes: []*string{
-					to.Ptr("Basic_A0"),
-					to.Ptr("Basic_A2")},
+					to.Ptr("Standard_D2s_v3"),
+					to.Ptr("Standard_D4s_v3")},
 			},
 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
 		},

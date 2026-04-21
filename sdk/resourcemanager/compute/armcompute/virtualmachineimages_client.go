@@ -525,7 +525,7 @@ func (client *VirtualMachineImagesClient) listWithPropertiesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$expand", Expand)
+	reqQP.Set("$expand", expand)
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}

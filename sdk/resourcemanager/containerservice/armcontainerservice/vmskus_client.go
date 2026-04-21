@@ -13,45 +13,48 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
-// TrustedAccessRolesClient contains the methods for the TrustedAccessRoles group.
-// Don't use this type directly, use NewTrustedAccessRolesClient() instead.
-type TrustedAccessRolesClient struct {
+// VMSKUsClient contains the methods for the VMSKUs group.
+// Don't use this type directly, use NewVMSKUsClient() instead.
+type VMSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewTrustedAccessRolesClient creates a new instance of TrustedAccessRolesClient with the specified values.
+// NewVMSKUsClient creates a new instance of VMSKUsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewTrustedAccessRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrustedAccessRolesClient, error) {
+func NewVMSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMSKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &TrustedAccessRolesClient{
+	client := &VMSKUsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListPager - List supported trusted access roles.
+// NewListPager - Gets the list of VM SKUs accepted by AKS.
+//
+// Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location. AKS will perform a best effort
+// approach to provision the requested VM SKUs, but availability is not guaranteed.
 //
 // Generated from API version 2026-02-02-preview
 //   - location - The name of the Azure region.
-//   - options - TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager
-//     method.
-func (client *TrustedAccessRolesClient) NewListPager(location string, options *TrustedAccessRolesClientListOptions) *runtime.Pager[TrustedAccessRolesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[TrustedAccessRolesClientListResponse]{
-		More: func(page TrustedAccessRolesClientListResponse) bool {
+//   - options - VMSKUsClientListOptions contains the optional parameters for the VMSKUsClient.NewListPager method.
+func (client *VMSKUsClient) NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VMSKUsClientListResponse]{
+		More: func(page VMSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *TrustedAccessRolesClientListResponse) (TrustedAccessRolesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrustedAccessRolesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *VMSKUsClientListResponse) (VMSKUsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VMSKUsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -60,7 +63,7 @@ func (client *TrustedAccessRolesClient) NewListPager(location string, options *T
 				return client.listCreateRequest(ctx, location, options)
 			}, nil)
 			if err != nil {
-				return TrustedAccessRolesClientListResponse{}, err
+				return VMSKUsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -69,8 +72,8 @@ func (client *TrustedAccessRolesClient) NewListPager(location string, options *T
 }
 
 // listCreateRequest creates the List request.
-func (client *TrustedAccessRolesClient) listCreateRequest(ctx context.Context, location string, _ *TrustedAccessRolesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/trustedAccessRoles"
+func (client *VMSKUsClient) listCreateRequest(ctx context.Context, location string, options *VMSKUsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/vmSkus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -85,16 +88,19 @@ func (client *TrustedAccessRolesClient) listCreateRequest(ctx context.Context, l
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2026-02-02-preview")
+	if options != nil && options.IncludeExtendedLocations != nil {
+		reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TrustedAccessRolesClient) listHandleResponse(resp *http.Response) (TrustedAccessRolesClientListResponse, error) {
-	result := TrustedAccessRolesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedAccessRoleListResult); err != nil {
-		return TrustedAccessRolesClientListResponse{}, err
+func (client *VMSKUsClient) listHandleResponse(resp *http.Response) (VMSKUsClientListResponse, error) {
+	result := VMSKUsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VMSKUsListResult); err != nil {
+		return VMSKUsClientListResponse{}, err
 	}
 	return result, nil
 }

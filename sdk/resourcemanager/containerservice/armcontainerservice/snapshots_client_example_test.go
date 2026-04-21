@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/SnapshotsCreate.json
+// Generated from example definition: 2026-02-02-preview/SnapshotsCreate.json
 func ExampleSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/SnapshotsDelete.json
+// Generated from example definition: 2026-02-02-preview/SnapshotsDelete.json
 func ExampleSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/SnapshotsGet.json
+// Generated from example definition: 2026-02-02-preview/SnapshotsGet.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/SnapshotsList.json
+// Generated from example definition: 2026-02-02-preview/SnapshotsList.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/SnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-02-02-preview/SnapshotsListByResourceGroup.json
 func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,7 +259,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/SnapshotsUpdateTags.json
+// Generated from example definition: 2026-02-02-preview/SnapshotsUpdateTags.json
 func ExampleSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

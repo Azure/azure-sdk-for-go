@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/TrustedAccessRoles_List.json
-func ExampleTrustedAccessRolesClient_NewListPager() {
+// Generated from example definition: 2026-02-02-preview/NodeImageVersions_List.json
+func ExampleClient_NewListNodeImageVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +22,7 @@ func ExampleTrustedAccessRolesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewTrustedAccessRolesClient().NewListPager("westus2", nil)
+	pager := clientFactory.NewClient().NewListNodeImageVersionsPager("location1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -33,29 +33,20 @@ func ExampleTrustedAccessRolesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.TrustedAccessRolesClientListResponse{
-		// 	TrustedAccessRoleListResult: armcontainerservice.TrustedAccessRoleListResult{
-		// 		Value: []*armcontainerservice.TrustedAccessRole{
+		// page = armcontainerservice.ClientListNodeImageVersionsResponse{
+		// 	NodeImageVersionsListResult: armcontainerservice.NodeImageVersionsListResult{
+		// 		Value: []*armcontainerservice.NodeImageVersion{
 		// 			{
-		// 				Name: to.Ptr("reader"),
-		// 				Rules: []*armcontainerservice.TrustedAccessRoleRule{
-		// 					{
-		// 						APIGroups: []*string{
-		// 							to.Ptr(""),
-		// 						},
-		// 						NonResourceURLs: []*string{
-		// 						},
-		// 						ResourceNames: []*string{
-		// 						},
-		// 						Resources: []*string{
-		// 							to.Ptr("pods"),
-		// 						},
-		// 						Verbs: []*string{
-		// 							to.Ptr("get"),
-		// 						},
-		// 					},
-		// 				},
-		// 				SourceResourceType: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
+		// 				FullName: to.Ptr("AKSCBLMariner-V1-202308.28.0"),
+		// 				OS: to.Ptr("AKSCBLMariner"),
+		// 				SKU: to.Ptr("V1"),
+		// 				Version: to.Ptr("202308.28.0"),
+		// 			},
+		// 			{
+		// 				FullName: to.Ptr("AKSUbuntu-2204gen2minimalcontainerd-202401.12.0"),
+		// 				OS: to.Ptr("AKSUbuntu"),
+		// 				SKU: to.Ptr("2204gen2minimalcontainerd"),
+		// 				Version: to.Ptr("202401.12.0"),
 		// 			},
 		// 		},
 		// 	},

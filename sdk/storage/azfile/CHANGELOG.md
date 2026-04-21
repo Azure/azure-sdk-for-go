@@ -1,5 +1,17 @@
 # Release History
 
+## 1.5.5-beta.2 (Unreleased)
+
+### Features Added
+* Added support for service version 2026-06-06.
+* Added support for uploading up to 4 MiB of data with Create File API.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.5.5-beta.1 (Unreleased)
 
 ### Features Added

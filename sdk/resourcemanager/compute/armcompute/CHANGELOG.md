@@ -3,7 +3,7 @@
 ## 8.0.0 (2026-04-21)
 ### Breaking Changes
 
-- All Cloud Services (classic) related types, clients, and functions have been removed due to the [Azure Cloud Services (classic) retirement](https://azure.microsoft.com/en-us/updates?id=486344).
+- All Cloud Services (classic) related types, clients, and functions have been removed due to the [Azure Cloud Services (classic) retirement](https://azure.microsoft.com/updates?id=486344).
 
 ### Features Added
 

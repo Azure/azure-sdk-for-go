@@ -1,5 +1,141 @@
 # Release History
 
+## 8.0.0 (2026-04-21)
+### Breaking Changes
+
+- Enum `CloudServiceSlotType` has been removed
+- Enum `CloudServiceUpgradeMode` has been removed
+- Function `*ClientFactory.NewCloudServiceOperatingSystemsClient` has been removed
+- Function `*ClientFactory.NewCloudServiceRoleInstancesClient` has been removed
+- Function `*ClientFactory.NewCloudServiceRolesClient` has been removed
+- Function `*ClientFactory.NewCloudServicesClient` has been removed
+- Function `*ClientFactory.NewCloudServicesUpdateDomainClient` has been removed
+- Function `NewCloudServiceOperatingSystemsClient` has been removed
+- Function `*CloudServiceOperatingSystemsClient.GetOSFamily` has been removed
+- Function `*CloudServiceOperatingSystemsClient.GetOSVersion` has been removed
+- Function `*CloudServiceOperatingSystemsClient.NewListOSFamiliesPager` has been removed
+- Function `*CloudServiceOperatingSystemsClient.NewListOSVersionsPager` has been removed
+- Function `NewCloudServiceRoleInstancesClient` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginDelete` has been removed
+- Function `*CloudServiceRoleInstancesClient.Get` has been removed
+- Function `*CloudServiceRoleInstancesClient.GetInstanceView` has been removed
+- Function `*CloudServiceRoleInstancesClient.GetRemoteDesktopFile` has been removed
+- Function `*CloudServiceRoleInstancesClient.NewListPager` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginRebuild` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginReimage` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginRestart` has been removed
+- Function `NewCloudServiceRolesClient` has been removed
+- Function `*CloudServiceRolesClient.Get` has been removed
+- Function `*CloudServiceRolesClient.NewListPager` has been removed
+- Function `NewCloudServicesClient` has been removed
+- Function `*CloudServicesClient.BeginCreateOrUpdate` has been removed
+- Function `*CloudServicesClient.BeginDelete` has been removed
+- Function `*CloudServicesClient.BeginDeleteInstances` has been removed
+- Function `*CloudServicesClient.Get` has been removed
+- Function `*CloudServicesClient.GetInstanceView` has been removed
+- Function `*CloudServicesClient.NewListAllPager` has been removed
+- Function `*CloudServicesClient.NewListPager` has been removed
+- Function `*CloudServicesClient.BeginPowerOff` has been removed
+- Function `*CloudServicesClient.BeginRebuild` has been removed
+- Function `*CloudServicesClient.BeginReimage` has been removed
+- Function `*CloudServicesClient.BeginRestart` has been removed
+- Function `*CloudServicesClient.BeginStart` has been removed
+- Function `*CloudServicesClient.BeginUpdate` has been removed
+- Function `NewCloudServicesUpdateDomainClient` has been removed
+- Function `*CloudServicesUpdateDomainClient.GetUpdateDomain` has been removed
+- Function `*CloudServicesUpdateDomainClient.NewListUpdateDomainsPager` has been removed
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` has been removed
+- Struct `CloudService` has been removed
+- Struct `CloudServiceExtensionProfile` has been removed
+- Struct `CloudServiceExtensionProperties` has been removed
+- Struct `CloudServiceInstanceView` has been removed
+- Struct `CloudServiceListResult` has been removed
+- Struct `CloudServiceNetworkProfile` has been removed
+- Struct `CloudServiceOsProfile` has been removed
+- Struct `CloudServiceProperties` has been removed
+- Struct `CloudServiceRole` has been removed
+- Struct `CloudServiceRoleListResult` has been removed
+- Struct `CloudServiceRoleProfile` has been removed
+- Struct `CloudServiceRoleProfileProperties` has been removed
+- Struct `CloudServiceRoleProperties` has been removed
+- Struct `CloudServiceRoleSKU` has been removed
+- Struct `CloudServiceUpdate` has been removed
+- Struct `CloudServiceVaultAndSecretReference` has been removed
+- Struct `CloudServiceVaultCertificate` has been removed
+- Struct `CloudServiceVaultSecretGroup` has been removed
+- Struct `Extension` has been removed
+- Struct `InstanceSKU` has been removed
+- Struct `InstanceViewStatusesSummary` has been removed
+- Struct `LoadBalancerConfiguration` has been removed
+- Struct `LoadBalancerConfigurationProperties` has been removed
+- Struct `LoadBalancerFrontendIPConfiguration` has been removed
+- Struct `LoadBalancerFrontendIPConfigurationProperties` has been removed
+- Struct `OSFamily` has been removed
+- Struct `OSFamilyListResult` has been removed
+- Struct `OSFamilyProperties` has been removed
+- Struct `OSVersion` has been removed
+- Struct `OSVersionListResult` has been removed
+- Struct `OSVersionProperties` has been removed
+- Struct `OSVersionPropertiesBase` has been removed
+- Struct `ResourceInstanceViewStatus` has been removed
+- Struct `RoleInstance` has been removed
+- Struct `RoleInstanceListResult` has been removed
+- Struct `RoleInstanceNetworkProfile` has been removed
+- Struct `RoleInstanceProperties` has been removed
+- Struct `RoleInstanceView` has been removed
+- Struct `RoleInstances` has been removed
+- Struct `StatusCodeCount` has been removed
+- Struct `UpdateDomain` has been removed
+- Struct `UpdateDomainListResult` has been removed
+
+### Features Added
+
+- New value `SecurityTypesStandard` added to enum type `SecurityTypes`
+- New value `ZonalPlatformFaultDomainAlignModeBestEffortAligned` added to enum type `ZonalPlatformFaultDomainAlignMode`
+- New enum type `LifecycleHookAction` with values `LifecycleHookActionApprove`, `LifecycleHookActionReject`
+- New enum type `LifecycleHookActionState` with values `LifecycleHookActionStateApproved`, `LifecycleHookActionStateRejected`, `LifecycleHookActionStateWaiting`
+- New enum type `StorageAlignmentStatus` with values `StorageAlignmentStatusAligned`, `StorageAlignmentStatusUnaligned`
+- New enum type `StorageFaultDomainAlignmentType` with values `StorageFaultDomainAlignmentTypeAligned`, `StorageFaultDomainAlignmentTypeBestEffortAligned`
+- New enum type `VMScaleSetLifecycleHookEventState` with values `VMScaleSetLifecycleHookEventStateActive`, `VMScaleSetLifecycleHookEventStateCompleted`
+- New enum type `VMScaleSetLifecycleHookEventType` with values `VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting`, `VMScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling`
+- New function `*ClientFactory.NewVirtualMachineScaleSetLifeCycleHookEventsClient() *VirtualMachineScaleSetLifeCycleHookEventsClient`
+- New function `PossibleLifecycleHookActionValues() []LifecycleHookAction`
+- New function `NewVirtualMachineScaleSetLifeCycleHookEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineScaleSetLifeCycleHookEventsClient, error)`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, lifecycleHookEventName string, options *VirtualMachineScaleSetLifeCycleHookEventsClientGetOptions) (VirtualMachineScaleSetLifeCycleHookEventsClientGetResponse, error)`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.NewListPager(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetLifeCycleHookEventsClientListOptions) *runtime.Pager[VirtualMachineScaleSetLifeCycleHookEventsClientListResponse]`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.Update(ctx context.Context, resourceGroupName string, vmScaleSetName string, lifecycleHookEventName string, properties VMScaleSetLifecycleHookEventUpdate, options *VirtualMachineScaleSetLifeCycleHookEventsClientUpdateOptions) (VirtualMachineScaleSetLifeCycleHookEventsClientUpdateResponse, error)`
+- New struct `ExternalHealthPolicy`
+- New struct `LifecycleHook`
+- New struct `LifecycleHooksProfile`
+- New struct `OperationRecoverySettings`
+- New struct `ReimageRecoveryPolicy`
+- New struct `ResiliencyProfile`
+- New struct `RestartRecoveryPolicy`
+- New struct `StartRecoveryPolicy`
+- New struct `VMScaleSetLifecycleHookEvent`
+- New struct `VMScaleSetLifecycleHookEventAdditionalContext`
+- New struct `VMScaleSetLifecycleHookEventListResult`
+- New struct `VMScaleSetLifecycleHookEventProperties`
+- New struct `VMScaleSetLifecycleHookEventTargetResource`
+- New struct `VMScaleSetLifecycleHookEventUpdate`
+- New struct `ZoneMovement`
+- New field `Expand` in struct `CapacityReservationsClientListByCapacityReservationGroupOptions`
+- New field `StorageFaultDomainAlignment` in struct `DataDisk`
+- New field `EnableFullCaching` in struct `DiffDiskSettings`
+- New field `StorageAlignmentStatus` in struct `DiskInstanceView`
+- New field `StorageFaultDomainAlignment` in struct `OSDisk`
+- New field `OperationRecoverySettings` in struct `ResiliencyPolicy`
+- New field `ResiliencyProfile` in struct `VirtualMachineProperties`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetDataDisk`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetOSDisk`
+- New field `ExternalHealthPolicy`, `LifecycleHooksProfile` in struct `VirtualMachineScaleSetProperties`
+- New field `Placement` in struct `VirtualMachineScaleSetUpdate`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetUpdateOSDisk`
+- New field `LifecycleHooksProfile` in struct `VirtualMachineScaleSetUpdateProperties`
+- New field `VirtualMachineResourceID` in struct `VirtualMachineScaleSetVMProperties`
+- New field `ForceDeallocate` in struct `VirtualMachinesClientBeginDeallocateOptions`
+
+
 ## 7.3.0 (2026-01-23)
 ### Features Added
 

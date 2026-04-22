@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.5-beta.1 (2026-04-22)
+## 1.5.0-beta.1 (2026-04-22)
 
 ### Features Added
 * Added support for service version 2026-04-06.
@@ -9,7 +9,7 @@
 * Added error code `PathIsTooDeep` which is returned when a path contains more than 63 path segments.
 
 ### Bugs Fixed
-* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`.This replaces `IncrementalCopyOfEarlierVersionSnapshotNotAllowed` which has been deprecated.
+* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`. This replaces `IncrementalCopyOfEarlierVersionSnapshotNotAllowed` which has been deprecated.
 
 ## 1.4.4 (2026-01-12)
 

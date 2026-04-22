@@ -16,67 +16,68 @@ import (
 	"strings"
 )
 
-// DataflowProfileClient contains the methods for the DataflowProfile group.
-// Don't use this type directly, use NewDataflowProfileClient() instead.
-type DataflowProfileClient struct {
+// DataflowGraphClient contains the methods for the DataflowGraph group.
+// Don't use this type directly, use NewDataflowGraphClient() instead.
+type DataflowGraphClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewDataflowProfileClient creates a new instance of DataflowProfileClient with the specified values.
+// NewDataflowGraphClient creates a new instance of DataflowGraphClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewDataflowProfileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataflowProfileClient, error) {
+func NewDataflowGraphClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataflowGraphClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &DataflowProfileClient{
+	client := &DataflowGraphClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a DataflowProfileResource
+// BeginCreateOrUpdate - Create a DataflowGraphResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowProfileName - Name of Instance dataflowProfile resource
+//   - dataflowGraphName - Name of Instance dataflowEndpoint resource.
 //   - resource - Resource create parameters.
-//   - options - DataflowProfileClientBeginCreateOrUpdateOptions contains the optional parameters for the DataflowProfileClient.BeginCreateOrUpdate
+//   - options - DataflowGraphClientBeginCreateOrUpdateOptions contains the optional parameters for the DataflowGraphClient.BeginCreateOrUpdate
 //     method.
-func (client *DataflowProfileClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, resource DataflowProfileResource, options *DataflowProfileClientBeginCreateOrUpdateOptions) (*runtime.Poller[DataflowProfileClientCreateOrUpdateResponse], error) {
+func (client *DataflowGraphClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, resource DataflowGraphResource, options *DataflowGraphClientBeginCreateOrUpdateOptions) (*runtime.Poller[DataflowGraphClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, instanceName, dataflowProfileName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataflowProfileClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataflowGraphClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataflowProfileClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataflowGraphClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create a DataflowProfileResource
+// CreateOrUpdate - Create a DataflowGraphResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
-func (client *DataflowProfileClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, resource DataflowProfileResource, options *DataflowProfileClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *DataflowGraphClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, resource DataflowGraphResource, options *DataflowGraphClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DataflowProfileClient.BeginCreateOrUpdate"
+	const operationName = "DataflowGraphClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,8 +93,8 @@ func (client *DataflowProfileClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataflowProfileClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, resource DataflowProfileResource, _ *DataflowProfileClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}"
+func (client *DataflowGraphClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, resource DataflowGraphResource, _ *DataflowGraphClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -110,6 +111,10 @@ func (client *DataflowProfileClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dataflowProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataflowProfileName}", url.PathEscape(dataflowProfileName))
+	if dataflowGraphName == "" {
+		return nil, errors.New("parameter dataflowGraphName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataflowGraphName}", url.PathEscape(dataflowGraphName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -125,43 +130,44 @@ func (client *DataflowProfileClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// BeginDelete - Delete a DataflowProfileResource
+// BeginDelete - Delete a DataflowGraphResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowProfileName - Name of Instance dataflowProfile resource
-//   - options - DataflowProfileClientBeginDeleteOptions contains the optional parameters for the DataflowProfileClient.BeginDelete
+//   - dataflowGraphName - Name of Instance dataflowEndpoint resource.
+//   - options - DataflowGraphClientBeginDeleteOptions contains the optional parameters for the DataflowGraphClient.BeginDelete
 //     method.
-func (client *DataflowProfileClient) BeginDelete(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, options *DataflowProfileClientBeginDeleteOptions) (*runtime.Poller[DataflowProfileClientDeleteResponse], error) {
+func (client *DataflowGraphClient) BeginDelete(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, options *DataflowGraphClientBeginDeleteOptions) (*runtime.Poller[DataflowGraphClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, instanceName, dataflowProfileName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataflowProfileClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataflowGraphClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataflowProfileClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataflowGraphClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a DataflowProfileResource
+// Delete - Delete a DataflowGraphResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
-func (client *DataflowProfileClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, options *DataflowProfileClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DataflowGraphClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, options *DataflowGraphClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DataflowProfileClient.BeginDelete"
+	const operationName = "DataflowGraphClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -177,8 +183,8 @@ func (client *DataflowProfileClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataflowProfileClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, _ *DataflowProfileClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}"
+func (client *DataflowGraphClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, _ *DataflowGraphClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -195,6 +201,10 @@ func (client *DataflowProfileClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter dataflowProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataflowProfileName}", url.PathEscape(dataflowProfileName))
+	if dataflowGraphName == "" {
+		return nil, errors.New("parameter dataflowGraphName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataflowGraphName}", url.PathEscape(dataflowGraphName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -205,39 +215,40 @@ func (client *DataflowProfileClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// Get - Get a DataflowProfileResource
+// Get - Get a DataflowGraphResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowProfileName - Name of Instance dataflowProfile resource
-//   - options - DataflowProfileClientGetOptions contains the optional parameters for the DataflowProfileClient.Get method.
-func (client *DataflowProfileClient) Get(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, options *DataflowProfileClientGetOptions) (DataflowProfileClientGetResponse, error) {
+//   - dataflowGraphName - Name of Instance dataflowEndpoint resource.
+//   - options - DataflowGraphClientGetOptions contains the optional parameters for the DataflowGraphClient.Get method.
+func (client *DataflowGraphClient) Get(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, options *DataflowGraphClientGetOptions) (DataflowGraphClientGetResponse, error) {
 	var err error
-	const operationName = "DataflowProfileClient.Get"
+	const operationName = "DataflowGraphClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, options)
 	if err != nil {
-		return DataflowProfileClientGetResponse{}, err
+		return DataflowGraphClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DataflowProfileClientGetResponse{}, err
+		return DataflowGraphClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return DataflowProfileClientGetResponse{}, err
+		return DataflowGraphClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataflowProfileClient) getCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, _ *DataflowProfileClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}"
+func (client *DataflowGraphClient) getCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowGraphName string, _ *DataflowGraphClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -254,6 +265,10 @@ func (client *DataflowProfileClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter dataflowProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataflowProfileName}", url.PathEscape(dataflowProfileName))
+	if dataflowGraphName == "" {
+		return nil, errors.New("parameter dataflowGraphName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataflowGraphName}", url.PathEscape(dataflowGraphName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -266,47 +281,48 @@ func (client *DataflowProfileClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataflowProfileClient) getHandleResponse(resp *http.Response) (DataflowProfileClientGetResponse, error) {
-	result := DataflowProfileClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataflowProfileResource); err != nil {
-		return DataflowProfileClientGetResponse{}, err
+func (client *DataflowGraphClient) getHandleResponse(resp *http.Response) (DataflowGraphClientGetResponse, error) {
+	result := DataflowGraphClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataflowGraphResource); err != nil {
+		return DataflowGraphClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List DataflowProfileResource resources by InstanceResource
+// NewListByDataflowProfilePager - List DataflowGraphResource resources by DataflowProfileResource
 //
 // Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
-//   - options - DataflowProfileClientListByResourceGroupOptions contains the optional parameters for the DataflowProfileClient.NewListByResourceGroupPager
+//   - dataflowProfileName - Name of Instance dataflowProfile resource
+//   - options - DataflowGraphClientListByDataflowProfileOptions contains the optional parameters for the DataflowGraphClient.NewListByDataflowProfilePager
 //     method.
-func (client *DataflowProfileClient) NewListByResourceGroupPager(resourceGroupName string, instanceName string, options *DataflowProfileClientListByResourceGroupOptions) *runtime.Pager[DataflowProfileClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DataflowProfileClientListByResourceGroupResponse]{
-		More: func(page DataflowProfileClientListByResourceGroupResponse) bool {
+func (client *DataflowGraphClient) NewListByDataflowProfilePager(resourceGroupName string, instanceName string, dataflowProfileName string, options *DataflowGraphClientListByDataflowProfileOptions) *runtime.Pager[DataflowGraphClientListByDataflowProfileResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DataflowGraphClientListByDataflowProfileResponse]{
+		More: func(page DataflowGraphClientListByDataflowProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *DataflowProfileClientListByResourceGroupResponse) (DataflowProfileClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataflowProfileClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *DataflowGraphClientListByDataflowProfileResponse) (DataflowGraphClientListByDataflowProfileResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataflowGraphClient.NewListByDataflowProfilePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, instanceName, options)
+				return client.listByDataflowProfileCreateRequest(ctx, resourceGroupName, instanceName, dataflowProfileName, options)
 			}, nil)
 			if err != nil {
-				return DataflowProfileClientListByResourceGroupResponse{}, err
+				return DataflowGraphClientListByDataflowProfileResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			return client.listByDataflowProfileHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DataflowProfileClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, _ *DataflowProfileClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles"
+// listByDataflowProfileCreateRequest creates the ListByDataflowProfile request.
+func (client *DataflowGraphClient) listByDataflowProfileCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, _ *DataflowGraphClientListByDataflowProfileOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -319,6 +335,10 @@ func (client *DataflowProfileClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
+	if dataflowProfileName == "" {
+		return nil, errors.New("parameter dataflowProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataflowProfileName}", url.PathEscape(dataflowProfileName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -330,11 +350,11 @@ func (client *DataflowProfileClient) listByResourceGroupCreateRequest(ctx contex
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DataflowProfileClient) listByResourceGroupHandleResponse(resp *http.Response) (DataflowProfileClientListByResourceGroupResponse, error) {
-	result := DataflowProfileClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataflowProfileResourceListResult); err != nil {
-		return DataflowProfileClientListByResourceGroupResponse{}, err
+// listByDataflowProfileHandleResponse handles the ListByDataflowProfile response.
+func (client *DataflowGraphClient) listByDataflowProfileHandleResponse(resp *http.Response) (DataflowGraphClientListByDataflowProfileResponse, error) {
+	result := DataflowGraphClientListByDataflowProfileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataflowGraphResourceListResult); err != nil {
+		return DataflowGraphClientListByDataflowProfileResponse{}, err
 	}
 	return result, nil
 }

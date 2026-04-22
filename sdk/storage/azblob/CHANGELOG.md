@@ -10,7 +10,7 @@
 * Added support for Dynamic User Delegation SAS.
 
 ### Bugs Fixed
-* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`.This replaces `IncrementalCopyOfEralierVersionSnapshotNotAllowed` which has been deprecated.
+* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`. This replaces `IncrementalCopyOfEralierVersionSnapshotNotAllowed` which has been deprecated.
 * Added support for missing SKU name values.
 
 ## 1.6.4 (2026-01-12)

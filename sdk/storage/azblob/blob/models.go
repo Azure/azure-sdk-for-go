@@ -192,7 +192,9 @@ type DownloadFileOptions struct {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AccessTierConditions contains conditions based on access tier change time.
+// AccessTierConditions specifies conditions based on when the blob's access tier was last changed.
+// These conditions allow operations to be performed only if the access tier has or has not been
+// modified relative to the specified date/time.
 type AccessTierConditions struct {
 	// Specify this header value to operate only on a blob if the access-tier has been modified since the specified date/time.
 	IfModifiedSince *time.Time
@@ -213,7 +215,9 @@ type DeleteOptions struct {
 	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
 	BlobDeleteType *DeleteType
 
-	// AccessTierConditions contains conditions based on access tier change time.
+	// AccessTierConditions specifies optional conditions based on when the blob's access tier was last changed.
+	// These conditions allow operations to be performed only if the access tier has or has not been
+	// modified relative to the specified date/time.
 	AccessTierConditions *AccessTierConditions
 }
 

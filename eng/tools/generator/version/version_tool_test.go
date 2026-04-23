@@ -571,11 +571,14 @@ func TestRemoveRetractStatements(t *testing.T) {
 			"",
 		}
 		result := removeRetractStatements(lines)
-		for _, line := range result {
-			trimmed := strings.TrimSpace(line)
-			require.False(t, strings.HasPrefix(trimmed, "retract"), "retract block should have been removed")
-			require.NotEqual(t, ")", trimmed, "closing paren of retract block should have been removed")
+		expected := []string{
+			"module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2",
+			"",
+			"go 1.25.0",
+			"",
+			"",
 		}
+		require.Equal(t, expected, result)
 	})
 
 	t.Run("No retract lines", func(t *testing.T) {

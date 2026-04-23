@@ -172,7 +172,7 @@ func removeRetractStatements(lines []string) []string {
 	for _, line := range lines {
 		trimmed := strings.TrimSpace(line)
 		if inRetractBlock {
-			if trimmed == ")" {
+			if trimmed == ")" || strings.HasPrefix(trimmed, ")") {
 				inRetractBlock = false
 			}
 			continue

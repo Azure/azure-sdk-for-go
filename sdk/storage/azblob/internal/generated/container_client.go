@@ -12,7 +12,7 @@ import (
 )
 
 func (client *ContainerClient) Endpoint() string {
-	return client.endpoint
+	return client.url
 }
 
 func (client *ContainerClient) InternalClient() *azcore.Client {
@@ -41,8 +41,27 @@ func (client *ContainerClient) ListBlobHierarchySegmentApacheArrowHandleResponse
 func NewContainerClient(endpoint string, azClient *azcore.Client) *ContainerClient {
 	client := &ContainerClient{
 		internal: azClient,
-		endpoint: endpoint,
-		version:  ServiceVersion,
+		url:      endpoint,
 	}
 	return client
+}
+
+// ListBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request.
+func (client *ContainerClient) ListBlobFlatSegmentCreateRequest(ctx context.Context, options *ContainerClientListBlobFlatSegmentOptions) (*policy.Request, error) {
+	return client.listBlobFlatSegmentCreateRequest(ctx, options)
+}
+
+// ListBlobFlatSegmentHandleResponse handles the ListBlobFlatSegment response.
+func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Response) (ContainerClientListBlobFlatSegmentResponse, error) {
+	return client.listBlobFlatSegmentHandleResponse(resp)
+}
+
+// ListBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
+func (client *ContainerClient) ListBlobHierarchySegmentCreateRequest(ctx context.Context, delimiter string, options *ContainerClientListBlobHierarchySegmentOptions) (*policy.Request, error) {
+	return client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, options)
+}
+
+// ListBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
+func (client *ContainerClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (ContainerClientListBlobHierarchySegmentResponse, error) {
+	return client.listBlobHierarchySegmentHandleResponse(resp)
 }

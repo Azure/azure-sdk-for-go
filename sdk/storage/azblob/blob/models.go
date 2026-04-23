@@ -430,7 +430,7 @@ func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *Modifie
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions)
+	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions, modifiedAccessConditions)
 	return options, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions
 }
 
@@ -460,7 +460,7 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.BlobAccessConditions)
-	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions)
+	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions, modifiedAccessConditions)
 	return options, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions
 }
 

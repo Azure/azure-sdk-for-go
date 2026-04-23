@@ -41,15 +41,36 @@ type ModifiedAccessConditions = generated.ModifiedAccessConditions
 
 type BlobModifiedAccessConditions = generated.BlobModifiedAccessConditions
 
-func FormatBlobModifiedAccessConditions(src *BlobModifiedAccessConditions) *BlobModifiedAccessConditions {
-	if src == nil {
+func FormatBlobModifiedAccessConditions(src *BlobModifiedAccessConditions, mac *ModifiedAccessConditions) *BlobModifiedAccessConditions {
+	if src == nil && mac == nil {
 		return nil
 	}
 
-	return &BlobModifiedAccessConditions{
-		IfMatch:           src.IfMatch,
-		IfModifiedSince:   src.IfModifiedSince,
-		IfNoneMatch:       src.IfNoneMatch,
-		IfUnmodifiedSince: src.IfUnmodifiedSince,
+	result := &BlobModifiedAccessConditions{}
+
+	// Start with values from ModifiedAccessConditions as fallback
+	if mac != nil {
+		result.IfMatch = mac.IfMatch
+		result.IfNoneMatch = mac.IfNoneMatch
+		result.IfModifiedSince = mac.IfModifiedSince
+		result.IfUnmodifiedSince = mac.IfUnmodifiedSince
 	}
+
+	// Override with values from BlobModifiedAccessConditions (takes precedence)
+	if src != nil {
+		if src.IfMatch != nil {
+			result.IfMatch = src.IfMatch
+		}
+		if src.IfNoneMatch != nil {
+			result.IfNoneMatch = src.IfNoneMatch
+		}
+		if src.IfModifiedSince != nil {
+			result.IfModifiedSince = src.IfModifiedSince
+		}
+		if src.IfUnmodifiedSince != nil {
+			result.IfUnmodifiedSince = src.IfUnmodifiedSince
+		}
+	}
+
+	return result
 }

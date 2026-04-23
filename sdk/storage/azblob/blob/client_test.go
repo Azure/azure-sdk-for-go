@@ -2432,7 +2432,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceTrue() {
 	conditionTime := tierChangeTime.Add(-10 * time.Second)
 
 	deleteBlobOptions := blob.DeleteOptions{
-		AccessTierIfModifiedSince: &conditionTime,
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfModifiedSince: &conditionTime,
+		},
 	}
 	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
 	_require.NoError(err)
@@ -2466,7 +2468,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceFalse() 
 	conditionTime := tierChangeTime.Add(10 * time.Second)
 
 	deleteBlobOptions := blob.DeleteOptions{
-		AccessTierIfModifiedSince: &conditionTime,
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfModifiedSince: &conditionTime,
+		},
 	}
 	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
 	testcommon.ValidateBlobErrorCode(_require, err, "AccessTierChangeTimeConditionNotMet")
@@ -2498,7 +2502,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceTrue()
 	conditionTime := tierChangeTime.Add(10 * time.Second)
 
 	deleteBlobOptions := blob.DeleteOptions{
-		AccessTierIfUnmodifiedSince: &conditionTime,
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfUnmodifiedSince: &conditionTime,
+		},
 	}
 	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
 	_require.NoError(err)
@@ -2532,7 +2538,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceFalse(
 	conditionTime := tierChangeTime.Add(-10 * time.Second)
 
 	deleteBlobOptions := blob.DeleteOptions{
-		AccessTierIfUnmodifiedSince: &conditionTime,
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfUnmodifiedSince: &conditionTime,
+		},
 	}
 	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
 	testcommon.ValidateBlobErrorCode(_require, err, "AccessTierChangeTimeConditionNotMet")

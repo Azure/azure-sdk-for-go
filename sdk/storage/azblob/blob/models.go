@@ -213,6 +213,7 @@ type DeleteOptions struct {
 	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
 	BlobDeleteType *DeleteType
 
+	// AccessTierConditions contains conditions based on access tier change time.
 	AccessTierConditions *AccessTierConditions
 }
 

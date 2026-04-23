@@ -4071,3 +4071,203 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 	}
 	_require.True(found, "Tag not found")
 }
+
+func (s *BlobRecordedTestsSuite) TestSetTagsAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), nil)
+	_require.NoError(err)
+
+	props, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	etag := props.ETag
+
+	tags := map[string]string{"key1": "val1"}
+
+	// IfMatch set only in AccessConditions.ModifiedAccessConditions (should fall back to BlobModifiedAccessConditions)
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: etag,
+			},
+		},
+	})
+	_require.NoError(err)
+
+	// IfNoneMatch set only in AccessConditions.ModifiedAccessConditions (should fail with wrong etag)
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: etag,
+			},
+		},
+	})
+	_require.Error(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestSetTagsBlobModifiedAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), nil)
+	_require.NoError(err)
+
+	props, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	etag := props.ETag
+
+	tags := map[string]string{"key2": "val2"}
+	wrongETag := azcore.ETag("0x1111111111111111")
+
+	// AccessConditions has wrong IfMatch, but BlobModifiedAccessConditions has correct IfMatch.
+	// BlobModifiedAccessConditions should take precedence, so this should succeed.
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: &wrongETag,
+			},
+		},
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfMatch: etag,
+		},
+	})
+	_require.NoError(err)
+
+	// AccessConditions has correct IfMatch, but BlobModifiedAccessConditions has wrong IfMatch.
+	// BlobModifiedAccessConditions should take precedence, so this should fail.
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: etag,
+			},
+		},
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfMatch: &wrongETag,
+		},
+	})
+	_require.Error(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestGetTagsAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), nil)
+	_require.NoError(err)
+
+	tags := map[string]string{"key3": "val3"}
+	_, err = bbClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	props, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	etag := props.ETag
+
+	// IfMatch set only in BlobAccessConditions.ModifiedAccessConditions (should fall back to BlobModifiedAccessConditions)
+	getResp, err := bbClient.GetTags(context.Background(), &blob.GetTagsOptions{
+		BlobAccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: etag,
+			},
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(getResp.BlobTagSet)
+
+	// IfNoneMatch set only in BlobAccessConditions.ModifiedAccessConditions (should fail)
+	_, err = bbClient.GetTags(context.Background(), &blob.GetTagsOptions{
+		BlobAccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: etag,
+			},
+		},
+	})
+	_require.Error(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestGetTagsBlobModifiedAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), nil)
+	_require.NoError(err)
+
+	tags := map[string]string{"key4": "val4"}
+	_, err = bbClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	props, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	etag := props.ETag
+	wrongETag := azcore.ETag("0x1111111111111111")
+
+	// BlobAccessConditions has wrong IfMatch, BlobModifiedAccessConditions has correct IfMatch.
+	// BlobModifiedAccessConditions should take precedence, so this should succeed.
+	getResp, err := bbClient.GetTags(context.Background(), &blob.GetTagsOptions{
+		BlobAccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: &wrongETag,
+			},
+		},
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfMatch: etag,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(getResp.BlobTagSet)
+
+	// BlobAccessConditions has correct IfMatch, BlobModifiedAccessConditions has wrong IfMatch.
+	// BlobModifiedAccessConditions should take precedence, so this should fail.
+	_, err = bbClient.GetTags(context.Background(), &blob.GetTagsOptions{
+		BlobAccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: etag,
+			},
+		},
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfMatch: &wrongETag,
+		},
+	})
+	_require.Error(err)
+}

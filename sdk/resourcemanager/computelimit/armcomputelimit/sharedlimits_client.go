@@ -42,7 +42,7 @@ func NewSharedLimitsClient(subscriptionID string, credential azcore.TokenCredent
 // Create - Enables sharing of a compute limit by the host subscription with its guest subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - name - The name of the SharedLimit
 //   - resource - Resource create parameters.
@@ -89,7 +89,7 @@ func (client *SharedLimitsClient) createCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-20")
+	reqQP.Set("api-version", "2026-04-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -111,7 +111,7 @@ func (client *SharedLimitsClient) createHandleResponse(resp *http.Response) (Sha
 // Delete - Disables sharing of a compute limit by the host subscription with its guest subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - name - The name of the SharedLimit
 //   - options - SharedLimitsClientDeleteOptions contains the optional parameters for the SharedLimitsClient.Delete method.
@@ -156,7 +156,7 @@ func (client *SharedLimitsClient) deleteCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-20")
+	reqQP.Set("api-version", "2026-04-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -164,7 +164,7 @@ func (client *SharedLimitsClient) deleteCreateRequest(ctx context.Context, locat
 // Get - Gets the properties of a compute limit shared by the host subscription with its guest subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - name - The name of the SharedLimit
 //   - options - SharedLimitsClientGetOptions contains the optional parameters for the SharedLimitsClient.Get method.
@@ -210,7 +210,7 @@ func (client *SharedLimitsClient) getCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-20")
+	reqQP.Set("api-version", "2026-04-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -227,7 +227,7 @@ func (client *SharedLimitsClient) getHandleResponse(resp *http.Response) (Shared
 
 // NewListBySubscriptionLocationResourcePager - Lists all compute limits shared by the host subscription with its guest subscriptions.
 //
-// Generated from API version 2026-03-20
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - options - SharedLimitsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the SharedLimitsClient.NewListBySubscriptionLocationResourcePager
 //     method.
@@ -270,7 +270,7 @@ func (client *SharedLimitsClient) listBySubscriptionLocationResourceCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-20")
+	reqQP.Set("api-version", "2026-04-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

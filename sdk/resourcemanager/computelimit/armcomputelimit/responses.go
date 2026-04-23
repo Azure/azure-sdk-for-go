@@ -4,6 +4,12 @@
 
 package armcomputelimit
 
+// FeaturesClientDisableResponse contains the response from method FeaturesClient.BeginDisable.
+type FeaturesClientDisableResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // FeaturesClientEnableResponse contains the response from method FeaturesClient.BeginEnable.
 type FeaturesClientEnableResponse struct {
 	// The current status of an async operation.
@@ -72,4 +78,16 @@ type SharedLimitsClientGetResponse struct {
 type SharedLimitsClientListBySubscriptionLocationResourceResponse struct {
 	// The response of a SharedLimit list operation.
 	SharedLimitListResult
+}
+
+// VMFamiliesClientGetResponse contains the response from method VMFamiliesClient.Get.
+type VMFamiliesClientGetResponse struct {
+	// VM family resource representing a virtual machine family and its category.
+	VMFamily
+}
+
+// VMFamiliesClientListBySubscriptionLocationResourceResponse contains the response from method VMFamiliesClient.NewListBySubscriptionLocationResourcePager.
+type VMFamiliesClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a VmFamily list operation.
+	VMFamilyListResult
 }

@@ -254,3 +254,39 @@ type SystemData struct {
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
 }
+
+// VMFamily - VM family resource representing a virtual machine family and its category.
+type VMFamily struct {
+	// The resource-specific properties for this resource.
+	Properties *VMFamilyProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VMFamilyListResult - The response of a VmFamily list operation.
+type VMFamilyListResult struct {
+	// REQUIRED; The VmFamily items on this page
+	Value []*VMFamily
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// VMFamilyProperties - Properties of a VM family resource.
+type VMFamilyProperties struct {
+	// The category of the VM family (for example, GeneralPurpose, ComputeOptimized).
+	Category *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}

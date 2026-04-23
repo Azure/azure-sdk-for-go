@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-20/SharedLimits_Create.json
+// Generated from example definition: 2026-04-30/SharedLimits_Create.json
 func ExampleSharedLimitsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleSharedLimitsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputelimit.SharedLimitsClientCreateResponse{
-	// 	SharedLimit: &armcomputelimit.SharedLimit{
+	// 	SharedLimit: armcomputelimit.SharedLimit{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimits/StandardDSv3Family"),
 	// 		Name: to.Ptr("StandardDSv3Family"),
 	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimits"),
@@ -49,7 +49,7 @@ func ExampleSharedLimitsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-20/SharedLimits_Delete.json
+// Generated from example definition: 2026-04-30/SharedLimits_Delete.json
 func ExampleSharedLimitsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleSharedLimitsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-20/SharedLimits_Get.json
+// Generated from example definition: 2026-04-30/SharedLimits_Get.json
 func ExampleSharedLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleSharedLimitsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputelimit.SharedLimitsClientGetResponse{
-	// 	SharedLimit: &armcomputelimit.SharedLimit{
+	// 	SharedLimit: armcomputelimit.SharedLimit{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimits/StandardDSv3Family"),
 	// 		Name: to.Ptr("StandardDSv3Family"),
 	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimits"),
@@ -107,7 +107,7 @@ func ExampleSharedLimitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-20/SharedLimits_List.json
+// Generated from example definition: 2026-04-30/SharedLimits_List.json
 func ExampleSharedLimitsClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

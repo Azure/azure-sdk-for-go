@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.1.0-beta.1 (2026-04-22)
+### 2.1.0-beta.1 (2026-04-23)
 
 #### Features Added
 * Added support for service version 2026-04-06.

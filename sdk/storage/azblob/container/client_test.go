@@ -1761,6 +1761,11 @@ func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1972,6 +1977,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessCon
 // }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2010,6 +2020,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2065,6 +2080,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2161,6 +2181,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsNilPolicySlice(
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

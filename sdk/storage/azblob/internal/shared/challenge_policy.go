@@ -18,6 +18,19 @@ type storageAuthorizer struct {
 	tenantID string
 }
 
+type RangePolicy struct {
+}
+
+// Do authorizes a request with a bearer token
+func (b *RangePolicy) Do(req *policy.Request) (*http.Response, error) {
+	if headerValue := req.Raw().Header.Get("Range"); headerValue != "" {
+		req.Raw().Header.Del("Range")
+		req.Raw().Header["x-ms-range"] = []string{headerValue}
+	}
+
+	return req.Next()
+}
+
 func NewStorageChallengePolicy(cred azcore.TokenCredential, audience string, allowHTTP bool) policy.Policy {
 	s := storageAuthorizer{scopes: []string{audience}}
 	return runtime.NewBearerTokenPolicy(cred, []string{audience}, &policy.BearerTokenOptions{

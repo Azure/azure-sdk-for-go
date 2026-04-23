@@ -3,4 +3,7 @@
 
 package generated
 
-const ServiceVersion = "2026-06-06"
+const ServiceVersion = "2026-04-06"
+
+// StorageErrorCode - Error codes returned by the service
+type StorageErrorCode string

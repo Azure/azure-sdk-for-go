@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/ManagedNamespacesCreate_Update.json
+// Generated from example definition: 2026-02-02-preview/ManagedNamespacesCreate_Update.json
 func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ManagedNamespacesDelete.json
+// Generated from example definition: 2026-02-02-preview/ManagedNamespacesDelete.json
 func ExampleManagedNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleManagedNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/ManagedNamespacesGet.json
+// Generated from example definition: 2026-02-02-preview/ManagedNamespacesGet.json
 func ExampleManagedNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleManagedNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ManagedNamespacesList.json
+// Generated from example definition: 2026-02-02-preview/ManagedNamespacesList.json
 func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/ManagedNamespacesListCredentialResult.json
+// Generated from example definition: 2026-02-02-preview/ManagedNamespacesListCredentialResult.json
 func ExampleManagedNamespacesClient_ListCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleManagedNamespacesClient_ListCredential() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ManagedNamespacesUpdateTags.json
+// Generated from example definition: 2026-02-02-preview/ManagedNamespacesUpdateTags.json
 func ExampleManagedNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

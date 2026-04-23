@@ -192,10 +192,12 @@ func (b *BackupVaultsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 			return nil, err
 		}
 		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		xMSDeletedVaultIDParam := getOptional(getHeaderValue(req.Header, "x-ms-deleted-vault-id"))
 		var options *armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions
-		if xMSAuthorizationAuxiliaryParam != nil {
+		if xMSAuthorizationAuxiliaryParam != nil || xMSDeletedVaultIDParam != nil {
 			options = &armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions{
 				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+				XMSDeletedVaultID:         xMSDeletedVaultIDParam,
 			}
 		}
 		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, options)

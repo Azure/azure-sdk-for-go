@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
@@ -220,7 +221,7 @@ func Example_blob_Client_StartCopyFromURL() {
 	copyID := *startCopy.CopyID
 	copyStatus := *startCopy.CopyStatus
 	for copyStatus == blob.CopyStatusTypePending {
-		time.Sleep(time.Second * 2)
+		recording.Sleep(time.Second * 2)
 		getMetadata, err := blobClient.GetProperties(context.TODO(), nil)
 		if err != nil {
 			log.Fatal(err)

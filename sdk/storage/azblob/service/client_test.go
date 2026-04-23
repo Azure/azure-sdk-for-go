@@ -618,7 +618,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -630,7 +630,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err = svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -649,7 +649,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -672,7 +672,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -683,7 +683,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(context.Background(), nil)
@@ -978,7 +978,7 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 
 	// it appears that deleting the container involves acquiring a lease.
 	// since leases can only be 15-60s or infinite, we just wait for 60 seconds.
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 	prefix := testcommon.ContainerPrefix
 	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true, Deleted: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
@@ -1011,7 +1011,7 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 			break
 		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
 			// the container is still being restored, sleep a bit then try again
-			time.Sleep(10 * time.Second)
+			recording.Sleep(10 * time.Second)
 		} else {
 			// some other error
 			break
@@ -1178,7 +1178,7 @@ func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NoError(err)
 	_require.NotNil(createResp.VersionID)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)

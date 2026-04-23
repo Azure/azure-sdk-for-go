@@ -1912,7 +1912,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	policy1 := blob.ImmutabilityPolicyMode("unlocked")
 	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
 
-	time.Sleep(time.Second * 7)
+	recording.Sleep(time.Second * 7)
 
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
 	_require.NoError(err)
@@ -3502,7 +3502,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -3513,7 +3513,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -3556,7 +3556,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -3567,7 +3567,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -3753,7 +3753,7 @@ func (s *BlockBlobRecordedTestsSuite) TestORSSource() {
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
-//	time.Sleep(time.Second * 2)
+//	recording.Sleep(time.Second * 2)
 //
 //	//Attach SAS query to block blob URL
 //	snapParts := NewBlobURLParts(blobURL.URL())
@@ -4429,7 +4429,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	blobClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName2, containerClient)
 	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
 	_require.NoError(err)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	blobTagsResp, err := blobClient2.GetTags(context.Background(), nil)
 	_require.NoError(err)
@@ -4509,7 +4509,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 //		_assert(blobTagsMap[blobTag.Key], chk.Equals, blobTag.Value)
 //	}
 //
-//	time.Sleep(30 * time.Second)
+//	recording.Sleep(30 * time.Second)
 //	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
 //	_, err = serviceURL.FindBlobsByTags(context.Background(), nil, nil, &where, Marker{}, nil)
 //	_require.NoError(err)
@@ -5490,7 +5490,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToNow() {
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -5518,7 +5518,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToCreation()
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -5548,7 +5548,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	_require.NotNil(resp.ExpiresOn)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp.ExpiresOn.UTC().Format(http.TimeFormat))
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -5570,7 +5570,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 

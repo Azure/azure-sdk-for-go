@@ -109,7 +109,6 @@ type AppendBlockOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-// TODO transfer validation fix
 func (o *AppendBlockOptions) format() *generated.AppendBlobClientAppendBlockOptions {
 	if o == nil {
 		return nil

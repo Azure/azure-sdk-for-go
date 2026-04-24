@@ -146,11 +146,14 @@ func UpdateModuleDefinition(modulePath string, version *semver.Version, sdkRepo 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, "module") {
-			line = strings.TrimRight(line, "\r")
-			parts := strings.Split(line, "/")
-			if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
-				majorVersionChanged = true
-				lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", moduleRelativePath, version.Major())
+			fields := strings.Fields(line)
+			if len(fields) >= 2 {
+				moduleDefinitionPath := fields[1]
+				parts := strings.Split(moduleDefinitionPath, "/")
+				if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
+					majorVersionChanged = true
+					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", moduleRelativePath, version.Major())
+				}
 			}
 			break
 		}

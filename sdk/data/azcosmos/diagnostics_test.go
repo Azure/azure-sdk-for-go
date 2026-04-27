@@ -317,6 +317,21 @@ func TestDiagnosticsFromErrorReturnsResponseDiagnostics(t *testing.T) {
 	require.Equal(t, float64(http.StatusNotFound), pointStats["StatusCode"])
 }
 
+func TestWrappedRequestErrorPreservesErrorsAs(t *testing.T) {
+	rootTrace := newFixedTrace("sample_operation", fixedDiagnosticsTime(0), fixedDiagnosticsTime(40*time.Millisecond), nil)
+	originalErr := &diagnosticsTestError{message: "network failure"}
+
+	wrappedErr := wrapRequestError(originalErr, newDiagnostics(rootTrace))
+
+	var target *diagnosticsTestError
+	require.True(t, errors.As(wrappedErr, &target))
+	require.Same(t, originalErr, target)
+
+	diagnostics, ok := DiagnosticsFromError(wrappedErr)
+	require.True(t, ok)
+	require.NotEmpty(t, diagnostics.String())
+}
+
 func TestDiagnosticsFromErrorRendersSampleJSON(t *testing.T) {
 	requestTrace := newFixedTrace(traceDatumKeyTransportRequest, fixedDiagnosticsTime(0), fixedDiagnosticsTime(40*time.Millisecond), nil)
 	requestTrace.AddDatum(traceDatumKeyPointOperationStatistics, pointOperationStatisticsTraceDatum{
@@ -634,4 +649,12 @@ func requireRenderedDiagnosticsJSON(t *testing.T, expected string, actual string
 	var compact bytes.Buffer
 	require.NoError(t, json.Compact(&compact, []byte(expected)))
 	require.Equal(t, compact.String(), actual)
+}
+
+type diagnosticsTestError struct {
+	message string
+}
+
+func (e *diagnosticsTestError) Error() string {
+	return e.message
 }

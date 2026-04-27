@@ -570,6 +570,68 @@ func TestReadManyItemsDiagnosticsAreStableAfterReturn(t *testing.T) {
 	require.Equal(t, firstPayload, secondPayload)
 }
 
+func TestReadManyItemsErrorPreservesDiagnostics(t *testing.T) {
+	containerBody, err := json.Marshal(ContainerProperties{
+		ID: "testcontainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	})
+	require.NoError(t, err)
+
+	rangeBody, err := json.Marshal(partitionKeyRangeResponse{
+		PartitionKeyRanges: []partitionKeyRange{
+			{
+				ID:           "0",
+				MinInclusive: "",
+				MaxExclusive: "",
+			},
+		},
+		Count: 1,
+	})
+	require.NoError(t, err)
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	srv.AppendResponse(
+		mock.WithBody(containerBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "container-read"),
+	)
+	srv.AppendResponse(
+		mock.WithBody(rangeBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "range-read"),
+	)
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"Documents":[`)),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "query-read"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.5"),
+	)
+
+	container := newTestDiagnosticsContainer(t, srv, false)
+
+	_, err = container.ReadManyItems(context.Background(), []ItemIdentity{
+		{
+			ID:           "item1",
+			PartitionKey: NewPartitionKeyString("pk1"),
+		},
+	}, nil)
+	require.Error(t, err)
+
+	diagnostics, ok := DiagnosticsFromError(err)
+	require.True(t, ok)
+
+	var parsed map[string]any
+	require.NoError(t, json.Unmarshal([]byte(diagnostics.String()), &parsed))
+	require.Equal(t, "read_many_items testcontainer", parsed["name"])
+
+	children := parsed["children"].([]any)
+	require.NotEmpty(t, children)
+}
+
 func newTestDiagnosticsClient(t *testing.T, transport policy.Transporter, withRetryPolicy bool) *Client {
 	t.Helper()
 

@@ -25,6 +25,26 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
+// SessionMode contains the possible values for session-based authentication modes.
+type SessionMode = base.SessionMode
+
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault SessionMode = base.SessionModeDefault
+	// SessionModeOff explicitly disables session-based authentication.
+	SessionModeOff SessionMode = base.SessionModeOff
+	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.
+	SessionModeSingleSpecifiedContainer SessionMode = base.SessionModeSingleSpecifiedContainer
+)
+
+// PossibleSessionModeValues returns a slice of possible values for SessionMode.
+func PossibleSessionModeValues() []SessionMode {
+	return base.PossibleSessionModeValues()
+}
+
+// SessionOptions contains the optional parameters for session-based authentication.
+type SessionOptions = base.SessionOptions
+
 // Client represents a client to an Azure Storage page blob;
 type Client base.CompositeClient[generated.BlobClient, generated.PageBlobClient]
 
@@ -33,12 +53,7 @@ type Client base.CompositeClient[generated.BlobClient, generated.PageBlobClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	audience := base.GetAudience((*base.ClientOptions)(options))
-	conOptions := shared.GetClientOptions(options)
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
-
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, cred, (*base.ClientOptions)(options))
 	if err != nil {
 		return nil, err
 	}

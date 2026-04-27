@@ -912,6 +912,17 @@ type ContainerClientCreateOptions struct {
 	Timeout *int32
 }
 
+// ContainerClientCreateSessionOptions contains the optional parameters for the ContainerClient.CreateSession method.
+type ContainerClientCreateSessionOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
+	// [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations]
+	Timeout *int32
+}
+
 // ContainerClientDeleteOptions contains the optional parameters for the ContainerClient.Delete method.
 type ContainerClientDeleteOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage

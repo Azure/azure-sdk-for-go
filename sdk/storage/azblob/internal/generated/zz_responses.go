@@ -652,6 +652,9 @@ type BlobClientGetPropertiesResponse struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
+	// SmartAccessTier contains the information returned from the x-ms-smart-access-tier header response.
+	SmartAccessTier *string
+
 	// TagCount contains the information returned from the x-ms-tag-count header response.
 	TagCount *int64
 
@@ -1319,6 +1322,11 @@ type ContainerClientCreateResponse struct {
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
+}
+
+// ContainerClientCreateSessionResponse contains the response from method ContainerClient.CreateSession.
+type ContainerClientCreateSessionResponse struct {
+	CreateSessionResponse
 }
 
 // ContainerClientDeleteResponse contains the response from method ContainerClient.Delete.

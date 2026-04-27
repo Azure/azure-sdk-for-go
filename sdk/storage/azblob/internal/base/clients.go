@@ -7,10 +7,32 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
+
+// SessionMode contains the possible values for session-based authentication modes.
+type SessionMode = exported.SessionMode
+
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault SessionMode = exported.SessionModeDefault
+	// SessionModeOff explicitly disables session-based authentication.
+	SessionModeOff SessionMode = exported.SessionModeOff
+	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.
+	SessionModeSingleSpecifiedContainer SessionMode = exported.SessionModeSingleSpecifiedContainer
+)
+
+// PossibleSessionModeValues returns a slice of possible values for SessionMode.
+func PossibleSessionModeValues() []SessionMode {
+	return exported.PossibleSessionModeValues()
+}
+
+// SessionOptions contains the optional parameters for session-based authentication.
+type SessionOptions = exported.SessionOptions
 
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions struct {
@@ -20,6 +42,10 @@ type ClientOptions struct {
 	// Only has an effect when credential is of type TokenCredential. The value could be
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
 	Audience string
+
+	// SessionOptions configures session-based authentication behavior.
+	// Only has an effect when credential is of type TokenCredential.
+	SessionOptions SessionOptions
 }
 
 type Client[T any] struct {
@@ -55,6 +81,43 @@ func GetAudience(clOpts *ClientOptions) string {
 	} else {
 		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
 	}
+}
+
+func GetAzClient(storageURL string, cred azcore.TokenCredential, options *ClientOptions) (*azcore.Client, error) {
+	audience := GetAudience(options)
+	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+	oauthPlOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	oauthAzClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, oauthPlOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	if options == nil || options.SessionOptions.Mode == SessionModeOff || options.SessionOptions.Mode == SessionModeDefault {
+		return oauthAzClient, nil
+	}
+	oAuthServiceClient, err := getServiceClient(storageURL, oauthAzClient, &cred, conOptions)
+	if err != nil {
+		return nil, err
+	}
+	sessionPolicy, err := exported.NewSessionPolicy(options.SessionOptions, authPolicy, oAuthServiceClient)
+	if err != nil {
+		return nil, err
+	}
+
+	sessionPlOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{sessionPolicy}}
+	sessionAzClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, sessionPlOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return sessionAzClient, nil
+}
+
+func getServiceClient(storageURL string, azClient *azcore.Client, cred any, conOptions *ClientOptions) (*generated.ServiceClient, error) {
+	serviceURL, err := shared.GetServiceURL(storageURL)
+	if err != nil {
+		return nil, err
+	}
+	return InnerClient(NewServiceClient(serviceURL, azClient, &cred, conOptions)), nil
 }
 
 func NewClient[T any](inner *T) *Client[T] {

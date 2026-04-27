@@ -147,6 +147,7 @@ type BlobProperties struct {
 	RemainingRetentionDays *int32             `xml:"RemainingRetentionDays"`
 	ResourceType           *string            `xml:"ResourceType"`
 	ServerEncrypted        *bool              `xml:"ServerEncrypted"`
+	SmartAccessTier        *AccessTier        `xml:"SmartAccessTier"`
 	TagCount               *int32             `xml:"TagCount"`
 }
 
@@ -251,6 +252,23 @@ type CORSRule struct {
 
 	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
+}
+
+type CreateSessionConfiguration struct {
+	// REQUIRED; The type of authentication required to create the session. The only type currently supported is HMAC.
+	AuthenticationType *AuthenticationType `xml:"AuthenticationType"`
+}
+
+type CreateSessionResponse struct {
+	// The type of authentication required to create the session. The only type currently supported is HMAC.
+	AuthenticationType *AuthenticationType `xml:"AuthenticationType"`
+	Credentials        *SessionCredentials `xml:"Credentials"`
+
+	// The time when the session will expire. The format follows RFC 1123.
+	Expiration *time.Time `xml:"Expiration"`
+
+	// A unique identifier for the created session.
+	ID *string `xml:"Id"`
 }
 
 // DelimitedTextConfiguration - Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
@@ -466,6 +484,15 @@ type RetentionPolicy struct {
 	// Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this
 	// value will be deleted
 	Days *int32 `xml:"Days"`
+}
+
+type SessionCredentials struct {
+	// Only returned when AuthenticationType is HMAC. A symmetric encryption key used to sign requests in the session using the
+	// Shared Key protocol.
+	SessionKey *string `xml:"SessionKey"`
+
+	// An opaque token used to authorize subsequent requests in the session. Must be treated as a security credential.
+	SessionToken *string `xml:"SessionToken"`
 }
 
 // SignedIdentifier - signed identifier

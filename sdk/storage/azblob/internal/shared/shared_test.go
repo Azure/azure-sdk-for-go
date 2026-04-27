@@ -207,3 +207,54 @@ func TestIsIPEndpointStyle(t *testing.T) {
 	require.True(t, IsIPEndpointStyle("127.0.0.1"))
 	require.True(t, IsIPEndpointStyle("127.0.0.1:80"))
 }
+
+func TestGetServiceURL(t *testing.T) {
+	tests := []struct {
+		name        string
+		inputURL    string
+		expectedURL string
+		expectError bool
+		errorSubstr string
+	}{
+		// Standard-style URLs
+		{"StandardBlobURL", "https://account.blob.core.windows.net/container/blob", "https://account.blob.core.windows.net/", false, ""},
+		{"StandardContainerURL", "https://account.blob.core.windows.net/container", "https://account.blob.core.windows.net/", false, ""},
+		{"StandardServiceURL", "https://account.blob.core.windows.net/", "https://account.blob.core.windows.net/", false, ""},
+		{"StandardServiceURLNoTrailingSlash", "https://account.blob.core.windows.net", "https://account.blob.core.windows.net/", false, ""},
+
+		// IP-style URLs (Azurite/emulator)
+		{"IPStyleBlobURL", "https://127.0.0.1:10000/devstoreaccount1/container/blob", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+		{"IPStyleContainerURL", "https://127.0.0.1:10000/devstoreaccount1/container", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+		{"IPStyleServiceURL", "https://127.0.0.1:10000/devstoreaccount1/", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+		{"IPStyleServiceURLNoTrailingSlash", "https://127.0.0.1:10000/devstoreaccount1", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+
+		// SAS token preservation
+		{"StandardURLWithSAS", "https://account.blob.core.windows.net/container/blob?sv=2021-06-08&ss=b&srt=sco&sig=test", "https://account.blob.core.windows.net/?sv=2021-06-08&ss=b&srt=sco&sig=test", false, ""},
+		{"IPStyleURLWithSAS", "https://127.0.0.1:10000/devstoreaccount1/container?sv=2021-06-08&sig=test", "https://127.0.0.1:10000/devstoreaccount1/?sv=2021-06-08&sig=test", false, ""},
+
+		// HTTP scheme
+		{"HTTPScheme", "http://account.blob.core.windows.net/container", "http://account.blob.core.windows.net/", false, ""},
+
+		// Custom domain
+		{"CustomDomain", "https://mydomain.com/container/blob", "https://mydomain.com/", false, ""},
+
+		// China cloud
+		{"ChinaCloud", "https://account.blob.core.chinacloudapi.cn/container", "https://account.blob.core.chinacloudapi.cn/", false, ""},
+		// Error cases
+		{"IPStyleMissingAccountName", "https://127.0.0.1:10000/", "", true, "missing the account name"},
+		{"IPStyleEmptyPath", "https://127.0.0.1:10000", "", true, "missing the account name"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			serviceURL, err := GetServiceURL(tt.inputURL)
+			if tt.expectError {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), tt.errorSubstr)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, tt.expectedURL, serviceURL)
+			}
+		})
+	}
+}

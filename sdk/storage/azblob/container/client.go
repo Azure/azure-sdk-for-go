@@ -31,6 +31,26 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
+// SessionMode contains the possible values for session-based authentication modes.
+type SessionMode = base.SessionMode
+
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault SessionMode = base.SessionModeDefault
+	// SessionModeOff explicitly disables session-based authentication.
+	SessionModeOff SessionMode = base.SessionModeOff
+	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.
+	SessionModeSingleSpecifiedContainer SessionMode = base.SessionModeSingleSpecifiedContainer
+)
+
+// PossibleSessionModeValues returns a slice of possible values for SessionMode.
+func PossibleSessionModeValues() []SessionMode {
+	return base.PossibleSessionModeValues()
+}
+
+// SessionOptions contains the optional parameters for session-based authentication.
+type SessionOptions = base.SessionOptions
+
 // Client represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type Client base.Client[generated.ContainerClient]
 
@@ -39,12 +59,8 @@ type Client base.Client[generated.ContainerClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
-
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(containerURL, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}

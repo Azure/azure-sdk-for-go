@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"sync"
@@ -123,7 +124,7 @@ type clientSideRequestStatisticsTraceDatum struct {
 	requestStartTimeUTC         time.Time
 	requestEndTimeUTC           *time.Time
 	regionsContacted            []contactedRegion
-	regionsContactedByURI       map[string]struct{}
+	regionsContactedByID        map[string]struct{}
 	httpResponseStatistics      []httpResponseStatistics
 	addressResolutionStatistics []addressResolutionStatistics
 	forceAddressRefreshes       []forceAddressRefresh
@@ -137,8 +138,7 @@ type clientSideRequestStatisticsSnapshot struct {
 }
 
 type contactedRegion struct {
-	name string
-	uri  string
+	id string
 }
 
 type httpResponseStatistics struct {
@@ -186,7 +186,7 @@ func newClientSideRequestStatisticsTraceDatum(startTime time.Time, trace *trace)
 		trace:                       trace,
 		requestStartTimeUTC:         startTime,
 		regionsContacted:            []contactedRegion{},
-		regionsContactedByURI:       map[string]struct{}{},
+		regionsContactedByID:        map[string]struct{}{},
 		httpResponseStatistics:      []httpResponseStatistics{},
 		addressResolutionStatistics: []addressResolutionStatistics{},
 		forceAddressRefreshes:       []forceAddressRefresh{},
@@ -292,22 +292,38 @@ func (d *clientSideRequestStatisticsTraceDatum) updateRequestEndTime(endTime tim
 }
 
 func (d *clientSideRequestStatisticsTraceDatum) recordRegion(regionName string, requestURI string) {
-	if requestURI == "" {
+	regionID := regionName
+	if regionID == "" {
+		regionID = endpointHostFromURI(requestURI)
+	}
+	if regionID == "" {
 		return
 	}
 
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if _, ok := d.regionsContactedByURI[requestURI]; ok {
+	if _, ok := d.regionsContactedByID[regionID]; ok {
 		return
 	}
 
-	d.regionsContactedByURI[requestURI] = struct{}{}
+	d.regionsContactedByID[regionID] = struct{}{}
 	d.regionsContacted = append(d.regionsContacted, contactedRegion{
-		name: regionName,
-		uri:  requestURI,
+		id: regionID,
 	})
+}
+
+func endpointHostFromURI(requestURI string) string {
+	if requestURI == "" {
+		return ""
+	}
+
+	parsed, err := url.Parse(requestURI)
+	if err != nil {
+		return ""
+	}
+
+	return parsed.Host
 }
 
 func parseSubStatusCode(value string) int {

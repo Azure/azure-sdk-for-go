@@ -80,7 +80,47 @@ func TestDiagnosticsSummaryIncludesRetriedGatewayCalls(t *testing.T) {
 	child := children[0].(map[string]any)
 	data := child["data"].(map[string]any)
 	require.Contains(t, data, traceDatumKeyClientSideRequestStats)
+	clientStatsData := data[traceDatumKeyClientSideRequestStats].(map[string]any)
+	require.Equal(t, []any{"local"}, clientStatsData["RegionsContacted"])
 	require.Contains(t, data, traceDatumKeyPointOperationStatistics)
+}
+
+func TestDiagnosticsRegionsContactedDedupesByRegion(t *testing.T) {
+	rootTrace := newRootTrace("test_operation")
+	requestTrace := rootTrace.StartChild(traceDatumKeyTransportRequest)
+	clientStats := newClientSideRequestStatisticsTraceDatum(time.Now().UTC(), requestTrace)
+	requestTrace.AddDatum(traceDatumKeyClientSideRequestStats, clientStats)
+
+	reqDB, err := http.NewRequest(http.MethodGet, "https://example.com/dbs/test", nil)
+	require.NoError(t, err)
+	clientStats.recordHTTPResponse(time.Now().Add(-20*time.Millisecond), &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{},
+		Request:    reqDB,
+	}, resourceTypeDatabase, "local")
+
+	reqColl, err := http.NewRequest(http.MethodGet, "https://example.com/dbs/test/colls/test", nil)
+	require.NoError(t, err)
+	clientStats.recordHTTPResponse(time.Now().Add(-10*time.Millisecond), &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{},
+		Request:    reqColl,
+	}, resourceTypeCollection, "local")
+
+	requestTrace.End()
+	rootTrace.End()
+
+	var parsed map[string]any
+	require.NoError(t, json.Unmarshal([]byte(newDiagnostics(rootTrace).String()), &parsed))
+
+	summary := parsed["Summary"].(map[string]any)
+	require.Equal(t, float64(1), summary["RegionsContacted"])
+
+	children := parsed["children"].([]any)
+	child := children[0].(map[string]any)
+	data := child["data"].(map[string]any)
+	clientStatsData := data[traceDatumKeyClientSideRequestStats].(map[string]any)
+	require.Equal(t, []any{"local"}, clientStatsData["RegionsContacted"])
 }
 
 func TestDiagnosticsStringRendersSampleGatewayJSON(t *testing.T) {
@@ -92,10 +132,10 @@ func TestDiagnosticsStringRendersSampleGatewayJSON(t *testing.T) {
 		requestStartTimeUTC: fixedDiagnosticsTime(5 * time.Millisecond),
 		requestEndTimeUTC:   timePtr(fixedDiagnosticsTime(24 * time.Millisecond)),
 		regionsContacted: []contactedRegion{
-			{name: "local", uri: "https://example.com/dbs/test"},
+			{id: "local"},
 		},
-		regionsContactedByURI: map[string]struct{}{
-			"https://example.com/dbs/test": {},
+		regionsContactedByID: map[string]struct{}{
+			"local": {},
 		},
 		httpResponseStatistics: []httpResponseStatistics{
 			{
@@ -155,7 +195,7 @@ func TestDiagnosticsStringRendersSampleGatewayJSON(t *testing.T) {
           "Id": "AggregatedClientSideRequestStatistics",
           "ContactedReplicas": [],
           "RegionsContacted": [
-            "https://example.com/dbs/test"
+            "local"
           ],
           "FailedReplicas": [],
           "AddressResolutionStatistics": [],

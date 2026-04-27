@@ -19,10 +19,10 @@ const (
 )
 
 type summaryDiagnostics struct {
-	directCalls    map[[2]int]int
-	gatewayCalls   map[[2]int]int
-	regionsByURI   map[string]struct{}
-	regionURICount int
+	directCalls   map[[2]int]int
+	gatewayCalls  map[[2]int]int
+	regionsByID   map[string]struct{}
+	regionIDCount int
 }
 
 func writeTraceJSON(root *finalizedTrace) string {
@@ -109,9 +109,9 @@ func writeSummaryDiagnostics(buffer *bytes.Buffer, root *finalizedTrace) {
 		})
 	}
 
-	if summary.regionURICount > 0 {
+	if summary.regionIDCount > 0 {
 		writeField("RegionsContacted", func() {
-			writeNumber(buffer, float64(summary.regionURICount))
+			writeNumber(buffer, float64(summary.regionIDCount))
 		})
 	}
 
@@ -128,7 +128,7 @@ func collectSummaryDiagnostics(root *finalizedTrace) summaryDiagnostics {
 	summary := summaryDiagnostics{
 		directCalls:  map[[2]int]int{},
 		gatewayCalls: map[[2]int]int{},
-		regionsByURI: map[string]struct{}{},
+		regionsByID:  map[string]struct{}{},
 	}
 
 	var walk func(*finalizedTrace)
@@ -140,9 +140,9 @@ func collectSummaryDiagnostics(root *finalizedTrace) summaryDiagnostics {
 			}
 
 			for _, region := range stats.regionsContacted {
-				if _, exists := summary.regionsByURI[region.uri]; !exists {
-					summary.regionsByURI[region.uri] = struct{}{}
-					summary.regionURICount++
+				if _, exists := summary.regionsByID[region.id]; !exists {
+					summary.regionsByID[region.id] = struct{}{}
+					summary.regionIDCount++
 				}
 			}
 
@@ -297,7 +297,7 @@ func writeClientSideRequestStatistics(buffer *bytes.Buffer, snapshot clientSideR
 			if index > 0 {
 				buffer.WriteByte(',')
 			}
-			writeJSONString(buffer, region.uri)
+			writeJSONString(buffer, region.id)
 		}
 		buffer.WriteByte(']')
 	})

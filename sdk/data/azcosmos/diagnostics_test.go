@@ -123,6 +123,47 @@ func TestDiagnosticsRegionsContactedDedupesByRegion(t *testing.T) {
 	require.Equal(t, []any{"local"}, clientStatsData["RegionsContacted"])
 }
 
+func TestDiagnosticsStringRendersMapDatumWithStableKeyOrder(t *testing.T) {
+	rootTrace := newFixedTrace("sample_operation", fixedDiagnosticsTime(0), fixedDiagnosticsTime(100*time.Millisecond), nil)
+	rootTrace.AddDatum("map", map[string]any{
+		"z": "last",
+		"a": map[string]any{
+			"z": "nested last",
+			"a": "nested first",
+		},
+		"m": []any{
+			map[string]any{
+				"z": "array nested last",
+				"a": "array nested first",
+			},
+		},
+	})
+
+	requireRenderedDiagnosticsJSON(t, `
+{
+  "Summary": {},
+  "name": "sample_operation",
+  "start datetime": "2024-01-02T03:04:05.000Z",
+  "duration in milliseconds": 100,
+  "data": {
+    "map": {
+      "a": {
+        "a": "nested first",
+        "z": "nested last"
+      },
+      "m": [
+        {
+          "a": "array nested first",
+          "z": "array nested last"
+        }
+      ],
+      "z": "last"
+    }
+  }
+}
+`, newDiagnostics(rootTrace).String())
+}
+
 func TestDiagnosticsStringRendersSampleGatewayJSON(t *testing.T) {
 	rootTrace := newFixedTrace("sample_operation", fixedDiagnosticsTime(0), fixedDiagnosticsTime(100*time.Millisecond), nil)
 	requestTrace := newFixedTrace(traceDatumKeyTransportRequest, fixedDiagnosticsTime(5*time.Millisecond), fixedDiagnosticsTime(95*time.Millisecond), rootTrace)

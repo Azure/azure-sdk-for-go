@@ -250,15 +250,19 @@ func writeTraceDatum(buffer *bytes.Buffer, value any) {
 		buffer.WriteByte(']')
 	case map[string]any:
 		buffer.WriteByte('{')
-		firstField := true
-		for key, item := range typed {
-			if !firstField {
+		// Sort keys so diagnostics output is stable for tests and easier to diff.
+		keys := make([]string, 0, len(typed))
+		for key := range typed {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		for index, key := range keys {
+			if index > 0 {
 				buffer.WriteByte(',')
 			}
-			firstField = false
 			writeJSONString(buffer, key)
 			buffer.WriteByte(':')
-			writeTraceDatum(buffer, item)
+			writeTraceDatum(buffer, typed[key])
 		}
 		buffer.WriteByte('}')
 	case nil:

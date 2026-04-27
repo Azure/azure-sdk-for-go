@@ -42,8 +42,8 @@ clientFactory, err := armslis.NewClientFactory(cred, nil)
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ```go
-options := arm.ClientOptions {
-    ClientOptions: azcore.ClientOptions {
+options := arm.ClientOptions{
+    ClientOptions: azcore.ClientOptions{
         Cloud: cloud.AzureChina,
     },
 }
@@ -55,7 +55,7 @@ clientFactory, err := armslis.NewClientFactory(cred, &options)
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.()
+client := clientFactory.NewClient()
 ```
 
 ## Fakes

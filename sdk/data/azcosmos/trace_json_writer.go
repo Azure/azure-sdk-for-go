@@ -19,7 +19,6 @@ const (
 )
 
 type summaryDiagnostics struct {
-	directCalls   map[[2]int]int
 	gatewayCalls  map[[2]int]int
 	regionsByID   map[string]struct{}
 	regionIDCount int
@@ -103,12 +102,6 @@ func writeSummaryDiagnostics(buffer *bytes.Buffer, root *finalizedTrace) {
 		writeValue()
 	}
 
-	if len(summary.directCalls) > 0 {
-		writeField("DirectCalls", func() {
-			writeCallSummaryObject(buffer, summary.directCalls)
-		})
-	}
-
 	if summary.regionIDCount > 0 {
 		writeField("RegionsContacted", func() {
 			writeNumber(buffer, float64(summary.regionIDCount))
@@ -126,7 +119,6 @@ func writeSummaryDiagnostics(buffer *bytes.Buffer, root *finalizedTrace) {
 
 func collectSummaryDiagnostics(root *finalizedTrace) summaryDiagnostics {
 	summary := summaryDiagnostics{
-		directCalls:  map[[2]int]int{},
 		gatewayCalls: map[[2]int]int{},
 		regionsByID:  map[string]struct{}{},
 	}

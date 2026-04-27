@@ -669,7 +669,7 @@ func (s *RecordedTestSuite) TestEnqueueMessageWithTimeToLiveExpired() {
 	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
 	_require.NoError(err)
 
-	time.Sleep(time.Second * 2)
+	recording.Sleep(time.Second * 2)
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(0, len(resp.Messages))
@@ -1286,7 +1286,7 @@ func (s *RecordedTestSuite) TestUpdateMessageWithVisibilityTimeout() {
 	opts := &azqueue.UpdateMessageOptions{VisibilityTimeout: to.Ptr(int32(1))}
 	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
 	_require.NoError(err)
-	time.Sleep(time.Second * 2)
+	recording.Sleep(time.Second * 2)
 	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.NoError(err)
 	content := *resp1.Messages[0].MessageText
@@ -1614,7 +1614,7 @@ func (s *UnrecordedTestSuite) TestQueueSASUsingAccessPolicy() {
 	_require.NoError(err)
 	_require.Len(gResp.SignedIdentifiers, 1)
 
-	time.Sleep(30 * time.Second)
+	recording.Sleep(30 * time.Second)
 
 	sasQueryParams, err := sas.QueueSignatureValues{
 		Protocol:   sas.ProtocolHTTPS,
@@ -1674,7 +1674,7 @@ func (s *UnrecordedTestSuite) TestQueueClientGetPropertiesApproximateMessagesCou
 		_, err = queueClient.EnqueueMessage(context.Background(), fmt.Sprintf("msg-%d", i), nil)
 		_require.NoError(err)
 	}
-	time.Sleep(3 * time.Second)
+	recording.Sleep(3 * time.Second)
 	propsResp, err := queueClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 

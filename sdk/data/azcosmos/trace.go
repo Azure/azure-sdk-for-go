@@ -29,6 +29,7 @@ type trace struct {
 type finalizedTrace struct {
 	name      string
 	startTime time.Time
+	// endTime is the trace's end time, or the diagnostics snapshot time if the trace was still active when finalized.
 	endTime   *time.Time
 	children  []*finalizedTrace
 	data      map[string]any
@@ -124,7 +125,7 @@ func (t *trace) finalize(freezeTime time.Time) *finalizedTrace {
 	t.mu.Lock()
 	name := t.name
 	startTime := t.startTime
-	endTime := cloneTraceTime(t.endTime, freezeTime)
+	endTime := snapshotTraceEndTime(t.endTime, freezeTime)
 	children := append([]*trace(nil), t.children...)
 	dataOrder := append([]string(nil), t.dataOrder...)
 	data := make(map[string]any, len(dataOrder))
@@ -148,7 +149,7 @@ func (t *trace) finalize(freezeTime time.Time) *finalizedTrace {
 	}
 }
 
-func cloneTraceTime(value *time.Time, freezeTime time.Time) *time.Time {
+func snapshotTraceEndTime(value *time.Time, freezeTime time.Time) *time.Time {
 	frozen := freezeTime.UTC()
 	if value != nil {
 		frozen = value.UTC()

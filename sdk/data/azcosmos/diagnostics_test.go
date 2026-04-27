@@ -164,6 +164,17 @@ func TestDiagnosticsStringRendersMapDatumWithStableKeyOrder(t *testing.T) {
 `, newDiagnostics(rootTrace).String())
 }
 
+func TestFinalizedTraceUsesSnapshotTimeForActiveTrace(t *testing.T) {
+	rootTrace := newRootTrace("sample_operation")
+	rootTrace.startTime = fixedDiagnosticsTime(0)
+
+	finalized := rootTrace.finalize(fixedDiagnosticsTime(40 * time.Millisecond))
+
+	require.NotNil(t, finalized.endTime)
+	require.Equal(t, 40*time.Millisecond, finalized.endTime.Sub(finalized.startTime))
+	require.Nil(t, rootTrace.endTime)
+}
+
 func TestDiagnosticsStringRendersSampleGatewayJSON(t *testing.T) {
 	rootTrace := newFixedTrace("sample_operation", fixedDiagnosticsTime(0), fixedDiagnosticsTime(100*time.Millisecond), nil)
 	requestTrace := newFixedTrace(traceDatumKeyTransportRequest, fixedDiagnosticsTime(5*time.Millisecond), fixedDiagnosticsTime(95*time.Millisecond), rootTrace)

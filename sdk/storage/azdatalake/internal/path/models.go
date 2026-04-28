@@ -321,10 +321,8 @@ type GetTagsOptions struct {
 	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
 	// It's for service version 2019-10-10 and newer.
 	VersionID *string
-	// BlobAccessConditions contains parameters for accessing the path.
-	BlobAccessConditions *AccessConditions
-	// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
-	BlobModifiedAccessConditions *BlobModifiedAccessConditions
+	// AccessConditions contains parameters for accessing the path.
+	AccessConditions *AccessConditions
 }
 
 func FormatGetTagsOptions(o *GetTagsOptions) *blob.GetTagsOptions {
@@ -332,12 +330,27 @@ func FormatGetTagsOptions(o *GetTagsOptions) *blob.GetTagsOptions {
 		return nil
 	}
 
-	return &blob.GetTagsOptions{
-		Snapshot:                     o.Snapshot,
-		VersionID:                    o.VersionID,
-		BlobAccessConditions:         exported.FormatBlobAccessConditions(o.BlobAccessConditions),
-		BlobModifiedAccessConditions: o.BlobModifiedAccessConditions,
+	opts := &blob.GetTagsOptions{
+		Snapshot:  o.Snapshot,
+		VersionID: o.VersionID,
 	}
+
+	if o.AccessConditions != nil {
+		opts.BlobAccessConditions = &blob.AccessConditions{
+			LeaseAccessConditions: exported.FormatBlobAccessConditions(o.AccessConditions).LeaseAccessConditions,
+		}
+
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.BlobModifiedAccessConditions = &BlobModifiedAccessConditions{
+				IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+				IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+				IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+				IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+			}
+		}
+	}
+
+	return opts
 }
 
 // SetTagsOptions contains the optional parameters for the Client.SetTags method.
@@ -351,8 +364,6 @@ type SetTagsOptions struct {
 	TransactionalContentMD5 []byte
 	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
-	// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
-	BlobModifiedAccessConditions *BlobModifiedAccessConditions
 }
 
 func FormatSetTagsOptions(o *SetTagsOptions) *blob.SetTagsOptions {
@@ -360,13 +371,28 @@ func FormatSetTagsOptions(o *SetTagsOptions) *blob.SetTagsOptions {
 		return nil
 	}
 
-	return &blob.SetTagsOptions{
-		VersionID:                    o.VersionID,
-		TransactionalContentCRC64:    o.TransactionalContentCRC64,
-		TransactionalContentMD5:      o.TransactionalContentMD5,
-		AccessConditions:             exported.FormatBlobAccessConditions(o.AccessConditions),
-		BlobModifiedAccessConditions: o.BlobModifiedAccessConditions,
+	opts := &blob.SetTagsOptions{
+		VersionID:                 o.VersionID,
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
+
+	if o.AccessConditions != nil {
+		opts.AccessConditions = &blob.AccessConditions{
+			LeaseAccessConditions: exported.FormatBlobAccessConditions(o.AccessConditions).LeaseAccessConditions,
+		}
+
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.BlobModifiedAccessConditions = &BlobModifiedAccessConditions{
+				IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+				IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+				IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+				IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+			}
+		}
+	}
+
+	return opts
 }
 
 // ========================================= constants =========================================

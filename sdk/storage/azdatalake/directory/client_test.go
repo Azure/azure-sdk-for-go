@@ -3245,16 +3245,20 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
 	setOpts := &directory.SetTagsOptions{
-		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
 	_require.NoError(err)
 
 	getOpts := &directory.GetTagsOptions{
-		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 	getTagsResp, err := dirClient.GetTags(context.Background(), getOpts)
@@ -3295,8 +3299,10 @@ func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
 	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
 	getOpts := &directory.GetTagsOptions{
-		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
-			IfModifiedSince: &futureTime,
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
 		},
 	}
 	_, err = dirClient.GetTags(context.Background(), getOpts)
@@ -3336,8 +3342,10 @@ func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
 	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
 	setOpts := &directory.SetTagsOptions{
-		BlobModifiedAccessConditions: &directory.BlobModifiedAccessConditions{
-			IfModifiedSince: &futureTime,
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
 		},
 	}
 	_, err = dirClient.SetTags(context.Background(), tags, setOpts)
@@ -3585,7 +3593,7 @@ func (s *RecordedTestSuite) TestDirGetTagsLeaseFailed() {
 
 	// Use a wrong lease ID
 	getOpts := &directory.GetTagsOptions{
-		BlobAccessConditions: &directory.AccessConditions{
+		AccessConditions: &directory.AccessConditions{
 			LeaseAccessConditions: &directory.LeaseAccessConditions{
 				LeaseID: proposedLeaseIDs[1],
 			},

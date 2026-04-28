@@ -5963,16 +5963,20 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
 	setOpts := &file.SetTagsOptions{
-		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = fClient.SetTags(context.Background(), tags, setOpts)
 	_require.NoError(err)
 
 	getOpts := &file.GetTagsOptions{
-		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 
@@ -6014,8 +6018,10 @@ func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
 	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
 	getOpts := &file.GetTagsOptions{
-		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
-			IfModifiedSince: &futureTime,
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
 		},
 	}
 	_, err = fClient.GetTags(context.Background(), getOpts)
@@ -6055,8 +6061,10 @@ func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
 	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
 	setOpts := &file.SetTagsOptions{
-		BlobModifiedAccessConditions: &file.BlobModifiedAccessConditions{
-			IfModifiedSince: &futureTime,
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
 		},
 	}
 	_, err = fClient.SetTags(context.Background(), tags, setOpts)
@@ -6201,7 +6209,7 @@ func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
 
 	// Use a wrong lease ID
 	getOpts := &file.GetTagsOptions{
-		BlobAccessConditions: &file.AccessConditions{
+		AccessConditions: &file.AccessConditions{
 			LeaseAccessConditions: &file.LeaseAccessConditions{
 				LeaseID: proposedLeaseIDs[1],
 			},

@@ -553,3 +553,65 @@ func addAssociatedLinkName(linkName string, msg *amqp.Message) {
 		msg.ApplicationProperties["associated-link-name"] = linkName
 	}
 }
+
+// GetMessageSessions lists session IDs from an entity. The behavior depends on lastUpdatedTime:
+//   - Pass time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC) to list sessions with active
+//     messages (equivalent to .NET DateTime.MaxValue at AMQP millisecond precision).
+//   - Pass a real timestamp to list sessions whose session state was updated after that time.
+//
+// No associated link name is needed (entity-level operation).
+func GetMessageSessions(ctx context.Context, rpcLink amqpwrap.RPCLink, lastUpdatedTime time.Time, skip int32, top int32) ([]string, error) {
+	msg := &amqp.Message{
+		Value: map[string]any{
+			"last-updated-time": lastUpdatedTime,
+			"skip":              skip,
+			"top":               top,
+		},
+		ApplicationProperties: map[string]any{
+			"operation": "com.microsoft:get-message-sessions",
+		},
+	}
+	// No associated link name for entity-level operations
+
+	resp, err := rpcLink.RPC(ctx, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Code == 204 {
+		return nil, nil
+	}
+
+	// 404 + SessionNotFound means no sessions exist for this entity.
+	if resp.Code == 404 {
+		return nil, nil
+	}
+
+	if resp.Code != 200 {
+		return nil, ErrAMQP(*resp)
+	}
+
+	asMap, ok := resp.Message.Value.(map[string]any)
+	if !ok {
+		return nil, NewErrIncorrectType("Value", map[string]any{}, resp.Message.Value)
+	}
+
+	sessionsObj := asMap["sessions-ids"]
+	if sessionsObj == nil {
+		return nil, nil
+	}
+
+	// The sessions-ids field is a string array from the service
+	switch v := sessionsObj.(type) {
+	case []string:
+		return v, nil
+	case []any:
+		result := make([]string, len(v))
+		for i, s := range v {
+			result[i] = fmt.Sprintf("%v", s)
+		}
+		return result, nil
+	default:
+		return nil, NewErrIncorrectType("Value['sessions-ids']", []string{}, sessionsObj)
+	}
+}

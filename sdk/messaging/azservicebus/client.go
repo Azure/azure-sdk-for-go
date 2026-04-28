@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -17,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 )
 
 // Client provides methods to create Sender and Receiver
@@ -375,4 +377,71 @@ func (client *Client) getCleanupForCloseable() (uint64, func()) {
 		delete(client.links, id)
 		client.linksMu.Unlock()
 	}
+}
+
+// ListSessionsOptions contains options for the ListSessionsForQueue and ListSessionsForSubscription methods.
+type ListSessionsOptions struct {
+	// UpdatedAfter, if set, returns only sessions whose state was updated after this time.
+	// If not set, returns sessions with active messages in the entity.
+	UpdatedAfter *time.Time
+}
+
+// ListSessionsForQueue lists the IDs of sessions with active messages in a session-enabled queue.
+// If options.UpdatedAfter is set, returns only sessions whose state was updated after that time.
+func (client *Client) ListSessionsForQueue(ctx context.Context, queueName string, options *ListSessionsOptions) ([]string, error) {
+	entityPath := queueName
+	return client.listSessionsForEntity(ctx, entityPath, options)
+}
+
+// ListSessionsForSubscription lists the IDs of sessions with active messages in a session-enabled subscription.
+// If options.UpdatedAfter is set, returns only sessions whose state was updated after that time.
+func (client *Client) ListSessionsForSubscription(ctx context.Context, topicName string, subscriptionName string, options *ListSessionsOptions) ([]string, error) {
+	entityPath := fmt.Sprintf("%s/Subscriptions/%s", topicName, subscriptionName)
+	return client.listSessionsForEntity(ctx, entityPath, options)
+}
+
+func (client *Client) listSessionsForEntity(ctx context.Context, entityPath string, options *ListSessionsOptions) ([]string, error) {
+	// The service checks for DateTime.MaxValue (C# 9999-12-31T23:59:59.9999999) to switch
+	// between "active messages" mode and "updated since" mode. On the AMQP wire, timestamps
+	// have ms precision, so DateTime.MaxValue becomes 253402300799999 ms. This time.Time
+	// value (9999-12-31T23:59:59.999999999) truncates to that same ms value via go-amqp.
+	lastUpdatedTime := time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC)
+	if options != nil && options.UpdatedAfter != nil {
+		lastUpdatedTime = *options.UpdatedAfter
+	}
+
+	managementPath := entityPath + "/$management"
+	var allSessionIds []string
+
+	err := utils.Retry(ctx, exported.EventReceiver, "ListSessions", func(ctx context.Context, args *utils.RetryFnArgs) error {
+		// Reset accumulated state on each retry attempt to avoid duplicates
+		allSessionIds = nil
+		var skip int32
+
+		rpcLink, err := client.namespace.NewRPCLink(ctx, managementPath)
+		if err != nil {
+			return err
+		}
+		defer rpcLink.Close(ctx)
+
+		for {
+			page, err := internal.GetMessageSessions(ctx, rpcLink, lastUpdatedTime, skip, 100)
+			if err != nil {
+				return err
+			}
+			if len(page) == 0 {
+				break
+			}
+			allSessionIds = append(allSessionIds, page...)
+			skip += int32(len(page))
+		}
+		return nil
+	}, func(err error) bool {
+		return internal.GetRecoveryKind(err) == internal.RecoveryKindFatal
+	}, exported.RetryOptions(client.retryOptions))
+
+	if err != nil {
+		return nil, internal.TransformError(err)
+	}
+	return allSessionIds, nil
 }

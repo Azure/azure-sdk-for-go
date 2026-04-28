@@ -153,7 +153,44 @@ func TestGetMessageSessions_HandlesTypedStringSlice(t *testing.T) {
 	require.Equal(t, []string{"typed-1", "typed-2"}, result)
 }
 
-func TestGetMessageSessions_404ReturnsEmpty(t *testing.T) {
+func TestGetMessageSessions_404SessionNotFoundReturnsEmpty(t *testing.T) {
+	// 404 + a "session not found" description means the entity exists but has no
+	// sessions. This is the only 404 case GetMessageSessions silently treats as
+	// empty; all other 404s (covered by TestGetMessageSessions_404OtherSurfacesError)
+	// must surface as an error so callers can distinguish "no sessions" from
+	// "entity not found".
+	descriptions := []string{
+		"Session not found",
+		"SessionNotFound",
+		"session not found.",
+	}
+
+	for _, description := range descriptions {
+		t.Run(description, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			rpcLink := mock.NewMockRPCLink(ctrl)
+			rpcLink.EXPECT().RPC(gomock.Any(), gomock.Any()).Return(
+				&amqpwrap.RPCResponse{
+					Code:        404,
+					Description: description,
+					Message:     &amqp.Message{},
+				}, nil)
+
+			result, err := GetMessageSessions(context.Background(), rpcLink,
+				time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC), 0, 100)
+
+			require.NoError(t, err)
+			require.Nil(t, result)
+		})
+	}
+}
+
+func TestGetMessageSessions_404OtherSurfacesError(t *testing.T) {
+	// 404s without a "session not found" description (e.g. entity not found) must
+	// be surfaced as errors so callers can distinguish a missing entity from an
+	// entity with no sessions.
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
@@ -161,15 +198,41 @@ func TestGetMessageSessions_404ReturnsEmpty(t *testing.T) {
 	rpcLink.EXPECT().RPC(gomock.Any(), gomock.Any()).Return(
 		&amqpwrap.RPCResponse{
 			Code:        404,
-			Description: "Session not found",
+			Description: "The messaging entity 'sb://ns/q' could not be found.",
 			Message:     &amqp.Message{},
 		}, nil)
 
 	result, err := GetMessageSessions(context.Background(), rpcLink,
 		time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC), 0, 100)
 
-	// 404 + SessionNotFound is treated as empty, not an error
-	require.NoError(t, err)
+	require.Error(t, err)
+	require.Nil(t, result)
+	require.Contains(t, err.Error(), "404")
+}
+
+func TestGetMessageSessions_NonStringSessionIDSurfacesError(t *testing.T) {
+	// The wire format declares sessions-ids as a string array. If the service
+	// returns a non-string element (e.g. nil or a number) we must fail fast
+	// rather than coerce via fmt.Sprintf("%v") and produce surprising IDs like
+	// "<nil>".
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	rpcLink := mock.NewMockRPCLink(ctrl)
+	rpcLink.EXPECT().RPC(gomock.Any(), gomock.Any()).Return(
+		&amqpwrap.RPCResponse{
+			Code: 200,
+			Message: &amqp.Message{
+				Value: map[string]any{
+					"sessions-ids": []any{"valid-session", nil},
+				},
+			},
+		}, nil)
+
+	result, err := GetMessageSessions(context.Background(), rpcLink,
+		time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)
+
+	require.Error(t, err)
 	require.Nil(t, result)
 }
 

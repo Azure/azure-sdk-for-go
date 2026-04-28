@@ -7,7 +7,6 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
-	"fmt"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -389,14 +388,20 @@ type ListSessionsOptions struct {
 // ListSessionsForQueue lists the IDs of sessions with active messages in a session-enabled queue.
 // If options.UpdatedAfter is set, returns only sessions whose state was updated after that time.
 func (client *Client) ListSessionsForQueue(ctx context.Context, queueName string, options *ListSessionsOptions) ([]string, error) {
-	entityPath := queueName
+	entityPath, err := (&entity{Queue: queueName}).String()
+	if err != nil {
+		return nil, err
+	}
 	return client.listSessionsForEntity(ctx, entityPath, options)
 }
 
 // ListSessionsForSubscription lists the IDs of sessions with active messages in a session-enabled subscription.
 // If options.UpdatedAfter is set, returns only sessions whose state was updated after that time.
 func (client *Client) ListSessionsForSubscription(ctx context.Context, topicName string, subscriptionName string, options *ListSessionsOptions) ([]string, error) {
-	entityPath := fmt.Sprintf("%s/Subscriptions/%s", topicName, subscriptionName)
+	entityPath, err := (&entity{Topic: topicName, Subscription: subscriptionName}).String()
+	if err != nil {
+		return nil, err
+	}
 	return client.listSessionsForEntity(ctx, entityPath, options)
 }
 
@@ -411,18 +416,20 @@ func (client *Client) listSessionsForEntity(ctx context.Context, entityPath stri
 	}
 
 	managementPath := entityPath + "/$management"
-	var allSessionIds []string
+	var allSessionIDs []string
 
 	err := utils.Retry(ctx, exported.EventReceiver, "ListSessions", func(ctx context.Context, args *utils.RetryFnArgs) error {
 		// Reset accumulated state on each retry attempt to avoid duplicates
-		allSessionIds = nil
+		allSessionIDs = nil
 		var skip int32
 
 		rpcLink, err := client.namespace.NewRPCLink(ctx, managementPath)
 		if err != nil {
 			return err
 		}
-		defer rpcLink.Close(ctx)
+		defer func() {
+			_ = rpcLink.Close(ctx)
+		}()
 
 		for {
 			page, err := internal.GetMessageSessions(ctx, rpcLink, lastUpdatedTime, skip, 100)
@@ -432,7 +439,7 @@ func (client *Client) listSessionsForEntity(ctx context.Context, entityPath stri
 			if len(page) == 0 {
 				break
 			}
-			allSessionIds = append(allSessionIds, page...)
+			allSessionIDs = append(allSessionIDs, page...)
 			if len(page) < 100 {
 				break
 			}
@@ -446,5 +453,5 @@ func (client *Client) listSessionsForEntity(ctx context.Context, entityPath stri
 	if err != nil {
 		return nil, internal.TransformError(err)
 	}
-	return allSessionIds, nil
+	return allSessionIDs, nil
 }

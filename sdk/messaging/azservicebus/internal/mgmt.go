@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -582,9 +583,14 @@ func GetMessageSessions(ctx context.Context, rpcLink amqpwrap.RPCLink, lastUpdat
 		return nil, nil
 	}
 
-	// 404 + SessionNotFound means no sessions exist for this entity.
+	// 404 + SessionNotFound means no sessions exist for this entity. Other 404s
+	// (e.g. entity not found) should surface as an error so callers can distinguish
+	// "this entity has no sessions" from "this entity does not exist".
 	if resp.Code == 404 {
-		return nil, nil
+		if isSessionNotFound(resp.Description) {
+			return nil, nil
+		}
+		return nil, ErrAMQP(*resp)
 	}
 
 	if resp.Code != 200 {
@@ -608,10 +614,26 @@ func GetMessageSessions(ctx context.Context, rpcLink amqpwrap.RPCLink, lastUpdat
 	case []any:
 		result := make([]string, len(v))
 		for i, s := range v {
-			result[i] = fmt.Sprintf("%v", s)
+			sessionID, ok := s.(string)
+			if !ok {
+				return nil, NewErrIncorrectType("Value['sessions-ids']", []string{}, sessionsObj)
+			}
+			result[i] = sessionID
 		}
 		return result, nil
 	default:
 		return nil, NewErrIncorrectType("Value['sessions-ids']", []string{}, sessionsObj)
 	}
+}
+
+// isSessionNotFound reports whether an AMQP error description indicates the
+// "no sessions for this entity" condition for the get-message-sessions
+// operation. The service emits the description as human-readable prose
+// (e.g. "Session not found") rather than a structured condition code, so the
+// match is case-insensitive and tolerates either the camel-case token form
+// ("SessionNotFound") or the spaced prose form ("session not found").
+func isSessionNotFound(description string) bool {
+	lower := strings.ToLower(description)
+	return strings.Contains(lower, "sessionnotfound") ||
+		strings.Contains(lower, "session not found")
 }

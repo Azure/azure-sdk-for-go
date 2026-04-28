@@ -433,6 +433,9 @@ func (client *Client) listSessionsForEntity(ctx context.Context, entityPath stri
 				break
 			}
 			allSessionIds = append(allSessionIds, page...)
+			if len(page) < 100 {
+				break
+			}
 			skip += int32(len(page))
 		}
 		return nil

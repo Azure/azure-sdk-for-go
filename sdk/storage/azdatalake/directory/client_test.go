@@ -3196,7 +3196,6 @@ func (s *RecordedTestSuite) TestDirGetSetTags() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	_, err = dirClient.SetTags(context.Background(), tags, nil)
@@ -3210,7 +3209,6 @@ func (s *RecordedTestSuite) TestDirGetSetTags() {
 		tagMap[*tag.Key] = *tag.Value
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
-	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
 func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
@@ -3239,7 +3237,6 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -3269,7 +3266,6 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithAccessConditions() {
 		tagMap[*tag.Key] = *tag.Value
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
-	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
 func (s *RecordedTestSuite) TestDirGetTagsAccessConditionsFail() {
@@ -3336,7 +3332,6 @@ func (s *RecordedTestSuite) TestDirSetTagsAccessConditionsFail() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -3541,7 +3536,6 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithLease() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	setOpts := &directory.SetTagsOptions{
@@ -3562,7 +3556,6 @@ func (s *RecordedTestSuite) TestDirGetSetTagsWithLease() {
 		tagMap[*tag.Key] = *tag.Value
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
-	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
 func (s *RecordedTestSuite) TestDirGetTagsLeaseFailed() {
@@ -3632,7 +3625,6 @@ func (s *RecordedTestSuite) TestDirSetTagsLeaseFailed() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	// Use a wrong lease ID

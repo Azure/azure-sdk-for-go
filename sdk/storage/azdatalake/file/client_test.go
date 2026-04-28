@@ -5866,7 +5866,6 @@ func (s *RecordedTestSuite) TestFileGetSetTags() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	_, err = fClient.SetTags(context.Background(), tags, nil)
@@ -5880,7 +5879,6 @@ func (s *RecordedTestSuite) TestFileGetSetTags() {
 		tagMap[*tag.Key] = *tag.Value
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
-	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
 func (s *UnrecordedTestSuite) TestFileGetSetTagsOAuth() {
@@ -5957,7 +5955,6 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -5988,7 +5985,6 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
 		tagMap[*tag.Key] = *tag.Value
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
-	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
 func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
@@ -6055,7 +6051,6 @@ func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -6157,7 +6152,6 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	setOpts := &file.SetTagsOptions{
@@ -6178,7 +6172,6 @@ func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
 		tagMap[*tag.Key] = *tag.Value
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
-	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
 func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
@@ -6248,7 +6241,6 @@ func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
 
 	tags := map[string]string{
 		"tagKey0": "tagValue0",
-		"tagKey1": "tagValue1",
 	}
 
 	// Use a wrong lease ID

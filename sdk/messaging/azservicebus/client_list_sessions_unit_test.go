@@ -5,6 +5,8 @@ package azservicebus
 
 import (
 	"context"
+	"fmt"
+	"sync"
 	"testing"
 	"time"
 
@@ -41,15 +43,43 @@ func (l *scriptedRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap
 	return l.responses[idx], nil
 }
 
-func newClientForListSessionsUnitTest(t *testing.T, rpcLink amqpwrap.RPCLink) *Client {
+// pathCapturingNS wraps internal.FakeNS to capture the management path
+// passed to NewRPCLink. Tests use this to verify that ListSessionsForQueue
+// and ListSessionsForSubscription construct the correct entity-relative
+// management address.
+type pathCapturingNS struct {
+	*internal.FakeNS
+	mu             sync.Mutex
+	capturedPaths  []string
+}
+
+func (ns *pathCapturingNS) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {
+	ns.mu.Lock()
+	ns.capturedPaths = append(ns.capturedPaths, managementPath)
+	ns.mu.Unlock()
+	return ns.FakeNS.NewRPCLink(ctx, managementPath)
+}
+
+func (ns *pathCapturingNS) ManagementPaths() []string {
+	ns.mu.Lock()
+	defer ns.mu.Unlock()
+	out := make([]string, len(ns.capturedPaths))
+	copy(out, ns.capturedPaths)
+	return out
+}
+
+func newClientForListSessionsUnitTest(t *testing.T, rpcLink amqpwrap.RPCLink) (*Client, *pathCapturingNS) {
 	t.Helper()
 	fakeTokenCredential := struct{ azcore.TokenCredential }{}
 	client, err := NewClient("fake.something", fakeTokenCredential, nil)
 	require.NoError(t, err)
-	client.namespace = &internal.FakeNS{
-		RPCLink: rpcLink,
+	ns := &pathCapturingNS{
+		FakeNS: &internal.FakeNS{
+			RPCLink: rpcLink,
+		},
 	}
-	return client
+	client.namespace = ns
+	return client, ns
 }
 
 func okPage(t *testing.T, ids ...string) *amqpwrap.RPCResponse {
@@ -68,11 +98,17 @@ func okPage(t *testing.T, ids ...string) *amqpwrap.RPCResponse {
 	}
 }
 
-// makeIDs returns ["prefix-0", "prefix-1", ...] of length n.
+// makeIDs returns a slice of n synthetic session IDs of the form
+// "prefix-000", "prefix-001", ... using a width that scales with n so the
+// helper works correctly for any size, not just n <= 100.
 func makeIDs(prefix string, n int) []string {
+	width := len(fmt.Sprintf("%d", n-1))
+	if width < 1 {
+		width = 1
+	}
 	out := make([]string, n)
 	for i := 0; i < n; i++ {
-		out[i] = prefix + "-" + string(rune('0'+i/10)) + string(rune('0'+i%10))
+		out[i] = fmt.Sprintf("%s-%0*d", prefix, width, i)
 	}
 	return out
 }
@@ -96,7 +132,7 @@ func TestClient_ListSessionsForQueue_PaginatesUntilShortPage(t *testing.T) {
 			okPage(t, page4...),
 		},
 	}
-	client := newClientForListSessionsUnitTest(t, link)
+	client, ns := newClientForListSessionsUnitTest(t, link)
 
 	got, err := client.ListSessionsForQueue(context.Background(), "myqueue", nil)
 	require.NoError(t, err)
@@ -104,6 +140,10 @@ func TestClient_ListSessionsForQueue_PaginatesUntilShortPage(t *testing.T) {
 	expected := append(append(append(append([]string{}, page1...), page2...), page3...), page4...)
 	require.Equal(t, expected, got)
 	require.Len(t, link.calls, 4)
+
+	// All paginated calls should reuse a single RPC link addressed to the
+	// queue's management endpoint.
+	require.Equal(t, []string{"myqueue/$management"}, ns.ManagementPaths())
 
 	// Skip values progress correctly across calls.
 	for i, expectedSkip := range []int32{0, 100, 200, 300} {
@@ -130,7 +170,7 @@ func TestClient_ListSessionsForQueue_StopsOnEmptyFirstPage(t *testing.T) {
 			},
 		},
 	}
-	client := newClientForListSessionsUnitTest(t, link)
+	client, _ := newClientForListSessionsUnitTest(t, link)
 
 	got, err := client.ListSessionsForQueue(context.Background(), "myqueue", nil)
 	require.NoError(t, err)
@@ -148,7 +188,7 @@ func TestClient_ListSessionsForQueue_ActiveModeSendsSentinel(t *testing.T) {
 			okPage(t, "active-1"),
 		},
 	}
-	client := newClientForListSessionsUnitTest(t, link)
+	client, _ := newClientForListSessionsUnitTest(t, link)
 
 	_, err := client.ListSessionsForQueue(context.Background(), "myqueue", nil)
 	require.NoError(t, err)
@@ -169,7 +209,7 @@ func TestClient_ListSessionsForQueue_UpdatedAfterIsPropagated(t *testing.T) {
 			okPage(t, "session-after"),
 		},
 	}
-	client := newClientForListSessionsUnitTest(t, link)
+	client, _ := newClientForListSessionsUnitTest(t, link)
 
 	_, err := client.ListSessionsForQueue(context.Background(), "myqueue",
 		&ListSessionsOptions{UpdatedAfter: &updatedAfter})
@@ -190,12 +230,13 @@ func TestClient_ListSessionsForQueue_EmptyNameReturnsError(t *testing.T) {
 		t: t,
 		// No responses scripted: any RPC call would fail the test.
 	}
-	client := newClientForListSessionsUnitTest(t, link)
+	client, ns := newClientForListSessionsUnitTest(t, link)
 
 	got, err := client.ListSessionsForQueue(context.Background(), "", nil)
 	require.Error(t, err)
 	require.Nil(t, got)
 	require.Empty(t, link.calls)
+	require.Empty(t, ns.ManagementPaths(), "NewRPCLink must not be called when name validation fails")
 }
 
 func TestClient_ListSessionsForSubscription_PaginatesAndSendsCorrectPath(t *testing.T) {
@@ -209,7 +250,7 @@ func TestClient_ListSessionsForSubscription_PaginatesAndSendsCorrectPath(t *test
 			okPage(t, page2...),
 		},
 	}
-	client := newClientForListSessionsUnitTest(t, link)
+	client, ns := newClientForListSessionsUnitTest(t, link)
 
 	got, err := client.ListSessionsForSubscription(context.Background(), "mytopic", "mysub", nil)
 	require.NoError(t, err)
@@ -217,6 +258,8 @@ func TestClient_ListSessionsForSubscription_PaginatesAndSendsCorrectPath(t *test
 	require.Len(t, link.calls, 2)
 	require.Equal(t, int32(0), link.calls[0].Value.(map[string]any)["skip"])
 	require.Equal(t, int32(100), link.calls[1].Value.(map[string]any)["skip"])
+	require.Equal(t, []string{"mytopic/Subscriptions/mysub/$management"}, ns.ManagementPaths(),
+		"subscription path must follow the topic/Subscriptions/<name> shape")
 }
 
 func TestClient_ListSessionsForSubscription_EmptyNamesReturnError(t *testing.T) {
@@ -233,12 +276,14 @@ func TestClient_ListSessionsForSubscription_EmptyNamesReturnError(t *testing.T) 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			link := &scriptedRPCLink{t: t}
-			client := newClientForListSessionsUnitTest(t, link)
+			client, ns := newClientForListSessionsUnitTest(t, link)
 
 			got, err := client.ListSessionsForSubscription(context.Background(), tc.topic, tc.sub, nil)
 			require.Error(t, err)
 			require.Nil(t, got)
 			require.Empty(t, link.calls)
+			require.Empty(t, ns.ManagementPaths(),
+				"NewRPCLink must not be called when name validation fails")
 		})
 	}
 }

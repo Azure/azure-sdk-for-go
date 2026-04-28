@@ -5651,11 +5651,7 @@ func (f *FileRecordedTestsSuite) TestFileCreateData() {
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
 
-	data := make([]byte, 1024)
-	_, err = rand.Read(data)
-	_require.NoError(err)
-
-	body := readSeekNopCloser{bytes.NewReader(data)}
+	body, data := testcommon.GenerateData(1024)
 
 	resp, err := fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
 		OptionalBody: body,
@@ -5686,14 +5682,10 @@ func (f *FileRecordedTestsSuite) TestFileCreateDataPrecalculatedChecksum() {
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
 
-	data := make([]byte, 1024)
-	_, err = rand.Read(data)
-	_require.NoError(err)
+	body, data := testcommon.GenerateData(1024)
 
 	hash := md5.Sum(data)
 	contentMD5 := hash[:]
-
-	body := readSeekNopCloser{bytes.NewReader(data)}
 
 	resp, err := fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
 		OptionalBody: body,
@@ -5718,16 +5710,11 @@ func (f *FileRecordedTestsSuite) TestFileCreateDataIncorrectMD5() {
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
 
-	data := make([]byte, 1024)
-	_, err = rand.Read(data)
-	_require.NoError(err)
+	body, data := testcommon.GenerateData(1024)
 
 	// Use an incorrect MD5 hash
-	wrongMD5 := make([]byte, 16)
-	_, err = rand.Read(wrongMD5)
-	_require.NoError(err)
-
-	body := readSeekNopCloser{bytes.NewReader(data)}
+	md5Str := "MDAwMDAwMDAwMDA="
+	wrongMD5 := []byte(md5Str)
 
 	_, err = fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
 		OptionalBody: body,
@@ -5842,14 +5829,10 @@ func (f *FileRecordedTestsSuite) TestFileCreateDataWithMD5Validation() {
 		fileName := testcommon.GenerateFileName(testName + fmt.Sprintf("%d", size))
 		fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
 
-		data := make([]byte, size)
-		_, err = rand.Read(data)
-		_require.NoError(err)
+		body, data := testcommon.GenerateData(size)
 
 		hash := md5.Sum(data)
 		contentMD5 := hash[:]
-
-		body := readSeekNopCloser{bytes.NewReader(data)}
 
 		resp, err := fileClient.Create(context.Background(), int64(size), &file.CreateOptions{
 			OptionalBody: body,

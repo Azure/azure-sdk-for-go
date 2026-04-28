@@ -414,10 +414,17 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 func (client *ServiceClient) NewListContainersSegmentPager(options *ServiceClientListContainersSegmentOptions) *runtime.Pager[ServiceClientListContainersSegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServiceClientListContainersSegmentResponse]{
 		More: func(page ServiceClientListContainersSegmentResponse) bool {
-			return false
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServiceClientListContainersSegmentResponse) (ServiceClientListContainersSegmentResponse, error) {
-			req, err := client.listContainersSegmentCreateRequest(ctx, options)
+			nextOpts := ServiceClientListContainersSegmentOptions{}
+			if options != nil {
+				nextOpts = *options
+			}
+			if page != nil {
+				nextOpts.Marker = page.NextMarker
+			}
+			req, err := client.listContainersSegmentCreateRequest(ctx, &nextOpts)
 			if err != nil {
 				return ServiceClientListContainersSegmentResponse{}, err
 			}

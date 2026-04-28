@@ -851,10 +851,17 @@ func (client *ContainerClient) getPropertiesHandleResponse(resp *http.Response) 
 func (client *ContainerClient) NewListBlobFlatSegmentPager(options *ContainerClientListBlobFlatSegmentOptions) *runtime.Pager[ContainerClientListBlobFlatSegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContainerClientListBlobFlatSegmentResponse]{
 		More: func(page ContainerClientListBlobFlatSegmentResponse) bool {
-			return false
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContainerClientListBlobFlatSegmentResponse) (ContainerClientListBlobFlatSegmentResponse, error) {
-			req, err := client.listBlobFlatSegmentCreateRequest(ctx, options)
+			nextOpts := ContainerClientListBlobFlatSegmentOptions{}
+			if options != nil {
+				nextOpts = *options
+			}
+			if page != nil {
+				nextOpts.Marker = page.NextMarker
+			}
+			req, err := client.listBlobFlatSegmentCreateRequest(ctx, &nextOpts)
 			if err != nil {
 				return ContainerClientListBlobFlatSegmentResponse{}, err
 			}
@@ -945,10 +952,17 @@ func (client *ContainerClient) listBlobFlatSegmentHandleResponse(resp *http.Resp
 func (client *ContainerClient) NewListBlobHierarchySegmentPager(delimiter string, options *ContainerClientListBlobHierarchySegmentOptions) *runtime.Pager[ContainerClientListBlobHierarchySegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContainerClientListBlobHierarchySegmentResponse]{
 		More: func(page ContainerClientListBlobHierarchySegmentResponse) bool {
-			return false
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContainerClientListBlobHierarchySegmentResponse) (ContainerClientListBlobHierarchySegmentResponse, error) {
-			req, err := client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, options)
+			nextOpts := ContainerClientListBlobHierarchySegmentOptions{}
+			if options != nil {
+				nextOpts = *options
+			}
+			if page != nil {
+				nextOpts.Marker = page.NextMarker
+			}
+			req, err := client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, &nextOpts)
 			if err != nil {
 				return ContainerClientListBlobHierarchySegmentResponse{}, err
 			}

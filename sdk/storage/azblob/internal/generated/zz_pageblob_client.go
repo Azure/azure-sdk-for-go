@@ -1083,11 +1083,9 @@ func (client *PageBlobClient) uploadPagesHandleResponse(resp *http.Response) (Pa
 //
 // Generated from API version 2026-04-06
 //   - sourceURL - Specify a URL to the copy source.
-//   - sourceRange - Bytes of source data in the specified range. The length of this range should match the ContentLength header
-//     and x-ms-range/Range destination range header.
+//   - sourceRange - Bytes of source data in the specified range.
 //   - contentLength - The length of the request.
-//   - rangeParam - Bytes of source data in the specified range. The length of this range should match the ContentLength header
-//     and x-ms-range/Range destination range header.
+//   - rangeParam - Bytes of data in the specified range.
 //   - options - PageBlobClientUploadPagesFromURLOptions contains the optional parameters for the PageBlobClient.UploadPagesFromURL
 //     method.
 func (client *PageBlobClient) UploadPagesFromURL(ctx context.Context, sourceURL string, sourceRange string, contentLength int64, rangeParam string, options *PageBlobClientUploadPagesFromURLOptions) (PageBlobClientUploadPagesFromURLResponse, error) {

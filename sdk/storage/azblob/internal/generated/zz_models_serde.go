@@ -490,8 +490,8 @@ func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	return enc.EncodeElement(aux, start)
 }
 
-// toMultipartFormData converts SubmitBatchRequest to multipart/form data.
-func (s SubmitBatchRequest) toMultipartFormData() (map[string]any, error) {
+// toMultipartFormData converts SubmitBatchResponse to multipart/form data.
+func (s SubmitBatchResponse) toMultipartFormData() (map[string]any, error) {
 	objectMap := make(map[string]any)
 	objectMap["body"] = s.Body
 	return objectMap, nil

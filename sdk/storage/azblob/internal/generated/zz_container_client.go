@@ -1541,12 +1541,14 @@ func (client *ContainerClient) setMetadataHandleResponse(resp *http.Response) (C
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-04-06
+//   - multipartContentType - Required. The value of this header must be multipart/mixed with a batch boundary. Example header
+//     value: multipart/mixed; boundary=batch_<GUID>
 //   - contentLength - The length of the request.
 //   - body - The body of the request.
 //   - options - ContainerClientSubmitBatchOptions contains the optional parameters for the ContainerClient.SubmitBatch method.
-func (client *ContainerClient) SubmitBatch(ctx context.Context, contentLength int64, body SubmitBatchRequest, options *ContainerClientSubmitBatchOptions) (ContainerClientSubmitBatchResponse, error) {
+func (client *ContainerClient) SubmitBatch(ctx context.Context, multipartContentType string, contentLength int64, body []byte, options *ContainerClientSubmitBatchOptions) (ContainerClientSubmitBatchResponse, error) {
 	var err error
-	req, err := client.submitBatchCreateRequest(ctx, contentLength, body, options)
+	req, err := client.submitBatchCreateRequest(ctx, multipartContentType, contentLength, body, options)
 	if err != nil {
 		return ContainerClientSubmitBatchResponse{}, err
 	}
@@ -1563,7 +1565,7 @@ func (client *ContainerClient) SubmitBatch(ctx context.Context, contentLength in
 }
 
 // submitBatchCreateRequest creates the SubmitBatch request.
-func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, contentLength int64, body SubmitBatchRequest, options *ContainerClientSubmitBatchOptions) (*policy.Request, error) {
+func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, multipartContentType string, contentLength int64, body []byte, options *ContainerClientSubmitBatchOptions) (*policy.Request, error) {
 	urlPath := "?restype=container&comp=batch"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
@@ -1577,14 +1579,13 @@ func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, con
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"multipart/mixed"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
+	req.Raw().Header["Content-Type"] = []string{multipartContentType}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
-	formData, err := body.toMultipartFormData()
-	if err != nil {
-		return nil, err
-	}
+	formData := map[string]any{}
+	formData["body"] = body
 	if err := runtime.SetMultipartFormData(req, formData); err != nil {
 		return nil, err
 	}

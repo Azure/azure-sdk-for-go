@@ -1,5 +1,19 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-04-29)
+### Breaking Changes
+
+- `FleetModeInstance` from enum `FleetMode` has been removed
+- `VMOperationStatusCancelFailedStatusUnknown`, `VMOperationStatusCanceled` from enum `VMOperationStatus` has been removed
+- Function `*FleetsClient.BeginCancel` has been removed
+
+### Features Added
+
+- New value `FleetModeLaunch` added to enum type `FleetMode`
+- New value `VMOperationStatusLaunching` added to enum type `VMOperationStatus`
+- New field `VMNamePrefix` in struct `FleetProperties`
+
+
 ## 2.0.0-beta.1 (2025-08-21)
 ### Breaking Changes
 

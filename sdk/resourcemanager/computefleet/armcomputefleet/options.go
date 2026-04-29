@@ -4,12 +4,6 @@
 
 package armcomputefleet
 
-// FleetsClientBeginCancelOptions contains the optional parameters for the FleetsClient.BeginCancel method.
-type FleetsClientBeginCancelOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // FleetsClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetsClient.BeginCreateOrUpdate method.
 type FleetsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.

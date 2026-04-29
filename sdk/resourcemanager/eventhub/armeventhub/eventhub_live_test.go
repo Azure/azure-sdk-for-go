@@ -246,13 +246,15 @@ func (testsuite *EventhubTestSuite) TTestNamespace() {
 
 	// From step Namespaces_Update
 	fmt.Println("Call operation: Namespaces_Update")
-	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armeventhub.EHNamespace{
+	namespacesClientUpdateResponsePoller, err := namespacesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armeventhub.EHNamespace{
 		Location: to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
 		},
 	}, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_CreateOrUpdateAuthorizationRule

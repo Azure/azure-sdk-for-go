@@ -878,8 +878,8 @@ type DiscountTypeCustomPrice struct {
 	ApplyDiscountOn *ApplyDiscountOn
 
 	// CONSTANT; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
-	// Field has constant value DiscountTypeCustomPrice, any specified value is ignored.
-	DiscountType *DiscountType
+	// Field has constant value DiscountTypeEnumCustomPrice, any specified value is ignored.
+	DiscountType *DiscountTypeEnum
 
 	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
 	Conditions []*ConditionsItem
@@ -930,8 +930,8 @@ type DiscountTypeCustomPriceMultiCurrency struct {
 	ApplyDiscountOn *ApplyDiscountOn
 
 	// CONSTANT; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
-	// Field has constant value DiscountTypeCustomPriceMultiCurrency, any specified value is ignored.
-	DiscountType *DiscountType
+	// Field has constant value DiscountTypeEnumCustomPriceMultiCurrency, any specified value is ignored.
+	DiscountType *DiscountTypeEnum
 
 	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
 	Conditions []*ConditionsItem
@@ -994,8 +994,8 @@ type DiscountTypeProduct struct {
 	ApplyDiscountOn *ApplyDiscountOn
 
 	// CONSTANT; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
-	// Field has constant value DiscountTypeProduct, any specified value is ignored.
-	DiscountType *DiscountType
+	// Field has constant value DiscountTypeEnumProduct, any specified value is ignored.
+	DiscountType *DiscountTypeEnum
 
 	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
 	Conditions []*ConditionsItem
@@ -1036,8 +1036,8 @@ type DiscountTypeProductFamily struct {
 	ApplyDiscountOn *ApplyDiscountOn
 
 	// CONSTANT; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
-	// Field has constant value DiscountTypeProductFamily, any specified value is ignored.
-	DiscountType *DiscountType
+	// Field has constant value DiscountTypeEnumProductFamily, any specified value is ignored.
+	DiscountType *DiscountTypeEnum
 
 	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
 	Conditions []*ConditionsItem
@@ -1075,8 +1075,8 @@ type DiscountTypeProductSKU struct {
 	ApplyDiscountOn *ApplyDiscountOn
 
 	// CONSTANT; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
-	// Field has constant value DiscountTypeSKU, any specified value is ignored.
-	DiscountType *DiscountType
+	// Field has constant value DiscountTypeEnumSKU, any specified value is ignored.
+	DiscountType *DiscountTypeEnum
 
 	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
 	Conditions []*ConditionsItem
@@ -1120,7 +1120,7 @@ type DiscountTypeProperties struct {
 	ApplyDiscountOn *ApplyDiscountOn
 
 	// REQUIRED; Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
-	DiscountType *DiscountType
+	DiscountType *DiscountTypeEnum
 
 	// Array of conditions for the discount. Validation: Optional. Maximum length is 1000.
 	Conditions []*ConditionsItem

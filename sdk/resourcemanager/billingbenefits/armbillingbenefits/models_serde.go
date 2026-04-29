@@ -1974,7 +1974,7 @@ func (d DiscountTypeCustomPrice) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customPriceProperties", d.CustomPriceProperties)
 	populate(objectMap, "discountCombinationRule", d.DiscountCombinationRule)
 	populate(objectMap, "discountPercentage", d.DiscountPercentage)
-	objectMap["discountType"] = DiscountTypeCustomPrice
+	objectMap["discountType"] = DiscountTypeEnumCustomPrice
 	populate(objectMap, "priceGuaranteeProperties", d.PriceGuaranteeProperties)
 	populate(objectMap, "productFamilyName", d.ProductFamilyName)
 	populate(objectMap, "productId", d.ProductID)
@@ -2037,7 +2037,7 @@ func (d DiscountTypeCustomPriceMultiCurrency) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customPriceProperties", d.CustomPriceProperties)
 	populate(objectMap, "discountCombinationRule", d.DiscountCombinationRule)
 	populate(objectMap, "discountPercentage", d.DiscountPercentage)
-	objectMap["discountType"] = DiscountTypeCustomPriceMultiCurrency
+	objectMap["discountType"] = DiscountTypeEnumCustomPriceMultiCurrency
 	populate(objectMap, "priceGuaranteeProperties", d.PriceGuaranteeProperties)
 	populate(objectMap, "productFamilyName", d.ProductFamilyName)
 	populate(objectMap, "productId", d.ProductID)
@@ -2099,7 +2099,7 @@ func (d DiscountTypeProduct) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "conditions", d.Conditions)
 	populate(objectMap, "discountCombinationRule", d.DiscountCombinationRule)
 	populate(objectMap, "discountPercentage", d.DiscountPercentage)
-	objectMap["discountType"] = DiscountTypeProduct
+	objectMap["discountType"] = DiscountTypeEnumProduct
 	populate(objectMap, "priceGuaranteeProperties", d.PriceGuaranteeProperties)
 	populate(objectMap, "productFamilyName", d.ProductFamilyName)
 	populate(objectMap, "productId", d.ProductID)
@@ -2154,7 +2154,7 @@ func (d DiscountTypeProductFamily) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "conditions", d.Conditions)
 	populate(objectMap, "discountCombinationRule", d.DiscountCombinationRule)
 	populate(objectMap, "discountPercentage", d.DiscountPercentage)
-	objectMap["discountType"] = DiscountTypeProductFamily
+	objectMap["discountType"] = DiscountTypeEnumProductFamily
 	populate(objectMap, "priceGuaranteeProperties", d.PriceGuaranteeProperties)
 	populate(objectMap, "productFamilyName", d.ProductFamilyName)
 	return json.Marshal(objectMap)
@@ -2205,7 +2205,7 @@ func (d DiscountTypeProductSKU) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "conditions", d.Conditions)
 	populate(objectMap, "discountCombinationRule", d.DiscountCombinationRule)
 	populate(objectMap, "discountPercentage", d.DiscountPercentage)
-	objectMap["discountType"] = DiscountTypeSKU
+	objectMap["discountType"] = DiscountTypeEnumSKU
 	populate(objectMap, "priceGuaranteeProperties", d.PriceGuaranteeProperties)
 	populate(objectMap, "productFamilyName", d.ProductFamilyName)
 	populate(objectMap, "productId", d.ProductID)

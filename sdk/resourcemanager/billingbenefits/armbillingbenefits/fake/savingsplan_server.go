@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -75,9 +76,7 @@ func (s *SavingsPlanServerTransport) Do(req *http.Request) (*http.Response, erro
 }
 
 func (s *SavingsPlanServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -101,10 +100,7 @@ func (s *SavingsPlanServerTransport) dispatchToMethodFake(req *http.Request, met
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -134,11 +130,7 @@ func (s *SavingsPlanServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(expandUnescaped)
+	expandParam := getOptional(qp.Get("$expand"))
 	var options *armbillingbenefits.SavingsPlanClientGetOptions
 	if expandParam != nil {
 		options = &armbillingbenefits.SavingsPlanClientGetOptions{
@@ -150,7 +142,7 @@ func (s *SavingsPlanServerTransport) dispatchGet(req *http.Request) (*http.Respo
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SavingsPlanModel, req)
@@ -187,7 +179,7 @@ func (s *SavingsPlanServerTransport) dispatchNewListPager(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -204,26 +196,10 @@ func (s *SavingsPlanServerTransport) dispatchNewListAllPager(req *http.Request) 
 	newListAllPager := s.newListAllPager.get(req)
 	if newListAllPager == nil {
 		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		orderbyUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
-		if err != nil {
-			return nil, err
-		}
-		orderbyParam := getOptional(orderbyUnescaped)
-		refreshSummaryUnescaped, err := url.QueryUnescape(qp.Get("refreshSummary"))
-		if err != nil {
-			return nil, err
-		}
-		refreshSummaryParam := getOptional(refreshSummaryUnescaped)
-		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam, err := parseOptional(skiptokenUnescaped, func(v string) (float32, error) {
+		filterParam := getOptional(qp.Get("$filter"))
+		orderbyParam := getOptional(qp.Get("$orderby"))
+		refreshSummaryParam := getOptional(qp.Get("refreshSummary"))
+		skiptokenParam, err := parseOptional(qp.Get("$skiptoken"), func(v string) (float32, error) {
 			p, parseErr := strconv.ParseFloat(v, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -233,16 +209,8 @@ func (s *SavingsPlanServerTransport) dispatchNewListAllPager(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		selectedStateUnescaped, err := url.QueryUnescape(qp.Get("selectedState"))
-		if err != nil {
-			return nil, err
-		}
-		selectedStateParam := getOptional(selectedStateUnescaped)
-		takeUnescaped, err := url.QueryUnescape(qp.Get("take"))
-		if err != nil {
-			return nil, err
-		}
-		takeParam, err := parseOptional(takeUnescaped, func(v string) (float32, error) {
+		selectedStateParam := getOptional(qp.Get("selectedState"))
+		takeParam, err := parseOptional(qp.Get("take"), func(v string) (float32, error) {
 			p, parseErr := strconv.ParseFloat(v, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -274,7 +242,7 @@ func (s *SavingsPlanServerTransport) dispatchNewListAllPager(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -321,7 +289,7 @@ func (s *SavingsPlanServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -359,7 +327,7 @@ func (s *SavingsPlanServerTransport) dispatchValidateUpdate(req *http.Request) (
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SavingsPlanValidateResponse, req)

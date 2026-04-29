@@ -393,25 +393,25 @@ func PossibleDiscountStatusValues() []DiscountStatus {
 	}
 }
 
-// DiscountType - Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
-type DiscountType string
+// DiscountTypeEnum - Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+type DiscountTypeEnum string
 
 const (
-	DiscountTypeCustomPrice              DiscountType = "CustomPrice"
-	DiscountTypeCustomPriceMultiCurrency DiscountType = "CustomPriceMultiCurrency"
-	DiscountTypeProduct                  DiscountType = "Product"
-	DiscountTypeProductFamily            DiscountType = "ProductFamily"
-	DiscountTypeSKU                      DiscountType = "Sku"
+	DiscountTypeEnumCustomPrice              DiscountTypeEnum = "CustomPrice"
+	DiscountTypeEnumCustomPriceMultiCurrency DiscountTypeEnum = "CustomPriceMultiCurrency"
+	DiscountTypeEnumProduct                  DiscountTypeEnum = "Product"
+	DiscountTypeEnumProductFamily            DiscountTypeEnum = "ProductFamily"
+	DiscountTypeEnumSKU                      DiscountTypeEnum = "Sku"
 )
 
-// PossibleDiscountTypeValues returns the possible values for the DiscountType const type.
-func PossibleDiscountTypeValues() []DiscountType {
-	return []DiscountType{
-		DiscountTypeCustomPrice,
-		DiscountTypeCustomPriceMultiCurrency,
-		DiscountTypeProduct,
-		DiscountTypeProductFamily,
-		DiscountTypeSKU,
+// PossibleDiscountTypeEnumValues returns the possible values for the DiscountTypeEnum const type.
+func PossibleDiscountTypeEnumValues() []DiscountTypeEnum {
+	return []DiscountTypeEnum{
+		DiscountTypeEnumCustomPrice,
+		DiscountTypeEnumCustomPriceMultiCurrency,
+		DiscountTypeEnumProduct,
+		DiscountTypeEnumProductFamily,
+		DiscountTypeEnumSKU,
 	}
 }
 

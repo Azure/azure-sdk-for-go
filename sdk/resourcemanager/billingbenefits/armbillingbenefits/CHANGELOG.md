@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-03-19)
+## 3.0.0-beta.1 (2026-04-29)
 ### Breaking Changes
 
 - Function `*RPClient.ValidatePurchase` has been removed
@@ -25,7 +25,7 @@
 - New enum type `DiscountProvisioningState` with values `DiscountProvisioningStateCanceled`, `DiscountProvisioningStateFailed`, `DiscountProvisioningStatePending`, `DiscountProvisioningStateSucceeded`, `DiscountProvisioningStateUnknown`
 - New enum type `DiscountRuleType` with values `DiscountRuleTypeFixedListPrice`, `DiscountRuleTypeFixedPriceLock`, `DiscountRuleTypePriceCeiling`
 - New enum type `DiscountStatus` with values `DiscountStatusActive`, `DiscountStatusCanceled`, `DiscountStatusExpired`, `DiscountStatusFailed`, `DiscountStatusPending`
-- New enum type `DiscountType` with values `DiscountTypeCustomPrice`, `DiscountTypeCustomPriceMultiCurrency`, `DiscountTypeProduct`, `DiscountTypeProductFamily`, `DiscountTypeSKU`
+- New enum type `DiscountTypeEnum` with values `DiscountTypeEnumCustomPrice`, `DiscountTypeEnumCustomPriceMultiCurrency`, `DiscountTypeEnumProduct`, `DiscountTypeEnumProductFamily`, `DiscountTypeEnumSKU`
 - New enum type `EnablementMode` with values `EnablementModeDisabled`, `EnablementModeEnabled`, `EnablementModeUnknown`
 - New enum type `FreeServicesStatus` with values `FreeServicesStatusActive`, `FreeServicesStatusCanceled`, `FreeServicesStatusCompleted`, `FreeServicesStatusPending`, `FreeServicesStatusUnknown`
 - New enum type `MaccEntityType` with values `MaccEntityTypeContributor`, `MaccEntityTypePrimary`

@@ -19,8 +19,12 @@ import (
 	"time"
 )
 
+const defaultBlockBlobClientVersion string = "2026-04-06"
+
 // BlockBlobClient contains the methods for the BlockBlob group.
 // Don't use this type directly, use a constructor function instead.
+//
+// Generated from API version 2026-04-06
 type BlockBlobClient struct {
 	internal *azcore.Client
 	url      string
@@ -33,8 +37,6 @@ type BlockBlobClient struct {
 // list or from the uncommitted block list, or to commit the most recently uploaded version of the block, whichever list it
 // may belong to.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - blocks - Blob Blocks.
 //   - options - BlockBlobClientCommitBlockListOptions contains the optional parameters for the BlockBlobClient.CommitBlockList
 //     method.
@@ -147,7 +149,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultBlockBlobClientVersion}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, blocks); err != nil {
 		return nil, err
@@ -219,8 +221,6 @@ func (client *BlockBlobClient) commitBlockListHandleResponse(resp *http.Response
 
 // GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - listType - Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together.
 //   - options - BlockBlobClientGetBlockListOptions contains the optional parameters for the BlockBlobClient.GetBlockList method.
 func (client *BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, options *BlockBlobClientGetBlockListOptions) (BlockBlobClientGetBlockListResponse, error) {
@@ -267,7 +267,7 @@ func (client *BlockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultBlockBlobClientVersion}
 	return req, nil
 }
 
@@ -318,8 +318,6 @@ func (client *BlockBlobClient) getBlockListHandleResponse(resp *http.Response) (
 
 // Query - The Query operation enables users to select/project on blob data by providing simple query expressions.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - queryRequest - The query request
 //   - options - BlockBlobClientQueryOptions contains the optional parameters for the BlockBlobClient.Query method.
 func (client *BlockBlobClient) Query(ctx context.Context, queryRequest QueryRequest, options *BlockBlobClientQueryOptions) (BlockBlobClientQueryResponse, error) {
@@ -387,7 +385,7 @@ func (client *BlockBlobClient) queryCreateRequest(ctx context.Context, queryRequ
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultBlockBlobClientVersion}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, queryRequest); err != nil {
 		return nil, err
@@ -548,8 +546,6 @@ func (client *BlockBlobClient) queryHandleResponse(resp *http.Response) (BlockBl
 
 // StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - blockID - A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal
 //     to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size
 //     for each block.
@@ -618,7 +614,7 @@ func (client *BlockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultBlockBlobClientVersion}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -681,8 +677,6 @@ func (client *BlockBlobClient) stageBlockHandleResponse(resp *http.Response) (Bl
 // StageBlockFromURL - The Stage Block From URL operation creates a new block to be committed as part of a blob where the
 // contents are read from a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - blockID - A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal
 //     to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size
 //     for each block.
@@ -777,7 +771,7 @@ func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultBlockBlobClientVersion}
 	return req, nil
 }
 
@@ -835,8 +829,6 @@ func (client *BlockBlobClient) stageBlockFromURLHandleResponse(resp *http.Respon
 // blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the
 // Put Block List operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - body - The body of the request.
 //   - contentLength - The length of the request.
 //   - options - BlockBlobClientUploadOptions contains the optional parameters for the BlockBlobClient.Upload method.
@@ -956,7 +948,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, body io.
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultBlockBlobClientVersion}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -1034,8 +1026,6 @@ func (client *BlockBlobClient) uploadHandleResponse(resp *http.Response) (BlockB
 // from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial updates to
 // a block blob’s contents using a source URL, use the Put Block from URL API in conjunction with Put Block List.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - copySource - Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies
 //     a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either
 //     be public or must be authenticated via a shared access signature.
@@ -1179,7 +1169,7 @@ func (client *BlockBlobClient) uploadBlobFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultBlockBlobClientVersion}
 	return req, nil
 }
 

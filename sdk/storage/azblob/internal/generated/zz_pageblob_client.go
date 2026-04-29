@@ -17,8 +17,12 @@ import (
 	"time"
 )
 
+const defaultPageBlobClientVersion string = "2026-04-06"
+
 // PageBlobClient contains the methods for the PageBlob group.
 // Don't use this type directly, use a constructor function instead.
+//
+// Generated from API version 2026-04-06
 type PageBlobClient struct {
 	internal *azcore.Client
 	url      string
@@ -26,8 +30,6 @@ type PageBlobClient struct {
 
 // ClearPages - The Clear Pages operation clears a range of pages from a page blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - rangeParam - Bytes of data in the specified range.
 //   - options - PageBlobClientClearPagesOptions contains the optional parameters for the PageBlobClient.ClearPages method.
 func (client *PageBlobClient) ClearPages(ctx context.Context, rangeParam string, options *PageBlobClientClearPagesOptions) (PageBlobClientClearPagesResponse, error) {
@@ -105,7 +107,7 @@ func (client *PageBlobClient) clearPagesCreateRequest(ctx context.Context, range
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
 	req.Raw().Header["x-ms-page-write"] = []string{"clear"}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 
@@ -167,8 +169,6 @@ func (client *PageBlobClient) clearPagesHandleResponse(resp *http.Response) (Pag
 // the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual.
 // This API is supported since REST version 2016-05-31.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - copySource - Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies
 //     a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either
 //     be public or must be authenticated via a shared access signature.
@@ -223,7 +223,7 @@ func (client *PageBlobClient) copyIncrementalCreateRequest(ctx context.Context, 
 	if options != nil && options.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*options.IfTags}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 
@@ -267,8 +267,6 @@ func (client *PageBlobClient) copyIncrementalHandleResponse(resp *http.Response)
 
 // Create - The Create operation creates a new page blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - size - This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte
 //     boundary.
 //   - options - PageBlobClientCreateOptions contains the optional parameters for the PageBlobClient.Create method.
@@ -380,7 +378,7 @@ func (client *PageBlobClient) createCreateRequest(ctx context.Context, size int6
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 
@@ -442,8 +440,6 @@ func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlo
 // GetPageRanges - The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page
 // blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.GetPageRanges method.
 func (client *PageBlobClient) GetPageRanges(ctx context.Context, options *PageBlobClientGetPageRangesOptions) (PageBlobClientGetPageRangesResponse, error) {
 	var err error
@@ -509,7 +505,7 @@ func (client *PageBlobClient) getPageRangesCreateRequest(ctx context.Context, op
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 
@@ -561,8 +557,6 @@ func (client *PageBlobClient) getPageRangesHandleResponse(resp *http.Response) (
 // GetPageRangesDiff - The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob or snapshot
 // of a page blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - PageBlobClientGetPageRangesDiffOptions contains the optional parameters for the PageBlobClient.GetPageRangesDiff
 //     method.
 func (client *PageBlobClient) GetPageRangesDiff(ctx context.Context, options *PageBlobClientGetPageRangesDiffOptions) (PageBlobClientGetPageRangesDiffResponse, error) {
@@ -635,7 +629,7 @@ func (client *PageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context
 	if options != nil && options.PrevSnapshotURL != nil {
 		req.Raw().Header["x-ms-previous-snapshot-url"] = []string{*options.PrevSnapshotURL}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 
@@ -686,8 +680,6 @@ func (client *PageBlobClient) getPageRangesDiffHandleResponse(resp *http.Respons
 
 // Resize - The Resize operation increases the size of the page blob to the specified size.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - size - This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte
 //     boundary.
 //   - options - PageBlobClientResizeOptions contains the optional parameters for the PageBlobClient.Resize method.
@@ -755,7 +747,7 @@ func (client *PageBlobClient) resizeCreateRequest(ctx context.Context, size int6
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 
@@ -801,8 +793,6 @@ func (client *PageBlobClient) resizeHandleResponse(resp *http.Response) (PageBlo
 // UpdateSequenceNumber - The Update Sequence Number operation sets the blob's sequence number. The operation will fail if
 // the specified sequence number is less than the current sequence number of the blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - sequenceNumberAction - Required if the x-ms-blob-sequence-number header is set for the request. This property applies to
 //     page blobs only. This property indicates how the service should modify the blob's sequence number
 //   - options - PageBlobClientUpdateSequenceNumberOptions contains the optional parameters for the PageBlobClient.UpdateSequenceNumber
@@ -862,7 +852,7 @@ func (client *PageBlobClient) updateSequenceNumberCreateRequest(ctx context.Cont
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
 	req.Raw().Header["x-ms-sequence-number-action"] = []string{string(sequenceNumberAction)}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 
@@ -907,8 +897,6 @@ func (client *PageBlobClient) updateSequenceNumberHandleResponse(resp *http.Resp
 
 // UploadPages - The Upload Pages operation writes a range of pages to a page blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - body - The body of the request.
 //   - contentLength - The length of the request.
 //   - rangeParam - Bytes of data in the specified range.
@@ -1000,7 +988,7 @@ func (client *PageBlobClient) uploadPagesCreateRequest(ctx context.Context, body
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -1080,8 +1068,6 @@ func (client *PageBlobClient) uploadPagesHandleResponse(resp *http.Response) (Pa
 // UploadPagesFromURL - The Upload Pages operation writes a range of pages to a page blob where the contents are read from
 // a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - sourceURL - Specify a URL to the copy source.
 //   - sourceRange - Bytes of source data in the specified range.
 //   - contentLength - The length of the request.
@@ -1198,7 +1184,7 @@ func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*options.SourceIfUnmodifiedSince).String()}
 	}
 	req.Raw().Header["x-ms-source-range"] = []string{sourceRange}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultPageBlobClientVersion}
 	return req, nil
 }
 

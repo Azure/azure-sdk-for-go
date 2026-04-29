@@ -19,8 +19,12 @@ import (
 	"time"
 )
 
+const defaultContainerClientVersion string = "2026-04-06"
+
 // ContainerClient contains the methods for the Container group.
 // Don't use this type directly, use a constructor function instead.
+//
+// Generated from API version 2026-04-06
 type ContainerClient struct {
 	internal *azcore.Client
 	url      string
@@ -29,8 +33,6 @@ type ContainerClient struct {
 // AcquireLease - The Acquire Lease operation requests a new lease on a container. The lease lock duration can be 15 to 60
 // seconds, or can be infinite.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
 //     lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
 //   - options - ContainerClientAcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
@@ -78,7 +80,7 @@ func (client *ContainerClient) acquireLeaseCreateRequest(ctx context.Context, du
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -120,8 +122,6 @@ func (client *ContainerClient) acquireLeaseHandleResponse(resp *http.Response) (
 // BreakLease - The Break Lease operation ends a lease and ensures that another client can't acquire a new lease until the
 // current lease period has expired.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientBreakLeaseOptions contains the optional parameters for the ContainerClient.BreakLease method.
 func (client *ContainerClient) BreakLease(ctx context.Context, options *ContainerClientBreakLeaseOptions) (ContainerClientBreakLeaseResponse, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *ContainerClient) breakLeaseCreateRequest(ctx context.Context, opti
 	if options != nil && options.BreakPeriod != nil {
 		req.Raw().Header["x-ms-lease-break-period"] = []string{strconv.FormatInt(int64(*options.BreakPeriod), 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -212,8 +212,6 @@ func (client *ContainerClient) breakLeaseHandleResponse(resp *http.Response) (Co
 
 // ChangeLease - The Change Lease operation is used to change the ID of an existing lease.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - leaseID - Required. A lease ID for the source path. If specified, the source path must have an active lease and the lease
 //     ID must match.
 //   - proposedLeaseID - Required. The proposed lease ID for the container.
@@ -260,7 +258,7 @@ func (client *ContainerClient) changeLeaseCreateRequest(ctx context.Context, lea
 	req.Raw().Header["x-ms-lease-action"] = []string{"change"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
 	req.Raw().Header["x-ms-proposed-lease-id"] = []string{proposedLeaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -302,8 +300,6 @@ func (client *ContainerClient) changeLeaseHandleResponse(resp *http.Response) (C
 // Create - Creates a new container under the specified account. If the container with the same name already exists, the operation
 // fails.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientCreateOptions contains the optional parameters for the ContainerClient.Create method.
 func (client *ContainerClient) Create(ctx context.Context, options *ContainerClientCreateOptions) (ContainerClientCreateResponse, error) {
 	var err error
@@ -354,7 +350,7 @@ func (client *ContainerClient) createCreateRequest(ctx context.Context, options 
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -393,8 +389,6 @@ func (client *ContainerClient) createHandleResponse(resp *http.Response) (Contai
 // Delete - operation marks the specified container for deletion. The container and any blobs contained within it are later
 // deleted during garbage collection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientDeleteOptions contains the optional parameters for the ContainerClient.Delete method.
 func (client *ContainerClient) Delete(ctx context.Context, options *ContainerClientDeleteOptions) (ContainerClientDeleteResponse, error) {
 	var err error
@@ -438,7 +432,7 @@ func (client *ContainerClient) deleteCreateRequest(ctx context.Context, options 
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -467,8 +461,6 @@ func (client *ContainerClient) deleteHandleResponse(resp *http.Response) (Contai
 // FilterBlobs - The Filter Blobs operation enables callers to list blobs in a container whose tags match a given search expression.
 // Filter blobs searches within the given container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - filterExpression - Filters the results to return only to return only blobs whose tags match the specified expression.
 //   - options - ContainerClientFilterBlobsOptions contains the optional parameters for the ContainerClient.FilterBlobs method.
 func (client *ContainerClient) FilterBlobs(ctx context.Context, filterExpression string, options *ContainerClientFilterBlobsOptions) (ContainerClientFilterBlobsResponse, error) {
@@ -515,7 +507,7 @@ func (client *ContainerClient) filterBlobsCreateRequest(ctx context.Context, fil
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -550,8 +542,6 @@ func (client *ContainerClient) filterBlobsHandleResponse(resp *http.Response) (C
 // GetAccessPolicy - gets the permissions for the specified container. The permissions indicate whether container data may
 // be accessed publicly.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientGetAccessPolicyOptions contains the optional parameters for the ContainerClient.GetAccessPolicy
 //     method.
 func (client *ContainerClient) GetAccessPolicy(ctx context.Context, options *ContainerClientGetAccessPolicyOptions) (ContainerClientGetAccessPolicyResponse, error) {
@@ -591,7 +581,7 @@ func (client *ContainerClient) getAccessPolicyCreateRequest(ctx context.Context,
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -638,8 +628,6 @@ func (client *ContainerClient) getAccessPolicyHandleResponse(resp *http.Response
 
 // GetAccountInfo - Returns the sku name and account kind
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientGetAccountInfoOptions contains the optional parameters for the ContainerClient.GetAccountInfo
 //     method.
 func (client *ContainerClient) GetAccountInfo(ctx context.Context, options *ContainerClientGetAccountInfoOptions) (ContainerClientGetAccountInfoResponse, error) {
@@ -675,7 +663,7 @@ func (client *ContainerClient) getAccountInfoCreateRequest(ctx context.Context, 
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -717,8 +705,6 @@ func (client *ContainerClient) getAccountInfoHandleResponse(resp *http.Response)
 // GetProperties - returns all user-defined metadata and system properties for the specified container. The data returned
 // does not include the container's list of blobs
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientGetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
 func (client *ContainerClient) GetProperties(ctx context.Context, options *ContainerClientGetPropertiesOptions) (ContainerClientGetPropertiesResponse, error) {
 	var err error
@@ -756,7 +742,7 @@ func (client *ContainerClient) getPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -844,8 +830,6 @@ func (client *ContainerClient) getPropertiesHandleResponse(resp *http.Response) 
 }
 
 // NewListBlobFlatSegmentPager - The List Blobs operation returns a list of the blobs under the specified container.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientListBlobFlatSegmentOptions contains the optional parameters for the ContainerClient.NewListBlobFlatSegmentPager
 //     method.
 func (client *ContainerClient) NewListBlobFlatSegmentPager(options *ContainerClientListBlobFlatSegmentOptions) *runtime.Pager[ContainerClientListBlobFlatSegmentResponse] {
@@ -908,7 +892,7 @@ func (client *ContainerClient) listBlobFlatSegmentCreateRequest(ctx context.Cont
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -942,8 +926,6 @@ func (client *ContainerClient) listBlobFlatSegmentHandleResponse(resp *http.Resp
 
 // NewListBlobHierarchySegmentPager - The List Blobs operation returns a list of the blobs under the specified container.
 // A delimiter can be used to traverse a virtual hierarchy of blobs as though it were a file system.
-//
-// Generated from API version 2026-04-06
 //   - delimiter - When the request includes this parameter, the operation returns a BlobPrefix element in the response body that
 //     acts as a placeholder for all blobs whose names begin with the same substring up to the appearance of the delimiter character.
 //     The delimiter may be a single character or a string.
@@ -1010,7 +992,7 @@ func (client *ContainerClient) listBlobHierarchySegmentCreateRequest(ctx context
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -1045,8 +1027,6 @@ func (client *ContainerClient) listBlobHierarchySegmentHandleResponse(resp *http
 // ReleaseLease - The Release Lease operation frees the lease if it's no longer needed, so that another client can immediately
 // acquire a lease against the container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - leaseID - Required. A lease ID for the source path. If specified, the source path must have an active lease and the lease
 //     ID must match.
 //   - options - ContainerClientReleaseLeaseOptions contains the optional parameters for the ContainerClient.ReleaseLease method.
@@ -1091,7 +1071,7 @@ func (client *ContainerClient) releaseLeaseCreateRequest(ctx context.Context, le
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -1129,8 +1109,6 @@ func (client *ContainerClient) releaseLeaseHandleResponse(resp *http.Response) (
 
 // Rename - Renames an existing container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - sourceContainerName - Required. Specifies the name of the container to rename.
 //   - options - ContainerClientRenameOptions contains the optional parameters for the ContainerClient.Rename method.
 func (client *ContainerClient) Rename(ctx context.Context, sourceContainerName string, options *ContainerClientRenameOptions) (ContainerClientRenameResponse, error) {
@@ -1170,7 +1148,7 @@ func (client *ContainerClient) renameCreateRequest(ctx context.Context, sourceCo
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -1198,8 +1176,6 @@ func (client *ContainerClient) renameHandleResponse(resp *http.Response) (Contai
 
 // RenewLease - The Renew Lease operation renews an existing lease.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - leaseID - Required. A lease ID for the source path. If specified, the source path must have an active lease and the lease
 //     ID must match.
 //   - options - ContainerClientRenewLeaseOptions contains the optional parameters for the ContainerClient.RenewLease method.
@@ -1244,7 +1220,7 @@ func (client *ContainerClient) renewLeaseCreateRequest(ctx context.Context, leas
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -1285,8 +1261,6 @@ func (client *ContainerClient) renewLeaseHandleResponse(resp *http.Response) (Co
 
 // Restore - Restores a previously-deleted container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientRestoreOptions contains the optional parameters for the ContainerClient.Restore method.
 func (client *ContainerClient) Restore(ctx context.Context, options *ContainerClientRestoreOptions) (ContainerClientRestoreResponse, error) {
 	var err error
@@ -1327,7 +1301,7 @@ func (client *ContainerClient) restoreCreateRequest(ctx context.Context, options
 	if options != nil && options.DeletedContainerVersion != nil {
 		req.Raw().Header["x-ms-deleted-container-version"] = []string{*options.DeletedContainerVersion}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -1356,8 +1330,6 @@ func (client *ContainerClient) restoreHandleResponse(resp *http.Response) (Conta
 // SetAccessPolicy - sets the permissions for the specified container. The permissions indicate whether blobs in a container
 // may be accessed publicly.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - containerACL - The access control list for the container.
 //   - options - ContainerClientSetAccessPolicyOptions contains the optional parameters for the ContainerClient.SetAccessPolicy
 //     method.
@@ -1406,7 +1378,7 @@ func (client *ContainerClient) setAccessPolicyCreateRequest(ctx context.Context,
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	type wrapper struct {
 		XMLName      xml.Name             `xml:"SignedIdentifiers"`
 		ContainerACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
@@ -1452,8 +1424,6 @@ func (client *ContainerClient) setAccessPolicyHandleResponse(resp *http.Response
 
 // SetMetadata - operation sets one or more user-defined name-value pairs for the specified container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - ContainerClientSetMetadataOptions contains the optional parameters for the ContainerClient.SetMetadata method.
 func (client *ContainerClient) SetMetadata(ctx context.Context, options *ContainerClientSetMetadataOptions) (ContainerClientSetMetadataResponse, error) {
 	var err error
@@ -1501,7 +1471,7 @@ func (client *ContainerClient) setMetadataCreateRequest(ctx context.Context, opt
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultContainerClientVersion}
 	return req, nil
 }
 
@@ -1527,76 +1497,6 @@ func (client *ContainerClient) setMetadataHandleResponse(resp *http.Response) (C
 			return ContainerClientSetMetadataResponse{}, err
 		}
 		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.Version = &val
-	}
-	return result, nil
-}
-
-// SubmitBatch - The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
-//   - multipartContentType - Required. The value of this header must be multipart/mixed with a batch boundary. Example header
-//     value: multipart/mixed; boundary=batch_<GUID>
-//   - contentLength - The length of the request.
-//   - body - The body of the request.
-//   - options - ContainerClientSubmitBatchOptions contains the optional parameters for the ContainerClient.SubmitBatch method.
-func (client *ContainerClient) SubmitBatch(ctx context.Context, multipartContentType string, contentLength int64, body []byte, options *ContainerClientSubmitBatchOptions) (ContainerClientSubmitBatchResponse, error) {
-	var err error
-	req, err := client.submitBatchCreateRequest(ctx, multipartContentType, contentLength, body, options)
-	if err != nil {
-		return ContainerClientSubmitBatchResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ContainerClientSubmitBatchResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerClientSubmitBatchResponse{}, err
-	}
-	resp, err := client.submitBatchHandleResponse(httpResp)
-	return resp, err
-}
-
-// submitBatchCreateRequest creates the SubmitBatch request.
-func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, multipartContentType string, contentLength int64, body []byte, options *ContainerClientSubmitBatchOptions) (*policy.Request, error) {
-	urlPath := "?restype=container&comp=batch"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.url, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	runtime.SkipBodyDownload(req)
-	req.Raw().Header["Accept"] = []string{"multipart/mixed"}
-	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
-	req.Raw().Header["Content-Type"] = []string{multipartContentType}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
-	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
-	formData := map[string]any{}
-	formData["body"] = body
-	if err := runtime.SetMultipartFormData(req, formData); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// submitBatchHandleResponse handles the SubmitBatch response.
-func (client *ContainerClient) submitBatchHandleResponse(resp *http.Response) (ContainerClientSubmitBatchResponse, error) {
-	result := ContainerClientSubmitBatchResponse{Body: resp.Body}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val

@@ -17,8 +17,12 @@ import (
 	"time"
 )
 
+const defaultAppendBlobClientVersion string = "2026-04-06"
+
 // AppendBlobClient contains the methods for the AppendBlob group.
 // Don't use this type directly, use a constructor function instead.
+//
+// Generated from API version 2026-04-06
 type AppendBlobClient struct {
 	internal *azcore.Client
 	url      string
@@ -26,8 +30,6 @@ type AppendBlobClient struct {
 
 // AppendBlock - The Append Block operation commits a new block of data to the end of an append blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - body - The body of the request.
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientAppendBlockOptions contains the optional parameters for the AppendBlobClient.AppendBlock method.
@@ -113,7 +115,7 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, bo
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultAppendBlobClientVersion}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -197,8 +199,6 @@ func (client *AppendBlobClient) appendBlockHandleResponse(resp *http.Response) (
 // AppendBlockFromURL - The Append Block From URL operation creates a new block to be committed as part of an append blob
 // where the contents are read from a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - sourceURL - Specify a URL to the copy source.
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientAppendBlockFromURLOptions contains the optional parameters for the AppendBlobClient.AppendBlockFromURL
@@ -313,7 +313,7 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultAppendBlobClientVersion}
 	return req, nil
 }
 
@@ -389,8 +389,6 @@ func (client *AppendBlobClient) appendBlockFromURLHandleResponse(resp *http.Resp
 
 // Create - The Create operation creates a new append blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - AppendBlobClientCreateOptions contains the optional parameters for the AppendBlobClient.Create method.
 func (client *AppendBlobClient) Create(ctx context.Context, options *AppendBlobClientCreateOptions) (AppendBlobClientCreateResponse, error) {
 	var err error
@@ -493,7 +491,7 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, options
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultAppendBlobClientVersion}
 	return req, nil
 }
 
@@ -555,8 +553,6 @@ func (client *AppendBlobClient) createHandleResponse(resp *http.Response) (Appen
 // Seal - The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12 version
 // or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
 //   - options - AppendBlobClientSealOptions contains the optional parameters for the AppendBlobClient.Seal method.
 func (client *AppendBlobClient) Seal(ctx context.Context, options *AppendBlobClientSealOptions) (AppendBlobClientSealResponse, error) {
 	var err error
@@ -609,7 +605,7 @@ func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	req.Raw().Header["x-ms-version"] = []string{defaultAppendBlobClientVersion}
 	return req, nil
 }
 

@@ -5,7 +5,6 @@
 package generated
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
@@ -490,13 +489,6 @@ func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	return enc.EncodeElement(aux, start)
 }
 
-// toMultipartFormData converts SubmitBatchResponse to multipart/form data.
-func (s SubmitBatchResponse) toMultipartFormData() (map[string]any, error) {
-	objectMap := make(map[string]any)
-	objectMap["body"] = s.Body
-	return objectMap, nil
-}
-
 // MarshalXML implements the xml.Marshaller interface for type UserDelegationKey.
 func (u UserDelegationKey) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias UserDelegationKey
@@ -531,14 +523,5 @@ func (u *UserDelegationKey) UnmarshalXML(dec *xml.Decoder, start xml.StartElemen
 	if aux.SignedStart != nil && !(*time.Time)(aux.SignedStart).IsZero() {
 		u.SignedStart = (*time.Time)(aux.SignedStart)
 	}
-	return nil
-}
-
-func populateMultipartJSON(m map[string]any, k string, v any) error {
-	data, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	m[k] = data
 	return nil
 }

@@ -6,7 +6,6 @@ package generated
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"time"
 )
 
@@ -676,11 +675,6 @@ type StorageServiceProperties struct {
 type StorageServiceStats struct {
 	// The geo replication stats.
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
-}
-
-type SubmitBatchResponse struct {
-	// REQUIRED
-	Body streaming.MultipartContent
 }
 
 // UserDelegationKey - A user delegation key.

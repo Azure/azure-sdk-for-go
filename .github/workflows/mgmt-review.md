@@ -110,15 +110,17 @@ For failures not covered above, reference the [troubleshooting guide](https://gi
 
 Post **exactly one** PR comment via `add_comment`. Include the marker `<!-- gh-aw-workflow-id: mgmt-review -->` in the body.
 
-**If nothing blocks** → post only:
+**If nothing blocks and this is NOT a first on-board service** → post only:
 
 ```
 ## PR is ready to merge
 ```
 
-**If this is a first on-board service** (detected in Step 1), include this block in the comment:
+**If nothing blocks but this IS a first on-board service** (detected in Step 1) → post:
 
 ```markdown
+## PR is ready to merge
+
 ## ⚠️ First On-Board Service — Pipeline Setup Required
 
 This PR adds a new service. Release pipelines have not been created yet.
@@ -126,7 +128,7 @@ This PR adds a new service. Release pipelines have not been created yet.
 **Action required:** Comment `/azp run prepare-pipelines` on this PR to create the release pipelines.
 ```
 
-**If there are failures** → use this template:
+**If there are failures** → use this template (append the first on-board block above after the failure list if this is also a first on-board service):
 
 ```markdown
 ## Next Steps to Merge

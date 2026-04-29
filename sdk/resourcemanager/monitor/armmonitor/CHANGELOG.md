@@ -1,5 +1,593 @@
 # Release History
 
+## 1.0.0 (2026-04-29)
+### Breaking Changes
+
+- Function `*AzureMonitorWorkspacesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties AzureMonitorWorkspaceResource, options *AzureMonitorWorkspacesClientUpdateOptions)`
+- Type of `AzureMonitorWorkspace.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
+- Type of `AzureMonitorWorkspaceResource.Properties` has been changed from `*AzureMonitorWorkspaceResourceProperties` to `*AzureMonitorWorkspace`
+- `PublicNetworkAccessSecuredByPerimeter` from enum `PublicNetworkAccess` has been removed
+- Enum `AccessMode` has been removed
+- Enum `AggregationType` has been removed
+- Enum `AggregationTypeEnum` has been removed
+- Enum `AlertSeverity` has been removed
+- Enum `BaselineSensitivity` has been removed
+- Enum `CategoryType` has been removed
+- Enum `ComparisonOperationType` has been removed
+- Enum `ConditionOperator` has been removed
+- Enum `CriterionType` has been removed
+- Enum `DataStatus` has been removed
+- Enum `DimensionOperator` has been removed
+- Enum `DynamicThresholdOperator` has been removed
+- Enum `DynamicThresholdSensitivity` has been removed
+- Enum `EventLevel` has been removed
+- Enum `IdentityType` has been removed
+- Enum `Kind` has been removed
+- Enum `KnownColumnDefinitionType` has been removed
+- Enum `KnownDataCollectionEndpointProvisioningState` has been removed
+- Enum `KnownDataCollectionEndpointResourceKind` has been removed
+- Enum `KnownDataCollectionRuleAssociationProvisioningState` has been removed
+- Enum `KnownDataCollectionRuleProvisioningState` has been removed
+- Enum `KnownDataCollectionRuleResourceKind` has been removed
+- Enum `KnownDataFlowStreams` has been removed
+- Enum `KnownExtensionDataSourceStreams` has been removed
+- Enum `KnownLocationSpecProvisioningStatus` has been removed
+- Enum `KnownLogFileTextSettingsRecordStartTimestampFormat` has been removed
+- Enum `KnownLogFilesDataSourceFormat` has been removed
+- Enum `KnownPerfCounterDataSourceStreams` has been removed
+- Enum `KnownPrometheusForwarderDataSourceStreams` has been removed
+- Enum `KnownPublicNetworkAccessOptions` has been removed
+- Enum `KnownSyslogDataSourceFacilityNames` has been removed
+- Enum `KnownSyslogDataSourceLogLevels` has been removed
+- Enum `KnownSyslogDataSourceStreams` has been removed
+- Enum `KnownWindowsEventLogDataSourceStreams` has been removed
+- Enum `MetricAggregationType` has been removed
+- Enum `MetricClass` has been removed
+- Enum `MetricResultType` has been removed
+- Enum `MetricStatisticType` has been removed
+- Enum `MetricUnit` has been removed
+- Enum `NamespaceClassification` has been removed
+- Enum `Odatatype` has been removed
+- Enum `OnboardingStatus` has been removed
+- Enum `Operator` has been removed
+- Enum `Origin` has been removed
+- Enum `PredictiveAutoscalePolicyScaleMode` has been removed
+- Enum `ProvisioningState` has been removed
+- Enum `ReceiverStatus` has been removed
+- Enum `RecurrenceFrequency` has been removed
+- Enum `ResultType` has been removed
+- Enum `ScaleDirection` has been removed
+- Enum `ScaleRuleMetricDimensionOperationType` has been removed
+- Enum `ScaleType` has been removed
+- Enum `TimeAggregation` has been removed
+- Enum `TimeAggregationOperator` has been removed
+- Enum `TimeAggregationType` has been removed
+- Enum `Unit` has been removed
+- Function `NewActionGroupsClient` has been removed
+- Function `*ActionGroupsClient.BeginCreateNotificationsAtActionGroupResourceLevel` has been removed
+- Function `*ActionGroupsClient.CreateOrUpdate` has been removed
+- Function `*ActionGroupsClient.Delete` has been removed
+- Function `*ActionGroupsClient.EnableReceiver` has been removed
+- Function `*ActionGroupsClient.Get` has been removed
+- Function `*ActionGroupsClient.GetTestNotificationsAtActionGroupResourceLevel` has been removed
+- Function `*ActionGroupsClient.NewListByResourceGroupPager` has been removed
+- Function `*ActionGroupsClient.NewListBySubscriptionIDPager` has been removed
+- Function `*ActionGroupsClient.Update` has been removed
+- Function `NewActivityLogAlertsClient` has been removed
+- Function `*ActivityLogAlertsClient.CreateOrUpdate` has been removed
+- Function `*ActivityLogAlertsClient.Delete` has been removed
+- Function `*ActivityLogAlertsClient.Get` has been removed
+- Function `*ActivityLogAlertsClient.NewListByResourceGroupPager` has been removed
+- Function `*ActivityLogAlertsClient.NewListBySubscriptionIDPager` has been removed
+- Function `*ActivityLogAlertsClient.Update` has been removed
+- Function `NewActivityLogsClient` has been removed
+- Function `*ActivityLogsClient.NewListPager` has been removed
+- Function `NewAlertRuleIncidentsClient` has been removed
+- Function `*AlertRuleIncidentsClient.Get` has been removed
+- Function `*AlertRuleIncidentsClient.NewListByAlertRulePager` has been removed
+- Function `NewAlertRulesClient` has been removed
+- Function `*AlertRulesClient.CreateOrUpdate` has been removed
+- Function `*AlertRulesClient.Delete` has been removed
+- Function `*AlertRulesClient.Get` has been removed
+- Function `*AlertRulesClient.NewListByResourceGroupPager` has been removed
+- Function `*AlertRulesClient.NewListBySubscriptionPager` has been removed
+- Function `*AlertRulesClient.Update` has been removed
+- Function `NewAutoscaleSettingsClient` has been removed
+- Function `*AutoscaleSettingsClient.CreateOrUpdate` has been removed
+- Function `*AutoscaleSettingsClient.Delete` has been removed
+- Function `*AutoscaleSettingsClient.Get` has been removed
+- Function `*AutoscaleSettingsClient.NewListByResourceGroupPager` has been removed
+- Function `*AutoscaleSettingsClient.NewListBySubscriptionPager` has been removed
+- Function `*AutoscaleSettingsClient.Update` has been removed
+- Function `*AzureMonitorWorkspacesClient.Create` has been removed
+- Function `NewBaselinesClient` has been removed
+- Function `*BaselinesClient.NewListPager` has been removed
+- Function `*ClientFactory.NewActionGroupsClient` has been removed
+- Function `*ClientFactory.NewActivityLogAlertsClient` has been removed
+- Function `*ClientFactory.NewActivityLogsClient` has been removed
+- Function `*ClientFactory.NewAlertRuleIncidentsClient` has been removed
+- Function `*ClientFactory.NewAlertRulesClient` has been removed
+- Function `*ClientFactory.NewAutoscaleSettingsClient` has been removed
+- Function `*ClientFactory.NewBaselinesClient` has been removed
+- Function `*ClientFactory.NewDataCollectionEndpointsClient` has been removed
+- Function `*ClientFactory.NewDataCollectionRuleAssociationsClient` has been removed
+- Function `*ClientFactory.NewDataCollectionRulesClient` has been removed
+- Function `*ClientFactory.NewDiagnosticSettingsCategoryClient` has been removed
+- Function `*ClientFactory.NewDiagnosticSettingsClient` has been removed
+- Function `*ClientFactory.NewEventCategoriesClient` has been removed
+- Function `*ClientFactory.NewLogProfilesClient` has been removed
+- Function `*ClientFactory.NewMetricAlertsClient` has been removed
+- Function `*ClientFactory.NewMetricAlertsStatusClient` has been removed
+- Function `*ClientFactory.NewMetricDefinitionsClient` has been removed
+- Function `*ClientFactory.NewMetricNamespacesClient` has been removed
+- Function `*ClientFactory.NewMetricsClient` has been removed
+- Function `*ClientFactory.NewOperationsForMonitorClient` has been removed
+- Function `*ClientFactory.NewPredictiveMetricClient` has been removed
+- Function `*ClientFactory.NewPrivateEndpointConnectionsClient` has been removed
+- Function `*ClientFactory.NewPrivateLinkResourcesClient` has been removed
+- Function `*ClientFactory.NewPrivateLinkScopeOperationStatusClient` has been removed
+- Function `*ClientFactory.NewPrivateLinkScopedResourcesClient` has been removed
+- Function `*ClientFactory.NewPrivateLinkScopesClient` has been removed
+- Function `*ClientFactory.NewScheduledQueryRulesClient` has been removed
+- Function `*ClientFactory.NewTenantActionGroupsClient` has been removed
+- Function `*ClientFactory.NewTenantActivityLogsClient` has been removed
+- Function `*ClientFactory.NewVMInsightsClient` has been removed
+- Function `NewDataCollectionEndpointsClient` has been removed
+- Function `*DataCollectionEndpointsClient.Create` has been removed
+- Function `*DataCollectionEndpointsClient.Delete` has been removed
+- Function `*DataCollectionEndpointsClient.Get` has been removed
+- Function `*DataCollectionEndpointsClient.NewListByResourceGroupPager` has been removed
+- Function `*DataCollectionEndpointsClient.NewListBySubscriptionPager` has been removed
+- Function `*DataCollectionEndpointsClient.Update` has been removed
+- Function `NewDataCollectionRuleAssociationsClient` has been removed
+- Function `*DataCollectionRuleAssociationsClient.Create` has been removed
+- Function `*DataCollectionRuleAssociationsClient.Delete` has been removed
+- Function `*DataCollectionRuleAssociationsClient.Get` has been removed
+- Function `*DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager` has been removed
+- Function `*DataCollectionRuleAssociationsClient.NewListByResourcePager` has been removed
+- Function `*DataCollectionRuleAssociationsClient.NewListByRulePager` has been removed
+- Function `NewDataCollectionRulesClient` has been removed
+- Function `*DataCollectionRulesClient.Create` has been removed
+- Function `*DataCollectionRulesClient.Delete` has been removed
+- Function `*DataCollectionRulesClient.Get` has been removed
+- Function `*DataCollectionRulesClient.NewListByResourceGroupPager` has been removed
+- Function `*DataCollectionRulesClient.NewListBySubscriptionPager` has been removed
+- Function `*DataCollectionRulesClient.Update` has been removed
+- Function `NewDiagnosticSettingsCategoryClient` has been removed
+- Function `*DiagnosticSettingsCategoryClient.Get` has been removed
+- Function `*DiagnosticSettingsCategoryClient.NewListPager` has been removed
+- Function `NewDiagnosticSettingsClient` has been removed
+- Function `*DiagnosticSettingsClient.CreateOrUpdate` has been removed
+- Function `*DiagnosticSettingsClient.Delete` has been removed
+- Function `*DiagnosticSettingsClient.Get` has been removed
+- Function `*DiagnosticSettingsClient.NewListPager` has been removed
+- Function `*DynamicMetricCriteria.GetMultiMetricCriteria` has been removed
+- Function `NewEventCategoriesClient` has been removed
+- Function `*EventCategoriesClient.NewListPager` has been removed
+- Function `*LocationThresholdRuleCondition.GetRuleCondition` has been removed
+- Function `NewLogProfilesClient` has been removed
+- Function `*LogProfilesClient.CreateOrUpdate` has been removed
+- Function `*LogProfilesClient.Delete` has been removed
+- Function `*LogProfilesClient.Get` has been removed
+- Function `*LogProfilesClient.NewListPager` has been removed
+- Function `*LogProfilesClient.Update` has been removed
+- Function `*ManagementEventRuleCondition.GetRuleCondition` has been removed
+- Function `*MetricAlertCriteria.GetMetricAlertCriteria` has been removed
+- Function `*MetricAlertMultipleResourceMultipleMetricCriteria.GetMetricAlertCriteria` has been removed
+- Function `*MetricAlertSingleResourceMultipleMetricCriteria.GetMetricAlertCriteria` has been removed
+- Function `NewMetricAlertsClient` has been removed
+- Function `*MetricAlertsClient.CreateOrUpdate` has been removed
+- Function `*MetricAlertsClient.Delete` has been removed
+- Function `*MetricAlertsClient.Get` has been removed
+- Function `*MetricAlertsClient.NewListByResourceGroupPager` has been removed
+- Function `*MetricAlertsClient.NewListBySubscriptionPager` has been removed
+- Function `*MetricAlertsClient.Update` has been removed
+- Function `NewMetricAlertsStatusClient` has been removed
+- Function `*MetricAlertsStatusClient.List` has been removed
+- Function `*MetricAlertsStatusClient.ListByName` has been removed
+- Function `*MetricCriteria.GetMultiMetricCriteria` has been removed
+- Function `NewMetricDefinitionsClient` has been removed
+- Function `*MetricDefinitionsClient.NewListAtSubscriptionScopePager` has been removed
+- Function `*MetricDefinitionsClient.NewListPager` has been removed
+- Function `NewMetricNamespacesClient` has been removed
+- Function `*MetricNamespacesClient.NewListPager` has been removed
+- Function `NewMetricsClient` has been removed
+- Function `*MetricsClient.List` has been removed
+- Function `*MetricsClient.ListAtSubscriptionScope` has been removed
+- Function `*MetricsClient.ListAtSubscriptionScopePost` has been removed
+- Function `*MultiMetricCriteria.GetMultiMetricCriteria` has been removed
+- Function `NewOperationsForMonitorClient` has been removed
+- Function `*OperationsForMonitorClient.NewListPager` has been removed
+- Function `PossibleAggregationTypeValues` has been removed
+- Function `NewPredictiveMetricClient` has been removed
+- Function `*PredictiveMetricClient.Get` has been removed
+- Function `NewPrivateEndpointConnectionsClient` has been removed
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` has been removed
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` has been removed
+- Function `*PrivateEndpointConnectionsClient.Get` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` has been removed
+- Function `NewPrivateLinkResourcesClient` has been removed
+- Function `*PrivateLinkResourcesClient.Get` has been removed
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` has been removed
+- Function `NewPrivateLinkScopeOperationStatusClient` has been removed
+- Function `*PrivateLinkScopeOperationStatusClient.Get` has been removed
+- Function `NewPrivateLinkScopedResourcesClient` has been removed
+- Function `*PrivateLinkScopedResourcesClient.BeginCreateOrUpdate` has been removed
+- Function `*PrivateLinkScopedResourcesClient.BeginDelete` has been removed
+- Function `*PrivateLinkScopedResourcesClient.Get` has been removed
+- Function `*PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager` has been removed
+- Function `NewPrivateLinkScopesClient` has been removed
+- Function `*PrivateLinkScopesClient.CreateOrUpdate` has been removed
+- Function `*PrivateLinkScopesClient.BeginDelete` has been removed
+- Function `*PrivateLinkScopesClient.Get` has been removed
+- Function `*PrivateLinkScopesClient.NewListByResourceGroupPager` has been removed
+- Function `*PrivateLinkScopesClient.NewListPager` has been removed
+- Function `*PrivateLinkScopesClient.UpdateTags` has been removed
+- Function `*RuleAction.GetRuleAction` has been removed
+- Function `*RuleCondition.GetRuleCondition` has been removed
+- Function `*RuleDataSource.GetRuleDataSource` has been removed
+- Function `*RuleEmailAction.GetRuleAction` has been removed
+- Function `*RuleManagementEventDataSource.GetRuleDataSource` has been removed
+- Function `*RuleMetricDataSource.GetRuleDataSource` has been removed
+- Function `*RuleWebhookAction.GetRuleAction` has been removed
+- Function `NewScheduledQueryRulesClient` has been removed
+- Function `*ScheduledQueryRulesClient.CreateOrUpdate` has been removed
+- Function `*ScheduledQueryRulesClient.Delete` has been removed
+- Function `*ScheduledQueryRulesClient.Get` has been removed
+- Function `*ScheduledQueryRulesClient.NewListByResourceGroupPager` has been removed
+- Function `*ScheduledQueryRulesClient.NewListBySubscriptionPager` has been removed
+- Function `*ScheduledQueryRulesClient.Update` has been removed
+- Function `NewTenantActionGroupsClient` has been removed
+- Function `*TenantActionGroupsClient.CreateOrUpdate` has been removed
+- Function `*TenantActionGroupsClient.Delete` has been removed
+- Function `*TenantActionGroupsClient.Get` has been removed
+- Function `*TenantActionGroupsClient.NewListByManagementGroupIDPager` has been removed
+- Function `*TenantActionGroupsClient.Update` has been removed
+- Function `NewTenantActivityLogsClient` has been removed
+- Function `*TenantActivityLogsClient.NewListPager` has been removed
+- Function `*ThresholdRuleCondition.GetRuleCondition` has been removed
+- Function `NewVMInsightsClient` has been removed
+- Function `*VMInsightsClient.GetOnboardingStatus` has been removed
+- Function `*WebtestLocationAvailabilityCriteria.GetMetricAlertCriteria` has been removed
+- Operation `*AzureMonitorWorkspacesClient.Delete` has been changed to LRO, use `*AzureMonitorWorkspacesClient.BeginDelete` instead.
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+- Struct `AccessModeSettings` has been removed
+- Struct `AccessModeSettingsExclusion` has been removed
+- Struct `ActionDetail` has been removed
+- Struct `ActionGroup` has been removed
+- Struct `ActionGroupAutoGenerated` has been removed
+- Struct `ActionGroupList` has been removed
+- Struct `ActionGroupPatch` has been removed
+- Struct `ActionGroupPatchAutoGenerated` has been removed
+- Struct `ActionGroupPatchBody` has been removed
+- Struct `ActionGroupPatchBodyAutoGenerated` has been removed
+- Struct `ActionGroupResource` has been removed
+- Struct `ActionList` has been removed
+- Struct `Actions` has been removed
+- Struct `ActivityLogAlertResource` has been removed
+- Struct `AlertRule` has been removed
+- Struct `AlertRuleAllOfCondition` has been removed
+- Struct `AlertRuleAnyOfOrLeafCondition` has been removed
+- Struct `AlertRuleLeafCondition` has been removed
+- Struct `AlertRuleList` has been removed
+- Struct `AlertRulePatchObject` has been removed
+- Struct `AlertRulePatchProperties` has been removed
+- Struct `AlertRuleProperties` has been removed
+- Struct `AlertRuleResource` has been removed
+- Struct `AlertRuleResourceCollection` has been removed
+- Struct `AlertRuleResourcePatch` has been removed
+- Struct `ArmRoleReceiver` has been removed
+- Struct `AutomationRunbookReceiver` has been removed
+- Struct `AutoscaleErrorResponse` has been removed
+- Struct `AutoscaleErrorResponseError` has been removed
+- Struct `AutoscaleNotification` has been removed
+- Struct `AutoscaleProfile` has been removed
+- Struct `AutoscaleSetting` has been removed
+- Struct `AutoscaleSettingResource` has been removed
+- Struct `AutoscaleSettingResourceCollection` has been removed
+- Struct `AutoscaleSettingResourcePatch` has been removed
+- Struct `AzureAppPushReceiver` has been removed
+- Struct `AzureAppPushReceiverAutoGenerated` has been removed
+- Struct `AzureFunctionReceiver` has been removed
+- Struct `AzureMonitorMetricsDestination` has been removed
+- Struct `AzureMonitorPrivateLinkScope` has been removed
+- Struct `AzureMonitorPrivateLinkScopeListResult` has been removed
+- Struct `AzureMonitorPrivateLinkScopeProperties` has been removed
+- Struct `AzureMonitorWorkspaceResourceForUpdate` has been removed
+- Struct `AzureMonitorWorkspaceResourceProperties` has been removed
+- Struct `AzureResource` has been removed
+- Struct `AzureResourceAutoGenerated` has been removed
+- Struct `BaselineMetadata` has been removed
+- Struct `ColumnDefinition` has been removed
+- Struct `Condition` has been removed
+- Struct `ConditionFailingPeriods` has been removed
+- Struct `ConfigurationAccessEndpointSpec` has been removed
+- Struct `Context` has been removed
+- Struct `DataCollectionEndpoint` has been removed
+- Struct `DataCollectionEndpointConfigurationAccess` has been removed
+- Struct `DataCollectionEndpointFailoverConfiguration` has been removed
+- Struct `DataCollectionEndpointLogsIngestion` has been removed
+- Struct `DataCollectionEndpointMetadata` has been removed
+- Struct `DataCollectionEndpointMetricsIngestion` has been removed
+- Struct `DataCollectionEndpointNetworkACLs` has been removed
+- Struct `DataCollectionEndpointResource` has been removed
+- Struct `DataCollectionEndpointResourceIdentity` has been removed
+- Struct `DataCollectionEndpointResourceListResult` has been removed
+- Struct `DataCollectionEndpointResourceProperties` has been removed
+- Struct `DataCollectionEndpointResourceSystemData` has been removed
+- Struct `DataCollectionRule` has been removed
+- Struct `DataCollectionRuleAssociation` has been removed
+- Struct `DataCollectionRuleAssociationMetadata` has been removed
+- Struct `DataCollectionRuleAssociationProxyOnlyResource` has been removed
+- Struct `DataCollectionRuleAssociationProxyOnlyResourceListResult` has been removed
+- Struct `DataCollectionRuleAssociationProxyOnlyResourceProperties` has been removed
+- Struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData` has been removed
+- Struct `DataCollectionRuleDataSources` has been removed
+- Struct `DataCollectionRuleDestinations` has been removed
+- Struct `DataCollectionRuleMetadata` has been removed
+- Struct `DataCollectionRuleResource` has been removed
+- Struct `DataCollectionRuleResourceIdentity` has been removed
+- Struct `DataCollectionRuleResourceListResult` has been removed
+- Struct `DataCollectionRuleResourceProperties` has been removed
+- Struct `DataCollectionRuleResourceSystemData` has been removed
+- Struct `DataContainer` has been removed
+- Struct `DataFlow` has been removed
+- Struct `DataImportSources` has been removed
+- Struct `DataImportSourcesEventHub` has been removed
+- Struct `DataSourcesSpec` has been removed
+- Struct `DataSourcesSpecDataImports` has been removed
+- Struct `DefaultErrorResponse` has been removed
+- Struct `DestinationsSpec` has been removed
+- Struct `DestinationsSpecAzureMonitorMetrics` has been removed
+- Struct `DiagnosticSettings` has been removed
+- Struct `DiagnosticSettingsCategory` has been removed
+- Struct `DiagnosticSettingsCategoryResource` has been removed
+- Struct `DiagnosticSettingsCategoryResourceCollection` has been removed
+- Struct `DiagnosticSettingsResource` has been removed
+- Struct `DiagnosticSettingsResourceCollection` has been removed
+- Struct `Dimension` has been removed
+- Struct `DynamicMetricCriteria` has been removed
+- Struct `DynamicThresholdFailingPeriods` has been removed
+- Struct `EmailNotification` has been removed
+- Struct `EmailReceiver` has been removed
+- Struct `EmailReceiverAutoGenerated` has been removed
+- Struct `EnableRequest` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorContract` has been removed
+- Struct `ErrorContractAutoGenerated` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorDetailAutoGenerated` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ErrorResponseAdditionalInfo` has been removed
+- Struct `ErrorResponseAutoGenerated` has been removed
+- Struct `ErrorResponseAutoGenerated2` has been removed
+- Struct `ErrorResponseCommonV2` has been removed
+- Struct `ErrorResponseDetails` has been removed
+- Struct `EventCategoryCollection` has been removed
+- Struct `EventData` has been removed
+- Struct `EventDataCollection` has been removed
+- Struct `EventHubDataSource` has been removed
+- Struct `EventHubDestination` has been removed
+- Struct `EventHubDirectDestination` has been removed
+- Struct `EventHubReceiver` has been removed
+- Struct `ExtensionDataSource` has been removed
+- Struct `FailoverConfigurationSpec` has been removed
+- Struct `HTTPRequestInfo` has been removed
+- Struct `Identity` has been removed
+- Struct `IisLogsDataSource` has been removed
+- Struct `Incident` has been removed
+- Struct `IncidentListResult` has been removed
+- Struct `IngestionSettings` has been removed
+- Struct `ItsmReceiver` has been removed
+- Struct `LocalizableString` has been removed
+- Struct `LocationSpec` has been removed
+- Struct `LocationThresholdRuleCondition` has been removed
+- Struct `LogAnalyticsDestination` has been removed
+- Struct `LogFileSettings` has been removed
+- Struct `LogFileSettingsText` has been removed
+- Struct `LogFileTextSettings` has been removed
+- Struct `LogFilesDataSource` has been removed
+- Struct `LogFilesDataSourceSettings` has been removed
+- Struct `LogProfileCollection` has been removed
+- Struct `LogProfileProperties` has been removed
+- Struct `LogProfileResource` has been removed
+- Struct `LogProfileResourcePatch` has been removed
+- Struct `LogSettings` has been removed
+- Struct `LogicAppReceiver` has been removed
+- Struct `LogsIngestionEndpointSpec` has been removed
+- Struct `ManagementEventAggregationCondition` has been removed
+- Struct `ManagementEventRuleCondition` has been removed
+- Struct `Metadata` has been removed
+- Struct `MetadataValue` has been removed
+- Struct `Metric` has been removed
+- Struct `MetricAlertAction` has been removed
+- Struct `MetricAlertMultipleResourceMultipleMetricCriteria` has been removed
+- Struct `MetricAlertProperties` has been removed
+- Struct `MetricAlertPropertiesPatch` has been removed
+- Struct `MetricAlertResource` has been removed
+- Struct `MetricAlertResourceCollection` has been removed
+- Struct `MetricAlertResourcePatch` has been removed
+- Struct `MetricAlertSingleResourceMultipleMetricCriteria` has been removed
+- Struct `MetricAlertStatus` has been removed
+- Struct `MetricAlertStatusCollection` has been removed
+- Struct `MetricAlertStatusProperties` has been removed
+- Struct `MetricAvailability` has been removed
+- Struct `MetricBaselinesProperties` has been removed
+- Struct `MetricBaselinesResponse` has been removed
+- Struct `MetricCriteria` has been removed
+- Struct `MetricDefinition` has been removed
+- Struct `MetricDefinitionCollection` has been removed
+- Struct `MetricDimension` has been removed
+- Struct `MetricNamespace` has been removed
+- Struct `MetricNamespaceCollection` has been removed
+- Struct `MetricNamespaceName` has been removed
+- Struct `MetricSettings` has been removed
+- Struct `MetricSingleDimension` has been removed
+- Struct `MetricTrigger` has been removed
+- Struct `MetricValue` has been removed
+- Struct `Metrics` has been removed
+- Struct `MetricsIngestionEndpointSpec` has been removed
+- Struct `MonitoringAccountDestination` has been removed
+- Struct `NetworkRuleSet` has been removed
+- Struct `NotificationRequestBody` has been removed
+- Struct `OperationAutoGenerated` has been removed
+- Struct `OperationDisplayAutoGenerated` has been removed
+- Struct `OperationListResultAutoGenerated` has been removed
+- Struct `OperationStatus` has been removed
+- Struct `PerfCounterDataSource` has been removed
+- Struct `PlatformTelemetryDataSource` has been removed
+- Struct `PredictiveAutoscalePolicy` has been removed
+- Struct `PredictiveResponse` has been removed
+- Struct `PredictiveValue` has been removed
+- Struct `PrivateEndpointConnectionListResult` has been removed
+- Struct `PrivateLinkResource` has been removed
+- Struct `PrivateLinkResourceListResult` has been removed
+- Struct `PrivateLinkResourceProperties` has been removed
+- Struct `PrivateLinkScopedResource` has been removed
+- Struct `PrometheusForwarderDataSource` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `ProxyResourceAutoGenerated` has been removed
+- Struct `Recurrence` has been removed
+- Struct `RecurrentSchedule` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceAutoGenerated` has been removed
+- Struct `ResourceAutoGenerated2` has been removed
+- Struct `ResourceAutoGenerated3` has been removed
+- Struct `ResourceAutoGenerated4` has been removed
+- Struct `ResourceAutoGenerated5` has been removed
+- Struct `ResourceForUpdate` has been removed
+- Struct `ResourceForUpdateIdentity` has been removed
+- Struct `Response` has been removed
+- Struct `ResponseWithError` has been removed
+- Struct `RetentionPolicy` has been removed
+- Struct `RuleEmailAction` has been removed
+- Struct `RuleManagementEventClaimsDataSource` has been removed
+- Struct `RuleManagementEventDataSource` has been removed
+- Struct `RuleMetricDataSource` has been removed
+- Struct `RuleResolveConfiguration` has been removed
+- Struct `RuleWebhookAction` has been removed
+- Struct `ScaleAction` has been removed
+- Struct `ScaleCapacity` has been removed
+- Struct `ScaleRule` has been removed
+- Struct `ScaleRuleMetricDimension` has been removed
+- Struct `ScheduledQueryRuleCriteria` has been removed
+- Struct `ScheduledQueryRuleProperties` has been removed
+- Struct `ScheduledQueryRuleResource` has been removed
+- Struct `ScheduledQueryRuleResourceCollection` has been removed
+- Struct `ScheduledQueryRuleResourcePatch` has been removed
+- Struct `ScopedResource` has been removed
+- Struct `ScopedResourceListResult` has been removed
+- Struct `ScopedResourceProperties` has been removed
+- Struct `SenderAuthorization` has been removed
+- Struct `SingleBaseline` has been removed
+- Struct `SingleMetricBaseline` has been removed
+- Struct `SmsReceiver` has been removed
+- Struct `SmsReceiverAutoGenerated` has been removed
+- Struct `StorageBlobDestination` has been removed
+- Struct `StorageTableDestination` has been removed
+- Struct `StreamDeclaration` has been removed
+- Struct `SubscriptionScopeMetric` has been removed
+- Struct `SubscriptionScopeMetricDefinition` has been removed
+- Struct `SubscriptionScopeMetricDefinitionCollection` has been removed
+- Struct `SubscriptionScopeMetricResponse` has been removed
+- Struct `SubscriptionScopeMetricsRequestBodyParameters` has been removed
+- Struct `SyslogDataSource` has been removed
+- Struct `TagsResource` has been removed
+- Struct `TenantActionGroup` has been removed
+- Struct `TenantActionGroupList` has been removed
+- Struct `TenantActionGroupResource` has been removed
+- Struct `TestNotificationDetailsResponse` has been removed
+- Struct `ThresholdRuleCondition` has been removed
+- Struct `TimeSeriesBaseline` has been removed
+- Struct `TimeSeriesElement` has been removed
+- Struct `TimeWindow` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `TrackedResourceAutoGenerated` has been removed
+- Struct `UserIdentityProperties` has been removed
+- Struct `VMInsightsOnboardingStatus` has been removed
+- Struct `VMInsightsOnboardingStatusProperties` has been removed
+- Struct `VoiceReceiver` has been removed
+- Struct `VoiceReceiverAutoGenerated` has been removed
+- Struct `WebhookNotification` has been removed
+- Struct `WebhookReceiver` has been removed
+- Struct `WebhookReceiverAutoGenerated` has been removed
+- Struct `WebtestLocationAvailabilityCriteria` has been removed
+- Struct `WindowsEventLogDataSource` has been removed
+- Struct `WindowsFirewallLogsDataSource` has been removed
+- Struct `WorkspaceInfo` has been removed
+- Struct `WorkspaceInfoProperties` has been removed
+- Field `Etag` of struct `AzureMonitorWorkspaceResource` has been removed
+- Field `AzureMonitorWorkspaceProperties` of struct `AzureMonitorWorkspacesClientUpdateOptions` has been removed
+
+### Features Added
+
+- New enum type `AddedByType` with values `AddedByTypeAutomatic`, `AddedByTypeManual`
+- New enum type `ArmOrigin` with values `ArmOriginSystem`, `ArmOriginUser`, `ArmOriginUserSystem`
+- New enum type `Relevance` with values `RelevanceIrrelevant`, `RelevanceNone`, `RelevanceRelevant`
+- New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
+- New enum type `Status` with values `StatusCanceled`, `StatusClosed`, `StatusInProgress`, `StatusMitigated`, `StatusNew`
+- New enum type `UpdateType` with values `UpdateTypeIssueCreation`, `UpdateTypeOnChange`, `UpdateTypeTimeBased`
+- New function `*AzureMonitorWorkspacesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, resource AzureMonitorWorkspaceResource, options *AzureMonitorWorkspacesClientCreateOrUpdateOptions) (AzureMonitorWorkspacesClientCreateOrUpdateResponse, error)`
+- New function `*ClientFactory.NewIssueClient() *IssueClient`
+- New function `*ClientFactory.NewMetricsContainersClient() *MetricsContainersClient`
+- New function `NewIssueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IssueClient, error)`
+- New function `*IssueClient.AddInvestigationResult(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body InvestigationResult, options *IssueClientAddInvestigationResultOptions) (IssueClientAddInvestigationResultResponse, error)`
+- New function `*IssueClient.AddOrUpdateAlerts(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body RelatedAlerts, options *IssueClientAddOrUpdateAlertsOptions) (IssueClientAddOrUpdateAlertsResponse, error)`
+- New function `*IssueClient.AddOrUpdateResources(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body RelatedResources, options *IssueClientAddOrUpdateResourcesOptions) (IssueClientAddOrUpdateResourcesResponse, error)`
+- New function `*IssueClient.Create(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, resource IssueResource, options *IssueClientCreateOptions) (IssueClientCreateResponse, error)`
+- New function `*IssueClient.Delete(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, options *IssueClientDeleteOptions) (IssueClientDeleteResponse, error)`
+- New function `*IssueClient.FetchBackgroundVisualization(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, options *IssueClientFetchBackgroundVisualizationOptions) (IssueClientFetchBackgroundVisualizationResponse, error)`
+- New function `*IssueClient.FetchInvestigationResult(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body FetchInvestigationResultParameters, options *IssueClientFetchInvestigationResultOptions) (IssueClientFetchInvestigationResultResponse, error)`
+- New function `*IssueClient.Get(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, options *IssueClientGetOptions) (IssueClientGetResponse, error)`
+- New function `*IssueClient.ListAlerts(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, options *IssueClientListAlertsOptions) (IssueClientListAlertsResponse, error)`
+- New function `*IssueClient.NewListPager(resourceGroupName string, azureMonitorWorkspaceName string, options *IssueClientListOptions) *runtime.Pager[IssueClientListResponse]`
+- New function `*IssueClient.ListResources(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, options *IssueClientListResourcesOptions) (IssueClientListResourcesResponse, error)`
+- New function `*IssueClient.SetBackgroundVisualization(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body BackgroundVisualization, options *IssueClientSetBackgroundVisualizationOptions) (IssueClientSetBackgroundVisualizationResponse, error)`
+- New function `*IssueClient.Update(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties IssueResource, options *IssueClientUpdateOptions) (IssueClientUpdateResponse, error)`
+- New function `*IssueCreationNotificationType.GetIssueNotificationType() *IssueNotificationType`
+- New function `*IssueNotificationType.GetIssueNotificationType() *IssueNotificationType`
+- New function `NewMetricsContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricsContainersClient, error)`
+- New function `*MetricsContainersClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, metricsContainerName string, resource MetricsContainerResource, options *MetricsContainersClientCreateOrUpdateOptions) (MetricsContainersClientCreateOrUpdateResponse, error)`
+- New function `*MetricsContainersClient.Get(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, metricsContainerName string, options *MetricsContainersClientGetOptions) (MetricsContainersClientGetResponse, error)`
+- New function `*MetricsContainersClient.NewListByAzureMonitorWorkspacePager(resourceGroupName string, azureMonitorWorkspaceName string, options *MetricsContainersClientListByAzureMonitorWorkspaceOptions) *runtime.Pager[MetricsContainersClientListByAzureMonitorWorkspaceResponse]`
+- New function `*OnChangeNotificationType.GetIssueNotificationType() *IssueNotificationType`
+- New function `*TimeBasedUpdatesNotificationType.GetIssueNotificationType() *IssueNotificationType`
+- New struct `Background`
+- New struct `BackgroundDetails`
+- New struct `BackgroundVisualization`
+- New struct `FetchInvestigationResultParameters`
+- New struct `IngestionEndpoints`
+- New struct `InvestigationMetadata`
+- New struct `InvestigationResult`
+- New struct `IssueCreationNotificationType`
+- New struct `IssueProperties`
+- New struct `IssueResource`
+- New struct `IssueResourceListResult`
+- New struct `ListParameter`
+- New struct `MetricsContainer`
+- New struct `MetricsContainerResource`
+- New struct `MetricsContainerResourceListResult`
+- New struct `Notifications`
+- New struct `OnChangeNotificationType`
+- New struct `Origin`
+- New struct `PagedRelatedAlert`
+- New struct `PagedRelatedResource`
+- New struct `RelatedAlert`
+- New struct `RelatedAlerts`
+- New struct `RelatedResource`
+- New struct `RelatedResources`
+- New struct `TimeBasedUpdatesNotificationType`
+- New field `PrivateEndpointConnections`, `PublicNetworkAccess` in struct `AzureMonitorWorkspace`
+- New field `DataCollectionRuleImmutableID`, `IngestionEndpoints` in struct `AzureMonitorWorkspaceDefaultIngestionSettings`
+- New field `EnableAccessUsingResourcePermissions` in struct `AzureMonitorWorkspaceMetrics`
+- New field `Identity` in struct `AzureMonitorWorkspaceResource`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+- New field `Description` in struct `OperationDisplay`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+
+
 ## 0.11.0 (2023-11-24)
 ### Features Added
 

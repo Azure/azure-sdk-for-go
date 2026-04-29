@@ -23,6 +23,7 @@ func NewShareClient(endpoint string, fileRequestIntent *ShareTokenIntent, azClie
 	client := &ShareClient{
 		internal:          azClient,
 		endpoint:          endpoint,
+		version:           ServiceVersion,
 		fileRequestIntent: fileRequestIntent,
 	}
 	return client

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleDppResourceGuardProxyClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleDppResourceGuardProxyClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleDppResourceGuardProxyClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleDppResourceGuardProxyClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_UnlockDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

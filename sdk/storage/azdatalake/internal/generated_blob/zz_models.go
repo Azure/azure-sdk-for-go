@@ -86,6 +86,9 @@ type PathName struct {
 type PathPrefix struct {
 	// REQUIRED
 	Name *string `xml:"Name"`
+
+	// Properties of a blob
+	Properties *PathProperties `xml:"Properties"`
 }
 
 // PathProperties - Properties of a blob
@@ -95,6 +98,7 @@ type PathProperties struct {
 
 	// REQUIRED
 	LastModified         *time.Time     `xml:"Last-Modified"`
+	ACL                  *string        `xml:"Acl"`
 	AccessTier           *AccessTier    `xml:"AccessTier"`
 	AccessTierChangeTime *time.Time     `xml:"AccessTierChangeTime"`
 	AccessTierInferred   *bool          `xml:"AccessTierInferred"`
@@ -124,6 +128,7 @@ type PathProperties struct {
 	// The name of the encryption scope under which the blob is encrypted.
 	EncryptionScope             *string                 `xml:"EncryptionScope"`
 	ExpiresOn                   *time.Time              `xml:"Expiry-Time"`
+	Group                       *string                 `xml:"Group"`
 	ImmutabilityPolicyExpiresOn *time.Time              `xml:"ImmutabilityPolicyUntilDate"`
 	ImmutabilityPolicyMode      *ImmutabilityPolicyMode `xml:"ImmutabilityPolicyMode"`
 	IncrementalCopy             *bool                   `xml:"IncrementalCopy"`
@@ -133,11 +138,14 @@ type PathProperties struct {
 	LeaseState                  *LeaseStateType         `xml:"LeaseState"`
 	LeaseStatus                 *LeaseStatusType        `xml:"LeaseStatus"`
 	LegalHold                   *bool                   `xml:"LegalHold"`
+	Owner                       *string                 `xml:"Owner"`
+	Permissions                 *string                 `xml:"Permissions"`
 
 	// If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High
 	// and Standard.
 	RehydratePriority      *RehydratePriority `xml:"RehydratePriority"`
 	RemainingRetentionDays *int32             `xml:"RemainingRetentionDays"`
+	ResourceType           *string            `xml:"ResourceType"`
 	ServerEncrypted        *bool              `xml:"ServerEncrypted"`
 	TagCount               *int32             `xml:"TagCount"`
 }
@@ -314,6 +322,9 @@ type KeyInfo struct {
 
 	// REQUIRED; The date-time the key is active in ISO 8601 UTC time
 	Start *string `xml:"Start"`
+
+	// The delegated user tenant id in Azure AD
+	DelegatedUserTenantID *string `xml:"DelegatedUserTid"`
 }
 
 // ListBlobsFlatSegmentResponse - An enumeration of blobs
@@ -482,7 +493,10 @@ type StaticWebsite struct {
 }
 
 type StorageError struct {
-	Message *string
+	CopySourceErrorCode    *string
+	CopySourceErrorMessage *string
+	CopySourceStatusCode   *int32
+	Message                *string
 }
 
 // StorageServiceProperties - Storage Service Properties.
@@ -538,4 +552,7 @@ type UserDelegationKey struct {
 
 	// REQUIRED; The key as a base64 string
 	Value *string `xml:"Value"`
+
+	// The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
+	SignedDelegatedUserTenantID *string `xml:"SignedDelegatedUserTid"`
 }

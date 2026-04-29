@@ -1,5 +1,58 @@
 # Release History
 
+## 8.0.0 (2026-04-21)
+### Breaking Changes
+
+- All Cloud Services (classic) related types, clients, and functions have been removed due to the [Azure Cloud Services (classic) retirement](https://azure.microsoft.com/updates?id=486344).
+
+### Features Added
+
+- New value `SecurityTypesStandard` added to enum type `SecurityTypes`
+- New value `ZonalPlatformFaultDomainAlignModeBestEffortAligned` added to enum type `ZonalPlatformFaultDomainAlignMode`
+- New enum type `LifecycleHookAction` with values `LifecycleHookActionApprove`, `LifecycleHookActionReject`
+- New enum type `LifecycleHookActionState` with values `LifecycleHookActionStateApproved`, `LifecycleHookActionStateRejected`, `LifecycleHookActionStateWaiting`
+- New enum type `StorageAlignmentStatus` with values `StorageAlignmentStatusAligned`, `StorageAlignmentStatusUnaligned`
+- New enum type `StorageFaultDomainAlignmentType` with values `StorageFaultDomainAlignmentTypeAligned`, `StorageFaultDomainAlignmentTypeBestEffortAligned`
+- New enum type `VMScaleSetLifecycleHookEventState` with values `VMScaleSetLifecycleHookEventStateActive`, `VMScaleSetLifecycleHookEventStateCompleted`
+- New enum type `VMScaleSetLifecycleHookEventType` with values `VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting`, `VMScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling`
+- New function `*ClientFactory.NewVirtualMachineScaleSetLifeCycleHookEventsClient() *VirtualMachineScaleSetLifeCycleHookEventsClient`
+- New function `PossibleLifecycleHookActionValues() []LifecycleHookAction`
+- New function `NewVirtualMachineScaleSetLifeCycleHookEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineScaleSetLifeCycleHookEventsClient, error)`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, lifecycleHookEventName string, options *VirtualMachineScaleSetLifeCycleHookEventsClientGetOptions) (VirtualMachineScaleSetLifeCycleHookEventsClientGetResponse, error)`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.NewListPager(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetLifeCycleHookEventsClientListOptions) *runtime.Pager[VirtualMachineScaleSetLifeCycleHookEventsClientListResponse]`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.Update(ctx context.Context, resourceGroupName string, vmScaleSetName string, lifecycleHookEventName string, properties VMScaleSetLifecycleHookEventUpdate, options *VirtualMachineScaleSetLifeCycleHookEventsClientUpdateOptions) (VirtualMachineScaleSetLifeCycleHookEventsClientUpdateResponse, error)`
+- New struct `ExternalHealthPolicy`
+- New struct `LifecycleHook`
+- New struct `LifecycleHooksProfile`
+- New struct `OperationRecoverySettings`
+- New struct `ReimageRecoveryPolicy`
+- New struct `ResiliencyProfile`
+- New struct `RestartRecoveryPolicy`
+- New struct `StartRecoveryPolicy`
+- New struct `VMScaleSetLifecycleHookEvent`
+- New struct `VMScaleSetLifecycleHookEventAdditionalContext`
+- New struct `VMScaleSetLifecycleHookEventListResult`
+- New struct `VMScaleSetLifecycleHookEventProperties`
+- New struct `VMScaleSetLifecycleHookEventTargetResource`
+- New struct `VMScaleSetLifecycleHookEventUpdate`
+- New struct `ZoneMovement`
+- New field `Expand` in struct `CapacityReservationsClientListByCapacityReservationGroupOptions`
+- New field `StorageFaultDomainAlignment` in struct `DataDisk`
+- New field `EnableFullCaching` in struct `DiffDiskSettings`
+- New field `StorageAlignmentStatus` in struct `DiskInstanceView`
+- New field `StorageFaultDomainAlignment` in struct `OSDisk`
+- New field `OperationRecoverySettings` in struct `ResiliencyPolicy`
+- New field `ResiliencyProfile` in struct `VirtualMachineProperties`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetDataDisk`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetOSDisk`
+- New field `ExternalHealthPolicy`, `LifecycleHooksProfile` in struct `VirtualMachineScaleSetProperties`
+- New field `Placement` in struct `VirtualMachineScaleSetUpdate`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetUpdateOSDisk`
+- New field `LifecycleHooksProfile` in struct `VirtualMachineScaleSetUpdateProperties`
+- New field `VirtualMachineResourceID` in struct `VirtualMachineScaleSetVMProperties`
+- New field `ForceDeallocate` in struct `VirtualMachinesClientBeginDeallocateOptions`
+
+
 ## 7.3.0 (2026-01-23)
 ### Features Added
 

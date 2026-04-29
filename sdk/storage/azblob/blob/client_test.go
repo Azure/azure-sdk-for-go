@@ -2406,6 +2406,146 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteIfNoneMatchFalse() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(-10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfModifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	_require.NoError(err)
+
+	validateBlobDeleted(_require, bbClient)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfModifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, "AccessTierChangeTimeConditionNotMet")
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfUnmodifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	_require.NoError(err)
+
+	validateBlobDeleted(_require, bbClient)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(-10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfUnmodifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, "AccessTierChangeTimeConditionNotMet")
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3559,7 +3699,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)

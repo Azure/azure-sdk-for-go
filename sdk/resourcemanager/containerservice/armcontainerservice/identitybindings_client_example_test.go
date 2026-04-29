@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/IdentityBindings_Create_Or_Update.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_Create_Or_Update.json
 func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/IdentityBindings_Delete.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_Delete.json
 func ExampleIdentityBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleIdentityBindingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-02-preview/IdentityBindings_Get.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_Get.json
 func ExampleIdentityBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleIdentityBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/IdentityBindings_List.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_List.json
 func ExampleIdentityBindingsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

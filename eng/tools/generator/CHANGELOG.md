@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.9 (2026-04-24)
+
+### Bugs Fixed
+
+- Fixed `UpdateModuleDefinition` to remove `retract` directives from `go.mod` when the major version changes, preventing invalid version errors.
+
 ## 0.4.8 (2026-04-07)
 
 ### Features Added

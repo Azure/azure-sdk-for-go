@@ -766,7 +766,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 			// simulate doing some work (HTTP call in real scenarios)
 			// later chunks later longer to finish
-			time.Sleep(time.Second * time.Duration(offset))
+			recording.Sleep(time.Second * time.Duration(offset))
 			// simulate having gotten data and write it to the memory mapped file
 			mmf.write("input")
 
@@ -791,7 +791,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 
 	// simulate closing the mmf and make sure no panic occurs (as reported in #139)
 	mmf.isClosed = true
-	time.Sleep(time.Second * 5)
+	recording.Sleep(time.Second * 5)
 }
 
 func (s *AZBlobRecordedTestsSuite) TestAzBlobClientDefaultAudience() {

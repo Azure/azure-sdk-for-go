@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/MeshMemberships_CreateOrUpdate.json
+// Generated from example definition: 2026-02-02-preview/MeshMemberships_CreateOrUpdate.json
 func ExampleMeshMembershipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleMeshMembershipsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/MeshMemberships_Delete.json
+// Generated from example definition: 2026-02-02-preview/MeshMemberships_Delete.json
 func ExampleMeshMembershipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleMeshMembershipsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-02-preview/MeshMemberships_Get.json
+// Generated from example definition: 2026-02-02-preview/MeshMemberships_Get.json
 func ExampleMeshMembershipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleMeshMembershipsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/MeshMemberships_ListByManagedCluster.json
+// Generated from example definition: 2026-02-02-preview/MeshMemberships_ListByManagedCluster.json
 func ExampleMeshMembershipsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -23,6 +23,7 @@ import (
 type ServiceClient struct {
 	internal *azcore.Client
 	endpoint string
+	version  string
 }
 
 // FilterBlobs - The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
@@ -30,7 +31,7 @@ type ServiceClient struct {
 // be scoped within the expression to a single container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - where - Filters the results to return only to return only blobs whose tags match the specified expression.
 //   - options - ServiceClientFilterBlobsOptions contains the optional parameters for the ServiceClient.FilterBlobs method.
 func (client *ServiceClient) FilterBlobs(ctx context.Context, where string, options *ServiceClientFilterBlobsOptions) (ServiceClientFilterBlobsResponse, error) {
@@ -77,7 +78,7 @@ func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, where
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -109,7 +110,7 @@ func (client *ServiceClient) filterBlobsHandleResponse(resp *http.Response) (Ser
 // GetAccountInfo - Returns the sku name and account kind
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - options - ServiceClientGetAccountInfoOptions contains the optional parameters for the ServiceClient.GetAccountInfo method.
 func (client *ServiceClient) GetAccountInfo(ctx context.Context, options *ServiceClientGetAccountInfoOptions) (ServiceClientGetAccountInfoResponse, error) {
 	var err error
@@ -138,9 +139,15 @@ func (client *ServiceClient) getAccountInfoCreateRequest(ctx context.Context, op
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "properties")
 	reqQP.Set("restype", "account")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -183,7 +190,7 @@ func (client *ServiceClient) getAccountInfoHandleResponse(resp *http.Response) (
 // CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 func (client *ServiceClient) GetProperties(ctx context.Context, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
 	var err error
@@ -215,12 +222,12 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -246,7 +253,7 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // location endpoint when read-access geo-redundant replication is enabled for the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
 func (client *ServiceClient) GetStatistics(ctx context.Context, options *ServiceClientGetStatisticsOptions) (ServiceClientGetStatisticsResponse, error) {
 	var err error
@@ -278,12 +285,12 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -316,7 +323,7 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // bearer token authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - keyInfo - Key information
 //   - options - ServiceClientGetUserDelegationKeyOptions contains the optional parameters for the ServiceClient.GetUserDelegationKey
 //     method.
@@ -350,12 +357,12 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
 		return nil, err
 	}
@@ -390,7 +397,7 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 // NewListContainersSegmentPager - The List Containers Segment operation returns a list of the containers under the specified
 // account
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - options - ServiceClientListContainersSegmentOptions contains the optional parameters for the ServiceClient.NewListContainersSegmentPager
 //     method.
 //
@@ -417,12 +424,12 @@ func (client *ServiceClient) ListContainersSegmentCreateRequest(ctx context.Cont
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -448,7 +455,7 @@ func (client *ServiceClient) ListContainersSegmentHandleResponse(resp *http.Resp
 // and CORS (Cross-Origin Resource Sharing) rules
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - storageServiceProperties - The StorageService properties.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
@@ -481,12 +488,12 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
 		return nil, err
 	}
@@ -511,7 +518,7 @@ func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (S
 // SubmitBatch - The Batch operation allows multiple API calls to be embedded into a single HTTP request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-02
+// Generated from API version 2026-04-06
 //   - contentLength - The length of the request.
 //   - multipartContentType - Required. The value of this header must be multipart/mixed with a batch boundary. Example header
 //     value: multipart/mixed; boundary=batch_
@@ -527,7 +534,7 @@ func (client *ServiceClient) SubmitBatch(ctx context.Context, contentLength int6
 	if err != nil {
 		return ServiceClientSubmitBatchResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return ServiceClientSubmitBatchResponse{}, err
 	}
@@ -546,7 +553,7 @@ func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, conte
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
@@ -554,7 +561,7 @@ func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if err := req.SetBody(body, multipartContentType); err != nil {
 		return nil, err
 	}

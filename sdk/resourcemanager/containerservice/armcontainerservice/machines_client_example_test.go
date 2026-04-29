@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/MachineCreate_Update.json
+// Generated from example definition: 2026-02-02-preview/MachineCreate_Update.json
 func ExampleMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleMachinesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/MachineGet.json
+// Generated from example definition: 2026-02-02-preview/MachineGet.json
 func ExampleMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/MachineList.json
+// Generated from example definition: 2026-02-02-preview/MachineList.json
 func ExampleMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

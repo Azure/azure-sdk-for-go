@@ -18,17 +18,20 @@ type storageAuthorizer struct {
 	tenantID string
 }
 
-type RangePolicy struct {
+type policyFunc func(*policy.Request) (*http.Response, error)
+
+func (pf policyFunc) Do(req *policy.Request) (*http.Response, error) {
+	return pf(req)
 }
 
-// Do authorizes a request with a bearer token
-func (b *RangePolicy) Do(req *policy.Request) (*http.Response, error) {
-	if headerValue := req.Raw().Header.Get("Range"); headerValue != "" {
-		req.Raw().Header.Del("Range")
-		req.Raw().Header["x-ms-range"] = []string{headerValue}
-	}
-
-	return req.Next()
+func NewRangePolicy() policy.Policy {
+	return policyFunc(func(req *policy.Request) (*http.Response, error) {
+		if headerValue := req.Raw().Header.Get("Range"); headerValue != "" {
+			req.Raw().Header.Del("Range")
+			req.Raw().Header["x-ms-range"] = []string{headerValue}
+		}
+		return req.Next()
+	})
 }
 
 func NewStorageChallengePolicy(cred azcore.TokenCredential, audience string, allowHTTP bool) policy.Policy {

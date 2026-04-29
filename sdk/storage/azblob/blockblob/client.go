@@ -45,7 +45,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{&shared.RangePolicy{}}, PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
 	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}
@@ -63,7 +63,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{&shared.RangePolicy{}}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
 	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}
@@ -83,7 +83,7 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{&shared.RangePolicy{}}, PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
 	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}

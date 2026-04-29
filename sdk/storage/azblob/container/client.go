@@ -42,7 +42,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{&shared.RangePolicy{}}, PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
 	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}
@@ -60,7 +60,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{&shared.RangePolicy{}}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
 	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}
@@ -79,7 +79,7 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{&shared.RangePolicy{}}, PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
 	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}

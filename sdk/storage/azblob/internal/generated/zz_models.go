@@ -684,7 +684,7 @@ type StorageServiceStats struct {
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
 
-type SubmitBatchRequest struct {
+type SubmitBatchResponse struct {
 	// REQUIRED
 	Body streaming.MultipartContent
 }

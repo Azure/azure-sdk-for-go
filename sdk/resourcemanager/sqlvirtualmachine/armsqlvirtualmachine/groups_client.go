@@ -27,7 +27,7 @@ type GroupsClient struct {
 // NewGroupsClient creates a new instance of GroupsClient with the specified values.
 //   - subscriptionID - Subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewGroupsClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreateOrUpdate - Creates or updates a SQL virtual machine group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
@@ -71,7 +71,7 @@ func (client *GroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 // CreateOrUpdate - Creates or updates a SQL virtual machine group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 func (client *GroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters Group, options *GroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupsClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *GroupsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters Group, options *GroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *GroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters Group, _ *GroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -113,7 +113,7 @@ func (client *GroupsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +125,7 @@ func (client *GroupsClient) createOrUpdateCreateRequest(ctx context.Context, res
 // BeginDelete - Deletes a SQL virtual machine group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
@@ -151,7 +151,7 @@ func (client *GroupsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Delete - Deletes a SQL virtual machine group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 func (client *GroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *GroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupsClient.BeginDelete"
@@ -174,7 +174,7 @@ func (client *GroupsClient) deleteOperation(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *GroupsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *GroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, _ *GroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -193,7 +193,7 @@ func (client *GroupsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *GroupsClient) deleteCreateRequest(ctx context.Context, resourceGro
 // Get - Gets a SQL virtual machine group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
@@ -230,7 +230,7 @@ func (client *GroupsClient) Get(ctx context.Context, resourceGroupName string, s
 }
 
 // getCreateRequest creates the Get request.
-func (client *GroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *GroupsClientGetOptions) (*policy.Request, error) {
+func (client *GroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, _ *GroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -249,7 +249,7 @@ func (client *GroupsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *GroupsClient) getHandleResponse(resp *http.Response) (GroupsClient
 
 // NewListPager - Gets all SQL virtual machine groups in a subscription.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 //   - options - GroupsClientListOptions contains the optional parameters for the GroupsClient.NewListPager method.
 func (client *GroupsClient) NewListPager(options *GroupsClientListOptions) *runtime.Pager[GroupsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GroupsClientListResponse]{
@@ -292,7 +292,7 @@ func (client *GroupsClient) NewListPager(options *GroupsClientListOptions) *runt
 }
 
 // listCreateRequest creates the List request.
-func (client *GroupsClient) listCreateRequest(ctx context.Context, options *GroupsClientListOptions) (*policy.Request, error) {
+func (client *GroupsClient) listCreateRequest(ctx context.Context, _ *GroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -303,7 +303,7 @@ func (client *GroupsClient) listCreateRequest(ctx context.Context, options *Grou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +320,7 @@ func (client *GroupsClient) listHandleResponse(resp *http.Response) (GroupsClien
 
 // NewListByResourceGroupPager - Gets all SQL virtual machine groups in a resource group.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - options - GroupsClientListByResourceGroupOptions contains the optional parameters for the GroupsClient.NewListByResourceGroupPager
@@ -349,7 +349,7 @@ func (client *GroupsClient) NewListByResourceGroupPager(resourceGroupName string
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *GroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *GroupsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *GroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *GroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -364,7 +364,7 @@ func (client *GroupsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -382,7 +382,7 @@ func (client *GroupsClient) listByResourceGroupHandleResponse(resp *http.Respons
 // BeginUpdate - Updates SQL virtual machine group tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
@@ -409,7 +409,7 @@ func (client *GroupsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 // Update - Updates SQL virtual machine group tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 func (client *GroupsClient) update(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters GroupUpdate, options *GroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupsClient.BeginUpdate"
@@ -432,7 +432,7 @@ func (client *GroupsClient) update(ctx context.Context, resourceGroupName string
 }
 
 // updateCreateRequest creates the Update request.
-func (client *GroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters GroupUpdate, options *GroupsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *GroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, parameters GroupUpdate, _ *GroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -451,7 +451,7 @@ func (client *GroupsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

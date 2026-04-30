@@ -50,21 +50,40 @@ func (t *TroubleshootServerTransport) Do(req *http.Request) (*http.Response, err
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return t.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "TroubleshootClient.BeginTroubleshoot":
-		resp, err = t.dispatchBeginTroubleshoot(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (t *TroubleshootServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if troubleshootServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = troubleshootServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "TroubleshootClient.BeginTroubleshoot":
+				res.resp, res.err = t.dispatchBeginTroubleshoot(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (t *TroubleshootServerTransport) dispatchBeginTroubleshoot(req *http.Request) (*http.Response, error) {
@@ -76,7 +95,7 @@ func (t *TroubleshootServerTransport) dispatchBeginTroubleshoot(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SqlVirtualMachine/sqlVirtualMachines/(?P<sqlVirtualMachineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/troubleshoot`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsqlvirtualmachine.SQLVMTroubleshooting](req)
@@ -113,4 +132,10 @@ func (t *TroubleshootServerTransport) dispatchBeginTroubleshoot(req *http.Reques
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to TroubleshootServerTransport
+var troubleshootServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -103,6 +103,9 @@ type AutoBackupSettings struct {
 
 // AutoPatchingSettings - Set a patching window during which Windows and SQL patches will be applied.
 type AutoPatchingSettings struct {
+	// Additional Patch to be enable or enabled on the SQL Virtual Machine.
+	AdditionalVMPatch *AdditionalVMPatch
+
 	// Day of week to apply the patch on.
 	DayOfWeek *DayOfWeek
 
@@ -165,6 +168,12 @@ type AvailabilityGroupListenerProperties struct {
 
 	// READ-ONLY; Provisioning state to track the async operation status.
 	ProvisioningState *string
+}
+
+// DiskConfigAssessmentRequest - Configure disk config assessment for databases in your SQL virtual machine.
+type DiskConfigAssessmentRequest struct {
+	// Boolean to run disk config Assessment. Use false to fetch past Assessment.
+	RunDiskConfigRules *bool
 }
 
 // Group - A SQL virtual machine group.
@@ -359,7 +368,8 @@ type Properties struct {
 	// SQL Server edition type.
 	SQLImageSKU *SQLImageSKU
 
-	// SQL Server Management type.
+	// SQL Server Management type. NOTE: This parameter is not used anymore. API will automatically detect the Sql Management,
+	// refrain from using it.
 	SQLManagement *SQLManagementMode
 
 	// SQL Server license type.
@@ -374,6 +384,9 @@ type Properties struct {
 	// Storage Configuration Settings.
 	StorageConfigurationSettings *StorageConfigurationSettings
 
+	// Virtual Machine Identity details used for Sql IaaS extension configurations.
+	VirtualMachineIdentitySettings *VirtualMachineIdentity
+
 	// ARM Resource id of underlying virtual machine created from SQL marketplace image.
 	VirtualMachineResourceID *string
 
@@ -382,6 +395,12 @@ type Properties struct {
 
 	// Domain credentials for setting up Windows Server Failover Cluster for SQL availability group.
 	WsfcStaticIP *string
+
+	// READ-ONLY; Additional VM Patching solution enabled on the Virtual Machine
+	AdditionalVMPatch *AdditionalOsPatch
+
+	// READ-ONLY; Operating System of the current SQL Virtual Machine.
+	OSType *OsType
 
 	// READ-ONLY; Provisioning state to track the async operation status.
 	ProvisioningState *string
@@ -449,6 +468,9 @@ type SQLStorageSettings struct {
 
 	// Logical Unit Numbers for the disks.
 	Luns []*int32
+
+	// Use storage pool to build a drive if true or not provided
+	UseStoragePool *bool
 }
 
 // SQLStorageUpdateSettings - Set disk storage settings for SQL Server.
@@ -491,6 +513,9 @@ type SQLTempDbSettings struct {
 
 	// SQL Server tempdb persist folder location
 	PersistFolderPath *string
+
+	// Use storage pool to build a drive if true or not provided
+	UseStoragePool *bool
 }
 
 // SQLVMTroubleshooting - Details required for SQL VM troubleshooting
@@ -516,7 +541,7 @@ type SQLVirtualMachine struct {
 	// REQUIRED; Resource location.
 	Location *string
 
-	// Azure Active Directory identity of the server.
+	// DO NOT USE. This value will be deprecated. Azure Active Directory identity of the server.
 	Identity *ResourceIdentity
 
 	// Resource properties.
@@ -588,6 +613,9 @@ type ServerConfigurationsManagementSettings struct {
 type StorageConfigurationSettings struct {
 	// Disk configuration to apply to SQL Server.
 	DiskConfigurationType *DiskConfigurationType
+
+	// Enable SQL IaaS Agent storage configuration blade in Azure Portal.
+	EnableStorageConfigBlade *bool
 
 	// SQL Server Data Storage Settings.
 	SQLDataSettings *SQLStorageSettings
@@ -665,6 +693,15 @@ type Update struct {
 	Tags map[string]*string
 }
 
+// VirtualMachineIdentity - Virtual Machine Identity details used for Sql IaaS extension configurations.
+type VirtualMachineIdentity struct {
+	// ARM Resource Id of the identity. Only required when UserAssigned identity is selected.
+	ResourceID *string
+
+	// Identity type of the virtual machine. Specify None to opt-out of Managed Identities.
+	Type *VMIdentityType
+}
+
 // WsfcDomainCredentials - Domain credentials for setting up Windows Server Failover Cluster for SQL availability group.
 type WsfcDomainCredentials struct {
 	// Cluster bootstrap account password.
@@ -694,6 +731,9 @@ type WsfcDomainProfile struct {
 
 	// Optional path for fileshare witness.
 	FileShareWitnessPath *string
+
+	// The flag to check if SQL service account is GMSA.
+	IsSQLServiceAccountGmsa *bool
 
 	// Organizational Unit path in which the nodes and cluster will be present.
 	OuPath *string

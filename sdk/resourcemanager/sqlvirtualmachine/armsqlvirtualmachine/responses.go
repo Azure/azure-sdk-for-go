@@ -80,6 +80,11 @@ type SQLVirtualMachinesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// SQLVirtualMachinesClientFetchDCAssessmentResponse contains the response from method SQLVirtualMachinesClient.BeginFetchDCAssessment.
+type SQLVirtualMachinesClientFetchDCAssessmentResponse struct {
+	// placeholder for future response values
+}
+
 // SQLVirtualMachinesClientGetResponse contains the response from method SQLVirtualMachinesClient.Get.
 type SQLVirtualMachinesClientGetResponse struct {
 	// A SQL virtual machine.

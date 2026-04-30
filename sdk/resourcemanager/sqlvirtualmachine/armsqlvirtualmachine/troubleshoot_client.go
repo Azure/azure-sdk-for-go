@@ -27,7 +27,7 @@ type TroubleshootClient struct {
 // NewTroubleshootClient creates a new instance of TroubleshootClient with the specified values.
 //   - subscriptionID - Subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTroubleshootClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TroubleshootClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewTroubleshootClient(subscriptionID string, credential azcore.TokenCredent
 // BeginTroubleshoot - Starts SQL virtual machine troubleshooting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
@@ -71,7 +71,7 @@ func (client *TroubleshootClient) BeginTroubleshoot(ctx context.Context, resourc
 // Troubleshoot - Starts SQL virtual machine troubleshooting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-10-01
 func (client *TroubleshootClient) troubleshoot(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVMTroubleshooting, options *TroubleshootClientBeginTroubleshootOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TroubleshootClient.BeginTroubleshoot"
@@ -94,7 +94,7 @@ func (client *TroubleshootClient) troubleshoot(ctx context.Context, resourceGrou
 }
 
 // troubleshootCreateRequest creates the Troubleshoot request.
-func (client *TroubleshootClient) troubleshootCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVMTroubleshooting, options *TroubleshootClientBeginTroubleshootOptions) (*policy.Request, error) {
+func (client *TroubleshootClient) troubleshootCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVMTroubleshooting, _ *TroubleshootClientBeginTroubleshootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -113,7 +113,7 @@ func (client *TroubleshootClient) troubleshootCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

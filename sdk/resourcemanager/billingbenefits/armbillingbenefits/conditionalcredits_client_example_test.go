@@ -814,7 +814,7 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewConditionalCreditsClient().NewScopeListPager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
+	pager := clientFactory.NewConditionalCreditsClient("00000000-0000-0000-0000-000000000000").NewScopeListPager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

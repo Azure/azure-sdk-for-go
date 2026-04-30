@@ -22,19 +22,22 @@ import (
 // Don't use this type directly, use NewRecommendationsClient() instead.
 type RecommendationsClient struct {
 	internal       *arm.Client
+	resourceURI    string
 	subscriptionID string
 }
 
 // NewRecommendationsClient creates a new instance of RecommendationsClient with the specified values.
+//   - resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
-func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationsClient, error) {
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
+func NewRecommendationsClient(resourceURI string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RecommendationsClient{
+		resourceURI:    resourceURI,
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -45,7 +48,7 @@ func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCred
 // The generated recommendations are stored in a cache in the Advisor service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - options - RecommendationsClientGenerateOptions contains the optional parameters for the RecommendationsClient.Generate
 //     method.
 func (client *RecommendationsClient) Generate(ctx context.Context, options *RecommendationsClientGenerateOptions) (RecommendationsClientGenerateResponse, error) {
@@ -71,7 +74,7 @@ func (client *RecommendationsClient) Generate(ctx context.Context, options *Reco
 }
 
 // generateCreateRequest creates the Generate request.
-func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, options *RecommendationsClientGenerateOptions) (*policy.Request, error) {
+func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, _ *RecommendationsClientGenerateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/generateRecommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +85,7 @@ func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,7 +106,7 @@ func (client *RecommendationsClient) generateHandleResponse(resp *http.Response)
 // Get - Obtains details of a cached recommendation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 //   - recommendationID - The recommendation ID.
 //   - options - RecommendationsClientGetOptions contains the optional parameters for the RecommendationsClient.Get method.
@@ -130,7 +133,7 @@ func (client *RecommendationsClient) Get(ctx context.Context, resourceURI string
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, options *RecommendationsClientGetOptions) (*policy.Request, error) {
+func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, _ *RecommendationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -145,7 +148,7 @@ func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -165,7 +168,7 @@ func (client *RecommendationsClient) getHandleResponse(resp *http.Response) (Rec
 // response header.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - operationID - The operation ID, which can be found from the Location field in the generate recommendation response header.
 //   - options - RecommendationsClientGetGenerateStatusOptions contains the optional parameters for the RecommendationsClient.GetGenerateStatus
 //     method.
@@ -191,7 +194,7 @@ func (client *RecommendationsClient) GetGenerateStatus(ctx context.Context, oper
 }
 
 // getGenerateStatusCreateRequest creates the GetGenerateStatus request.
-func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.Context, operationID string, options *RecommendationsClientGetGenerateStatusOptions) (*policy.Request, error) {
+func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.Context, operationID string, _ *RecommendationsClientGetGenerateStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/generateRecommendations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,7 +209,7 @@ func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +218,7 @@ func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.
 // NewListPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
 // generateRecommendations.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
 //     method.
 func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
@@ -253,16 +256,16 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,6 +276,136 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (Re
 	result := RecommendationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
 		return RecommendationsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByTenantPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed
+// by invoking generateRecommendations.
+//
+// Generated from API version 2025-05-01-preview
+//   - options - RecommendationsClientListByTenantOptions contains the optional parameters for the RecommendationsClient.NewListByTenantPager
+//     method.
+func (client *RecommendationsClient) NewListByTenantPager(options *RecommendationsClientListByTenantOptions) *runtime.Pager[RecommendationsClientListByTenantResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListByTenantResponse]{
+		More: func(page RecommendationsClientListByTenantResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListByTenantResponse) (RecommendationsClientListByTenantResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecommendationsClient.NewListByTenantPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByTenantCreateRequest(ctx, options)
+			}, nil)
+			if err != nil {
+				return RecommendationsClientListByTenantResponse{}, err
+			}
+			return client.listByTenantHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByTenantCreateRequest creates the ListByTenant request.
+func (client *RecommendationsClient) listByTenantCreateRequest(ctx context.Context, options *RecommendationsClientListByTenantOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations"
+	if client.resourceURI == "" {
+		return nil, errors.New("parameter client.resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(client.resourceURI))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByTenantHandleResponse handles the ListByTenant response.
+func (client *RecommendationsClient) listByTenantHandleResponse(resp *http.Response) (RecommendationsClientListByTenantResponse, error) {
+	result := RecommendationsClientListByTenantResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
+		return RecommendationsClientListByTenantResponse{}, err
+	}
+	return result, nil
+}
+
+// Patch - Update the tracked properties of a Recommendation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
+//   - resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the tracked recommendation
+//     applies.
+//   - recommendationID - The RecommendationId ID.
+//   - trackedProperties - The properties to update on the recommendation.
+//   - options - RecommendationsClientPatchOptions contains the optional parameters for the RecommendationsClient.Patch method.
+func (client *RecommendationsClient) Patch(ctx context.Context, resourceURI string, recommendationID string, trackedProperties TrackedRecommendationPropertiesPayload, options *RecommendationsClientPatchOptions) (RecommendationsClientPatchResponse, error) {
+	var err error
+	const operationName = "RecommendationsClient.Patch"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.patchCreateRequest(ctx, resourceURI, recommendationID, trackedProperties, options)
+	if err != nil {
+		return RecommendationsClientPatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RecommendationsClientPatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientPatchResponse{}, err
+	}
+	resp, err := client.patchHandleResponse(httpResp)
+	return resp, err
+}
+
+// patchCreateRequest creates the Patch request.
+func (client *RecommendationsClient) patchCreateRequest(ctx context.Context, resourceURI string, recommendationID string, trackedProperties TrackedRecommendationPropertiesPayload, _ *RecommendationsClientPatchOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	if recommendationID == "" {
+		return nil, errors.New("parameter recommendationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recommendationId}", url.PathEscape(recommendationID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, trackedProperties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// patchHandleResponse handles the Patch response.
+func (client *RecommendationsClient) patchHandleResponse(resp *http.Response) (RecommendationsClientPatchResponse, error) {
+	result := RecommendationsClientPatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
+		return RecommendationsClientPatchResponse{}, err
 	}
 	return result, nil
 }

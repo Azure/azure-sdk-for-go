@@ -28,7 +28,7 @@ type SuppressionsClient struct {
 // NewSuppressionsClient creates a new instance of SuppressionsClient with the specified values.
 //   - subscriptionID - The Azure subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSuppressionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SuppressionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -46,7 +46,7 @@ func NewSuppressionsClient(subscriptionID string, credential azcore.TokenCredent
 // a recommendation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 //   - recommendationID - The recommendation ID.
 //   - name - The name of the suppression.
@@ -75,7 +75,7 @@ func (client *SuppressionsClient) Create(ctx context.Context, resourceURI string
 }
 
 // createCreateRequest creates the Create request.
-func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract, options *SuppressionsClientCreateOptions) (*policy.Request, error) {
+func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract, _ *SuppressionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -94,7 +94,7 @@ func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, suppressionContract); err != nil {
@@ -116,7 +116,7 @@ func (client *SuppressionsClient) createHandleResponse(resp *http.Response) (Sup
 // is referred to as a suppression.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 //   - recommendationID - The recommendation ID.
 //   - name - The name of the suppression.
@@ -143,7 +143,7 @@ func (client *SuppressionsClient) Delete(ctx context.Context, resourceURI string
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsClientDeleteOptions) (*policy.Request, error) {
+func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, _ *SuppressionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -162,7 +162,7 @@ func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +171,7 @@ func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Obtains the details of a suppression.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
 //   - recommendationID - The recommendation ID.
 //   - name - The name of the suppression.
@@ -199,7 +199,7 @@ func (client *SuppressionsClient) Get(ctx context.Context, resourceURI string, r
 }
 
 // getCreateRequest creates the Get request.
-func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsClientGetOptions) (*policy.Request, error) {
+func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, _ *SuppressionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -218,7 +218,7 @@ func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -236,7 +236,7 @@ func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (Suppre
 // NewListPager - Retrieves the list of snoozed or dismissed suppressions for a subscription. The snoozed or dismissed attribute
 // of a recommendation is referred to as a suppression.
 //
-// Generated from API version 2020-01-01
+// Generated from API version 2025-05-01-preview
 //   - options - SuppressionsClientListOptions contains the optional parameters for the SuppressionsClient.NewListPager method.
 func (client *SuppressionsClient) NewListPager(options *SuppressionsClientListOptions) *runtime.Pager[SuppressionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SuppressionsClientListResponse]{
@@ -273,13 +273,13 @@ func (client *SuppressionsClient) listCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

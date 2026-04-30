@@ -170,6 +170,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -323,7 +324,7 @@ func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName stri
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ClustersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters"
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}

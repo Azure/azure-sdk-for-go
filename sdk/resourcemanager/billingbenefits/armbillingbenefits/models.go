@@ -1994,6 +1994,28 @@ type SKU struct {
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string
+	Name   *string
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier
+}
+
+// SKU - The resource model definition representing SKU
+type SKU struct {
+	// REQUIRED; REQUIRED; The name of the SKU. E.g. P3. It is typically a letter+number code
+	Name *string
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string
+	Name   *string
 
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string

@@ -84,7 +84,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromApplicableConditional
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewConditionalCreditContributorsClient("00000000-0000-0000-0000-000000000000").NewListFromApplicableConditionalCreditPager("20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31", "C20251028000000000000", nil)
+	pager := clientFactory.NewConditionalCreditContributorsClient().NewListFromApplicableConditionalCreditPager("20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31", "C20251028000000000000", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

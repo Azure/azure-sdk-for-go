@@ -74,35 +74,54 @@ func (p *ProvidersServerTransport) Do(req *http.Request) (*http.Response, error)
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ProvidersClient.Create":
-		resp, err = p.dispatchCreate(req)
-	case "ProvidersClient.Delete":
-		resp, err = p.dispatchDelete(req)
-	case "ProvidersClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "ProvidersClient.GetDefaultByLocation":
-		resp, err = p.dispatchGetDefaultByLocation(req)
-	case "ProvidersClient.List":
-		resp, err = p.dispatchList(req)
-	case "ProvidersClient.ListByResourceGroup":
-		resp, err = p.dispatchListByResourceGroup(req)
-	case "ProvidersClient.ListDefault":
-		resp, err = p.dispatchListDefault(req)
-	case "ProvidersClient.Update":
-		resp, err = p.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *ProvidersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if providersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = providersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ProvidersClient.Create":
+				res.resp, res.err = p.dispatchCreate(req)
+			case "ProvidersClient.Delete":
+				res.resp, res.err = p.dispatchDelete(req)
+			case "ProvidersClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "ProvidersClient.GetDefaultByLocation":
+				res.resp, res.err = p.dispatchGetDefaultByLocation(req)
+			case "ProvidersClient.List":
+				res.resp, res.err = p.dispatchList(req)
+			case "ProvidersClient.ListByResourceGroup":
+				res.resp, res.err = p.dispatchListByResourceGroup(req)
+			case "ProvidersClient.ListDefault":
+				res.resp, res.err = p.dispatchListDefault(req)
+			case "ProvidersClient.Update":
+				res.resp, res.err = p.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *ProvidersServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -112,7 +131,7 @@ func (p *ProvidersServerTransport) dispatchCreate(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armattestation.ServiceCreationParams](req)
@@ -149,7 +168,7 @@ func (p *ProvidersServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -182,7 +201,7 @@ func (p *ProvidersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -215,7 +234,7 @@ func (p *ProvidersServerTransport) dispatchGetDefaultByLocation(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/defaultProvider`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -244,7 +263,7 @@ func (p *ProvidersServerTransport) dispatchList(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := p.srv.List(req.Context(), nil)
@@ -269,7 +288,7 @@ func (p *ProvidersServerTransport) dispatchListByResourceGroup(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -298,7 +317,7 @@ func (p *ProvidersServerTransport) dispatchListDefault(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/defaultProviders`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := p.srv.ListDefault(req.Context(), nil)
@@ -323,7 +342,7 @@ func (p *ProvidersServerTransport) dispatchUpdate(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armattestation.ServicePatchParams](req)
@@ -351,4 +370,10 @@ func (p *ProvidersServerTransport) dispatchUpdate(req *http.Request) (*http.Resp
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ProvidersServerTransport
+var providersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

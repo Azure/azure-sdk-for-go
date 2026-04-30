@@ -62,27 +62,46 @@ func (p *PrivateEndpointConnectionsServerTransport) Do(req *http.Request) (*http
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PrivateEndpointConnectionsClient.Create":
-		resp, err = p.dispatchCreate(req)
-	case "PrivateEndpointConnectionsClient.Delete":
-		resp, err = p.dispatchDelete(req)
-	case "PrivateEndpointConnectionsClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "PrivateEndpointConnectionsClient.NewListPager":
-		resp, err = p.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if privateEndpointConnectionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = privateEndpointConnectionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PrivateEndpointConnectionsClient.Create":
+				res.resp, res.err = p.dispatchCreate(req)
+			case "PrivateEndpointConnectionsClient.Delete":
+				res.resp, res.err = p.dispatchDelete(req)
+			case "PrivateEndpointConnectionsClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PrivateEndpointConnectionsClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PrivateEndpointConnectionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -92,7 +111,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchCreate(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armattestation.PrivateEndpointConnection](req)
@@ -133,7 +152,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchDelete(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -170,7 +189,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -209,7 +228,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Attestation/attestationProviders/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -236,4 +255,10 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 		p.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PrivateEndpointConnectionsServerTransport
+var privateEndpointConnectionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

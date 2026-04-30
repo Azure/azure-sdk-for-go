@@ -155,6 +155,39 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
+// PrivateLinkResource - A private link resource
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// Array of private link resources
+	Value []*PrivateLinkResource
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource Private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
 // PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
 // and provider.
 type PrivateLinkServiceConnectionState struct {
@@ -230,18 +263,33 @@ type ServiceCreationSpecificParams struct {
 	// JSON Web Key Set defining a set of X.509 Certificates that will represent the parent certificate for the signing certificate
 	// used for policy operations
 	PolicySigningCertificates *JSONWebKeySet
+
+	// Controls whether traffic from the public network is allowed to access the Attestation Provider APIs.
+	PublicNetworkAccess *PublicNetworkAccessType
 }
 
 // ServicePatchParams - Parameters for patching an attestation provider
 type ServicePatchParams struct {
+	// Properties of the attestation provider
+	Properties *ServicePatchSpecificParams
+
 	// The tags that will be assigned to the attestation provider.
 	Tags map[string]*string
+}
+
+// ServicePatchSpecificParams - Client supplied parameters used to patch an existing attestation provider.
+type ServicePatchSpecificParams struct {
+	// Controls whether traffic from the public network is allowed to access the Attestation Provider APIs.
+	PublicNetworkAccess *PublicNetworkAccessType
 }
 
 // StatusResult - Status of attestation service.
 type StatusResult struct {
 	// Gets the uri of attestation service
 	AttestURI *string
+
+	// Controls whether traffic from the public network is allowed to access the Attestation Provider APIs.
+	PublicNetworkAccess *PublicNetworkAccessType
 
 	// Status of attestation service.
 	Status *AttestationServiceStatus

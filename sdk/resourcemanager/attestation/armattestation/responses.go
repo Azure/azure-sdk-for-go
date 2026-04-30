@@ -34,6 +34,12 @@ type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
+// PrivateLinkResourcesClientListByProviderResponse contains the response from method PrivateLinkResourcesClient.ListByProvider.
+type PrivateLinkResourcesClientListByProviderResponse struct {
+	// A list of private link resources
+	PrivateLinkResourceListResult
+}
+
 // ProvidersClientCreateResponse contains the response from method ProvidersClient.Create.
 type ProvidersClientCreateResponse struct {
 	// Attestation service response message.

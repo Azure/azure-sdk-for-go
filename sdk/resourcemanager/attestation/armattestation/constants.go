@@ -5,11 +5,6 @@
 
 package armattestation
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
-	moduleVersion = "v1.2.0"
-)
-
 // AttestationServiceStatus - Status of attestation service.
 type AttestationServiceStatus string
 
@@ -83,5 +78,23 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// PublicNetworkAccessType - The public network access type for API calls to the Attestation Provider.
+type PublicNetworkAccessType string
+
+const (
+	// PublicNetworkAccessTypeDisabled - Disables public network connectivity to the Attestation Provider REST APIs.
+	PublicNetworkAccessTypeDisabled PublicNetworkAccessType = "Disabled"
+	// PublicNetworkAccessTypeEnabled - Enables public network connectivity to the Attestation Provider REST APIs.
+	PublicNetworkAccessTypeEnabled PublicNetworkAccessType = "Enabled"
+)
+
+// PossiblePublicNetworkAccessTypeValues returns the possible values for the PublicNetworkAccessType const type.
+func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
+	return []PublicNetworkAccessType{
+		PublicNetworkAccessTypeDisabled,
+		PublicNetworkAccessTypeEnabled,
 	}
 }

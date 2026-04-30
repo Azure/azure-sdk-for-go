@@ -34,6 +34,12 @@ type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PrivateLinkResourcesClientListByProviderOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByProvider
+// method.
+type PrivateLinkResourcesClientListByProviderOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ProvidersClientCreateOptions contains the optional parameters for the ProvidersClient.Create method.
 type ProvidersClientCreateOptions struct {
 	// placeholder for future optional parameters

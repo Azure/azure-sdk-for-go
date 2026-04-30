@@ -10,12 +10,6 @@ type ClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LedgerClientBeginBackupOptions contains the optional parameters for the LedgerClient.BeginBackup method.
-type LedgerClientBeginBackupOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // LedgerClientBeginCreateOptions contains the optional parameters for the LedgerClient.BeginCreate method.
 type LedgerClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -24,12 +18,6 @@ type LedgerClientBeginCreateOptions struct {
 
 // LedgerClientBeginDeleteOptions contains the optional parameters for the LedgerClient.BeginDelete method.
 type LedgerClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// LedgerClientBeginRestoreOptions contains the optional parameters for the LedgerClient.BeginRestore method.
-type LedgerClientBeginRestoreOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -59,12 +47,6 @@ type LedgerClientListBySubscriptionOptions struct {
 	Filter *string
 }
 
-// ManagedCCFClientBeginBackupOptions contains the optional parameters for the ManagedCCFClient.BeginBackup method.
-type ManagedCCFClientBeginBackupOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // ManagedCCFClientBeginCreateOptions contains the optional parameters for the ManagedCCFClient.BeginCreate method.
 type ManagedCCFClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -73,12 +55,6 @@ type ManagedCCFClientBeginCreateOptions struct {
 
 // ManagedCCFClientBeginDeleteOptions contains the optional parameters for the ManagedCCFClient.BeginDelete method.
 type ManagedCCFClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ManagedCCFClientBeginRestoreOptions contains the optional parameters for the ManagedCCFClient.BeginRestore method.
-type ManagedCCFClientBeginRestoreOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

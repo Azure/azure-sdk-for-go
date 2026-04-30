@@ -19,21 +19,6 @@ type AADBasedSecurityPrincipal struct {
 	TenantID *string
 }
 
-// Backup - Object representing Backup properties of a Confidential Ledger Resource.
-type Backup struct {
-	// REQUIRED; SAS URI used to access the backup Fileshare.
-	URI *string
-
-	// The region where the backup of the ledger will eventually be restored to.
-	RestoreRegion *string
-}
-
-// BackupResponse - Object representing the backup response of a Confidential Ledger Resource.
-type BackupResponse struct {
-	// READ-ONLY; Response body stating if the ledger is being backed up.
-	Message *string
-}
-
 // CertBasedSecurityPrincipal - Cert based security principal with Ledger RoleName
 type CertBasedSecurityPrincipal struct {
 	// Public key of the user cert (.pem or .cer)
@@ -102,42 +87,14 @@ type LedgerProperties struct {
 	// Array of all AAD based Security Principals.
 	AADBasedSecurityPrincipals []*AADBasedSecurityPrincipal
 
-	// Application type of the Confidential Ledger. Default: "Standard".
-	// Expected values: "Standard", "Premium".
-	ApplicationType *ApplicationType
-
 	// Array of all cert based Security Principals.
 	CertBasedSecurityPrincipals []*CertBasedSecurityPrincipal
-
-	// Enclave platform of the Confidential Ledger.
-	EnclavePlatform *EnclavePlatform
-
-	// CCF Property for the logging level for the untrusted host: Trace, Debug, Info, Fail, Fatal.
-	HostLevel *string
-
-	// SKU associated with the ledger
-	LedgerSKU *LedgerSKU
 
 	// Type of Confidential Ledger
 	LedgerType *LedgerType
 
-	// CCF Property for the maximum size of the http request body: 1MB, 5MB, 10MB.
-	MaxBodySizeInMb *int32
-
-	// Number of CCF nodes in the ACC Ledger.
-	NodeCount *int32
-
 	// Object representing RunningState for Ledger.
 	RunningState *RunningState
-
-	// CCF Property for the subject name to include in the node certificate. Default: CN=CCF Node.
-	SubjectName *string
-
-	// Number of additional threads processing incoming client requests in the enclave (modify with care!)
-	WorkerThreads *int32
-
-	// Prefix for the write load balancer. Example: write
-	WriteLBAddressPrefix *string
 
 	// READ-ONLY; Endpoint for accessing network identity.
 	IdentityServiceURI *string
@@ -188,21 +145,6 @@ type ManagedCCF struct {
 	Type *string
 }
 
-// ManagedCCFBackup - Object representing Backup properties of a Managed CCF Resource.
-type ManagedCCFBackup struct {
-	// REQUIRED; SAS URI used to access the backup Fileshare.
-	URI *string
-
-	// The region where the backup of the managed CCF resource will eventually be restored to.
-	RestoreRegion *string
-}
-
-// ManagedCCFBackupResponse - Object representing the backup response of a Managed CCF Resource.
-type ManagedCCFBackupResponse struct {
-	// READ-ONLY; Response body stating if the managed CCF resource is being backed up.
-	Message *string
-}
-
 // ManagedCCFList - Object that includes an array of Managed CCF and a possible link for next set.
 type ManagedCCFList struct {
 	// The URL the client should use to fetch the next page (per server side paging).
@@ -217,17 +159,11 @@ type ManagedCCFProperties struct {
 	// Deployment Type of Managed CCF
 	DeploymentType *DeploymentType
 
-	// Enclave platform of Managed CCF.
-	EnclavePlatform *EnclavePlatform
-
 	// List of member identity certificates for Managed CCF
 	MemberIdentityCertificates []*MemberIdentityCertificate
 
 	// Number of CCF nodes in the Managed CCF.
 	NodeCount *int32
-
-	// Object representing RunningState for Managed CCF.
-	RunningState *RunningState
 
 	// READ-ONLY; Unique name for the Managed CCF.
 	AppName *string
@@ -238,26 +174,8 @@ type ManagedCCFProperties struct {
 	// READ-ONLY; Endpoint for accessing network identity.
 	IdentityServiceURI *string
 
-	// READ-ONLY; Provisioning state of Managed CCF Resource
+	// READ-ONLY; Provisioning state of Ledger Resource
 	ProvisioningState *ProvisioningState
-}
-
-// ManagedCCFRestore - Object representing Restore properties of Managed CCF Resource.
-type ManagedCCFRestore struct {
-	// REQUIRED; Fileshare where the managed CCF resource backup is stored.
-	FileShareName *string
-
-	// REQUIRED; The region the managed CCF resource is being restored to.
-	RestoreRegion *string
-
-	// REQUIRED; SAS URI used to access the backup Fileshare.
-	URI *string
-}
-
-// ManagedCCFRestoreResponse - Object representing the restore response of a Managed CCF Resource.
-type ManagedCCFRestoreResponse struct {
-	// READ-ONLY; Response body stating if the managed CCF resource is being restored.
-	Message *string
 }
 
 // MemberIdentityCertificate - Object representing MemberIdentityCertificate for Managed CCF.
@@ -306,24 +224,6 @@ type ResourceProviderOperationList struct {
 
 	// READ-ONLY; Resource provider operations list.
 	Value []*ResourceProviderOperationDefinition
-}
-
-// Restore - Object representing Restore properties of a Confidential Ledger Resource.
-type Restore struct {
-	// REQUIRED; Fileshare where the ledger backup is stored.
-	FileShareName *string
-
-	// REQUIRED; The region the ledger is being restored to.
-	RestoreRegion *string
-
-	// REQUIRED; SAS URI used to access the backup fileshare.
-	URI *string
-}
-
-// RestoreResponse - Object representing the restore response of a Confidential Ledger Resource.
-type RestoreResponse struct {
-	// READ-ONLY; Response body stating if the ledger is being restored.
-	Message *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

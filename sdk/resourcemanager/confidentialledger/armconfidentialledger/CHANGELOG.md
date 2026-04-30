@@ -1,5 +1,28 @@
 # Release History
 
+## 1.3.0-beta.4 (2026-04-30)
+### Breaking Changes
+
+- Enum `ApplicationType` has been removed
+- Enum `EnclavePlatform` has been removed
+- Enum `LedgerSKU` has been removed
+- Function `*LedgerClient.BeginRestore` has been removed
+- Function `*LedgerClient.BeginBackup` has been removed
+- Function `*ManagedCCFClient.BeginRestore` has been removed
+- Function `*ManagedCCFClient.BeginBackup` has been removed
+- Struct `Backup` has been removed
+- Struct `BackupResponse` has been removed
+- Struct `ManagedCCFBackup` has been removed
+- Struct `ManagedCCFBackupResponse` has been removed
+- Struct `ManagedCCFRestore` has been removed
+- Struct `ManagedCCFRestoreResponse` has been removed
+- Struct `Restore` has been removed
+- Struct `RestoreResponse` has been removed
+- Field `ApplicationType`, `EnclavePlatform`, `HostLevel`, `LedgerSKU`, `MaxBodySizeInMb`, `NodeCount`, `SubjectName`, `WorkerThreads`, `WriteLBAddressPrefix` of struct `LedgerProperties` has been removed
+- Field `ManagedCCF` of struct `ManagedCCFClientUpdateResponse` has been removed
+- Field `EnclavePlatform`, `RunningState` of struct `ManagedCCFProperties` has been removed
+
+
 ## 1.3.0-beta.3 (2025-05-23)
 ### Features Added
 

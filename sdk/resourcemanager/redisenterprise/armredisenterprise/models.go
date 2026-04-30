@@ -58,6 +58,49 @@ type AccessPolicyAssignmentPropertiesUser struct {
 	ObjectID *string
 }
 
+// AzureCacheForRedisMigrationProperties - Properties for Redis Enterprise migration operation for Azure Cache for Redis.
+type AzureCacheForRedisMigrationProperties struct {
+	// REQUIRED; Sets whether the data is migrated from source to target or not. This property must be true during the preview.
+	SkipDataMigration *bool
+
+	// REQUIRED; The source resource ID to migrate from. This is the resource ID of the Azure Cache for Redis.
+	SourceResourceID *string
+
+	// REQUIRED; Describes the source of the migration operation.
+	SourceType *SourceType
+
+	// REQUIRED; Sets whether the DNS is switched automatically after the data is transferred from the source cache to the target
+	// cache. This property must be true during the preview.
+	SwitchDNS *bool
+
+	// READ-ONLY; The timestamp when the migration operation was created.
+	CreationTime *time.Time
+
+	// READ-ONLY; The timestamp when the migration operation was last updated.
+	LastModifiedTime *time.Time
+
+	// READ-ONLY; Current provisioning status of the migration
+	ProvisioningState *MigrationProvisioningState
+
+	// READ-ONLY; Additional details about the migration operation's status in free text format.
+	StatusDetails *string
+
+	// READ-ONLY; The Azure resource ID of the Azure Managed Redis destination cache to migrate.
+	TargetResourceID *string
+}
+
+// GetMigrationProperties implements the MigrationPropertiesClassification interface for type AzureCacheForRedisMigrationProperties.
+func (a *AzureCacheForRedisMigrationProperties) GetMigrationProperties() *MigrationProperties {
+	return &MigrationProperties{
+		CreationTime:      a.CreationTime,
+		LastModifiedTime:  a.LastModifiedTime,
+		ProvisioningState: a.ProvisioningState,
+		SourceType:        a.SourceType,
+		StatusDetails:     a.StatusDetails,
+		TargetResourceID:  a.TargetResourceID,
+	}
+}
+
 // Cluster - Describes the Redis Enterprise cluster
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -91,67 +134,6 @@ type Cluster struct {
 	Type *string
 }
 
-// ClusterCommonProperties - Properties of Redis Enterprise clusters, as opposed to general resource properties like location,
-// tags
-type ClusterCommonProperties struct {
-	// Encryption-at-rest configuration for the cluster.
-	Encryption *ClusterCommonPropertiesEncryption
-
-	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
-	// and increases the risk of data loss.
-	HighAvailability *HighAvailability
-
-	// The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note that TLS
-	// 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are
-	// mentioned only for the sake of consistency with old API versions.
-	MinimumTLSVersion *TLSVersion
-
-	// READ-ONLY; DNS name of the cluster endpoint
-	HostName *string
-
-	// READ-ONLY; List of private endpoint connections associated with the specified Redis Enterprise cluster
-	PrivateEndpointConnections []*PrivateEndpointConnection
-
-	// READ-ONLY; Current provisioning status of the cluster
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Version of redis the cluster supports, e.g. '6'
-	RedisVersion *string
-
-	// READ-ONLY; Explains the current redundancy strategy of the cluster, which affects the expected SLA.
-	RedundancyMode *RedundancyMode
-
-	// READ-ONLY; Current resource status of the cluster
-	ResourceState *ResourceState
-}
-
-// ClusterCommonPropertiesEncryption - Encryption-at-rest configuration for the cluster.
-type ClusterCommonPropertiesEncryption struct {
-	// All Customer-managed key encryption properties for the resource. Set this to an empty object to use Microsoft-managed key
-	// encryption.
-	CustomerManagedKeyEncryption *ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption
-}
-
-// ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption - All Customer-managed key encryption properties for the
-// resource. Set this to an empty object to use Microsoft-managed key encryption.
-type ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption struct {
-	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
-	KeyEncryptionKeyIdentity *ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
-
-	// Key encryption key Url, versioned only. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
-	KeyEncryptionKeyURL *string
-}
-
-// ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed
-// key settings defining which identity should be used to auth to Key Vault.
-type ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity struct {
-	// Only userAssignedIdentity is supported in this API version; other types may be supported in the future
-	IdentityType *CmkIdentityType
-
-	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions//resourceGroups//providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
-	UserAssignedIdentityResourceID *string
-}
-
 // ClusterCreateProperties - Properties of Redis Enterprise clusters for create operations
 type ClusterCreateProperties struct {
 	// REQUIRED; Whether or not public network traffic can access the Redis cluster. Only 'Enabled' or 'Disabled' can be set.
@@ -160,11 +142,14 @@ type ClusterCreateProperties struct {
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Encryption-at-rest configuration for the cluster.
-	Encryption *ClusterCommonPropertiesEncryption
+	Encryption *ClusterPropertiesEncryption
 
 	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
 	// and increases the risk of data loss.
 	HighAvailability *HighAvailability
+
+	// Cluster-level maintenance configuration.
+	MaintenanceConfiguration *MaintenanceConfiguration
 
 	// The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note that TLS
 	// 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are
@@ -199,6 +184,69 @@ type ClusterList struct {
 	NextLink *string
 }
 
+// ClusterProperties - Properties of Redis Enterprise clusters, as opposed to general resource properties like location, tags
+type ClusterProperties struct {
+	// Encryption-at-rest configuration for the cluster.
+	Encryption *ClusterPropertiesEncryption
+
+	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
+	// and increases the risk of data loss.
+	HighAvailability *HighAvailability
+
+	// Cluster-level maintenance configuration.
+	MaintenanceConfiguration *MaintenanceConfiguration
+
+	// The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note that TLS
+	// 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are
+	// mentioned only for the sake of consistency with old API versions.
+	MinimumTLSVersion *TLSVersion
+
+	// READ-ONLY; DNS name of the cluster endpoint
+	HostName *string
+
+	// READ-ONLY; List of private endpoint connections associated with the specified Redis Enterprise cluster
+	PrivateEndpointConnections []*PrivateEndpointConnection
+
+	// READ-ONLY; Current provisioning status of the cluster
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Version of redis the cluster supports, e.g. '6'
+	RedisVersion *string
+
+	// READ-ONLY; Explains the current redundancy strategy of the cluster, which affects the expected SLA.
+	RedundancyMode *RedundancyMode
+
+	// READ-ONLY; Current resource status of the cluster
+	ResourceState *ResourceState
+}
+
+// ClusterPropertiesEncryption - Encryption-at-rest configuration for the cluster.
+type ClusterPropertiesEncryption struct {
+	// All Customer-managed key encryption properties for the resource. Set this to an empty object to use Microsoft-managed key
+	// encryption.
+	CustomerManagedKeyEncryption *ClusterPropertiesEncryptionCustomerManagedKeyEncryption
+}
+
+// ClusterPropertiesEncryptionCustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
+// Set this to an empty object to use Microsoft-managed key encryption.
+type ClusterPropertiesEncryptionCustomerManagedKeyEncryption struct {
+	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
+	KeyEncryptionKeyIdentity *ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
+
+	// Key encryption key Url, versioned only. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
+	KeyEncryptionKeyURL *string
+}
+
+// ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key
+// settings defining which identity should be used to auth to Key Vault.
+type ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity struct {
+	// Only userAssignedIdentity is supported in this API version; other types may be supported in the future
+	IdentityType *CmkIdentityType
+
+	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions//resourceGroups//providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
+	UserAssignedIdentityResourceID *string
+}
+
 // ClusterUpdate - A partial update to the Redis Enterprise cluster
 type ClusterUpdate struct {
 	// The identity of the resource.
@@ -217,11 +265,14 @@ type ClusterUpdate struct {
 // ClusterUpdateProperties - Properties of Redis Enterprise clusters for update operations
 type ClusterUpdateProperties struct {
 	// Encryption-at-rest configuration for the cluster.
-	Encryption *ClusterCommonPropertiesEncryption
+	Encryption *ClusterPropertiesEncryption
 
 	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
 	// and increases the risk of data loss.
 	HighAvailability *HighAvailability
+
+	// Cluster-level maintenance configuration.
+	MaintenanceConfiguration *MaintenanceConfiguration
 
 	// The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note that TLS
 	// 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are
@@ -270,58 +321,6 @@ type Database struct {
 	Type *string
 }
 
-// DatabaseCommonProperties - Properties of Redis Enterprise databases, as opposed to general resource properties like location,
-// tags
-type DatabaseCommonProperties struct {
-	// This property can be Enabled/Disabled to allow or deny access with the current access keys. Can be updated even after database
-	// is created.
-	AccessKeysAuthentication *AccessKeysAuthentication
-
-	// Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted.
-	ClientProtocol *Protocol
-
-	// Clustering policy - default is OSSCluster. This property can be updated only if the current value is NoCluster. If the
-	// value is OSSCluster or EnterpriseCluster, it cannot be updated without deleting
-	// the database.
-	ClusteringPolicy *ClusteringPolicy
-
-	// Option to defer upgrade when newest version is released - default is NotDeferred. Learn more: https://aka.ms/redisversionupgrade
-	DeferUpgrade *DeferUpgradeSetting
-
-	// Redis eviction policy - default is VolatileLRU
-	EvictionPolicy *EvictionPolicy
-
-	// Optional set of properties to configure geo replication for this database.
-	GeoReplication *DatabaseCommonPropertiesGeoReplication
-
-	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
-	Modules []*Module
-
-	// Persistence settings
-	Persistence *Persistence
-
-	// TCP port of the database endpoint. Specified at create time. Defaults to an available port.
-	Port *int32
-
-	// READ-ONLY; Current provisioning status of the database
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Version of Redis the database is running on, e.g. '6.0'
-	RedisVersion *string
-
-	// READ-ONLY; Current resource status of the database
-	ResourceState *ResourceState
-}
-
-// DatabaseCommonPropertiesGeoReplication - Optional set of properties to configure geo replication for this database.
-type DatabaseCommonPropertiesGeoReplication struct {
-	// Name for the group of linked database resources
-	GroupNickname *string
-
-	// List of database resources to link with this database
-	LinkedDatabases []*LinkedDatabase
-}
-
 // DatabaseCreateProperties - Properties for creating Redis Enterprise databases
 type DatabaseCreateProperties struct {
 	// This property can be Enabled/Disabled to allow or deny access with the current access keys. Can be updated even after database
@@ -343,7 +342,7 @@ type DatabaseCreateProperties struct {
 	EvictionPolicy *EvictionPolicy
 
 	// Optional set of properties to configure geo replication for this database.
-	GeoReplication *DatabaseCommonPropertiesGeoReplication
+	GeoReplication *DatabasePropertiesGeoReplication
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
@@ -373,6 +372,58 @@ type DatabaseList struct {
 	NextLink *string
 }
 
+// DatabaseProperties - Properties of Redis Enterprise databases, as opposed to general resource properties like location,
+// tags
+type DatabaseProperties struct {
+	// This property can be Enabled/Disabled to allow or deny access with the current access keys. Can be updated even after database
+	// is created.
+	AccessKeysAuthentication *AccessKeysAuthentication
+
+	// Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted.
+	ClientProtocol *Protocol
+
+	// Clustering policy - default is OSSCluster. This property can be updated only if the current value is NoCluster. If the
+	// value is OSSCluster or EnterpriseCluster, it cannot be updated without deleting
+	// the database.
+	ClusteringPolicy *ClusteringPolicy
+
+	// Option to defer upgrade when newest version is released - default is NotDeferred. Learn more: https://aka.ms/redisversionupgrade
+	DeferUpgrade *DeferUpgradeSetting
+
+	// Redis eviction policy - default is VolatileLRU
+	EvictionPolicy *EvictionPolicy
+
+	// Optional set of properties to configure geo replication for this database.
+	GeoReplication *DatabasePropertiesGeoReplication
+
+	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
+	Modules []*Module
+
+	// Persistence settings
+	Persistence *Persistence
+
+	// TCP port of the database endpoint. Specified at create time. Defaults to an available port.
+	Port *int32
+
+	// READ-ONLY; Current provisioning status of the database
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Version of Redis the database is running on, e.g. '6.0'
+	RedisVersion *string
+
+	// READ-ONLY; Current resource status of the database
+	ResourceState *ResourceState
+}
+
+// DatabasePropertiesGeoReplication - Optional set of properties to configure geo replication for this database.
+type DatabasePropertiesGeoReplication struct {
+	// Name for the group of linked database resources
+	GroupNickname *string
+
+	// List of database resources to link with this database
+	LinkedDatabases []*LinkedDatabase
+}
+
 // DatabaseUpdate - A partial update to the Redis Enterprise database
 type DatabaseUpdate struct {
 	// Properties of the database.
@@ -400,7 +451,7 @@ type DatabaseUpdateProperties struct {
 	EvictionPolicy *EvictionPolicy
 
 	// Optional set of properties to configure geo replication for this database.
-	GeoReplication *DatabaseCommonPropertiesGeoReplication
+	GeoReplication *DatabasePropertiesGeoReplication
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
@@ -531,6 +582,33 @@ type LinkedDatabase struct {
 	State *LinkState
 }
 
+// MaintenanceConfiguration - Cluster-level maintenance configuration.
+type MaintenanceConfiguration struct {
+	// Custom maintenance windows that apply to the cluster.
+	MaintenanceWindows []*MaintenanceWindow
+}
+
+// MaintenanceWindow - A single custom maintenance window.
+type MaintenanceWindow struct {
+	// REQUIRED; Duration in ISO-8601 format, for example 'PT5H'.
+	Duration *string
+
+	// REQUIRED; Recurring schedule for the maintenance window.
+	Schedule *MaintenanceWindowSchedule
+
+	// REQUIRED; Start hour (0-23) in UTC when the maintenance window begins.
+	StartHourUTC *int32
+
+	// REQUIRED; Maintenance window type.
+	Type *MaintenanceWindowType
+}
+
+// MaintenanceWindowSchedule - Schedule details for a maintenance window.
+type MaintenanceWindowSchedule struct {
+	// Day of week. Required when the maintenance window type is 'Weekly'.
+	DayOfWeek *MaintenanceDayOfWeek
+}
+
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
@@ -550,6 +628,57 @@ type ManagedServiceIdentity struct {
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
 }
+
+// Migration - Describes the current migration operation on a Redis Enterprise cluster.
+type Migration struct {
+	// Properties of the migration operation.
+	Properties MigrationPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MigrationList - The response of a list-all migrations.
+type MigrationList struct {
+	// List of migration operations.
+	Value []*Migration
+
+	// READ-ONLY; The URI to fetch the next page of results.
+	NextLink *string
+}
+
+// MigrationProperties - Properties for Redis Enterprise migration operation.
+type MigrationProperties struct {
+	// REQUIRED; Describes the source of the migration operation.
+	SourceType *SourceType
+
+	// READ-ONLY; The timestamp when the migration operation was created.
+	CreationTime *time.Time
+
+	// READ-ONLY; The timestamp when the migration operation was last updated.
+	LastModifiedTime *time.Time
+
+	// READ-ONLY; Current provisioning status of the migration
+	ProvisioningState *MigrationProvisioningState
+
+	// READ-ONLY; Additional details about the migration operation's status in free text format.
+	StatusDetails *string
+
+	// READ-ONLY; The Azure resource ID of the Azure Managed Redis destination cache to migrate.
+	TargetResourceID *string
+}
+
+// GetMigrationProperties implements the MigrationPropertiesClassification interface for type MigrationProperties.
+func (m *MigrationProperties) GetMigrationProperties() *MigrationProperties { return m }
 
 // Module - Specifies configuration of a redis module
 type Module struct {

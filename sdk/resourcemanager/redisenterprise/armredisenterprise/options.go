@@ -148,6 +148,28 @@ type DatabasesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MigrationClientBeginCancelOptions contains the optional parameters for the MigrationClient.BeginCancel method.
+type MigrationClientBeginCancelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MigrationClientBeginStartOptions contains the optional parameters for the MigrationClient.BeginStart method.
+type MigrationClientBeginStartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MigrationClientGetOptions contains the optional parameters for the MigrationClient.Get method.
+type MigrationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MigrationClientListOptions contains the optional parameters for the MigrationClient.NewListPager method.
+type MigrationClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

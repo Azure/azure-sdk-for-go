@@ -1903,6 +1903,16 @@ type ContainerClientSetMetadataOptions struct {
 	Timeout *int32
 }
 
+// ContainerClientSubmitBatchOptions contains the optional parameters for the ContainerClient.SubmitBatch method.
+type ContainerClientSubmitBatchOptions struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+}
+
 // PageBlobClientClearPagesOptions contains the optional parameters for the PageBlobClient.ClearPages method.
 type PageBlobClientClearPagesOptions struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
@@ -2499,6 +2509,16 @@ type ServiceClientListContainersSegmentOptions struct {
 
 // ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 type ServiceClientSetPropertiesOptions struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+}
+
+// ServiceClientSubmitBatchOptions contains the optional parameters for the ServiceClient.SubmitBatch method.
+type ServiceClientSubmitBatchOptions struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
 	ClientRequestID *string
 

@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -61,7 +62,7 @@ func (client *PageBlobClient) clearPagesCreateRequest(ctx context.Context, range
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Length"] = []string{"0"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
@@ -203,7 +204,7 @@ func (client *PageBlobClient) copyIncrementalCreateRequest(ctx context.Context, 
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -298,7 +299,7 @@ func (client *PageBlobClient) createCreateRequest(ctx context.Context, size int6
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Length"] = []string{"0"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
@@ -479,7 +480,7 @@ func (client *PageBlobClient) getPageRangesCreateRequest(ctx context.Context, op
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
@@ -600,7 +601,7 @@ func (client *PageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
@@ -712,7 +713,7 @@ func (client *PageBlobClient) resizeCreateRequest(ctx context.Context, size int6
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -826,7 +827,7 @@ func (client *PageBlobClient) updateSequenceNumberCreateRequest(ctx context.Cont
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -930,7 +931,7 @@ func (client *PageBlobClient) uploadPagesCreateRequest(ctx context.Context, body
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentMD5)}
@@ -1103,7 +1104,7 @@ func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}

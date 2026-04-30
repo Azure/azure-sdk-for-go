@@ -64,7 +64,7 @@ func (client *BlobClient) abortCopyFromURLCreateRequest(ctx context.Context, cop
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
@@ -133,7 +133,7 @@ func (client *BlobClient) acquireLeaseCreateRequest(ctx context.Context, duratio
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -229,7 +229,7 @@ func (client *BlobClient) breakLeaseCreateRequest(ctx context.Context, options *
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -331,7 +331,7 @@ func (client *BlobClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -427,7 +427,7 @@ func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -594,7 +594,7 @@ func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, optio
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -732,7 +732,7 @@ func (client *BlobClient) deleteCreateRequest(ctx context.Context, options *Blob
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -828,7 +828,7 @@ func (client *BlobClient) deleteImmutabilityPolicyCreateRequest(ctx context.Cont
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
@@ -896,7 +896,7 @@ func (client *BlobClient) downloadCreateRequest(ctx context.Context, options *Bl
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream"}
 	if options != nil && options.IfMatch != nil {
@@ -1204,7 +1204,7 @@ func (client *BlobClient) getAccountInfoCreateRequest(ctx context.Context, optio
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
@@ -1249,7 +1249,6 @@ func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (Blo
 
 // GetProperties - The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties
 // for the blob. It does not return the content of the blob.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - options - BlobClientGetPropertiesOptions contains the optional parameters for the BlobClient.GetProperties method.
 func (client *BlobClient) GetProperties(ctx context.Context, options *BlobClientGetPropertiesOptions) (BlobClientGetPropertiesResponse, error) {
 	var err error
@@ -1285,7 +1284,7 @@ func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, option
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -1322,7 +1321,7 @@ func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, option
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (BlobClientGetPropertiesResponse, error) {
-	result := BlobClientGetPropertiesResponse{}
+	result := BlobClientGetPropertiesResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
@@ -1598,7 +1597,7 @@ func (client *BlobClient) getTagsCreateRequest(ctx context.Context, options *Blo
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["x-ms-blob-if-match"] = []string{string(*options.IfMatch)}
@@ -1688,7 +1687,7 @@ func (client *BlobClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -1779,7 +1778,7 @@ func (client *BlobClient) renewLeaseCreateRequest(ctx context.Context, leaseID s
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -1872,7 +1871,7 @@ func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
@@ -1948,7 +1947,7 @@ func (client *BlobClient) setHTTPHeadersCreateRequest(ctx context.Context, optio
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -2071,7 +2070,7 @@ func (client *BlobClient) setImmutabilityPolicyCreateRequest(ctx context.Context
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
 	}
@@ -2157,7 +2156,7 @@ func (client *BlobClient) setLegalHoldCreateRequest(ctx context.Context, legalHo
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
@@ -2227,7 +2226,7 @@ func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options 
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -2356,7 +2355,7 @@ func (client *BlobClient) setTagsCreateRequest(ctx context.Context, tags BlobTag
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.TransactionalContentMD5 != nil {
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentMD5)}
 	}
@@ -2455,7 +2454,7 @@ func (client *BlobClient) setTierCreateRequest(ctx context.Context, tier AccessT
 	if options != nil && options.VersionID != nil {
 		reqQP.Set("versionid", *options.VersionID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["x-ms-access-tier"] = []string{string(tier)}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -2529,7 +2528,7 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
@@ -2672,7 +2671,7 @@ func (client *BlobClient) undeleteCreateRequest(ctx context.Context, options *Bl
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}

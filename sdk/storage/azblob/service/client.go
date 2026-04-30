@@ -352,7 +352,7 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	rsc := streaming.NopCloser(reader)
 	multipartContentType := "multipart/mixed; boundary=" + batchID
 
-	resp, err := s.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
+	resp, err := s.generated().SubmitBatch(ctx, multipartContentType, int64(len(batchReq)), rsc, options.format())
 	if err != nil {
 		return SubmitBatchResponse{}, err
 	}

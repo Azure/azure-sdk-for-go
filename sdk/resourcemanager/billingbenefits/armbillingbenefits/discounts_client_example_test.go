@@ -6,11 +6,12 @@ package armbillingbenefits_test
 
 import (
 	"context"
+	"log"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits/v3"
-	"log"
-	"time"
 )
 
 // Generated from example definition: 2025-12-01-preview/DiscountCancel.json
@@ -844,7 +845,7 @@ func ExampleDiscountsClient_NewScopeListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDiscountsClient().NewScopeListPager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
+	pager := clientFactory.NewDiscountsClient("").NewScopeListPager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

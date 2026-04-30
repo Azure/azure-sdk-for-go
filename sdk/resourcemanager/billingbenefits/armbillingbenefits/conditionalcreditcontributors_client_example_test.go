@@ -6,9 +6,10 @@ package armbillingbenefits_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits/v3"
-	"log"
 )
 
 // Generated from example definition: 2025-12-01-preview/ConditionalCreditContributorGetFromPrimary.json
@@ -84,7 +85,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromApplicableConditional
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewConditionalCreditContributorsClient().NewListFromApplicableConditionalCreditPager("20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31", "C20251028000000000000", nil)
+	pager := clientFactory.NewConditionalCreditContributorsClient("").NewListFromApplicableConditionalCreditPager("20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31", "C20251028000000000000", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

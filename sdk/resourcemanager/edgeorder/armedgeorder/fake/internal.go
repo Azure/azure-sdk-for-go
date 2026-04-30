@@ -12,6 +12,11 @@ import (
 	"sync"
 )
 
+type result struct {
+	resp *http.Response
+	err  error
+}
+
 type nonRetriableError struct {
 	error
 }
@@ -42,6 +47,17 @@ func getOptional[T any](v T) *T {
 		return nil
 	}
 	return &v
+}
+
+func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
+	if v == "" {
+		return nil, nil
+	}
+	t, err := parse(v)
+	if err != nil {
+		return nil, err
+	}
+	return &t, err
 }
 
 func newTracker[T any]() *tracker[T] {

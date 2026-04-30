@@ -89,10 +89,10 @@ func (testsuite *MigrationconfigsTestSuite) Prepare() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
-	var namespacesClientCreateOrUpdateResponse *armservicebus.NamespacesClientCreateOrUpdateResponse
-	namespacesClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
+	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
-	testsuite.secondNamespaceId = *namespacesClientCreateOrUpdateResponse.ID
+	testsuite.secondNamespaceId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.ServiceBus/namespaces/%s",
+		testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.namespaceNameSecond)
 }
 
 // Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}

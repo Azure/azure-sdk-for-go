@@ -6,6 +6,7 @@ package armservicebus_test
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -74,10 +75,10 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
-	var namespacesClientCreateOrUpdateResponse *armservicebus.NamespacesClientCreateOrUpdateResponse
-	namespacesClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
+	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
-	testsuite.namespaceId = *namespacesClientCreateOrUpdateResponse.ID
+	testsuite.namespaceId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.ServiceBus/namespaces/%s",
+		testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.namespaceName)
 
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
@@ -378,6 +379,9 @@ func (testsuite *NamespaceTestSuite) TestPrivateEndpointConnections() {
 		testsuite.Require().NoError(err)
 
 		privateEndpointConnectionName = *nextResult.Value[0].Name
+		if os.Getenv("AZURE_RECORD_MODE") == "playback" && privateEndpointConnectionName == "Sanitized" {
+			privateEndpointConnectionName = "00000000-0000-0000-0000-000000000000"
+		}
 		break
 	}
 

@@ -28,7 +28,7 @@ type ImagesClient struct {
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // Get - Gets a gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -73,7 +73,7 @@ func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, d
 }
 
 // getCreateRequest creates the Get request.
-func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, options *ImagesClientGetOptions) (*policy.Request, error) {
+func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, _ *ImagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -100,7 +100,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,7 +117,7 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 
 // NewListByDevCenterPager - Lists images for a devcenter.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - options - ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.NewListByDevCenterPager
@@ -168,7 +168,7 @@ func (client *ImagesClient) listByDevCenterCreateRequest(ctx context.Context, re
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,7 +185,7 @@ func (client *ImagesClient) listByDevCenterHandleResponse(resp *http.Response) (
 
 // NewListByGalleryPager - Lists images for a gallery.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -241,7 +241,7 @@ func (client *ImagesClient) listByGalleryCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

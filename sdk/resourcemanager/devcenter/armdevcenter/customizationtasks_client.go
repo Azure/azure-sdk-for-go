@@ -18,64 +18,63 @@ import (
 	"strings"
 )
 
-// EnvironmentDefinitionsClient contains the methods for the EnvironmentDefinitions group.
-// Don't use this type directly, use NewEnvironmentDefinitionsClient() instead.
-type EnvironmentDefinitionsClient struct {
+// CustomizationTasksClient contains the methods for the CustomizationTasks group.
+// Don't use this type directly, use NewCustomizationTasksClient() instead.
+type CustomizationTasksClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewEnvironmentDefinitionsClient creates a new instance of EnvironmentDefinitionsClient with the specified values.
+// NewCustomizationTasksClient creates a new instance of CustomizationTasksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewEnvironmentDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentDefinitionsClient, error) {
+func NewCustomizationTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomizationTasksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &EnvironmentDefinitionsClient{
+	client := &CustomizationTasksClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Gets an environment definition from the catalog.
+// Get - Gets a Task from the catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
-//   - environmentDefinitionName - The name of the Environment Definition.
-//   - options - EnvironmentDefinitionsClientGetOptions contains the optional parameters for the EnvironmentDefinitionsClient.Get
-//     method.
-func (client *EnvironmentDefinitionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetOptions) (EnvironmentDefinitionsClientGetResponse, error) {
+//   - taskName - The name of the Task.
+//   - options - CustomizationTasksClientGetOptions contains the optional parameters for the CustomizationTasksClient.Get method.
+func (client *CustomizationTasksClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, options *CustomizationTasksClientGetOptions) (CustomizationTasksClientGetResponse, error) {
 	var err error
-	const operationName = "EnvironmentDefinitionsClient.Get"
+	const operationName = "CustomizationTasksClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, environmentDefinitionName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, taskName, options)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetResponse{}, err
+		return CustomizationTasksClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetResponse{}, err
+		return CustomizationTasksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return EnvironmentDefinitionsClientGetResponse{}, err
+		return CustomizationTasksClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, _ *EnvironmentDefinitionsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}"
+func (client *CustomizationTasksClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, _ *CustomizationTasksClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -92,10 +91,10 @@ func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	if environmentDefinitionName == "" {
-		return nil, errors.New("parameter environmentDefinitionName cannot be empty")
+	if taskName == "" {
+		return nil, errors.New("parameter taskName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentDefinitionName}", url.PathEscape(environmentDefinitionName))
+	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -108,49 +107,49 @@ func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnvironmentDefinitionsClient) getHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientGetResponse, error) {
-	result := EnvironmentDefinitionsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinition); err != nil {
-		return EnvironmentDefinitionsClientGetResponse{}, err
+func (client *CustomizationTasksClient) getHandleResponse(resp *http.Response) (CustomizationTasksClientGetResponse, error) {
+	result := CustomizationTasksClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomizationTask); err != nil {
+		return CustomizationTasksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// GetErrorDetails - Gets Environment Definition error details
+// GetErrorDetails - Gets Customization Task error details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
-//   - environmentDefinitionName - The name of the Environment Definition.
-//   - options - EnvironmentDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the EnvironmentDefinitionsClient.GetErrorDetails
+//   - taskName - The name of the Task.
+//   - options - CustomizationTasksClientGetErrorDetailsOptions contains the optional parameters for the CustomizationTasksClient.GetErrorDetails
 //     method.
-func (client *EnvironmentDefinitionsClient) GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetErrorDetailsOptions) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
+func (client *CustomizationTasksClient) GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, options *CustomizationTasksClientGetErrorDetailsOptions) (CustomizationTasksClientGetErrorDetailsResponse, error) {
 	var err error
-	const operationName = "EnvironmentDefinitionsClient.GetErrorDetails"
+	const operationName = "CustomizationTasksClient.GetErrorDetails"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, environmentDefinitionName, options)
+	req, err := client.getErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, taskName, options)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CustomizationTasksClientGetErrorDetailsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CustomizationTasksClientGetErrorDetailsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CustomizationTasksClientGetErrorDetailsResponse{}, err
 	}
 	resp, err := client.getErrorDetailsHandleResponse(httpResp)
 	return resp, err
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
-func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, _ *EnvironmentDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}/getErrorDetails"
+func (client *CustomizationTasksClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, _ *CustomizationTasksClientGetErrorDetailsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/tasks/{taskName}/getErrorDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -167,10 +166,10 @@ func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx con
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	if environmentDefinitionName == "" {
-		return nil, errors.New("parameter environmentDefinitionName cannot be empty")
+	if taskName == "" {
+		return nil, errors.New("parameter taskName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentDefinitionName}", url.PathEscape(environmentDefinitionName))
+	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -183,29 +182,29 @@ func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx con
 }
 
 // getErrorDetailsHandleResponse handles the GetErrorDetails response.
-func (client *EnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
-	result := EnvironmentDefinitionsClientGetErrorDetailsResponse{}
+func (client *CustomizationTasksClient) getErrorDetailsHandleResponse(resp *http.Response) (CustomizationTasksClientGetErrorDetailsResponse, error) {
+	result := CustomizationTasksClientGetErrorDetailsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogResourceValidationErrorDetails); err != nil {
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CustomizationTasksClientGetErrorDetailsResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByCatalogPager - List environment definitions in the catalog.
+// NewListByCatalogPager - List Tasks in the catalog.
 //
 // Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
-//   - options - EnvironmentDefinitionsClientListByCatalogOptions contains the optional parameters for the EnvironmentDefinitionsClient.NewListByCatalogPager
+//   - options - CustomizationTasksClientListByCatalogOptions contains the optional parameters for the CustomizationTasksClient.NewListByCatalogPager
 //     method.
-func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupName string, devCenterName string, catalogName string, options *EnvironmentDefinitionsClientListByCatalogOptions) *runtime.Pager[EnvironmentDefinitionsClientListByCatalogResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EnvironmentDefinitionsClientListByCatalogResponse]{
-		More: func(page EnvironmentDefinitionsClientListByCatalogResponse) bool {
+func (client *CustomizationTasksClient) NewListByCatalogPager(resourceGroupName string, devCenterName string, catalogName string, options *CustomizationTasksClientListByCatalogOptions) *runtime.Pager[CustomizationTasksClientListByCatalogResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CustomizationTasksClientListByCatalogResponse]{
+		More: func(page CustomizationTasksClientListByCatalogResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *EnvironmentDefinitionsClientListByCatalogResponse) (EnvironmentDefinitionsClientListByCatalogResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentDefinitionsClient.NewListByCatalogPager")
+		Fetcher: func(ctx context.Context, page *CustomizationTasksClientListByCatalogResponse) (CustomizationTasksClientListByCatalogResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomizationTasksClient.NewListByCatalogPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -214,7 +213,7 @@ func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupN
 				return client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 			}, nil)
 			if err != nil {
-				return EnvironmentDefinitionsClientListByCatalogResponse{}, err
+				return CustomizationTasksClientListByCatalogResponse{}, err
 			}
 			return client.listByCatalogHandleResponse(resp)
 		},
@@ -223,8 +222,8 @@ func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupN
 }
 
 // listByCatalogCreateRequest creates the ListByCatalog request.
-func (client *EnvironmentDefinitionsClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *EnvironmentDefinitionsClientListByCatalogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions"
+func (client *CustomizationTasksClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CustomizationTasksClientListByCatalogOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/tasks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -256,10 +255,10 @@ func (client *EnvironmentDefinitionsClient) listByCatalogCreateRequest(ctx conte
 }
 
 // listByCatalogHandleResponse handles the ListByCatalog response.
-func (client *EnvironmentDefinitionsClient) listByCatalogHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientListByCatalogResponse, error) {
-	result := EnvironmentDefinitionsClientListByCatalogResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinitionListResult); err != nil {
-		return EnvironmentDefinitionsClientListByCatalogResponse{}, err
+func (client *CustomizationTasksClient) listByCatalogHandleResponse(resp *http.Response) (CustomizationTasksClientListByCatalogResponse, error) {
+	result := CustomizationTasksClientListByCatalogResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomizationTaskListResult); err != nil {
+		return CustomizationTasksClientListByCatalogResponse{}, err
 	}
 	return result, nil
 }

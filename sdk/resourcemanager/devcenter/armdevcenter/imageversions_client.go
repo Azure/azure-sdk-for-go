@@ -27,7 +27,7 @@ type ImageVersionsClient struct {
 // NewImageVersionsClient creates a new instance of ImageVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImageVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Gets an image version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -73,7 +73,7 @@ func (client *ImageVersionsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *ImageVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, versionName string, options *ImageVersionsClientGetOptions) (*policy.Request, error) {
+func (client *ImageVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, versionName string, _ *ImageVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions/{versionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -104,7 +104,7 @@ func (client *ImageVersionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -121,7 +121,7 @@ func (client *ImageVersionsClient) getHandleResponse(resp *http.Response) (Image
 
 // NewListByImagePager - Lists versions for an image.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -152,7 +152,7 @@ func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string,
 }
 
 // listByImageCreateRequest creates the ListByImage request.
-func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, options *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
+func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, _ *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -179,7 +179,7 @@ func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

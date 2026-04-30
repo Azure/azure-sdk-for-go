@@ -1,5 +1,67 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-04-30)
+### Breaking Changes
+
+- Enum `CatalogItemSyncEnableStatus` has been removed
+- Enum `CatalogItemType` has been removed
+- Function `NewCheckScopedNameAvailabilityClient` has been removed
+- Function `*CheckScopedNameAvailabilityClient.Execute` has been removed
+- Function `*ClientFactory.NewCheckScopedNameAvailabilityClient` has been removed
+- Function `*ClientFactory.NewProjectCatalogEnvironmentDefinitionsClient` has been removed
+- Function `*ClientFactory.NewProjectCatalogsClient` has been removed
+- Function `*EnvironmentDefinitionsClient.GetByProjectCatalog` has been removed
+- Function `*EnvironmentDefinitionsClient.NewListByProjectCatalogPager` has been removed
+- Function `NewProjectCatalogEnvironmentDefinitionsClient` has been removed
+- Function `*ProjectCatalogEnvironmentDefinitionsClient.GetErrorDetails` has been removed
+- Function `NewProjectCatalogsClient` has been removed
+- Function `*ProjectCatalogsClient.BeginConnect` has been removed
+- Function `*ProjectCatalogsClient.BeginCreateOrUpdate` has been removed
+- Function `*ProjectCatalogsClient.BeginDelete` has been removed
+- Function `*ProjectCatalogsClient.Get` has been removed
+- Function `*ProjectCatalogsClient.GetSyncErrorDetails` has been removed
+- Function `*ProjectCatalogsClient.NewListPager` has been removed
+- Function `*ProjectCatalogsClient.BeginPatch` has been removed
+- Function `*ProjectCatalogsClient.BeginSync` has been removed
+- Struct `CheckScopedNameAvailabilityRequest` has been removed
+- Struct `ProjectCatalogSettings` has been removed
+- Struct `ProjectCatalogSettingsInfo` has been removed
+- Field `Tags` of struct `CatalogProperties` has been removed
+- Field `Tags` of struct `CatalogUpdateProperties` has been removed
+- Field `ResourceID` of struct `OperationStatusResult` has been removed
+- Field `Location` of struct `OperationStatusesClientGetResponse` has been removed
+- Field `Identity` of struct `Project` has been removed
+- Field `DisplayName` of struct `ProjectEnvironmentTypeUpdateProperties` has been removed
+- Field `CatalogSettings` of struct `ProjectProperties` has been removed
+- Field `Identity` of struct `ProjectUpdate` has been removed
+- Field `CatalogSettings` of struct `ProjectUpdateProperties` has been removed
+- Field `ProjectCatalogSettings` of struct `Properties` has been removed
+- Field `Location`, `Tags` of struct `ScheduleProperties` has been removed
+- Field `Location`, `Tags` of struct `ScheduleUpdateProperties` has been removed
+- Field `SyncedCatalogItemTypes` of struct `SyncStats` has been removed
+- Field `ProjectCatalogSettings` of struct `UpdateProperties` has been removed
+
+### Features Added
+
+- New enum type `CustomizationTaskInputType` with values `CustomizationTaskInputTypeBoolean`, `CustomizationTaskInputTypeNumber`, `CustomizationTaskInputTypeString`
+- New function `NewCatalogDevBoxDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CatalogDevBoxDefinitionsClient, error)`
+- New function `*CatalogDevBoxDefinitionsClient.Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, options *CatalogDevBoxDefinitionsClientGetOptions) (CatalogDevBoxDefinitionsClientGetResponse, error)`
+- New function `*CatalogDevBoxDefinitionsClient.GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, options *CatalogDevBoxDefinitionsClientGetErrorDetailsOptions) (CatalogDevBoxDefinitionsClientGetErrorDetailsResponse, error)`
+- New function `*CatalogDevBoxDefinitionsClient.NewListByCatalogPager(resourceGroupName string, devCenterName string, catalogName string, options *CatalogDevBoxDefinitionsClientListByCatalogOptions) *runtime.Pager[CatalogDevBoxDefinitionsClientListByCatalogResponse]`
+- New function `*ClientFactory.NewCatalogDevBoxDefinitionsClient() *CatalogDevBoxDefinitionsClient`
+- New function `*ClientFactory.NewCustomizationTasksClient() *CustomizationTasksClient`
+- New function `NewCustomizationTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomizationTasksClient, error)`
+- New function `*CustomizationTasksClient.Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, options *CustomizationTasksClientGetOptions) (CustomizationTasksClientGetResponse, error)`
+- New function `*CustomizationTasksClient.GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, options *CustomizationTasksClientGetErrorDetailsOptions) (CustomizationTasksClientGetErrorDetailsResponse, error)`
+- New function `*CustomizationTasksClient.NewListByCatalogPager(resourceGroupName string, devCenterName string, catalogName string, options *CustomizationTasksClientListByCatalogOptions) *runtime.Pager[CustomizationTasksClientListByCatalogResponse]`
+- New struct `CustomizationTask`
+- New struct `CustomizationTaskInput`
+- New struct `CustomizationTaskListResult`
+- New struct `CustomizationTaskProperties`
+- New field `Tags` in struct `CatalogUpdate`
+- New field `Location`, `Tags` in struct `ScheduleUpdate`
+
+
 ## 2.0.0 (2024-04-26)
 ### Breaking Changes
 

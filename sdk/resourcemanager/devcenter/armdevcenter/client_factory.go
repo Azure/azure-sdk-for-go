@@ -41,6 +41,14 @@ func (c *ClientFactory) NewAttachedNetworksClient() *AttachedNetworksClient {
 	}
 }
 
+// NewCatalogDevBoxDefinitionsClient creates a new instance of CatalogDevBoxDefinitionsClient.
+func (c *ClientFactory) NewCatalogDevBoxDefinitionsClient() *CatalogDevBoxDefinitionsClient {
+	return &CatalogDevBoxDefinitionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCatalogsClient creates a new instance of CatalogsClient.
 func (c *ClientFactory) NewCatalogsClient() *CatalogsClient {
 	return &CatalogsClient{
@@ -57,9 +65,9 @@ func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityC
 	}
 }
 
-// NewCheckScopedNameAvailabilityClient creates a new instance of CheckScopedNameAvailabilityClient.
-func (c *ClientFactory) NewCheckScopedNameAvailabilityClient() *CheckScopedNameAvailabilityClient {
-	return &CheckScopedNameAvailabilityClient{
+// NewCustomizationTasksClient creates a new instance of CustomizationTasksClient.
+func (c *ClientFactory) NewCustomizationTasksClient() *CustomizationTasksClient {
+	return &CustomizationTasksClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -155,22 +163,6 @@ func (c *ClientFactory) NewPoolsClient() *PoolsClient {
 // NewProjectAllowedEnvironmentTypesClient creates a new instance of ProjectAllowedEnvironmentTypesClient.
 func (c *ClientFactory) NewProjectAllowedEnvironmentTypesClient() *ProjectAllowedEnvironmentTypesClient {
 	return &ProjectAllowedEnvironmentTypesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewProjectCatalogEnvironmentDefinitionsClient creates a new instance of ProjectCatalogEnvironmentDefinitionsClient.
-func (c *ClientFactory) NewProjectCatalogEnvironmentDefinitionsClient() *ProjectCatalogEnvironmentDefinitionsClient {
-	return &ProjectCatalogEnvironmentDefinitionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewProjectCatalogsClient creates a new instance of ProjectCatalogsClient.
-func (c *ClientFactory) NewProjectCatalogsClient() *ProjectCatalogsClient {
-	return &ProjectCatalogsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

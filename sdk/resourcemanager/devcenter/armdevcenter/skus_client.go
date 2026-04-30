@@ -28,7 +28,7 @@ type SKUsClient struct {
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListBySubscriptionPager - Lists the Microsoft.DevCenter SKUs available in a subscription
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2023-10-01-preview
 //   - options - SKUsClientListBySubscriptionOptions contains the optional parameters for the SKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *SKUsClient) NewListBySubscriptionPager(options *SKUsClientListBySubscriptionOptions) *runtime.Pager[SKUsClientListBySubscriptionResponse] {
@@ -84,7 +84,7 @@ func (client *SKUsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -18,64 +18,64 @@ import (
 	"strings"
 )
 
-// EnvironmentDefinitionsClient contains the methods for the EnvironmentDefinitions group.
-// Don't use this type directly, use NewEnvironmentDefinitionsClient() instead.
-type EnvironmentDefinitionsClient struct {
+// CatalogDevBoxDefinitionsClient contains the methods for the CatalogDevBoxDefinitions group.
+// Don't use this type directly, use NewCatalogDevBoxDefinitionsClient() instead.
+type CatalogDevBoxDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewEnvironmentDefinitionsClient creates a new instance of EnvironmentDefinitionsClient with the specified values.
+// NewCatalogDevBoxDefinitionsClient creates a new instance of CatalogDevBoxDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewEnvironmentDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentDefinitionsClient, error) {
+func NewCatalogDevBoxDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CatalogDevBoxDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &EnvironmentDefinitionsClient{
+	client := &CatalogDevBoxDefinitionsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Gets an environment definition from the catalog.
+// Get - Gets a Dev Box definition from the catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
-//   - environmentDefinitionName - The name of the Environment Definition.
-//   - options - EnvironmentDefinitionsClientGetOptions contains the optional parameters for the EnvironmentDefinitionsClient.Get
+//   - devBoxDefinitionName - The name of the Dev Box definition.
+//   - options - CatalogDevBoxDefinitionsClientGetOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.Get
 //     method.
-func (client *EnvironmentDefinitionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetOptions) (EnvironmentDefinitionsClientGetResponse, error) {
+func (client *CatalogDevBoxDefinitionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, options *CatalogDevBoxDefinitionsClientGetOptions) (CatalogDevBoxDefinitionsClientGetResponse, error) {
 	var err error
-	const operationName = "EnvironmentDefinitionsClient.Get"
+	const operationName = "CatalogDevBoxDefinitionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, environmentDefinitionName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, devBoxDefinitionName, options)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetResponse{}, err
+		return CatalogDevBoxDefinitionsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetResponse{}, err
+		return CatalogDevBoxDefinitionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return EnvironmentDefinitionsClientGetResponse{}, err
+		return CatalogDevBoxDefinitionsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, _ *EnvironmentDefinitionsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}"
+func (client *CatalogDevBoxDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, _ *CatalogDevBoxDefinitionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/devboxdefinitions/{devBoxDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -92,10 +92,10 @@ func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	if environmentDefinitionName == "" {
-		return nil, errors.New("parameter environmentDefinitionName cannot be empty")
+	if devBoxDefinitionName == "" {
+		return nil, errors.New("parameter devBoxDefinitionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentDefinitionName}", url.PathEscape(environmentDefinitionName))
+	urlPath = strings.ReplaceAll(urlPath, "{devBoxDefinitionName}", url.PathEscape(devBoxDefinitionName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -108,49 +108,49 @@ func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnvironmentDefinitionsClient) getHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientGetResponse, error) {
-	result := EnvironmentDefinitionsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinition); err != nil {
-		return EnvironmentDefinitionsClientGetResponse{}, err
+func (client *CatalogDevBoxDefinitionsClient) getHandleResponse(resp *http.Response) (CatalogDevBoxDefinitionsClientGetResponse, error) {
+	result := CatalogDevBoxDefinitionsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DevBoxDefinition); err != nil {
+		return CatalogDevBoxDefinitionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// GetErrorDetails - Gets Environment Definition error details
+// GetErrorDetails - Gets Catalog Devbox Definition error details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
-//   - environmentDefinitionName - The name of the Environment Definition.
-//   - options - EnvironmentDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the EnvironmentDefinitionsClient.GetErrorDetails
+//   - devBoxDefinitionName - The name of the Dev Box definition.
+//   - options - CatalogDevBoxDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.GetErrorDetails
 //     method.
-func (client *EnvironmentDefinitionsClient) GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetErrorDetailsOptions) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
+func (client *CatalogDevBoxDefinitionsClient) GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, options *CatalogDevBoxDefinitionsClientGetErrorDetailsOptions) (CatalogDevBoxDefinitionsClientGetErrorDetailsResponse, error) {
 	var err error
-	const operationName = "EnvironmentDefinitionsClient.GetErrorDetails"
+	const operationName = "CatalogDevBoxDefinitionsClient.GetErrorDetails"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, environmentDefinitionName, options)
+	req, err := client.getErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, devBoxDefinitionName, options)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CatalogDevBoxDefinitionsClientGetErrorDetailsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CatalogDevBoxDefinitionsClientGetErrorDetailsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CatalogDevBoxDefinitionsClientGetErrorDetailsResponse{}, err
 	}
 	resp, err := client.getErrorDetailsHandleResponse(httpResp)
 	return resp, err
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
-func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, _ *EnvironmentDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}/getErrorDetails"
+func (client *CatalogDevBoxDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, _ *CatalogDevBoxDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/devboxdefinitions/{devBoxDefinitionName}/getErrorDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -167,10 +167,10 @@ func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx con
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	if environmentDefinitionName == "" {
-		return nil, errors.New("parameter environmentDefinitionName cannot be empty")
+	if devBoxDefinitionName == "" {
+		return nil, errors.New("parameter devBoxDefinitionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentDefinitionName}", url.PathEscape(environmentDefinitionName))
+	urlPath = strings.ReplaceAll(urlPath, "{devBoxDefinitionName}", url.PathEscape(devBoxDefinitionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -183,29 +183,29 @@ func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx con
 }
 
 // getErrorDetailsHandleResponse handles the GetErrorDetails response.
-func (client *EnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
-	result := EnvironmentDefinitionsClientGetErrorDetailsResponse{}
+func (client *CatalogDevBoxDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response) (CatalogDevBoxDefinitionsClientGetErrorDetailsResponse, error) {
+	result := CatalogDevBoxDefinitionsClientGetErrorDetailsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogResourceValidationErrorDetails); err != nil {
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
+		return CatalogDevBoxDefinitionsClientGetErrorDetailsResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByCatalogPager - List environment definitions in the catalog.
+// NewListByCatalogPager - List Dev Box definitions in the catalog.
 //
 // Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
-//   - options - EnvironmentDefinitionsClientListByCatalogOptions contains the optional parameters for the EnvironmentDefinitionsClient.NewListByCatalogPager
+//   - options - CatalogDevBoxDefinitionsClientListByCatalogOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.NewListByCatalogPager
 //     method.
-func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupName string, devCenterName string, catalogName string, options *EnvironmentDefinitionsClientListByCatalogOptions) *runtime.Pager[EnvironmentDefinitionsClientListByCatalogResponse] {
-	return runtime.NewPager(runtime.PagingHandler[EnvironmentDefinitionsClientListByCatalogResponse]{
-		More: func(page EnvironmentDefinitionsClientListByCatalogResponse) bool {
+func (client *CatalogDevBoxDefinitionsClient) NewListByCatalogPager(resourceGroupName string, devCenterName string, catalogName string, options *CatalogDevBoxDefinitionsClientListByCatalogOptions) *runtime.Pager[CatalogDevBoxDefinitionsClientListByCatalogResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CatalogDevBoxDefinitionsClientListByCatalogResponse]{
+		More: func(page CatalogDevBoxDefinitionsClientListByCatalogResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *EnvironmentDefinitionsClientListByCatalogResponse) (EnvironmentDefinitionsClientListByCatalogResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentDefinitionsClient.NewListByCatalogPager")
+		Fetcher: func(ctx context.Context, page *CatalogDevBoxDefinitionsClientListByCatalogResponse) (CatalogDevBoxDefinitionsClientListByCatalogResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CatalogDevBoxDefinitionsClient.NewListByCatalogPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -214,7 +214,7 @@ func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupN
 				return client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 			}, nil)
 			if err != nil {
-				return EnvironmentDefinitionsClientListByCatalogResponse{}, err
+				return CatalogDevBoxDefinitionsClientListByCatalogResponse{}, err
 			}
 			return client.listByCatalogHandleResponse(resp)
 		},
@@ -223,8 +223,8 @@ func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupN
 }
 
 // listByCatalogCreateRequest creates the ListByCatalog request.
-func (client *EnvironmentDefinitionsClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *EnvironmentDefinitionsClientListByCatalogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions"
+func (client *CatalogDevBoxDefinitionsClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogDevBoxDefinitionsClientListByCatalogOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/devboxdefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -256,10 +256,10 @@ func (client *EnvironmentDefinitionsClient) listByCatalogCreateRequest(ctx conte
 }
 
 // listByCatalogHandleResponse handles the ListByCatalog response.
-func (client *EnvironmentDefinitionsClient) listByCatalogHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientListByCatalogResponse, error) {
-	result := EnvironmentDefinitionsClientListByCatalogResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinitionListResult); err != nil {
-		return EnvironmentDefinitionsClientListByCatalogResponse{}, err
+func (client *CatalogDevBoxDefinitionsClient) listByCatalogHandleResponse(resp *http.Response) (CatalogDevBoxDefinitionsClientListByCatalogResponse, error) {
+	result := CatalogDevBoxDefinitionsClientListByCatalogResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DevBoxDefinitionListResult); err != nil {
+		return CatalogDevBoxDefinitionsClientListByCatalogResponse{}, err
 	}
 	return result, nil
 }

@@ -6,6 +6,7 @@ package armcdn_test
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -35,6 +36,9 @@ type CdnTestSuite struct {
 
 func (testsuite *CdnTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
+	if os.Getenv("AZURE_RECORD_MODE") == "record" {
+		testsuite.T().Skip("classic Microsoft CDN profile creation is no longer supported by the service")
+	}
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())

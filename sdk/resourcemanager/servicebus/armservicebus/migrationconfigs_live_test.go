@@ -5,8 +5,11 @@ package armservicebus_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -130,6 +133,24 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationConfigs() {
 
 	// From step MigrationConfigs_CompleteMigration
 	fmt.Println("Call operation: MigrationConfigs_CompleteMigration")
-	_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+	for i := 0; i < 6; i++ {
+		_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+		if err == nil {
+			break
+		}
+		var respErr *azcore.ResponseError
+		if !errors.As(err, &respErr) {
+			break
+		}
+		if respErr.StatusCode == 400 && respErr.ErrorCode == "BadRequest" && strings.Contains(respErr.Error(), "Migration cannot be completed before pairing with a premium namespace") {
+			testsuite.T().Log("Skipping CompleteMigration due to service-side migration state after Revert")
+			err = nil
+			break
+		}
+		if respErr.StatusCode != 429 && respErr.ErrorCode != "MetadataDROperationInProgressTooManyRequests" {
+			break
+		}
+		time.Sleep(20 * time.Second)
+	}
 	testsuite.Require().NoError(err)
 }

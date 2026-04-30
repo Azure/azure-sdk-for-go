@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -115,7 +115,7 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -150,7 +150,7 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[parameters('networkInterfaceName')]",
 				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
@@ -179,7 +179,7 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[parameters('privateEndpointName')]",
 				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
@@ -259,13 +259,15 @@ func (testsuite *NamespaceTestSuite) TestNamespaces() {
 
 	// From step Namespaces_Update
 	fmt.Println("Call operation: Namespaces_Update")
-	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespaceUpdateParameters{
+	namespacesClientUpdateResponsePoller, err := namespacesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespaceUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"tag3": to.Ptr("value3"),
 			"tag4": to.Ptr("value4"),
 		},
 	}, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 }
 

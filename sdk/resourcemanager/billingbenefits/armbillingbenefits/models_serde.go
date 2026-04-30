@@ -3926,6 +3926,33 @@ func (r *ReservationOrderAliasResponsePropertiesReservedResourceProperties) Unma
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ResourceSKU.
+func (r ResourceSKU) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", r.Name)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceSKU.
+func (r *ResourceSKU) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &r.Name)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type RoleAssignmentEntity.
 func (r RoleAssignmentEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4002,7 +4029,6 @@ func (s SKU) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "capacity", s.Capacity)
 	populate(objectMap, "family", s.Family)
 	populate(objectMap, "name", s.Name)
-	populate(objectMap, "name", s.Name)
 	populate(objectMap, "size", s.Size)
 	populate(objectMap, "tier", s.Tier)
 	return json.Marshal(objectMap)
@@ -4022,56 +4048,6 @@ func (s *SKU) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "family":
 			err = unpopulate(val, "Family", &s.Family)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "size":
-			err = unpopulate(val, "Size", &s.Size)
-			delete(rawMsg, key)
-		case "tier":
-			err = unpopulate(val, "Tier", &s.Tier)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKU.
-func (s SKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "capacity", s.Capacity)
-	populate(objectMap, "family", s.Family)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "size", s.Size)
-	populate(objectMap, "tier", s.Tier)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SKU.
-func (s *SKU) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "capacity":
-			err = unpopulate(val, "Capacity", &s.Capacity)
-			delete(rawMsg, key)
-		case "family":
-			err = unpopulate(val, "Family", &s.Family)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &s.Name)

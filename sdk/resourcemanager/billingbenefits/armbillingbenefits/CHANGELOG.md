@@ -1,8 +1,14 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-04-29)
+## 3.0.0-beta.1 (2026-04-30)
 ### Breaking Changes
 
+- Type of `PurchaseRequest.SKU` has been changed from `*SKU` to `*ResourceSKU`
+- Type of `ReservationOrderAliasRequest.SKU` has been changed from `*SKU` to `*ResourceSKU`
+- Type of `ReservationOrderAliasResponse.SKU` has been changed from `*SKU` to `*ResourceSKU`
+- Type of `SavingsPlanModel.SKU` has been changed from `*SKU` to `*ResourceSKU`
+- Type of `SavingsPlanOrderAliasModel.SKU` has been changed from `*SKU` to `*ResourceSKU`
+- Type of `SavingsPlanOrderModel.SKU` has been changed from `*SKU` to `*ResourceSKU`
 - Function `*RPClient.ValidatePurchase` has been removed
 - Operation `*SavingsPlanClient.Update` has been changed to LRO, use `*SavingsPlanClient.BeginUpdate` instead.
 - Struct `SavingsPlanPurchaseValidateRequest` has been removed
@@ -194,6 +200,7 @@
 - New struct `Plan`
 - New struct `PriceGuaranteeProperties`
 - New struct `PrimaryConditionalCreditProperties`
+- New struct `ResourceSKU`
 - New struct `SavingsPlanValidateModel`
 - New struct `SellerResourceListRequest`
 - New struct `SellerResourceListRequestProperties`

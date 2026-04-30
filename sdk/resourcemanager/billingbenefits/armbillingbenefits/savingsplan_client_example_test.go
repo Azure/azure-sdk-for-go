@@ -68,7 +68,7 @@ func ExampleSavingsPlanClient_Get_savingsPlanItemWithExpandedRenewPropertiesGet(
 	// 						DisplayName: to.Ptr("Compute_SavingsPlan_patch_rename2_renewed"),
 	// 						Term: to.Ptr(armbillingbenefits.TermP1Y),
 	// 					},
-	// 					SKU: &armbillingbenefits.SKU{
+	// 					SKU: &armbillingbenefits.ResourceSKU{
 	// 						Name: to.Ptr("Compute_Savings_Plan"),
 	// 					},
 	// 				},
@@ -99,7 +99,7 @@ func ExampleSavingsPlanClient_Get_savingsPlanItemWithExpandedRenewPropertiesGet(
 	// 				Trend: to.Ptr(""),
 	// 			},
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},
@@ -173,7 +173,7 @@ func ExampleSavingsPlanClient_Get_savingsPlanItemGet() {
 	// 				Trend: to.Ptr(""),
 	// 			},
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},
@@ -255,7 +255,7 @@ func ExampleSavingsPlanClient_NewListPager() {
 		// 						Trend: to.Ptr(""),
 		// 					},
 		// 				},
-		// 				SKU: &armbillingbenefits.SKU{
+		// 				SKU: &armbillingbenefits.ResourceSKU{
 		// 					Name: to.Ptr("Compute_Savings_Plan"),
 		// 				},
 		// 			},
@@ -361,7 +361,7 @@ func ExampleSavingsPlanClient_NewListAllPager() {
 		// 						Trend: to.Ptr(""),
 		// 					},
 		// 				},
-		// 				SKU: &armbillingbenefits.SKU{
+		// 				SKU: &armbillingbenefits.ResourceSKU{
 		// 					Name: to.Ptr("Compute_Savings_Plan"),
 		// 				},
 		// 			},
@@ -408,7 +408,7 @@ func ExampleSavingsPlanClient_BeginUpdate() {
 						Renew:       to.Ptr(false),
 						Term:        to.Ptr(armbillingbenefits.TermP1Y),
 					},
-					SKU: &armbillingbenefits.SKU{
+					SKU: &armbillingbenefits.ResourceSKU{
 						Name: to.Ptr("Compute_Savings_Plan"),
 					},
 				},
@@ -479,7 +479,7 @@ func ExampleSavingsPlanClient_BeginUpdate() {
 	// 				Trend: to.Ptr("DOWN"),
 	// 			},
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},

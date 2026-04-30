@@ -36,7 +36,7 @@ func ExampleSavingsPlanOrderAliasClient_BeginCreate_savingsPlanOrderAliasCreate(
 			DisplayName: to.Ptr("Compute_SavingsPlan_10-28-2022_16-38"),
 			Term:        to.Ptr(armbillingbenefits.TermP3Y),
 		},
-		SKU: &armbillingbenefits.SKU{
+		SKU: &armbillingbenefits.ResourceSKU{
 			Name: to.Ptr("Compute_Savings_Plan"),
 		},
 	}, nil)
@@ -69,7 +69,7 @@ func ExampleSavingsPlanOrderAliasClient_BeginCreate_savingsPlanOrderAliasCreate(
 	// 			SavingsPlanOrderID: to.Ptr("/providers/Microsoft.BillingBenefits/savingsPlanOrders/30000000-0000-0000-0000-000000000023"),
 	// 			Term: to.Ptr(armbillingbenefits.TermP3Y),
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},
@@ -103,7 +103,7 @@ func ExampleSavingsPlanOrderAliasClient_BeginCreate_savingsPlanOrderAliasCreateS
 			DisplayName: to.Ptr("Compute_SavingsPlan_10-28-2022_16-38"),
 			Term:        to.Ptr(armbillingbenefits.TermP3Y),
 		},
-		SKU: &armbillingbenefits.SKU{
+		SKU: &armbillingbenefits.ResourceSKU{
 			Name: to.Ptr("Compute_Savings_Plan"),
 		},
 	}, nil)
@@ -139,7 +139,7 @@ func ExampleSavingsPlanOrderAliasClient_BeginCreate_savingsPlanOrderAliasCreateS
 	// 			SavingsPlanOrderID: to.Ptr("/providers/Microsoft.BillingBenefits/savingsPlanOrders/30000000-0000-0000-0000-000000000023"),
 	// 			Term: to.Ptr(armbillingbenefits.TermP3Y),
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},
@@ -186,7 +186,7 @@ func ExampleSavingsPlanOrderAliasClient_Get() {
 	// 			SavingsPlanOrderID: to.Ptr("/providers/Microsoft.BillingBenefits/savingsPlanOrders/30000000-0000-0000-0000-000000000000"),
 	// 			Term: to.Ptr(armbillingbenefits.TermP1Y),
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},

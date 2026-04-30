@@ -41,7 +41,7 @@ func ExampleReservationOrderAliasClient_BeginCreate() {
 			ReservedResourceType: to.Ptr(armbillingbenefits.ReservedResourceTypeVirtualMachines),
 			Term:                 to.Ptr(armbillingbenefits.TermP1Y),
 		},
-		SKU: &armbillingbenefits.SKU{
+		SKU: &armbillingbenefits.ResourceSKU{
 			Name: to.Ptr("Standard_M64s_v2"),
 		},
 	}, nil)
@@ -78,7 +78,7 @@ func ExampleReservationOrderAliasClient_BeginCreate() {
 	// 			ReservedResourceType: to.Ptr(armbillingbenefits.ReservedResourceTypeVirtualMachines),
 	// 			Term: to.Ptr(armbillingbenefits.TermP1Y),
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Standard_M64s_v2"),
 	// 		},
 	// 	},
@@ -127,7 +127,7 @@ func ExampleReservationOrderAliasClient_Get() {
 	// 			ReservedResourceType: to.Ptr(armbillingbenefits.ReservedResourceTypeVirtualMachines),
 	// 			Term: to.Ptr(armbillingbenefits.TermP1Y),
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Standard_M64s_v2"),
 	// 		},
 	// 	},

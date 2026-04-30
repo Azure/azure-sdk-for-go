@@ -383,7 +383,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 			},
 	// 			Term: to.Ptr(armbillingbenefits.TermP3Y),
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},
@@ -426,7 +426,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderGet() {
 	// 			},
 	// 			Term: to.Ptr(armbillingbenefits.TermP3Y),
 	// 		},
-	// 		SKU: &armbillingbenefits.SKU{
+	// 		SKU: &armbillingbenefits.ResourceSKU{
 	// 			Name: to.Ptr("Compute_Savings_Plan"),
 	// 		},
 	// 	},
@@ -475,7 +475,7 @@ func ExampleSavingsPlanOrderClient_NewListPager() {
 		// 					},
 		// 					Term: to.Ptr(armbillingbenefits.TermP3Y),
 		// 				},
-		// 				SKU: &armbillingbenefits.SKU{
+		// 				SKU: &armbillingbenefits.ResourceSKU{
 		// 					Name: to.Ptr("Compute_Savings_Plan"),
 		// 				},
 		// 			},

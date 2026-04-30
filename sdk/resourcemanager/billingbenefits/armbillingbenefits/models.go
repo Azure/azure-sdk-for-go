@@ -1783,7 +1783,7 @@ type PurchaseRequest struct {
 	Properties *PurchaseRequestProperties
 
 	// The SKU to be applied for this resource
-	SKU *SKU
+	SKU *ResourceSKU
 }
 
 type PurchaseRequestProperties struct {
@@ -1822,7 +1822,7 @@ type RenewProperties struct {
 // ReservationOrderAliasRequest - Reservation order alias
 type ReservationOrderAliasRequest struct {
 	// REQUIRED; Reservation order SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// The Azure Region where the reservation benefits are applied to.
 	Location *string
@@ -1889,7 +1889,7 @@ type ReservationOrderAliasRequestPropertiesReservedResourceProperties struct {
 // ReservationOrderAliasResponse - Reservation order alias
 type ReservationOrderAliasResponse struct {
 	// REQUIRED; Reservation order SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// The Azure Region where the reserved resource lives.
 	Location *string
@@ -1959,6 +1959,10 @@ type ReservationOrderAliasResponsePropertiesReservedResourceProperties struct {
 	InstanceFlexibility *InstanceFlexibility
 }
 
+type ResourceSKU struct {
+	Name *string
+}
+
 // RoleAssignmentEntity - Role assignment entity
 type RoleAssignmentEntity struct {
 	// Role assignment entity id
@@ -1985,7 +1989,7 @@ type RoleAssignmentEntityProperties struct {
 
 // SKU - The resource model definition representing SKU
 type SKU struct {
-	// REQUIRED; REQUIRED; The name of the SKU. E.g. P3. It is typically a letter+number code
+	// REQUIRED; The name of the SKU. E.g. P3. It is typically a letter+number code
 	Name *string
 
 	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
@@ -1994,28 +1998,6 @@ type SKU struct {
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string
-	Name   *string
-
-	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
-	Size *string
-
-	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
-	// on a PUT.
-	Tier *SKUTier
-}
-
-// SKU - The resource model definition representing SKU
-type SKU struct {
-	// REQUIRED; REQUIRED; The name of the SKU. E.g. P3. It is typically a letter+number code
-	Name *string
-
-	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
-	// resource this may be omitted.
-	Capacity *int32
-
-	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
-	Family *string
-	Name   *string
 
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string
@@ -2028,7 +2010,7 @@ type SKU struct {
 // SavingsPlanModel - Savings plan
 type SavingsPlanModel struct {
 	// REQUIRED; Savings plan SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// Savings plan properties
 	Properties *SavingsPlanModelProperties
@@ -2142,7 +2124,7 @@ type SavingsPlanModelProperties struct {
 // SavingsPlanOrderAliasModel - Savings plan order alias
 type SavingsPlanOrderAliasModel struct {
 	// REQUIRED; Savings plan SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// Resource provider kind
 	Kind *string
@@ -2199,7 +2181,7 @@ type SavingsPlanOrderAliasProperties struct {
 // SavingsPlanOrderModel - Savings plan order
 type SavingsPlanOrderModel struct {
 	// REQUIRED; Savings plan SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// Savings plan order properties
 	Properties *SavingsPlanOrderModelProperties
@@ -2352,7 +2334,7 @@ type SavingsPlanValidateModel struct {
 	BenefitType *BenefitType
 
 	// REQUIRED; Savings plan SKU
-	SKU *SKU
+	SKU *ResourceSKU
 
 	// Resource provider kind
 	Kind *string

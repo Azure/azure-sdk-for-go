@@ -471,6 +471,18 @@ type ProfilesClientCanMigrateResponse struct {
 	CanMigrateResult
 }
 
+// ProfilesClientCdnCanMigrateToAfdResponse contains the response from method ProfilesClient.BeginCdnCanMigrateToAfd.
+type ProfilesClientCdnCanMigrateToAfdResponse struct {
+	// Result for canMigrate operation.
+	CanMigrateResult
+}
+
+// ProfilesClientCdnMigrateToAfdResponse contains the response from method ProfilesClient.BeginCdnMigrateToAfd.
+type ProfilesClientCdnMigrateToAfdResponse struct {
+	// Result for migrate operation.
+	MigrateResult
+}
+
 // ProfilesClientCreateResponse contains the response from method ProfilesClient.BeginCreate.
 type ProfilesClientCreateResponse struct {
 	// A profile is a logical grouping of endpoints that share the same settings.
@@ -522,6 +534,11 @@ type ProfilesClientListSupportedOptimizationTypesResponse struct {
 type ProfilesClientMigrateResponse struct {
 	// Result for migrate operation.
 	MigrateResult
+}
+
+// ProfilesClientMigrationAbortResponse contains the response from method ProfilesClient.BeginMigrationAbort.
+type ProfilesClientMigrationAbortResponse struct {
+	// placeholder for future response values
 }
 
 // ProfilesClientMigrationCommitResponse contains the response from method ProfilesClient.BeginMigrationCommit.

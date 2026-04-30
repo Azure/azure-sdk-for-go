@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -73,29 +73,48 @@ func (o *OriginsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return o.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "OriginsClient.BeginCreate":
-		resp, err = o.dispatchBeginCreate(req)
-	case "OriginsClient.BeginDelete":
-		resp, err = o.dispatchBeginDelete(req)
-	case "OriginsClient.Get":
-		resp, err = o.dispatchGet(req)
-	case "OriginsClient.NewListByEndpointPager":
-		resp, err = o.dispatchNewListByEndpointPager(req)
-	case "OriginsClient.BeginUpdate":
-		resp, err = o.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (o *OriginsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if originsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = originsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "OriginsClient.BeginCreate":
+				res.resp, res.err = o.dispatchBeginCreate(req)
+			case "OriginsClient.BeginDelete":
+				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OriginsClient.Get":
+				res.resp, res.err = o.dispatchGet(req)
+			case "OriginsClient.NewListByEndpointPager":
+				res.resp, res.err = o.dispatchNewListByEndpointPager(req)
+			case "OriginsClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (o *OriginsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -107,7 +126,7 @@ func (o *OriginsServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcdn.Origin](req)
@@ -163,7 +182,7 @@ func (o *OriginsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -213,7 +232,7 @@ func (o *OriginsServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -256,7 +275,7 @@ func (o *OriginsServerTransport) dispatchNewListByEndpointPager(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -301,7 +320,7 @@ func (o *OriginsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endpoints/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/origins/(?P<originName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcdn.OriginUpdateParameters](req)
@@ -346,4 +365,10 @@ func (o *OriginsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to OriginsServerTransport
+var originsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

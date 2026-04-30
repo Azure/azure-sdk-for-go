@@ -7,26 +7,26 @@ package armcdn
 
 // AFDCustomDomainsClientBeginCreateOptions contains the optional parameters for the AFDCustomDomainsClient.BeginCreate method.
 type AFDCustomDomainsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDCustomDomainsClientBeginDeleteOptions contains the optional parameters for the AFDCustomDomainsClient.BeginDelete method.
 type AFDCustomDomainsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDCustomDomainsClientBeginRefreshValidationTokenOptions contains the optional parameters for the AFDCustomDomainsClient.BeginRefreshValidationToken
 // method.
 type AFDCustomDomainsClientBeginRefreshValidationTokenOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDCustomDomainsClientBeginUpdateOptions contains the optional parameters for the AFDCustomDomainsClient.BeginUpdate method.
 type AFDCustomDomainsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -43,26 +43,26 @@ type AFDCustomDomainsClientListByProfileOptions struct {
 
 // AFDEndpointsClientBeginCreateOptions contains the optional parameters for the AFDEndpointsClient.BeginCreate method.
 type AFDEndpointsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDEndpointsClientBeginDeleteOptions contains the optional parameters for the AFDEndpointsClient.BeginDelete method.
 type AFDEndpointsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDEndpointsClientBeginPurgeContentOptions contains the optional parameters for the AFDEndpointsClient.BeginPurgeContent
 // method.
 type AFDEndpointsClientBeginPurgeContentOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDEndpointsClientBeginUpdateOptions contains the optional parameters for the AFDEndpointsClient.BeginUpdate method.
 type AFDEndpointsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -91,19 +91,19 @@ type AFDEndpointsClientValidateCustomDomainOptions struct {
 
 // AFDOriginGroupsClientBeginCreateOptions contains the optional parameters for the AFDOriginGroupsClient.BeginCreate method.
 type AFDOriginGroupsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDOriginGroupsClientBeginDeleteOptions contains the optional parameters for the AFDOriginGroupsClient.BeginDelete method.
 type AFDOriginGroupsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDOriginGroupsClientBeginUpdateOptions contains the optional parameters for the AFDOriginGroupsClient.BeginUpdate method.
 type AFDOriginGroupsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -126,19 +126,19 @@ type AFDOriginGroupsClientListResourceUsageOptions struct {
 
 // AFDOriginsClientBeginCreateOptions contains the optional parameters for the AFDOriginsClient.BeginCreate method.
 type AFDOriginsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDOriginsClientBeginDeleteOptions contains the optional parameters for the AFDOriginsClient.BeginDelete method.
 type AFDOriginsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AFDOriginsClientBeginUpdateOptions contains the optional parameters for the AFDOriginsClient.BeginUpdate method.
 type AFDOriginsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -155,7 +155,7 @@ type AFDOriginsClientListByOriginGroupOptions struct {
 
 // AFDProfilesClientBeginUpgradeOptions contains the optional parameters for the AFDProfilesClient.BeginUpgrade method.
 type AFDProfilesClientBeginUpgradeOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -184,20 +184,20 @@ type AFDProfilesClientValidateSecretOptions struct {
 
 // CustomDomainsClientBeginCreateOptions contains the optional parameters for the CustomDomainsClient.BeginCreate method.
 type CustomDomainsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CustomDomainsClientBeginDeleteOptions contains the optional parameters for the CustomDomainsClient.BeginDelete method.
 type CustomDomainsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CustomDomainsClientBeginDisableCustomHTTPSOptions contains the optional parameters for the CustomDomainsClient.BeginDisableCustomHTTPS
 // method.
 type CustomDomainsClientBeginDisableCustomHTTPSOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -209,7 +209,7 @@ type CustomDomainsClientBeginEnableCustomHTTPSOptions struct {
 	// default.
 	CustomDomainHTTPSParameters CustomDomainHTTPSParametersClassification
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -231,43 +231,43 @@ type EdgeNodesClientListOptions struct {
 
 // EndpointsClientBeginCreateOptions contains the optional parameters for the EndpointsClient.BeginCreate method.
 type EndpointsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EndpointsClientBeginDeleteOptions contains the optional parameters for the EndpointsClient.BeginDelete method.
 type EndpointsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EndpointsClientBeginLoadContentOptions contains the optional parameters for the EndpointsClient.BeginLoadContent method.
 type EndpointsClientBeginLoadContentOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EndpointsClientBeginPurgeContentOptions contains the optional parameters for the EndpointsClient.BeginPurgeContent method.
 type EndpointsClientBeginPurgeContentOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EndpointsClientBeginStartOptions contains the optional parameters for the EndpointsClient.BeginStart method.
 type EndpointsClientBeginStartOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EndpointsClientBeginStopOptions contains the optional parameters for the EndpointsClient.BeginStop method.
 type EndpointsClientBeginStopOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EndpointsClientBeginUpdateOptions contains the optional parameters for the EndpointsClient.BeginUpdate method.
 type EndpointsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -369,19 +369,19 @@ type OperationsClientListOptions struct {
 
 // OriginGroupsClientBeginCreateOptions contains the optional parameters for the OriginGroupsClient.BeginCreate method.
 type OriginGroupsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // OriginGroupsClientBeginDeleteOptions contains the optional parameters for the OriginGroupsClient.BeginDelete method.
 type OriginGroupsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // OriginGroupsClientBeginUpdateOptions contains the optional parameters for the OriginGroupsClient.BeginUpdate method.
 type OriginGroupsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -398,19 +398,19 @@ type OriginGroupsClientListByEndpointOptions struct {
 
 // OriginsClientBeginCreateOptions contains the optional parameters for the OriginsClient.BeginCreate method.
 type OriginsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // OriginsClientBeginDeleteOptions contains the optional parameters for the OriginsClient.BeginDelete method.
 type OriginsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // OriginsClientBeginUpdateOptions contains the optional parameters for the OriginsClient.BeginUpdate method.
 type OriginsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -426,13 +426,13 @@ type OriginsClientListByEndpointOptions struct {
 
 // PoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdate method.
 type PoliciesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
 type PoliciesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -453,38 +453,58 @@ type PoliciesClientListOptions struct {
 
 // ProfilesClientBeginCanMigrateOptions contains the optional parameters for the ProfilesClient.BeginCanMigrate method.
 type ProfilesClientBeginCanMigrateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProfilesClientBeginCdnCanMigrateToAfdOptions contains the optional parameters for the ProfilesClient.BeginCdnCanMigrateToAfd
+// method.
+type ProfilesClientBeginCdnCanMigrateToAfdOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProfilesClientBeginCdnMigrateToAfdOptions contains the optional parameters for the ProfilesClient.BeginCdnMigrateToAfd
+// method.
+type ProfilesClientBeginCdnMigrateToAfdOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProfilesClientBeginCreateOptions contains the optional parameters for the ProfilesClient.BeginCreate method.
 type ProfilesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProfilesClientBeginDeleteOptions contains the optional parameters for the ProfilesClient.BeginDelete method.
 type ProfilesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProfilesClientBeginMigrateOptions contains the optional parameters for the ProfilesClient.BeginMigrate method.
 type ProfilesClientBeginMigrateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProfilesClientBeginMigrationAbortOptions contains the optional parameters for the ProfilesClient.BeginMigrationAbort method.
+type ProfilesClientBeginMigrationAbortOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProfilesClientBeginMigrationCommitOptions contains the optional parameters for the ProfilesClient.BeginMigrationCommit
 // method.
 type ProfilesClientBeginMigrationCommitOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProfilesClientBeginUpdateOptions contains the optional parameters for the ProfilesClient.BeginUpdate method.
 type ProfilesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -528,19 +548,19 @@ type ResourceUsageClientListOptions struct {
 
 // RoutesClientBeginCreateOptions contains the optional parameters for the RoutesClient.BeginCreate method.
 type RoutesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoutesClientBeginDeleteOptions contains the optional parameters for the RoutesClient.BeginDelete method.
 type RoutesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RoutesClientBeginUpdateOptions contains the optional parameters for the RoutesClient.BeginUpdate method.
 type RoutesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -556,7 +576,7 @@ type RoutesClientListByEndpointOptions struct {
 
 // RuleSetsClientBeginDeleteOptions contains the optional parameters for the RuleSetsClient.BeginDelete method.
 type RuleSetsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -583,19 +603,19 @@ type RuleSetsClientListResourceUsageOptions struct {
 
 // RulesClientBeginCreateOptions contains the optional parameters for the RulesClient.BeginCreate method.
 type RulesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RulesClientBeginDeleteOptions contains the optional parameters for the RulesClient.BeginDelete method.
 type RulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RulesClientBeginUpdateOptions contains the optional parameters for the RulesClient.BeginUpdate method.
 type RulesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -611,13 +631,13 @@ type RulesClientListByRuleSetOptions struct {
 
 // SecretsClientBeginCreateOptions contains the optional parameters for the SecretsClient.BeginCreate method.
 type SecretsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SecretsClientBeginDeleteOptions contains the optional parameters for the SecretsClient.BeginDelete method.
 type SecretsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -633,19 +653,19 @@ type SecretsClientListByProfileOptions struct {
 
 // SecurityPoliciesClientBeginCreateOptions contains the optional parameters for the SecurityPoliciesClient.BeginCreate method.
 type SecurityPoliciesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SecurityPoliciesClientBeginDeleteOptions contains the optional parameters for the SecurityPoliciesClient.BeginDelete method.
 type SecurityPoliciesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // SecurityPoliciesClientBeginPatchOptions contains the optional parameters for the SecurityPoliciesClient.BeginPatch method.
 type SecurityPoliciesClientBeginPatchOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

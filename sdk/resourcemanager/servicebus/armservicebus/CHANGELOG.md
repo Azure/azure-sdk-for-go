@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.4 (2026-03-19)
+## 2.0.0-beta.4 (2026-04-30)
 ### Breaking Changes
 
 - Type of `DisasterRecoveryConfigsClientFailOverOptions.Parameters` has been changed from `*FailoverProperties` to `*NamespaceFailoverProperties`

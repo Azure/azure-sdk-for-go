@@ -4,10 +4,11 @@
 
 ``` yaml
 azure-arm: true
+tag: package-preview-2023-03
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/postgresqlhsc/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/postgresqlhsc/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/549e13fda6874099890b133b993217f8cd325946/specification/postgresqlhsc/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/549e13fda6874099890b133b993217f8cd325946/specification/postgresqlhsc/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.6.1
+module-version: 0.7.0
 
 ```

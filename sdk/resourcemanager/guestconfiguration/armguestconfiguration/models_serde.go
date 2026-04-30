@@ -657,6 +657,7 @@ func (n Navigation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "configurationProtectedParameter", n.ConfigurationProtectedParameter)
 	populate(objectMap, "configurationSetting", n.ConfigurationSetting)
 	populate(objectMap, "contentHash", n.ContentHash)
+	populate(objectMap, "contentManagedIdentity", n.ContentManagedIdentity)
 	populate(objectMap, "contentType", n.ContentType)
 	populate(objectMap, "contentUri", n.ContentURI)
 	populate(objectMap, "kind", n.Kind)
@@ -691,6 +692,9 @@ func (n *Navigation) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "contentHash":
 			err = unpopulate(val, "ContentHash", &n.ContentHash)
+			delete(rawMsg, key)
+		case "contentManagedIdentity":
+			err = unpopulate(val, "ContentManagedIdentity", &n.ContentManagedIdentity)
 			delete(rawMsg, key)
 		case "contentType":
 			err = unpopulate(val, "ContentType", &n.ContentType)
@@ -1063,7 +1067,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

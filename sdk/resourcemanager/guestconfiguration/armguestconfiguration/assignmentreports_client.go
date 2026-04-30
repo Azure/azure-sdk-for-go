@@ -28,7 +28,7 @@ type AssignmentReportsClient struct {
 //   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
 //     the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssignmentReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentReportsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewAssignmentReportsClient(subscriptionID string, credential azcore.TokenCr
 // Get - Get a report for the guest configuration assignment, by reportId.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
 //   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - reportID - The GUID for the guest configuration assignment report.
@@ -73,7 +73,7 @@ func (client *AssignmentReportsClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssignmentReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, vmName string, options *AssignmentReportsClientGetOptions) (*policy.Request, error) {
+func (client *AssignmentReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, vmName string, _ *AssignmentReportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports/{reportId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -100,7 +100,7 @@ func (client *AssignmentReportsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,7 +118,7 @@ func (client *AssignmentReportsClient) getHandleResponse(resp *http.Response) (A
 // List - List all reports for the guest configuration assignment, latest report first.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
 //   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - vmName - The name of the virtual machine.
@@ -146,7 +146,7 @@ func (client *AssignmentReportsClient) List(ctx context.Context, resourceGroupNa
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, options *AssignmentReportsClientListOptions) (*policy.Request, error) {
+func (client *AssignmentReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, vmName string, _ *AssignmentReportsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -169,7 +169,7 @@ func (client *AssignmentReportsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

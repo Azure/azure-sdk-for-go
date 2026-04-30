@@ -17,24 +17,25 @@ import (
 	"strings"
 )
 
-// HCRPAssignmentReportsClient contains the methods for the GuestConfigurationHCRPAssignmentReports group.
-// Don't use this type directly, use NewHCRPAssignmentReportsClient() instead.
-type HCRPAssignmentReportsClient struct {
+// ConnectedVMwarevSphereAssignmentsReportsClient contains the methods for the GuestConfigurationConnectedVMwarevSphereAssignmentsReports
+// group.
+// Don't use this type directly, use NewConnectedVMwarevSphereAssignmentsReportsClient() instead.
+type ConnectedVMwarevSphereAssignmentsReportsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewHCRPAssignmentReportsClient creates a new instance of HCRPAssignmentReportsClient with the specified values.
+// NewConnectedVMwarevSphereAssignmentsReportsClient creates a new instance of ConnectedVMwarevSphereAssignmentsReportsClient with the specified values.
 //   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
 //     the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewHCRPAssignmentReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HCRPAssignmentReportsClient, error) {
+func NewConnectedVMwarevSphereAssignmentsReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedVMwarevSphereAssignmentsReportsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &HCRPAssignmentReportsClient{
+	client := &ConnectedVMwarevSphereAssignmentsReportsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -46,40 +47,48 @@ func NewHCRPAssignmentReportsClient(subscriptionID string, credential azcore.Tok
 //
 // Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
+//   - vmName - The name of the virtual machine.
 //   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - reportID - The GUID for the guest configuration assignment report.
-//   - machineName - The name of the ARC machine.
-//   - options - HCRPAssignmentReportsClientGetOptions contains the optional parameters for the HCRPAssignmentReportsClient.Get
+//   - options - ConnectedVMwarevSphereAssignmentsReportsClientGetOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsReportsClient.Get
 //     method.
-func (client *HCRPAssignmentReportsClient) Get(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, machineName string, options *HCRPAssignmentReportsClientGetOptions) (HCRPAssignmentReportsClientGetResponse, error) {
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) Get(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, reportID string, options *ConnectedVMwarevSphereAssignmentsReportsClientGetOptions) (ConnectedVMwarevSphereAssignmentsReportsClientGetResponse, error) {
 	var err error
-	const operationName = "HCRPAssignmentReportsClient.Get"
+	const operationName = "ConnectedVMwarevSphereAssignmentsReportsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, guestConfigurationAssignmentName, reportID, machineName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, guestConfigurationAssignmentName, reportID, options)
 	if err != nil {
-		return HCRPAssignmentReportsClientGetResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return HCRPAssignmentReportsClientGetResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return HCRPAssignmentReportsClientGetResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *HCRPAssignmentReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, machineName string, _ *HCRPAssignmentReportsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports/{reportId}"
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, reportID string, _ *ConnectedVMwarevSphereAssignmentsReportsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports/{reportId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmName == "" {
+		return nil, errors.New("parameter vmName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
 	if guestConfigurationAssignmentName == "" {
 		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
 	}
@@ -88,14 +97,6 @@ func (client *HCRPAssignmentReportsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter reportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportId}", url.PathEscape(reportID))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if machineName == "" {
-		return nil, errors.New("parameter machineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -108,10 +109,10 @@ func (client *HCRPAssignmentReportsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *HCRPAssignmentReportsClient) getHandleResponse(resp *http.Response) (HCRPAssignmentReportsClientGetResponse, error) {
-	result := HCRPAssignmentReportsClientGetResponse{}
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) getHandleResponse(resp *http.Response) (ConnectedVMwarevSphereAssignmentsReportsClientGetResponse, error) {
+	result := ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentReport); err != nil {
-		return HCRPAssignmentReportsClientGetResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -121,51 +122,51 @@ func (client *HCRPAssignmentReportsClient) getHandleResponse(resp *http.Response
 //
 // Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
+//   - vmName - The name of the virtual machine.
 //   - guestConfigurationAssignmentName - The guest configuration assignment name.
-//   - machineName - The name of the ARC machine.
-//   - options - HCRPAssignmentReportsClientListOptions contains the optional parameters for the HCRPAssignmentReportsClient.List
+//   - options - ConnectedVMwarevSphereAssignmentsReportsClientListOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsReportsClient.List
 //     method.
-func (client *HCRPAssignmentReportsClient) List(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, options *HCRPAssignmentReportsClientListOptions) (HCRPAssignmentReportsClientListResponse, error) {
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) List(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, options *ConnectedVMwarevSphereAssignmentsReportsClientListOptions) (ConnectedVMwarevSphereAssignmentsReportsClientListResponse, error) {
 	var err error
-	const operationName = "HCRPAssignmentReportsClient.List"
+	const operationName = "ConnectedVMwarevSphereAssignmentsReportsClient.List"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, resourceGroupName, guestConfigurationAssignmentName, machineName, options)
+	req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, guestConfigurationAssignmentName, options)
 	if err != nil {
-		return HCRPAssignmentReportsClientListResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return HCRPAssignmentReportsClientListResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return HCRPAssignmentReportsClientListResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
 	}
 	resp, err := client.listHandleResponse(httpResp)
 	return resp, err
 }
 
 // listCreateRequest creates the List request.
-func (client *HCRPAssignmentReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, _ *HCRPAssignmentReportsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if guestConfigurationAssignmentName == "" {
-		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, _ *ConnectedVMwarevSphereAssignmentsReportsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if machineName == "" {
-		return nil, errors.New("parameter machineName cannot be empty")
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmName == "" {
+		return nil, errors.New("parameter vmName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	if guestConfigurationAssignmentName == "" {
+		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{guestConfigurationAssignmentName}", url.PathEscape(guestConfigurationAssignmentName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -178,10 +179,10 @@ func (client *HCRPAssignmentReportsClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *HCRPAssignmentReportsClient) listHandleResponse(resp *http.Response) (HCRPAssignmentReportsClientListResponse, error) {
-	result := HCRPAssignmentReportsClientListResponse{}
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) listHandleResponse(resp *http.Response) (ConnectedVMwarevSphereAssignmentsReportsClientListResponse, error) {
+	result := ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentReportList); err != nil {
-		return HCRPAssignmentReportsClientListResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
 	}
 	return result, nil
 }

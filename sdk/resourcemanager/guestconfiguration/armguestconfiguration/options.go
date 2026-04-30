@@ -57,6 +57,12 @@ type AssignmentsClientSubscriptionListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AssignmentsVMSSClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsVMSSClient.CreateOrUpdate
+// method.
+type AssignmentsVMSSClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AssignmentsVMSSClientDeleteOptions contains the optional parameters for the AssignmentsVMSSClient.Delete method.
 type AssignmentsVMSSClientDeleteOptions struct {
 	// placeholder for future optional parameters
@@ -69,6 +75,42 @@ type AssignmentsVMSSClientGetOptions struct {
 
 // AssignmentsVMSSClientListOptions contains the optional parameters for the AssignmentsVMSSClient.NewListPager method.
 type AssignmentsVMSSClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsClient.CreateOrUpdate
+// method.
+type ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedVMwarevSphereAssignmentsClientDeleteOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsClient.Delete
+// method.
+type ConnectedVMwarevSphereAssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedVMwarevSphereAssignmentsClientGetOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsClient.Get
+// method.
+type ConnectedVMwarevSphereAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedVMwarevSphereAssignmentsClientListOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsClient.NewListPager
+// method.
+type ConnectedVMwarevSphereAssignmentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedVMwarevSphereAssignmentsReportsClientGetOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsReportsClient.Get
+// method.
+type ConnectedVMwarevSphereAssignmentsReportsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedVMwarevSphereAssignmentsReportsClientListOptions contains the optional parameters for the ConnectedVMwarevSphereAssignmentsReportsClient.List
+// method.
+type ConnectedVMwarevSphereAssignmentsReportsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

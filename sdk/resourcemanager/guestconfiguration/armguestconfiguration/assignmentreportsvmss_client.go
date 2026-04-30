@@ -28,7 +28,7 @@ type AssignmentReportsVMSSClient struct {
 //   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
 //     the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssignmentReportsVMSSClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentReportsVMSSClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewAssignmentReportsVMSSClient(subscriptionID string, credential azcore.Tok
 // Get - Get a report for the VMSS guest configuration assignment, by reportId.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
 //   - vmssName - The name of the virtual machine scale set.
 //   - name - The guest configuration assignment name.
@@ -74,7 +74,7 @@ func (client *AssignmentReportsVMSSClient) Get(ctx context.Context, resourceGrou
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssignmentReportsVMSSClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, id string, options *AssignmentReportsVMSSClientGetOptions) (*policy.Request, error) {
+func (client *AssignmentReportsVMSSClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, id string, _ *AssignmentReportsVMSSClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{name}/reports/{id}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -101,7 +101,7 @@ func (client *AssignmentReportsVMSSClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,7 +118,7 @@ func (client *AssignmentReportsVMSSClient) getHandleResponse(resp *http.Response
 
 // NewListPager - List all reports for the VMSS guest configuration assignment, latest report first.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
 //   - vmssName - The name of the virtual machine scale set.
 //   - name - The guest configuration assignment name.
@@ -149,7 +149,7 @@ func (client *AssignmentReportsVMSSClient) NewListPager(resourceGroupName string
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentReportsVMSSClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, options *AssignmentReportsVMSSClientListOptions) (*policy.Request, error) {
+func (client *AssignmentReportsVMSSClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, name string, _ *AssignmentReportsVMSSClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{name}/reports"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -172,7 +172,7 @@ func (client *AssignmentReportsVMSSClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -28,7 +28,7 @@ type HCRPAssignmentsClient struct {
 //   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
 //     the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHCRPAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HCRPAssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewHCRPAssignmentsClient(subscriptionID string, credential azcore.TokenCred
 // CreateOrUpdate - Creates an association between a ARC machine and guest configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - guestConfigurationAssignmentName - Name of the guest configuration assignment.
 //   - resourceGroupName - The resource group name.
 //   - machineName - The name of the ARC machine.
@@ -74,7 +74,7 @@ func (client *HCRPAssignmentsClient) CreateOrUpdate(ctx context.Context, guestCo
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *HCRPAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, guestConfigurationAssignmentName string, resourceGroupName string, machineName string, parameters Assignment, options *HCRPAssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *HCRPAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, guestConfigurationAssignmentName string, resourceGroupName string, machineName string, parameters Assignment, _ *HCRPAssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
 	if guestConfigurationAssignmentName == "" {
 		return nil, errors.New("parameter guestConfigurationAssignmentName cannot be empty")
@@ -97,7 +97,7 @@ func (client *HCRPAssignmentsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,7 +118,7 @@ func (client *HCRPAssignmentsClient) createOrUpdateHandleResponse(resp *http.Res
 // Delete - Delete a guest configuration assignment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
 //   - guestConfigurationAssignmentName - Name of the guest configuration assignment
 //   - machineName - The name of the ARC machine.
@@ -145,7 +145,7 @@ func (client *HCRPAssignmentsClient) Delete(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *HCRPAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, options *HCRPAssignmentsClientDeleteOptions) (*policy.Request, error) {
+func (client *HCRPAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, _ *HCRPAssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -168,7 +168,7 @@ func (client *HCRPAssignmentsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,7 +177,7 @@ func (client *HCRPAssignmentsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get information about a guest configuration assignment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
 //   - guestConfigurationAssignmentName - The guest configuration assignment name.
 //   - machineName - The name of the ARC machine.
@@ -205,7 +205,7 @@ func (client *HCRPAssignmentsClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *HCRPAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, options *HCRPAssignmentsClientGetOptions) (*policy.Request, error) {
+func (client *HCRPAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, _ *HCRPAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -228,7 +228,7 @@ func (client *HCRPAssignmentsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *HCRPAssignmentsClient) getHandleResponse(resp *http.Response) (HCR
 
 // NewListPager - List all guest configuration assignments for an ARC machine.
 //
-// Generated from API version 2022-01-25
+// Generated from API version 2024-04-05
 //   - resourceGroupName - The resource group name.
 //   - machineName - The name of the ARC machine.
 //   - options - HCRPAssignmentsClientListOptions contains the optional parameters for the HCRPAssignmentsClient.NewListPager
@@ -275,7 +275,7 @@ func (client *HCRPAssignmentsClient) NewListPager(resourceGroupName string, mach
 }
 
 // listCreateRequest creates the List request.
-func (client *HCRPAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *HCRPAssignmentsClientListOptions) (*policy.Request, error) {
+func (client *HCRPAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, machineName string, _ *HCRPAssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -294,7 +294,7 @@ func (client *HCRPAssignmentsClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-25")
+	reqQP.Set("api-version", "2024-04-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

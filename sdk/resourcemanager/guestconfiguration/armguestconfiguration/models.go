@@ -280,6 +280,9 @@ type Navigation struct {
 	// Combined hash of the guest configuration package and configuration parameters.
 	ContentHash *string
 
+	// Managed identity with storage access of the guest configuration package and configuration parameters.
+	ContentManagedIdentity *string
+
 	// Uri of the storage where guest configuration package is uploaded.
 	ContentURI *string
 

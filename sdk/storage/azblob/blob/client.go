@@ -391,12 +391,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			}
 			if computeReadLength {
 				if dr.ContentRange != nil {
-					rangeLen := parseContentRangeLength(*dr.ContentRange)
-					if rangeLen > 0 {
-						atomic.AddInt64(&dataDownloaded, rangeLen)
-					} else {
-						atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
-					}
+					atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
 				} else {
 					atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
 				}
@@ -431,13 +426,13 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	}
 
 	return DownloadStreamResponse{
-		client:                 b,
-		DownloadResponse:       dr,
-		getInfo:                httpGetterInfo{Range: o.Range, ETag: dr.ETag},
-		ObjectReplicationRules: deserializeORSPolicies(dr.ObjectReplicationRules),
-		cpkInfo:                o.CPKInfo,
-		cpkScope:               o.CPKScopeInfo,
-		structuredBodyType:     o.StructuredBodyType,
+		client:                  b,
+		DownloadResponse:        dr,
+		getInfo:                 httpGetterInfo{Range: o.Range, ETag: dr.ETag},
+		ObjectReplicationRules:  deserializeORSPolicies(dr.ObjectReplicationRules),
+		cpkInfo:                 o.CPKInfo,
+		cpkScope:                o.CPKScopeInfo,
+		transactionalValidation: o.TransactionalValidation,
 	}, err
 }
 

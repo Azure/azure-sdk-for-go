@@ -2093,9 +2093,8 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamWithStructuredMessageCRC64() 
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 	})
 	_require.NoError(err)
 
@@ -2121,9 +2120,8 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamWithStructuredMessageCRC64Ran
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		Range:              blob.HTTPRange{Offset: 1024, Count: 2048},
 	})
 	_require.NoError(err)
@@ -2151,11 +2149,10 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferWithStructuredMessageCRC64() 
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	blobClient := containerClient.NewBlobClient(blobName)
 	buff := make([]byte, contentSize)
 	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		BlockSize:          4 * 1024,
 	})
 	_require.NoError(err)
@@ -2179,9 +2176,8 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64EmptyBlob() {
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte{})), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 	})
 	_require.NoError(err)
 
@@ -2209,9 +2205,8 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadStreamSMCRC64LargeMultiSegment() 
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 	})
 	_require.NoError(err)
 
@@ -2238,9 +2233,8 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64NonAlignedRange() {
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		Range:              blob.HTTPRange{Offset: 10, Count: 1000},
 	})
 	_require.NoError(err)
@@ -2268,11 +2262,10 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferSMCRC64ParallelChunks() {
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	blobClient := containerClient.NewBlobClient(blobName)
 	buff := make([]byte, contentSize)
 	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		BlockSize:          4 * 1024, // 4 KB → 8 parallel chunks
 		Concurrency:        4,
 	})
@@ -2307,10 +2300,9 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadFileSMCRC64() {
 		_ = os.Remove(tmpFile.Name())
 	}()
 
-	smHeader := "XSM/1.0; properties=crc64"
 	blobClient := containerClient.NewBlobClient(blobName)
 	n, err := blobClient.DownloadFile(context.Background(), tmpFile, &blob.DownloadFileOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		BlockSize:          4 * 1024,
 	})
 	_require.NoError(err)
@@ -2341,9 +2333,8 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64WithRetryReader() {
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 	_require.NoError(err)
 
-	smHeader := "XSM/1.0; properties=crc64"
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
-		StructuredBodyType: &smHeader,
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 	})
 	_require.NoError(err)
 
@@ -2378,9 +2369,8 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64UploadDownloadRoundtri
 		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
 		_require.NoError(err)
 
-		smHeader := "XSM/1.0; properties=crc64"
 		downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
-			StructuredBodyType: &smHeader,
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		})
 		_require.NoError(err)
 

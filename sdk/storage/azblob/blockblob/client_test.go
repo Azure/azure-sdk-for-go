@@ -967,6 +967,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1867,6 +1871,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithTier() {
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1904,7 +1912,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	policy1 := blob.ImmutabilityPolicyMode("unlocked")
 	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
 
-	time.Sleep(time.Second * 7)
+	recording.Sleep(time.Second * 7)
 
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
 	_require.NoError(err)
@@ -3494,7 +3502,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -3505,7 +3513,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -3548,7 +3556,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -3559,7 +3567,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -3745,7 +3753,7 @@ func (s *BlockBlobRecordedTestsSuite) TestORSSource() {
 //	if err != nil {
 //		s.T().Fatal(err)
 //	}
-//	time.Sleep(time.Second * 2)
+//	recording.Sleep(time.Second * 2)
 //
 //	//Attach SAS query to block blob URL
 //	snapParts := NewBlobURLParts(blobURL.URL())
@@ -4421,7 +4429,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	blobClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName2, containerClient)
 	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
 	_require.NoError(err)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	blobTagsResp, err := blobClient2.GetTags(context.Background(), nil)
 	_require.NoError(err)
@@ -4501,7 +4509,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 //		_assert(blobTagsMap[blobTag.Key], chk.Equals, blobTag.Value)
 //	}
 //
-//	time.Sleep(30 * time.Second)
+//	recording.Sleep(30 * time.Second)
 //	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
 //	_, err = serviceURL.FindBlobsByTags(context.Background(), nil, nil, &where, Marker{}, nil)
 //	_require.NoError(err)
@@ -5482,7 +5490,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToNow() {
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -5510,7 +5518,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToCreation()
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -5540,7 +5548,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	_require.NotNil(resp.ExpiresOn)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp.ExpiresOn.UTC().Format(http.TimeFormat))
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -5562,7 +5570,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 
@@ -6142,4 +6150,166 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() 
 	_require.NoError(err)
 	_require.NotNil(gResp.ContentLength)
 	_require.Equal(fileSize, *gResp.ContentLength)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	// Test UploadBlobFromURL with Source CPK
+	_, err = destBlobClient.UploadBlobFromURL(context.Background(), srcURL, &blockblob.UploadBlobFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
+	})
+	_require.NoError(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	invalidCPK := testcommon.TestInvalidCPKByValue
+	// Test UploadBlobFromURL with Source CPK
+	_, err = destBlobClient.UploadBlobFromURL(context.Background(), srcURL, &blockblob.UploadBlobFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
+	})
+	_require.Error(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte("blockID"))
+
+	// Test StageBlockFromURL with Source CPK
+	_, err = destBlobClient.StageBlockFromURL(context.Background(), blockID, srcURL, &blockblob.StageBlockFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
+	})
+	_require.NoError(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte("blockID"))
+
+	invalidCPK := testcommon.TestInvalidCPKByValue
+	// Test StageBlockFromURL with Source CPK
+	_, err = destBlobClient.StageBlockFromURL(context.Background(), blockID, srcURL, &blockblob.StageBlockFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
+	})
+	_require.Error(err)
 }

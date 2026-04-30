@@ -4,6 +4,15 @@
 
 package armazurestackhci
 
+// ClusterJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterJobProperties, *HciConfigureCvmJobProperties, *HciConfigureSdnIntegrationJobProperties
+type ClusterJobPropertiesClassification interface {
+	// GetClusterJobProperties returns the ClusterJobProperties content of the underlying type.
+	GetClusterJobProperties() *ClusterJobProperties
+}
+
 // EdgeDeviceClassification provides polymorphic access to related types.
 // Call the interface's GetEdgeDevice() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -20,6 +29,16 @@ type EdgeDeviceClassification interface {
 type EdgeDeviceJobClassification interface {
 	// GetEdgeDeviceJob returns the EdgeDeviceJob content of the underlying type.
 	GetEdgeDeviceJob() *EdgeDeviceJob
+}
+
+// EdgeMachineJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEdgeMachineJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DownloadOsJobProperties, *EdgeMachineCollectLogJobProperties, *EdgeMachineJobProperties, *EdgeMachineRemoteSupportJobProperties,
+// - *ProvisionOsJobProperties
+type EdgeMachineJobPropertiesClassification interface {
+	// GetEdgeMachineJobProperties returns the EdgeMachineJobProperties content of the underlying type.
+	GetEdgeMachineJobProperties() *EdgeMachineJobProperties
 }
 
 // HciEdgeDeviceJobPropertiesClassification provides polymorphic access to related types.

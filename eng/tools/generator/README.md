@@ -381,6 +381,8 @@ The input file should contain:
 }
 ```
 
+> **Note:** `apiVersion` and `sdkReleaseType` are optional. When `apiVersion` is omitted, the version defined in the TypeSpec project is used. When `sdkReleaseType` is omitted, it is auto-detected. If provided, `sdkReleaseType` must be `"stable"` or `"beta"`.
+
 **Output Format:**
 The command generates a JSON output file with generation results:
 

@@ -1,10 +1,20 @@
 # Release History
 
+## 0.4.9 (2026-04-24)
+
+### Bugs Fixed
+
+- Fixed `UpdateModuleDefinition` to remove `retract` directives from `go.mod` when the major version changes, preventing invalid version errors.
+
 ## 0.4.8 (2026-04-07)
 
 ### Features Added
 
 - Added `metadata` command to create required metadata files (ci.yml, README.md) for packages in inner loop scenarios.
+
+### Other Changes
+
+- Removed the validation that required both `apiVersion` and `sdkReleaseType` to be provided together for self-serve SDK generation. Either parameter can now be omitted and will use its default value.
 
 ### Bugs Fixed
 

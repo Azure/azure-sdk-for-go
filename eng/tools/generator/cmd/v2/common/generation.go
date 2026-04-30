@@ -648,6 +648,14 @@ func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 		override = new(bool)
 		*override = true
 	case utils.SDKReleaseTypeStable:
+		isPreview, err := version.IsCurrentPreviewVersion(t.PackagePath, *t.SDKRepo, nil)
+		if err != nil {
+			return err
+		}
+		if isPreview {
+			return fmt.Errorf("SDK release type is stable, but the generated code contains preview API versions. " +
+				"Please specify a stable API version or use beta release type")
+		}
 		override = new(bool)
 		*override = false
 	}

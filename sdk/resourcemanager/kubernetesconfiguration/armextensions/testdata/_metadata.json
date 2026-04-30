@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.KubernetesConfiguration": "2024-11-01"
+    "Microsoft.KubernetesConfiguration": "2025-03-01"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.5"
 }

@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ae95eb6a4701d844bada7d1c4f5ecf4a7444e5b8/specification/storage/data-plane/Microsoft.BlobStorage/stable/2025-01-05/blob.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a30ef1ee2e9795f4d77e8c62fad52b33e60d4cb7/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-04-06/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated_blob
 file-prefix: "zz_"
@@ -20,6 +20,65 @@ modelerfour:
   lenient-model-deduplication: true
 export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
+```
+
+### Add a Properties field to the BlobPrefix definition
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.BlobPrefix.properties["Properties"] = {
+      "type": "object",
+      "$ref": "#/definitions/BlobPropertiesInternal"
+    };
+```
+
+### Add Owner,Group,Permissions,Acl,ResourceType in ListBlob Response
+``` yaml
+directive:  
+- from: swagger-document    
+  where: $.definitions
+  transform: >
+    $.BlobPropertiesInternal.properties["Owner"] = {
+      "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Group"] = {
+      "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Permissions"] = {
+      "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Acl"] = {
+      "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["ResourceType"] = {
+      "type" : "string",
+    };
+
+```
+
+### Add permissions in ListBlobsInclude
+``` yaml
+directive:  
+- from: swagger-document    
+  where: $.parameters.ListBlobsInclude    
+  transform: >        
+    $.items.enum.push("permissions");
+```
+
+### Fix CRC Response Header in PutBlob response
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob"].put.responses["201"].headers
+  transform: >
+      $["x-ms-content-crc64"] = {
+        "x-ms-client-name": "ContentCRC64",
+        "type": "string",
+        "format": "byte",
+        "description": "Returned for a block blob so that the client can check the integrity of message content."
+      };
 ```
 
 ### Undo breaking change with BlobName
@@ -263,9 +322,9 @@ directive:
 
 ``` yaml
 directive:
-- from: 
-    - zz_options.go
-    - zz_models.go
+- from:
+  - zz_models.go
+  - zz_options.go
   where: $
   transform: >-
     return $.
@@ -296,6 +355,8 @@ directive:
       replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`).
       replace(/\*modifiedAccessConditions.IfMatch/g, `string(*modifiedAccessConditions.IfMatch)`).
       replace(/\*modifiedAccessConditions.IfNoneMatch/g, `string(*modifiedAccessConditions.IfNoneMatch)`).
+      replace(/\*blobModifiedAccessConditions.IfMatch/g, `string(*blobModifiedAccessConditions.IfMatch)`).
+      replace(/\*blobModifiedAccessConditions.IfNoneMatch/g, `string(*blobModifiedAccessConditions.IfNoneMatch)`).
       replace(/\*sourceModifiedAccessConditions.SourceIfMatch/g, `string(*sourceModifiedAccessConditions.SourceIfMatch)`).
       replace(/\*sourceModifiedAccessConditions.SourceIfNoneMatch/g, `string(*sourceModifiedAccessConditions.SourceIfNoneMatch)`);
 ```
@@ -309,18 +370,9 @@ directive:
   transform: >-
     return $.
       replace(/SignedOid\s+\*string/g, `SignedOID *string`).
-      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
-```
-
-### Fixing Typo with StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed
-
-``` yaml
-directive:
-- from: zz_constants.go
-  where: $
-  transform: >-
-    return $.
-      replace(/IncrementalCopyOfEralierVersionSnapshotNotAllowed/g, "IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`).
+      replace(/DelegatedUserTid\s+\*string/g, `DelegatedUserTenantID *string`).
+      replace(/SignedDelegatedUserTid\s+\*string/g, `SignedDelegatedUserTenantID *string`);
 ```
 
 ### Fix up x-ms-content-crc64 header response name
@@ -430,8 +482,8 @@ directive:
   where: $
   transform: >-
     return $.
-      replace(/if\s+!runtime\.HasStatusCode\(resp,\s+http\.StatusOK\)\s+\{\s*\n\t\treturn\s+ServiceClientSubmitBatchResponse\{\}\,\s+runtime\.NewResponseError\(resp\)\s*\n\t\}/g, 
-      `if !runtime.HasStatusCode(resp, http.StatusAccepted) {\n\t\treturn ServiceClientSubmitBatchResponse{}, runtime.NewResponseError(resp)\n\t}`);
+      replace(/if\s+!runtime\.HasStatusCode\(httpResp,\s+http\.StatusOK\)\s+\{\s+err\s+=\s+runtime\.NewResponseError\(httpResp\)\s+return ServiceClientSubmitBatchResponse\{\}\,\s+err\s+}/g, 
+      `if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {\n\t\terr = runtime.NewResponseError(httpResp)\n\t\treturn ServiceClientSubmitBatchResponse{}, err\n\t}`);
 ```
 
 ### Convert time to GMT for If-Modified-Since and If-Unmodified-Since request headers

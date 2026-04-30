@@ -45,7 +45,7 @@ func NewVMSKUsClient(subscriptionID string, credential azcore.TokenCredential, o
 // Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location. AKS will perform a best effort
 // approach to provision the requested VM SKUs, but availability is not guaranteed.
 //
-// Generated from API version 2026-01-02-preview
+// Generated from API version 2026-02-02-preview
 //   - location - The name of the Azure region.
 //   - options - VMSKUsClientListOptions contains the optional parameters for the VMSKUsClient.NewListPager method.
 func (client *VMSKUsClient) NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse] {
@@ -87,7 +87,7 @@ func (client *VMSKUsClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	if options != nil && options.IncludeExtendedLocations != nil {
 		reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
 	}

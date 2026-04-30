@@ -40,16 +40,16 @@ func unpackMsg(err internalACSRouterCommunicationError, indent string) string {
 		message = *err.Message
 	}
 
-	sb.WriteString(fmt.Sprintf("%sCode: %s\n%sMessage: %s\n", indent, code, indent, message))
+	fmt.Fprintf(&sb, "%sCode: %s\n%sMessage: %s\n", indent, code, indent, message)
 
 	if len(err.Details) > 0 {
 		for i, detailErr := range err.Details {
-			sb.WriteString(fmt.Sprintf("%sDetails[%d]:\n%s", indent, i, unpackMsg(detailErr, indent+"  ")))
+			fmt.Fprintf(&sb, "%sDetails[%d]:\n%s", indent, i, unpackMsg(detailErr, indent+"  "))
 		}
 	}
 
 	if err.Innererror != nil {
-		sb.WriteString(fmt.Sprintf("%sInnerError:\n%s", indent, unpackMsg(*err.Innererror, indent+"  ")))
+		fmt.Fprintf(&sb, "%sInnerError:\n%s", indent, unpackMsg(*err.Innererror, indent+"  "))
 	}
 
 	return sb.String()

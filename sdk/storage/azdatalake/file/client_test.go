@@ -10,10 +10,6 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
 	"net/http"
@@ -24,11 +20,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -587,7 +587,7 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 	_require.NoError(err)
 	_require.NotNil(resp1.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
@@ -653,7 +653,7 @@ func (s *RecordedTestSuite) TestCreateFileWithLease() {
 	_, err = fClient.Create(context.Background(), createFileOpts)
 	_require.Error(err)
 
-	time.Sleep(time.Second * 15)
+	recording.Sleep(time.Second * 15)
 	resp, err = fClient.Create(context.Background(), createFileOpts)
 	_require.NoError(err)
 	_require.NotNil(resp)
@@ -1001,7 +1001,7 @@ func (s *RecordedTestSuite) TestFileSetExpiry() {
 	)
 	_require.NoError(err)
 
-	time.Sleep(time.Second * 12)
+	recording.Sleep(time.Second * 12)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
@@ -1037,7 +1037,7 @@ func (s *UnrecordedTestSuite) TestFileSetExpiryTypeAbsoluteTime() {
 		nil)
 	_require.NoError(err)
 
-	time.Sleep(time.Second * 7)
+	recording.Sleep(time.Second * 7)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
@@ -3790,7 +3790,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
 
-	time.Sleep(time.Second * 15)
+	recording.Sleep(time.Second * 15)
 
 	// Check if the lease was acquired for the right duration
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
@@ -3829,7 +3829,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
 	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
 
 	// Wait for 15 seconds for lease to expire
-	time.Sleep(15 * time.Second)
+	recording.Sleep(15 * time.Second)
 
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -5356,7 +5356,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 
 	// This tests file.NewClient
 	var respFromCtxFile *http.Response
-	ctxWithRespFile := runtime.WithCaptureResponse(context.Background(), &respFromCtxFile)
+	ctxWithRespFile := policy.WithCaptureResponse(context.Background(), &respFromCtxFile)
 	resp2, err := fClient.GetProperties(ctxWithRespFile, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -5366,7 +5366,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	// This tests filesystem.NewClient
 	fClient = fsClient.NewFileClient(dirName + "/" + fileName)
 	var respFromCtxFs *http.Response
-	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
+	ctxWithRespFs := policy.WithCaptureResponse(context.Background(), &respFromCtxFs)
 	resp2, err = fClient.GetProperties(ctxWithRespFs, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -5381,7 +5381,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	fClient, err = dirClient.NewFileClient(fileName)
 	_require.NoError(err)
 	var respFromCtxService *http.Response
-	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
+	ctxWithRespService := policy.WithCaptureResponse(context.Background(), &respFromCtxService)
 	resp2, err = fClient.GetProperties(ctxWithRespService, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -5390,7 +5390,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 
 	// This tests directory.NewClient
 	var respFromCtxDir *http.Response
-	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
+	ctxWithRespDir := policy.WithCaptureResponse(context.Background(), &respFromCtxDir)
 	dirClient, err = testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 	fClient, err = dirClient.NewFileClient(fileName)
@@ -5440,7 +5440,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 
 	// This tests file.NewClient
 	var respFromCtxFile *http.Response
-	ctxWithRespFile := runtime.WithCaptureResponse(context.Background(), &respFromCtxFile)
+	ctxWithRespFile := policy.WithCaptureResponse(context.Background(), &respFromCtxFile)
 	response, err := fClient.GetProperties(ctxWithRespFile, GetPropertiesOpts)
 	_require.NoError(err)
 	_require.NotNil(response)

@@ -33,6 +33,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
@@ -547,6 +548,127 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURWithLRequestIntent
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
 	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewAppendBlobClient(srcBlobName)
+
+	cpk := &testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), &appendblob.CreateOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.AppendBlock(context.Background(), streaming.NopCloser(r), &appendblob.AppendBlockOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	// Create SAS for source
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	sasQuery, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-1 * time.Hour),
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true}).String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcURL := srcBlobClient.URL() + "?" + sasQuery.Encode()
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewAppendBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Test AppendBlockFromURL with Source CPK
+	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
+	})
+	_require.NoError(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewAppendBlobClient(srcBlobName)
+
+	cpk := &testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), &appendblob.CreateOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.AppendBlock(context.Background(), streaming.NopCloser(r), &appendblob.AppendBlockOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	// Create SAS for source
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	sasQuery, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-1 * time.Hour),
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true}).String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcURL := srcBlobClient.URL() + "?" + sasQuery.Encode()
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewAppendBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	invalidCPK := testcommon.TestInvalidCPKByValue
+	// Test AppendBlockFromURL with Source CPK
+	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
+	})
+	_require.Error(err)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestBlobEncryptionScopeSAS() {
@@ -1317,6 +1439,10 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchTrue() {
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1355,6 +1481,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1388,6 +1518,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("This test only runs in playback mode")
+	}
+
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -2166,7 +2300,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NoError(err)
 	_require.NotNil(createResp.VersionID)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -2820,7 +2954,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -2831,7 +2965,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -2877,7 +3011,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -2888,7 +3022,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -2951,7 +3085,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToNow() {
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -2984,7 +3118,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -3019,7 +3153,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 	_require.NotNil(resp.ExpiresOn)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp.ExpiresOn.UTC().Format(http.TimeFormat))
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -3541,7 +3675,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
 
 	_, err = abClient.SetTags(context.Background(), tagsMap, nil)
 	_require.NoError(err)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
 	_require.NoError(err)
@@ -3579,7 +3713,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, nil)
 	_require.Error(err)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	// add lease conditions
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{
@@ -3797,4 +3931,43 @@ func getOIDFromCredential(ctx context.Context, cred azcore.TokenCredential) (str
 		return "", fmt.Errorf("empty oid claim")
 	}
 	return oid, nil
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTenantID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	now := time.Now().UTC().Add(-time.Minute)
+	expiry := now.Add(30 * time.Minute)
+	serviceCode := "b"
+	version := sas.Version
+	oid := "00000000-0000-0000-0000-000000000000"
+	tid := "11111111-1111-1111-1111-111111111111"
+	skdutid := "22222222-2222-2222-2222-222222222222"
+	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
+
+	udk := exported.UserDelegationKey{
+		SignedStart:                 &now,
+		SignedExpiry:                &expiry,
+		SignedService:               &serviceCode,
+		SignedVersion:               &version,
+		SignedOID:                   &oid,
+		SignedTID:                   &tid,
+		SignedDelegatedUserTenantID: &skdutid,
+		Value:                       val,
+	}
+	udc := exported.NewUserDelegationCredential("testaccount", udk)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	sv := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     now,
+		ExpiryTime:    expiry,
+		Permissions:   (&sas.BlobPermissions{Read: true, Create: true, Write: true}).String(),
+		ContainerName: containerName,
+	}
+	qp, err := sv.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	enc := qp.Encode()
+	_require.Contains(enc, "skdutid="+skdutid)
 }

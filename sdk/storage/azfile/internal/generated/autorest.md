@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-02-06/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a30ef1ee2e9795f4d77e8c62fad52b33e60d4cb7/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-04-06/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -23,20 +23,6 @@ honor-body-placement: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2026-02-06
-
-```yaml
-directive:
-- from: 
-  - zz_directory_client.go
-  - zz_file_client.go
-  - zz_share_client.go
-  - zz_service_client.go
-  where: $
-  transform: >-
-    return $.
-      replaceAll(`[]string{"2025-11-05"}`, `[]string{ServiceVersion}`);
-```
 ### Changing casing of NfsFileType, Nfs, ShareNfsSettingsEncryptionInTransit and ShareNfsSettings
 
 ```yaml
@@ -206,7 +192,8 @@ directive:
       replace(/EnableSmbDirectoryLease/g, `EnableSMBDirectoryLease`); 
 ```
 
-### Fixing casing of SignedTid and SignedOid
+### Fixing casing of SignedTid and SignedOid, 
+### and rename DelegatedUserTid and SignedDelegatedUserTid to DelegatedUserTenantID and DelegatedUserTenantID respectively
 
 ``` yaml
 directive:
@@ -215,7 +202,9 @@ directive:
   transform: >-
     return $.
       replace(/SignedOid\s+\*string/g, `SignedOID *string`).
-      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`).
+      replace(/DelegatedUserTid\s+\*string/g, `DelegatedUserTenantID *string`).
+      replace(/SignedDelegatedUserTid\s+\*string/g, `SignedDelegatedUserTenantID *string`);
 ```
 
 ### Rename models - remove `Item` and `Internal` suffix

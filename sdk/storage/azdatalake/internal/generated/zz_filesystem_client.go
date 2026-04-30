@@ -67,7 +67,7 @@ func (client *FileSystemClient) createCreateRequest(ctx context.Context, options
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -157,7 +157,7 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, options
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -220,7 +220,7 @@ func (client *FileSystemClient) getPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -300,7 +300,7 @@ func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx contex
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -371,7 +371,7 @@ func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recu
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 
@@ -463,7 +463,7 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 

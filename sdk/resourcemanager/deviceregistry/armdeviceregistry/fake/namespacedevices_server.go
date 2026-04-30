@@ -36,6 +36,10 @@ type NamespaceDevicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceDevicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse])
 
+	// BeginRevoke is the fake for method NamespaceDevicesClient.BeginRevoke
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRevoke func(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body armdeviceregistry.DeviceCredentialsRevokeRequest, options *armdeviceregistry.NamespaceDevicesClientBeginRevokeOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientRevokeResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method NamespaceDevicesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, properties armdeviceregistry.NamespaceDeviceUpdate, options *armdeviceregistry.NamespaceDevicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -50,6 +54,7 @@ func NewNamespaceDevicesServerTransport(srv *NamespaceDevicesServer) *NamespaceD
 		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse]](),
+		beginRevoke:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientRevokeResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientUpdateResponse]](),
 	}
 }
@@ -61,6 +66,7 @@ type NamespaceDevicesServerTransport struct {
 	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDevicesClientListByResourceGroupResponse]]
+	beginRevoke                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientRevokeResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDevicesClientUpdateResponse]]
 }
 
@@ -95,6 +101,8 @@ func (n *NamespaceDevicesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = n.dispatchGet(req)
 			case "NamespaceDevicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NamespaceDevicesClient.BeginRevoke":
+				res.resp, res.err = n.dispatchBeginRevoke(req)
 			case "NamespaceDevicesClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
@@ -291,6 +299,58 @@ func (n *NamespaceDevicesServerTransport) dispatchNewListByResourceGroupPager(re
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		n.newListByResourceGroupPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (n *NamespaceDevicesServerTransport) dispatchBeginRevoke(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginRevoke == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRevoke not implemented")}
+	}
+	beginRevoke := n.beginRevoke.get(req)
+	if beginRevoke == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revoke`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceregistry.DeviceCredentialsRevokeRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginRevoke(req.Context(), resourceGroupNameParam, namespaceNameParam, deviceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRevoke = &respr
+		n.beginRevoke.add(req, beginRevoke)
+	}
+
+	resp, err := server.PollerResponderNext(beginRevoke, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		n.beginRevoke.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRevoke) {
+		n.beginRevoke.remove(req)
+	}
+
 	return resp, nil
 }
 

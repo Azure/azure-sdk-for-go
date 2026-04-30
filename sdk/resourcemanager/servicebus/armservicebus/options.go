@@ -68,7 +68,7 @@ type DisasterRecoveryConfigsClientListOptions struct {
 // MigrationConfigsClientBeginCreateAndStartMigrationOptions contains the optional parameters for the MigrationConfigsClient.BeginCreateAndStartMigration
 // method.
 type MigrationConfigsClientBeginCreateAndStartMigrationOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -101,13 +101,19 @@ type MigrationConfigsClientRevertOptions struct {
 // NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
 // method.
 type NamespacesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
 type NamespacesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginFailoverOptions contains the optional parameters for the NamespacesClient.BeginFailover method.
+type NamespacesClientBeginFailoverOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -189,6 +195,24 @@ type NamespacesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NetworkSecurityPerimeterConfigurationClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationClient.NewListPager
+// method.
+type NetworkSecurityPerimeterConfigurationClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameOptions contains the optional parameters for the
+// NetworkSecurityPerimeterConfigurationsClient.GetResourceAssociationName method.
+type NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.Reconcile
+// method.
+type NetworkSecurityPerimeterConfigurationsClientReconcileOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -197,7 +221,7 @@ type OperationsClientListOptions struct {
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

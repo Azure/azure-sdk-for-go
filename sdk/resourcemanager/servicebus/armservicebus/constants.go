@@ -5,11 +5,6 @@
 
 package armservicebus
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
-	moduleVersion = "v1.2.0"
-)
-
 type AccessRights string
 
 const (
@@ -133,6 +128,22 @@ func PossibleFilterTypeValues() []FilterType {
 	}
 }
 
+// GeoDRRoleType - GeoDR Role Types
+type GeoDRRoleType string
+
+const (
+	GeoDRRoleTypePrimary   GeoDRRoleType = "Primary"
+	GeoDRRoleTypeSecondary GeoDRRoleType = "Secondary"
+)
+
+// PossibleGeoDRRoleTypeValues returns the possible values for the GeoDRRoleType const type.
+func PossibleGeoDRRoleTypeValues() []GeoDRRoleType {
+	return []GeoDRRoleType{
+		GeoDRRoleTypePrimary,
+		GeoDRRoleTypeSecondary,
+	}
+}
+
 // KeyType - The access key to regenerate.
 type KeyType string
 
@@ -182,6 +193,22 @@ func PossibleMigrationConfigurationNameValues() []MigrationConfigurationName {
 	}
 }
 
+// Mode - Setting to Enable or Disable Confidential Compute
+type Mode string
+
+const (
+	ModeDisabled Mode = "Disabled"
+	ModeEnabled  Mode = "Enabled"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeDisabled,
+		ModeEnabled,
+	}
+}
+
 // NetworkRuleIPAction - The IP Filter Action
 type NetworkRuleIPAction string
 
@@ -193,6 +220,56 @@ const (
 func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return []NetworkRuleIPAction{
 		NetworkRuleIPActionAllow,
+	}
+}
+
+// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of NetworkSecurityPerimeter configuration propagation
+type NetworkSecurityPerimeterConfigurationProvisioningState string
+
+const (
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted            NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled            NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating            NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleted             NetworkSecurityPerimeterConfigurationProvisioningState = "Deleted"
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting            NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed              NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	NetworkSecurityPerimeterConfigurationProvisioningStateInvalidResponse     NetworkSecurityPerimeterConfigurationProvisioningState = "InvalidResponse"
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded           NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceededWithIssues NetworkSecurityPerimeterConfigurationProvisioningState = "SucceededWithIssues"
+	NetworkSecurityPerimeterConfigurationProvisioningStateUnknown             NetworkSecurityPerimeterConfigurationProvisioningState = "Unknown"
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating            NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
+	return []NetworkSecurityPerimeterConfigurationProvisioningState{
+		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigurationProvisioningStateInvalidResponse,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceededWithIssues,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUnknown,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
+	}
+}
+
+// NspAccessRuleDirection - Direction of Access Rule
+type NspAccessRuleDirection string
+
+const (
+	NspAccessRuleDirectionInbound  NspAccessRuleDirection = "Inbound"
+	NspAccessRuleDirectionOutbound NspAccessRuleDirection = "Outbound"
+)
+
+// PossibleNspAccessRuleDirectionValues returns the possible values for the NspAccessRuleDirection const type.
+func PossibleNspAccessRuleDirectionValues() []NspAccessRuleDirection {
+	return []NspAccessRuleDirection{
+		NspAccessRuleDirectionInbound,
+		NspAccessRuleDirectionOutbound,
 	}
 }
 
@@ -235,6 +312,24 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	}
 }
 
+// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled.
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
+	}
+}
+
 // PublicNetworkAccessFlag - This determines if traffic is allowed over public network. By default it is enabled.
 type PublicNetworkAccessFlag string
 
@@ -248,6 +343,28 @@ func PossiblePublicNetworkAccessFlagValues() []PublicNetworkAccessFlag {
 	return []PublicNetworkAccessFlag{
 		PublicNetworkAccessFlagDisabled,
 		PublicNetworkAccessFlagEnabled,
+	}
+}
+
+// ResourceAssociationAccessMode - Access Mode of the resource association
+type ResourceAssociationAccessMode string
+
+const (
+	ResourceAssociationAccessModeAuditMode         ResourceAssociationAccessMode = "AuditMode"
+	ResourceAssociationAccessModeEnforcedMode      ResourceAssociationAccessMode = "EnforcedMode"
+	ResourceAssociationAccessModeLearningMode      ResourceAssociationAccessMode = "LearningMode"
+	ResourceAssociationAccessModeNoAssociationMode ResourceAssociationAccessMode = "NoAssociationMode"
+	ResourceAssociationAccessModeUnspecifiedMode   ResourceAssociationAccessMode = "UnspecifiedMode"
+)
+
+// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
+func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
+	return []ResourceAssociationAccessMode{
+		ResourceAssociationAccessModeAuditMode,
+		ResourceAssociationAccessModeEnforcedMode,
+		ResourceAssociationAccessModeLearningMode,
+		ResourceAssociationAccessModeNoAssociationMode,
+		ResourceAssociationAccessModeUnspecifiedMode,
 	}
 }
 
@@ -302,6 +419,26 @@ func PossibleSKUTierValues() []SKUTier {
 		SKUTierBasic,
 		SKUTierPremium,
 		SKUTierStandard,
+	}
+}
+
+// TLSVersion - The minimum TLS version for the cluster to support, e.g. '1.2'
+type TLSVersion string
+
+const (
+	TLSVersionOne0 TLSVersion = "1.0"
+	TLSVersionOne1 TLSVersion = "1.1"
+	TLSVersionOne2 TLSVersion = "1.2"
+	TLSVersionOne3 TLSVersion = "1.3"
+)
+
+// PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
+func PossibleTLSVersionValues() []TLSVersion {
+	return []TLSVersion{
+		TLSVersionOne0,
+		TLSVersionOne1,
+		TLSVersionOne2,
+		TLSVersionOne3,
 	}
 }
 

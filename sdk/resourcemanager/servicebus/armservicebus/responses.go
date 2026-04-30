@@ -129,6 +129,11 @@ type NamespacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// NamespacesClientFailoverResponse contains the response from method NamespacesClient.BeginFailover.
+type NamespacesClientFailoverResponse struct {
+	FailOver
+}
+
 // NamespacesClientGetAuthorizationRuleResponse contains the response from method NamespacesClient.GetAuthorizationRule.
 type NamespacesClientGetAuthorizationRuleResponse struct {
 	// Description of a namespace authorization rule.
@@ -187,6 +192,23 @@ type NamespacesClientRegenerateKeysResponse struct {
 type NamespacesClientUpdateResponse struct {
 	// Description of a namespace resource.
 	SBNamespace
+}
+
+// NetworkSecurityPerimeterConfigurationClientListResponse contains the response from method NetworkSecurityPerimeterConfigurationClient.NewListPager.
+type NetworkSecurityPerimeterConfigurationClientListResponse struct {
+	// Result of the List NetworkSecurityPerimeterConfiguration operation.
+	NetworkSecurityPerimeterConfigurationList
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.GetResourceAssociationName.
+type NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse struct {
+	// Network Security Perimeter related configurations of a given namespace
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Reconcile.
+type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

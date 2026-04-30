@@ -24,7 +24,7 @@ type MarketplacesClient struct {
 
 // NewMarketplacesClient creates a new instance of MarketplacesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MarketplacesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -39,7 +39,7 @@ func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.Clien
 // NewListPager - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for
 // May 1, 2014 or later.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - scope - The scope associated with marketplace operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing
 //     Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
@@ -85,13 +85,13 @@ func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope s
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	reqQP.Set("api-version", "2021-10-01")
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

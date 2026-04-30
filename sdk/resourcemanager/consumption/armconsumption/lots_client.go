@@ -25,7 +25,7 @@ type LotsClient struct {
 
 // NewLotsClient creates a new instance of LotsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLotsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*LotsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewLotsClient(credential azcore.TokenCredential, options *arm.ClientOptions
 // NewListByBillingAccountPager - Lists all Microsoft Azure consumption commitments for a billing account. The API is only
 // supported for Microsoft Customer Agreements (MCA) and Direct Enterprise Agreement (EA) billing accounts.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - options - LotsClientListByBillingAccountOptions contains the optional parameters for the LotsClient.NewListByBillingAccountPager
 //     method.
@@ -79,10 +79,10 @@ func (client *LotsClient) listByBillingAccountCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +100,7 @@ func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response
 // NewListByBillingProfilePager - Lists all Azure credits for a billing account or a billing profile. The API is only supported
 // for Microsoft Customer Agreements (MCA) billing accounts.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - billingProfileID - Azure Billing Profile ID.
 //   - options - LotsClientListByBillingProfileOptions contains the optional parameters for the LotsClient.NewListByBillingProfilePager
@@ -129,7 +129,7 @@ func (client *LotsClient) NewListByBillingProfilePager(billingAccountID string, 
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, options *LotsClientListByBillingProfileOptions) (*policy.Request, error) {
+func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, _ *LotsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/lots"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -144,7 +144,7 @@ func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -162,7 +162,7 @@ func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response
 // NewListByCustomerPager - Lists all Azure credits for a customer. The API is only supported for Microsoft Partner Agreements
 // (MPA) billing accounts.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - customerID - Customer ID
 //   - options - LotsClientListByCustomerOptions contains the optional parameters for the LotsClient.NewListByCustomerPager method.
@@ -205,10 +205,10 @@ func (client *LotsClient) listByCustomerCreateRequest(ctx context.Context, billi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -23,7 +23,7 @@ type TagsClient struct {
 
 // NewTagsClient creates a new instance of TagsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTagsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TagsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -38,7 +38,7 @@ func NewTagsClient(credential azcore.TokenCredential, options *arm.ClientOptions
 // Get - Get all available tag keys for the defined scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2024-08-01
 //   - scope - The scope associated with tags operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope,
 //     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -70,7 +70,7 @@ func (client *TagsClient) Get(ctx context.Context, scope string, options *TagsCl
 }
 
 // getCreateRequest creates the Get request.
-func (client *TagsClient) getCreateRequest(ctx context.Context, scope string, options *TagsClientGetOptions) (*policy.Request, error) {
+func (client *TagsClient) getCreateRequest(ctx context.Context, scope string, _ *TagsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/tags"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -78,7 +78,7 @@ func (client *TagsClient) getCreateRequest(ctx context.Context, scope string, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

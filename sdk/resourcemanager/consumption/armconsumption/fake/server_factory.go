@@ -16,23 +16,56 @@ import (
 
 // ServerFactory is a fake server for instances of the armconsumption.ClientFactory type.
 type ServerFactory struct {
-	AggregatedCostServer                   AggregatedCostServer
-	BalancesServer                         BalancesServer
-	BudgetsServer                          BudgetsServer
-	ChargesServer                          ChargesServer
-	CreditsServer                          CreditsServer
-	EventsServer                           EventsServer
-	LotsServer                             LotsServer
-	MarketplacesServer                     MarketplacesServer
-	OperationsServer                       OperationsServer
-	PriceSheetServer                       PriceSheetServer
+	// AggregatedCostServer contains the fakes for client AggregatedCostClient
+	AggregatedCostServer AggregatedCostServer
+
+	// BalancesServer contains the fakes for client BalancesClient
+	BalancesServer BalancesServer
+
+	// BudgetsServer contains the fakes for client BudgetsClient
+	BudgetsServer BudgetsServer
+
+	// ChargesServer contains the fakes for client ChargesClient
+	ChargesServer ChargesServer
+
+	// CreditsServer contains the fakes for client CreditsClient
+	CreditsServer CreditsServer
+
+	// EventsServer contains the fakes for client EventsClient
+	EventsServer EventsServer
+
+	// LotsServer contains the fakes for client LotsClient
+	LotsServer LotsServer
+
+	// MarketplacesServer contains the fakes for client MarketplacesClient
+	MarketplacesServer MarketplacesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PriceSheetServer contains the fakes for client PriceSheetClient
+	PriceSheetServer PriceSheetServer
+
+	// ReservationRecommendationDetailsServer contains the fakes for client ReservationRecommendationDetailsClient
 	ReservationRecommendationDetailsServer ReservationRecommendationDetailsServer
-	ReservationRecommendationsServer       ReservationRecommendationsServer
-	ReservationTransactionsServer          ReservationTransactionsServer
-	ReservationsDetailsServer              ReservationsDetailsServer
-	ReservationsSummariesServer            ReservationsSummariesServer
-	TagsServer                             TagsServer
-	UsageDetailsServer                     UsageDetailsServer
+
+	// ReservationRecommendationsServer contains the fakes for client ReservationRecommendationsClient
+	ReservationRecommendationsServer ReservationRecommendationsServer
+
+	// ReservationTransactionsServer contains the fakes for client ReservationTransactionsClient
+	ReservationTransactionsServer ReservationTransactionsServer
+
+	// ReservationsDetailsServer contains the fakes for client ReservationsDetailsClient
+	ReservationsDetailsServer ReservationsDetailsServer
+
+	// ReservationsSummariesServer contains the fakes for client ReservationsSummariesClient
+	ReservationsSummariesServer ReservationsSummariesServer
+
+	// TagsServer contains the fakes for client TagsClient
+	TagsServer TagsServer
+
+	// UsageDetailsServer contains the fakes for client UsageDetailsClient
+	UsageDetailsServer UsageDetailsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

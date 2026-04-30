@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -56,23 +56,42 @@ func (e *EventsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EventsClient.NewListByBillingAccountPager":
-		resp, err = e.dispatchNewListByBillingAccountPager(req)
-	case "EventsClient.NewListByBillingProfilePager":
-		resp, err = e.dispatchNewListByBillingProfilePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EventsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if eventsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = eventsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EventsClient.NewListByBillingAccountPager":
+				res.resp, res.err = e.dispatchNewListByBillingAccountPager(req)
+			case "EventsClient.NewListByBillingProfilePager":
+				res.resp, res.err = e.dispatchNewListByBillingProfilePager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EventsServerTransport) dispatchNewListByBillingAccountPager(req *http.Request) (*http.Response, error) {
@@ -84,7 +103,7 @@ func (e *EventsServerTransport) dispatchNewListByBillingAccountPager(req *http.R
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/events`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -133,7 +152,7 @@ func (e *EventsServerTransport) dispatchNewListByBillingProfilePager(req *http.R
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/events`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -172,4 +191,10 @@ func (e *EventsServerTransport) dispatchNewListByBillingProfilePager(req *http.R
 		e.newListByBillingProfilePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EventsServerTransport
+var eventsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

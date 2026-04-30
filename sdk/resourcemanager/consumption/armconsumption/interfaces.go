@@ -23,6 +23,15 @@ type LegacyReservationRecommendationPropertiesClassification interface {
 	GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties
 }
 
+// ModernReservationRecommendationPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetModernReservationRecommendationProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ModernReservationRecommendationProperties, *ModernSharedScopeReservationRecommendationProperties, *ModernSingleScopeReservationRecommendationProperties
+type ModernReservationRecommendationPropertiesClassification interface {
+	// GetModernReservationRecommendationProperties returns the ModernReservationRecommendationProperties content of the underlying type.
+	GetModernReservationRecommendationProperties() *ModernReservationRecommendationProperties
+}
+
 // ReservationRecommendationClassification provides polymorphic access to related types.
 // Call the interface's GetReservationRecommendation() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

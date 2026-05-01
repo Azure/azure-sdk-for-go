@@ -767,7 +767,6 @@ func (o *CopyFromURLOptions) format() *generated.BlobClientCopyFromURLOptions {
 	if o == nil {
 		return nil
 	}
-	// Notes: no mapping for o.CPKScopeInfo
 	opts := &generated.BlobClientCopyFromURLOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.BlobTags),
 		CopySourceAuthorization:  o.CopySourceAuthorization,
@@ -795,6 +794,9 @@ func (o *CopyFromURLOptions) format() *generated.BlobClientCopyFromURLOptions {
 			opts.IfNoneMatch = o.BlobAccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
+	}
+	if o.CPKScopeInfo != nil {
+		opts.EncryptionScope = o.CPKScopeInfo.EncryptionScope
 	}
 
 	return opts

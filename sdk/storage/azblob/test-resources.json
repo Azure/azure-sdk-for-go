@@ -36,7 +36,7 @@
       "premiumFileAccountName": "[concat(parameters('baseName'), 'pfile')]",
       "webjobsPrimaryAccountName": "[concat(parameters('baseName'), 'wjprim')]",
       "webjobsSecondaryAccountName": "[concat(parameters('baseName'), 'wjsec')]",
-      "location": "uksouth",
+      "location": "[resourceGroup().location]",
       "resourceGroupName": "[resourceGroup().name]",
       "subscriptionId": "[subscription().subscriptionId]",
       "encryption": {

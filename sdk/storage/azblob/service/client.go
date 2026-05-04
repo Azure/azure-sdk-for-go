@@ -40,7 +40,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -56,7 +56,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -302,9 +302,7 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
 func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
-	serviceFilterBlobsOptions := o.format()
-	resp, err := s.generated().FilterBlobs(ctx, where, serviceFilterBlobsOptions)
-	return resp, err
+	return s.generated().FilterBlobs(ctx, where, o.format())
 }
 
 // NewBatchBuilder creates an instance of BatchBuilder using the same auth policy as the client.
@@ -350,12 +348,11 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	if err != nil {
 		return SubmitBatchResponse{}, err
 	}
-
 	reader := bytes.NewReader(batchReq)
 	rsc := streaming.NopCloser(reader)
 	multipartContentType := "multipart/mixed; boundary=" + batchID
 
-	resp, err := s.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
+	resp, err := s.generated().SubmitBatch(ctx, multipartContentType, int64(len(batchReq)), rsc, options.format())
 	if err != nil {
 		return SubmitBatchResponse{}, err
 	}

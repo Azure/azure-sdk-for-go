@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -311,20 +312,29 @@ type BatchDeleteOptions struct {
 	Snapshot  *string
 }
 
-func (o *BatchDeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	basics := generated.BlobClientDeleteOptions{
+	opts := &generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      o.BlobDeleteType, // None by default
+		BlobDeleteType:  o.BlobDeleteType, // None by default
 		Snapshot:        o.Snapshot,
 		VersionID:       o.VersionID,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
+		}
+	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, modifiedAccessConditions
+	return opts
 }
 
 // BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
@@ -334,19 +344,21 @@ type BatchSetTierOptions struct {
 	Snapshot  *string
 }
 
-func (o *BatchSetTierOptions) format() (*generated.BlobClientSetTierOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	basics := generated.BlobClientSetTierOptions{
+	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
+	opts := &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,
 		Snapshot:          o.Snapshot,
 		VersionID:         o.VersionID,
 	}
+	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
+		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, modifiedAccessConditions
+	return opts
 }
 
 // SubmitBatchOptions contains the optional parameters for the Client.SubmitBatch method.

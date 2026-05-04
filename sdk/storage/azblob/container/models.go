@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -81,6 +82,23 @@ type CreateOptions struct {
 	CPKScopeInfo *CPKScopeInfo
 }
 
+func (o *CreateOptions) format() *generated.ContainerClientCreateOptions {
+	if o == nil {
+		return nil
+	}
+
+	opts := &generated.ContainerClientCreateOptions{
+		Access:   o.Access,
+		Metadata: o.Metadata,
+	}
+	if o.CPKScopeInfo != nil {
+		opts.DefaultEncryptionScope = o.CPKScopeInfo.DefaultEncryptionScope
+		opts.PreventEncryptionScopeOverride = o.CPKScopeInfo.PreventEncryptionScopeOverride
+	}
+
+	return opts
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
@@ -88,13 +106,24 @@ type DeleteOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *DeleteOptions) format() *generated.ContainerClientDeleteOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatContainerAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, modifiedAccessConditions
+	opts := &generated.ContainerClientDeleteOptions{}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
+		}
+	}
+
+	// Note: missing o.AccessConditions.ModifiedAccessConditions.IfMatch and o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -112,12 +141,17 @@ type GetPropertiesOptions struct {
 }
 
 // ContainerClientGetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
-func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetPropertiesOptions, *generated.LeaseAccessConditions) {
+func (o *GetPropertiesOptions) format() *generated.ContainerClientGetPropertiesOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
-	return nil, o.LeaseAccessConditions
+	opts := &generated.ContainerClientGetPropertiesOptions{}
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -141,13 +175,13 @@ func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
 		include = append(include, generated.ListBlobsIncludeItemDeleted)
 	}
 	if l.DeletedWithVersions {
-		include = append(include, generated.ListBlobsIncludeItemDeletedwithversions)
+		include = append(include, generated.ListBlobsIncludeItemDeletedWithVersions)
 	}
 	if l.ImmutabilityPolicy {
-		include = append(include, generated.ListBlobsIncludeItemImmutabilitypolicy)
+		include = append(include, generated.ListBlobsIncludeItemImmutabilityPolicy)
 	}
 	if l.LegalHold {
-		include = append(include, generated.ListBlobsIncludeItemLegalhold)
+		include = append(include, generated.ListBlobsIncludeItemLegalHold)
 	}
 	if l.Metadata {
 		include = append(include, generated.ListBlobsIncludeItemMetadata)
@@ -159,7 +193,7 @@ func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
 		include = append(include, generated.ListBlobsIncludeItemTags)
 	}
 	if l.UncommittedBlobs {
-		include = append(include, generated.ListBlobsIncludeItemUncommittedblobs)
+		include = append(include, generated.ListBlobsIncludeItemUncommittedBlobs)
 	}
 	if l.Versions {
 		include = append(include, generated.ListBlobsIncludeItemVersions)
@@ -262,12 +296,23 @@ type SetMetadataOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *SetMetadataOptions) format() (*generated.ContainerClientSetMetadataOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *SetMetadataOptions) format() *generated.ContainerClientSetMetadataOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
 
-	return &generated.ContainerClientSetMetadataOptions{Metadata: o.Metadata}, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	opts := &generated.ContainerClientSetMetadataOptions{
+		Metadata: o.Metadata,
+	}
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
+	}
+
+	// Note: missing mapping for most of o.ModifiedAccessConditions
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -277,12 +322,17 @@ type GetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPolicyOptions, *LeaseAccessConditions) {
+func (o *GetAccessPolicyOptions) format() *generated.ContainerClientGetAccessPolicyOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
-	return nil, o.LeaseAccessConditions
+	opts := &generated.ContainerClientGetAccessPolicyOptions{}
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+
+	return opts
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -296,25 +346,33 @@ type SetAccessPolicyOptions struct {
 	ContainerACL     []*SignedIdentifier
 }
 
-func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions, []*SignedIdentifier, error) {
+func (o *SetAccessPolicyOptions) format() *generated.ContainerClientSetAccessPolicyOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
-	if o.ContainerACL != nil {
-		for _, c := range o.ContainerACL {
-			err := formatTime(c)
-			if err != nil {
-				return nil, nil, nil, nil, err
-			}
+
+	opts := &generated.ContainerClientSetAccessPolicyOptions{
+		Access: o.Access,
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
 		}
 	}
-	lac, mac := exported.FormatContainerAccessConditions(o.AccessConditions)
-	return &generated.ContainerClientSetAccessPolicyOptions{
-		Access: o.Access,
-	}, lac, mac, o.ContainerACL, nil
+
+	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions.IfMatch,  o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+	return opts
 }
 
 func formatTime(c *SignedIdentifier) error {
+	if c == nil {
+		return nil
+	}
+
 	if c.AccessPolicy == nil {
 		return nil
 	}
@@ -357,20 +415,30 @@ type BatchDeleteOptions struct {
 	Snapshot  *string
 }
 
-func (o *BatchDeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
 
-	basics := generated.BlobClientDeleteOptions{
+	opts := &generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      o.BlobDeleteType, // None by default
+		BlobDeleteType:  o.BlobDeleteType, // None by default
 		Snapshot:        o.Snapshot,
 		VersionID:       o.VersionID,
 	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
+		}
+	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, modifiedAccessConditions
+	return opts
 }
 
 // BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
@@ -380,19 +448,22 @@ type BatchSetTierOptions struct {
 	Snapshot  *string
 }
 
-func (o *BatchSetTierOptions) format() (*generated.BlobClientSetTierOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
 
-	basics := generated.BlobClientSetTierOptions{
+	opts := &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,
 		Snapshot:          o.Snapshot,
 		VersionID:         o.VersionID,
 	}
+	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
+		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, modifiedAccessConditions
+	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions
+	return opts
 }
 
 // SubmitBatchOptions contains the optional parameters for the Client.SubmitBatch method.

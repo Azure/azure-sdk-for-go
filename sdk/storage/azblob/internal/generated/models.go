@@ -5,8 +5,9 @@ package generated
 
 import (
 	"encoding/xml"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/url"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 type TransactionalContentSetter interface {
@@ -52,7 +53,7 @@ type SourceContentSetter interface {
 }
 
 func (a *AppendBlobClientAppendBlockFromURLOptions) SetSourceContentCRC64(v []byte) {
-	a.SourceContentcrc64 = v
+	a.SourceContentCRC64 = v
 }
 
 func (a *AppendBlobClientAppendBlockFromURLOptions) SetSourceContentMD5(v []byte) {
@@ -60,7 +61,7 @@ func (a *AppendBlobClientAppendBlockFromURLOptions) SetSourceContentMD5(v []byte
 }
 
 func (b *BlockBlobClientStageBlockFromURLOptions) SetSourceContentCRC64(v []byte) {
-	b.SourceContentcrc64 = v
+	b.SourceContentCRC64 = v
 }
 
 func (b *BlockBlobClientStageBlockFromURLOptions) SetSourceContentMD5(v []byte) {
@@ -68,7 +69,7 @@ func (b *BlockBlobClientStageBlockFromURLOptions) SetSourceContentMD5(v []byte) 
 }
 
 func (p *PageBlobClientUploadPagesFromURLOptions) SetSourceContentCRC64(v []byte) {
-	p.SourceContentcrc64 = v
+	p.SourceContentCRC64 = v
 }
 
 func (p *PageBlobClientUploadPagesFromURLOptions) SetSourceContentMD5(v []byte) {
@@ -76,6 +77,14 @@ func (p *PageBlobClientUploadPagesFromURLOptions) SetSourceContentMD5(v []byte) 
 }
 
 // Custom UnmarshalXML functions for types that need special handling.
+
+type BlobName struct {
+	// The name of the blob.
+	Content *string `xml:",chardata"`
+
+	// Indicates if the blob name is encoded.
+	Encoded *bool `xml:"Encoded,attr"`
+}
 
 // UnmarshalXML implements the xml.Unmarshaller interface for type BlobPrefix.
 func (b *BlobPrefix) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {

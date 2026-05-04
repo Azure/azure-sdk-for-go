@@ -674,7 +674,7 @@ func (s *RecordedTestSuite) TestCreateDirWithLease() {
 	_, err = dirClient.Create(context.Background(), createFileOpts)
 	_require.Error(err)
 
-	time.Sleep(time.Second * 15)
+	recording.Sleep(time.Second * 15)
 	resp, err = dirClient.Create(context.Background(), createFileOpts)
 	_require.NoError(err)
 	_require.NotNil(resp)

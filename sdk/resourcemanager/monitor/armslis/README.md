@@ -1,6 +1,6 @@
-# Azure Monitor Module for Go
+# Azure Monitor - SLIs Module for Go
 
-The `armslis` module provides operations for working with Azure Monitor.
+The `armslis` module provides operations for working with Azure Monitor SLIs.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/monitor/armslis)
 

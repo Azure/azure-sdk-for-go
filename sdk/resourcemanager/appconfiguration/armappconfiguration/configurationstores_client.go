@@ -42,7 +42,7 @@ func NewConfigurationStoresClient(subscriptionID string, credential azcore.Token
 // BeginCreate - Creates a configuration store with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - configStoreCreationParameters - The parameters for creating a configuration store.
@@ -68,7 +68,7 @@ func (client *ConfigurationStoresClient) BeginCreate(ctx context.Context, resour
 // Create - Creates a configuration store with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *ConfigurationStoresClient) create(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore, options *ConfigurationStoresClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationStoresClient.BeginCreate"
@@ -110,7 +110,7 @@ func (client *ConfigurationStoresClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *ConfigurationStoresClient) createCreateRequest(ctx context.Context
 // BeginDelete - Deletes a configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - options - ConfigurationStoresClientBeginDeleteOptions contains the optional parameters for the ConfigurationStoresClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *ConfigurationStoresClient) BeginDelete(ctx context.Context, resour
 // Delete - Deletes a configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *ConfigurationStoresClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationStoresClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *ConfigurationStoresClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -198,7 +198,7 @@ func (client *ConfigurationStoresClient) deleteCreateRequest(ctx context.Context
 // Get - Gets the properties of the specified configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - options - ConfigurationStoresClientGetOptions contains the optional parameters for the ConfigurationStoresClient.Get method.
@@ -244,7 +244,7 @@ func (client *ConfigurationStoresClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *ConfigurationStoresClient) getHandleResponse(resp *http.Response) 
 // GetDeleted - Gets a deleted Azure app configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - location - The name of the Azure region.
 //   - configStoreName - The name of the configuration store.
 //   - options - ConfigurationStoresClientGetDeletedOptions contains the optional parameters for the ConfigurationStoresClient.GetDeleted
@@ -309,7 +309,7 @@ func (client *ConfigurationStoresClient) getDeletedCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +326,7 @@ func (client *ConfigurationStoresClient) getDeletedHandleResponse(resp *http.Res
 
 // NewListPager - Lists the configuration stores for a given subscription.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - options - ConfigurationStoresClientListOptions contains the optional parameters for the ConfigurationStoresClient.NewListPager
 //     method.
 func (client *ConfigurationStoresClient) NewListPager(options *ConfigurationStoresClientListOptions) *runtime.Pager[ConfigurationStoresClientListResponse] {
@@ -367,7 +367,7 @@ func (client *ConfigurationStoresClient) listCreateRequest(ctx context.Context, 
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -384,7 +384,7 @@ func (client *ConfigurationStoresClient) listHandleResponse(resp *http.Response)
 
 // NewListByResourceGroupPager - Lists the configuration stores for a given resource group.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ConfigurationStoresClientListByResourceGroupOptions contains the optional parameters for the ConfigurationStoresClient.NewListByResourceGroupPager
 //     method.
@@ -430,7 +430,7 @@ func (client *ConfigurationStoresClient) listByResourceGroupCreateRequest(ctx co
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -447,7 +447,7 @@ func (client *ConfigurationStoresClient) listByResourceGroupHandleResponse(resp 
 
 // NewListDeletedPager - Gets information about the deleted configuration stores in a subscription.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - options - ConfigurationStoresClientListDeletedOptions contains the optional parameters for the ConfigurationStoresClient.NewListDeletedPager
 //     method.
 func (client *ConfigurationStoresClient) NewListDeletedPager(options *ConfigurationStoresClientListDeletedOptions) *runtime.Pager[ConfigurationStoresClientListDeletedResponse] {
@@ -485,7 +485,7 @@ func (client *ConfigurationStoresClient) listDeletedCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -502,7 +502,7 @@ func (client *ConfigurationStoresClient) listDeletedHandleResponse(resp *http.Re
 
 // NewListKeysPager - Lists the access key for the specified configuration store.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - options - ConfigurationStoresClientListKeysOptions contains the optional parameters for the ConfigurationStoresClient.NewListKeysPager
@@ -553,7 +553,7 @@ func (client *ConfigurationStoresClient) listKeysCreateRequest(ctx context.Conte
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -571,7 +571,7 @@ func (client *ConfigurationStoresClient) listKeysHandleResponse(resp *http.Respo
 // BeginPurgeDeleted - Permanently deletes the specified configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - location - The name of the Azure region.
 //   - configStoreName - The name of the configuration store.
 //   - options - ConfigurationStoresClientBeginPurgeDeletedOptions contains the optional parameters for the ConfigurationStoresClient.BeginPurgeDeleted
@@ -596,7 +596,7 @@ func (client *ConfigurationStoresClient) BeginPurgeDeleted(ctx context.Context, 
 // PurgeDeleted - Permanently deletes the specified configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *ConfigurationStoresClient) purgeDeleted(ctx context.Context, location string, configStoreName string, options *ConfigurationStoresClientBeginPurgeDeletedOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationStoresClient.BeginPurgeDeleted"
@@ -638,7 +638,7 @@ func (client *ConfigurationStoresClient) purgeDeletedCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -646,7 +646,7 @@ func (client *ConfigurationStoresClient) purgeDeletedCreateRequest(ctx context.C
 // RegenerateKey - Regenerates an access key for the specified configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - regenerateKeyParameters - The parameters for regenerating an access key.
@@ -694,7 +694,7 @@ func (client *ConfigurationStoresClient) regenerateKeyCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -716,7 +716,7 @@ func (client *ConfigurationStoresClient) regenerateKeyHandleResponse(resp *http.
 // BeginUpdate - Updates a configuration store with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - configStoreUpdateParameters - The parameters for updating a configuration store.
@@ -742,7 +742,7 @@ func (client *ConfigurationStoresClient) BeginUpdate(ctx context.Context, resour
 // Update - Updates a configuration store with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *ConfigurationStoresClient) update(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters, options *ConfigurationStoresClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationStoresClient.BeginUpdate"
@@ -784,7 +784,7 @@ func (client *ConfigurationStoresClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

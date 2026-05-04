@@ -1200,7 +1200,7 @@ func (f *FileRecordedTestsSuite) TestStartCopyDefault() {
 	_require.Equal(copyResp.Date.IsZero(), false)
 	_require.NotEqual(copyResp.CopyStatus, "")
 
-	time.Sleep(time.Duration(5) * time.Second)
+	recording.Sleep(time.Duration(5) * time.Second)
 
 	getResp, err := destFile.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1249,7 +1249,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDestEmpty() {
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp, err := copyFClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
@@ -1289,7 +1289,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyMetadata() {
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: basicMetadata})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1328,7 +1328,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyMetadataNil() {
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1367,7 +1367,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyMetadataEmpty() {
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: map[string]*string{}})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1440,7 +1440,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceCreationTime() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1497,7 +1497,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceProperties() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1558,7 +1558,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDifferentProperties() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1603,7 +1603,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyOverrideMode() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1677,7 +1677,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeTrue() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1720,7 +1720,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeFalse() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1765,7 +1765,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDestReadOnly() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1850,7 +1850,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyUsingSASSrc() {
 	_, err = copyFileClient.StartCopyFromURL(context.Background(), fileURLWithSAS, nil)
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	dResp, err := copyFileClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
@@ -1908,7 +1908,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyModeCopyModeNfs() {
 	})
 	_require.NoError(err)
 
-	time.Sleep(4 * time.Second)
+	recording.Sleep(4 * time.Second)
 
 	resp, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -4842,7 +4842,7 @@ func (f *FileUnrecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
 	_require.NoError(err)
 	_require.NotEqual(copyResp.CopyStatus, "")
 
-	time.Sleep(time.Duration(5) * time.Second)
+	recording.Sleep(time.Duration(5) * time.Second)
 
 	getResp, err := destFileClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)

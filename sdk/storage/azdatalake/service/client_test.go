@@ -305,7 +305,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -317,7 +317,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err = svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -336,7 +336,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -359,7 +359,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -370,7 +370,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(context.Background(), nil)

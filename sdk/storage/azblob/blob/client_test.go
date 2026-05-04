@@ -2122,7 +2122,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamWithStructuredMessageCRC64Ran
 
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
-		Range:              blob.HTTPRange{Offset: 1024, Count: 2048},
+		Range:                   blob.HTTPRange{Offset: 1024, Count: 2048},
 	})
 	_require.NoError(err)
 
@@ -2153,7 +2153,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferWithStructuredMessageCRC64() 
 	buff := make([]byte, contentSize)
 	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
-		BlockSize:          4 * 1024,
+		BlockSize:               4 * 1024,
 	})
 	_require.NoError(err)
 	_require.Equal(int64(contentSize), n)
@@ -2235,7 +2235,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64NonAlignedRange() {
 
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
-		Range:              blob.HTTPRange{Offset: 10, Count: 1000},
+		Range:                   blob.HTTPRange{Offset: 10, Count: 1000},
 	})
 	_require.NoError(err)
 
@@ -2266,8 +2266,8 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferSMCRC64ParallelChunks() {
 	buff := make([]byte, contentSize)
 	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
-		BlockSize:          4 * 1024, // 4 KB → 8 parallel chunks
-		Concurrency:        4,
+		BlockSize:               4 * 1024, // 4 KB → 8 parallel chunks
+		Concurrency:             4,
 	})
 	_require.NoError(err)
 	_require.Equal(int64(contentSize), n)
@@ -2303,7 +2303,7 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadFileSMCRC64() {
 	blobClient := containerClient.NewBlobClient(blobName)
 	n, err := blobClient.DownloadFile(context.Background(), tmpFile, &blob.DownloadFileOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
-		BlockSize:          4 * 1024,
+		BlockSize:               4 * 1024,
 	})
 	_require.NoError(err)
 	_require.Equal(int64(contentSize), n)
@@ -4118,7 +4118,7 @@ type fakeDownloadBlob struct {
 // nolint
 func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
 	// check how many times range based get blob is called
-	if _, ok := req.Header[http.CanonicalHeaderKey("x-ms-range")]; ok {
+	if _, ok := req.Header["x-ms-range"]; ok {
 		atomic.AddUint64(&f.numChunks, 1)
 	}
 	return &http.Response{

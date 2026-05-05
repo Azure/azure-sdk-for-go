@@ -1,16 +1,10 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (2026-05-05)
 
 ### Features Added
 * Added support for service version 2026-06-06.
 * Added support for Blob Smart Tier.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.7.0-beta.1 (2026-04-23)
 

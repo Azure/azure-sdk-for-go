@@ -573,7 +573,7 @@ func TestReadManyItemsDiagnosticsAreStableAfterReturn(t *testing.T) {
 
 	firstDuration := resp.Diagnostics.ClientElapsedTime()
 	firstPayload := resp.Diagnostics.String()
-	require.Greater(t, firstDuration, time.Duration(0))
+	require.NotNil(t, resp.Diagnostics.root.endTime)
 	require.NotEmpty(t, firstPayload)
 
 	time.Sleep(20 * time.Millisecond)

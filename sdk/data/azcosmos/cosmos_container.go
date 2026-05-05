@@ -138,6 +138,9 @@ func (c *ContainerClient) Replace(
 	}
 
 	response, err := newContainerResponse(azResponse)
+	if err == nil && c.database.client.containerCache != nil && response.ContainerProperties != nil {
+		c.database.client.containerCache.set(c.link, response.ContainerProperties)
+	}
 	return response, err
 }
 

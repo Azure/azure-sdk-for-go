@@ -307,16 +307,20 @@ func (c *ContainerClient) executeReadManyWithQueries(
 
 		results, err := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)
 		if err != nil {
+			if attempt < maxPKRangeGoneRetries && isPKRangeGoneResponseError(err) {
+				if refreshErr := c.refreshPKRangeCache(ctx); refreshErr != nil {
+					return ReadManyItemsResponse{}, refreshErr
+				}
+				continue
+			}
 			return ReadManyItemsResponse{}, err
 		}
 
 		resp, err := collectChunkResults(results)
 		if err != nil {
-			// Check if this is a partition key range gone error
 			if attempt < maxPKRangeGoneRetries && isPKRangeGoneResponseError(err) {
-				// Force refresh the PK range cache and retry
-				if c.database.client.pkRangeCache != nil {
-					_, _ = c.database.client.pkRangeCache.forceRefresh(ctx, c.link, c.database.client)
+				if refreshErr := c.refreshPKRangeCache(ctx); refreshErr != nil {
+					return ReadManyItemsResponse{}, refreshErr
 				}
 				continue
 			}
@@ -326,6 +330,18 @@ func (c *ContainerClient) executeReadManyWithQueries(
 	}
 
 	return ReadManyItemsResponse{}, errors.New("exhausted retries for partition key range gone")
+}
+
+// refreshPKRangeCache forces a refresh of the partition key range cache for this container.
+// Returns an error if the refresh fails, allowing the caller to fail fast.
+func (c *ContainerClient) refreshPKRangeCache(ctx context.Context) error {
+	if c.database.client.pkRangeCache != nil {
+		_, err := c.database.client.pkRangeCache.forceRefresh(ctx, c.link, c.database.client)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // isPKRangeGoneResponseError checks if an error is an azcore.ResponseError

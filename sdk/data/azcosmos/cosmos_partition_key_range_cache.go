@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"sync"
 
@@ -161,6 +162,9 @@ func (c *partitionKeyRangeCache) refreshEntry(
 
 		// Build fresh routing map from all ranges
 		newMap = newCollectionRoutingMap(ranges, newETag)
+		if !isCompleteSetOfRanges(newMap.orderedRanges) {
+			return nil, fmt.Errorf("incomplete partition key range set after full refresh for %s", containerLink)
+		}
 	}
 
 	entry.routingMap = newMap

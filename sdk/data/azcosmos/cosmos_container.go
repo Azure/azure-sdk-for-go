@@ -90,6 +90,10 @@ func (c *ContainerClient) Read(
 	}
 
 	response, err := newContainerResponse(azResponse)
+	if err == nil && c.database.client.containerCache != nil && response.ContainerProperties != nil {
+		// Populate the container properties cache on successful Read
+		c.database.client.containerCache.set(c.link, response.ContainerProperties)
+	}
 	return response, err
 }
 
@@ -888,6 +892,26 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 
+	// Use the cache if available, otherwise fall back to direct fetch
+	if c.database.client.pkRangeCache != nil {
+		routingMap, err := c.database.client.pkRangeCache.getRoutingMap(ctx, c.link, c.database.client)
+		if err != nil {
+			return partitionKeyRangeResponse{}, err
+		}
+
+		return partitionKeyRangeResponse{
+			PartitionKeyRanges: routingMap.orderedRanges,
+			Count:              len(routingMap.orderedRanges),
+		}, nil
+	}
+
+	// Fallback: direct fetch without caching
+	return c.fetchPartitionKeyRangesDirect(ctx, o)
+}
+
+// fetchPartitionKeyRangesDirect fetches partition key ranges directly from the service
+// without using the cache. Used as a fallback when the cache is not initialized.
+func (c *ContainerClient) fetchPartitionKeyRangesDirect(ctx context.Context, o *partitionKeyRangeOptions) (partitionKeyRangeResponse, error) {
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypePartitionKeyRange,
 		resourceAddress: c.link,

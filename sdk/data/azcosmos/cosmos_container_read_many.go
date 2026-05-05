@@ -6,13 +6,16 @@ package azcosmos
 import (
 	"context"
 	"errors"
+	"net/http"
 	"sort"
 	"sync"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 const maxItemsPerQuery = 1000
+const maxPKRangeGoneRetries = 3
 
 // queryChunk is a single parameterized query targeting one physical partition key range.
 type queryChunk struct {
@@ -257,25 +260,20 @@ func (c *ContainerClient) executeReadManyWithQueries(
 	readManyOptions *ReadManyOptions,
 	operationContext pipelineRequestOptions,
 ) (ReadManyItemsResponse, error) {
-	containerResp, err := c.Read(ctx, nil)
-	if err != nil {
-		return ReadManyItemsResponse{}, err
-	}
-	pkDef := containerResp.ContainerProperties.PartitionKeyDefinition
-
-	pkRangeResp, err := c.getPartitionKeyRanges(ctx, nil)
-	if err != nil {
-		return ReadManyItemsResponse{}, err
-	}
-
-	orderedRangeIDs, groups, err := groupItemsByPhysicalRange(items, pkDef, pkRangeResp.PartitionKeyRanges)
-	if err != nil {
-		return ReadManyItemsResponse{}, err
-	}
-
-	chunks, err := buildQueryChunksForRanges(orderedRangeIDs, groups, pkDef)
-	if err != nil {
-		return ReadManyItemsResponse{}, err
+	var pkDef PartitionKeyDefinition
+	if c.database.client.containerCache != nil {
+		containerProps, err := c.database.client.containerCache.getProperties(ctx, c)
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+		pkDef = containerProps.PartitionKeyDefinition
+	} else {
+		// Fallback: direct fetch without caching
+		containerResp, err := c.Read(ctx, nil)
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+		pkDef = containerResp.ContainerProperties.PartitionKeyDefinition
 	}
 
 	concurrency := determineConcurrency(nil)
@@ -290,10 +288,61 @@ func (c *ContainerClient) executeReadManyWithQueries(
 		queryOpts.DedicatedGatewayRequestOptions = readManyOptions.DedicatedGatewayRequestOptions
 	}
 
-	results, err := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)
-	if err != nil {
-		// An error here means we failed to even start executing the queries, so we return it directly. Errors from individual chunks are handled in collectChunkResults.
-		return ReadManyItemsResponse{}, err
+	// Retry loop for partition key range gone (splits/merges)
+	for attempt := 0; attempt <= maxPKRangeGoneRetries; attempt++ {
+		pkRangeResp, err := c.getPartitionKeyRanges(ctx, nil)
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+
+		orderedRangeIDs, groups, err := groupItemsByPhysicalRange(items, pkDef, pkRangeResp.PartitionKeyRanges)
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+
+		chunks, err := buildQueryChunksForRanges(orderedRangeIDs, groups, pkDef)
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+
+		results, err := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+
+		resp, err := collectChunkResults(results)
+		if err != nil {
+			// Check if this is a partition key range gone error
+			if attempt < maxPKRangeGoneRetries && isPKRangeGoneResponseError(err) {
+				// Force refresh the PK range cache and retry
+				if c.database.client.pkRangeCache != nil {
+					_, _ = c.database.client.pkRangeCache.forceRefresh(ctx, c.link, c.database.client)
+				}
+				continue
+			}
+			return ReadManyItemsResponse{}, err
+		}
+		return resp, nil
 	}
-	return collectChunkResults(results)
+
+	return ReadManyItemsResponse{}, errors.New("exhausted retries for partition key range gone")
+}
+
+// isPKRangeGoneResponseError checks if an error is an azcore.ResponseError
+// indicating a partition key range gone condition (HTTP 410 with split-related substatus).
+func isPKRangeGoneResponseError(err error) bool {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return false
+	}
+	if respErr.StatusCode != http.StatusGone {
+		return false
+	}
+	// Extract substatus from the raw response if available
+	if respErr.RawResponse != nil {
+		subStatus := respErr.RawResponse.Header.Get(cosmosHeaderSubstatus)
+		return isPartitionKeyRangeGoneError(respErr.StatusCode, subStatus)
+	}
+	// If no raw response, any 410 Gone could be a PKRange gone
+	return true
 }

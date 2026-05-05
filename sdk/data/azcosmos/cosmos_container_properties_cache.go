@@ -114,18 +114,40 @@ func (c *containerPropertiesCache) set(containerLink string, props *ContainerPro
 	entry.mu.Unlock()
 }
 
-// refreshEntry fetches container properties from the service.
+// refreshEntry fetches container properties directly from the service.
+// This bypasses container.Read() to avoid deadlock — the caller already holds entry.mu,
+// and Read() calls cache.set() which would try to re-acquire the same lock.
 // Caller must hold entry.mu.
 func (c *containerPropertiesCache) refreshEntry(
 	ctx context.Context,
 	container *ContainerClient,
 	entry *containerPropsCacheEntry,
 ) (*ContainerProperties, error) {
-	resp, err := container.Read(ctx, nil)
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeCollection,
+		resourceAddress: container.link,
+	}
+
+	path, err := generatePathForNameBased(resourceTypeCollection, container.link, false)
 	if err != nil {
 		return nil, err
 	}
 
-	entry.props = resp.ContainerProperties
+	azResponse, err := container.database.client.sendGetRequest(
+		path,
+		ctx,
+		operationContext,
+		&ReadContainerOptions{},
+		nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := newContainerResponse(azResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	entry.props = response.ContainerProperties
 	return entry.props, nil
 }

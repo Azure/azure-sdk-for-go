@@ -518,7 +518,10 @@ func TestReadManyItemsDiagnosticsAreStableAfterReturn(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	rangeBody, err := json.Marshal(partitionKeyRangeResponse{
+	rangeBody, err := json.Marshal(struct {
+		PartitionKeyRanges []partitionKeyRange `json:"PartitionKeyRanges"`
+		Count              int                 `json:"_count"`
+	}{
 		PartitionKeyRanges: []partitionKeyRange{
 			{
 				ID:           "0",
@@ -590,7 +593,10 @@ func TestReadManyItemsErrorPreservesDiagnostics(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	rangeBody, err := json.Marshal(partitionKeyRangeResponse{
+	rangeBody, err := json.Marshal(struct {
+		PartitionKeyRanges []partitionKeyRange `json:"PartitionKeyRanges"`
+		Count              int                 `json:"_count"`
+	}{
 		PartitionKeyRanges: []partitionKeyRange{
 			{
 				ID:           "0",

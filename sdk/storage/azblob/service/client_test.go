@@ -1356,6 +1356,77 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 	}
 }
 
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSmartUsingSharedKey() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+
+	bb, err := svcClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// Create 5 containers, each with 2 blobs, and add SetTier(Smart) to batch
+	var cntClients []*container.Client
+	for i := 0; i < 5; i++ {
+		cntName := fmt.Sprintf("%v%v", containerName, i)
+		cntClient := svcClient.NewContainerClient(cntName)
+		_, err := cntClient.Create(context.Background(), nil)
+		_require.NoError(err)
+		cntClients = append(cntClients, cntClient)
+
+		bbName := fmt.Sprintf("block/blob%v", i*2)
+		bbClient := cntClient.NewBlockBlobClient(bbName)
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+		_require.NoError(err)
+		err = bb.SetTier(cntName, bbName, blob.AccessTierSmart, nil)
+		_require.NoError(err)
+
+		bbName = fmt.Sprintf("blockblob%v", i*2+1)
+		bbClient = cntClient.NewBlockBlobClient(bbName)
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+		_require.NoError(err)
+		err = bb.SetTier(cntName, bbName, blob.AccessTierSmart, nil)
+		_require.NoError(err)
+	}
+	defer batchClean(cntClients)
+
+	// Verify all blobs are in Hot tier before batch
+	for _, cntClient := range cntClients {
+		pager := cntClient.NewListBlobsFlatPager(nil)
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			handleError(err)
+			for _, blobItem := range resp.Segment.BlobItems {
+				_require.Equal(*blobItem.Properties.AccessTier, container.AccessTierHot)
+			}
+		}
+	}
+
+	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	// Verify all blobs are now in Smart tier
+	for _, cntClient := range cntClients {
+		pager := cntClient.NewListBlobsFlatPager(nil)
+		var ctrSmart = 0
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			handleError(err)
+			for _, blobItem := range resp.Segment.BlobItems {
+				if *blobItem.Properties.AccessTier == container.AccessTierSmart {
+					ctrSmart++
+				}
+			}
+		}
+		_require.Equal(ctrSmart, 2)
+	}
+}
+
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

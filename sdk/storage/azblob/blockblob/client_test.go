@@ -1075,6 +1075,76 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLSmartAccessTier() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	tier := blob.AccessTierSmart
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.UploadBlobFromURLOptions{
+		Tier: &tier,
+	})
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	resp, err := destBlob.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.AccessTier, string(blob.AccessTierSmart))
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestCopyFromURLSmartAccessTier() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4KB
+	contentReader, _ := testcommon.GetDataAndReader(testName, contentSize)
+
+	srcBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(contentReader), nil)
+	_require.NoError(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.NoError(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	destBlob := containerClient.NewBlockBlobClient("dest" + testcommon.GenerateBlobName(testName))
+	tier := blob.AccessTierSmart
+	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
+		Tier: &tier,
+	})
+	_require.NoError(err)
+	_require.Equal(*resp.CopyStatus, "success")
+
+	destBlobPropResp, err := destBlob.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*destBlobPropResp.AccessTier, string(blob.AccessTierSmart))
+}
+
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3163,6 +3233,290 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierAllTiersOnBlockBlob() {
 	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierCool)
 	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierArchive)
 
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestSetTierSmart() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+
+	// Set tier to Smart
+	_, err = bbClient.SetTier(context.Background(), blob.AccessTierSmart, nil)
+	_require.NoError(err)
+
+	// Verify via GetProperties
+	getResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getResp.AccessTier, string(blob.AccessTierSmart))
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestGetPropertiesSmartAccessTierHeader() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+
+	// Set tier to Smart
+	_, err = bbClient.SetTier(context.Background(), blob.AccessTierSmart, nil)
+	_require.NoError(err)
+
+	// Verify x-ms-smart-access-tier is returned in GetProperties response.
+	// This header is only returned for blobs in Smart tier and indicates the
+	// current sub-tier (Hot, Cool, or Cold) that data is placed in.
+	getResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getResp.AccessTier, string(blob.AccessTierSmart))
+	_require.Equal(*getResp.SmartAccessTier, string(blob.AccessTierHot)) // SmartAccessTier should default to Hot
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartListBlobs() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName1 := "smartblob1" + testcommon.GenerateBlobName(testName)
+	bbClient1 := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName1, containerClient)
+	bbName2 := "smartblob2" + testcommon.GenerateBlobName(testName)
+	bbClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName2, containerClient)
+
+	// Set tier to Smart
+	_, err = bbClient1.SetTier(context.Background(), blob.AccessTierSmart, nil)
+	_require.NoError(err)
+	_, err = bbClient2.SetTier(context.Background(), blob.AccessTierSmart, nil)
+	_require.NoError(err)
+
+	// Verify via ListBlobs
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	var blobs []*container.BlobItem
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		blobs = append(blobs, resp.Segment.BlobItems...)
+	}
+	_require.GreaterOrEqual(len(blobs), 2)
+	for _, b := range blobs {
+		_require.Equal(*b.Properties.AccessTier, blob.AccessTierSmart)
+	}
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartRehydrate() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+
+	// Archive the blob first
+	_, err = bbClient.SetTier(context.Background(), blob.AccessTierArchive, nil)
+	_require.NoError(err)
+
+	// Rehydrate to Smart
+	rehydratePriority := blob.RehydratePriorityHigh
+	_, err = bbClient.SetTier(context.Background(), blob.AccessTierSmart, &blob.SetTierOptions{
+		RehydratePriority: &rehydratePriority,
+	})
+	_require.NoError(err)
+
+	// Verify ArchiveStatus is rehydrate-pending-to-smart
+	getResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getResp.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToSmart))
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestSetTierSmartRehydrateListBlobs() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName1 := "smartblob1" + testcommon.GenerateBlobName(testName)
+	bbClient1 := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName1, containerClient)
+	bbName2 := "smartblob2" + testcommon.GenerateBlobName(testName)
+	bbClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName2, containerClient)
+
+	// Archive both blobs
+	_, err = bbClient1.SetTier(context.Background(), blob.AccessTierArchive, nil)
+	_require.NoError(err)
+	_, err = bbClient2.SetTier(context.Background(), blob.AccessTierArchive, nil)
+	_require.NoError(err)
+
+	// Rehydrate both to Smart
+	rehydratePriority := blob.RehydratePriorityHigh
+	_, err = bbClient1.SetTier(context.Background(), blob.AccessTierSmart, &blob.SetTierOptions{
+		RehydratePriority: &rehydratePriority,
+	})
+	_require.NoError(err)
+
+	_, err = bbClient2.SetTier(context.Background(), blob.AccessTierSmart, &blob.SetTierOptions{
+		RehydratePriority: &rehydratePriority,
+	})
+	_require.NoError(err)
+
+	// Verify via ListBlobs
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	var blobs []*container.BlobItem
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		blobs = append(blobs, resp.Segment.BlobItems...)
+	}
+
+	_require.GreaterOrEqual(len(blobs), 2)
+	for _, b := range blobs {
+		_require.Equal(*b.Properties.ArchiveStatus, blob.ArchiveStatusRehydratePendingToSmart)
+	}
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestSetTierOnBlobUploadSmart() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	tier := blob.AccessTierSmart
+	uploadBlockBlobOptions := blockblob.UploadOptions{
+		Tier: &tier,
+	}
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &uploadBlockBlobOptions)
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.AccessTier, string(blob.AccessTierSmart))
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommitSmart() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := "test" + testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	_, err = bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.NoError(err)
+
+	tier := blob.AccessTierSmart
+	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
+		Tier: &tier,
+	})
+	_require.NoError(err)
+
+	getResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getResp.AccessTier, string(blob.AccessTierSmart))
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestStartCopyFromURLSmartAccessTier() {
+	// Smart access tier is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Smart access tier is in public preview and not GA yet")
+	}
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	sourceBlobName := testcommon.GenerateBlobName(testName)
+	sourceBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, sourceBlobName, containerClient)
+
+	destBlobName := "dest" + testcommon.GenerateBlobName(testName)
+	destBBClient := testcommon.GetBlockBlobClient(destBlobName, containerClient)
+
+	tier := blob.AccessTierSmart
+	_, err = destBBClient.StartCopyFromURL(context.Background(), sourceBBClient.URL(), &blob.StartCopyFromURLOptions{
+		Tier: &tier,
+	})
+	_require.NoError(err)
+
+	// Wait briefly and check tier
+	getResp, err := destBBClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getResp.AccessTier, string(blob.AccessTierSmart))
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlockBlobGetPropertiesUsingVID() {
@@ -6312,4 +6666,374 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPKFail() {
 		},
 	})
 	_require.Error(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithUDSCreatePermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClient, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// StageBlock should succeed for a new blob (no existing blob)
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = bbClient.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithUDSCreatePermissionOverwriteFails() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Upload a blob first so it exists
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClientWithSAS, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// StageBlock should fail since blob already exists (UnauthorizedBlobOverwrite)
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = bbClientWithSAS.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.UnauthorizedBlobOverwrite)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithUDSCreatePermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create and upload a source blob with all permissions
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create SAS URL for source blob with Read permission
+	srcPerms := sas.BlobPermissions{Read: true}
+	srcSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   srcPerms.String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	srcBlobURLWithSAS := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, srcBlobName, srcSASParams.Encode())
+
+	// Create SAS URL for destination blob with Create-only permission
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destPerms := sas.BlobPermissions{Create: true}
+	destSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   destPerms.String(),
+		ContainerName: containerName,
+		BlobName:      destBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	destBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, destBlobName, destSASParams.Encode())
+
+	destBBClient, err := blockblob.NewClientWithNoCredential(destBlobURL, nil)
+	_require.NoError(err)
+
+	// StageBlockFromURL should succeed for a new blob
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = destBBClient.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithUDSCreatePermissionOverwriteFails() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create and upload a source blob
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+	contentSize := 4 * 1024
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Create the destination blob so it already exists
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+	_, err = destBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create SAS URL for source blob with Read permission
+	srcPerms := sas.BlobPermissions{Read: true}
+	srcSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   srcPerms.String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	srcBlobURLWithSAS := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, srcBlobName, srcSASParams.Encode())
+
+	// Create SAS URL for destination blob with Create-only permission
+	destPerms := sas.BlobPermissions{Create: true}
+	destSASParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   destPerms.String(),
+		ContainerName: containerName,
+		BlobName:      destBlobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	destBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, destBlobName, destSASParams.Encode())
+
+	destBBClient, err := blockblob.NewClientWithNoCredential(destBlobURL, nil)
+	_require.NoError(err)
+
+	// StageBlockFromURL should fail since destination blob already exists (UnauthorizedBlobOverwrite)
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = destBBClient.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.UnauthorizedBlobOverwrite)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestCommitBlockListWithUDSCreatePermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClient, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// CommitBlockList with empty block list should succeed for a new blob (no committed block list)
+	_, err = bbClient.CommitBlockList(context.Background(), []string{}, nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestCommitBlockListWithUDSCreatePermissionOverwriteFails() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// First, create the blob with a committed block list
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.CommitBlockList(context.Background(), []string{}, nil)
+	_require.NoError(err)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create blob-level SAS with Create-only permission
+	permissions := sas.BlobPermissions{Create: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		BlobName:      blobName,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, sasQueryParams.Encode())
+	bbClientWithSAS, err := blockblob.NewClientWithNoCredential(blobURL, nil)
+	_require.NoError(err)
+
+	// CommitBlockList should fail since blob already has a committed block list (UnauthorizedBlobOverwrite)
+	_, err = bbClientWithSAS.CommitBlockList(context.Background(), []string{}, nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.UnauthorizedBlobOverwrite)
 }

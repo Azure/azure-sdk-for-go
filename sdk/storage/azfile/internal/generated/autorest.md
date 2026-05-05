@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a30ef1ee2e9795f4d77e8c62fad52b33e60d4cb7/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-04-06/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e1470c23ac1cb2a15cd5ef1e2b2dd187a3de13e9/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-06-06/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -20,7 +20,7 @@ modelerfour:
   lenient-model-deduplication: true
 export-clients: true
 honor-body-placement: true
-use: "@autorest/go@4.0.0-preview.61"
+use: "@autorest/go@4.0.0-preview.65"
 ```
 
 ### Changing casing of NfsFileType, Nfs, ShareNfsSettingsEncryptionInTransit and ShareNfsSettings
@@ -30,7 +30,7 @@ directive:
 - from: 
   - zz_constants.go
   - zz_options.go
-  - zz_response_types.go
+  - zz_responses.go
   - zz_file_client.go
   - zz_directory_client.go
   - zz_models.go
@@ -48,7 +48,7 @@ directive:
 ```yaml
 directive:
 - from: 
-  - zz_response_types.go
+  - zz_responses.go
   - zz_share_client.go
   where: $
   transform: >-
@@ -141,7 +141,7 @@ directive:
       replace(/import "time"/, `import (\n\t"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n)`).
       replace(/Etag\s+\*string/g, `ETag *azcore.ETag`);
 
-- from: zz_response_types.go
+- from: zz_responses.go
   where: $
   transform: >-
     return $.
@@ -181,7 +181,7 @@ directive:
   - zz_models.go
   - zz_options.go
   - zz_share_client.go
-  - zz_response_types.go
+  - zz_responses.go
   where: $
   transform: >-
     return $.
@@ -256,7 +256,7 @@ directive:
 - from:
   - zz_directory_client.go
   - zz_file_client.go
-  - zz_response_types.go
+  - zz_responses.go
   where: $
   transform: >-
     return $.

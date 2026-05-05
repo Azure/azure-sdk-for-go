@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -371,8 +372,7 @@ func (f *FileRecordedTestsSuite) TestFileCreateWithBodyUsingSharedKey() {
 	body := readSeekNopCloser{bytes.NewReader(content)}
 
 	resp, err := fileClient.Create(context.Background(), int64(len(content)), &file.CreateOptions{
-		OptionalBody:  body,
-		ContentLength: to.Ptr(int64(len(content))),
+		OptionalBody: body,
 	})
 	_require.NoError(err)
 	_require.NotNil(resp.ETag)
@@ -417,8 +417,7 @@ func (f *FileRecordedTestsSuite) TestFileCreateWithEmptyBody() {
 
 	// Create with nil OptionalBody but length > 0
 	createOpts := &file.CreateOptions{
-		OptionalBody:  nil,
-		ContentLength: to.Ptr(int64(512)),
+		OptionalBody: nil,
 	}
 	resp, err := fileClient.Create(context.Background(), 512, createOpts)
 	_require.NoError(err)
@@ -5587,4 +5586,260 @@ func (f *FileUnrecordedTestsSuite) TestFileDownloadBufferLargeData() {
 	}
 
 	_require.EqualValues(destBuffer[:int(cnt)], content[:int(cnt)])
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateFilePropertySemantics() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	propertySemanticsValues := []*file.PropertySemantics{
+		nil,
+		to.Ptr(file.FilePropertySemanticsNew),
+		to.Ptr(file.FilePropertySemanticsRestore),
+	}
+
+	for i, ps := range propertySemanticsValues {
+		fileName := testcommon.GenerateFileName(testName) + strconv.Itoa(i)
+		fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+		opts := &file.CreateOptions{
+			FilePropertySemantics: ps,
+		}
+
+		if ps != nil && *ps == file.FilePropertySemanticsRestore {
+			opts.Permissions = &file.Permissions{
+				Permission: to.Ptr("O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"),
+			}
+		}
+
+		cResp, err := fileClient.Create(context.Background(), 1024, opts)
+		_require.NoError(err)
+		_require.NotNil(cResp.ETag)
+
+		fileAttributes, err := file.ParseNTFSFileAttributes(cResp.FileAttributes)
+		_require.NoError(err)
+		_require.NotNil(fileAttributes)
+
+		if ps != nil && *ps == file.FilePropertySemanticsRestore {
+			// Restore mode should not modify file attribute flags
+			_require.False(fileAttributes.Archive)
+		} else {
+			// New mode (or nil/default) should automatically add Archive attribute
+			_require.True(fileAttributes.Archive)
+		}
+	}
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateData() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	body, data := testcommon.GenerateData(1024)
+
+	resp, err := fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
+		OptionalBody: body,
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Download and verify content
+	downloadResp, err := fileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloaded, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(len(data), len(downloaded))
+	_require.EqualValues(data, downloaded)
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateDataPrecalculatedChecksum() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	body, data := testcommon.GenerateData(1024)
+
+	hash := md5.Sum(data)
+	contentMD5 := hash[:]
+
+	resp, err := fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
+		OptionalBody: body,
+		ContentMD5:   contentMD5,
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.EqualValues(contentMD5, resp.ContentMD5)
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateDataIncorrectMD5() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	body, data := testcommon.GenerateData(1024)
+
+	// Use an incorrect MD5 hash
+	md5Str := "MDAwMDAwMDAwMDA="
+	wrongMD5 := []byte(md5Str)
+
+	_, err = fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
+		OptionalBody: body,
+		ContentMD5:   wrongMD5,
+	})
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.MD5Mismatch)
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateDataWithMD5NoBody() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	// Create with no ContentMD5 and no body - should succeed with no content hash in response
+	resp, err := fileClient.Create(context.Background(), 1024, &file.CreateOptions{
+		ContentMD5: nil,
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.Nil(resp.ContentMD5)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileCreateDataExceedMaxSize() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	// Create data exceeding 4 MiB (4 * 1024 * 1024 + 1 bytes)
+	dataSize := 4*1024*1024 + 1
+	data := make([]byte, dataSize)
+	_, err = rand.Read(data)
+	_require.NoError(err)
+
+	body := readSeekNopCloser{bytes.NewReader(data)}
+
+	// The maximum number of bytes in the request body is 4 MiB
+	_, err = fileClient.Create(context.Background(), int64(dataSize), &file.CreateOptions{
+		OptionalBody: body,
+	})
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.RequestBodyTooLarge)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileCreateDataExactly4MiB() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	// Create data of exactly 4 MiB - should succeed
+	dataSize := 4 * 1024 * 1024
+	data := make([]byte, dataSize)
+	_, err = rand.Read(data)
+	_require.NoError(err)
+
+	body := readSeekNopCloser{bytes.NewReader(data)}
+
+	resp, err := fileClient.Create(context.Background(), int64(dataSize), &file.CreateOptions{
+		OptionalBody: body,
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Verify by checking properties
+	props, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(int64(dataSize), *props.ContentLength)
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateDataWithMD5Validation() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Test with various data sizes
+	dataSizes := []int{1, 512, 1024, 4096}
+
+	for _, size := range dataSizes {
+		fileName := testcommon.GenerateFileName(testName + fmt.Sprintf("%d", size))
+		fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+		body, data := testcommon.GenerateData(size)
+
+		hash := md5.Sum(data)
+		contentMD5 := hash[:]
+
+		resp, err := fileClient.Create(context.Background(), int64(size), &file.CreateOptions{
+			OptionalBody: body,
+			ContentMD5:   contentMD5,
+		})
+		_require.NoError(err)
+		_require.NotNil(resp.ETag)
+		_require.EqualValues(contentMD5, resp.ContentMD5)
+	}
 }

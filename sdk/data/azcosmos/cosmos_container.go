@@ -935,6 +935,9 @@ func (c *ContainerClient) fetchPartitionKeyRangesDirect(ctx context.Context, o *
 		operationContext,
 		o,
 		nil)
+	if err != nil {
+		return partitionKeyRangeResponse{}, err
+	}
 
 	response, err := newPartitionKeyRangeResponse(azResponse)
 	if err != nil {

@@ -4120,9 +4120,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	// Create blob client with TokenCredential
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
-			ContainerName: containerName,
-			AccountName:   accountName,
+			Mode:        service.SessionModeEnabled,
+			AccountName: accountName,
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -4175,7 +4174,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode: service.SessionModeOff,
+			Mode: service.SessionModeDisabled,
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -4197,8 +4196,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 	sessionAuthCount := sessionTracker.sessionAuthCount
 	sessionTracker.mu.Unlock()
 
-	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when SessionModeOff")
-	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when SessionModeOff")
+	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when SessionModeDisabled")
+	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when SessionModeDisabled")
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainerName() {
@@ -4232,13 +4231,11 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainerNa
 
 	sessionTracker := &authRequestTracker{}
 
-	// Configure SessionOptions with a different container name than the one being accessed
-	differentContainerName := testcommon.GenerateContainerName(testName + "other")
+	// Configure SessionOptions — the container name is now resolved from the request URL
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
-			ContainerName: differentContainerName,
-			AccountName:   accountName,
+			Mode:        service.SessionModeEnabled,
+			AccountName: accountName,
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -4307,9 +4304,8 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentD
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
-			ContainerName: containerName,
-			AccountName:   accountName,
+			Mode:        service.SessionModeEnabled,
+			AccountName: accountName,
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -4405,8 +4401,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
-			ContainerName: containerName,
+			Mode:          service.SessionModeEnabled,
 			AccountName:   accountName,
 		},
 	}
@@ -4481,8 +4476,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
-			ContainerName: containerName,
+			Mode:          service.SessionModeEnabled,
 			AccountName:   accountName,
 		},
 	}
@@ -4567,9 +4561,8 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpi
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
+			Mode:          service.SessionModeEnabled,
 			AccountName:   accountName,
-			ContainerName: containerName,
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -4662,9 +4655,8 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
+			Mode:          service.SessionModeEnabled,
 			AccountName:   accountName,
-			ContainerName: containerName,
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
@@ -4727,9 +4719,8 @@ func (s *BlobRecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUsesSe
 
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleSpecifiedContainer,
+			Mode:          service.SessionModeEnabled,
 			AccountName:   accountName,
-			ContainerName: containerName,
 		},
 	}
 	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)

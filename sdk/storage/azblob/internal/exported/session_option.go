@@ -9,18 +9,18 @@ type SessionMode string
 const (
 	// SessionModeDefault is the default mode where sessions are disabled.
 	SessionModeDefault SessionMode = ""
-	// SessionModeOff explicitly disables session-based authentication.
-	SessionModeOff SessionMode = "off"
-	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.
-	SessionModeSingleSpecifiedContainer SessionMode = "singlespecifiedcontainer"
+	// SessionModeDisabled explicitly disables session-based authentication.
+	SessionModeDisabled SessionMode = "disabled"
+	// SessionModeEnabled enables session-based authentication.
+	SessionModeEnabled SessionMode = "enabled"
 )
 
 // PossibleSessionModeValues returns a slice of possible values for SessionMode.
 func PossibleSessionModeValues() []SessionMode {
 	return []SessionMode{
 		SessionModeDefault,
-		SessionModeOff,
-		SessionModeSingleSpecifiedContainer,
+		SessionModeDisabled,
+		SessionModeEnabled,
 	}
 }
 
@@ -31,6 +31,4 @@ type SessionOptions struct {
 
 	// AccountName is the storage account name.
 	AccountName string
-	// ContainerName is the container name for SingleSpecifiedContainer mode.
-	ContainerName string
 }

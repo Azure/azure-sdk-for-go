@@ -20,10 +20,10 @@ type SessionMode = exported.SessionMode
 const (
 	// SessionModeDefault is the default mode where sessions are disabled.
 	SessionModeDefault SessionMode = exported.SessionModeDefault
-	// SessionModeOff explicitly disables session-based authentication.
-	SessionModeOff SessionMode = exported.SessionModeOff
-	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.
-	SessionModeSingleSpecifiedContainer SessionMode = exported.SessionModeSingleSpecifiedContainer
+	// SessionModeDisabled explicitly disables session-based authentication.
+	SessionModeDisabled SessionMode = exported.SessionModeDisabled
+	// SessionModeEnabled enables session-based authentication for a single container.
+	SessionModeEnabled SessionMode = exported.SessionModeEnabled
 )
 
 // PossibleSessionModeValues returns a slice of possible values for SessionMode.
@@ -92,7 +92,7 @@ func GetAzClient(storageURL string, cred azcore.TokenCredential, options *Client
 	if err != nil {
 		return nil, err
 	}
-	if options == nil || options.SessionOptions.Mode == SessionModeOff || options.SessionOptions.Mode == SessionModeDefault {
+	if options == nil || options.SessionOptions.Mode == SessionModeDisabled || options.SessionOptions.Mode == SessionModeDefault {
 		return oauthAzClient, nil
 	}
 	oAuthServiceClient, err := getServiceClient(storageURL, oauthAzClient, &cred, conOptions)

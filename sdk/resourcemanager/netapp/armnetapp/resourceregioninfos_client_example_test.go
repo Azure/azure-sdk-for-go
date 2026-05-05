@@ -30,7 +30,7 @@ func ExampleResourceRegionInfosClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceRegionInfosClientGetResponse{
-	// 	RegionInfoResource: &armnetapp.RegionInfoResource{
+	// 	RegionInfoResource: armnetapp.RegionInfoResource{
 	// 		Name: to.Ptr("eastus/default"),
 	// 		Type: to.Ptr("Microsoft.NetApp/locations/regionInfos"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/regionInfos/default"),

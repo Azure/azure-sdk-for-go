@@ -19,6 +19,49 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+// AllocationStrategy - The allocation strategy for VM size selection
+type AllocationStrategy string
+
+const (
+	// AllocationStrategyCapacityOptimized - Platform prioritizes VM sizes with the highest available capacity first
+	AllocationStrategyCapacityOptimized AllocationStrategy = "CapacityOptimized"
+	// AllocationStrategyLowestPrice - Platform prioritizes VM sizes with the lowest hourly cost
+	AllocationStrategyLowestPrice AllocationStrategy = "LowestPrice"
+	// AllocationStrategyPrioritized - Customer specifies a rank for each VM size, platform uses VM sizes in rank order
+	AllocationStrategyPrioritized AllocationStrategy = "Prioritized"
+)
+
+// PossibleAllocationStrategyValues returns the possible values for the AllocationStrategy const type.
+func PossibleAllocationStrategyValues() []AllocationStrategy {
+	return []AllocationStrategy{
+		AllocationStrategyCapacityOptimized,
+		AllocationStrategyLowestPrice,
+		AllocationStrategyPrioritized,
+	}
+}
+
+// CachingTypes - Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default
+// values are: **None for Standard storage. ReadOnly for Premium storage**
+type CachingTypes string
+
+const (
+	// CachingTypesNone - Caching type:None
+	CachingTypesNone CachingTypes = "None"
+	// CachingTypesReadOnly - Caching type:ReadOnly
+	CachingTypesReadOnly CachingTypes = "ReadOnly"
+	// CachingTypesReadWrite - Caching type:ReadWrite
+	CachingTypesReadWrite CachingTypes = "ReadWrite"
+)
+
+// PossibleCachingTypesValues returns the possible values for the CachingTypes const type.
+func PossibleCachingTypesValues() []CachingTypes {
+	return []CachingTypes{
+		CachingTypesNone,
+		CachingTypesReadOnly,
+		CachingTypesReadWrite,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -64,6 +107,249 @@ func PossibleDeadlineTypeValues() []DeadlineType {
 	}
 }
 
+// DeleteOptions - Specify what happens to the network interface when the VM is deleted
+type DeleteOptions string
+
+const (
+	// DeleteOptionsDelete - Delete network interface when the VM is deleted
+	DeleteOptionsDelete DeleteOptions = "Delete"
+	// DeleteOptionsDetach - Detach network interface when the VM is deleted
+	DeleteOptionsDetach DeleteOptions = "Detach"
+)
+
+// PossibleDeleteOptionsValues returns the possible values for the DeleteOptions const type.
+func PossibleDeleteOptionsValues() []DeleteOptions {
+	return []DeleteOptions{
+		DeleteOptionsDelete,
+		DeleteOptionsDetach,
+	}
+}
+
+// DiffDiskOptions - Specifies the ephemeral disk option for operating system disk.
+type DiffDiskOptions string
+
+const (
+	// DiffDiskOptionsLocal - Local Ephemeral disk option: Local
+	DiffDiskOptionsLocal DiffDiskOptions = "Local"
+)
+
+// PossibleDiffDiskOptionsValues returns the possible values for the DiffDiskOptions const type.
+func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
+	return []DiffDiskOptions{
+		DiffDiskOptionsLocal,
+	}
+}
+
+// DiffDiskPlacement - Specifies the ephemeral disk placement for operating system disk. This property can be used by user
+// in the request to choose the location i.e, cache disk, resource disk or nvme disk space for Ephemeral OS disk provisioning.
+// For more information on Ephemeral OS disk size requirements, please refer Ephemeral OS disk size requirements for Windows
+// VM at https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VM at https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+// Minimum api-version for NvmeDisk: 2024-03-01.
+type DiffDiskPlacement string
+
+const (
+	// DiffDiskPlacementCacheDisk - CacheDisk disk placement
+	DiffDiskPlacementCacheDisk DiffDiskPlacement = "CacheDisk"
+	// DiffDiskPlacementNvmeDisk - NvmeDisk disk placement
+	DiffDiskPlacementNvmeDisk DiffDiskPlacement = "NvmeDisk"
+	// DiffDiskPlacementResourceDisk - ResourceDisk disk placement
+	DiffDiskPlacementResourceDisk DiffDiskPlacement = "ResourceDisk"
+)
+
+// PossibleDiffDiskPlacementValues returns the possible values for the DiffDiskPlacement const type.
+func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
+	return []DiffDiskPlacement{
+		DiffDiskPlacementCacheDisk,
+		DiffDiskPlacementNvmeDisk,
+		DiffDiskPlacementResourceDisk,
+	}
+}
+
+// DiskControllerTypes - Specifies the disk controller type configured for the VM and VirtualMachineScaleSet. This property
+// is only supported for virtual machines whose operating system disk and VM sku supports Generation 2 (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2),
+// please check the HyperVGenerations capability returned as part of VM sku capabilities in the response of Microsoft.Compute
+// SKUs api for the region contains V2 (https://docs.microsoft.com/rest/api/compute/resourceskus/list). For more information
+// about Disk Controller Types supported please refer to https://aka.ms/azure-diskcontrollertypes.
+type DiskControllerTypes string
+
+const (
+	// DiskControllerTypesNVMe - NVMe disk controller type
+	DiskControllerTypesNVMe DiskControllerTypes = "NVMe"
+	// DiskControllerTypesSCSI - SCSI disk controller type
+	DiskControllerTypesSCSI DiskControllerTypes = "SCSI"
+)
+
+// PossibleDiskControllerTypesValues returns the possible values for the DiskControllerTypes const type.
+func PossibleDiskControllerTypesValues() []DiskControllerTypes {
+	return []DiskControllerTypes{
+		DiskControllerTypesNVMe,
+		DiskControllerTypesSCSI,
+	}
+}
+
+// DiskCreateOptionTypes - Specifies how the virtual machine disk should be created. Possible values are **Attach:** This
+// value is used when you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when
+// you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
+// element described above. If you are using a marketplace image, you should also use the plan element previously described.
+// **Empty:** This value is used when creating an empty data disk. **Copy:** This value is used to create a data disk from
+// a snapshot or another disk. **Restore:** This value is used to create a data disk from a disk restore point.
+type DiskCreateOptionTypes string
+
+const (
+	// DiskCreateOptionTypesAttach - Create disk by Attach
+	DiskCreateOptionTypesAttach DiskCreateOptionTypes = "Attach"
+	// DiskCreateOptionTypesCopy - Create disk by Copy
+	DiskCreateOptionTypesCopy DiskCreateOptionTypes = "Copy"
+	// DiskCreateOptionTypesEmpty - Empty value
+	DiskCreateOptionTypesEmpty DiskCreateOptionTypes = "Empty"
+	// DiskCreateOptionTypesFromImage - Create disk FromImage
+	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "FromImage"
+	// DiskCreateOptionTypesRestore - Create disk by Restore
+	DiskCreateOptionTypesRestore DiskCreateOptionTypes = "Restore"
+)
+
+// PossibleDiskCreateOptionTypesValues returns the possible values for the DiskCreateOptionTypes const type.
+func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
+	return []DiskCreateOptionTypes{
+		DiskCreateOptionTypesAttach,
+		DiskCreateOptionTypesCopy,
+		DiskCreateOptionTypesEmpty,
+		DiskCreateOptionTypesFromImage,
+		DiskCreateOptionTypesRestore,
+	}
+}
+
+// DiskDeleteOptionTypes - Specifies the behavior of the managed disk when the VM gets deleted, for example whether the managed
+// disk is deleted or detached. Supported values are: **Delete.** If this value is used, the managed disk is deleted when
+// VM gets deleted. **Detach.** If this value is used, the managed disk is retained after VM gets deleted. Minimum api-version:
+// 2021-03-01.
+type DiskDeleteOptionTypes string
+
+const (
+	// DiskDeleteOptionTypesDelete - Delete the disk upon VM deletion
+	DiskDeleteOptionTypesDelete DiskDeleteOptionTypes = "Delete"
+	// DiskDeleteOptionTypesDetach - Detach the disk upon VM deletion
+	DiskDeleteOptionTypesDetach DiskDeleteOptionTypes = "Detach"
+)
+
+// PossibleDiskDeleteOptionTypesValues returns the possible values for the DiskDeleteOptionTypes const type.
+func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
+	return []DiskDeleteOptionTypes{
+		DiskDeleteOptionTypesDelete,
+		DiskDeleteOptionTypesDetach,
+	}
+}
+
+// DiskDetachOptionTypes - Specifies the detach behavior to be used while detaching a disk or which is already in the process
+// of detachment from the virtual machine. Supported values are: **ForceDetach.** detachOption: **ForceDetach** is applicable
+// only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected failure
+// from the virtual machine and the disk is still not released then use force-detach as a last resort option to detach the
+// disk forcibly from the VM. All writes might not have been flushed when using this detach behavior. **This feature is still
+// in preview**. To force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+type DiskDetachOptionTypes string
+
+const (
+	// DiskDetachOptionTypesForceDetach - ForceDetach the disk
+	DiskDetachOptionTypesForceDetach DiskDetachOptionTypes = "ForceDetach"
+)
+
+// PossibleDiskDetachOptionTypesValues returns the possible values for the DiskDetachOptionTypes const type.
+func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
+	return []DiskDetachOptionTypes{
+		DiskDetachOptionTypesForceDetach,
+	}
+}
+
+// DistributionStrategy - The distribution strategy for zone allocation
+type DistributionStrategy string
+
+const (
+	// DistributionStrategyBestEffortBalanced - Platform attempts to evenly distribute VMs across all available zones with best
+	// effort
+	DistributionStrategyBestEffortBalanced DistributionStrategy = "BestEffortBalanced"
+	// DistributionStrategyBestEffortSingleZone - Platform attempts to place as many VMs as possible in a single zone, falls back
+	// to multiple zones if needed
+	DistributionStrategyBestEffortSingleZone DistributionStrategy = "BestEffortSingleZone"
+	// DistributionStrategyPrioritized - Platform uses customer-provided zone rankings to allocate VMs
+	DistributionStrategyPrioritized DistributionStrategy = "Prioritized"
+	// DistributionStrategyStrictBalanced - Platform must evenly distribute VMs across zones, request is rejected if exact balance
+	// cannot be achieved
+	DistributionStrategyStrictBalanced DistributionStrategy = "StrictBalanced"
+)
+
+// PossibleDistributionStrategyValues returns the possible values for the DistributionStrategy const type.
+func PossibleDistributionStrategyValues() []DistributionStrategy {
+	return []DistributionStrategy{
+		DistributionStrategyBestEffortBalanced,
+		DistributionStrategyBestEffortSingleZone,
+		DistributionStrategyPrioritized,
+		DistributionStrategyStrictBalanced,
+	}
+}
+
+// DomainNameLabelScopeTypes - The Domain name label scope.The concatenation of the hashed domain name label that generated
+// according to the policy from domain name label scope and vm index will be the domain name labels of the PublicIPAddress
+// resources that will be created
+type DomainNameLabelScopeTypes string
+
+const (
+	// DomainNameLabelScopeTypesNoReuse - NoReuse scope type
+	DomainNameLabelScopeTypesNoReuse DomainNameLabelScopeTypes = "NoReuse"
+	// DomainNameLabelScopeTypesResourceGroupReuse - ResourceGroupReuse scope type
+	DomainNameLabelScopeTypesResourceGroupReuse DomainNameLabelScopeTypes = "ResourceGroupReuse"
+	// DomainNameLabelScopeTypesSubscriptionReuse - SubscriptionReuse scope type
+	DomainNameLabelScopeTypesSubscriptionReuse DomainNameLabelScopeTypes = "SubscriptionReuse"
+	// DomainNameLabelScopeTypesTenantReuse - TenantReuse scope type
+	DomainNameLabelScopeTypesTenantReuse DomainNameLabelScopeTypes = "TenantReuse"
+)
+
+// PossibleDomainNameLabelScopeTypesValues returns the possible values for the DomainNameLabelScopeTypes const type.
+func PossibleDomainNameLabelScopeTypesValues() []DomainNameLabelScopeTypes {
+	return []DomainNameLabelScopeTypes{
+		DomainNameLabelScopeTypesNoReuse,
+		DomainNameLabelScopeTypesResourceGroupReuse,
+		DomainNameLabelScopeTypesSubscriptionReuse,
+		DomainNameLabelScopeTypesTenantReuse,
+	}
+}
+
+// ExtendedLocationType - The supported ExtendedLocation types.
+type ExtendedLocationType string
+
+const (
+	// ExtendedLocationTypeCustomLocation - Azure Custom Locations type
+	ExtendedLocationTypeCustomLocation ExtendedLocationType = "CustomLocation"
+	// ExtendedLocationTypeEdgeZone - Azure Edge Zones location type
+	ExtendedLocationTypeEdgeZone ExtendedLocationType = "EdgeZone"
+)
+
+// PossibleExtendedLocationTypeValues returns the possible values for the ExtendedLocationType const type.
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return []ExtendedLocationType{
+		ExtendedLocationTypeCustomLocation,
+		ExtendedLocationTypeEdgeZone,
+	}
+}
+
+// IPVersions - Available from compute Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration
+// is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+type IPVersions string
+
+const (
+	// IPVersionsIPv4 - IPv4 version
+	IPVersionsIPv4 IPVersions = "IPv4"
+	// IPVersionsIPv6 - IPv6 version
+	IPVersionsIPv6 IPVersions = "IPv6"
+)
+
+// PossibleIPVersionsValues returns the possible values for the IPVersions const type.
+func PossibleIPVersionsValues() []IPVersions {
+	return []IPVersions{
+		IPVersionsIPv4,
+		IPVersionsIPv6,
+	}
+}
+
 // Language - The notification languages currently supported
 type Language string
 
@@ -76,6 +362,116 @@ const (
 func PossibleLanguageValues() []Language {
 	return []Language{
 		LanguageEnUs,
+	}
+}
+
+// LinuxPatchAssessmentMode - Specifies the mode of VM Guest Patch Assessment for the IaaS virtual machine.<br /><br /> Possible
+// values are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine. <br /><br
+// /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent must be
+// true.
+type LinuxPatchAssessmentMode string
+
+const (
+	// LinuxPatchAssessmentModeAutomaticByPlatform - AutomaticByPlatform mode
+	LinuxPatchAssessmentModeAutomaticByPlatform LinuxPatchAssessmentMode = "AutomaticByPlatform"
+	// LinuxPatchAssessmentModeImageDefault - ImageDefault mode
+	LinuxPatchAssessmentModeImageDefault LinuxPatchAssessmentMode = "ImageDefault"
+)
+
+// PossibleLinuxPatchAssessmentModeValues returns the possible values for the LinuxPatchAssessmentMode const type.
+func PossibleLinuxPatchAssessmentModeValues() []LinuxPatchAssessmentMode {
+	return []LinuxPatchAssessmentMode{
+		LinuxPatchAssessmentModeAutomaticByPlatform,
+		LinuxPatchAssessmentModeImageDefault,
+	}
+}
+
+// LinuxVMGuestPatchAutomaticByPlatformRebootSetting - Specifies the reboot setting for all AutomaticByPlatform patch installation
+// operations.
+type LinuxVMGuestPatchAutomaticByPlatformRebootSetting string
+
+const (
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways - Always reboot
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired - Reboot if required
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "IfRequired"
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever - Never reboot
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown - Unknown reboot setting
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
+)
+
+// PossibleLinuxVMGuestPatchAutomaticByPlatformRebootSettingValues returns the possible values for the LinuxVMGuestPatchAutomaticByPlatformRebootSetting const type.
+func PossibleLinuxVMGuestPatchAutomaticByPlatformRebootSettingValues() []LinuxVMGuestPatchAutomaticByPlatformRebootSetting {
+	return []LinuxVMGuestPatchAutomaticByPlatformRebootSetting{
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways,
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired,
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever,
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown,
+	}
+}
+
+// LinuxVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
+// to virtual machine scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **ImageDefault**
+// - The virtual machine's default patching configuration is used. <br /><br /> **AutomaticByPlatform** - The virtual machine
+// will be automatically updated by the platform. The property provisionVMAgent must be true
+type LinuxVMGuestPatchMode string
+
+const (
+	// LinuxVMGuestPatchModeAutomaticByPlatform - AutomaticByPlatform linux VM guest patch mode
+	LinuxVMGuestPatchModeAutomaticByPlatform LinuxVMGuestPatchMode = "AutomaticByPlatform"
+	// LinuxVMGuestPatchModeImageDefault - ImageDefault linux VM guest patch mode
+	LinuxVMGuestPatchModeImageDefault LinuxVMGuestPatchMode = "ImageDefault"
+)
+
+// PossibleLinuxVMGuestPatchModeValues returns the possible values for the LinuxVMGuestPatchMode const type.
+func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
+	return []LinuxVMGuestPatchMode{
+		LinuxVMGuestPatchModeAutomaticByPlatform,
+		LinuxVMGuestPatchModeImageDefault,
+	}
+}
+
+// Mode - Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent will start to audit or
+// monitor but not enforce access control over requests to host endpoints in Audit mode, while in Enforce mode it will enforce
+// access control. The default value is Enforce mode.
+type Mode string
+
+const (
+	// ModeAudit - Audit mode
+	ModeAudit Mode = "Audit"
+	// ModeEnforce - Enforce mode
+	ModeEnforce Mode = "Enforce"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeAudit,
+		ModeEnforce,
+	}
+}
+
+// Modes - Specifies the execution mode. In Audit mode, the system acts as if it is enforcing the access control policy, including
+// emitting access denial entries in the logs but it does not actually deny any requests to host endpoints. In Enforce mode,
+// the system will enforce the access control and it is the recommended mode of operation.
+type Modes string
+
+const (
+	// ModesAudit - Audit mode
+	ModesAudit Modes = "Audit"
+	// ModesDisabled - Disabled mode
+	ModesDisabled Modes = "Disabled"
+	// ModesEnforce - Enforce mode
+	ModesEnforce Modes = "Enforce"
+)
+
+// PossibleModesValues returns the possible values for the Modes const type.
+func PossibleModesValues() []Modes {
+	return []Modes{
+		ModesAudit,
+		ModesDisabled,
+		ModesEnforce,
 	}
 }
 
@@ -130,6 +526,73 @@ func PossibleMonthValues() []Month {
 	}
 }
 
+// NetworkAPIVersion - Specifies the Microsoft.Network API version used when creating networking resources in the Network
+// Interface Configurations
+type NetworkAPIVersion string
+
+const (
+	// NetworkAPIVersion20201101 - 2020-11-01 version
+	NetworkAPIVersion20201101 NetworkAPIVersion = "2020-11-01"
+	// NetworkAPIVersion20221101 - 2022-11-01 version
+	NetworkAPIVersion20221101 NetworkAPIVersion = "2022-11-01"
+)
+
+// PossibleNetworkAPIVersionValues returns the possible values for the NetworkAPIVersion const type.
+func PossibleNetworkAPIVersionValues() []NetworkAPIVersion {
+	return []NetworkAPIVersion{
+		NetworkAPIVersion20201101,
+		NetworkAPIVersion20221101,
+	}
+}
+
+// NetworkInterfaceAuxiliaryMode - Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+type NetworkInterfaceAuxiliaryMode string
+
+const (
+	// NetworkInterfaceAuxiliaryModeAcceleratedConnections - AcceleratedConnections mode
+	NetworkInterfaceAuxiliaryModeAcceleratedConnections NetworkInterfaceAuxiliaryMode = "AcceleratedConnections"
+	// NetworkInterfaceAuxiliaryModeFloating - Floating mode
+	NetworkInterfaceAuxiliaryModeFloating NetworkInterfaceAuxiliaryMode = "Floating"
+	// NetworkInterfaceAuxiliaryModeNone - None mode
+	NetworkInterfaceAuxiliaryModeNone NetworkInterfaceAuxiliaryMode = "None"
+)
+
+// PossibleNetworkInterfaceAuxiliaryModeValues returns the possible values for the NetworkInterfaceAuxiliaryMode const type.
+func PossibleNetworkInterfaceAuxiliaryModeValues() []NetworkInterfaceAuxiliaryMode {
+	return []NetworkInterfaceAuxiliaryMode{
+		NetworkInterfaceAuxiliaryModeAcceleratedConnections,
+		NetworkInterfaceAuxiliaryModeFloating,
+		NetworkInterfaceAuxiliaryModeNone,
+	}
+}
+
+// NetworkInterfaceAuxiliarySKU - Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+type NetworkInterfaceAuxiliarySKU string
+
+const (
+	// NetworkInterfaceAuxiliarySKUA1 - A1 sku
+	NetworkInterfaceAuxiliarySKUA1 NetworkInterfaceAuxiliarySKU = "A1"
+	// NetworkInterfaceAuxiliarySKUA2 - A2 sku
+	NetworkInterfaceAuxiliarySKUA2 NetworkInterfaceAuxiliarySKU = "A2"
+	// NetworkInterfaceAuxiliarySKUA4 - A4 sku
+	NetworkInterfaceAuxiliarySKUA4 NetworkInterfaceAuxiliarySKU = "A4"
+	// NetworkInterfaceAuxiliarySKUA8 - A8 sku
+	NetworkInterfaceAuxiliarySKUA8 NetworkInterfaceAuxiliarySKU = "A8"
+	// NetworkInterfaceAuxiliarySKUNone - None: None sku
+	NetworkInterfaceAuxiliarySKUNone NetworkInterfaceAuxiliarySKU = "None"
+)
+
+// PossibleNetworkInterfaceAuxiliarySKUValues returns the possible values for the NetworkInterfaceAuxiliarySKU const type.
+func PossibleNetworkInterfaceAuxiliarySKUValues() []NetworkInterfaceAuxiliarySKU {
+	return []NetworkInterfaceAuxiliarySKU{
+		NetworkInterfaceAuxiliarySKUA1,
+		NetworkInterfaceAuxiliarySKUA2,
+		NetworkInterfaceAuxiliarySKUA4,
+		NetworkInterfaceAuxiliarySKUA8,
+		NetworkInterfaceAuxiliarySKUNone,
+	}
+}
+
 // NotificationType - The type of notification supported
 type NotificationType string
 
@@ -175,6 +638,25 @@ func PossibleOccurrenceStateValues() []OccurrenceState {
 		OccurrenceStateRescheduling,
 		OccurrenceStateScheduled,
 		OccurrenceStateSucceeded,
+	}
+}
+
+// OperatingSystemTypes - This property allows you to specify the supported type of the OS that application is built for.
+// Possible values are: **Windows,** **Linux.**
+type OperatingSystemTypes string
+
+const (
+	// OperatingSystemTypesLinux - Linux OS
+	OperatingSystemTypesLinux OperatingSystemTypes = "Linux"
+	// OperatingSystemTypesWindows - Windows OS
+	OperatingSystemTypesWindows OperatingSystemTypes = "Windows"
+)
+
+// PossibleOperatingSystemTypesValues returns the possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
+	return []OperatingSystemTypes{
+		OperatingSystemTypesLinux,
+		OperatingSystemTypesWindows,
 	}
 }
 
@@ -260,6 +742,60 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// OsType - The supported operating system types for flex VM creation
+type OsType string
+
+const (
+	// OsTypeLinux - Linux operating system
+	OsTypeLinux OsType = "Linux"
+	// OsTypeWindows - Windows operating system
+	OsTypeWindows OsType = "Windows"
+)
+
+// PossibleOsTypeValues returns the possible values for the OsType const type.
+func PossibleOsTypeValues() []OsType {
+	return []OsType{
+		OsTypeLinux,
+		OsTypeWindows,
+	}
+}
+
+// PriorityType - The priority type for VM allocation
+type PriorityType string
+
+const (
+	// PriorityTypeRegular - Regular priority VMs
+	PriorityTypeRegular PriorityType = "Regular"
+	// PriorityTypeSpot - Spot priority VMs
+	PriorityTypeSpot PriorityType = "Spot"
+)
+
+// PossiblePriorityTypeValues returns the possible values for the PriorityType const type.
+func PossiblePriorityTypeValues() []PriorityType {
+	return []PriorityType{
+		PriorityTypeRegular,
+		PriorityTypeSpot,
+	}
+}
+
+// ProtocolTypes - Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**
+type ProtocolTypes string
+
+const (
+	// ProtocolTypesHTTP - Http protocol
+	ProtocolTypesHTTP ProtocolTypes = "Http"
+	// ProtocolTypesHTTPS - Https protocol
+	ProtocolTypesHTTPS ProtocolTypes = "Https"
+)
+
+// PossibleProtocolTypesValues returns the possible values for the ProtocolTypes const type.
+func PossibleProtocolTypesValues() []ProtocolTypes {
+	return []ProtocolTypes{
+		ProtocolTypesHTTP,
+		ProtocolTypesHTTPS,
+	}
+}
+
 // ProvisioningState - Provisioning state
 type ProvisioningState string
 
@@ -281,6 +817,82 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// PublicIPAddressSKUName - Specify public IP sku name
+type PublicIPAddressSKUName string
+
+const (
+	// PublicIPAddressSKUNameBasic - Basic IP sku name
+	PublicIPAddressSKUNameBasic PublicIPAddressSKUName = "Basic"
+	// PublicIPAddressSKUNameStandard - Standard IP sku name
+	PublicIPAddressSKUNameStandard PublicIPAddressSKUName = "Standard"
+)
+
+// PossiblePublicIPAddressSKUNameValues returns the possible values for the PublicIPAddressSKUName const type.
+func PossiblePublicIPAddressSKUNameValues() []PublicIPAddressSKUName {
+	return []PublicIPAddressSKUName{
+		PublicIPAddressSKUNameBasic,
+		PublicIPAddressSKUNameStandard,
+	}
+}
+
+// PublicIPAddressSKUTier - Specify public IP sku tier
+type PublicIPAddressSKUTier string
+
+const (
+	// PublicIPAddressSKUTierGlobal - Global IP address sku tier
+	PublicIPAddressSKUTierGlobal PublicIPAddressSKUTier = "Global"
+	// PublicIPAddressSKUTierRegional - Regional IP address sku tier
+	PublicIPAddressSKUTierRegional PublicIPAddressSKUTier = "Regional"
+)
+
+// PossiblePublicIPAddressSKUTierValues returns the possible values for the PublicIPAddressSKUTier const type.
+func PossiblePublicIPAddressSKUTierValues() []PublicIPAddressSKUTier {
+	return []PublicIPAddressSKUTier{
+		PublicIPAddressSKUTierGlobal,
+		PublicIPAddressSKUTierRegional,
+	}
+}
+
+// PublicIPAllocationMethod - Specify the public IP allocation type
+type PublicIPAllocationMethod string
+
+const (
+	// PublicIPAllocationMethodDynamic - Dynamic IP allocation
+	PublicIPAllocationMethodDynamic PublicIPAllocationMethod = "Dynamic"
+	// PublicIPAllocationMethodStatic - Static IP allocation
+	PublicIPAllocationMethodStatic PublicIPAllocationMethod = "Static"
+)
+
+// PossiblePublicIPAllocationMethodValues returns the possible values for the PublicIPAllocationMethod const type.
+func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
+	return []PublicIPAllocationMethod{
+		PublicIPAllocationMethodDynamic,
+		PublicIPAllocationMethodStatic,
+	}
+}
+
+// ResourceIdentityType - The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned'
+// includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities
+// from the virtual machine scale set.
+type ResourceIdentityType string
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{
+		ResourceIdentityTypeNone,
+		ResourceIdentityTypeSystemAssigned,
+		ResourceIdentityTypeSystemAssignedUserAssigned,
+		ResourceIdentityTypeUserAssigned,
 	}
 }
 
@@ -306,8 +918,12 @@ func PossibleResourceOperationStatusValues() []ResourceOperationStatus {
 type ResourceOperationType string
 
 const (
+	// ResourceOperationTypeCreate - Create operations on the resources
+	ResourceOperationTypeCreate ResourceOperationType = "Create"
 	// ResourceOperationTypeDeallocate - Deallocate operations on the resources
 	ResourceOperationTypeDeallocate ResourceOperationType = "Deallocate"
+	// ResourceOperationTypeDelete - Delete operations on the resources
+	ResourceOperationTypeDelete ResourceOperationType = "Delete"
 	// ResourceOperationTypeHibernate - Hibernate operations on the resources
 	ResourceOperationTypeHibernate ResourceOperationType = "Hibernate"
 	// ResourceOperationTypeStart - Start operations on the resources
@@ -319,7 +935,9 @@ const (
 // PossibleResourceOperationTypeValues returns the possible values for the ResourceOperationType const type.
 func PossibleResourceOperationTypeValues() []ResourceOperationType {
 	return []ResourceOperationType{
+		ResourceOperationTypeCreate,
 		ResourceOperationTypeDeallocate,
+		ResourceOperationTypeDelete,
 		ResourceOperationTypeHibernate,
 		ResourceOperationTypeStart,
 		ResourceOperationTypeUnknown,
@@ -386,6 +1004,105 @@ func PossibleScheduledActionTypeValues() []ScheduledActionType {
 	}
 }
 
+// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption
+// of the managed disk along with VMGuestState blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and NonPersistedTPM
+// for not persisting firmware state in the VMGuestState blob.. **Note:** It can be set for only Confidential VMs.
+type SecurityEncryptionTypes string
+
+const (
+	// SecurityEncryptionTypesDiskWithVMGuestState - DiskWithVMGuestState encryption
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = "DiskWithVMGuestState"
+	// SecurityEncryptionTypesNonPersistedTPM - NonPersistedTPM encryption
+	SecurityEncryptionTypesNonPersistedTPM SecurityEncryptionTypes = "NonPersistedTPM"
+	// SecurityEncryptionTypesVMGuestStateOnly - VMGuestStateOnly encryption
+	SecurityEncryptionTypesVMGuestStateOnly SecurityEncryptionTypes = "VMGuestStateOnly"
+)
+
+// PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return []SecurityEncryptionTypes{
+		SecurityEncryptionTypesDiskWithVMGuestState,
+		SecurityEncryptionTypesNonPersistedTPM,
+		SecurityEncryptionTypesVMGuestStateOnly,
+	}
+}
+
+// SecurityTypes - Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+// The default behavior is: UefiSettings will not be enabled unless this property is set.
+type SecurityTypes string
+
+const (
+	// SecurityTypesConfidentialVM - ConfidentialVM security type
+	SecurityTypesConfidentialVM SecurityTypes = "ConfidentialVM"
+	// SecurityTypesTrustedLaunch - TrustedLaunch security type
+	SecurityTypesTrustedLaunch SecurityTypes = "TrustedLaunch"
+)
+
+// PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
+func PossibleSecurityTypesValues() []SecurityTypes {
+	return []SecurityTypes{
+		SecurityTypesConfidentialVM,
+		SecurityTypesTrustedLaunch,
+	}
+}
+
+// SettingNames - Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands
+// and AutoLogon.
+type SettingNames string
+
+const (
+	// SettingNamesAutoLogon - AutoLogon mode
+	SettingNamesAutoLogon SettingNames = "AutoLogon"
+	// SettingNamesFirstLogonCommands - FirstLogonCommands mode
+	SettingNamesFirstLogonCommands SettingNames = "FirstLogonCommands"
+)
+
+// PossibleSettingNamesValues returns the possible values for the SettingNames const type.
+func PossibleSettingNamesValues() []SettingNames {
+	return []SettingNames{
+		SettingNamesAutoLogon,
+		SettingNamesFirstLogonCommands,
+	}
+}
+
+// StorageAccountTypes - Specifies the storage account type for the managed disk. Managed OS disk storage account type can
+// only be set when you create the scale set. NOTE: UltraSSD_LRS can only be used with data disks. It cannot be used with
+// OS Disk. Standard_LRS uses Standard HDD. StandardSSD_LRS uses Standard SSD. Premium_LRS uses Premium SSD. UltraSSD_LRS
+// uses Ultra disk. Premium_ZRS uses Premium SSD zone redundant storage. StandardSSD_ZRS uses Standard SSD zone redundant
+// storage. For more information regarding disks supported for Windows Virtual Machines, refer to https://docs.microsoft.com/azure/virtual-machines/windows/disks-types
+// and, for Linux Virtual Machines, refer to https://docs.microsoft.com/azure/virtual-machines/linux/disks-types
+type StorageAccountTypes string
+
+const (
+	// StorageAccountTypesPremiumLRS - Premium_LRS storage account type
+	StorageAccountTypesPremiumLRS StorageAccountTypes = "Premium_LRS"
+	// StorageAccountTypesPremiumV2LRS - PremiumV2_LRS storage account type
+	StorageAccountTypesPremiumV2LRS StorageAccountTypes = "PremiumV2_LRS"
+	// StorageAccountTypesPremiumZRS - Premium_ZRS storage account type
+	StorageAccountTypesPremiumZRS StorageAccountTypes = "Premium_ZRS"
+	// StorageAccountTypesStandardLRS - Standard_LRS storage account type
+	StorageAccountTypesStandardLRS StorageAccountTypes = "Standard_LRS"
+	// StorageAccountTypesStandardSSDLRS - StandardSSD_LRS storage account type
+	StorageAccountTypesStandardSSDLRS StorageAccountTypes = "StandardSSD_LRS"
+	// StorageAccountTypesStandardSSDZRS - StandardSSD_ZRS storage account type
+	StorageAccountTypesStandardSSDZRS StorageAccountTypes = "StandardSSD_ZRS"
+	// StorageAccountTypesUltraSSDLRS - UltraSSD_LRS storage account type
+	StorageAccountTypesUltraSSDLRS StorageAccountTypes = "UltraSSD_LRS"
+)
+
+// PossibleStorageAccountTypesValues returns the possible values for the StorageAccountTypes const type.
+func PossibleStorageAccountTypesValues() []StorageAccountTypes {
+	return []StorageAccountTypes{
+		StorageAccountTypesPremiumLRS,
+		StorageAccountTypesPremiumV2LRS,
+		StorageAccountTypesPremiumZRS,
+		StorageAccountTypesStandardLRS,
+		StorageAccountTypesStandardSSDLRS,
+		StorageAccountTypesStandardSSDZRS,
+		StorageAccountTypesUltraSSDLRS,
+	}
+}
+
 // WeekDay - Representation of the possible selection of days in a week in a gregorian calendar
 type WeekDay string
 
@@ -419,5 +1136,97 @@ func PossibleWeekDayValues() []WeekDay {
 		WeekDayThursday,
 		WeekDayTuesday,
 		WeekDayWednesday,
+	}
+}
+
+// WindowsPatchAssessmentMode - Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.<br /><br />
+// Possible values are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine.<br
+// /><br /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent
+// must be true.
+type WindowsPatchAssessmentMode string
+
+const (
+	// WindowsPatchAssessmentModeAutomaticByPlatform - AutomaticByPlatform patch assessment mode
+	WindowsPatchAssessmentModeAutomaticByPlatform WindowsPatchAssessmentMode = "AutomaticByPlatform"
+	// WindowsPatchAssessmentModeImageDefault - ImageDefault patch assessment mode
+	WindowsPatchAssessmentModeImageDefault WindowsPatchAssessmentMode = "ImageDefault"
+)
+
+// PossibleWindowsPatchAssessmentModeValues returns the possible values for the WindowsPatchAssessmentMode const type.
+func PossibleWindowsPatchAssessmentModeValues() []WindowsPatchAssessmentMode {
+	return []WindowsPatchAssessmentMode{
+		WindowsPatchAssessmentModeAutomaticByPlatform,
+		WindowsPatchAssessmentModeImageDefault,
+	}
+}
+
+// WindowsVMGuestPatchAutomaticByPlatformRebootSetting - Specifies the reboot setting for all AutomaticByPlatform patch installation
+// operations.
+type WindowsVMGuestPatchAutomaticByPlatformRebootSetting string
+
+const (
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways - Reboot setting for Always
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired - Reboot setting for IfRequired
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "IfRequired"
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever - Reboot setting for Never
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown - Reboot setting for Unknown
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
+)
+
+// PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues returns the possible values for the WindowsVMGuestPatchAutomaticByPlatformRebootSetting const type.
+func PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues() []WindowsVMGuestPatchAutomaticByPlatformRebootSetting {
+	return []WindowsVMGuestPatchAutomaticByPlatformRebootSetting{
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways,
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired,
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever,
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown,
+	}
+}
+
+// WindowsVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
+// to virtual machine scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **Manual**
+// - You control the application of patches to a virtual machine. You do this by applying patches manually inside the VM.
+// In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br
+// /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates
+// must be true. <br /><br /> **AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The
+// properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true
+type WindowsVMGuestPatchMode string
+
+const (
+	// WindowsVMGuestPatchModeAutomaticByOS - AutomaticByOS VM guest patch mode
+	WindowsVMGuestPatchModeAutomaticByOS WindowsVMGuestPatchMode = "AutomaticByOS"
+	// WindowsVMGuestPatchModeAutomaticByPlatform - AutomaticByPlatform VM guest patch mode
+	WindowsVMGuestPatchModeAutomaticByPlatform WindowsVMGuestPatchMode = "AutomaticByPlatform"
+	// WindowsVMGuestPatchModeManual - Manual VM guest patch mode
+	WindowsVMGuestPatchModeManual WindowsVMGuestPatchMode = "Manual"
+)
+
+// PossibleWindowsVMGuestPatchModeValues returns the possible values for the WindowsVMGuestPatchMode const type.
+func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
+	return []WindowsVMGuestPatchMode{
+		WindowsVMGuestPatchModeAutomaticByOS,
+		WindowsVMGuestPatchModeAutomaticByPlatform,
+		WindowsVMGuestPatchModeManual,
+	}
+}
+
+// ZonePlacementPolicyType - Specifies the policy for resource's placement in availability zone. Possible values are: **Any**
+// (used for Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An availability zone will be automatically
+// picked by system as part of resource creation.
+type ZonePlacementPolicyType string
+
+const (
+	ZonePlacementPolicyTypeAny ZonePlacementPolicyType = "Any"
+	// ZonePlacementPolicyTypeAuto - The platform automatically selects an availability zone based on the request.
+	ZonePlacementPolicyTypeAuto ZonePlacementPolicyType = "Auto"
+)
+
+// PossibleZonePlacementPolicyTypeValues returns the possible values for the ZonePlacementPolicyType const type.
+func PossibleZonePlacementPolicyTypeValues() []ZonePlacementPolicyType {
+	return []ZonePlacementPolicyType{
+		ZonePlacementPolicyTypeAny,
+		ZonePlacementPolicyTypeAuto,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnection/DeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-01-31-preview/PrivateEndpointConnection/DeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -38,7 +38,7 @@ func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnection/GetPrivateEndpointConnection.json
+// Generated from example definition: 2026-01-31-preview/PrivateEndpointConnection/GetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExamplePrivateEndpointConnectionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.PrivateEndpointConnectionClientGetResponse{
-	// 	PrivateEndpointConnectionResource: &armrecoveryservicesbackup.PrivateEndpointConnectionResource{
+	// 	PrivateEndpointConnectionResource: armrecoveryservicesbackup.PrivateEndpointConnectionResource{
 	// 		Name: to.Ptr("gaallatestpe1.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.RecoveryServicesBVTD2/vaults/gaallavaultbvtd2msi/privateEndpointConnections/gaallatestpe3.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),
@@ -78,7 +78,7 @@ func ExamplePrivateEndpointConnectionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnection/PutPrivateEndpointConnection.json
+// Generated from example definition: 2026-01-31-preview/PrivateEndpointConnection/PutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,13 +109,13 @@ func ExamplePrivateEndpointConnectionClient_BeginPut() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.PrivateEndpointConnectionClientPutResponse{
-	// 	PrivateEndpointConnectionResource: &armrecoveryservicesbackup.PrivateEndpointConnectionResource{
+	// 	PrivateEndpointConnectionResource: armrecoveryservicesbackup.PrivateEndpointConnectionResource{
 	// 		Name: to.Ptr("gaallatestpe1.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.RecoveryServicesBVTD2/vaults/gaallavaultbvtd2msi/privateEndpointConnections/gaallatestpe3.3592346090307038890.backup.5704c932-249a-490b-a142-1396838cd3b"),

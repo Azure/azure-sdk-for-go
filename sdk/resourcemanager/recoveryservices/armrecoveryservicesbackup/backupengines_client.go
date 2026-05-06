@@ -42,7 +42,7 @@ func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Returns backup management server registered to Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupEnginesClientGetOptions contains the optional parameters for the BackupEnginesClient.Get method.
 func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesClientGetOptions) (BackupEnginesClientGetResponse, error) {
@@ -97,7 +97,7 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,7 +114,7 @@ func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (Backu
 
 // NewListPager - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.NewListPager method.
 func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) *runtime.Pager[BackupEnginesClientListResponse] {
@@ -166,7 +166,7 @@ func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultN
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

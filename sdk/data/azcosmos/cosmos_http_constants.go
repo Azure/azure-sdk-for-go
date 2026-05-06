@@ -99,11 +99,11 @@ const (
 
 // Substatus Codes
 const (
-	subStatusWriteForbidden              string = "3"
-	subStatusDatabaseAccountNotFound     string = "1008"
-	subStatusReadSessionNotAvailable     string = "1002"
-	subStatusPartitionKeyRangeGone       string = "1002"
-	subStatusCompletingSplit             string = "1007"
+	subStatusWriteForbidden               string = "3"
+	subStatusDatabaseAccountNotFound      string = "1008"
+	subStatusReadSessionNotAvailable      string = "1002"
+	subStatusPartitionKeyRangeGone        string = "1002"
+	subStatusCompletingSplit              string = "1007"
 	subStatusCompletingPartitionMigration string = "1008"
 )
 

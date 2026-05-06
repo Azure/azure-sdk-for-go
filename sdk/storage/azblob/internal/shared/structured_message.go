@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"hash/crc64"
 	"io"
+	"math"
 )
 
 // Structured Message (XSM/1.0) constants
@@ -293,6 +294,16 @@ func NewSMEncoder(inner io.ReadSeeker, contentLen int64, segmentSize int) *SMEnc
 	}
 	if numSegments == 0 {
 		numSegments = 1
+	}
+
+	// Segment count is stored as uint16 in the SM header. If the content is too large
+	// for the given segment size, auto-increase segment size to fit within uint16 max.
+	if numSegments > math.MaxUint16 {
+		segmentSize = int(math.Ceil(float64(contentLen) / float64(math.MaxUint16)))
+		numSegments = int(contentLen) / segmentSize
+		if int(contentLen)%segmentSize != 0 {
+			numSegments++
+		}
 	}
 
 	// Calculate total encoded length

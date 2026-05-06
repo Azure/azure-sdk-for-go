@@ -910,3 +910,77 @@ func TestDecoderMultiSegmentCRCValidation(t *testing.T) {
 	require.Contains(t, err.Error(), "segment 3")
 	require.Contains(t, err.Error(), "CRC64 mismatch")
 }
+
+// Test segment size overflow protection: when content would produce > 65535 segments,
+// NewSMEncoder should auto-increase segment size to keep numSegments within uint16 range.
+func TestSMEncoderSegmentSizeOverflowProtection(t *testing.T) {
+	// With 1-byte segment size and 70000 bytes of content, numSegments would be 70000.
+	// The encoder should auto-increase segment size to ceil(70000/65535) = 2 bytes,
+	// resulting in 35000 segments.
+	contentLen := int64(70000)
+	segmentSize := 1
+	content := make([]byte, contentLen)
+	for i := range content {
+		content[i] = byte(i % 251)
+	}
+
+	enc := NewSMEncoder(bytes.NewReader(content), contentLen, segmentSize)
+
+	// Verify the encoder was created successfully and numSegments <= 65535
+	require.LessOrEqual(t, enc.numSegments, 65535)
+	require.Greater(t, enc.numSegments, 0)
+
+	// Read all encoded data
+	encodedData, err := io.ReadAll(enc)
+	require.NoError(t, err)
+	require.Equal(t, int(enc.EncodedLength()), len(encodedData))
+
+	// Decode and verify round-trip
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(encodedData)))
+	decodedData, err := io.ReadAll(dec)
+	require.NoError(t, err)
+	require.Equal(t, content, decodedData)
+}
+
+func TestSMEncoderSegmentSizeExactlyAtLimit(t *testing.T) {
+	// With segment size 1 and exactly 65535 bytes, it should not overflow
+	contentLen := int64(65535)
+	segmentSize := 1
+	content := make([]byte, contentLen)
+	for i := range content {
+		content[i] = byte(i % 199)
+	}
+
+	enc := NewSMEncoder(bytes.NewReader(content), contentLen, segmentSize)
+	require.Equal(t, 65535, enc.numSegments)
+
+	encodedData, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(encodedData)))
+	decodedData, err := io.ReadAll(dec)
+	require.NoError(t, err)
+	require.Equal(t, content, decodedData)
+}
+
+func TestSMEncoderSegmentSizeJustOverLimit(t *testing.T) {
+	// With segment size 1 and 65536 bytes, it should auto-scale to segment size 2
+	contentLen := int64(65536)
+	segmentSize := 1
+	content := make([]byte, contentLen)
+	for i := range content {
+		content[i] = byte(i % 199)
+	}
+
+	enc := NewSMEncoder(bytes.NewReader(content), contentLen, segmentSize)
+	require.LessOrEqual(t, enc.numSegments, 65535)
+	require.Greater(t, enc.segmentSize, 1)
+
+	encodedData, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(encodedData)))
+	decodedData, err := io.ReadAll(dec)
+	require.NoError(t, err)
+	require.Equal(t, content, decodedData)
+}

@@ -65,6 +65,12 @@ type DownloadStreamOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	// When set to TransferValidationTypeComputeStructuredMessageCRC64, the service returns the
+	// blob data wrapped in a structured message with per-segment CRC64 checksums. The SDK
+	// automatically decodes the structured message and validates checksums before returning data.
+	TransactionalValidation TransferValidationType
+
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
@@ -75,9 +81,17 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 		return nil, nil, nil, nil
 	}
 
+	var smHeader *string
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			smHeader = &h
+		}
+	}
+
 	basics := generated.BlobClientDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
 		Range:              exported.FormatHTTPRange(o.Range),
+		StructuredBodyType: smHeader,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -109,6 +123,9 @@ type downloadOptions struct {
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
@@ -126,11 +143,12 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 		return nil
 	}
 	return &DownloadStreamOptions{
-		AccessConditions:   o.AccessConditions,
-		CPKInfo:            o.CPKInfo,
-		CPKScopeInfo:       o.CPKScopeInfo,
-		Range:              rnge,
-		RangeGetContentMD5: rangeGetContentMD5,
+		AccessConditions:        o.AccessConditions,
+		CPKInfo:                 o.CPKInfo,
+		CPKScopeInfo:            o.CPKScopeInfo,
+		Range:                   rnge,
+		RangeGetContentMD5:      rangeGetContentMD5,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -159,6 +177,9 @@ type DownloadBufferOptions struct {
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
@@ -184,6 +205,9 @@ type DownloadFileOptions struct {
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

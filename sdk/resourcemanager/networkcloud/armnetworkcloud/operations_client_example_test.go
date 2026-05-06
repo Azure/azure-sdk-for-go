@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/Operations_List.json
+// Generated from example definition: 2026-05-01-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 					Provider: to.Ptr("Microsoft Network Cloud"),
 		// 					Resource: to.Ptr("Network Cloud cluster"),
 		// 				},
-		// 				IsDataAction: to.Ptr(true),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Name: to.Ptr("Microsoft.NetworkCloud/clusters/Read"),
 		// 				Origin: to.Ptr(armnetworkcloud.OriginUserSystem),
 		// 			},
@@ -57,7 +57,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 					Provider: to.Ptr("Microsoft Network Cloud"),
 		// 					Resource: to.Ptr("Network Cloud cluster"),
 		// 				},
-		// 				IsDataAction: to.Ptr(true),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Name: to.Ptr("Microsoft.NetworkCloud/clusters/Write"),
 		// 				Origin: to.Ptr(armnetworkcloud.OriginUserSystem),
 		// 			},

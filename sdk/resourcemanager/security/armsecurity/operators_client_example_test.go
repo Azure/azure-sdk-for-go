@@ -25,12 +25,15 @@ func ExampleOperatorsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOperatorsClient().List(ctx, "CloudPosture", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewOperatorsClient().NewListPager("CloudPosture", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		// You could use page here. We use blank identifier for just demo purposes.
+		_ = page
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.OperatorList = armsecurity.OperatorList{
 	// 	Value: []*armsecurity.OperatorResource{

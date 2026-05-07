@@ -405,7 +405,7 @@ func ExampleJitNetworkAccessPoliciesClient_CreateOrUpdate() {
 									AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
 									EndTimeUTC:                 to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.569Z"); return t }()),
 									Number:                     to.Ptr[int32](3389),
-									Status:                     to.Ptr(armsecurity.StatusInitiated),
+									Status:                     to.Ptr(armsecurity.StatusEnumInitiated),
 									StatusReason:               to.Ptr(armsecurity.StatusReasonUserRequested),
 								}},
 						}},

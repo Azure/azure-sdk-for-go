@@ -199,6 +199,28 @@ type ApplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ArmSecurityStandardsClientCreateOrUpdateOptions contains the optional parameters for the ArmSecurityStandardsClient.CreateOrUpdate
+// method.
+type ArmSecurityStandardsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmSecurityStandardsClientDeleteOptions contains the optional parameters for the ArmSecurityStandardsClient.Delete method.
+type ArmSecurityStandardsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmSecurityStandardsClientGetOptions contains the optional parameters for the ArmSecurityStandardsClient.Get method.
+type ArmSecurityStandardsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmSecurityStandardsClientListOptions contains the optional parameters for the ArmSecurityStandardsClient.NewListPager
+// method.
+type ArmSecurityStandardsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AssessmentsClientCreateOrUpdateOptions contains the optional parameters for the AssessmentsClient.CreateOrUpdate method.
 type AssessmentsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -1394,23 +1416,8 @@ type StandardsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StandardsClientCreateOrUpdateOptions contains the optional parameters for the StandardsClient.CreateOrUpdate method.
-type StandardsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // StandardsClientDeleteOptions contains the optional parameters for the StandardsClient.Delete method.
 type StandardsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StandardsClientDeleteOptions contains the optional parameters for the StandardsClient.Delete method.
-type StandardsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StandardsClientGetOptions contains the optional parameters for the StandardsClient.Get method.
-type StandardsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1422,11 +1429,6 @@ type StandardsClientGetOptions struct {
 // StandardsClientListBySubscriptionOptions contains the optional parameters for the StandardsClient.NewListBySubscriptionPager
 // method.
 type StandardsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StandardsClientListOptions contains the optional parameters for the StandardsClient.NewListPager method.
-type StandardsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

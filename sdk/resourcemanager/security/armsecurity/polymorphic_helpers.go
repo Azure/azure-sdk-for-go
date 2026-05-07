@@ -262,6 +262,31 @@ func unmarshalCloudOfferingClassificationArray(rawMsg json.RawMessage) ([]CloudO
 	return fArray, nil
 }
 
+func unmarshalCommonResourceDetailsClassification(rawMsg json.RawMessage) (CommonResourceDetailsClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b CommonResourceDetailsClassification
+	switch m["source"] {
+	case string(SourceAzure):
+		b = &AzureResourceDetails{}
+	case string(SourceOnPremiseResourceDetails):
+		b = &OnPremiseResourceDetails{}
+	case string(SourceOnPremiseSQL):
+		b = &OnPremiseSQLResourceDetails{}
+	default:
+		b = &CommonResourceDetails{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (EnvironmentDataClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -402,31 +427,6 @@ func unmarshalNotificationsSourceClassificationArray(rawMsg json.RawMessage) ([]
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalResourceDetailsClassification(rawMsg json.RawMessage) (ResourceDetailsClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ResourceDetailsClassification
-	switch m["source"] {
-	case string(SourceAzure):
-		b = &AzureResourceDetails{}
-	case string(SourceOnPremiseResourceDetails):
-		b = &OnPremiseResourceDetails{}
-	case string(SourceOnPremiseSQL):
-		b = &OnPremiseSQLResourceDetails{}
-	default:
-		b = &ResourceDetails{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
 }
 
 func unmarshalResourceIdentifierClassification(rawMsg json.RawMessage) (ResourceIdentifierClassification, error) {

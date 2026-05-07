@@ -196,6 +196,29 @@ type ApplicationsClientListResponse struct {
 	ApplicationsList
 }
 
+// ArmSecurityStandardsClientCreateOrUpdateResponse contains the response from method ArmSecurityStandardsClient.CreateOrUpdate.
+type ArmSecurityStandardsClientCreateOrUpdateResponse struct {
+	// Security Standard on a resource
+	ArmSecurityStandard
+}
+
+// ArmSecurityStandardsClientDeleteResponse contains the response from method ArmSecurityStandardsClient.Delete.
+type ArmSecurityStandardsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArmSecurityStandardsClientGetResponse contains the response from method ArmSecurityStandardsClient.Get.
+type ArmSecurityStandardsClientGetResponse struct {
+	// Security Standard on a resource
+	ArmSecurityStandard
+}
+
+// ArmSecurityStandardsClientListResponse contains the response from method ArmSecurityStandardsClient.NewListPager.
+type ArmSecurityStandardsClientListResponse struct {
+	// Page of a Standard list
+	StandardList
+}
+
 // AssessmentsClientCreateOrUpdateResponse contains the response from method AssessmentsClient.CreateOrUpdate.
 type AssessmentsClientCreateOrUpdateResponse struct {
 	// Security assessment on a resource - response format
@@ -1409,29 +1432,12 @@ type StandardAssignmentsClientListResponse struct {
 // StandardsClientCreateOrUpdateResponse contains the response from method StandardsClient.CreateOrUpdate.
 type StandardsClientCreateOrUpdateResponse struct {
 	// Security Standard on a resource
-	ArmSecurityStandard
-}
-
-// StandardsClientCreateOrUpdateResponse contains the response from method StandardsClient.CreateOrUpdate.
-type StandardsClientCreateOrUpdateResponse struct {
-	// Security Standard on a resource
 	Standard
 }
 
 // StandardsClientDeleteResponse contains the response from method StandardsClient.Delete.
 type StandardsClientDeleteResponse struct {
 	// placeholder for future response values
-}
-
-// StandardsClientDeleteResponse contains the response from method StandardsClient.Delete.
-type StandardsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// StandardsClientGetResponse contains the response from method StandardsClient.Get.
-type StandardsClientGetResponse struct {
-	// Security Standard on a resource
-	ArmSecurityStandard
 }
 
 // StandardsClientGetResponse contains the response from method StandardsClient.Get.
@@ -1443,19 +1449,13 @@ type StandardsClientGetResponse struct {
 // StandardsClientListBySubscriptionResponse contains the response from method StandardsClient.NewListBySubscriptionPager.
 type StandardsClientListBySubscriptionResponse struct {
 	// Page of a Standard list
-	StandardList
+	ArmSecurityStandardList
 }
 
 // StandardsClientListResponse contains the response from method StandardsClient.NewListPager.
 type StandardsClientListResponse struct {
 	// Page of a Standard list
-	StandardList
-}
-
-// StandardsClientListResponse contains the response from method StandardsClient.NewListPager.
-type StandardsClientListResponse struct {
-	// Page of a Standard list
-	StandardList
+	ArmSecurityStandardList
 }
 
 // SubAssessmentsClientGetResponse contains the response from method SubAssessmentsClient.Get.

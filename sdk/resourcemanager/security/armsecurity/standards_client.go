@@ -280,7 +280,7 @@ func (client *StandardsClient) listCreateRequest(ctx context.Context, resourceGr
 // listHandleResponse handles the List response.
 func (client *StandardsClient) listHandleResponse(resp *http.Response) (StandardsClientListResponse, error) {
 	result := StandardsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StandardList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ArmSecurityStandardList); err != nil {
 		return StandardsClientListResponse{}, err
 	}
 	return result, nil
@@ -335,7 +335,7 @@ func (client *StandardsClient) listBySubscriptionCreateRequest(ctx context.Conte
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *StandardsClient) listBySubscriptionHandleResponse(resp *http.Response) (StandardsClientListBySubscriptionResponse, error) {
 	result := StandardsClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StandardList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ArmSecurityStandardList); err != nil {
 		return StandardsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil

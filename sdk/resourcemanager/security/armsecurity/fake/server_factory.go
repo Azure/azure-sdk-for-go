@@ -36,6 +36,9 @@ type ServerFactory struct {
 	// ApplicationsServer contains the fakes for client ApplicationsClient
 	ApplicationsServer ApplicationsServer
 
+	// ArmSecurityStandardsServer contains the fakes for client ArmSecurityStandardsClient
+	ArmSecurityStandardsServer ArmSecurityStandardsServer
+
 	// AssessmentsServer contains the fakes for client AssessmentsClient
 	AssessmentsServer AssessmentsServer
 
@@ -228,9 +231,6 @@ type ServerFactory struct {
 	// StandardsServer contains the fakes for client StandardsClient
 	StandardsServer StandardsServer
 
-	// StandardsServer contains the fakes for client StandardsClient
-	StandardsServer StandardsServer
-
 	// SubAssessmentsServer contains the fakes for client SubAssessmentsClient
 	SubAssessmentsServer SubAssessmentsServer
 
@@ -265,6 +265,7 @@ type ServerFactoryTransport struct {
 	trAllowedConnectionsServer                           *AllowedConnectionsServerTransport
 	trApplicationServer                                  *ApplicationServerTransport
 	trApplicationsServer                                 *ApplicationsServerTransport
+	trArmSecurityStandardsServer                         *ArmSecurityStandardsServerTransport
 	trAssessmentsServer                                  *AssessmentsServerTransport
 	trAssessmentsMetadataServer                          *AssessmentsMetadataServerTransport
 	trAssignmentsServer                                  *AssignmentsServerTransport
@@ -329,7 +330,6 @@ type ServerFactoryTransport struct {
 	trSolutionsReferenceDataServer                       *SolutionsReferenceDataServerTransport
 	trStandardAssignmentsServer                          *StandardAssignmentsServerTransport
 	trStandardsServer                                    *StandardsServerTransport
-	trStandardsServer                                    *StandardsServerTransport
 	trSubAssessmentsServer                               *SubAssessmentsServerTransport
 	trTasksServer                                        *TasksServerTransport
 	trTopologyServer                                     *TopologyServerTransport
@@ -378,6 +378,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ApplicationsClient":
 		initServer(&s.trMu, &s.trApplicationsServer, func() *ApplicationsServerTransport { return NewApplicationsServerTransport(&s.srv.ApplicationsServer) })
 		resp, err = s.trApplicationsServer.Do(req)
+	case "ArmSecurityStandardsClient":
+		initServer(&s.trMu, &s.trArmSecurityStandardsServer, func() *ArmSecurityStandardsServerTransport {
+			return NewArmSecurityStandardsServerTransport(&s.srv.ArmSecurityStandardsServer)
+		})
+		resp, err = s.trArmSecurityStandardsServer.Do(req)
 	case "AssessmentsClient":
 		initServer(&s.trMu, &s.trAssessmentsServer, func() *AssessmentsServerTransport { return NewAssessmentsServerTransport(&s.srv.AssessmentsServer) })
 		resp, err = s.trAssessmentsServer.Do(req)
@@ -657,9 +662,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewStandardAssignmentsServerTransport(&s.srv.StandardAssignmentsServer)
 		})
 		resp, err = s.trStandardAssignmentsServer.Do(req)
-	case "StandardsClient":
-		initServer(&s.trMu, &s.trStandardsServer, func() *StandardsServerTransport { return NewStandardsServerTransport(&s.srv.StandardsServer) })
-		resp, err = s.trStandardsServer.Do(req)
 	case "StandardsClient":
 		initServer(&s.trMu, &s.trStandardsServer, func() *StandardsServerTransport { return NewStandardsServerTransport(&s.srv.StandardsServer) })
 		resp, err = s.trStandardsServer.Do(req)

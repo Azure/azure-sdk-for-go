@@ -892,6 +892,15 @@ type ArmSecurityStandard struct {
 	Type *string
 }
 
+// ArmSecurityStandardList - Page of a Standard list
+type ArmSecurityStandardList struct {
+	// READ-ONLY; The URI to fetch the next page
+	NextLink *string
+
+	// READ-ONLY; Collection of standards in this page
+	Value []*Standard
+}
+
 // ArmSecurityStandardProperties - Describes properties of a standard.
 type ArmSecurityStandardProperties struct {
 	// List of assessment keys to apply to standard scope.
@@ -1109,7 +1118,7 @@ type AssessmentPartnerData struct {
 // AssessmentProperties - Describes properties of an assessment.
 type AssessmentProperties struct {
 	// REQUIRED; Details of the resource that was assessed
-	ResourceDetails ResourceDetailsClassification
+	ResourceDetails CommonResourceDetailsClassification
 
 	// REQUIRED; The result of the assessment
 	Status *AssessmentStatus
@@ -1180,7 +1189,7 @@ type AssessmentPropertiesBaseRiskPathsItemNodesItem struct {
 // AssessmentPropertiesResponse - Describes properties of an assessment.
 type AssessmentPropertiesResponse struct {
 	// REQUIRED; Details of the resource that was assessed
-	ResourceDetails ResourceDetailsClassification
+	ResourceDetails CommonResourceDetailsClassification
 
 	// REQUIRED; The result of the assessment
 	Status *AssessmentStatusResponse
@@ -1939,13 +1948,10 @@ type AzureResourceDetails struct {
 	ID *string
 }
 
-// GetResourceDetails implements the ResourceDetailsClassification interface for type AzureResourceDetails.
-func (a *AzureResourceDetails) GetResourceDetails() *ResourceDetails {
-	return &ResourceDetails{
-		ConnectorID: a.ConnectorID,
-		ID:          a.ID,
-		Source:      a.Source,
-		Source:      a.Source,
+// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type AzureResourceDetails.
+func (a *AzureResourceDetails) GetCommonResourceDetails() *CommonResourceDetails {
+	return &CommonResourceDetails{
+		Source: a.Source,
 	}
 }
 
@@ -2160,6 +2166,15 @@ type CloudOffering struct {
 
 // GetCloudOffering implements the CloudOfferingClassification interface for type CloudOffering.
 func (c *CloudOffering) GetCloudOffering() *CloudOffering { return c }
+
+// CommonResourceDetails - Details of the resource that was assessed
+type CommonResourceDetails struct {
+	// REQUIRED; The platform where the assessed resource resides
+	Source *Source
+}
+
+// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type CommonResourceDetails.
+func (c *CommonResourceDetails) GetCommonResourceDetails() *CommonResourceDetails { return c }
 
 // Compliance of a scope
 type Compliance struct {
@@ -6098,18 +6113,15 @@ type OnPremiseResourceDetails struct {
 	WorkspaceID *string
 }
 
-// GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseResourceDetails.
-func (o *OnPremiseResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails { return o }
-
-// GetResourceDetails implements the ResourceDetailsClassification interface for type OnPremiseResourceDetails.
-func (o *OnPremiseResourceDetails) GetResourceDetails() *ResourceDetails {
-	return &ResourceDetails{
-		ConnectorID: o.ConnectorID,
-		ID:          o.ID,
-		Source:      o.Source,
-		Source:      o.Source,
+// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type OnPremiseResourceDetails.
+func (o *OnPremiseResourceDetails) GetCommonResourceDetails() *CommonResourceDetails {
+	return &CommonResourceDetails{
+		Source: o.Source,
 	}
 }
+
+// GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseResourceDetails.
+func (o *OnPremiseResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails { return o }
 
 // OnPremiseSQLResourceDetails - Details of the On Premise Sql resource that was assessed
 type OnPremiseSQLResourceDetails struct {
@@ -6136,6 +6148,13 @@ type OnPremiseSQLResourceDetails struct {
 	WorkspaceID *string
 }
 
+// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
+func (o *OnPremiseSQLResourceDetails) GetCommonResourceDetails() *CommonResourceDetails {
+	return &CommonResourceDetails{
+		Source: o.Source,
+	}
+}
+
 // GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
 func (o *OnPremiseSQLResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails {
 	return &OnPremiseResourceDetails{
@@ -6144,16 +6163,6 @@ func (o *OnPremiseSQLResourceDetails) GetOnPremiseResourceDetails() *OnPremiseRe
 		SourceComputerID: o.SourceComputerID,
 		Vmuuid:           o.Vmuuid,
 		WorkspaceID:      o.WorkspaceID,
-	}
-}
-
-// GetResourceDetails implements the ResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
-func (o *OnPremiseSQLResourceDetails) GetResourceDetails() *ResourceDetails {
-	return &ResourceDetails{
-		ConnectorID: o.ConnectorID,
-		ID:          o.ID,
-		Source:      o.Source,
-		Source:      o.Source,
 	}
 }
 
@@ -6197,7 +6206,7 @@ type Operation struct {
 	Display *OperationDisplay
 
 	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
+	ActionType *ArmActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -6860,31 +6869,13 @@ type RemediationEta struct {
 
 // ResourceDetails - The resource details of the health report
 type ResourceDetails struct {
-	// REQUIRED; REQUIRED; The platform where the assessed resource resides
-	Source *Source
-
 	// The status of the health report
 	Source *Source
 
-	// READ-ONLY; READ-ONLY; The id of the connector
+	// READ-ONLY; The id of the connector
 	ConnectorID *string
 
-	// READ-ONLY; READ-ONLY; The azure id of the resource
-	ID *string
-}
-
-// ResourceDetails - The resource details of the health report
-type ResourceDetails struct {
-	// REQUIRED; REQUIRED; The platform where the assessed resource resides
-	Source *Source
-
-	// The status of the health report
-	Source *Source
-
-	// READ-ONLY; READ-ONLY; The id of the connector
-	ConnectorID *string
-
-	// READ-ONLY; READ-ONLY; The azure id of the resource
+	// READ-ONLY; The azure id of the resource
 	ID *string
 }
 
@@ -7720,32 +7711,11 @@ type StandardComponentProperties struct {
 
 // StandardList - Page of a Standard list
 type StandardList struct {
-	// READ-ONLY; READ-ONLY; Collection of standards in this page
+	// READ-ONLY; Collection of standards in this page
 	Value []*ArmSecurityStandard
 
-	// READ-ONLY; READ-ONLY; The URI to fetch the next page
+	// READ-ONLY; The URI to fetch the next page
 	NextLink *string
-
-	// READ-ONLY; READ-ONLY; The URI to fetch the next page
-	NextLink *string
-
-	// READ-ONLY; READ-ONLY; Collection of standards in this page
-	Value []*Standard
-}
-
-// StandardList - Page of a Standard list
-type StandardList struct {
-	// READ-ONLY; READ-ONLY; Collection of standards in this page
-	Value []*ArmSecurityStandard
-
-	// READ-ONLY; READ-ONLY; The URI to fetch the next page
-	NextLink *string
-
-	// READ-ONLY; READ-ONLY; The URI to fetch the next page
-	NextLink *string
-
-	// READ-ONLY; READ-ONLY; Collection of standards in this page
-	Value []*Standard
 }
 
 // StandardMetadata - The standard metadata
@@ -7836,7 +7806,7 @@ type SubAssessmentProperties struct {
 	AdditionalData AdditionalDataClassification
 
 	// Details of the resource that was assessed
-	ResourceDetails ResourceDetailsClassification
+	ResourceDetails CommonResourceDetailsClassification
 
 	// Status of the sub-assessment
 	Status *SubAssessmentStatus

@@ -87,6 +87,13 @@ func (c *ClientFactory) NewApplicationsClient() *ApplicationsClient {
 	}
 }
 
+// NewArmSecurityStandardsClient creates a new instance of ArmSecurityStandardsClient.
+func (c *ClientFactory) NewArmSecurityStandardsClient() *ArmSecurityStandardsClient {
+	return &ArmSecurityStandardsClient{
+		internal: c.internal,
+	}
+}
+
 // NewAssessmentsClient creates a new instance of AssessmentsClient.
 func (c *ClientFactory) NewAssessmentsClient() *AssessmentsClient {
 	return &AssessmentsClient{
@@ -569,13 +576,6 @@ func (c *ClientFactory) NewSolutionsReferenceDataClient() *SolutionsReferenceDat
 // NewStandardAssignmentsClient creates a new instance of StandardAssignmentsClient.
 func (c *ClientFactory) NewStandardAssignmentsClient() *StandardAssignmentsClient {
 	return &StandardAssignmentsClient{
-		internal: c.internal,
-	}
-}
-
-// NewStandardsClient creates a new instance of StandardsClient.
-func (c *ClientFactory) NewStandardsClient() *StandardsClient {
-	return &StandardsClient{
 		internal: c.internal,
 	}
 }

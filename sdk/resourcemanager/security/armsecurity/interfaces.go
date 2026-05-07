@@ -72,6 +72,15 @@ type CloudOfferingClassification interface {
 	GetCloudOffering() *CloudOffering
 }
 
+// CommonResourceDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetCommonResourceDetails() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureResourceDetails, *CommonResourceDetails, *OnPremiseResourceDetails, *OnPremiseSQLResourceDetails
+type CommonResourceDetailsClassification interface {
+	// GetCommonResourceDetails returns the CommonResourceDetails content of the underlying type.
+	GetCommonResourceDetails() *CommonResourceDetails
+}
+
 // CustomAlertRuleClassification provides polymorphic access to related types.
 // Call the interface's GetCustomAlertRule() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -140,18 +149,9 @@ type NotificationsSourceClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *OnPremiseResourceDetails, *OnPremiseSQLResourceDetails
 type OnPremiseResourceDetailsClassification interface {
-	ResourceDetailsClassification
+	CommonResourceDetailsClassification
 	// GetOnPremiseResourceDetails returns the OnPremiseResourceDetails content of the underlying type.
 	GetOnPremiseResourceDetails() *OnPremiseResourceDetails
-}
-
-// ResourceDetailsClassification provides polymorphic access to related types.
-// Call the interface's GetResourceDetails() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureResourceDetails, *OnPremiseResourceDetails, *OnPremiseSQLResourceDetails, *ResourceDetails
-type ResourceDetailsClassification interface {
-	// GetResourceDetails returns the ResourceDetails content of the underlying type.
-	GetResourceDetails() *ResourceDetails
 }
 
 // ResourceIdentifierClassification provides polymorphic access to related types.

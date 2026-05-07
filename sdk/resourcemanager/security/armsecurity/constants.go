@@ -49,30 +49,6 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// ActionType - Enum. Indicates the action type.
-type ActionType string
-
-const (
-	// ActionTypeEventHub - EventHub
-	ActionTypeEventHub ActionType = "EventHub"
-	// ActionTypeInternal - Internal
-	ActionTypeInternal ActionType = "Internal"
-	// ActionTypeLogicApp - LogicApp
-	ActionTypeLogicApp ActionType = "LogicApp"
-	// ActionTypeWorkspace - Workspace
-	ActionTypeWorkspace ActionType = "Workspace"
-)
-
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
-		ActionTypeEventHub,
-		ActionTypeInternal,
-		ActionTypeLogicApp,
-		ActionTypeWorkspace,
-	}
-}
-
 // ActionableRemediationState - ActionableRemediation Setting.
 // None - the setting was never set.
 // Enabled - ActionableRemediation is enabled.
@@ -231,6 +207,21 @@ const (
 func PossibleApplicationSourceResourceTypeValues() []ApplicationSourceResourceType {
 	return []ApplicationSourceResourceType{
 		ApplicationSourceResourceTypeAssessments,
+	}
+}
+
+// ArmActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ArmActionType string
+
+const (
+	// ArmActionTypeInternal - Actions are for internal-only APIs.
+	ArmActionTypeInternal ArmActionType = "Internal"
+)
+
+// PossibleArmActionTypeValues returns the possible values for the ArmActionType const type.
+func PossibleArmActionTypeValues() []ArmActionType {
+	return []ArmActionType{
+		ArmActionTypeInternal,
 	}
 }
 

@@ -1312,11 +1312,7 @@ Loop:
 		defer func() { _ = receiver.Close(context.Background()) }()
 
 		// we might not get all the messages in our prefetch, so let's make sure we get all remaining messages
-		for {
-			if remaining() == 0 {
-				break
-			}
-
+		for remaining() != 0 {
 			n := min(100, remaining())
 
 			t.Logf("Receiving %d messages", n)

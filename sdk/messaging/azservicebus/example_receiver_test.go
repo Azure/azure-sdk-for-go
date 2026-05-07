@@ -91,7 +91,7 @@ func ExampleReceiver_ReceiveMessages() {
 	for _, message := range messages {
 		// The message body is a []byte. For this example we're just assuming that the body
 		// was a string, converted to bytes but any []byte payload is valid.
-		var body []byte = message.Body
+		var body = message.Body
 		fmt.Printf("Message received with body: %s\n", string(body))
 
 		// For more information about settling messages:
@@ -133,7 +133,7 @@ func ExampleReceiver_ReceiveMessages_receiveAndDelete() {
 	for _, message := range messages {
 		// The message body is a []byte. For this example we're just assuming that the body
 		// was a string, converted to bytes but any []byte payload is valid.
-		var body []byte = message.Body
+		var body = message.Body
 		fmt.Printf("Message received with body: %s\n", string(body))
 		fmt.Printf("Received and completed the message\n")
 	}
@@ -158,7 +158,7 @@ func ExampleReceiver_ReceiveMessages_receiveAndDelete() {
 		} else {
 			// process messages
 			for _, message := range messages {
-				var body []byte = message.Body
+				var body = message.Body
 				fmt.Printf("Message received with body: %s\n", string(body))
 				fmt.Printf("Received and completed the message\n")
 			}
@@ -181,7 +181,7 @@ func ExampleReceiver_ReceiveMessages_amqpMessage() {
 	// NOTE: For this example we'll assume we received at least one message.
 
 	// Every received message carries a RawAMQPMessage.
-	var rawAMQPMessage *azservicebus.AMQPAnnotatedMessage = messages[0].RawAMQPMessage
+	var rawAMQPMessage = messages[0].RawAMQPMessage
 
 	// All the various body encodings available for AMQP messages are exposed via Body
 	_ = rawAMQPMessage.Body.Data
@@ -286,7 +286,7 @@ func Example_settleWithLockToken() {
 	for _, message := range messages {
 		// The message body is a []byte. For this example we're just assuming that the body
 		// was a string, converted to bytes but any []byte payload is valid.
-		var body []byte = message.Body
+		var body = message.Body
 		fmt.Printf("Message received with body: %s\n", string(body))
 
 		// For more information about settling messages:

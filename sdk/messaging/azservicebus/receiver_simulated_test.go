@@ -542,7 +542,7 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 		if evt.Type == emulation.EventTypeLinkDisposition {
 			dispEvt := evt.Data.(emulation.DispositionEvent)
 
-			if dispEvt.LinkEvent.Entity == "queue" && string(dispEvt.Data[0]) == "message available again after being released by releaser" {
+			if dispEvt.Entity == "queue" && string(dispEvt.Data[0]) == "message available again after being released by releaser" {
 				break
 			}
 		}

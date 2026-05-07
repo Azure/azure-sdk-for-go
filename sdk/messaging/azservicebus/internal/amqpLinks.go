@@ -214,7 +214,8 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 
 	rk := links.getRecoveryKindFunc(origErr)
 
-	if rk == RecoveryKindLink {
+	switch rk {
+	case RecoveryKindLink:
 		oldPrefix := links.Prefix()
 
 		if err := links.recoverLink(ctx, theirID); err != nil {
@@ -224,7 +225,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 
 		links.Writef(exported.EventConn, "Recovered links (old: %s)", oldPrefix)
 		return nil
-	} else if rk == RecoveryKindConn {
+	case RecoveryKindConn:
 		oldPrefix := links.Prefix()
 
 		if err := links.recoverConnection(ctx, theirID); err != nil {

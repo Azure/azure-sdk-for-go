@@ -8,15 +8,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
 )
 
 // AuthorizationServerServer is a fake server for instances of the armapimanagement.AuthorizationServerClient type.
@@ -459,10 +460,4 @@ func (a *AuthorizationServerServerTransport) dispatchUpdate(req *http.Request) (
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
-}
-
-// set this to conditionally intercept incoming requests to AuthorizationServerServerTransport
-var authorizationServerTransportInterceptor interface {
-	// Do returns true if the server transport should use the returned response/error
-	Do(*http.Request) (*http.Response, error, bool)
 }

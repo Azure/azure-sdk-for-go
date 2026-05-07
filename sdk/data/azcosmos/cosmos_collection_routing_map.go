@@ -5,6 +5,8 @@ package azcosmos
 
 import (
 	"sort"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
 )
 
 // collectionRoutingMap holds an immutable snapshot of partition key ranges for a
@@ -40,9 +42,9 @@ func newCollectionRoutingMap(ranges []partitionKeyRange, changeFeedETag string) 
 		}
 	}
 
-	// Sort by MinInclusive
+	// Sort by MinInclusive using length-aware comparison for HPK boundaries
 	sort.Slice(filtered, func(i, j int) bool {
-		return filtered[i].MinInclusive < filtered[j].MinInclusive
+		return epk.CompareEPK(filtered[i].MinInclusive, filtered[j].MinInclusive) < 0
 	})
 
 	rangeByID := make(map[string]partitionKeyRange, len(filtered))
@@ -93,7 +95,7 @@ func (crm *collectionRoutingMap) tryCombine(newRanges []partitionKeyRange, newET
 		combined = append(combined, r)
 	}
 	sort.Slice(combined, func(i, j int) bool {
-		return combined[i].MinInclusive < combined[j].MinInclusive
+		return epk.CompareEPK(combined[i].MinInclusive, combined[j].MinInclusive) < 0
 	})
 
 	// Validate completeness: ranges must form a contiguous covering
@@ -112,6 +114,42 @@ func (crm *collectionRoutingMap) tryCombine(newRanges []partitionKeyRange, newET
 // isGone returns true if the given range ID has been replaced (by a split/merge).
 func (crm *collectionRoutingMap) isGone(rangeID string) bool {
 	return crm.goneRanges[rangeID]
+}
+
+// getOverlappingRanges returns all partition key ranges that overlap with the
+// given EPK range [minInclusive, maxExclusive). Uses binary search for O(log n)
+// lookups. The ranges must be sorted and contiguous (guaranteed by construction).
+func (crm *collectionRoutingMap) getOverlappingRanges(minInclusive, maxExclusive string) []partitionKeyRange {
+	if len(crm.orderedRanges) == 0 {
+		return nil
+	}
+
+	// Start: rightmost range whose MinInclusive <= minInclusive.
+	// Same logic as findPhysicalRangeForEPK.
+	startIdx := sort.Search(len(crm.orderedRanges), func(i int) bool {
+		return epk.CompareEPK(crm.orderedRanges[i].MinInclusive, minInclusive) > 0
+	}) - 1
+	if startIdx < 0 {
+		startIdx = 0
+	}
+
+	// End: first range whose MinInclusive >= maxExclusive.
+	// All ranges from startIdx up to (but not including) endIdx overlap.
+	endIdx := startIdx + sort.Search(len(crm.orderedRanges)-startIdx, func(i int) bool {
+		return epk.CompareEPK(crm.orderedRanges[startIdx+i].MinInclusive, maxExclusive) >= 0
+	})
+
+	if endIdx <= startIdx {
+		// At minimum, include the range containing minInclusive
+		endIdx = startIdx + 1
+	}
+	if endIdx > len(crm.orderedRanges) {
+		endIdx = len(crm.orderedRanges)
+	}
+
+	result := make([]partitionKeyRange, endIdx-startIdx)
+	copy(result, crm.orderedRanges[startIdx:endIdx])
+	return result
 }
 
 // isCompleteSetOfRanges validates that the sorted ranges form a contiguous

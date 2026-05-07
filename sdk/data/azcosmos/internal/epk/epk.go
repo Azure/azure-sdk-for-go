@@ -348,6 +348,59 @@ func hexCharToNibble(c byte) byte {
 	}
 }
 
+// CompareEPK performs length-aware comparison of two effective partition key hex strings.
+//
+// For hierarchical partition key (HPK) containers, the service may return
+// partition key ranges with mixed-length boundaries (e.g., 32-char partial
+// vs 64-char fully specified, zero-padded). This function treats two EPKs
+// as equal when one is a prefix of the other and the remainder is all '0' characters.
+//
+// Returns -1 if a < b, 0 if a == b, +1 if a > b.
+//
+// See: https://github.com/Azure/azure-cosmos-dotnet-v3/pull/5260
+func CompareEPK(a, b string) int {
+	commonLen := len(a)
+	if len(b) < commonLen {
+		commonLen = len(b)
+	}
+
+	// Compare the common prefix
+	prefixA := a[:commonLen]
+	prefixB := b[:commonLen]
+	if prefixA < prefixB {
+		return -1
+	}
+	if prefixA > prefixB {
+		return 1
+	}
+
+	// Common prefixes are equal — check the tail of the longer string
+	var tail string
+	if len(a) > len(b) {
+		tail = a[commonLen:]
+	} else {
+		tail = b[commonLen:]
+	}
+
+	// If the tail is all zeros (or empty), the EPKs are equal
+	allZeros := true
+	for i := 0; i < len(tail); i++ {
+		if tail[i] != '0' {
+			allZeros = false
+			break
+		}
+	}
+	if allZeros {
+		return 0
+	}
+
+	// Non-zero tail: the longer string is greater
+	if len(a) > len(b) {
+		return 1
+	}
+	return -1
+}
+
 // toHexUpper returns uppercase hex encoding of data with no separators.
 func toHexUpper(data []byte) string {
 	var sb strings.Builder

@@ -135,3 +135,42 @@ func TestComputeEPK_Baseline(t *testing.T) {
 		}
 	}
 }
+
+func TestCompareEPK_EqualSameLength(t *testing.T) {
+	require.Equal(t, 0, CompareEPK("06AB34CFE4E48223", "06AB34CFE4E48223"))
+}
+
+func TestCompareEPK_LessThan(t *testing.T) {
+	require.Equal(t, -1, CompareEPK("06AB34CFE4E48223", "06AB34CFE4E48224"))
+}
+
+func TestCompareEPK_GreaterThan(t *testing.T) {
+	require.Equal(t, 1, CompareEPK("06AB34CFE4E48224", "06AB34CFE4E48223"))
+}
+
+func TestCompareEPK_ZeroPaddedTailEqual(t *testing.T) {
+	// A 32-char partial EPK should equal its 64-char zero-padded equivalent
+	partial := "06AB34CFE4E482236BCACBBF50E234AB"
+	full := "06AB34CFE4E482236BCACBBF50E234AB00000000000000000000000000000000"
+	require.Equal(t, 0, CompareEPK(partial, full))
+	require.Equal(t, 0, CompareEPK(full, partial))
+}
+
+func TestCompareEPK_NonZeroTailNotEqual(t *testing.T) {
+	partial := "06AB34CFE4E482236BCACBBF50E234AB"
+	full := "06AB34CFE4E482236BCACBBF50E234AB00000000000000000000000000000001"
+	require.Equal(t, -1, CompareEPK(partial, full))
+	require.Equal(t, 1, CompareEPK(full, partial))
+}
+
+func TestCompareEPK_EmptyStrings(t *testing.T) {
+	require.Equal(t, 0, CompareEPK("", ""))
+	require.Equal(t, 0, CompareEPK("", "00000"))
+	require.Equal(t, -1, CompareEPK("", "00001"))
+}
+
+func TestCompareEPK_FFSentinel(t *testing.T) {
+	// "FF" should be greater than any masked EPK (first hex digit in [0-3])
+	require.Equal(t, 1, CompareEPK("FF", "3FFFFFFFFFFFFFFF"))
+	require.Equal(t, -1, CompareEPK("3FFFFFFFFFFFFFFF", "FF"))
+}

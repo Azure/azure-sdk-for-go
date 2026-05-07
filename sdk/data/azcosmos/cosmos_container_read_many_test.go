@@ -322,3 +322,125 @@ func TestExecuteQueryChunks_CancelledContext(t *testing.T) {
 	require.ErrorIs(t, err, context.Canceled)
 	require.Empty(t, resp.Items)
 }
+
+func TestComputeEPKRange_FullKeyHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/pk"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("test")
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "full key should be a point, not a range")
+	require.Equal(t, r.Min, r.Max)
+}
+
+func TestComputeEPKRange_FullKeyMultiHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("tenant1").AppendString("user1")
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "full multi-hash key should be a point")
+}
+
+func TestComputeEPKRange_PrefixKeyMultiHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("tenant1")
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.True(t, r.isRange(), "prefix key should produce a range")
+	require.Equal(t, r.Min+"FF", r.Max)
+}
+
+func TestComputeEPKRange_TooManyComponents(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/pk"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("a").AppendString("b") // 2 components for 1 path
+	_, err := computeEPKRange(&pk, pkDef)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "more partition key components")
+}
+
+func TestComputeEPKRange_NonMultiHashPartialKey(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/a", "/b"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("only-one")
+	_, err := computeEPKRange(&pk, pkDef)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "non-MultiHash")
+}
+
+func TestFindPhysicalRangeForEPK_MixedLengthBoundaries(t *testing.T) {
+	// Simulate HPK boundaries where one is 32-char partial and the next is 64-char zero-padded
+	partial := "06AB34CFE4E482236BCACBBF50E234AB"
+	fullZero := partial + "00000000000000000000000000000000"
+
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: partial},
+		{ID: "1", MinInclusive: fullZero, MaxExclusive: "FF"},
+	}
+
+	// An EPK exactly at the boundary should go to range 1 (length-aware: partial == fullZero)
+	id, ok := findPhysicalRangeForEPK(fullZero, ranges)
+	require.True(t, ok)
+	require.Equal(t, "1", id)
+
+	// An EPK just below the boundary should go to range 0
+	id, ok = findPhysicalRangeForEPK("06AB34CFE4E482236BCACBBF50E234AA", ranges)
+	require.True(t, ok)
+	require.Equal(t, "0", id)
+}
+
+func TestGroupItemsByPhysicalRange_MultiHashPrefixFanout(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+
+	// Compute the EPK range for "tenant1" prefix
+	prefixPK := NewPartitionKeyString("tenant1")
+	prefixRange, err := computeEPKRange(&prefixPK, pkDef)
+	require.NoError(t, err)
+	require.True(t, prefixRange.isRange())
+
+	// The prefix EPK is a 32-char hash. The range is [epk, epk+"FF").
+	// Create a split point INSIDE that range by appending a mid-range suffix
+	// to the prefix EPK. E.g., if EPK is "AABB...", split at "AABB...80..."
+	splitPoint := prefixRange.Min + "80000000000000000000000000000000"
+
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: splitPoint},
+		{ID: "1", MinInclusive: splitPoint, MaxExclusive: "FF"},
+	}
+
+	items := []ItemIdentity{
+		{ID: "1", PartitionKey: prefixPK},
+	}
+
+	orderedIDs, groups, err := groupItemsByPhysicalRange(items, pkDef, ranges)
+	require.NoError(t, err)
+
+	// The prefix key should fan out to both partitions
+	require.Len(t, orderedIDs, 2, "prefix key should fan out to 2 partitions")
+	require.Contains(t, groups, "0")
+	require.Contains(t, groups, "1")
+	require.Len(t, groups["0"], 1)
+	require.Len(t, groups["1"], 1)
+}
+

@@ -160,3 +160,67 @@ func Test_isCompleteSetOfRanges_emptyMaxExclusive(t *testing.T) {
 	}
 	require.True(t, isCompleteSetOfRanges(ranges))
 }
+
+func Test_getOverlappingRanges_singleRange(t *testing.T) {
+	rm := newCollectionRoutingMap([]partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "FF"},
+	}, "")
+
+	result := rm.getOverlappingRanges("0000", "3FFF")
+	require.Len(t, result, 1)
+	require.Equal(t, "0", result[0].ID)
+}
+
+func Test_getOverlappingRanges_multipleRanges(t *testing.T) {
+	rm := newCollectionRoutingMap([]partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "10"},
+		{ID: "1", MinInclusive: "10", MaxExclusive: "20"},
+		{ID: "2", MinInclusive: "20", MaxExclusive: "30"},
+		{ID: "3", MinInclusive: "30", MaxExclusive: "FF"},
+	}, "")
+
+	// Range spanning partitions 1 and 2
+	result := rm.getOverlappingRanges("10", "30")
+	require.Len(t, result, 2)
+	require.Equal(t, "1", result[0].ID)
+	require.Equal(t, "2", result[1].ID)
+}
+
+func Test_getOverlappingRanges_allRanges(t *testing.T) {
+	rm := newCollectionRoutingMap([]partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "10"},
+		{ID: "1", MinInclusive: "10", MaxExclusive: "20"},
+		{ID: "2", MinInclusive: "20", MaxExclusive: "FF"},
+	}, "")
+
+	result := rm.getOverlappingRanges("", "FF")
+	require.Len(t, result, 3)
+}
+
+func Test_getOverlappingRanges_pointInMiddle(t *testing.T) {
+	rm := newCollectionRoutingMap([]partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "10"},
+		{ID: "1", MinInclusive: "10", MaxExclusive: "20"},
+		{ID: "2", MinInclusive: "20", MaxExclusive: "FF"},
+	}, "")
+
+	// EPK range that starts and ends within range "1"
+	result := rm.getOverlappingRanges("15", "18")
+	require.Len(t, result, 1)
+	require.Equal(t, "1", result[0].ID)
+}
+
+func Test_getOverlappingRanges_mixedLengthBoundaries(t *testing.T) {
+	// Simulate HPK container with mixed-length EPK boundaries
+	partial := "06AB34CFE4E482236BCACBBF50E234AB"
+	fullZero := partial + "00000000000000000000000000000000"
+
+	rm := newCollectionRoutingMap([]partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: partial},
+		{ID: "1", MinInclusive: fullZero, MaxExclusive: "FF"},
+	}, "")
+
+	// A query range spanning both should find both
+	result := rm.getOverlappingRanges("", "FF")
+	require.Len(t, result, 2)
+}

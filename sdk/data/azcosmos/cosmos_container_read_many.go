@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
 )
 
 const maxItemsPerQuery = 1000
@@ -36,8 +37,9 @@ type chunkResult struct {
 // range ID and true if found, or ("", false) otherwise.
 func findPhysicalRangeForEPK(epkValue string, ranges []partitionKeyRange) (string, bool) {
 	// Binary search: find the last range whose MinInclusive <= epkValue.
+	// Uses length-aware comparison for HPK containers with mixed-length EPK boundaries.
 	idx := sort.Search(len(ranges), func(i int) bool {
-		return ranges[i].MinInclusive > epkValue
+		return epk.CompareEPK(ranges[i].MinInclusive, epkValue) > 0
 	}) - 1
 	if idx < 0 {
 		return "", false
@@ -45,7 +47,7 @@ func findPhysicalRangeForEPK(epkValue string, ranges []partitionKeyRange) (strin
 	// Verify epkValue < MaxExclusive.
 	// Empty MaxExclusive or "FF" means unbounded (the last partition).
 	r := ranges[idx]
-	if r.MaxExclusive != "" && r.MaxExclusive != "FF" && epkValue >= r.MaxExclusive {
+	if r.MaxExclusive != "" && r.MaxExclusive != "FF" && epk.CompareEPK(epkValue, r.MaxExclusive) >= 0 {
 		return "", false
 	}
 	return r.ID, true
@@ -54,35 +56,49 @@ func findPhysicalRangeForEPK(epkValue string, ranges []partitionKeyRange) (strin
 // groupItemsByPhysicalRange computes the EPK for each item and groups them by
 // physical partition range. It returns the range IDs in first-seen order and
 // the groups keyed by range ID.
+//
+// For MultiHash containers, items with partial partition keys (fewer components
+// than paths) are fanned out to all overlapping physical partitions via EPK
+// range computation.
 func groupItemsByPhysicalRange(items []ItemIdentity, pkDef PartitionKeyDefinition, ranges []partitionKeyRange) ([]string, map[string][]ItemIdentity, error) {
-	// Sort ranges by MinInclusive for binary search.
-	sorted := make([]partitionKeyRange, len(ranges))
-	copy(sorted, ranges)
-	sort.Slice(sorted, func(i, j int) bool {
-		return sorted[i].MinInclusive < sorted[j].MinInclusive
-	})
+	// Build a routing map for efficient lookups.
+	routingMap := newCollectionRoutingMap(ranges, "")
 
 	order := make([]string, 0)
 	seen := make(map[string]bool)
 	groups := make(map[string][]ItemIdentity)
 
-	pkVersion := pkDef.Version
-	if pkVersion == 0 {
-		pkVersion = 1
-	}
-
 	for _, item := range items {
-		epkVal := item.PartitionKey.computeEffectivePartitionKey(pkDef.Kind, pkVersion)
-		rangeID, ok := findPhysicalRangeForEPK(epkVal.EPK, sorted)
-		if !ok {
-			return nil, nil, errors.New("could not find physical partition range for item EPK")
+		epkR, err := computeEPKRange(&item.PartitionKey, pkDef)
+		if err != nil {
+			return nil, nil, err
 		}
 
-		if !seen[rangeID] {
-			order = append(order, rangeID)
-			seen[rangeID] = true
+		if epkR.isRange() {
+			// Prefix key: fan out to all overlapping ranges
+			overlapping := routingMap.getOverlappingRanges(epkR.Min, epkR.Max)
+			if len(overlapping) == 0 {
+				return nil, nil, errors.New("could not find physical partition range for item EPK range")
+			}
+			for _, r := range overlapping {
+				if !seen[r.ID] {
+					order = append(order, r.ID)
+					seen[r.ID] = true
+				}
+				groups[r.ID] = append(groups[r.ID], item)
+			}
+		} else {
+			// Point key: direct lookup
+			rangeID, ok := findPhysicalRangeForEPK(epkR.Min, routingMap.orderedRanges)
+			if !ok {
+				return nil, nil, errors.New("could not find physical partition range for item EPK")
+			}
+			if !seen[rangeID] {
+				order = append(order, rangeID)
+				seen[rangeID] = true
+			}
+			groups[rangeID] = append(groups[rangeID], item)
 		}
-		groups[rangeID] = append(groups[rangeID], item)
 	}
 
 	return order, groups, nil

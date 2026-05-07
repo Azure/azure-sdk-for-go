@@ -115,9 +115,14 @@ func (c *partitionKeyRangeCache) invalidate(containerLink string) {
 	}
 }
 
+// maxIncrementalRefreshIterations caps the number of incremental fetch loops
+// to prevent runaway requests during large-scale splits.
+const maxIncrementalRefreshIterations = 10
+
 // refreshEntry fetches PK ranges from the service and populates the entry.
 // It attempts an incremental refresh if a previous routing map with an ETag exists,
-// falling back to a full refresh if the incremental merge is incomplete.
+// looping until 304 Not Modified (capped at maxIncrementalRefreshIterations).
+// Falls back to a full refresh if the incremental merge is incomplete.
 // Caller must hold entry.mu.
 func (c *partitionKeyRangeCache) refreshEntry(
 	ctx context.Context,
@@ -127,44 +132,56 @@ func (c *partitionKeyRangeCache) refreshEntry(
 ) (*collectionRoutingMap, error) {
 	previousMap := entry.routingMap
 
-	ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, previousMap, client)
+	if previousMap != nil && previousMap.changeFeedETag != "" {
+		// Incremental refresh loop: keep fetching until 304 or iteration cap
+		currentMap := previousMap
+		for i := 0; i < maxIncrementalRefreshIterations; i++ {
+			ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, currentMap, client)
+			if err != nil {
+				return nil, err
+			}
+
+			if len(ranges) == 0 {
+				// 304 Not Modified — no more changes
+				if newETag != "" && newETag != currentMap.changeFeedETag {
+					currentMap = &collectionRoutingMap{
+						orderedRanges:  currentMap.orderedRanges,
+						rangeByID:      currentMap.rangeByID,
+						goneRanges:     currentMap.goneRanges,
+						changeFeedETag: newETag,
+					}
+				}
+				entry.routingMap = currentMap
+				return currentMap, nil
+			}
+
+			merged := currentMap.tryCombine(ranges, newETag)
+			if merged == nil {
+				// Incremental merge failed — fall through to full refresh
+				break
+			}
+			currentMap = merged
+		}
+
+		// If we exited the loop without a 304 (iteration cap or merge failure),
+		// check if the current map is complete
+		if isCompleteSetOfRanges(currentMap.orderedRanges) && currentMap != previousMap {
+			entry.routingMap = currentMap
+			return currentMap, nil
+		}
+
+		// Fall through to full refresh
+	}
+
+	// Full refresh: fetch all ranges without ETag
+	ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, nil, client)
 	if err != nil {
 		return nil, err
 	}
 
-	var newMap *collectionRoutingMap
-	if previousMap != nil && len(ranges) > 0 {
-		// Attempt incremental merge
-		newMap = previousMap.tryCombine(ranges, newETag)
-	}
-
-	if newMap == nil {
-		if previousMap != nil && len(ranges) == 0 {
-			// No changes (ETag matched) — keep existing map, update ETag if different
-			if newETag != "" {
-				entry.routingMap = &collectionRoutingMap{
-					orderedRanges:  previousMap.orderedRanges,
-					rangeByID:      previousMap.rangeByID,
-					goneRanges:     previousMap.goneRanges,
-					changeFeedETag: newETag,
-				}
-			}
-			return entry.routingMap, nil
-		}
-
-		if previousMap != nil && newMap == nil {
-			// Incremental merge failed (incomplete covering) — do a full refresh
-			ranges, newETag, err = fetchPartitionKeyRanges(ctx, containerLink, nil, client)
-			if err != nil {
-				return nil, err
-			}
-		}
-
-		// Build fresh routing map from all ranges
-		newMap = newCollectionRoutingMap(ranges, newETag)
-		if !isCompleteSetOfRanges(newMap.orderedRanges) {
-			return nil, fmt.Errorf("incomplete partition key range set after full refresh for %s", containerLink)
-		}
+	newMap := newCollectionRoutingMap(ranges, newETag)
+	if !isCompleteSetOfRanges(newMap.orderedRanges) {
+		return nil, fmt.Errorf("incomplete partition key range set after full refresh for %s", containerLink)
 	}
 
 	entry.routingMap = newMap

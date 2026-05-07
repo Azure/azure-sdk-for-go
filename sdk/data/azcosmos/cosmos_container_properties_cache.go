@@ -9,11 +9,14 @@ import (
 )
 
 // containerPropertiesCache provides a client-level cache of container properties
-// (specifically PartitionKeyDefinition). Keyed by container link with event-driven
-// invalidation (no TTL).
+// (specifically PartitionKeyDefinition). It maintains a dual index — by container
+// link (name-based path) and by ResourceID (RID) — so that lookups succeed
+// regardless of which identifier the caller has. When a reference is fetched or
+// inserted, both indices are cross-populated.
 type containerPropertiesCache struct {
-	mu      sync.RWMutex
-	entries map[string]*containerPropsCacheEntry
+	mu          sync.RWMutex
+	entries     map[string]*containerPropsCacheEntry // keyed by container link
+	entriesByID map[string]*containerPropsCacheEntry // keyed by ResourceID
 }
 
 type containerPropsCacheEntry struct {
@@ -23,7 +26,8 @@ type containerPropsCacheEntry struct {
 
 func newContainerPropertiesCache() *containerPropertiesCache {
 	return &containerPropertiesCache{
-		entries: make(map[string]*containerPropsCacheEntry),
+		entries:     make(map[string]*containerPropsCacheEntry),
+		entriesByID: make(map[string]*containerPropsCacheEntry),
 	}
 }
 
@@ -73,8 +77,28 @@ func (c *containerPropertiesCache) getProperties(
 	return props, err
 }
 
+// getPropertiesByRID looks up cached container properties by ResourceID.
+// Returns nil if the RID is not in the cache.
+func (c *containerPropertiesCache) getPropertiesByRID(resourceID string) *ContainerProperties {
+	if resourceID == "" {
+		return nil
+	}
+	c.mu.RLock()
+	entry, exists := c.entriesByID[resourceID]
+	c.mu.RUnlock()
+
+	if !exists {
+		return nil
+	}
+
+	entry.mu.Lock()
+	props := entry.props
+	entry.mu.Unlock()
+	return props
+}
+
 // invalidate removes the cached properties for the given container link,
-// forcing the next access to fetch fresh data.
+// forcing the next access to fetch fresh data. Also removes the RID index entry.
 func (c *containerPropertiesCache) invalidate(containerLink string) {
 	c.mu.RLock()
 	entry, exists := c.entries[containerLink]
@@ -82,13 +106,22 @@ func (c *containerPropertiesCache) invalidate(containerLink string) {
 
 	if exists {
 		entry.mu.Lock()
+		props := entry.props
 		entry.props = nil
 		entry.mu.Unlock()
+
+		// Remove the RID index entry if we had cached props
+		if props != nil && props.ResourceID != "" {
+			c.mu.Lock()
+			delete(c.entriesByID, props.ResourceID)
+			c.mu.Unlock()
+		}
 	}
 }
 
 // set directly populates the cache with the given container properties.
-// This is used when a Read() call already fetched the properties.
+// This is used when a Read() or Replace() call already fetched the properties.
+// Cross-populates both the link-based and RID-based indices.
 func (c *containerPropertiesCache) set(containerLink string, props *ContainerProperties) {
 	c.mu.RLock()
 	entry, exists := c.entries[containerLink]
@@ -98,20 +131,26 @@ func (c *containerPropertiesCache) set(containerLink string, props *ContainerPro
 		entry.mu.Lock()
 		entry.props = props
 		entry.mu.Unlock()
-		return
+	} else {
+		c.mu.Lock()
+		entry, exists = c.entries[containerLink]
+		if !exists {
+			entry = &containerPropsCacheEntry{props: props}
+			c.entries[containerLink] = entry
+		} else {
+			entry.mu.Lock()
+			entry.props = props
+			entry.mu.Unlock()
+		}
+		c.mu.Unlock()
 	}
 
-	c.mu.Lock()
-	entry, exists = c.entries[containerLink]
-	if !exists {
-		entry = &containerPropsCacheEntry{}
-		c.entries[containerLink] = entry
+	// Cross-populate the RID index
+	if props != nil && props.ResourceID != "" {
+		c.mu.Lock()
+		c.entriesByID[props.ResourceID] = entry
+		c.mu.Unlock()
 	}
-	c.mu.Unlock()
-
-	entry.mu.Lock()
-	entry.props = props
-	entry.mu.Unlock()
 }
 
 // refreshEntry fetches container properties directly from the service.
@@ -149,5 +188,13 @@ func (c *containerPropertiesCache) refreshEntry(
 	}
 
 	entry.props = response.ContainerProperties
+
+	// Cross-populate the RID index
+	if entry.props != nil && entry.props.ResourceID != "" {
+		c.mu.Lock()
+		c.entriesByID[entry.props.ResourceID] = entry
+		c.mu.Unlock()
+	}
+
 	return entry.props, nil
 }

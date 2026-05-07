@@ -127,3 +127,59 @@ func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, vers
 
 	return epk.EffectivePartitionKey{EPK: epkStr}
 }
+
+// epkRange represents an effective partition key range for routing.
+// For a point key, Min == Max (both equal to the EPK).
+// For a prefix key on a MultiHash container, Min is the prefix EPK and
+// Max is prefix EPK + "FF" (an exclusive upper bound).
+type epkRange struct {
+	Min string // inclusive
+	Max string // exclusive (empty means same as Min, i.e., point)
+}
+
+// isRange returns true if this represents a range (prefix key) rather than a point.
+func (r epkRange) isRange() bool {
+	return r.Max != "" && r.Min != r.Max
+}
+
+// computeEPKRange computes the EPK range for a partition key given the container's
+// partition key definition. For full keys it returns a point range. For prefix keys
+// on MultiHash containers it returns a range [prefix_epk, prefix_epk+"FF").
+// Non-MultiHash containers require exactly the right number of components.
+func computeEPKRange(pk *PartitionKey, pkDef PartitionKeyDefinition) (epkRange, error) {
+	componentCount := len(pk.values)
+	if componentCount == 0 {
+		componentCount = 1 // undefined marker
+	}
+	pathCount := len(pkDef.Paths)
+
+	if componentCount > pathCount {
+		return epkRange{}, fmt.Errorf("more partition key components (%d) than definition paths (%d)", componentCount, pathCount)
+	}
+
+	if pkDef.Kind != PartitionKeyKindMultiHash && componentCount != pathCount {
+		return epkRange{}, fmt.Errorf("non-MultiHash containers require exactly %d components, got %d", pathCount, componentCount)
+	}
+
+	pkVersion := pkDef.Version
+	if pkVersion == 0 {
+		pkVersion = 1
+	}
+
+	epkVal := pk.computeEffectivePartitionKey(pkDef.Kind, pkVersion)
+
+	isPrefix := pkDef.Kind == PartitionKeyKindMultiHash && componentCount < pathCount
+	if isPrefix {
+		// "FF" is safe as an upper-bound sentinel because maskTopBitsForRouting
+		// ensures every EPK component's first hex digit is in [0-3].
+		return epkRange{
+			Min: epkVal.EPK,
+			Max: epkVal.EPK + "FF",
+		}, nil
+	}
+
+	return epkRange{
+		Min: epkVal.EPK,
+		Max: epkVal.EPK,
+	}, nil
+}

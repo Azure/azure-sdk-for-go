@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.FileShares": "2026-06-01"
+  },
+  "emitterVersion": "0.11.0"
+}

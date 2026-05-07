@@ -125,9 +125,9 @@ func TestComputeEPK_Baseline(t *testing.T) {
 			t.Run(category+"/V2/"+tc.Input.Description, func(t *testing.T) {
 				var actual string
 				if spec.multiHash {
-					actual = ComputeV2MultiHash(values)
+					actual = computeV2MultiHash(values)
 				} else {
-					actual = ComputeV2Hash(values)
+					actual = computeV2Hash(values)
 				}
 				require.Equal(t, expectedV2, actual,
 					"V2 hash mismatch for %s (value: %s)", tc.Input.Description, tc.Input.PartitionKeyValue)

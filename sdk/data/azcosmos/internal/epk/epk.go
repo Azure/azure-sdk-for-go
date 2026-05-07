@@ -258,8 +258,9 @@ func ComputeV1(values []interface{}) string {
 	return sb.String()
 }
 
-// ComputeV2Hash computes the V2 EPK for Hash partitioning.
-func ComputeV2Hash(values []interface{}) string {
+// computeV2Hash computes the raw V2 EPK for Hash partitioning (without top-bit masking).
+// Do not use for partition routing — use ComputeV2HashForRouting instead.
+func computeV2Hash(values []interface{}) string {
 	var hashBuf []byte
 	for _, comp := range values {
 		writeForHashingV2(comp, &hashBuf)
@@ -269,8 +270,9 @@ func ComputeV2Hash(values []interface{}) string {
 	return hash128ToEPK(low, high)
 }
 
-// ComputeV2MultiHash computes the V2 EPK for MultiHash partitioning.
-func ComputeV2MultiHash(values []interface{}) string {
+// computeV2MultiHash computes the raw V2 EPK for MultiHash partitioning (without top-bit masking).
+// Do not use for partition routing — use ComputeV2MultiHashForRouting instead.
+func computeV2MultiHash(values []interface{}) string {
 	var sb strings.Builder
 	for _, comp := range values {
 		var hashBuf []byte
@@ -286,7 +288,7 @@ func ComputeV2MultiHash(values []interface{}) string {
 // The service uses "FF" as the maximum exclusive partition key range sentinel,
 // so all valid EPK values must have their first byte masked to [0x00, 0x3F].
 func ComputeV2HashForRouting(values []interface{}) string {
-	return MaskTopBitsForRouting(ComputeV2Hash(values))
+	return maskTopBitsForRouting(computeV2Hash(values))
 }
 
 // ComputeV2MultiHashForRouting computes the V2 MultiHash EPK for routing.
@@ -298,7 +300,7 @@ func ComputeV2MultiHashForRouting(values []interface{}) string {
 		writeForHashingV2(comp, &hashBuf)
 
 		low, high := murmurhash3_128(hashBuf, 0, 0)
-		sb.WriteString(MaskTopBitsForRouting(hash128ToEPK(low, high)))
+		sb.WriteString(maskTopBitsForRouting(hash128ToEPK(low, high)))
 	}
 	return sb.String()
 }
@@ -318,11 +320,11 @@ func hash128ToEPK(low, high uint64) string {
 	return toHexUpper(bytes[:])
 }
 
-// MaskTopBitsForRouting clears the two most significant bits of the first byte
+// maskTopBitsForRouting clears the two most significant bits of the first byte
 // in an EPK hex string. The Cosmos DB partition key range space uses "FF" as the
 // maximum exclusive sentinel, so all valid EPK values must have their first byte
 // in the range [0x00, 0x3F]. This matches the behavior of other Cosmos DB SDKs.
-func MaskTopBitsForRouting(epkHex string) string {
+func maskTopBitsForRouting(epkHex string) string {
 	if len(epkHex) < 2 {
 		return epkHex
 	}

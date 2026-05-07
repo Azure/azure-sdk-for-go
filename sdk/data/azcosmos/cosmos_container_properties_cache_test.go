@@ -153,13 +153,13 @@ func Test_containerPropertiesCache_set_multipleContainers(t *testing.T) {
 	cache := newContainerPropertiesCache()
 
 	props1 := &ContainerProperties{
-		ID:         "col1",
-		ResourceID: "rid1",
+		ID:                     "col1",
+		ResourceID:             "rid1",
 		PartitionKeyDefinition: PartitionKeyDefinition{Paths: []string{"/pk1"}},
 	}
 	props2 := &ContainerProperties{
-		ID:         "col2",
-		ResourceID: "rid2",
+		ID:                     "col2",
+		ResourceID:             "rid2",
 		PartitionKeyDefinition: PartitionKeyDefinition{Paths: []string{"/pk2"}},
 	}
 

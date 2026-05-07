@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
@@ -372,7 +373,7 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 	env := newQueueEnvelope(props, ac.em.TokenProvider())
 
 	if !creating {
-		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+		ctx = policy.WithHTTPHeader(ctx, http.Header{
 			"If-Match": []string{"*"},
 		})
 	}

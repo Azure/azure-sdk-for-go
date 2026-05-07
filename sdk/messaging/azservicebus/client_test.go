@@ -63,7 +63,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	client.Close(context.TODO())
+	_ = client.Close(context.TODO())
 }
 
 func TestNewClientWithWebsockets(t *testing.T) {
@@ -151,7 +151,7 @@ const fastNotFoundDuration = 10 * time.Second
 func TestNewClientNewSenderNotFound(t *testing.T) {
 	client := newServiceBusClientForTest(t, nil)
 
-	defer client.Close(context.Background())
+	defer func() { _ = client.Close(context.Background()) }()
 
 	sender, err := client.NewSender("non-existent-queue", nil)
 	require.NoError(t, err)
@@ -168,7 +168,7 @@ func TestNewClientNewSenderNotFound(t *testing.T) {
 func TestNewClientNewReceiverNotFound(t *testing.T) {
 	client := newServiceBusClientForTest(t, nil)
 
-	defer client.Close(context.Background())
+	defer func() { _ = client.Close(context.Background()) }()
 
 	receiver, err := client.NewReceiverForQueue("non-existent-queue", nil)
 	require.NoError(t, err)
@@ -198,7 +198,7 @@ func TestNewClientNewReceiverNotFound(t *testing.T) {
 func TestClientNewSessionReceiverNotFound(t *testing.T) {
 	client := newServiceBusClientForTest(t, nil)
 
-	defer client.Close(context.Background())
+	defer func() { _ = client.Close(context.Background()) }()
 
 	ctx, cancel := context.WithTimeout(context.Background(), fastNotFoundDuration)
 	defer cancel()

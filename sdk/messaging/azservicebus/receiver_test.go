@@ -78,7 +78,7 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	for i := 0; i < 5; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
@@ -122,7 +122,7 @@ func TestReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(topicName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	for i := 0; i < 5; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
@@ -151,7 +151,7 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello"),
@@ -180,7 +180,7 @@ func TestReceiverAbandon(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("send and abandon test"),
@@ -212,7 +212,7 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("send and abandon test"),
@@ -242,7 +242,7 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
 
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	for i := 0; i < 100; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
@@ -283,7 +283,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 
 	ctx := context.TODO()
 
-	defer sender.Close(ctx)
+	defer func() { _ = sender.Close(ctx) }()
 
 	err = sender.SendMessage(ctx, &Message{
 		Body: []byte("deferring a message"),
@@ -326,7 +326,7 @@ func TestReceiverDeferWithReceiveAndDelete(t *testing.T) {
 
 	ctx := context.TODO()
 
-	defer sender.Close(ctx)
+	defer func() { _ = sender.Close(ctx) }()
 
 	err = sender.SendMessage(ctx, &Message{
 		Body: []byte("deferring a message"),
@@ -374,7 +374,7 @@ func TestReceiverPeek(t *testing.T) {
 
 	ctx := context.TODO()
 
-	defer sender.Close(ctx)
+	defer func() { _ = sender.Close(ctx) }()
 
 	batch, err := sender.NewMessageBatch(ctx, nil)
 	require.NoError(t, err)
@@ -933,7 +933,7 @@ func TestReceiveAndSendAndReceive(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	scheduledEnqueuedTime := time.Now()
 
@@ -983,7 +983,7 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 
 		sender, err := serviceBusClient.NewSender(queueName, nil)
 		require.NoError(t, err)
-		defer sender.Close(context.Background())
+		defer func() { _ = sender.Close(context.Background()) }()
 
 		batch, err := sender.NewMessageBatch(context.Background(), nil)
 		require.NoError(t, err)
@@ -1309,7 +1309,7 @@ Loop:
 		})
 		require.NoError(t, err)
 
-		defer receiver.Close(context.Background())
+		defer func() { _ = receiver.Close(context.Background()) }()
 
 		// we might not get all the messages in our prefetch, so let's make sure we get all remaining messages
 		for {
@@ -1417,7 +1417,7 @@ func TestReceiver_SettleWithOnlyLockToken(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	setup := func(t *testing.T, body string) (receiver *Receiver, lockToken [16]byte, sequenceNumber int64) {
 		err = sender.SendMessage(context.Background(), &Message{Body: []byte(body)}, nil)

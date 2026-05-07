@@ -1237,7 +1237,7 @@ func (em *fakeEM) Get(ctx context.Context, entityPath string, respObj any) (*htt
 		return nil, err
 	}
 
-	defer reader.Close()
+	defer func() { _ = reader.Close() }()
 
 	bytes, err := io.ReadAll(reader)
 

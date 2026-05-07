@@ -167,7 +167,7 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 
-			sender.Close(context.Background())
+			_ = sender.Close(context.Background())
 
 			require.Equal(t, 3, len(md.Events.GetOpenLinks()))
 			require.Equal(t, 1, len(md.Events.GetOpenConns()))

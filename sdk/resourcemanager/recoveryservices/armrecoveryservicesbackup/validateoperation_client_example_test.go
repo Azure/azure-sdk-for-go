@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
 func ExampleValidateOperationClient_BeginTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,6 +51,6 @@ func ExampleValidateOperationClient_BeginTrigger() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

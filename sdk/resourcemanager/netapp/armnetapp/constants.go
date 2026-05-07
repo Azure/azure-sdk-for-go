@@ -128,30 +128,6 @@ func PossibleBackupTypeValues() []BackupType {
 	}
 }
 
-// BreakthroughMode - Specifies whether the volume operates in Breakthrough Mode. When set to 'Enabled', the volume runs on
-// the resources configured for this mode,
-// delivering improved performance and higher throughput. If set to 'Disabled' or omitted, the volume uses the basic configuration.
-// This feature
-// is available only in regions where it’s been configured and first-time users must finish onboarding prior to using Breakthrough
-// Mode.
-type BreakthroughMode string
-
-const (
-	// BreakthroughModeDisabled - The volume uses configuration that provides basic performance and throughput.
-	BreakthroughModeDisabled BreakthroughMode = "Disabled"
-	// BreakthroughModeEnabled - The volume runs on the resources configured for Breakthrough mode which ensures consistent high
-	// performance and a higher throughput.
-	BreakthroughModeEnabled BreakthroughMode = "Enabled"
-)
-
-// PossibleBreakthroughModeValues returns the possible values for the BreakthroughMode const type.
-func PossibleBreakthroughModeValues() []BreakthroughMode {
-	return []BreakthroughMode{
-		BreakthroughModeDisabled,
-		BreakthroughModeEnabled,
-	}
-}
-
 // BucketPatchPermissions - Access permissions for the bucket. Either ReadOnly or ReadWrite.
 type BucketPatchPermissions string
 
@@ -243,43 +219,6 @@ func PossibleCacheProvisioningStateValues() []CacheProvisioningState {
 		CacheProvisioningStateFailed,
 		CacheProvisioningStateSucceeded,
 		CacheProvisioningStateUpdating,
-	}
-}
-
-// CheckElasticResourceAvailabilityReason - Availability reason
-type CheckElasticResourceAvailabilityReason string
-
-const (
-	// CheckElasticResourceAvailabilityReasonAlreadyExists - Value indicating the name is already in use and is therefore unavailable
-	CheckElasticResourceAvailabilityReasonAlreadyExists CheckElasticResourceAvailabilityReason = "AlreadyExists"
-	// CheckElasticResourceAvailabilityReasonInvalid - Value indicating the name provided does not match Azure NetApp Files naming
-	// requirements
-	CheckElasticResourceAvailabilityReasonInvalid CheckElasticResourceAvailabilityReason = "Invalid"
-)
-
-// PossibleCheckElasticResourceAvailabilityReasonValues returns the possible values for the CheckElasticResourceAvailabilityReason const type.
-func PossibleCheckElasticResourceAvailabilityReasonValues() []CheckElasticResourceAvailabilityReason {
-	return []CheckElasticResourceAvailabilityReason{
-		CheckElasticResourceAvailabilityReasonAlreadyExists,
-		CheckElasticResourceAvailabilityReasonInvalid,
-	}
-}
-
-// CheckElasticResourceAvailabilityStatus - Availability status
-type CheckElasticResourceAvailabilityStatus string
-
-const (
-	// CheckElasticResourceAvailabilityStatusFalse - Value indicating the the name is invalid, unavailable, or both.
-	CheckElasticResourceAvailabilityStatusFalse CheckElasticResourceAvailabilityStatus = "False"
-	// CheckElasticResourceAvailabilityStatusTrue - Value indicating the name is valid and available
-	CheckElasticResourceAvailabilityStatusTrue CheckElasticResourceAvailabilityStatus = "True"
-)
-
-// PossibleCheckElasticResourceAvailabilityStatusValues returns the possible values for the CheckElasticResourceAvailabilityStatus const type.
-func PossibleCheckElasticResourceAvailabilityStatusValues() []CheckElasticResourceAvailabilityStatus {
-	return []CheckElasticResourceAvailabilityStatus{
-		CheckElasticResourceAvailabilityStatusFalse,
-		CheckElasticResourceAvailabilityStatusTrue,
 	}
 }
 
@@ -461,39 +400,6 @@ func PossibleCredentialsStatusValues() []CredentialsStatus {
 	}
 }
 
-// DayOfWeek - Day of the week
-type DayOfWeek string
-
-const (
-	// DayOfWeekFriday - Take a snapshot each Friday
-	DayOfWeekFriday DayOfWeek = "Friday"
-	// DayOfWeekMonday - Take a snapshot each Monday
-	DayOfWeekMonday DayOfWeek = "Monday"
-	// DayOfWeekSaturday - Take a snapshot each Saturday
-	DayOfWeekSaturday DayOfWeek = "Saturday"
-	// DayOfWeekSunday - Take a snapshot each Sunday
-	DayOfWeekSunday DayOfWeek = "Sunday"
-	// DayOfWeekThursday - Take a snapshot each Thursday
-	DayOfWeekThursday DayOfWeek = "Thursday"
-	// DayOfWeekTuesday - Take a snapshot each Tuesday
-	DayOfWeekTuesday DayOfWeek = "Tuesday"
-	// DayOfWeekWednesday - Take a snapshot each Wednesday
-	DayOfWeekWednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{
-		DayOfWeekFriday,
-		DayOfWeekMonday,
-		DayOfWeekSaturday,
-		DayOfWeekSunday,
-		DayOfWeekThursday,
-		DayOfWeekTuesday,
-		DayOfWeekWednesday,
-	}
-}
-
 // DesiredRansomwareProtectionState - The desired state of the Advanced Ransomware Protection feature
 type DesiredRansomwareProtectionState string
 
@@ -509,273 +415,6 @@ func PossibleDesiredRansomwareProtectionStateValues() []DesiredRansomwareProtect
 	return []DesiredRansomwareProtectionState{
 		DesiredRansomwareProtectionStateDisabled,
 		DesiredRansomwareProtectionStateEnabled,
-	}
-}
-
-// ElasticBackupPolicyState - Elastic Backup Policy state
-type ElasticBackupPolicyState string
-
-const (
-	// ElasticBackupPolicyStateDisabled - Value indicating the policy is disabled
-	ElasticBackupPolicyStateDisabled ElasticBackupPolicyState = "Disabled"
-	// ElasticBackupPolicyStateEnabled - Value indicating the policy is enabled
-	ElasticBackupPolicyStateEnabled ElasticBackupPolicyState = "Enabled"
-)
-
-// PossibleElasticBackupPolicyStateValues returns the possible values for the ElasticBackupPolicyState const type.
-func PossibleElasticBackupPolicyStateValues() []ElasticBackupPolicyState {
-	return []ElasticBackupPolicyState{
-		ElasticBackupPolicyStateDisabled,
-		ElasticBackupPolicyStateEnabled,
-	}
-}
-
-// ElasticBackupType - Type of backup
-type ElasticBackupType string
-
-const (
-	// ElasticBackupTypeManual - Manual backup type
-	ElasticBackupTypeManual ElasticBackupType = "Manual"
-	// ElasticBackupTypeScheduled - Scheduled backup type
-	ElasticBackupTypeScheduled ElasticBackupType = "Scheduled"
-)
-
-// PossibleElasticBackupTypeValues returns the possible values for the ElasticBackupType const type.
-func PossibleElasticBackupTypeValues() []ElasticBackupType {
-	return []ElasticBackupType{
-		ElasticBackupTypeManual,
-		ElasticBackupTypeScheduled,
-	}
-}
-
-// ElasticKeyVaultStatus - KeyVault status
-type ElasticKeyVaultStatus string
-
-const (
-	// ElasticKeyVaultStatusCreated - KeyVault connection created but not in use
-	ElasticKeyVaultStatusCreated ElasticKeyVaultStatus = "Created"
-	// ElasticKeyVaultStatusDeleted - KeyVault connection Deleted
-	ElasticKeyVaultStatusDeleted ElasticKeyVaultStatus = "Deleted"
-	// ElasticKeyVaultStatusError - Error with the KeyVault connection
-	ElasticKeyVaultStatusError ElasticKeyVaultStatus = "Error"
-	// ElasticKeyVaultStatusInUse - KeyVault connection in use by SMB Volume
-	ElasticKeyVaultStatusInUse ElasticKeyVaultStatus = "InUse"
-	// ElasticKeyVaultStatusUpdating - KeyVault connection Updating
-	ElasticKeyVaultStatusUpdating ElasticKeyVaultStatus = "Updating"
-)
-
-// PossibleElasticKeyVaultStatusValues returns the possible values for the ElasticKeyVaultStatus const type.
-func PossibleElasticKeyVaultStatusValues() []ElasticKeyVaultStatus {
-	return []ElasticKeyVaultStatus{
-		ElasticKeyVaultStatusCreated,
-		ElasticKeyVaultStatusDeleted,
-		ElasticKeyVaultStatusError,
-		ElasticKeyVaultStatusInUse,
-		ElasticKeyVaultStatusUpdating,
-	}
-}
-
-// ElasticNfsv3Access - NFSv3 access
-type ElasticNfsv3Access string
-
-const (
-	// ElasticNfsv3AccessDisabled - Clients can't connect to the volume using the NFSv3 protocol.
-	ElasticNfsv3AccessDisabled ElasticNfsv3Access = "Disabled"
-	// ElasticNfsv3AccessEnabled - Clients can connect to the volume using the NFSv3 protocol.
-	ElasticNfsv3AccessEnabled ElasticNfsv3Access = "Enabled"
-)
-
-// PossibleElasticNfsv3AccessValues returns the possible values for the ElasticNfsv3Access const type.
-func PossibleElasticNfsv3AccessValues() []ElasticNfsv3Access {
-	return []ElasticNfsv3Access{
-		ElasticNfsv3AccessDisabled,
-		ElasticNfsv3AccessEnabled,
-	}
-}
-
-// ElasticNfsv4Access - NFSv4 access
-type ElasticNfsv4Access string
-
-const (
-	// ElasticNfsv4AccessDisabled - Clients can't connect to the volume using the NFSv4 protocol.
-	ElasticNfsv4AccessDisabled ElasticNfsv4Access = "Disabled"
-	// ElasticNfsv4AccessEnabled - Clients can connect to the volume using the NFSv4 protocol.
-	ElasticNfsv4AccessEnabled ElasticNfsv4Access = "Enabled"
-)
-
-// PossibleElasticNfsv4AccessValues returns the possible values for the ElasticNfsv4Access const type.
-func PossibleElasticNfsv4AccessValues() []ElasticNfsv4Access {
-	return []ElasticNfsv4Access{
-		ElasticNfsv4AccessDisabled,
-		ElasticNfsv4AccessEnabled,
-	}
-}
-
-// ElasticPoolEncryptionKeySource - Pool Encryption Key Source.
-type ElasticPoolEncryptionKeySource string
-
-const (
-	// ElasticPoolEncryptionKeySourceKeyVault - Represents the encryption key source of Elastic pool is Microsoft.KeyVault
-	ElasticPoolEncryptionKeySourceKeyVault ElasticPoolEncryptionKeySource = "KeyVault"
-	// ElasticPoolEncryptionKeySourceNetApp - Represents the encryption key source of Elastic pool is Microsoft.NetApp
-	ElasticPoolEncryptionKeySourceNetApp ElasticPoolEncryptionKeySource = "NetApp"
-)
-
-// PossibleElasticPoolEncryptionKeySourceValues returns the possible values for the ElasticPoolEncryptionKeySource const type.
-func PossibleElasticPoolEncryptionKeySourceValues() []ElasticPoolEncryptionKeySource {
-	return []ElasticPoolEncryptionKeySource{
-		ElasticPoolEncryptionKeySourceKeyVault,
-		ElasticPoolEncryptionKeySourceNetApp,
-	}
-}
-
-// ElasticProtocolType - Protocol types for elastic volume
-type ElasticProtocolType string
-
-const (
-	// ElasticProtocolTypeNFSv3 - NFSv3 protocol type
-	ElasticProtocolTypeNFSv3 ElasticProtocolType = "NFSv3"
-	// ElasticProtocolTypeNFSv4 - NFSv4 protocol type
-	ElasticProtocolTypeNFSv4 ElasticProtocolType = "NFSv4"
-	// ElasticProtocolTypeSMB - SMB/CIFS protocol type
-	ElasticProtocolTypeSMB ElasticProtocolType = "SMB"
-)
-
-// PossibleElasticProtocolTypeValues returns the possible values for the ElasticProtocolType const type.
-func PossibleElasticProtocolTypeValues() []ElasticProtocolType {
-	return []ElasticProtocolType{
-		ElasticProtocolTypeNFSv3,
-		ElasticProtocolTypeNFSv4,
-		ElasticProtocolTypeSMB,
-	}
-}
-
-// ElasticResourceAvailabilityStatus - Current availability status of the resource.
-type ElasticResourceAvailabilityStatus string
-
-const (
-	// ElasticResourceAvailabilityStatusOffline - The resource is currently Offline and not accessible
-	ElasticResourceAvailabilityStatusOffline ElasticResourceAvailabilityStatus = "Offline"
-	// ElasticResourceAvailabilityStatusOnline - The resource is currently Online and accessible
-	ElasticResourceAvailabilityStatusOnline ElasticResourceAvailabilityStatus = "Online"
-)
-
-// PossibleElasticResourceAvailabilityStatusValues returns the possible values for the ElasticResourceAvailabilityStatus const type.
-func PossibleElasticResourceAvailabilityStatusValues() []ElasticResourceAvailabilityStatus {
-	return []ElasticResourceAvailabilityStatus{
-		ElasticResourceAvailabilityStatusOffline,
-		ElasticResourceAvailabilityStatusOnline,
-	}
-}
-
-// ElasticRootAccess - Root access
-type ElasticRootAccess string
-
-const (
-	// ElasticRootAccessDisabled - Root user access is disabled for clients affected by this rule
-	ElasticRootAccessDisabled ElasticRootAccess = "Disabled"
-	// ElasticRootAccessEnabled - Root user access is enabled for clients affected by this rule
-	ElasticRootAccessEnabled ElasticRootAccess = "Enabled"
-)
-
-// PossibleElasticRootAccessValues returns the possible values for the ElasticRootAccess const type.
-func PossibleElasticRootAccessValues() []ElasticRootAccess {
-	return []ElasticRootAccess{
-		ElasticRootAccessDisabled,
-		ElasticRootAccessEnabled,
-	}
-}
-
-// ElasticServiceLevel - Service level for elastic capacity pool
-type ElasticServiceLevel string
-
-const (
-	// ElasticServiceLevelZoneRedundant - Zone redundant storage service level.
-	ElasticServiceLevelZoneRedundant ElasticServiceLevel = "ZoneRedundant"
-)
-
-// PossibleElasticServiceLevelValues returns the possible values for the ElasticServiceLevel const type.
-func PossibleElasticServiceLevelValues() []ElasticServiceLevel {
-	return []ElasticServiceLevel{
-		ElasticServiceLevelZoneRedundant,
-	}
-}
-
-// ElasticSmbEncryption - SMB encryption
-type ElasticSmbEncryption string
-
-const (
-	// ElasticSmbEncryptionDisabled - Value indicating the SMB encryption is disabled
-	ElasticSmbEncryptionDisabled ElasticSmbEncryption = "Disabled"
-	// ElasticSmbEncryptionEnabled - Value indicating the SMB encryption is enabled
-	ElasticSmbEncryptionEnabled ElasticSmbEncryption = "Enabled"
-)
-
-// PossibleElasticSmbEncryptionValues returns the possible values for the ElasticSmbEncryption const type.
-func PossibleElasticSmbEncryptionValues() []ElasticSmbEncryption {
-	return []ElasticSmbEncryption{
-		ElasticSmbEncryptionDisabled,
-		ElasticSmbEncryptionEnabled,
-	}
-}
-
-// ElasticUnixAccessRule - Unix access rule
-type ElasticUnixAccessRule string
-
-const (
-	// ElasticUnixAccessRuleNoAccess - Clients connecting with this rule will have no access to the volume
-	ElasticUnixAccessRuleNoAccess ElasticUnixAccessRule = "NoAccess"
-	// ElasticUnixAccessRuleReadOnly - Clients connecting with this rule will only have read access to the volume
-	ElasticUnixAccessRuleReadOnly ElasticUnixAccessRule = "ReadOnly"
-	// ElasticUnixAccessRuleReadWrite - Clients connecting with this rule will have full read and write access to the volume
-	ElasticUnixAccessRuleReadWrite ElasticUnixAccessRule = "ReadWrite"
-)
-
-// PossibleElasticUnixAccessRuleValues returns the possible values for the ElasticUnixAccessRule const type.
-func PossibleElasticUnixAccessRuleValues() []ElasticUnixAccessRule {
-	return []ElasticUnixAccessRule{
-		ElasticUnixAccessRuleNoAccess,
-		ElasticUnixAccessRuleReadOnly,
-		ElasticUnixAccessRuleReadWrite,
-	}
-}
-
-// ElasticVolumePolicyEnforcement - Policy enforcement
-type ElasticVolumePolicyEnforcement string
-
-const (
-	// ElasticVolumePolicyEnforcementEnforced - Value indicating the policy is enforced on the volume.
-	ElasticVolumePolicyEnforcementEnforced ElasticVolumePolicyEnforcement = "Enforced"
-	// ElasticVolumePolicyEnforcementNotEnforced - Value indicating the policy is not enforced on the volume.
-	ElasticVolumePolicyEnforcementNotEnforced ElasticVolumePolicyEnforcement = "NotEnforced"
-)
-
-// PossibleElasticVolumePolicyEnforcementValues returns the possible values for the ElasticVolumePolicyEnforcement const type.
-func PossibleElasticVolumePolicyEnforcementValues() []ElasticVolumePolicyEnforcement {
-	return []ElasticVolumePolicyEnforcement{
-		ElasticVolumePolicyEnforcementEnforced,
-		ElasticVolumePolicyEnforcementNotEnforced,
-	}
-}
-
-// ElasticVolumeRestorationState - The current state of the restoration process.
-type ElasticVolumeRestorationState string
-
-const (
-	// ElasticVolumeRestorationStateFailed - Value indicating that the volume restore has failed.
-	ElasticVolumeRestorationStateFailed ElasticVolumeRestorationState = "Failed"
-	// ElasticVolumeRestorationStateRestored - Value indicating that the volume is restored.
-	ElasticVolumeRestorationStateRestored ElasticVolumeRestorationState = "Restored"
-	// ElasticVolumeRestorationStateRestoring - Value indicating that the volume is currently restoring.
-	ElasticVolumeRestorationStateRestoring ElasticVolumeRestorationState = "Restoring"
-)
-
-// PossibleElasticVolumeRestorationStateValues returns the possible values for the ElasticVolumeRestorationState const type.
-func PossibleElasticVolumeRestorationStateValues() []ElasticVolumeRestorationState {
-	return []ElasticVolumeRestorationState{
-		ElasticVolumeRestorationStateFailed,
-		ElasticVolumeRestorationStateRestored,
-		ElasticVolumeRestorationStateRestoring,
 	}
 }
 
@@ -1056,30 +695,6 @@ func PossibleKeyVaultStatusValues() []KeyVaultStatus {
 	}
 }
 
-// LargeVolumeType - Specifies the type of the Large Volume. When set to 'LargeVolume', the large volume is created with standard
-// configuration.
-// If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB with cool
-// access enabled,
-// delivering higher capacity limit with lower costs.
-type LargeVolumeType string
-
-const (
-	// LargeVolumeTypeExtraLargeVolume7Dot2PiB - The extra large volume is created with higher volume capacity limit 7.2PiB with
-	// cool access enabled, delivering higher capacity limit with lower costs
-	LargeVolumeTypeExtraLargeVolume7Dot2PiB LargeVolumeType = "PremExtraLargeVolume7Dot2PiB"
-	// LargeVolumeTypeLargeVolume - The large volume is created with standard configuration that provides standard performance
-	// and throughput.
-	LargeVolumeTypeLargeVolume LargeVolumeType = "LargeVolume"
-)
-
-// PossibleLargeVolumeTypeValues returns the possible values for the LargeVolumeType const type.
-func PossibleLargeVolumeTypeValues() []LargeVolumeType {
-	return []LargeVolumeType{
-		LargeVolumeTypeExtraLargeVolume7Dot2PiB,
-		LargeVolumeTypeLargeVolume,
-	}
-}
-
 // LdapServerType - The type of the LDAP server
 type LdapServerType string
 
@@ -1254,24 +869,6 @@ func PossibleOnCertificateConflictActionValues() []OnCertificateConflictAction {
 	return []OnCertificateConflictAction{
 		OnCertificateConflictActionFail,
 		OnCertificateConflictActionUpdate,
-	}
-}
-
-// PolicyStatus - Policy status
-type PolicyStatus string
-
-const (
-	// PolicyStatusDisabled - Value indicating the policy is disabled
-	PolicyStatusDisabled PolicyStatus = "Disabled"
-	// PolicyStatusEnabled - Value indicating the policy is enabled
-	PolicyStatusEnabled PolicyStatus = "Enabled"
-)
-
-// PossiblePolicyStatusValues returns the possible values for the PolicyStatus const type.
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return []PolicyStatus{
-		PolicyStatusDisabled,
-		PolicyStatusEnabled,
 	}
 }
 
@@ -1627,43 +1224,6 @@ func PossibleSmbNonBrowsableValues() []SmbNonBrowsable {
 	}
 }
 
-// SnapshotDirectoryVisibility - Controls the visibility of the Elastic Volume's read-only snapshot directory, which provides
-// access to each of the volume's snapshots.
-type SnapshotDirectoryVisibility string
-
-const (
-	// SnapshotDirectoryVisibilityHidden - Value indicating the read-only snapshot directory is not visible
-	SnapshotDirectoryVisibilityHidden SnapshotDirectoryVisibility = "Hidden"
-	// SnapshotDirectoryVisibilityVisible - Value indicating the read-only snapshot directory is visible
-	SnapshotDirectoryVisibilityVisible SnapshotDirectoryVisibility = "Visible"
-)
-
-// PossibleSnapshotDirectoryVisibilityValues returns the possible values for the SnapshotDirectoryVisibility const type.
-func PossibleSnapshotDirectoryVisibilityValues() []SnapshotDirectoryVisibility {
-	return []SnapshotDirectoryVisibility{
-		SnapshotDirectoryVisibilityHidden,
-		SnapshotDirectoryVisibilityVisible,
-	}
-}
-
-// SnapshotUsage - Snapshot usage for backup
-type SnapshotUsage string
-
-const (
-	// SnapshotUsageCreateNewSnapshot - Value indicating a new snapshot is created
-	SnapshotUsageCreateNewSnapshot SnapshotUsage = "CreateNewSnapshot"
-	// SnapshotUsageUseExistingSnapshot - Value indicating an existing snapshot is used
-	SnapshotUsageUseExistingSnapshot SnapshotUsage = "UseExistingSnapshot"
-)
-
-// PossibleSnapshotUsageValues returns the possible values for the SnapshotUsage const type.
-func PossibleSnapshotUsageValues() []SnapshotUsage {
-	return []SnapshotUsage{
-		SnapshotUsageCreateNewSnapshot,
-		SnapshotUsageUseExistingSnapshot,
-	}
-}
-
 // VolumeBackupRelationshipStatus - Status of the volume backup relationship
 type VolumeBackupRelationshipStatus string
 
@@ -1936,24 +1496,6 @@ func PossibleVolumeRestoreRelationshipStatusValues() []VolumeRestoreRelationship
 		VolumeRestoreRelationshipStatusIdle,
 		VolumeRestoreRelationshipStatusTransferring,
 		VolumeRestoreRelationshipStatusUnknown,
-	}
-}
-
-// VolumeSize - Volume size for backup
-type VolumeSize string
-
-const (
-	// VolumeSizeLarge - Value indicating backup is for a large volume
-	VolumeSizeLarge VolumeSize = "Large"
-	// VolumeSizeRegular - Value indicating backup is not for a large volume
-	VolumeSizeRegular VolumeSize = "Regular"
-)
-
-// PossibleVolumeSizeValues returns the possible values for the VolumeSize const type.
-func PossibleVolumeSizeValues() []VolumeSize {
-	return []VolumeSize{
-		VolumeSizeLarge,
-		VolumeSizeRegular,
 	}
 }
 

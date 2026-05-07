@@ -291,7 +291,7 @@ func RunTestRequiringServiceProperties(ctx context.Context, _require *require.As
 	err := testImplFunc(ctx, _require, svcClient)
 	// We cannot assume that the error indicative of slow update will necessarily be a StorageError. As in ListBlobs.
 	if err != nil && err.Error() == code {
-		time.Sleep(time.Second * 30)
+		recording.Sleep(time.Second * 30)
 		err = testImplFunc(ctx, _require, svcClient)
 		_require.NoError(err)
 	}

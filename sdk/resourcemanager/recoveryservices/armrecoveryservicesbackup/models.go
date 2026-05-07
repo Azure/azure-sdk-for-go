@@ -3886,7 +3886,7 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	// Parent name of the DB such as Instance or Availability Group.
 	ParentName *string
 
-	// Parent Protected item in case protected as part of a parent.
+	// Name of the parent protected item (e.g., SQL Instance name) when this database is protected as part of a parent.
 	ParentProtectedItem *string
 
 	// Parent type of protected item, example: for a DB, standalone server or distributed
@@ -6522,7 +6522,7 @@ type BackupResourceEncryptionConfigExtendedResource struct {
 	// The geo-location where the resource lives
 	Location *string
 
-	// BackupResourceEncryptionConfigExtendedResource properties
+	// The properties of the backup resource encryption config extended resource
 	Properties *BackupResourceEncryptionConfigExtended
 
 	// Resource tags.
@@ -6548,7 +6548,7 @@ type BackupResourceEncryptionConfigResource struct {
 	// The geo-location where the resource lives
 	Location *string
 
-	// BackupResourceEncryptionConfigResource properties
+	// The properties of the backup resource encryption config
 	Properties *BackupResourceEncryptionConfig
 
 	// Resource tags.
@@ -8756,10 +8756,6 @@ type NameInfo struct {
 
 	// Value of usage.
 	Value *string
-}
-
-// OkResponse - The request has succeeded.
-type OkResponse struct {
 }
 
 // OperationResultInfo - Operation result info.

@@ -6,5 +6,5 @@ package armappconfiguration
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration"
-	moduleVersion = "v3.1.0-beta.1"
+	moduleVersion = "v3.1.0-beta.2"
 )

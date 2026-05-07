@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // DeletedProtectionContainersServer is a fake server for instances of the armrecoveryservicesbackup.DeletedProtectionContainersClient type.
@@ -53,9 +54,7 @@ func (d *DeletedProtectionContainersServerTransport) Do(req *http.Request) (*htt
 }
 
 func (d *DeletedProtectionContainersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (d *DeletedProtectionContainersServerTransport) dispatchToMethodFake(req *h
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -106,11 +102,7 @@ func (d *DeletedProtectionContainersServerTransport) dispatchNewListPager(req *h
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
 		var options *armrecoveryservicesbackup.DeletedProtectionContainersClientListOptions
 		if filterParam != nil {
 			options = &armrecoveryservicesbackup.DeletedProtectionContainersClientListOptions{
@@ -128,7 +120,7 @@ func (d *DeletedProtectionContainersServerTransport) dispatchNewListPager(req *h
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

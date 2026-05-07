@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/TieringCost/GetTieringCostOperationResult.json
+// Generated from example definition: 2026-01-31-preview/TieringCost/GetTieringCostOperationResult.json
 func ExampleGetTieringCostOperationResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

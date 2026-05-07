@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Common/BackupSecurityPin_Get.json
+// Generated from example definition: 2026-01-31-preview/Common/BackupSecurityPin_Get.json
 func ExampleSecurityPINsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleSecurityPINsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.SecurityPINsClientGetResponse{
-	// 	TokenInformation: &armrecoveryservicesbackup.TokenInformation{
+	// 	TokenInformation: armrecoveryservicesbackup.TokenInformation{
 	// 		ExpiryTimeInUTCTicks: to.Ptr[int64](636495150137443100),
 	// 		SecurityPIN: to.Ptr("200432"),
 	// 		Token: to.Ptr("200432"),

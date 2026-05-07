@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -65,8 +65,8 @@ func (testsuite *ProximityPlacementGroupTestSuite) TestProximityPlacementGroups(
 		Properties: &armcompute.ProximityPlacementGroupProperties{
 			Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
 				VMSizes: []*string{
-					to.Ptr("Basic_A0"),
-					to.Ptr("Basic_A2")},
+					to.Ptr("Standard_D2s_v3"),
+					to.Ptr("Standard_D4s_v3")},
 			},
 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
 		},

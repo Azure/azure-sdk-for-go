@@ -3,12 +3,26 @@
 
 package generated
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 func (client *QueueClient) Endpoint() string {
 	return client.endpoint
 }
 
-func (client *QueueClient) Pipeline() runtime.Pipeline {
-	return client.pl
+func (client *QueueClient) InternalClient() *azcore.Client {
+	return client.internal
+}
+
+// NewQueueClient creates a new instance of QueueClient with the specified values.
+//   - endpoint - The URL of the service account, queue, or message that is the target of the desired operation.
+//   - azClient - azcore.Client is a basic HTTP client. It consists of a pipeline and tracing provider.
+func NewQueueClient(endpoint string, azClient *azcore.Client) *QueueClient {
+	client := &QueueClient{
+		internal: azClient,
+		endpoint: endpoint,
+		version:  ServiceVersion,
+	}
+	return client
 }

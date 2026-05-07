@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -125,6 +125,9 @@ func (testsuite *WebpubsubTestSuite) Prepare() {
 	clientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, clientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 	testsuite.webpubsubId = *clientCreateOrUpdateResponse.ID
+	if recording.GetRecordMode() == recording.PlaybackMode && testsuite.webpubsubId == recording.SanitizedValue {
+		testsuite.webpubsubId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.SignalRService/WebPubSub/%s", testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.resourceName)
+	}
 }
 
 // Microsoft.SignalRService/webPubSub/{resourceName}
@@ -273,7 +276,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -299,7 +302,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('networkInterfaceName')]",
 				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
@@ -328,7 +331,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('privateEndpointName')]",
 				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
@@ -360,7 +363,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
@@ -391,14 +394,18 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 	for privateEndpointConnectionsClientNewListPager.More() {
 		nextResult, err := privateEndpointConnectionsClientNewListPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
+		testsuite.Require().NotEmpty(nextResult.Value)
 
 		privateEndpointConnectionName = *nextResult.Value[0].Name
 		break
 	}
+	if recording.GetRecordMode() == recording.PlaybackMode && privateEndpointConnectionName == recording.SanitizedValue {
+		privateEndpointConnectionName = testsuite.subscriptionId
+	}
 
 	// From step WebPubSubPrivateEndpointConnections_Update
 	fmt.Println("Call operation: WebPubSubPrivateEndpointConnections_Update")
-	_, err = privateEndpointConnectionsClient.Update(testsuite.ctx, privateEndpointConnectionName, testsuite.resourceGroupName, testsuite.resourceName, armwebpubsub.PrivateEndpointConnection{
+	_, err = privateEndpointConnectionsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, privateEndpointConnectionName, armwebpubsub.PrivateEndpointConnection{
 		Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
 			PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
 				ID: to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourcegroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
@@ -413,12 +420,12 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 
 	// From step WebPubSubPrivateEndpointConnections_Get
 	fmt.Println("Call operation: WebPubSubPrivateEndpointConnections_Get")
-	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, privateEndpointConnectionName, testsuite.resourceGroupName, testsuite.resourceName, nil)
+	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step WebPubSubPrivateEndpointConnections_Delete
 	fmt.Println("Call operation: WebPubSubPrivateEndpointConnections_Delete")
-	privateEndpointConnectionsClientDeleteResponsePoller, err := privateEndpointConnectionsClient.BeginDelete(testsuite.ctx, privateEndpointConnectionName, testsuite.resourceGroupName, testsuite.resourceName, nil)
+	privateEndpointConnectionsClientDeleteResponsePoller, err := privateEndpointConnectionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, privateEndpointConnectionsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
@@ -428,6 +435,15 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 	var webAppId string
 	var err error
+	appLocation := testsuite.location
+	serverFarmSKU := map[string]any{
+		"name":     "B1",
+		"capacity": float64(1),
+		"family":   "B",
+		"size":     "B1",
+		"tier":     "Basic",
+	}
+	siteKind := "app,linux"
 	// From step Create_WebApp
 	template := map[string]any{
 		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -454,7 +470,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 				"type":       "Microsoft.Web/serverfarms",
 				"apiVersion": "2022-09-01",
 				"kind":       "linux",
-				"location":   "East US",
+				"location":   appLocation,
 				"properties": map[string]any{
 					"elasticScaleEnabled":       false,
 					"hyperV":                    false,
@@ -467,13 +483,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 					"targetWorkerSizeId":        float64(0),
 					"zoneRedundant":             false,
 				},
-				"sku": map[string]any{
-					"name":     "P1v3",
-					"capacity": float64(1),
-					"family":   "Pv3",
-					"size":     "P1v3",
-					"tier":     "PremiumV3",
-				},
+				"sku": serverFarmSKU,
 			},
 			map[string]any{
 				"name":       "[parameters('sitesName')]",
@@ -482,8 +492,8 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmsName'))]",
 				},
-				"kind":     "app",
-				"location": "East US",
+				"kind":     siteKind,
+				"location": appLocation,
 				"properties": map[string]any{
 					"enabled":      true,
 					"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmsName'))]",
@@ -506,7 +516,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 	fmt.Println("Call operation: WebPubSubSharedPrivateLinkResources_CreateOrUpdate")
 	sharedPrivateLinkResourcesClient, err := armwebpubsub.NewSharedPrivateLinkResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	sharedPrivateLinkResourcesClientCreateOrUpdateResponsePoller, err := sharedPrivateLinkResourcesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.sharedPrivateLinkResourceName, testsuite.resourceGroupName, testsuite.resourceName, armwebpubsub.SharedPrivateLinkResource{
+	sharedPrivateLinkResourcesClientCreateOrUpdateResponsePoller, err := sharedPrivateLinkResourcesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.sharedPrivateLinkResourceName, armwebpubsub.SharedPrivateLinkResource{
 		Properties: &armwebpubsub.SharedPrivateLinkResourceProperties{
 			GroupID:               to.Ptr("sites"),
 			PrivateLinkResourceID: to.Ptr(webAppId),
@@ -528,12 +538,12 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 
 	// From step WebPubSubSharedPrivateLinkResources_Get
 	fmt.Println("Call operation: WebPubSubSharedPrivateLinkResources_Get")
-	_, err = sharedPrivateLinkResourcesClient.Get(testsuite.ctx, testsuite.sharedPrivateLinkResourceName, testsuite.resourceGroupName, testsuite.resourceName, nil)
+	_, err = sharedPrivateLinkResourcesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.sharedPrivateLinkResourceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step WebPubSubSharedPrivateLinkResources_Delete
 	fmt.Println("Call operation: WebPubSubSharedPrivateLinkResources_Delete")
-	sharedPrivateLinkResourcesClientDeleteResponsePoller, err := sharedPrivateLinkResourcesClient.BeginDelete(testsuite.ctx, testsuite.sharedPrivateLinkResourceName, testsuite.resourceGroupName, testsuite.resourceName, nil)
+	sharedPrivateLinkResourcesClientDeleteResponsePoller, err := sharedPrivateLinkResourcesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.sharedPrivateLinkResourceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sharedPrivateLinkResourcesClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
@@ -546,7 +556,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubHubs() {
 	fmt.Println("Call operation: WebPubSubHubs_CreateOrUpdate")
 	hubsClient, err := armwebpubsub.NewHubsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	hubsClientCreateOrUpdateResponsePoller, err := hubsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.hubName, testsuite.resourceGroupName, testsuite.resourceName, armwebpubsub.Hub{
+	hubsClientCreateOrUpdateResponsePoller, err := hubsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.hubName, armwebpubsub.Hub{
 		Properties: &armwebpubsub.HubProperties{
 			AnonymousConnectPolicy: to.Ptr("allow"),
 			EventHandlers: []*armwebpubsub.EventHandler{
@@ -595,12 +605,12 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubHubs() {
 
 	// From step WebPubSubHubs_Get
 	fmt.Println("Call operation: WebPubSubHubs_Get")
-	_, err = hubsClient.Get(testsuite.ctx, testsuite.hubName, testsuite.resourceGroupName, testsuite.resourceName, nil)
+	_, err = hubsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.hubName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step WebPubSubHubs_Delete
 	fmt.Println("Call operation: WebPubSubHubs_Delete")
-	hubsClientDeleteResponsePoller, err := hubsClient.BeginDelete(testsuite.ctx, testsuite.hubName, testsuite.resourceGroupName, testsuite.resourceName, nil)
+	hubsClientDeleteResponsePoller, err := hubsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.hubName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, hubsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

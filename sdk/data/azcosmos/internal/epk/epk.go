@@ -282,6 +282,27 @@ func ComputeV2MultiHash(values []interface{}) string {
 	return sb.String()
 }
 
+// ComputeV2HashForRouting computes the V2 EPK for routing (with top-2-bit masking).
+// The service uses "FF" as the maximum exclusive partition key range sentinel,
+// so all valid EPK values must have their first byte masked to [0x00, 0x3F].
+func ComputeV2HashForRouting(values []interface{}) string {
+	return MaskTopBitsForRouting(ComputeV2Hash(values))
+}
+
+// ComputeV2MultiHashForRouting computes the V2 MultiHash EPK for routing.
+// Each per-component hash has its top 2 bits masked independently.
+func ComputeV2MultiHashForRouting(values []interface{}) string {
+	var sb strings.Builder
+	for _, comp := range values {
+		var hashBuf []byte
+		writeForHashingV2(comp, &hashBuf)
+
+		low, high := murmurhash3_128(hashBuf, 0, 0)
+		sb.WriteString(MaskTopBitsForRouting(hash128ToEPK(low, high)))
+	}
+	return sb.String()
+}
+
 // hash128ToEPK converts a 128-bit hash (low, high) to an EPK hex string.
 // The byte array is [low_LE, high_LE] reversed, producing big-endian order.
 func hash128ToEPK(low, high uint64) string {
@@ -295,6 +316,34 @@ func hash128ToEPK(low, high uint64) string {
 	}
 
 	return toHexUpper(bytes[:])
+}
+
+// MaskTopBitsForRouting clears the two most significant bits of the first byte
+// in an EPK hex string. The Cosmos DB partition key range space uses "FF" as the
+// maximum exclusive sentinel, so all valid EPK values must have their first byte
+// in the range [0x00, 0x3F]. This matches the behavior of other Cosmos DB SDKs.
+func MaskTopBitsForRouting(epkHex string) string {
+	if len(epkHex) < 2 {
+		return epkHex
+	}
+	// Parse the first byte (2 hex chars)
+	firstByte := hexCharToNibble(epkHex[0])<<4 | hexCharToNibble(epkHex[1])
+	firstByte &= 0x3F
+	// Replace the first two hex characters
+	return fmt.Sprintf("%02X", firstByte) + epkHex[2:]
+}
+
+func hexCharToNibble(c byte) byte {
+	switch {
+	case c >= '0' && c <= '9':
+		return c - '0'
+	case c >= 'A' && c <= 'F':
+		return c - 'A' + 10
+	case c >= 'a' && c <= 'f':
+		return c - 'a' + 10
+	default:
+		return 0
+	}
 }
 
 // toHexUpper returns uppercase hex encoding of data with no separators.

@@ -120,9 +120,9 @@ func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, vers
 	case version == 1:
 		epkStr = epk.ComputeV1(values)
 	case kind == PartitionKeyKindMultiHash:
-		epkStr = epk.ComputeV2MultiHash(values)
+		epkStr = epk.ComputeV2MultiHashForRouting(values)
 	default:
-		epkStr = epk.ComputeV2Hash(values)
+		epkStr = epk.ComputeV2HashForRouting(values)
 	}
 
 	return epk.EffectivePartitionKey{EPK: epkStr}

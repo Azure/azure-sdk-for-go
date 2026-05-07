@@ -165,6 +165,31 @@ func TestGroupItemsByPhysicalRange_DefaultVersion(t *testing.T) {
 	require.Len(t, groups["0"], 1)
 }
 
+func TestFindPhysicalRangeForEPK_FFSentinel(t *testing.T) {
+	// "FF" is the sentinel max boundary for the last partition.
+	// EPK values like "FFF697..." are longer strings that lexicographically
+	// exceed "FF" but must still match the last partition range.
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "3C3C3C3C"},
+		{ID: "1", MinInclusive: "3C3C3C3C", MaxExclusive: "FF"},
+	}
+
+	// EPK that starts with "FF..." — lexicographically > "FF" but should match range 1
+	rangeID, ok := findPhysicalRangeForEPK("FFF697AF545B8770396E3626B83A20AE", ranges)
+	require.True(t, ok)
+	require.Equal(t, "1", rangeID)
+
+	// EPK at very start
+	rangeID, ok = findPhysicalRangeForEPK("0000000000000000", ranges)
+	require.True(t, ok)
+	require.Equal(t, "0", rangeID)
+
+	// EPK at boundary
+	rangeID, ok = findPhysicalRangeForEPK("3C3C3C3C", ranges)
+	require.True(t, ok)
+	require.Equal(t, "1", rangeID)
+}
+
 func TestBuildQueryChunksForRanges_SingleRange(t *testing.T) {
 	pkDef := PartitionKeyDefinition{Paths: []string{"/pk"}}
 	orderedIDs := []string{"0"}

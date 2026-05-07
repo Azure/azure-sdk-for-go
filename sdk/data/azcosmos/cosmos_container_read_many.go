@@ -42,9 +42,10 @@ func findPhysicalRangeForEPK(epkValue string, ranges []partitionKeyRange) (strin
 	if idx < 0 {
 		return "", false
 	}
-	// Verify epkValue < MaxExclusive (empty MaxExclusive means unbounded).
+	// Verify epkValue < MaxExclusive.
+	// Empty MaxExclusive or "FF" means unbounded (the last partition).
 	r := ranges[idx]
-	if r.MaxExclusive != "" && epkValue >= r.MaxExclusive {
+	if r.MaxExclusive != "" && r.MaxExclusive != "FF" && epkValue >= r.MaxExclusive {
 		return "", false
 	}
 	return r.ID, true

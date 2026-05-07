@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicy.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicy.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -199,7 +199,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicyColdTierActions.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicyColdTierActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyColdTierActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -334,7 +334,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyForBlockAndAppendBlobs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +393,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -441,7 +441,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicyHotTierActions.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicyHotTierActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyHotTierActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +499,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -546,7 +546,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyWithSnapshotAndVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -622,7 +622,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -687,7 +687,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyBaseBlobDaysAfterCreationActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -741,7 +741,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -784,7 +784,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyLastAccessTimeBasedBlobActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -844,7 +844,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -893,7 +893,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
+// Generated from example definition: 2025-08-01/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyLastTierChangeTimeActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -960,7 +960,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientCreateOrUpdateResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
@@ -1016,7 +1016,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountDeleteManagementPolicy.json
+// Generated from example definition: 2025-08-01/StorageAccountDeleteManagementPolicy.json
 func ExampleManagementPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1038,7 +1038,7 @@ func ExampleManagementPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountGetManagementPolicy.json
+// Generated from example definition: 2025-08-01/StorageAccountGetManagementPolicy.json
 func ExampleManagementPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1057,7 +1057,7 @@ func ExampleManagementPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ManagementPoliciesClientGetResponse{
-	// 	ManagementPolicy: &armstorage.ManagementPolicy{
+	// 	ManagementPolicy: armstorage.ManagementPolicy{
 	// 		Name: to.Ptr("DefaultManagementPolicy"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),

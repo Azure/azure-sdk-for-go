@@ -12,11 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_partitionKeyRangeCache_getRoutingMap_populatesOnMiss(t *testing.T) {
+func Test_partitionKeyRangeCache_newCache_startsEmpty(t *testing.T) {
 	cache := newPartitionKeyRangeCache()
 
-	// We can't easily test with a real Client, but we can test the structure.
-	// Verify that a new cache starts empty.
 	cache.mu.RLock()
 	require.Empty(t, cache.entries)
 	cache.mu.RUnlock()
@@ -119,10 +117,11 @@ func Test_partitionKeyRangeCache_singleFlight(t *testing.T) {
 	require.Equal(t, expectedRM, entry.routingMap)
 }
 
-func Test_partitionKeyRangeCache_forceRefresh_noEntry(t *testing.T) {
+func Test_partitionKeyRangeCache_entryMutex_noDeadlock(t *testing.T) {
 	cache := newPartitionKeyRangeCache()
 
-	// Pre-populate so forceRefresh has something to refresh
+	// Pre-populate an entry and verify we can acquire its mutex
+	// without deadlocking against the cache-level mutex.
 	rm := newCollectionRoutingMap([]partitionKeyRange{
 		{ID: "0", MinInclusive: "", MaxExclusive: "FF"},
 	}, "etag1")
@@ -131,10 +130,6 @@ func Test_partitionKeyRangeCache_forceRefresh_noEntry(t *testing.T) {
 	cache.entries["rid1"] = entry
 	cache.mu.Unlock()
 
-	// forceRefresh with nil client will panic/fail on service call,
-	// but if we test the path without service we can verify the entry.mu lock is acquired
-	// For a full integration test, we'd need a mock. Here we just verify
-	// the structure doesn't deadlock.
 	entry.mu.Lock()
 	require.NotNil(t, entry.routingMap)
 	entry.mu.Unlock()

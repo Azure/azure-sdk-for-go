@@ -6,10 +6,11 @@ package armsecurityinsights_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
-	"log"
 )
 
 // Generated from example definition: 2025-07-01-preview/threatintelligence/AppendTagsThreatIntelligence.json
@@ -50,7 +51,7 @@ func ExampleThreatIntelligenceIndicatorClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().Create(ctx, "myRg", "myWorkspace", "d9cd6f0b-96b9-3984-17cd-a779d1e15a93", &armsecurityinsights.ThreatIntelligenceIndicatorModel{
+	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().Create(ctx, "myRg", "myWorkspace", "d9cd6f0b-96b9-3984-17cd-a779d1e15a93", armsecurityinsights.ThreatIntelligenceIndicatorModel{
 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 			Description:        to.Ptr("debugging indicators"),
@@ -130,7 +131,7 @@ func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().CreateIndicator(ctx, "myRg", "myWorkspace", &armsecurityinsights.ThreatIntelligenceIndicatorModel{
+	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().CreateIndicator(ctx, "myRg", "myWorkspace", armsecurityinsights.ThreatIntelligenceIndicatorModel{
 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 			Description:        to.Ptr("debugging indicators"),
@@ -414,7 +415,7 @@ func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().ReplaceTags(ctx, "myRg", "myWorkspace", "d9cd6f0b-96b9-3984-17cd-a779d1e15a93", &armsecurityinsights.ThreatIntelligenceIndicatorModel{
+	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().ReplaceTags(ctx, "myRg", "myWorkspace", "d9cd6f0b-96b9-3984-17cd-a779d1e15a93", armsecurityinsights.ThreatIntelligenceIndicatorModel{
 		Etag: to.Ptr("\"0000262c-0000-0800-0000-5e9767060000\""),
 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{

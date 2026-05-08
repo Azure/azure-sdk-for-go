@@ -6,11 +6,12 @@ package armsecurityinsights_test
 
 import (
 	"context"
+	"log"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
-	"log"
-	"time"
 )
 
 // Generated from example definition: 2025-07-01-preview/dataConnectors/ConnectAPIPolling.json
@@ -99,7 +100,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 				Availability: &armsecurityinsights.Availability{
 					IsPreview: to.Ptr(true),
-					Status:    to.Ptr(1),
+					Status:    to.Ptr(int32(1)),
 				},
 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 					{
@@ -403,7 +404,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 				Availability: &armsecurityinsights.Availability{
 					IsPreview: to.Ptr(true),
-					Status:    to.Ptr(1),
+					Status:    to.Ptr(int32(1)),
 				},
 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 					{

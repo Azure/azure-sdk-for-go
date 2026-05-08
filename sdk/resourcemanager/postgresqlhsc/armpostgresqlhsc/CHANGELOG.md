@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.0 (2026-03-19)
+## 0.7.0 (2026-05-08)
 ### Breaking Changes
 
 - Function `*ConfigurationsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, options *ConfigurationsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, options *ConfigurationsClientGetOptions)`
@@ -49,13 +49,25 @@
 - Struct `ServerGroupsClientBeginStopOptions` has been removed
 - Struct `ServerGroupsClientBeginUpdateOptions` has been removed
 - Struct `ServerGroupsClientCheckNameAvailabilityOptions` has been removed
+- Struct `ServerGroupsClientCheckNameAvailabilityResponse` has been removed
+- Struct `ServerGroupsClientCreateOrUpdateResponse` has been removed
+- Struct `ServerGroupsClientDeleteResponse` has been removed
 - Struct `ServerGroupsClientGetOptions` has been removed
+- Struct `ServerGroupsClientGetResponse` has been removed
 - Struct `ServerGroupsClientListByResourceGroupOptions` has been removed
+- Struct `ServerGroupsClientListByResourceGroupResponse` has been removed
 - Struct `ServerGroupsClientListOptions` has been removed
+- Struct `ServerGroupsClientListResponse` has been removed
+- Struct `ServerGroupsClientRestartResponse` has been removed
+- Struct `ServerGroupsClientStartResponse` has been removed
+- Struct `ServerGroupsClientStopResponse` has been removed
+- Struct `ServerGroupsClientUpdateResponse` has been removed
 - Struct `ServerProperties` has been removed
 - Struct `ServerRoleGroup` has been removed
 - Struct `TrackedResource` has been removed
+- Field `ServerGroupConfiguration` of struct `ConfigurationsClientGetResponse` has been removed
 - Field `Properties` of struct `Operation` has been removed
+- Field `ServerGroupServer` of struct `ServersClientGetResponse` has been removed
 
 ### Features Added
 
@@ -133,12 +145,14 @@
 - New struct `RolePropertiesExternalIdentity`
 - New struct `SimplePrivateEndpointConnection`
 - New struct `UserAssignedIdentity`
+- New anonymous field `Configuration` in struct `ConfigurationsClientGetResponse`
 - New field `NextLink` in struct `FirewallRuleListResult`
 - New field `ProvisioningState` in struct `FirewallRuleProperties`
 - New field `ActionType` in struct `Operation`
 - New field `NextLink` in struct `RoleListResult`
 - New field `ExternalIdentity`, `ProvisioningState`, `RoleType` in struct `RoleProperties`
 - New field `ProvisioningState`, `RequiresRestart` in struct `ServerConfigurationProperties`
+- New anonymous field `ClusterServer` in struct `ServersClientGetResponse`
 
 
 ## 0.6.1 (2023-06-23)

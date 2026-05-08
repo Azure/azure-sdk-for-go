@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.DBforPostgreSQL": "2023-03-02-preview"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.10.6"
 }

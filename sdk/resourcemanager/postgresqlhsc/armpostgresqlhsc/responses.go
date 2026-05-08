@@ -115,8 +115,7 @@ type FirewallRulesClientCreateOrUpdateResponse struct {
 
 // FirewallRulesClientDeleteResponse contains the response from method FirewallRulesClient.BeginDelete.
 type FirewallRulesClientDeleteResponse struct {
-	// Represents a cluster firewall rule.
-	FirewallRule
+	// placeholder for future response values
 }
 
 // FirewallRulesClientGetResponse contains the response from method FirewallRulesClient.Get.
@@ -180,8 +179,7 @@ type RolesClientCreateResponse struct {
 
 // RolesClientDeleteResponse contains the response from method RolesClient.BeginDelete.
 type RolesClientDeleteResponse struct {
-	// Represents a cluster role.
-	Role
+	// placeholder for future response values
 }
 
 // RolesClientGetResponse contains the response from method RolesClient.Get.

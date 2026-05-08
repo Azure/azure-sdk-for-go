@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.2 (2026-03-19)
+## 1.3.0-beta.2 (2026-05-08)
 ### Features Added
 
 - New enum type `ClientConnectionCountRuleDiscriminator` with values `ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule`, `ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule`, `ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule`

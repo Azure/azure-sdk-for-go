@@ -6,17 +6,27 @@ package armcdn_test
 import (
 	"context"
 	"fmt"
-	"os"
+	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
+
+type acceptHeaderPolicy struct{}
+
+func (p *acceptHeaderPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if (req.Raw().Method == http.MethodPost || req.Raw().Method == http.MethodDelete) && req.Raw().Header.Get("Accept") == "" {
+		req.Raw().Header.Set("Accept", "application/json")
+	}
+	return req.Next()
+}
 
 type CdnTestSuite struct {
 	suite.Suite
@@ -36,12 +46,13 @@ type CdnTestSuite struct {
 
 func (testsuite *CdnTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
-	if os.Getenv("AZURE_RECORD_MODE") == "record" {
+	if recording.GetRecordMode() != recording.PlaybackMode {
 		testsuite.T().Skip("classic Microsoft CDN profile creation is no longer supported by the service")
 	}
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.options.PerCallPolicies = append(testsuite.options.PerCallPolicies, &acceptHeaderPolicy{})
 	testsuite.customDomainName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "customdoma", 16, false)
 	testsuite.endpointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "endpointna", 16, false)
 	testsuite.originGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "origingrou", 16, false)

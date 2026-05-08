@@ -353,7 +353,11 @@ func (c *ContainerClient) executeReadManyWithQueries(
 // Returns an error if the refresh fails, allowing the caller to fail fast.
 func (c *ContainerClient) refreshPKRangeCache(ctx context.Context) error {
 	if c.database.client.pkRangeCache != nil {
-		_, err := c.database.client.pkRangeCache.forceRefresh(ctx, c.link, c.database.client)
+		containerRID, err := c.getContainerRID(ctx)
+		if err != nil {
+			return err
+		}
+		_, err = c.database.client.pkRangeCache.forceRefresh(ctx, containerRID, c.link, c.database.client)
 		if err != nil {
 			return err
 		}

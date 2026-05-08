@@ -879,6 +879,19 @@ func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	return containerResponse.ContainerProperties.ResourceID, nil
 }
 
+// getContainerRID resolves the container's ResourceID, using the container
+// properties cache if available, otherwise falling back to a direct Read.
+func (c *ContainerClient) getContainerRID(ctx context.Context) (string, error) {
+	if c.database.client.containerCache != nil {
+		props, err := c.database.client.containerCache.getProperties(ctx, c)
+		if err != nil {
+			return "", err
+		}
+		return props.ResourceID, nil
+	}
+	return c.getRID(ctx)
+}
+
 func (c *ContainerClient) getSpanForContainer(operationType operationType, resourceType resourceType, id string) (span, error) {
 	return getSpanNameForContainers(c.database.client.accountEndpointUrl(), operationType, resourceType, c.database.id, id)
 }
@@ -897,7 +910,12 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 
 	// Use the cache if available, otherwise fall back to direct fetch
 	if c.database.client.pkRangeCache != nil {
-		routingMap, err := c.database.client.pkRangeCache.getRoutingMap(ctx, c.link, c.database.client)
+		containerRID, err := c.getContainerRID(ctx)
+		if err != nil {
+			return partitionKeyRangeResponse{}, err
+		}
+
+		routingMap, err := c.database.client.pkRangeCache.getRoutingMap(ctx, containerRID, c.link, c.database.client)
 		if err != nil {
 			return partitionKeyRangeResponse{}, err
 		}

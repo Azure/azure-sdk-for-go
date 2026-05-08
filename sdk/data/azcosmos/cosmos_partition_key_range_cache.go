@@ -15,11 +15,13 @@ import (
 )
 
 // partitionKeyRangeCache provides a client-level cache of partition key ranges
-// for containers. It is keyed by container link and uses event-driven
+// for containers. It is keyed by container ResourceID (RID) and uses event-driven
 // invalidation (no TTL). Refreshes are incremental using the change-feed ETag.
+// Keying by RID (rather than name-based link) ensures the cache survives
+// container renames and matches the service's partition key range addressing.
 type partitionKeyRangeCache struct {
 	mu      sync.RWMutex
-	entries map[string]*pkRangeCacheEntry
+	entries map[string]*pkRangeCacheEntry // keyed by container ResourceID
 }
 
 type pkRangeCacheEntry struct {
@@ -33,16 +35,18 @@ func newPartitionKeyRangeCache() *partitionKeyRangeCache {
 	}
 }
 
-// getRoutingMap returns the cached routing map for the given container link.
+// getRoutingMap returns the cached routing map for the given container RID.
 // If the cache is empty for this container, it fetches from the service.
+// containerLink is the name-based path used for the HTTP request.
 func (c *partitionKeyRangeCache) getRoutingMap(
 	ctx context.Context,
+	containerRID string,
 	containerLink string,
 	client *Client,
 ) (*collectionRoutingMap, error) {
 	// Fast path: read lock check
 	c.mu.RLock()
-	entry, exists := c.entries[containerLink]
+	entry, exists := c.entries[containerRID]
 	c.mu.RUnlock()
 
 	if exists {
@@ -61,10 +65,10 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 	// Slow path: create entry
 	c.mu.Lock()
 	// Double check after acquiring write lock
-	entry, exists = c.entries[containerLink]
+	entry, exists = c.entries[containerRID]
 	if !exists {
 		entry = &pkRangeCacheEntry{}
-		c.entries[containerLink] = entry
+		c.entries[containerRID] = entry
 	}
 	c.mu.Unlock()
 
@@ -81,19 +85,20 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 
 // forceRefresh triggers an incremental refresh of the routing map for the given
 // container. If the incremental merge fails (incomplete covering), it falls back
-// to a full refresh.
+// to a full refresh. containerRID is the cache key; containerLink is used for HTTP requests.
 func (c *partitionKeyRangeCache) forceRefresh(
 	ctx context.Context,
+	containerRID string,
 	containerLink string,
 	client *Client,
 ) (*collectionRoutingMap, error) {
 	c.mu.RLock()
-	entry, exists := c.entries[containerLink]
+	entry, exists := c.entries[containerRID]
 	c.mu.RUnlock()
 
 	if !exists {
 		// No entry yet — just do a normal get which will create and populate
-		return c.getRoutingMap(ctx, containerLink, client)
+		return c.getRoutingMap(ctx, containerRID, containerLink, client)
 	}
 
 	entry.mu.Lock()
@@ -101,11 +106,11 @@ func (c *partitionKeyRangeCache) forceRefresh(
 	return c.refreshEntry(ctx, containerLink, entry, client)
 }
 
-// invalidate removes the cached routing map for the given container,
+// invalidate removes the cached routing map for the given container RID,
 // forcing the next access to fetch fresh data.
-func (c *partitionKeyRangeCache) invalidate(containerLink string) {
+func (c *partitionKeyRangeCache) invalidate(containerRID string) {
 	c.mu.RLock()
-	entry, exists := c.entries[containerLink]
+	entry, exists := c.entries[containerRID]
 	c.mu.RUnlock()
 
 	if exists {
@@ -163,14 +168,8 @@ func (c *partitionKeyRangeCache) refreshEntry(
 			currentMap = merged
 		}
 
-		// If we exited the loop without a 304 (iteration cap or merge failure),
-		// check if the current map is complete
-		if isCompleteSetOfRanges(currentMap.orderedRanges) && currentMap != previousMap {
-			entry.routingMap = currentMap
-			return currentMap, nil
-		}
-
-		// Fall through to full refresh
+		// Loop exited without 304 — either iteration cap or merge failure.
+		// Fall through to full refresh to guarantee consistency with the service.
 	}
 
 	// Full refresh: fetch all ranges without ETag

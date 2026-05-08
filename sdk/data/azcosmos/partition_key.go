@@ -147,10 +147,20 @@ func (r epkRange) isRange() bool {
 // on MultiHash containers it returns a range [prefix_epk, prefix_epk+"FF").
 // Non-MultiHash containers require exactly the right number of components.
 func computeEPKRange(pk *PartitionKey, pkDef PartitionKeyDefinition) (epkRange, error) {
-	componentCount := len(pk.values)
-	if componentCount == 0 {
-		componentCount = 1 // undefined marker
+	pkVersion := pkDef.Version
+	if pkVersion == 0 {
+		pkVersion = 1
 	}
+
+	// Undefined PK (no components) is a concrete value, not a prefix.
+	// It hashes to a single deterministic EPK regardless of the number of
+	// definition paths, so always return a point range.
+	if len(pk.values) == 0 {
+		epkVal := pk.computeEffectivePartitionKey(pkDef.Kind, pkVersion)
+		return epkRange{Min: epkVal.EPK, Max: epkVal.EPK}, nil
+	}
+
+	componentCount := len(pk.values)
 	pathCount := len(pkDef.Paths)
 
 	if componentCount > pathCount {
@@ -159,11 +169,6 @@ func computeEPKRange(pk *PartitionKey, pkDef PartitionKeyDefinition) (epkRange, 
 
 	if pkDef.Kind != PartitionKeyKindMultiHash && componentCount != pathCount {
 		return epkRange{}, fmt.Errorf("non-MultiHash containers require exactly %d components, got %d", pathCount, componentCount)
-	}
-
-	pkVersion := pkDef.Version
-	if pkVersion == 0 {
-		pkVersion = 1
 	}
 
 	epkVal := pk.computeEffectivePartitionKey(pkDef.Kind, pkVersion)

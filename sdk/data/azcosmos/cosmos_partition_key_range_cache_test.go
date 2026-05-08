@@ -26,10 +26,10 @@ func Test_partitionKeyRangeCache_invalidate_nilEntry(t *testing.T) {
 	cache := newPartitionKeyRangeCache()
 
 	// Invalidating a non-existent entry should not panic
-	cache.invalidate("dbs/db1/colls/col1")
+	cache.invalidate("rid1")
 
 	cache.mu.RLock()
-	_, exists := cache.entries["dbs/db1/colls/col1"]
+	_, exists := cache.entries["rid1"]
 	cache.mu.RUnlock()
 	require.False(t, exists)
 }
@@ -44,7 +44,7 @@ func Test_partitionKeyRangeCache_invalidate_existingEntry(t *testing.T) {
 		}, "etag1"),
 	}
 	cache.mu.Lock()
-	cache.entries["dbs/db1/colls/col1"] = entry
+	cache.entries["rid1"] = entry
 	cache.mu.Unlock()
 
 	// Verify populated
@@ -53,7 +53,7 @@ func Test_partitionKeyRangeCache_invalidate_existingEntry(t *testing.T) {
 	entry.mu.Unlock()
 
 	// Invalidate
-	cache.invalidate("dbs/db1/colls/col1")
+	cache.invalidate("rid1")
 
 	// Verify nil
 	entry.mu.Lock()
@@ -71,11 +71,11 @@ func Test_partitionKeyRangeCache_getRoutingMap_cacheHit(t *testing.T) {
 
 	entry := &pkRangeCacheEntry{routingMap: expectedRM}
 	cache.mu.Lock()
-	cache.entries["dbs/db1/colls/col1"] = entry
+	cache.entries["rid1"] = entry
 	cache.mu.Unlock()
 
 	// getRoutingMap with a nil client should return cached value without calling service
-	rm, err := cache.getRoutingMap(context.Background(), "dbs/db1/colls/col1", nil)
+	rm, err := cache.getRoutingMap(context.Background(), "rid1", "dbs/db1/colls/col1", nil)
 	require.NoError(t, err)
 	require.Equal(t, expectedRM, rm)
 }
@@ -90,7 +90,7 @@ func Test_partitionKeyRangeCache_singleFlight(t *testing.T) {
 	// Pre-populate entry with nil routingMap (simulates invalidated state)
 	entry := &pkRangeCacheEntry{routingMap: nil}
 	cache.mu.Lock()
-	cache.entries["dbs/db1/colls/col1"] = entry
+	cache.entries["rid1"] = entry
 	cache.mu.Unlock()
 
 	// Since we can't mock the HTTP call easily, we'll simulate by manually setting
@@ -128,7 +128,7 @@ func Test_partitionKeyRangeCache_forceRefresh_noEntry(t *testing.T) {
 	}, "etag1")
 	entry := &pkRangeCacheEntry{routingMap: rm}
 	cache.mu.Lock()
-	cache.entries["dbs/db1/colls/col1"] = entry
+	cache.entries["rid1"] = entry
 	cache.mu.Unlock()
 
 	// forceRefresh with nil client will panic/fail on service call,

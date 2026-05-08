@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/ValidateOperationStatus.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ValidateOperationStatus.json
 func ExampleValidateOperationStatusesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleValidateOperationStatusesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ValidateOperationStatusesClientGetResponse{
-	// 	OperationStatus: &armrecoveryservicesbackup.OperationStatus{
+	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-29T06:04:18.207325Z"); return t}()),
 	// 		ID: to.Ptr("00000000-0000-0000-0000-000000000000"),

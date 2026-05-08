@@ -42,7 +42,7 @@ func NewValidatedSolutionRecipesClient(subscriptionID string, credential azcore.
 // Get - Get a validated solution recipe.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - validatedSolutionRecipeName - The name of the ValidatedSolutionRecipe
 //   - options - ValidatedSolutionRecipesClientGetOptions contains the optional parameters for the ValidatedSolutionRecipesClient.Get
@@ -89,7 +89,7 @@ func (client *ValidatedSolutionRecipesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +106,7 @@ func (client *ValidatedSolutionRecipesClient) getHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionLocationResourcePager - List all validated solution recipes.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - options - ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions contains the optional parameters for
 //     the ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager method.
@@ -149,7 +149,7 @@ func (client *ValidatedSolutionRecipesClient) listBySubscriptionLocationResource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

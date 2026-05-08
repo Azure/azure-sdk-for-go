@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/OperationStatusResultGet.json
+// Generated from example definition: 2026-02-02-preview/OperationStatusResultGet.json
 func ExampleOperationStatusResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleOperationStatusResultClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/OperationStatusResultGetByAgentPool.json
+// Generated from example definition: 2026-02-02-preview/OperationStatusResultGetByAgentPool.json
 func ExampleOperationStatusResultClient_GetByAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleOperationStatusResultClient_GetByAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/OperationStatusResultList.json
+// Generated from example definition: 2026-02-02-preview/OperationStatusResultList.json
 func ExampleOperationStatusResultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

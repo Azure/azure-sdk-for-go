@@ -174,6 +174,9 @@ type BackupVaultsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken               string
 	XMSAuthorizationAuxiliary *string
+
+	// The ID of the deleted backup vault to restore from during undelete flow.
+	XMSDeletedVaultID *string
 }
 
 // BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete method.
@@ -232,6 +235,17 @@ type DeletedBackupInstancesClientGetOptions struct {
 // DeletedBackupInstancesClientListOptions contains the optional parameters for the DeletedBackupInstancesClient.NewListPager
 // method.
 type DeletedBackupInstancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedBackupVaultsClientGetOptions contains the optional parameters for the DeletedBackupVaultsClient.Get method.
+type DeletedBackupVaultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedBackupVaultsClientListByLocationOptions contains the optional parameters for the DeletedBackupVaultsClient.NewListByLocationPager
+// method.
+type DeletedBackupVaultsClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 

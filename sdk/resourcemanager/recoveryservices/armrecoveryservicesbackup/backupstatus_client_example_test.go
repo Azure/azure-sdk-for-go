@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/GetBackupStatus.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/GetBackupStatus.json
 func ExampleBackupStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleBackupStatusClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.BackupStatusClientGetResponse{
-	// 	BackupStatusResponse: &armrecoveryservicesbackup.BackupStatusResponse{
+	// 	BackupStatusResponse: armrecoveryservicesbackup.BackupStatusResponse{
 	// 		ContainerName: to.Ptr("iaasvmcontainer;iaasvmcontainerv2;testRg;testVm"),
 	// 		ErrorCode: to.Ptr("Success"),
 	// 		ErrorMessage: to.Ptr("ErrorMessage"),

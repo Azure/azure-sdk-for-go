@@ -278,6 +278,37 @@ Locate the model property and use `@@alternateType` to change the property type 
 @@alternateType(RegistryNameCheckRequest.type, "Microsoft.ContainerRegistry/registries", "go");
 ```
 
+### 8. Method Parameter Renaming from Body Parameter Name
+
+**Changelog Pattern**:
+
+A method parameter is renamed, typically for resource create or update operations:
+
+```md
+- Function `*LoadTestsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, loadTestName string, resource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions)`
+```
+
+**Reason**: When using TypeSpec ARM resource operation templates (e.g., `ArmResourceCreateOrReplaceAsync`), the body parameter defaults to the name `resource`. In Swagger-generated SDKs, the body parameter may have had a customized name (e.g., `loadTestResource`). This difference surfaces as a parameter renaming in the generated SDK.
+
+**Spec Pattern**:
+
+Find the interface and operation using the name from the changelog (pattern: `Function *<interface name>Client.<operation name> parameter(s) have been changed`):
+
+```tsp
+@armResourceOperations
+interface LoadTests {
+  createOrUpdate is ArmResourceCreateOrReplaceAsync<LoadTestResource>;
+}
+```
+
+**Resolution**:
+
+Use `@@clientName` on the operation's `resource` parameter to restore the original parameter name:
+
+```tsp
+@@clientName(LoadTests.createOrUpdate::parameters.resource, "loadTestResource");
+```
+
 ## Breaking Changes That Can Be Accepted
 
 All these breaking changes will be released in a new major version, except the last one about unreferenced types.

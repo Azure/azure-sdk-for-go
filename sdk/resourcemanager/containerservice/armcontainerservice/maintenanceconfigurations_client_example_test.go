@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-01-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+// Generated from example definition: 2026-02-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+// Generated from example definition: 2026-02-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
+// Generated from example definition: 2026-02-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
+// Generated from example definition: 2026-02-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/ListAvailableContainerServiceVmSkus.json
+// Generated from example definition: 2026-02-02-preview/ListAvailableContainerServiceVmSkus.json
 func ExampleVMSKUsClient_NewListPager_listsAllAvailableContainerServiceVMSkUsForALocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleVMSKUsClient_NewListPager_listsAllAvailableContainerServiceVMSkUsFor
 	}
 }
 
-// Generated from example definition: 2026-01-02-preview/ListAvailableContainerServiceVmSkusWithExtendedLocations.json
+// Generated from example definition: 2026-02-02-preview/ListAvailableContainerServiceVmSkusWithExtendedLocations.json
 func ExampleVMSKUsClient_NewListPager_listsAllAvailableContainerServiceVMSkUsWithExtendedLocationInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

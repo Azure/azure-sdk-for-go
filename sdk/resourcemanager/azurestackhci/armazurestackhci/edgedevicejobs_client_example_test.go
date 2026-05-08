@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-02-01/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
 func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdateCollectLog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-02-01/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
 func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdateRemoteSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-02-01/EdgeDeviceJobs_Delete.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_Delete.json
 func ExampleEdgeDeviceJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleEdgeDeviceJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/EdgeDeviceJobs_Get_RemoteSupport.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_Get_RemoteSupport.json
 func ExampleEdgeDeviceJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleEdgeDeviceJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/EdgeDeviceJobs_ListByEdgeDevice.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_ListByEdgeDevice.json
 func ExampleEdgeDeviceJobsClient_NewListByEdgeDevicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -4,12 +4,13 @@
 package directory
 
 import (
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
-	"reflect"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -42,6 +43,11 @@ type CreateOptions struct {
 	// binary, the permission is returned as a base64 string representing the binary
 	// encoding of the permission
 	FilePermissionFormat *FilePermissionFormat
+	// SMB only. How attributes and permissions should be set on the directory.
+	// New: automatically adds the ARCHIVE file attribute flag and uses Windows create file permissions semantics (ex: inherit from parent).
+	// Restore: does not modify file attribute flag and uses Windows update file permissions semantics.
+	// If Restore is specified, the file permission must also be provided, otherwise PropertySemantics will default to New.
+	FilePropertySemantics *PropertySemantics
 }
 
 func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
@@ -81,6 +87,9 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
 		} else if o.FilePermissionFormat != nil {
 			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+		}
+		if o.FilePropertySemantics != nil {
+			createOptions.FilePropertySemantics = o.FilePropertySemantics
 		}
 	}
 

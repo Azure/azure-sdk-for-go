@@ -6,7 +6,6 @@ package armrelay_test
 import (
 	"context"
 	"fmt"
-	"os"
 	"testing"
 	"time"
 
@@ -306,10 +305,6 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 		testsuite.Require().NoError(err)
 
 		privateEndpointConnectionName = *nextResult.Value[0].Name
-		if os.Getenv("AZURE_RECORD_MODE") == "playback" && privateEndpointConnectionName == "Sanitized" {
-			privateEndpointConnectionName = "00000000-0000-0000-0000-000000000000"
-		}
-		break
 	}
 
 	// From step PrivateEndpointConnections_Get

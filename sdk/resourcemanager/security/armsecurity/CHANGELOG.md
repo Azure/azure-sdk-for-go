@@ -1,6 +1,6 @@
 # Release History
 
-## 0.15.0 (2026-05-07)
+## 0.15.0 (2026-05-08)
 ### Breaking Changes
 
 - Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Add` parameter(s) have been changed from `(ctx context.Context, workspaceID string, resourceID string, options *SQLVulnerabilityAssessmentBaselineRulesClientAddOptions)` to `(ctx context.Context, resourceID string, options *SQLVulnerabilityAssessmentBaselineRulesClientAddOptions)`

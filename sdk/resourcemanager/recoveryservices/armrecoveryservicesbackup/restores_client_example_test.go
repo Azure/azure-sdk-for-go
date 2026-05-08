@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,11 +50,11 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,11 +94,11 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,11 +137,11 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
 func ExampleRestoresClient_BeginTrigger_restoreWithResourceGuardEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,11 +181,11 @@ func ExampleRestoresClient_BeginTrigger_restoreWithResourceGuardEnabled() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,11 +224,11 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequest() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,11 +265,11 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequestWith
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,6 +304,6 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreWithRehydra
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

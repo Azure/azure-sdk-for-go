@@ -43,7 +43,7 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 // pagination
 // parameters.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupWorkloadItemsClientListOptions contains the optional parameters for the BackupWorkloadItemsClient.NewListPager
 //     method.
@@ -104,7 +104,7 @@ func (client *BackupWorkloadItemsClient) listCreateRequest(ctx context.Context, 
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

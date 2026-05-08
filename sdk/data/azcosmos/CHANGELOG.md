@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added operation diagnostics on responses and `DiagnosticsFromError` for retrieving diagnostics from failed operations. See [PR 26548](https://github.com/Azure/azure-sdk-for-go/pull/26548)
+
 ### Breaking Changes
 
 ### Bugs Fixed

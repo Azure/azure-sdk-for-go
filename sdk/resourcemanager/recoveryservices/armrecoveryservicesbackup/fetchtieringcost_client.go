@@ -44,7 +44,7 @@ func NewFetchTieringCostClient(subscriptionID string, credential azcore.TokenCre
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - parameters - Fetch Tiering Cost Request
@@ -72,7 +72,7 @@ func (client *FetchTieringCostClient) BeginPost(ctx context.Context, resourceGro
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 func (client *FetchTieringCostClient) post(ctx context.Context, resourceGroupName string, vaultName string, parameters FetchTieringCostInfoRequestClassification, options *FetchTieringCostClientBeginPostOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FetchTieringCostClient.BeginPost"
@@ -114,7 +114,7 @@ func (client *FetchTieringCostClient) postCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

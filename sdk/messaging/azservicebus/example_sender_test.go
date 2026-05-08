@@ -19,7 +19,7 @@ func ExampleClient_NewSender() {
 	}
 
 	// close the sender when it's no longer needed
-	defer sender.Close(context.TODO())
+	defer func() { _ = sender.Close(context.TODO()) }()
 }
 
 func ExampleSender_SendMessage_message() {

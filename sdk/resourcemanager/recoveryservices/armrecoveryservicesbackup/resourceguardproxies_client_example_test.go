@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
 func ExampleResourceGuardProxiesClient_NewGetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

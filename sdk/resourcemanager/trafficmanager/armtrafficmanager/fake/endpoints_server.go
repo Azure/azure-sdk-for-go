@@ -31,9 +31,9 @@ type EndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, profileName string, endpointType armtrafficmanager.EndpointType, endpointName string, options *armtrafficmanager.EndpointsClientGetOptions) (resp azfake.Responder[armtrafficmanager.EndpointsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// UpdateV2 is the fake for method EndpointsClient.UpdateV2
+	// Update is the fake for method EndpointsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateV2 func(ctx context.Context, resourceGroupName string, profileName string, endpointType armtrafficmanager.EndpointType, endpointName string, parameters armtrafficmanager.EndpointUpdate, options *armtrafficmanager.EndpointsClientUpdateV2Options) (resp azfake.Responder[armtrafficmanager.EndpointsClientUpdateV2Response], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, profileName string, endpointType armtrafficmanager.EndpointType, endpointName string, parameters armtrafficmanager.Endpoint, options *armtrafficmanager.EndpointsClientUpdateOptions) (resp azfake.Responder[armtrafficmanager.EndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEndpointsServerTransport creates a new instance of EndpointsServerTransport with the provided implementation.
@@ -78,8 +78,8 @@ func (e *EndpointsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = e.dispatchDelete(req)
 			case "EndpointsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
-			case "EndpointsClient.UpdateV2":
-				res.resp, res.err = e.dispatchUpdateV2(req)
+			case "EndpointsClient.Update":
+				res.resp, res.err = e.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -244,9 +244,9 @@ func (e *EndpointsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	return resp, nil
 }
 
-func (e *EndpointsServerTransport) dispatchUpdateV2(req *http.Request) (*http.Response, error) {
-	if e.srv.UpdateV2 == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateV2 not implemented")}
+func (e *EndpointsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/trafficmanagerprofiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<endpointType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<endpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
@@ -254,7 +254,7 @@ func (e *EndpointsServerTransport) dispatchUpdateV2(req *http.Request) (*http.Re
 	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armtrafficmanager.EndpointUpdate](req)
+	body, err := server.UnmarshalRequestAsJSON[armtrafficmanager.Endpoint](req)
 	if err != nil {
 		return nil, err
 	}
@@ -280,7 +280,7 @@ func (e *EndpointsServerTransport) dispatchUpdateV2(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.UpdateV2(req.Context(), resourceGroupNameParam, profileNameParam, endpointTypeParam, endpointNameParam, body, nil)
+	respr, errRespr := e.srv.Update(req.Context(), resourceGroupNameParam, profileNameParam, endpointTypeParam, endpointNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

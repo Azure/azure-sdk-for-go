@@ -48,9 +48,9 @@ type ProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armtrafficmanager.ProfilesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armtrafficmanager.ProfilesClientListBySubscriptionResponse])
 
-	// UpdateV2 is the fake for method ProfilesClient.UpdateV2
+	// Update is the fake for method ProfilesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateV2 func(ctx context.Context, resourceGroupName string, profileName string, parameters armtrafficmanager.ProfileUpdate, options *armtrafficmanager.ProfilesClientUpdateV2Options) (resp azfake.Responder[armtrafficmanager.ProfilesClientUpdateV2Response], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, profileName string, parameters armtrafficmanager.Profile, options *armtrafficmanager.ProfilesClientUpdateOptions) (resp azfake.Responder[armtrafficmanager.ProfilesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewProfilesServerTransport creates a new instance of ProfilesServerTransport with the provided implementation.
@@ -109,8 +109,8 @@ func (p *ProfilesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "ProfilesClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
-			case "ProfilesClient.UpdateV2":
-				res.resp, res.err = p.dispatchUpdateV2(req)
+			case "ProfilesClient.Update":
+				res.resp, res.err = p.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -355,9 +355,9 @@ func (p *ProfilesServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	return resp, nil
 }
 
-func (p *ProfilesServerTransport) dispatchUpdateV2(req *http.Request) (*http.Response, error) {
-	if p.srv.UpdateV2 == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateV2 not implemented")}
+func (p *ProfilesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/trafficmanagerprofiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
@@ -365,7 +365,7 @@ func (p *ProfilesServerTransport) dispatchUpdateV2(req *http.Request) (*http.Res
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armtrafficmanager.ProfileUpdate](req)
+	body, err := server.UnmarshalRequestAsJSON[armtrafficmanager.Profile](req)
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +377,7 @@ func (p *ProfilesServerTransport) dispatchUpdateV2(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.UpdateV2(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
+	respr, errRespr := p.srv.Update(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -1,10 +1,8 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-04-14)
+## 2.0.0-beta.1 (2026-05-08)
 ### Breaking Changes
 
-- Function `*EndpointsClient.Update` has been removed
-- Function `*ProfilesClient.Update` has been removed
 - Struct `ProxyResource` has been removed
 - Struct `Resource` has been removed
 - Struct `TrackedResource` has been removed
@@ -13,11 +11,6 @@
 
 - New enum type `HeatMapType` with values `HeatMapTypeDefault`
 - New enum type `RecordType` with values `RecordTypeA`, `RecordTypeAAAA`, `RecordTypeCNAME`
-- New function `*EndpointsClient.UpdateV2(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters EndpointUpdate, options *EndpointsClientUpdateV2Options) (EndpointsClientUpdateV2Response, error)`
-- New function `*ProfilesClient.UpdateV2(ctx context.Context, resourceGroupName string, profileName string, parameters ProfileUpdate, options *ProfilesClientUpdateV2Options) (ProfilesClientUpdateV2Response, error)`
-- New struct `EndpointUpdate`
-- New struct `ProfilePropertiesUpdate`
-- New struct `ProfileUpdate`
 - New field `NextLink` in struct `ProfileListResult`
 - New field `RecordType` in struct `ProfileProperties`
 

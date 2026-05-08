@@ -22,8 +22,8 @@ type EndpointsClientGetResponse struct {
 	Endpoint
 }
 
-// EndpointsClientUpdateV2Response contains the response from method EndpointsClient.UpdateV2.
-type EndpointsClientUpdateV2Response struct {
+// EndpointsClientUpdateResponse contains the response from method EndpointsClient.Update.
+type EndpointsClientUpdateResponse struct {
 	// Class representing a Traffic Manager endpoint.
 	Endpoint
 }
@@ -82,8 +82,8 @@ type ProfilesClientListBySubscriptionResponse struct {
 	ProfileListResult
 }
 
-// ProfilesClientUpdateV2Response contains the response from method ProfilesClient.UpdateV2.
-type ProfilesClientUpdateV2Response struct {
+// ProfilesClientUpdateResponse contains the response from method ProfilesClient.Update.
+type ProfilesClientUpdateResponse struct {
 	// Class representing a Traffic Manager profile.
 	Profile
 }

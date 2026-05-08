@@ -127,21 +127,6 @@ type EndpointPropertiesSubnetsItem struct {
 	Scope *int32
 }
 
-// EndpointUpdate - Class representing a Traffic Manager endpoint for update operations.
-type EndpointUpdate struct {
-	// The properties of the Traffic Manager endpoint.
-	Properties *EndpointProperties
-
-	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-	Type *string
-}
-
 // GeographicHierarchy - Class representing the Geographic hierarchy used with the Geographic traffic routing method.
 type GeographicHierarchy struct {
 	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
@@ -331,58 +316,6 @@ type ProfileProperties struct {
 	// Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'.
 	// Enabling this feature will increase the cost of the Traffic Manage profile.
 	TrafficViewEnrollmentStatus *TrafficViewEnrollmentStatus
-}
-
-// ProfilePropertiesUpdate - Class representing the Traffic Manager profile properties for update operations.
-type ProfilePropertiesUpdate struct {
-	// The list of allowed endpoint record types.
-	AllowedEndpointRecordTypes []*AllowedEndpointRecordType
-
-	// The DNS settings of the Traffic Manager profile.
-	DNSConfig *DNSConfig
-
-	// The list of endpoints in the Traffic Manager profile.
-	Endpoints []*EndpointUpdate
-
-	// Maximum number of endpoints to be returned for MultiValue routing type.
-	MaxReturn *int64
-
-	// The endpoint monitoring settings of the Traffic Manager profile.
-	MonitorConfig *MonitorConfig
-
-	// The status of the Traffic Manager profile.
-	ProfileStatus *ProfileStatus
-
-	// When record type is set, a traffic manager profile will allow only endpoints that match this type.
-	RecordType *RecordType
-
-	// The traffic routing method of the Traffic Manager profile.
-	TrafficRoutingMethod *TrafficRoutingMethod
-
-	// Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'.
-	// Enabling this feature will increase the cost of the Traffic Manage profile.
-	TrafficViewEnrollmentStatus *TrafficViewEnrollmentStatus
-}
-
-// ProfileUpdate - Parameters supplied to update a Traffic Manager profile.
-type ProfileUpdate struct {
-	// The properties of the Traffic Manager profile.
-	Properties *ProfilePropertiesUpdate
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
-	ID *string
-
-	// READ-ONLY; The Azure Region where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-	Type *string
 }
 
 // QueryExperience - Class representing a Traffic Manager HeatMap query experience properties.

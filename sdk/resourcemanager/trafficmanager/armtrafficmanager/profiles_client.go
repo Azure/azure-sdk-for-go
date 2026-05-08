@@ -467,38 +467,38 @@ func (client *ProfilesClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// UpdateV2 - Update a Traffic Manager profile.
+// Update - Update a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The name of the Traffic Manager profile.
 //   - parameters - The Traffic Manager profile parameters supplied to the Update operation.
-//   - options - ProfilesClientUpdateV2Options contains the optional parameters for the ProfilesClient.UpdateV2 method.
-func (client *ProfilesClient) UpdateV2(ctx context.Context, resourceGroupName string, profileName string, parameters ProfileUpdate, options *ProfilesClientUpdateV2Options) (ProfilesClientUpdateV2Response, error) {
+//   - options - ProfilesClientUpdateOptions contains the optional parameters for the ProfilesClient.Update method.
+func (client *ProfilesClient) Update(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesClientUpdateOptions) (ProfilesClientUpdateResponse, error) {
 	var err error
-	const operationName = "ProfilesClient.UpdateV2"
+	const operationName = "ProfilesClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateV2CreateRequest(ctx, resourceGroupName, profileName, parameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, parameters, options)
 	if err != nil {
-		return ProfilesClientUpdateV2Response{}, err
+		return ProfilesClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProfilesClientUpdateV2Response{}, err
+		return ProfilesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ProfilesClientUpdateV2Response{}, err
+		return ProfilesClientUpdateResponse{}, err
 	}
-	resp, err := client.updateV2HandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
-// updateV2CreateRequest creates the UpdateV2 request.
-func (client *ProfilesClient) updateV2CreateRequest(ctx context.Context, resourceGroupName string, profileName string, parameters ProfileUpdate, _ *ProfilesClientUpdateV2Options) (*policy.Request, error) {
+// updateCreateRequest creates the Update request.
+func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, _ *ProfilesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -527,11 +527,11 @@ func (client *ProfilesClient) updateV2CreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// updateV2HandleResponse handles the UpdateV2 response.
-func (client *ProfilesClient) updateV2HandleResponse(resp *http.Response) (ProfilesClientUpdateV2Response, error) {
-	result := ProfilesClientUpdateV2Response{}
+// updateHandleResponse handles the Update response.
+func (client *ProfilesClient) updateHandleResponse(resp *http.Response) (ProfilesClientUpdateResponse, error) {
+	result := ProfilesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
-		return ProfilesClientUpdateV2Response{}, err
+		return ProfilesClientUpdateResponse{}, err
 	}
 	return result, nil
 }

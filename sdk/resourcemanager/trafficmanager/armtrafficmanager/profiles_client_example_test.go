@@ -1354,7 +1354,7 @@ func ExampleProfilesClient_NewListBySubscriptionPager() {
 }
 
 // Generated from example definition: 2024-04-01-preview/Profile-PATCH-MonitorConfig.json
-func ExampleProfilesClient_UpdateV2_profilePatchMonitorConfig() {
+func ExampleProfilesClient_Update_profilePatchMonitorConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1364,8 +1364,8 @@ func ExampleProfilesClient_UpdateV2_profilePatchMonitorConfig() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProfilesClient().UpdateV2(ctx, "azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192", armtrafficmanager.ProfileUpdate{
-		Properties: &armtrafficmanager.ProfilePropertiesUpdate{
+	res, err := clientFactory.NewProfilesClient().Update(ctx, "azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192", armtrafficmanager.Profile{
+		Properties: &armtrafficmanager.ProfileProperties{
 			MonitorConfig: &armtrafficmanager.MonitorConfig{
 				Path: to.Ptr("/testpath.aspx"),
 				CustomHeaders: []*armtrafficmanager.MonitorConfigCustomHeadersItem{
@@ -1392,7 +1392,7 @@ func ExampleProfilesClient_UpdateV2_profilePatchMonitorConfig() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armtrafficmanager.ProfilesClientUpdateV2Response{
+	// res = armtrafficmanager.ProfilesClientUpdateResponse{
 	// 	Profile: &armtrafficmanager.Profile{
 	// 		Name: to.Ptr("azuresdkfornetautoresttrafficmanager6192"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles"),
@@ -1448,7 +1448,7 @@ func ExampleProfilesClient_UpdateV2_profilePatchMonitorConfig() {
 }
 
 // Generated from example definition: 2024-04-01-preview/Profile-PATCH-RecordType.json
-func ExampleProfilesClient_UpdateV2_profilePatchRecordType() {
+func ExampleProfilesClient_Update_profilePatchRecordType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1458,8 +1458,8 @@ func ExampleProfilesClient_UpdateV2_profilePatchRecordType() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProfilesClient().UpdateV2(ctx, "azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192", armtrafficmanager.ProfileUpdate{
-		Properties: &armtrafficmanager.ProfilePropertiesUpdate{
+	res, err := clientFactory.NewProfilesClient().Update(ctx, "azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192", armtrafficmanager.Profile{
+		Properties: &armtrafficmanager.ProfileProperties{
 			RecordType: to.Ptr(armtrafficmanager.RecordTypeCNAME),
 		},
 	}, nil)
@@ -1469,7 +1469,7 @@ func ExampleProfilesClient_UpdateV2_profilePatchRecordType() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armtrafficmanager.ProfilesClientUpdateV2Response{
+	// res = armtrafficmanager.ProfilesClientUpdateResponse{
 	// 	Profile: &armtrafficmanager.Profile{
 	// 		Name: to.Ptr("azuresdkfornetautoresttrafficmanager6192"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles"),

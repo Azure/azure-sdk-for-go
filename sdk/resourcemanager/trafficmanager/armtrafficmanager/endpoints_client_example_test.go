@@ -415,7 +415,7 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 }
 
 // Generated from example definition: 2024-04-01-preview/Endpoint-PATCH-External-Target.json
-func ExampleEndpointsClient_UpdateV2() {
+func ExampleEndpointsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -425,7 +425,7 @@ func ExampleEndpointsClient_UpdateV2() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().UpdateV2(ctx, "azuresdkfornetautoresttrafficmanager1421", "azsmnet6386", armtrafficmanager.EndpointTypeExternalEndpoints, "azsmnet7187", armtrafficmanager.EndpointUpdate{
+	res, err := clientFactory.NewEndpointsClient().Update(ctx, "azuresdkfornetautoresttrafficmanager1421", "azsmnet6386", armtrafficmanager.EndpointTypeExternalEndpoints, "azsmnet7187", armtrafficmanager.Endpoint{
 		Properties: &armtrafficmanager.EndpointProperties{
 			Target: to.Ptr("another.foobar.contoso.com"),
 		},
@@ -436,7 +436,7 @@ func ExampleEndpointsClient_UpdateV2() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armtrafficmanager.EndpointsClientUpdateV2Response{
+	// res = armtrafficmanager.EndpointsClientUpdateResponse{
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),

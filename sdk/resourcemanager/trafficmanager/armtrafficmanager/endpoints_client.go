@@ -267,7 +267,7 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 	return result, nil
 }
 
-// UpdateV2 - Update a Traffic Manager endpoint.
+// Update - Update a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-04-01-preview
@@ -276,31 +276,31 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 //   - endpointType - The type of the Traffic Manager endpoint.
 //   - endpointName - The name of the Traffic Manager endpoint.
 //   - parameters - The Traffic Manager endpoint parameters supplied to the Update operation.
-//   - options - EndpointsClientUpdateV2Options contains the optional parameters for the EndpointsClient.UpdateV2 method.
-func (client *EndpointsClient) UpdateV2(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters EndpointUpdate, options *EndpointsClientUpdateV2Options) (EndpointsClientUpdateV2Response, error) {
+//   - options - EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
+func (client *EndpointsClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, options *EndpointsClientUpdateOptions) (EndpointsClientUpdateResponse, error) {
 	var err error
-	const operationName = "EndpointsClient.UpdateV2"
+	const operationName = "EndpointsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateV2CreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, parameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, parameters, options)
 	if err != nil {
-		return EndpointsClientUpdateV2Response{}, err
+		return EndpointsClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EndpointsClientUpdateV2Response{}, err
+		return EndpointsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return EndpointsClientUpdateV2Response{}, err
+		return EndpointsClientUpdateResponse{}, err
 	}
-	resp, err := client.updateV2HandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
-// updateV2CreateRequest creates the UpdateV2 request.
-func (client *EndpointsClient) updateV2CreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters EndpointUpdate, _ *EndpointsClientUpdateV2Options) (*policy.Request, error) {
+// updateCreateRequest creates the Update request.
+func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, _ *EndpointsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -337,11 +337,11 @@ func (client *EndpointsClient) updateV2CreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// updateV2HandleResponse handles the UpdateV2 response.
-func (client *EndpointsClient) updateV2HandleResponse(resp *http.Response) (EndpointsClientUpdateV2Response, error) {
-	result := EndpointsClientUpdateV2Response{}
+// updateHandleResponse handles the Update response.
+func (client *EndpointsClient) updateHandleResponse(resp *http.Response) (EndpointsClientUpdateResponse, error) {
+	result := EndpointsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Endpoint); err != nil {
-		return EndpointsClientUpdateV2Response{}, err
+		return EndpointsClientUpdateResponse{}, err
 	}
 	return result, nil
 }

@@ -54,6 +54,9 @@ func (c *containerPropertiesCache) getProperties(
 		// Entry exists but props is nil (invalidated) — refresh under lock
 		props, err := c.refreshEntry(ctx, container, entry)
 		entry.mu.Unlock()
+		if err == nil {
+			c.updateRIDIndex(entry, props)
+		}
 		return props, err
 	}
 
@@ -74,6 +77,9 @@ func (c *containerPropertiesCache) getProperties(
 	}
 	props, err := c.refreshEntry(ctx, container, entry)
 	entry.mu.Unlock()
+	if err == nil {
+		c.updateRIDIndex(entry, props)
+	}
 	return props, err
 }
 
@@ -132,20 +138,30 @@ func (c *containerPropertiesCache) set(containerLink string, props *ContainerPro
 		entry.props = props
 		entry.mu.Unlock()
 	} else {
+		// Slow path: upgrade to write lock and double-check.
+		// We release c.mu before touching entry.mu to maintain
+		// consistent lock order (c.mu → entry.mu, never reversed).
 		c.mu.Lock()
 		entry, exists = c.entries[containerLink]
 		if !exists {
 			entry = &containerPropsCacheEntry{props: props}
 			c.entries[containerLink] = entry
-		} else {
+		}
+		c.mu.Unlock()
+
+		if exists {
 			entry.mu.Lock()
 			entry.props = props
 			entry.mu.Unlock()
 		}
-		c.mu.Unlock()
 	}
 
-	// Cross-populate the RID index
+	c.updateRIDIndex(entry, props)
+}
+
+// updateRIDIndex cross-populates the RID-based index.
+// Must be called WITHOUT entry.mu held to maintain lock order (c.mu → entry.mu).
+func (c *containerPropertiesCache) updateRIDIndex(entry *containerPropsCacheEntry, props *ContainerProperties) {
 	if props != nil && props.ResourceID != "" {
 		c.mu.Lock()
 		c.entriesByID[props.ResourceID] = entry
@@ -157,6 +173,8 @@ func (c *containerPropertiesCache) set(containerLink string, props *ContainerPro
 // This bypasses container.Read() to avoid deadlock — the caller already holds entry.mu,
 // and Read() calls cache.set() which would try to re-acquire the same lock.
 // Caller must hold entry.mu.
+// NOTE: This method must NOT acquire c.mu — callers update the RID index
+// after releasing entry.mu via updateRIDIndex() to prevent lock-order inversion.
 func (c *containerPropertiesCache) refreshEntry(
 	ctx context.Context,
 	container *ContainerClient,
@@ -188,13 +206,6 @@ func (c *containerPropertiesCache) refreshEntry(
 	}
 
 	entry.props = response.ContainerProperties
-
-	// Cross-populate the RID index
-	if entry.props != nil && entry.props.ResourceID != "" {
-		c.mu.Lock()
-		c.entriesByID[entry.props.ResourceID] = entry
-		c.mu.Unlock()
-	}
 
 	return entry.props, nil
 }

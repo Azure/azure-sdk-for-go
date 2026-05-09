@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/ResolvePrivateLinkServiceId.json
+// Generated from example definition: 2026-03-01/ResolvePrivateLinkServiceId.json
 func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.ResolvePrivateLinkServiceIDClientPOSTResponse{
-	// 	PrivateLinkResource: &armcontainerservice.PrivateLinkResource{
+	// 	PrivateLinkResource: armcontainerservice.PrivateLinkResource{
 	// 		PrivateLinkServiceID: to.Ptr("/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Network/privateLinkServices/plsName"),
 	// 	},
 	// }

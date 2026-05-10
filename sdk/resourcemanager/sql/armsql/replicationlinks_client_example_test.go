@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ReplicationLinkCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkCreateOrUpdate.json
 func ExampleReplicationLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleReplicationLinksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ReplicationLinkDelete.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkDelete.json
 func ExampleReplicationLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleReplicationLinksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ReplicationLinkFailover.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkFailover.json
 func ExampleReplicationLinksClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleReplicationLinksClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ReplicationLinkFailoverAllowDataLoss.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkFailoverAllowDataLoss.json
 func ExampleReplicationLinksClient_BeginFailoverAllowDataLoss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleReplicationLinksClient_BeginFailoverAllowDataLoss() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ReplicationLinkGet.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkGet.json
 func ExampleReplicationLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleReplicationLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ReplicationLinkListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkListByDatabase.json
 func ExampleReplicationLinksClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleReplicationLinksClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ReplicationLinkListByServer.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkListByServer.json
 func ExampleReplicationLinksClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ReplicationLinkUpdate.json
+// Generated from example definition: 2025-02-01-preview/ReplicationLinkUpdate.json
 func ExampleReplicationLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

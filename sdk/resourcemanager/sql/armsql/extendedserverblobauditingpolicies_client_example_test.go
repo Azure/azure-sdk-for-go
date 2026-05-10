@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ExtendedServerBlobAuditingCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ExtendedServerBlobAuditingCreateMax.json
 func ExampleExtendedServerBlobAuditingPoliciesClient_BeginCreateOrUpdate_updateAServerSExtendedBlobAuditingPolicyWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleExtendedServerBlobAuditingPoliciesClient_BeginCreateOrUpdate_updateA
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ExtendedServerBlobAuditingCreateMin.json
+// Generated from example definition: 2025-02-01-preview/ExtendedServerBlobAuditingCreateMin.json
 func ExampleExtendedServerBlobAuditingPoliciesClient_BeginCreateOrUpdate_updateAServerSExtendedBlobAuditingPolicyWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleExtendedServerBlobAuditingPoliciesClient_BeginCreateOrUpdate_updateA
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ExtendedServerBlobAuditingGet.json
+// Generated from example definition: 2025-02-01-preview/ExtendedServerBlobAuditingGet.json
 func ExampleExtendedServerBlobAuditingPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleExtendedServerBlobAuditingPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerExtendedAuditingSettingsList.json
+// Generated from example definition: 2025-02-01-preview/ServerExtendedAuditingSettingsList.json
 func ExampleExtendedServerBlobAuditingPoliciesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

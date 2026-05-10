@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceDtcUpdateEnableDtc.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceDtcUpdateEnableDtc.json
 func ExampleManagedInstanceDtcsClient_BeginCreateOrUpdate_updatesManagedInstanceDtcSettingsByEnablingDtc() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleManagedInstanceDtcsClient_BeginCreateOrUpdate_updatesManagedInstance
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceDtcUpdateMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceDtcUpdateMax.json
 func ExampleManagedInstanceDtcsClient_BeginCreateOrUpdate_updatesManagedInstanceDtcSettingsWithAllOptionalParametersSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleManagedInstanceDtcsClient_BeginCreateOrUpdate_updatesManagedInstance
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceDtcGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceDtcGet.json
 func ExampleManagedInstanceDtcsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleManagedInstanceDtcsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceDtcList.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceDtcList.json
 func ExampleManagedInstanceDtcsClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

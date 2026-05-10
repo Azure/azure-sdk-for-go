@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ChangeLongTermRetentionBackupAccessTier.json
+// Generated from example definition: 2025-02-01-preview/ChangeLongTermRetentionBackupAccessTier.json
 func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTier() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedChangeLongTermRetentionBackupAccessTier.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedChangeLongTermRetentionBackupAccessTier.json
 func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTierByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTierByResourceGroup(
 	// }
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionBackupCopy.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupCopy.json
 func ExampleLongTermRetentionBackupsClient_BeginCopy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleLongTermRetentionBackupsClient_BeginCopy() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupCopy.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupCopy.json
 func ExampleLongTermRetentionBackupsClient_BeginCopyByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleLongTermRetentionBackupsClient_BeginCopyByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionBackupDelete.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleLongTermRetentionBackupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupDelete.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionBackupsClient_BeginDeleteByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleLongTermRetentionBackupsClient_BeginDeleteByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionBackupGet.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupGet.json
 func ExampleLongTermRetentionBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleLongTermRetentionBackupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupGet.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupGet.json
 func ExampleLongTermRetentionBackupsClient_GetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +315,7 @@ func ExampleLongTermRetentionBackupsClient_GetByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionBackupListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupListByDatabase.json
 func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +381,7 @@ func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionBackupListByLocation.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupListByLocation.json
 func ExampleLongTermRetentionBackupsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleLongTermRetentionBackupsClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupListByDatabase.json
 func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,7 +511,7 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager()
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupListByLocation.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocation.json
 func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -576,7 +576,7 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager()
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupListByServer.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupListByServer.json
 func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -641,7 +641,7 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionBackupListByServer.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupListByServer.json
 func ExampleLongTermRetentionBackupsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -706,7 +706,7 @@ func ExampleLongTermRetentionBackupsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/LockTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/LockTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -739,7 +739,7 @@ func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLockTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLockTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +772,7 @@ func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutabilityByResou
 	// }
 }
 
-// Generated from example definition: 2025-01-01/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -805,7 +805,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedRemoveLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedRemoveLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -838,7 +838,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutabilityByRes
 	// }
 }
 
-// Generated from example definition: 2025-01-01/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,7 +871,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedRemoveTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedRemoveTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -904,7 +904,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutabilityByRes
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SetLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/SetLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -937,7 +937,7 @@ func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedSetLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedSetLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -970,7 +970,7 @@ func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutabilityByResour
 	// }
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionBackupUpdate.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupUpdate.json
 func ExampleLongTermRetentionBackupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +1012,7 @@ func ExampleLongTermRetentionBackupsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupUpdate.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupUpdate.json
 func ExampleLongTermRetentionBackupsClient_BeginUpdateByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

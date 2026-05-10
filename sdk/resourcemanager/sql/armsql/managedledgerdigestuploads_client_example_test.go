@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedLedgerDigestUploadsEnable.json
+// Generated from example definition: 2025-02-01-preview/ManagedLedgerDigestUploadsEnable.json
 func ExampleManagedLedgerDigestUploadsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleManagedLedgerDigestUploadsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedLedgerDigestUploadsDisable.json
+// Generated from example definition: 2025-02-01-preview/ManagedLedgerDigestUploadsDisable.json
 func ExampleManagedLedgerDigestUploadsClient_BeginDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleManagedLedgerDigestUploadsClient_BeginDisable() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedLedgerDigestUploadsGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedLedgerDigestUploadsGet.json
 func ExampleManagedLedgerDigestUploadsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleManagedLedgerDigestUploadsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedLedgerDigestUploadsList.json
+// Generated from example definition: 2025-02-01-preview/ManagedLedgerDigestUploadsList.json
 func ExampleManagedLedgerDigestUploadsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

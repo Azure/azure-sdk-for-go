@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/SynapseLinkWorkspaceListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/SynapseLinkWorkspaceListByDatabase.json
 func ExampleSynapseLinkWorkspacesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

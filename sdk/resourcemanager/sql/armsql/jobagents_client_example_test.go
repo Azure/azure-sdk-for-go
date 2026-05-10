@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobAgent.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobAgent.json
 func ExampleJobAgentsClient_BeginCreateOrUpdate_createOrUpdateAJobAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleJobAgentsClient_BeginCreateOrUpdate_createOrUpdateAJobAgent() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobAgentWithIdentity.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobAgentWithIdentity.json
 func ExampleJobAgentsClient_BeginCreateOrUpdate_createOrUpdateAJobAgentWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleJobAgentsClient_BeginCreateOrUpdate_createOrUpdateAJobAgentWithIdent
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobAgentWithSku.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobAgentWithSku.json
 func ExampleJobAgentsClient_BeginCreateOrUpdate_createOrUpdateAJobAgentWithSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleJobAgentsClient_BeginCreateOrUpdate_createOrUpdateAJobAgentWithSku()
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteJobAgent.json
+// Generated from example definition: 2025-02-01-preview/DeleteJobAgent.json
 func ExampleJobAgentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleJobAgentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetJobAgent.json
+// Generated from example definition: 2025-02-01-preview/GetJobAgent.json
 func ExampleJobAgentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleJobAgentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobAgentsByServer.json
+// Generated from example definition: 2025-02-01-preview/ListJobAgentsByServer.json
 func ExampleJobAgentsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleJobAgentsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/UpdateJobAgent.json
+// Generated from example definition: 2025-02-01-preview/UpdateJobAgent.json
 func ExampleJobAgentsClient_BeginUpdate_updateAJobAgentSTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleJobAgentsClient_BeginUpdate_updateAJobAgentSTags() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/UpdateJobAgentWithIdentity.json
+// Generated from example definition: 2025-02-01-preview/UpdateJobAgentWithIdentity.json
 func ExampleJobAgentsClient_BeginUpdate_updateAJobAgentSIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +369,7 @@ func ExampleJobAgentsClient_BeginUpdate_updateAJobAgentSIdentity() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/UpdateJobAgentWithSku.json
+// Generated from example definition: 2025-02-01-preview/UpdateJobAgentWithSku.json
 func ExampleJobAgentsClient_BeginUpdate_updateAJobAgentSSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseEncryptionProtectorRevalidate.json
+// Generated from example definition: 2025-02-01-preview/DatabaseEncryptionProtectorRevalidate.json
 func ExampleDatabaseEncryptionProtectorsClient_BeginRevalidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleDatabaseEncryptionProtectorsClient_BeginRevalidate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseEncryptionProtectorRevert.json
+// Generated from example definition: 2025-02-01-preview/DatabaseEncryptionProtectorRevert.json
 func ExampleDatabaseEncryptionProtectorsClient_BeginRevert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

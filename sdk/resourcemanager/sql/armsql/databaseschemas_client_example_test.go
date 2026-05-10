@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseSchemaGet.json
+// Generated from example definition: 2025-02-01-preview/DatabaseSchemaGet.json
 func ExampleDatabaseSchemasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleDatabaseSchemasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseSchemaListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/DatabaseSchemaListByDatabase.json
 func ExampleDatabaseSchemasClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

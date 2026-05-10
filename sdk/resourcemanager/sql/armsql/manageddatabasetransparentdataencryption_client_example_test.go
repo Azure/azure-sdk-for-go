@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedTransparentDataEncryptionUpdate.json
+// Generated from example definition: 2025-02-01-preview/ManagedTransparentDataEncryptionUpdate.json
 func ExampleManagedDatabaseTransparentDataEncryptionClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleManagedDatabaseTransparentDataEncryptionClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedTransparentDataEncryptionGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedTransparentDataEncryptionGet.json
 func ExampleManagedDatabaseTransparentDataEncryptionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleManagedDatabaseTransparentDataEncryptionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedTransparentDataEncryptionList.json
+// Generated from example definition: 2025-02-01-preview/ManagedTransparentDataEncryptionList.json
 func ExampleManagedDatabaseTransparentDataEncryptionClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

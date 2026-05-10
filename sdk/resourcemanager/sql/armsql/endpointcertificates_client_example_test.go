@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/EndpointCertificatesGet.json
+// Generated from example definition: 2025-02-01-preview/EndpointCertificatesGet.json
 func ExampleEndpointCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleEndpointCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/EndpointCertificatesListByInstance.json
+// Generated from example definition: 2025-02-01-preview/EndpointCertificatesListByInstance.json
 func ExampleEndpointCertificatesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

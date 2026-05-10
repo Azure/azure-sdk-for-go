@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/TransparentDataEncryptionUpdate.json
+// Generated from example definition: 2025-02-01-preview/TransparentDataEncryptionUpdate.json
 func ExampleTransparentDataEncryptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleTransparentDataEncryptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/TransparentDataEncryptionGet.json
+// Generated from example definition: 2025-02-01-preview/TransparentDataEncryptionGet.json
 func ExampleTransparentDataEncryptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleTransparentDataEncryptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/TransparentDataEncryptionList.json
+// Generated from example definition: 2025-02-01-preview/TransparentDataEncryptionList.json
 func ExampleTransparentDataEncryptionsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleTransparentDataEncryptionsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResumeTransparentDataEncryptionUpdate.json
+// Generated from example definition: 2025-02-01-preview/ResumeTransparentDataEncryptionUpdate.json
 func ExampleTransparentDataEncryptionsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleTransparentDataEncryptionsClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SuspendTransparentDataEncryptionUpdate.json
+// Generated from example definition: 2025-02-01-preview/SuspendTransparentDataEncryptionUpdate.json
 func ExampleTransparentDataEncryptionsClient_BeginSuspend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -68,7 +68,8 @@ type DataMaskingRulesClientCreateOrUpdateOptions struct {
 // DataMaskingRulesClientListByDatabaseOptions contains the optional parameters for the DataMaskingRulesClient.NewListByDatabasePager
 // method.
 type DataMaskingRulesClientListByDatabaseOptions struct {
-	// placeholder for future optional parameters
+	// The number of elements in the collection to skip.
+	Skip *int64
 }
 
 // DataWarehouseUserActivitiesClientGetOptions contains the optional parameters for the DataWarehouseUserActivitiesClient.Get
@@ -508,7 +509,17 @@ type DatabasesClientListByElasticPoolOptions struct {
 
 // DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.NewListByServerPager method.
 type DatabasesClientListByServerOptions struct {
-	SkipToken *string
+	// An OData filter expression that filters elements in the collection.
+	Filter *string
+
+	// How the results should be ordered.
+	Orderby *string
+
+	// The number of elements in the collection to skip.
+	Skip *int64
+
+	// The number of elements to return from the collection.
+	Top *int64
 }
 
 // DatabasesClientListInaccessibleByServerOptions contains the optional parameters for the DatabasesClient.NewListInaccessibleByServerPager

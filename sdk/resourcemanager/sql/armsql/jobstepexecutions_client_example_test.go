@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GetJobExecutionStep.json
+// Generated from example definition: 2025-02-01-preview/GetJobExecutionStep.json
 func ExampleJobStepExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleJobStepExecutionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobExecutionSteps.json
+// Generated from example definition: 2025-02-01-preview/ListJobExecutionSteps.json
 func ExampleJobStepExecutionsClient_NewListByJobExecutionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

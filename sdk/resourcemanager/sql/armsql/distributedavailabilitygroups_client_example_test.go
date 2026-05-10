@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsCreateMax.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsCreateMax.json
 func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistributedAvailabilityGroupWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistr
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsCreateMin.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsCreateMin.json
 func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistributedAvailabilityGroupWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistr
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsDelete.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsDelete.json
 func ExampleDistributedAvailabilityGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsFailover.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsFailover.json
 func ExampleDistributedAvailabilityGroupsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsGet.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsGet.json
 func ExampleDistributedAvailabilityGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleDistributedAvailabilityGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsListByInstance.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsListByInstance.json
 func ExampleDistributedAvailabilityGroupsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +380,7 @@ func ExampleDistributedAvailabilityGroupsClient_NewListByInstancePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsSetRole.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsSetRole.json
 func ExampleDistributedAvailabilityGroupsClient_BeginSetRole() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,7 +418,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginSetRole() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DistributedAvailabilityGroupsUpdate.json
+// Generated from example definition: 2025-02-01-preview/DistributedAvailabilityGroupsUpdate.json
 func ExampleDistributedAvailabilityGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

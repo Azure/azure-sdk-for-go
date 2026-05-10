@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseAzureMonitorAuditingCreateMin.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAzureMonitorAuditingCreateMin.json
 func ExampleDatabaseBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateADatabaseSAzureMonitorAuditingPolicyWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleDatabaseBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateADat
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseBlobAuditingCreateMax.json
+// Generated from example definition: 2025-02-01-preview/DatabaseBlobAuditingCreateMax.json
 func ExampleDatabaseBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateADatabaseSBlobAuditingPolicyWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleDatabaseBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateADat
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseBlobAuditingCreateMin.json
+// Generated from example definition: 2025-02-01-preview/DatabaseBlobAuditingCreateMin.json
 func ExampleDatabaseBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateADatabaseSBlobAuditingPolicyWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleDatabaseBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateADat
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseBlobAuditingGet.json
+// Generated from example definition: 2025-02-01-preview/DatabaseBlobAuditingGet.json
 func ExampleDatabaseBlobAuditingPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleDatabaseBlobAuditingPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseAuditingSettingsList.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAuditingSettingsList.json
 func ExampleDatabaseBlobAuditingPoliciesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

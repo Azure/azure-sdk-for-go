@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseTableGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseTableGet.json
 func ExampleManagedDatabaseTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleManagedDatabaseTablesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseTableListBySchema.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseTableListBySchema.json
 func ExampleManagedDatabaseTablesClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

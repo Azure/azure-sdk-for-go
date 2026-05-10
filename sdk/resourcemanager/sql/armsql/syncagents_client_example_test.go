@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/SyncAgentCreate.json
+// Generated from example definition: 2025-02-01-preview/SyncAgentCreate.json
 func ExampleSyncAgentsClient_BeginCreateOrUpdate_createANewSyncAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_createANewSyncAgent() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncAgentUpdate.json
+// Generated from example definition: 2025-02-01-preview/SyncAgentUpdate.json
 func ExampleSyncAgentsClient_BeginCreateOrUpdate_updateASyncAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_updateASyncAgent() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncAgentDelete.json
+// Generated from example definition: 2025-02-01-preview/SyncAgentDelete.json
 func ExampleSyncAgentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleSyncAgentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncAgentGenerateKey.json
+// Generated from example definition: 2025-02-01-preview/SyncAgentGenerateKey.json
 func ExampleSyncAgentsClient_GenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleSyncAgentsClient_GenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncAgentGet.json
+// Generated from example definition: 2025-02-01-preview/SyncAgentGet.json
 func ExampleSyncAgentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleSyncAgentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncAgentListByServer.json
+// Generated from example definition: 2025-02-01-preview/SyncAgentListByServer.json
 func ExampleSyncAgentsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleSyncAgentsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SyncAgentGetLinkedDatabases.json
+// Generated from example definition: 2025-02-01-preview/SyncAgentGetLinkedDatabases.json
 func ExampleSyncAgentsClient_NewListLinkedDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

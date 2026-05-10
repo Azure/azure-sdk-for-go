@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/SqlTdeCertificateCreate.json
+// Generated from example definition: 2025-02-01-preview/SqlTdeCertificateCreate.json
 func ExampleTdeCertificatesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

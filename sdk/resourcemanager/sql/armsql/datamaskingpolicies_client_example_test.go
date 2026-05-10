@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DataMaskingPolicyCreateOrUpdateMax.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingPolicyCreateOrUpdateMax.json
 func ExampleDataMaskingPoliciesClient_CreateOrUpdate_createOrUpdateDataMaskingPolicyMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleDataMaskingPoliciesClient_CreateOrUpdate_createOrUpdateDataMaskingPo
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataMaskingPolicyCreateOrUpdateMin.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingPolicyCreateOrUpdateMin.json
 func ExampleDataMaskingPoliciesClient_CreateOrUpdate_createOrUpdateDataMaskingPolicyMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleDataMaskingPoliciesClient_CreateOrUpdate_createOrUpdateDataMaskingPo
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataMaskingPolicyGet.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingPolicyGet.json
 func ExampleDataMaskingPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

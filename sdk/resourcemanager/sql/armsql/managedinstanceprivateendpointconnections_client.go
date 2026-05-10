@@ -43,7 +43,7 @@ func NewManagedInstancePrivateEndpointConnectionsClient(subscriptionID string, c
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - privateEndpointConnectionName - The name of the private endpoint connection.
@@ -69,7 +69,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginCreateOrUpda
 // CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancePrivateEndpointConnectionsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateCre
 // BeginDelete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - privateEndpointConnectionName - The name of the private endpoint connection.
@@ -154,7 +154,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginDelete(ctx c
 // Delete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancePrivateEndpointConnectionsClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteCreateReque
 // Get - Gets a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - privateEndpointConnectionName - The name of the private endpoint connection.
@@ -260,7 +260,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) getCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleResponse
 
 // NewListByManagedInstancePager - Gets all private endpoint connections on a server.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions contains the optional parameters
@@ -325,7 +325,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInst
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

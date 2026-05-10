@@ -42,7 +42,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListByInstancePoolPager - Gets all instance pool usage metrics
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancePoolName - The name of the instance pool to be retrieved.
 //   - options - UsagesClientListByInstancePoolOptions contains the optional parameters for the UsagesClient.NewListByInstancePoolPager
@@ -90,7 +90,7 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	if options != nil && options.ExpandChildren != nil {
 		reqQP.Set("expandChildren", strconv.FormatBool(*options.ExpandChildren))
 	}

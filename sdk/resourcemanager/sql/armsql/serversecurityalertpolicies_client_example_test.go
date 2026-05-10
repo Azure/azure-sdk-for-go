@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerSecurityAlertsCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ServerSecurityAlertsCreateMax.json
 func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServerSThreatDetectionPolicyWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServerS
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerSecurityAlertsCreateMin.json
+// Generated from example definition: 2025-02-01-preview/ServerSecurityAlertsCreateMin.json
 func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServerSThreatDetectionPolicyWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServerS
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerSecurityAlertsGet.json
+// Generated from example definition: 2025-02-01-preview/ServerSecurityAlertsGet.json
 func ExampleServerSecurityAlertPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleServerSecurityAlertPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerSecurityAlertsListByServer.json
+// Generated from example definition: 2025-02-01-preview/ServerSecurityAlertsListByServer.json
 func ExampleServerSecurityAlertPoliciesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

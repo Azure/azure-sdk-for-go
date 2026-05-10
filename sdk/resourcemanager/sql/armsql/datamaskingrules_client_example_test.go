@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DataMaskingRuleCreateOrUpdateDefaultMax.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateDefaultMax.json
 func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleForDefaultMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataMaskingRuleCreateOrUpdateDefaultMin.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateDefaultMin.json
 func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleForDefaultMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataMaskingRuleCreateOrUpdateNumber.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateNumber.json
 func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleForNumbers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataMaskingRuleCreateOrUpdateText.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateText.json
 func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleForText() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataMaskingRuleListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/DataMaskingRuleListByDatabase.json
 func ExampleDataMaskingRulesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

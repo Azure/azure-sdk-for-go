@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateWorkloadGroupMax.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateWorkloadGroupMax.json
 func ExampleWorkloadGroupsClient_BeginCreateOrUpdate_createAWorkloadGroupWithAllPropertiesSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleWorkloadGroupsClient_BeginCreateOrUpdate_createAWorkloadGroupWithAll
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateWorkloadGroupMin.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateWorkloadGroupMin.json
 func ExampleWorkloadGroupsClient_BeginCreateOrUpdate_createAWorkloadGroupWithTheRequiredPropertiesSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleWorkloadGroupsClient_BeginCreateOrUpdate_createAWorkloadGroupWithThe
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteWorkloadGroup.json
+// Generated from example definition: 2025-02-01-preview/DeleteWorkloadGroup.json
 func ExampleWorkloadGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleWorkloadGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetWorkloadGroup.json
+// Generated from example definition: 2025-02-01-preview/GetWorkloadGroup.json
 func ExampleWorkloadGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleWorkloadGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetWorkloadGroupList.json
+// Generated from example definition: 2025-02-01-preview/GetWorkloadGroupList.json
 func ExampleWorkloadGroupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -41,7 +41,7 @@ func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListByServerPager - Gets server usages.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerUsagesClientListByServerOptions contains the optional parameters for the ServerUsagesClient.NewListByServerPager
@@ -89,7 +89,7 @@ func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

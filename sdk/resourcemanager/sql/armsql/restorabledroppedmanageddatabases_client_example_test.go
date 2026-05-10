@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GetRestorableDroppedManagedDatabase.json
+// Generated from example definition: 2025-02-01-preview/GetRestorableDroppedManagedDatabase.json
 func ExampleRestorableDroppedManagedDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleRestorableDroppedManagedDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/RestorableDroppedManagedDatabaseListByManagedInstance.json
+// Generated from example definition: 2025-02-01-preview/RestorableDroppedManagedDatabaseListByManagedInstance.json
 func ExampleRestorableDroppedManagedDatabasesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

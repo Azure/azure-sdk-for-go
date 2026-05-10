@@ -42,7 +42,7 @@ func NewIPv6FirewallRulesClient(subscriptionID string, credential azcore.TokenCr
 // CreateOrUpdate - Creates or updates an IPv6 firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - firewallRuleName - The name of the firewall rule.
@@ -95,7 +95,7 @@ func (client *IPv6FirewallRulesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -117,7 +117,7 @@ func (client *IPv6FirewallRulesClient) createOrUpdateHandleResponse(resp *http.R
 // Delete - Deletes an IPv6 firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - firewallRuleName - The name of the firewall rule.
@@ -168,7 +168,7 @@ func (client *IPv6FirewallRulesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -176,7 +176,7 @@ func (client *IPv6FirewallRulesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Gets an IPv6 firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - firewallRuleName - The name of the firewall rule.
@@ -227,7 +227,7 @@ func (client *IPv6FirewallRulesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -244,7 +244,7 @@ func (client *IPv6FirewallRulesClient) getHandleResponse(resp *http.Response) (I
 
 // NewListByServerPager - Gets a list of IPv6 firewall rules.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - IPv6FirewallRulesClientListByServerOptions contains the optional parameters for the IPv6FirewallRulesClient.NewListByServerPager
@@ -292,7 +292,7 @@ func (client *IPv6FirewallRulesClient) listByServerCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

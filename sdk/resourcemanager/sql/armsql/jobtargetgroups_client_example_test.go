@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobTargetGroupMax.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobTargetGroupMax.json
 func ExampleJobTargetGroupsClient_CreateOrUpdate_createOrUpdateATargetGroupWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleJobTargetGroupsClient_CreateOrUpdate_createOrUpdateATargetGroupWithA
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobTargetGroupMin.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobTargetGroupMin.json
 func ExampleJobTargetGroupsClient_CreateOrUpdate_createOrUpdateATargetGroupWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleJobTargetGroupsClient_CreateOrUpdate_createOrUpdateATargetGroupWithM
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteJobTargetGroup.json
+// Generated from example definition: 2025-02-01-preview/DeleteJobTargetGroup.json
 func ExampleJobTargetGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleJobTargetGroupsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetJobTargetGroup.json
+// Generated from example definition: 2025-02-01-preview/GetJobTargetGroup.json
 func ExampleJobTargetGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleJobTargetGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobTargetGroups.json
+// Generated from example definition: 2025-02-01-preview/ListJobTargetGroups.json
 func ExampleJobTargetGroupsClient_NewListByAgentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

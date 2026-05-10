@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedServerDnsAliasAcquire.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerDnsAliasAcquire.json
 func ExampleManagedServerDNSAliasesClient_BeginAcquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleManagedServerDNSAliasesClient_BeginAcquire() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedServerDnsAliasCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerDnsAliasCreateOrUpdate.json
 func ExampleManagedServerDNSAliasesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleManagedServerDNSAliasesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedServerDnsAliasDelete.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerDnsAliasDelete.json
 func ExampleManagedServerDNSAliasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleManagedServerDNSAliasesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedServerDnsAliasGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerDnsAliasGet.json
 func ExampleManagedServerDNSAliasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleManagedServerDNSAliasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedServerDnsAliasList.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerDnsAliasList.json
 func ExampleManagedServerDNSAliasesClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

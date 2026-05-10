@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2025-02-01-preview/CreateManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2025-02-01-preview/GetManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetListManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2025-02-01-preview/GetListManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_NewListByRestorableDroppedDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	}
 }
 
-// Generated from example definition: 2025-01-01/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2025-02-01-preview/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

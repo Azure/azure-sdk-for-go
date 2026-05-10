@@ -887,6 +887,29 @@ func PossibleDataMaskingStateValues() []DataMaskingState {
 	}
 }
 
+type DataSyncParticipantIdentityType string
+
+const (
+	// DataSyncParticipantIdentityTypeNone - None
+	DataSyncParticipantIdentityTypeNone DataSyncParticipantIdentityType = "None"
+	// DataSyncParticipantIdentityTypeSystemAssigned - SystemAssigned
+	DataSyncParticipantIdentityTypeSystemAssigned DataSyncParticipantIdentityType = "SystemAssigned"
+	// DataSyncParticipantIdentityTypeSystemAssignedUserAssigned - SystemAssignedUserAssigned
+	DataSyncParticipantIdentityTypeSystemAssignedUserAssigned DataSyncParticipantIdentityType = "SystemAssignedUserAssigned"
+	// DataSyncParticipantIdentityTypeUserAssigned - UserAssigned
+	DataSyncParticipantIdentityTypeUserAssigned DataSyncParticipantIdentityType = "UserAssigned"
+)
+
+// PossibleDataSyncParticipantIdentityTypeValues returns the possible values for the DataSyncParticipantIdentityType const type.
+func PossibleDataSyncParticipantIdentityTypeValues() []DataSyncParticipantIdentityType {
+	return []DataSyncParticipantIdentityType{
+		DataSyncParticipantIdentityTypeNone,
+		DataSyncParticipantIdentityTypeSystemAssigned,
+		DataSyncParticipantIdentityTypeSystemAssignedUserAssigned,
+		DataSyncParticipantIdentityTypeUserAssigned,
+	}
+}
+
 type DataWarehouseUserActivityName string
 
 const (

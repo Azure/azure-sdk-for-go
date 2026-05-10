@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstancePrivateEndpointConnectionUpdate.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstancePrivateEndpointConnectionUpdate.json
 func ExampleManagedInstancePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleManagedInstancePrivateEndpointConnectionsClient_BeginCreateOrUpdate(
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstancePrivateEndpointConnectionDelete.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstancePrivateEndpointConnectionDelete.json
 func ExampleManagedInstancePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleManagedInstancePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstancePrivateEndpointConnectionGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstancePrivateEndpointConnectionGet.json
 func ExampleManagedInstancePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleManagedInstancePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstancePrivateEndpointConnectionList.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstancePrivateEndpointConnectionList.json
 func ExampleManagedInstancePrivateEndpointConnectionsClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

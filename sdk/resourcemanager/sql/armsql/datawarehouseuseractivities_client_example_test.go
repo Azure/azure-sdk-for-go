@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GetDataWarehouseUserActivities.json
+// Generated from example definition: 2025-02-01-preview/GetDataWarehouseUserActivities.json
 func ExampleDataWarehouseUserActivitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleDataWarehouseUserActivitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListDataWarehouseUserActivities.json
+// Generated from example definition: 2025-02-01-preview/ListDataWarehouseUserActivities.json
 func ExampleDataWarehouseUserActivitiesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

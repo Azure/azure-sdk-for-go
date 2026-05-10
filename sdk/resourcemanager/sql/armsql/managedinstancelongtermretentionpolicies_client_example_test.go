@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionPolicyCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionPolicyCreateOrUpdate.json
 func ExampleManagedInstanceLongTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleManagedInstanceLongTermRetentionPoliciesClient_BeginCreateOrUpdate()
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionPolicyDelete.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionPolicyDelete.json
 func ExampleManagedInstanceLongTermRetentionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleManagedInstanceLongTermRetentionPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionPolicyGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionPolicyGet.json
 func ExampleManagedInstanceLongTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleManagedInstanceLongTermRetentionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionPolicyListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionPolicyListByDatabase.json
 func ExampleManagedInstanceLongTermRetentionPoliciesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

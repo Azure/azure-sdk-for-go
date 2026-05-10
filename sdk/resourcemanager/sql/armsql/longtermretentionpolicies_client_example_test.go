@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/LongTermRetentionPolicyCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionPolicyCreateOrUpdate.json
 func ExampleLongTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleLongTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionPolicyGet.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionPolicyGet.json
 func ExampleLongTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleLongTermRetentionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/LongTermRetentionPolicyListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/LongTermRetentionPolicyListByDatabase.json
 func ExampleLongTermRetentionPoliciesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

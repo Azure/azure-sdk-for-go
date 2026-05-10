@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/OutboundFirewallRuleCreate.json
+// Generated from example definition: 2025-02-01-preview/OutboundFirewallRuleCreate.json
 func ExampleOutboundFirewallRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleOutboundFirewallRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/OutboundFirewallRuleDelete.json
+// Generated from example definition: 2025-02-01-preview/OutboundFirewallRuleDelete.json
 func ExampleOutboundFirewallRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleOutboundFirewallRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/OutboundFirewallRuleGet.json
+// Generated from example definition: 2025-02-01-preview/OutboundFirewallRuleGet.json
 func ExampleOutboundFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleOutboundFirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/OutboundFirewallRuleList.json
+// Generated from example definition: 2025-02-01-preview/OutboundFirewallRuleList.json
 func ExampleOutboundFirewallRulesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

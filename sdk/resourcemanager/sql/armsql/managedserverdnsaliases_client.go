@@ -42,7 +42,7 @@ func NewManagedServerDNSAliasesClient(subscriptionID string, credential azcore.T
 // BeginAcquire - Acquires managed server DNS alias from another managed server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientBeginAcquireOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginAcquire
@@ -67,7 +67,7 @@ func (client *ManagedServerDNSAliasesClient) BeginAcquire(ctx context.Context, r
 // Acquire - Acquires managed server DNS alias from another managed server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasAcquisition, options *ManagedServerDNSAliasesClientBeginAcquireOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedServerDNSAliasesClient.BeginAcquire"
@@ -113,7 +113,7 @@ func (client *ManagedServerDNSAliasesClient) acquireCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -126,7 +126,7 @@ func (client *ManagedServerDNSAliasesClient) acquireCreateRequest(ctx context.Co
 // BeginCreateOrUpdate - Creates a managed server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginCreateOrUpdate
@@ -151,7 +151,7 @@ func (client *ManagedServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Creates a managed server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasCreation, options *ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedServerDNSAliasesClient.BeginCreateOrUpdate"
@@ -197,7 +197,7 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -210,7 +210,7 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdateCreateRequest(ctx con
 // BeginDelete - Deletes the managed server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientBeginDeleteOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginDelete
@@ -235,7 +235,7 @@ func (client *ManagedServerDNSAliasesClient) BeginDelete(ctx context.Context, re
 // Delete - Deletes the managed server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, options *ManagedServerDNSAliasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedServerDNSAliasesClient.BeginDelete"
@@ -281,7 +281,7 @@ func (client *ManagedServerDNSAliasesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -289,7 +289,7 @@ func (client *ManagedServerDNSAliasesClient) deleteCreateRequest(ctx context.Con
 // Get - Gets a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientGetOptions contains the optional parameters for the ManagedServerDNSAliasesClient.Get
@@ -340,7 +340,7 @@ func (client *ManagedServerDNSAliasesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -357,7 +357,7 @@ func (client *ManagedServerDNSAliasesClient) getHandleResponse(resp *http.Respon
 
 // NewListByManagedInstancePager - Gets a list of managed server DNS aliases for a managed server.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientListByManagedInstanceOptions contains the optional parameters for the ManagedServerDNSAliasesClient.NewListByManagedInstancePager
@@ -405,7 +405,7 @@ func (client *ManagedServerDNSAliasesClient) listByManagedInstanceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

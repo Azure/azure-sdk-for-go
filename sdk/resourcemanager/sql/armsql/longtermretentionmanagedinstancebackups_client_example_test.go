@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionBackupDelete.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceG
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionBackupGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupGet.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedManagedInstanceLongTermRetentionBackupGet.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupGet.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_GetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_GetByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionBackupListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByDatabase.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionBackupListByInstance.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByInstance.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionBackupListByLocation.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByLocation.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager_getAllLongTermRetentionBackupsUnderTheLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceLongTermRetentionBackupListByLocationMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByLocationMax.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager_getAllLongTermRetentionBackupsUnderTheLocationWithMaximalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByDatabase.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,7 +476,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -546,7 +546,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupLocationPager_getAllLongTermRetentionBackupsUnderTheLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -616,7 +616,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-01-01/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocationMax.json
+// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocationMax.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupLocationPager_getAllLongTermRetentionBackupsUnderTheLocationWithMaximalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

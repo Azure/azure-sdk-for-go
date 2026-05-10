@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/SubscriptionUsageGet.json
+// Generated from example definition: 2025-02-01-preview/SubscriptionUsageGet.json
 func ExampleSubscriptionUsagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleSubscriptionUsagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SubscriptionUsageListByLocation.json
+// Generated from example definition: 2025-02-01-preview/SubscriptionUsageListByLocation.json
 func ExampleSubscriptionUsagesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

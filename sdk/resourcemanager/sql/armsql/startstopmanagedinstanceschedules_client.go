@@ -42,7 +42,7 @@ func NewStartStopManagedInstanceSchedulesClient(subscriptionID string, credentia
 // CreateOrUpdate - Creates or updates the managed instance's Start/Stop schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - startStopScheduleName - Name of the managed instance Start/Stop schedule.
@@ -95,7 +95,7 @@ func (client *StartStopManagedInstanceSchedulesClient) createOrUpdateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -117,7 +117,7 @@ func (client *StartStopManagedInstanceSchedulesClient) createOrUpdateHandleRespo
 // Delete - Deletes the managed instance's Start/Stop schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - startStopScheduleName - Name of the managed instance Start/Stop schedule.
@@ -168,7 +168,7 @@ func (client *StartStopManagedInstanceSchedulesClient) deleteCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -176,7 +176,7 @@ func (client *StartStopManagedInstanceSchedulesClient) deleteCreateRequest(ctx c
 // Get - Gets the managed instance's Start/Stop schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - startStopScheduleName - Name of the managed instance Start/Stop schedule.
@@ -228,7 +228,7 @@ func (client *StartStopManagedInstanceSchedulesClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *StartStopManagedInstanceSchedulesClient) getHandleResponse(resp *h
 
 // NewListByInstancePager - Lists the managed instance's Start/Stop schedules.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - StartStopManagedInstanceSchedulesClientListByInstanceOptions contains the optional parameters for the StartStopManagedInstanceSchedulesClient.NewListByInstancePager
@@ -293,7 +293,7 @@ func (client *StartStopManagedInstanceSchedulesClient) listByInstanceCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-01-01/CancelJobExecution.json
+// Generated from example definition: 2025-02-01-preview/CancelJobExecution.json
 func ExampleJobExecutionsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleJobExecutionsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateJobExecution.json
+// Generated from example definition: 2025-02-01-preview/CreateJobExecution.json
 func ExampleJobExecutionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleJobExecutionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobExecution.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobExecution.json
 func ExampleJobExecutionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleJobExecutionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetJobExecution.json
+// Generated from example definition: 2025-02-01-preview/GetJobExecution.json
 func ExampleJobExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleJobExecutionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobExecutionsByAgent.json
+// Generated from example definition: 2025-02-01-preview/ListJobExecutionsByAgent.json
 func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAg
 	}
 }
 
-// Generated from example definition: 2025-01-01/ListJobExecutionsByAgentWithFilter.json
+// Generated from example definition: 2025-02-01-preview/ListJobExecutionsByAgentWithFilter.json
 func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAgentWithFiltering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAg
 	}
 }
 
-// Generated from example definition: 2025-01-01/ListJobExecutionsByJob.json
+// Generated from example definition: 2025-02-01-preview/ListJobExecutionsByJob.json
 func ExampleJobExecutionsClient_NewListByJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

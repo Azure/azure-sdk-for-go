@@ -43,7 +43,7 @@ func NewManagedDatabaseMoveOperationsClient(subscriptionID string, credential az
 // Get - Gets a managed database move operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - operationID - The ID of the managed database move operation.
@@ -95,7 +95,7 @@ func (client *ManagedDatabaseMoveOperationsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *ManagedDatabaseMoveOperationsClient) getHandleResponse(resp *http.
 
 // NewListByLocationPager - Lists managed database move operations.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - options - ManagedDatabaseMoveOperationsClientListByLocationOptions contains the optional parameters for the ManagedDatabaseMoveOperationsClient.NewListByLocationPager
@@ -163,7 +163,7 @@ func (client *ManagedDatabaseMoveOperationsClient) listByLocationCreateRequest(c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	if options != nil && options.OnlyLatestPerDatabase != nil {
 		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
 	}

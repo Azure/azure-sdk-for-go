@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerConnectionPoliciesUpdate.json
+// Generated from example definition: 2025-02-01-preview/ServerConnectionPoliciesUpdate.json
 func ExampleServerConnectionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleServerConnectionPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerConnectionPoliciesGet.json
+// Generated from example definition: 2025-02-01-preview/ServerConnectionPoliciesGet.json
 func ExampleServerConnectionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleServerConnectionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerConnectionPoliciesList.json
+// Generated from example definition: 2025-02-01-preview/ServerConnectionPoliciesList.json
 func ExampleServerConnectionPoliciesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

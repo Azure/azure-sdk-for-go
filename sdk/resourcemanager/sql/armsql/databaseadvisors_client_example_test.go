@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseAdvisorGet.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAdvisorGet.json
 func ExampleDatabaseAdvisorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleDatabaseAdvisorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseAdvisorList.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAdvisorList.json
 func ExampleDatabaseAdvisorsClient_ListByDatabase_listOfDatabaseAdvisors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleDatabaseAdvisorsClient_ListByDatabase_listOfDatabaseAdvisors() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseRecommendedActionListExpand.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRecommendedActionListExpand.json
 func ExampleDatabaseAdvisorsClient_ListByDatabase_listOfDatabaseRecommendedActionsForAllAdvisors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -797,7 +797,7 @@ func ExampleDatabaseAdvisorsClient_ListByDatabase_listOfDatabaseRecommendedActio
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseAdvisorUpdate.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAdvisorUpdate.json
 func ExampleDatabaseAdvisorsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

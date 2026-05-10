@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/StartStopManagedInstanceScheduleCreateOrUpdateMax.json
+// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMax.json
 func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpdatesTheManagedInstanceSStartStopScheduleWithAllOptionalParametersSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpda
 	// }
 }
 
-// Generated from example definition: 2025-01-01/StartStopManagedInstanceScheduleCreateOrUpdateMin.json
+// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMin.json
 func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpdatesTheManagedInstanceSStartStopScheduleWithNoOptionalParametersSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpda
 	// }
 }
 
-// Generated from example definition: 2025-01-01/StartStopManagedInstanceScheduleDelete.json
+// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleDelete.json
 func ExampleStartStopManagedInstanceSchedulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/StartStopManagedInstanceScheduleGet.json
+// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleGet.json
 func ExampleStartStopManagedInstanceSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/StartStopManagedInstanceScheduleList.json
+// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleList.json
 func ExampleStartStopManagedInstanceSchedulesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

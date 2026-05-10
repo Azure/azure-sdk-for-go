@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GeoBackupPoliciesCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/GeoBackupPoliciesCreateOrUpdate.json
 func ExampleGeoBackupPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleGeoBackupPoliciesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GeoBackupPoliciesGet.json
+// Generated from example definition: 2025-02-01-preview/GeoBackupPoliciesGet.json
 func ExampleGeoBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleGeoBackupPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GeoBackupPoliciesList.json
+// Generated from example definition: 2025-02-01-preview/GeoBackupPoliciesList.json
 func ExampleGeoBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

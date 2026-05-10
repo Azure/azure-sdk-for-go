@@ -42,7 +42,7 @@ func NewBackupShortTermRetentionPoliciesClient(subscriptionID string, credential
 // BeginCreateOrUpdate - Updates a database's short term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -70,7 +70,7 @@ func (client *BackupShortTermRetentionPoliciesClient) BeginCreateOrUpdate(ctx co
 // CreateOrUpdate - Updates a database's short term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *BackupShortTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName ShortTermRetentionPolicyName, parameters BackupShortTermRetentionPolicy, options *BackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupShortTermRetentionPoliciesClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *BackupShortTermRetentionPoliciesClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *BackupShortTermRetentionPoliciesClient) createOrUpdateCreateReques
 // Get - Gets a database's short term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -190,7 +190,7 @@ func (client *BackupShortTermRetentionPoliciesClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -207,7 +207,7 @@ func (client *BackupShortTermRetentionPoliciesClient) getHandleResponse(resp *ht
 
 // NewListByDatabasePager - Gets a database's short term retention policy.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -260,7 +260,7 @@ func (client *BackupShortTermRetentionPoliciesClient) listByDatabaseCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *BackupShortTermRetentionPoliciesClient) listByDatabaseHandleRespon
 // BeginUpdate - Updates a database's short term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -306,7 +306,7 @@ func (client *BackupShortTermRetentionPoliciesClient) BeginUpdate(ctx context.Co
 // Update - Updates a database's short term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *BackupShortTermRetentionPoliciesClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName ShortTermRetentionPolicyName, parameters BackupShortTermRetentionPolicy, options *BackupShortTermRetentionPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupShortTermRetentionPoliciesClient.BeginUpdate"
@@ -356,7 +356,7 @@ func (client *BackupShortTermRetentionPoliciesClient) updateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

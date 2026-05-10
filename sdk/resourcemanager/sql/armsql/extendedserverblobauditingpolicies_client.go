@@ -42,7 +42,7 @@ func NewExtendedServerBlobAuditingPoliciesClient(subscriptionID string, credenti
 // BeginCreateOrUpdate - Creates or updates an extended server's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Properties of extended blob auditing policy
@@ -68,7 +68,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx 
 // CreateOrUpdate - Creates or updates an extended server's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtendedServerBlobAuditingPoliciesClient.BeginCreateOrUpdate"
@@ -111,7 +111,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -124,7 +124,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateCreateRequ
 // Get - Gets an extended server's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ExtendedServerBlobAuditingPoliciesClientGetOptions contains the optional parameters for the ExtendedServerBlobAuditingPoliciesClient.Get
@@ -172,7 +172,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) getHandleResponse(resp *
 
 // NewListByServerPager - Lists extended auditing settings of a server.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ExtendedServerBlobAuditingPoliciesClientListByServerOptions contains the optional parameters for the ExtendedServerBlobAuditingPoliciesClient.NewListByServerPager
@@ -237,7 +237,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) listByServerCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

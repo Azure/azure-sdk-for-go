@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/InstanceFailoverGroupCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/InstanceFailoverGroupCreateOrUpdate.json
 func ExampleInstanceFailoverGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleInstanceFailoverGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/InstanceFailoverGroupDelete.json
+// Generated from example definition: 2025-02-01-preview/InstanceFailoverGroupDelete.json
 func ExampleInstanceFailoverGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleInstanceFailoverGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/InstanceFailoverGroupFailover.json
+// Generated from example definition: 2025-02-01-preview/InstanceFailoverGroupFailover.json
 func ExampleInstanceFailoverGroupsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleInstanceFailoverGroupsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/InstanceFailoverGroupForceFailoverAllowDataLoss.json
+// Generated from example definition: 2025-02-01-preview/InstanceFailoverGroupForceFailoverAllowDataLoss.json
 func ExampleInstanceFailoverGroupsClient_BeginForceFailoverAllowDataLoss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleInstanceFailoverGroupsClient_BeginForceFailoverAllowDataLoss() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/InstanceFailoverGroupGet.json
+// Generated from example definition: 2025-02-01-preview/InstanceFailoverGroupGet.json
 func ExampleInstanceFailoverGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleInstanceFailoverGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/InstanceFailoverGroupList.json
+// Generated from example definition: 2025-02-01-preview/InstanceFailoverGroupList.json
 func ExampleInstanceFailoverGroupsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

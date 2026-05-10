@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GetJobVersion.json
+// Generated from example definition: 2025-02-01-preview/GetJobVersion.json
 func ExampleJobVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleJobVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobVersions.json
+// Generated from example definition: 2025-02-01-preview/ListJobVersions.json
 func ExampleJobVersionsClient_NewListByJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerTrustGroupCreate.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustGroupCreate.json
 func ExampleServerTrustGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleServerTrustGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerTrustGroupDelete.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustGroupDelete.json
 func ExampleServerTrustGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleServerTrustGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerTrustGroupGet.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustGroupGet.json
 func ExampleServerTrustGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleServerTrustGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerTrustGroupListByManagedInstance.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustGroupListByManagedInstance.json
 func ExampleServerTrustGroupsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleServerTrustGroupsClient_NewListByInstancePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ServerTrustGroupList.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustGroupList.json
 func ExampleServerTrustGroupsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

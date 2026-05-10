@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GetDatabaseUsages.json
+// Generated from example definition: 2025-02-01-preview/GetDatabaseUsages.json
 func ExampleDatabaseUsagesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

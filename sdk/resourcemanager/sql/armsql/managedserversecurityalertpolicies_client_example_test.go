@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedServerSecurityAlertCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertCreateMax.json
 func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAManagedServerSThreatDetectionPolicyWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateA
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedServerSecurityAlertCreateMin.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertCreateMin.json
 func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAManagedServerSThreatDetectionPolicyWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateA
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedServerSecurityAlertGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertGet.json
 func ExampleManagedServerSecurityAlertPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedServerSecurityAlertListByInstance.json
+// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertListByInstance.json
 func ExampleManagedServerSecurityAlertPoliciesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

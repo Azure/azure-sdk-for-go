@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CheckNameAvailabilityServerAlreadyExists.json
+// Generated from example definition: 2025-02-01-preview/CheckNameAvailabilityServerAlreadyExists.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyEx
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CheckNameAvailabilityServerAvailable.json
+// Generated from example definition: 2025-02-01-preview/CheckNameAvailabilityServerAvailable.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailab
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CheckNameAvailabilityServerInvalid.json
+// Generated from example definition: 2025-02-01-preview/CheckNameAvailabilityServerInvalid.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerCreate.json
+// Generated from example definition: 2025-02-01-preview/ServerCreate.json
 func ExampleServersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleServersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDelete.json
+// Generated from example definition: 2025-02-01-preview/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleServersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerGet.json
+// Generated from example definition: 2025-02-01-preview/ServerGet.json
 func ExampleServersClient_Get_getServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleServersClient_Get_getServer() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerGetWithExpandEqualsAdministrators.json
+// Generated from example definition: 2025-02-01-preview/ServerGetWithExpandEqualsAdministrators.json
 func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory()
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ImportNewDatabase.json
+// Generated from example definition: 2025-02-01-preview/ImportNewDatabase.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ImportNewDatabaseWithManagedIdentity.json
+// Generated from example definition: 2025-02-01-preview/ImportNewDatabaseWithManagedIdentity.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingManagedIdentityForTheSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingManagedI
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ImportNewDatabaseWithNetworkIsolation.json
+// Generated from example definition: 2025-02-01-preview/ImportNewDatabaseWithNetworkIsolation.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateLinkForTheSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +490,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateL
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerList.json
+// Generated from example definition: 2025-02-01-preview/ServerList.json
 func ExampleServersClient_NewListPager_listServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -589,7 +589,7 @@ func ExampleServersClient_NewListPager_listServers() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ServerListWithExpandEqualsAdministrators.json
+// Generated from example definition: 2025-02-01-preview/ServerListWithExpandEqualsAdministrators.json
 func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -704,7 +704,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActive
 	}
 }
 
-// Generated from example definition: 2025-01-01/ServerListByResourceGroup.json
+// Generated from example definition: 2025-02-01-preview/ServerListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -805,7 +805,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-01-01/ServerListByResourceGroupWithExpandEqualsAdministrators.json
+// Generated from example definition: 2025-02-01-preview/ServerListByResourceGroupWithExpandEqualsAdministrators.json
 func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroupWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -920,7 +920,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-01-01/RefreshExternalGovernanceStatus.json
+// Generated from example definition: 2025-02-01-preview/RefreshExternalGovernanceStatus.json
 func ExampleServersClient_BeginRefreshStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -958,7 +958,7 @@ func ExampleServersClient_BeginRefreshStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerUpdate.json
+// Generated from example definition: 2025-02-01-preview/ServerUpdate.json
 func ExampleServersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

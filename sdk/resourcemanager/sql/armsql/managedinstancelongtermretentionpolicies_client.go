@@ -42,7 +42,7 @@ func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string, cr
 // BeginCreateOrUpdate - Sets a managed database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -70,7 +70,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) BeginCreateOrUpdat
 // CreateOrUpdate - Sets a managed database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, parameters ManagedInstanceLongTermRetentionPolicy, options *ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceLongTermRetentionPoliciesClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdateCrea
 // BeginDelete - Deletes a managed database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -160,7 +160,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) BeginDelete(ctx co
 // Delete - Deletes a managed database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, options *ManagedInstanceLongTermRetentionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceLongTermRetentionPoliciesClient.BeginDelete"
@@ -210,7 +210,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +219,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) deleteCreateReques
 // Get - Gets a managed database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -276,7 +276,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -293,7 +293,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) getHandleResponse(
 
 // NewListByDatabasePager - Gets a database's long term retention policy.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -346,7 +346,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) listByDatabaseCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

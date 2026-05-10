@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseMoveOperationResultGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseMoveOperationResultGet.json
 func ExampleManagedDatabaseMoveOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleManagedDatabaseMoveOperationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseMoveOperationResultList.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseMoveOperationResultList.json
 func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsAllManagedDatabaseMoveOperationsForSpecifiedSubscriptionResourceGroupAndLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsAllMa
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseMoveOperationResultListLastOperations.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseMoveOperationResultListLastOperations.json
 func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLatestManagedDatabaseMoveOperationsForEachDatabaseUnderSpecifiedSubscriptionResourceGroupAndLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLa
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseMoveOperationResultListMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseMoveOperationResultListMax.json
 func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLatestManagedDatabaseMoveOperationsForEachDatabaseUnderSpecifiedSubscriptionResourceGroupAndLocationFilteredByOperationType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

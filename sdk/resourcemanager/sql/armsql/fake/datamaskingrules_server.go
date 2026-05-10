@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // DataMaskingRulesServer is a fake server for instances of the armsql.DataMaskingRulesClient type.
@@ -155,6 +156,7 @@ func (d *DataMaskingRulesServerTransport) dispatchNewListByDatabasePager(req *ht
 		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -177,7 +179,23 @@ func (d *DataMaskingRulesServerTransport) dispatchNewListByDatabasePager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		resp := d.srv.NewListByDatabasePager(resourceGroupNameParam, serverNameParam, databaseNameParam, dataMaskingPolicyNameParam, nil)
+		skipParam, err := parseOptional(qp.Get("$skip"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armsql.DataMaskingRulesClientListByDatabaseOptions
+		if skipParam != nil {
+			options = &armsql.DataMaskingRulesClientListByDatabaseOptions{
+				Skip: skipParam,
+			}
+		}
+		resp := d.srv.NewListByDatabasePager(resourceGroupNameParam, serverNameParam, databaseNameParam, dataMaskingPolicyNameParam, options)
 		newListByDatabasePager = &resp
 		d.newListByDatabasePager.add(req, newListByDatabasePager)
 		server.PagerResponderInjectNextLinks(newListByDatabasePager, req, func(page *armsql.DataMaskingRulesClientListByDatabaseResponse, createLink func() string) {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateWorkloadClassifierMax.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateWorkloadClassifierMax.json
 func ExampleWorkloadClassifiersClient_BeginCreateOrUpdate_createAWorkloadGroupWithAllPropertiesSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleWorkloadClassifiersClient_BeginCreateOrUpdate_createAWorkloadGroupWi
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateWorkloadClassifierMin.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateWorkloadClassifierMin.json
 func ExampleWorkloadClassifiersClient_BeginCreateOrUpdate_createAWorkloadGroupWithTheRequiredPropertiesSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleWorkloadClassifiersClient_BeginCreateOrUpdate_createAWorkloadGroupWi
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteWorkloadClassifier.json
+// Generated from example definition: 2025-02-01-preview/DeleteWorkloadClassifier.json
 func ExampleWorkloadClassifiersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleWorkloadClassifiersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetWorkloadClassifier.json
+// Generated from example definition: 2025-02-01-preview/GetWorkloadClassifier.json
 func ExampleWorkloadClassifiersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleWorkloadClassifiersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetWorkloadClassifierList.json
+// Generated from example definition: 2025-02-01-preview/GetWorkloadClassifierList.json
 func ExampleWorkloadClassifiersClient_NewListByWorkloadGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

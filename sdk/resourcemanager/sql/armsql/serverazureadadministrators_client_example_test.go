@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/AdministratorCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/AdministratorCreateOrUpdate.json
 func ExampleServerAzureADAdministratorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleServerAzureADAdministratorsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AdministratorDelete.json
+// Generated from example definition: 2025-02-01-preview/AdministratorDelete.json
 func ExampleServerAzureADAdministratorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleServerAzureADAdministratorsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AdministratorGet.json
+// Generated from example definition: 2025-02-01-preview/AdministratorGet.json
 func ExampleServerAzureADAdministratorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleServerAzureADAdministratorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AdministratorList.json
+// Generated from example definition: 2025-02-01-preview/AdministratorList.json
 func ExampleServerAzureADAdministratorsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

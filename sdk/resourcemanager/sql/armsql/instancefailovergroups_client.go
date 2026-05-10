@@ -42,7 +42,7 @@ func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - failoverGroupName - The name of the failover group.
@@ -69,7 +69,7 @@ func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstanceFailoverGroupsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Deletes a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - failoverGroupName - The name of the failover group.
@@ -154,7 +154,7 @@ func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, res
 // Delete - Deletes a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstanceFailoverGroupsClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Cont
 // BeginFailover - Fails over from the current primary managed instance to this managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - failoverGroupName - The name of the failover group.
@@ -234,7 +234,7 @@ func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, r
 // Failover - Fails over from the current primary managed instance to this managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstanceFailoverGroupsClient.BeginFailover"
@@ -280,7 +280,7 @@ func (client *InstanceFailoverGroupsClient) failoverCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *InstanceFailoverGroupsClient) failoverCreateRequest(ctx context.Co
 // might result in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - failoverGroupName - The name of the failover group.
@@ -317,7 +317,7 @@ func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx 
 // might result in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstanceFailoverGroupsClient.BeginForceFailoverAllowDataLoss"
@@ -363,7 +363,7 @@ func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -372,7 +372,7 @@ func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequ
 // Get - Gets a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - failoverGroupName - The name of the failover group.
@@ -424,7 +424,7 @@ func (client *InstanceFailoverGroupsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -441,7 +441,7 @@ func (client *InstanceFailoverGroupsClient) getHandleResponse(resp *http.Respons
 
 // NewListByLocationPager - Lists the failover groups in a location.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - locationName - The name of the region where the resource is located.
 //   - options - InstanceFailoverGroupsClientListByLocationOptions contains the optional parameters for the InstanceFailoverGroupsClient.NewListByLocationPager
@@ -489,7 +489,7 @@ func (client *InstanceFailoverGroupsClient) listByLocationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseAutomaticTuningGet.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAutomaticTuningGet.json
 func ExampleDatabaseAutomaticTuningClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleDatabaseAutomaticTuningClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseAutomaticTuningUpdateMax.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAutomaticTuningUpdateMax.json
 func ExampleDatabaseAutomaticTuningClient_Update_updatesDatabaseAutomaticTuningSettingsWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleDatabaseAutomaticTuningClient_Update_updatesDatabaseAutomaticTuningS
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseAutomaticTuningUpdateMin.json
+// Generated from example definition: 2025-02-01-preview/DatabaseAutomaticTuningUpdateMin.json
 func ExampleDatabaseAutomaticTuningClient_Update_updatesDatabaseAutomaticTuningSettingsWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerConfigurationOptionUpdate.json
+// Generated from example definition: 2025-02-01-preview/ServerConfigurationOptionUpdate.json
 func ExampleServerConfigurationOptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleServerConfigurationOptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerConfigurationOptionGet.json
+// Generated from example definition: 2025-02-01-preview/ServerConfigurationOptionGet.json
 func ExampleServerConfigurationOptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleServerConfigurationOptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerConfigurationOptionList.json
+// Generated from example definition: 2025-02-01-preview/ServerConfigurationOptionList.json
 func ExampleServerConfigurationOptionsClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

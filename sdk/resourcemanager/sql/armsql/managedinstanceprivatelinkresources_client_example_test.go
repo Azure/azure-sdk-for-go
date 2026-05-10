@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstancePrivateLinkResourcesGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstancePrivateLinkResourcesGet.json
 func ExampleManagedInstancePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleManagedInstancePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstancePrivateLinkResourcesList.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstancePrivateLinkResourcesList.json
 func ExampleManagedInstancePrivateLinkResourcesClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

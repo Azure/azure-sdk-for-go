@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerTrustCertificatesCreate.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustCertificatesCreate.json
 func ExampleServerTrustCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleServerTrustCertificatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerTrustCertificatesDelete.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustCertificatesDelete.json
 func ExampleServerTrustCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleServerTrustCertificatesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerTrustCertificatesGet.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustCertificatesGet.json
 func ExampleServerTrustCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleServerTrustCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerTrustCertificatesListByInstance.json
+// Generated from example definition: 2025-02-01-preview/ServerTrustCertificatesListByInstance.json
 func ExampleServerTrustCertificatesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateDatabaseExtensions.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateDatabaseExtensions.json
 func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_createOrUpdateDatabaseExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_createOrUpdateDatabaseE
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ExportDatabaseUsingDatabaseExtensions.json
+// Generated from example definition: 2025-02-01-preview/ExportDatabaseUsingDatabaseExtensions.json
 func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_exportDatabaseUsingDatabaseExtension() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_exportDatabaseUsingData
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ExportDatabaseUsingDatabaseExtensionsWithManagedIdentity.json
+// Generated from example definition: 2025-02-01-preview/ExportDatabaseUsingDatabaseExtensionsWithManagedIdentity.json
 func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_exportDatabaseUsingDatabaseExtensionWithManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_exportDatabaseUsingData
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ImportDatabaseUsingDatabaseExtensions.json
+// Generated from example definition: 2025-02-01-preview/ImportDatabaseUsingDatabaseExtensions.json
 func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_importDatabaseUsingDatabaseExtension() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate_importDatabaseUsingData
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetDatabaseExtensions.json
+// Generated from example definition: 2025-02-01-preview/GetDatabaseExtensions.json
 func ExampleDatabaseExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleDatabaseExtensionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListDatabaseExtensions.json
+// Generated from example definition: 2025-02-01-preview/ListDatabaseExtensions.json
 func ExampleDatabaseExtensionsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

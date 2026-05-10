@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/VirtualNetworkRulesCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/VirtualNetworkRulesCreateOrUpdate.json
 func ExampleVirtualNetworkRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleVirtualNetworkRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/VirtualNetworkRulesDelete.json
+// Generated from example definition: 2025-02-01-preview/VirtualNetworkRulesDelete.json
 func ExampleVirtualNetworkRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleVirtualNetworkRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/VirtualNetworkRulesGet.json
+// Generated from example definition: 2025-02-01-preview/VirtualNetworkRulesGet.json
 func ExampleVirtualNetworkRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleVirtualNetworkRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/VirtualNetworkRulesList.json
+// Generated from example definition: 2025-02-01-preview/VirtualNetworkRulesList.json
 func ExampleVirtualNetworkRulesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

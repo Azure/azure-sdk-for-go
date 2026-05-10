@@ -42,7 +42,7 @@ func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenC
 // Get - Gets a subscription usage metric.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - usageName - Name of usage metric to return.
 //   - options - SubscriptionUsagesClientGetOptions contains the optional parameters for the SubscriptionUsagesClient.Get method.
@@ -88,7 +88,7 @@ func (client *SubscriptionUsagesClient) getCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response) (
 
 // NewListByLocationPager - Gets all subscription usage metrics in a given location.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - options - SubscriptionUsagesClientListByLocationOptions contains the optional parameters for the SubscriptionUsagesClient.NewListByLocationPager
 //     method.
@@ -148,7 +148,7 @@ func (client *SubscriptionUsagesClient) listByLocationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

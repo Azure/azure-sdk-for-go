@@ -42,7 +42,7 @@ func NewRestorableDroppedManagedDatabasesClient(subscriptionID string, credentia
 // Get - Gets a restorable dropped managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - RestorableDroppedManagedDatabasesClientGetOptions contains the optional parameters for the RestorableDroppedManagedDatabasesClient.Get
@@ -93,7 +93,7 @@ func (client *RestorableDroppedManagedDatabasesClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *h
 
 // NewListByInstancePager - Gets a list of restorable dropped managed databases.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - RestorableDroppedManagedDatabasesClientListByInstanceOptions contains the optional parameters for the RestorableDroppedManagedDatabasesClient.NewListByInstancePager
@@ -158,7 +158,7 @@ func (client *RestorableDroppedManagedDatabasesClient) listByInstanceCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

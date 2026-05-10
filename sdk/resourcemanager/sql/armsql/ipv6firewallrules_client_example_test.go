@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/IPv6FirewallRuleCreate.json
+// Generated from example definition: 2025-02-01-preview/IPv6FirewallRuleCreate.json
 func ExampleIPv6FirewallRulesClient_CreateOrUpdate_createAnIPv6FirewallRuleMaxMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleIPv6FirewallRulesClient_CreateOrUpdate_createAnIPv6FirewallRuleMaxMi
 	// }
 }
 
-// Generated from example definition: 2025-01-01/IPv6FirewallRuleUpdate.json
+// Generated from example definition: 2025-02-01-preview/IPv6FirewallRuleUpdate.json
 func ExampleIPv6FirewallRulesClient_CreateOrUpdate_updateAnIPv6FirewallRuleMaxMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleIPv6FirewallRulesClient_CreateOrUpdate_updateAnIPv6FirewallRuleMaxMi
 	// }
 }
 
-// Generated from example definition: 2025-01-01/IPv6FirewallRuleDelete.json
+// Generated from example definition: 2025-02-01-preview/IPv6FirewallRuleDelete.json
 func ExampleIPv6FirewallRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleIPv6FirewallRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/IPv6FirewallRuleGet.json
+// Generated from example definition: 2025-02-01-preview/IPv6FirewallRuleGet.json
 func ExampleIPv6FirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleIPv6FirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/IPv6FirewallRuleList.json
+// Generated from example definition: 2025-02-01-preview/IPv6FirewallRuleList.json
 func ExampleIPv6FirewallRulesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerAdvisorGet.json
+// Generated from example definition: 2025-02-01-preview/ServerAdvisorGet.json
 func ExampleServerAdvisorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleServerAdvisorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerAdvisorList.json
+// Generated from example definition: 2025-02-01-preview/ServerAdvisorList.json
 func ExampleServerAdvisorsClient_ListByServer_listOfServerAdvisors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleServerAdvisorsClient_ListByServer_listOfServerAdvisors() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerRecommendedActionListExpand.json
+// Generated from example definition: 2025-02-01-preview/ServerRecommendedActionListExpand.json
 func ExampleServerAdvisorsClient_ListByServer_listOfServerRecommendedActionsForAllAdvisors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -793,7 +793,7 @@ func ExampleServerAdvisorsClient_ListByServer_listOfServerRecommendedActionsForA
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerAdvisorUpdate.json
+// Generated from example definition: 2025-02-01-preview/ServerAdvisorUpdate.json
 func ExampleServerAdvisorsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAzureADOnlyAuthCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAzureADOnlyAuthCreateOrUpdate.json
 func ExampleManagedInstanceAzureADOnlyAuthenticationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleManagedInstanceAzureADOnlyAuthenticationsClient_BeginCreateOrUpdate(
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAzureADOnlyAuthDelete.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAzureADOnlyAuthDelete.json
 func ExampleManagedInstanceAzureADOnlyAuthenticationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleManagedInstanceAzureADOnlyAuthenticationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAzureADOnlyAuthGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAzureADOnlyAuthGet.json
 func ExampleManagedInstanceAzureADOnlyAuthenticationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleManagedInstanceAzureADOnlyAuthenticationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAzureADOnlyAuthListByInstance.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAzureADOnlyAuthListByInstance.json
 func ExampleManagedInstanceAzureADOnlyAuthenticationsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

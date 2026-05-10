@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAdvancedThreatProtectionSettingsCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMax.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_updateAManagedInstanceSAdvancedThreatProtectionSettingsWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrU
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAdvancedThreatProtectionSettingsCreateMin.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMin.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_updateAManagedInstanceSAdvancedThreatProtectionSettingsWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrU
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAdvancedThreatProtectionSettingsGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsGet.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceAdvancedThreatProtectionSettingsListByInstance.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsListByInstance.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceTimeZoneGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceTimeZoneGet.json
 func ExampleTimeZonesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleTimeZonesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceTimeZoneListByLocation.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceTimeZoneListByLocation.json
 func ExampleTimeZonesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerDevOpsAuditCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ServerDevOpsAuditCreateMax.json
 func ExampleServerDevOpsAuditSettingsClient_BeginCreateOrUpdate_updateAServerSDevOpsAuditSettingsWithAllParams() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleServerDevOpsAuditSettingsClient_BeginCreateOrUpdate_updateAServerSDe
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDevOpsAuditCreateMin.json
+// Generated from example definition: 2025-02-01-preview/ServerDevOpsAuditCreateMin.json
 func ExampleServerDevOpsAuditSettingsClient_BeginCreateOrUpdate_updateAServerSDevOpsAuditSettingsWithMinimalInput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleServerDevOpsAuditSettingsClient_BeginCreateOrUpdate_updateAServerSDe
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDevOpsAuditGet.json
+// Generated from example definition: 2025-02-01-preview/ServerDevOpsAuditGet.json
 func ExampleServerDevOpsAuditSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleServerDevOpsAuditSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDevOpsAuditList.json
+// Generated from example definition: 2025-02-01-preview/ServerDevOpsAuditList.json
 func ExampleServerDevOpsAuditSettingsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

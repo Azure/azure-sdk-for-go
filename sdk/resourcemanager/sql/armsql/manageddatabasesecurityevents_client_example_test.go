@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseSecurityEventsGetMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseSecurityEventsGetMax.json
 func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager_getTheManagedDatabaseSSecurityEventsWithMaximalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager_getTheMan
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseSecurityEventsGetMin.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseSecurityEventsGetMin.json
 func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager_getTheManagedDatabaseSSecurityEventsWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

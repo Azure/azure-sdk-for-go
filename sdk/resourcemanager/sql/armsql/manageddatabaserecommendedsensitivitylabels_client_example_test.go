@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseSensitivityLabelsRecommendedUpdate.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseSensitivityLabelsRecommendedUpdate.json
 func ExampleManagedDatabaseRecommendedSensitivityLabelsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

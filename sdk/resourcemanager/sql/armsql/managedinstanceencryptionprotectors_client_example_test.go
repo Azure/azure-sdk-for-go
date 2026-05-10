@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceEncryptionProtectorCreateOrUpdateKeyVault.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceEncryptionProtectorCreateOrUpdateKeyVault.json
 func ExampleManagedInstanceEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionProtectorToKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleManagedInstanceEncryptionProtectorsClient_BeginCreateOrUpdate_update
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceEncryptionProtectorCreateOrUpdateServiceManaged.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceEncryptionProtectorCreateOrUpdateServiceManaged.json
 func ExampleManagedInstanceEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionProtectorToServiceManaged() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleManagedInstanceEncryptionProtectorsClient_BeginCreateOrUpdate_update
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceEncryptionProtectorGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceEncryptionProtectorGet.json
 func ExampleManagedInstanceEncryptionProtectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleManagedInstanceEncryptionProtectorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceEncryptionProtectorList.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceEncryptionProtectorList.json
 func ExampleManagedInstanceEncryptionProtectorsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleManagedInstanceEncryptionProtectorsClient_NewListByInstancePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceEncryptionProtectorRevalidate.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceEncryptionProtectorRevalidate.json
 func ExampleManagedInstanceEncryptionProtectorsClient_BeginRevalidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

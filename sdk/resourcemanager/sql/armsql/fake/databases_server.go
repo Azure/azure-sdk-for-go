@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // DatabasesServer is a fake server for instances of the armsql.DatabasesClient type.
@@ -555,11 +556,35 @@ func (d *DatabasesServerTransport) dispatchNewListByServerPager(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(qp.Get("$skip"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		orderbyParam := getOptional(qp.Get("$orderby"))
 		var options *armsql.DatabasesClientListByServerOptions
-		if skipTokenParam != nil {
+		if topParam != nil || skipParam != nil || filterParam != nil || orderbyParam != nil {
 			options = &armsql.DatabasesClientListByServerOptions{
-				SkipToken: skipTokenParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Filter:  filterParam,
+				Orderby: orderbyParam,
 			}
 		}
 		resp := d.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, options)

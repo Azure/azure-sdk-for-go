@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseRestorePointsPost.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsPost.json
 func ExampleRestorePointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleRestorePointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseRestorePointsDelete.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsDelete.json
 func ExampleRestorePointsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleRestorePointsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataWarehouseRestorePointsGet.json
+// Generated from example definition: 2025-02-01-preview/DataWarehouseRestorePointsGet.json
 func ExampleRestorePointsClient_Get_getsADatawarehouseDatabaseRestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleRestorePointsClient_Get_getsADatawarehouseDatabaseRestorePoint() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseRestorePointsGet.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsGet.json
 func ExampleRestorePointsClient_Get_getsADatabaseRestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleRestorePointsClient_Get_getsADatabaseRestorePoint() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DataWarehouseRestorePointsListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/DataWarehouseRestorePointsListByDatabase.json
 func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabaseRestorePoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 	}
 }
 
-// Generated from example definition: 2025-01-01/DatabaseRestorePointsListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsListByDatabase.json
 func ExampleRestorePointsClient_NewListByDatabasePager_listDatabaseRestorePoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

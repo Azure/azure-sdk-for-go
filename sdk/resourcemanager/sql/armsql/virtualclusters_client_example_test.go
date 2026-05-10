@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/VirtualClusterCreate.json
+// Generated from example definition: 2025-02-01-preview/VirtualClusterCreate.json
 func ExampleVirtualClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleVirtualClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/VirtualClusterDelete.json
+// Generated from example definition: 2025-02-01-preview/VirtualClusterDelete.json
 func ExampleVirtualClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleVirtualClustersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/VirtualClusterGet.json
+// Generated from example definition: 2025-02-01-preview/VirtualClusterGet.json
 func ExampleVirtualClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleVirtualClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/VirtualClusterList.json
+// Generated from example definition: 2025-02-01-preview/VirtualClusterList.json
 func ExampleVirtualClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleVirtualClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/VirtualClusterListByResourceGroup.json
+// Generated from example definition: 2025-02-01-preview/VirtualClusterListByResourceGroup.json
 func ExampleVirtualClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleVirtualClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/VirtualClusterUpdate.json
+// Generated from example definition: 2025-02-01-preview/VirtualClusterUpdate.json
 func ExampleVirtualClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,7 +309,7 @@ func ExampleVirtualClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/UpdateVirtualClusterDnsServers.json
+// Generated from example definition: 2025-02-01-preview/UpdateVirtualClusterDnsServers.json
 func ExampleVirtualClustersClient_BeginUpdateDNSServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CancelManagedInstanceOperation.json
+// Generated from example definition: 2025-02-01-preview/CancelManagedInstanceOperation.json
 func ExampleManagedInstanceOperationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleManagedInstanceOperationsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetManagedInstanceOperation.json
+// Generated from example definition: 2025-02-01-preview/GetManagedInstanceOperation.json
 func ExampleManagedInstanceOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleManagedInstanceOperationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListManagedInstanceOperations.json
+// Generated from example definition: 2025-02-01-preview/ListManagedInstanceOperations.json
 func ExampleManagedInstanceOperationsClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

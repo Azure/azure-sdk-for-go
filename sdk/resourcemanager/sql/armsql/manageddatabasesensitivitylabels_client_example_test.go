@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseColumnSensitivityLabelCreate.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseColumnSensitivityLabelCreate.json
 func ExampleManagedDatabaseSensitivityLabelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseColumnSensitivityLabelDelete.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseColumnSensitivityLabelDelete.json
 func ExampleManagedDatabaseSensitivityLabelsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
 func ExampleManagedDatabaseSensitivityLabelsClient_DisableRecommendation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_DisableRecommendation() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseRecommendedColumnSensitivityLabelEnable.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseRecommendedColumnSensitivityLabelEnable.json
 func ExampleManagedDatabaseSensitivityLabelsClient_EnableRecommendation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_EnableRecommendation() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseColumnSensitivityLabelGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseColumnSensitivityLabelGet.json
 func ExampleManagedDatabaseSensitivityLabelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseSensitivityLabelsListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseSensitivityLabelsListByDatabase.json
 func ExampleManagedDatabaseSensitivityLabelsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseSensitivityLabelsListByDatabaseCurrent.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseSensitivityLabelsListByDatabaseCurrent.json
 func ExampleManagedDatabaseSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_NewListCurrentByDatabasePager
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseSensitivityLabelsListByDatabaseRecommended.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseSensitivityLabelsListByDatabaseRecommended.json
 func ExampleManagedDatabaseSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +342,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_NewListRecommendedByDatabaseP
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseSensitivityLabelsCurrentUpdate.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseSensitivityLabelsCurrentUpdate.json
 func ExampleManagedDatabaseSensitivityLabelsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

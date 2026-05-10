@@ -44,7 +44,7 @@ func NewManagedInstanceAzureADOnlyAuthenticationsClient(subscriptionID string, c
 // only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - authenticationName - The name of server azure active directory only authentication.
@@ -72,7 +72,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginCreateOrUpda
 // only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, parameters ManagedInstanceAzureADOnlyAuthentication, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate"
@@ -118,7 +118,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdateCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -131,7 +131,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdateCre
 // BeginDelete - Deletes an existing server Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - authenticationName - The name of server azure active directory only authentication.
@@ -157,7 +157,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginDelete(ctx c
 // Delete - Deletes an existing server Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceAzureADOnlyAuthenticationsClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -211,7 +211,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteCreateReque
 // Get - Gets a specific Azure Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - authenticationName - The name of server azure active directory only authentication.
@@ -263,7 +263,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getHandleResponse
 
 // NewListByInstancePager - Gets a list of server Azure Active Directory only authentications.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions contains the optional parameters for the
@@ -328,7 +328,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) listByInstanceCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

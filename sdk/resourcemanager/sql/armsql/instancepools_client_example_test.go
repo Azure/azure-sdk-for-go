@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateInstancePoolMax.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateInstancePoolMax.json
 func ExampleInstancePoolsClient_BeginCreateOrUpdate_createAnInstancePoolWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleInstancePoolsClient_BeginCreateOrUpdate_createAnInstancePoolWithAllP
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateInstancePoolMin.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateInstancePoolMin.json
 func ExampleInstancePoolsClient_BeginCreateOrUpdate_createAnInstancePoolWithMinProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleInstancePoolsClient_BeginCreateOrUpdate_createAnInstancePoolWithMinP
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteInstancePool.json
+// Generated from example definition: 2025-02-01-preview/DeleteInstancePool.json
 func ExampleInstancePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleInstancePoolsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetInstancePool.json
+// Generated from example definition: 2025-02-01-preview/GetInstancePool.json
 func ExampleInstancePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleInstancePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListInstancePoolsBySubscriptionId.json
+// Generated from example definition: 2025-02-01-preview/ListInstancePoolsBySubscriptionId.json
 func ExampleInstancePoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleInstancePoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ListInstancePoolsByResourceGroup.json
+// Generated from example definition: 2025-02-01-preview/ListInstancePoolsByResourceGroup.json
 func ExampleInstancePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleInstancePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/PatchInstancePool.json
+// Generated from example definition: 2025-02-01-preview/PatchInstancePool.json
 func ExampleInstancePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

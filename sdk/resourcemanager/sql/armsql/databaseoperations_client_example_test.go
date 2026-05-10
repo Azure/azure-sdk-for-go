@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CancelDatabaseOperation.json
+// Generated from example definition: 2025-02-01-preview/CancelDatabaseOperation.json
 func ExampleDatabaseOperationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleDatabaseOperationsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListDatabaseOperations.json
+// Generated from example definition: 2025-02-01-preview/ListDatabaseOperations.json
 func ExampleDatabaseOperationsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -42,7 +42,7 @@ func NewReplicationLinksClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Updates the replication link type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -69,7 +69,7 @@ func (client *ReplicationLinksClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Updates the replication link type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ReplicationLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLink, options *ReplicationLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *ReplicationLinksClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -132,7 +132,7 @@ func (client *ReplicationLinksClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes the replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -159,7 +159,7 @@ func (client *ReplicationLinksClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes the replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ReplicationLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginDelete"
@@ -209,7 +209,7 @@ func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -217,7 +217,7 @@ func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, r
 // BeginFailover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -244,7 +244,7 @@ func (client *ReplicationLinksClient) BeginFailover(ctx context.Context, resourc
 // Failover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ReplicationLinksClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginFailover"
@@ -294,7 +294,7 @@ func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +303,7 @@ func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context,
 // BeginFailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -330,7 +330,7 @@ func (client *ReplicationLinksClient) BeginFailoverAllowDataLoss(ctx context.Con
 // FailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ReplicationLinksClient) failoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginFailoverAllowDataLoss"
@@ -380,7 +380,7 @@ func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -389,7 +389,7 @@ func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx con
 // Get - Gets a replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -445,7 +445,7 @@ func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -462,7 +462,7 @@ func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (Re
 
 // NewListByDatabasePager - Gets a list of replication links on database.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -515,7 +515,7 @@ func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -532,7 +532,7 @@ func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *http.Re
 
 // NewListByServerPager - Gets a list of replication links.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ReplicationLinksClientListByServerOptions contains the optional parameters for the ReplicationLinksClient.NewListByServerPager
@@ -580,7 +580,7 @@ func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -598,7 +598,7 @@ func (client *ReplicationLinksClient) listByServerHandleResponse(resp *http.Resp
 // BeginUpdate - Updates the replication link type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -625,7 +625,7 @@ func (client *ReplicationLinksClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates the replication link type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ReplicationLinksClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLinkUpdate, options *ReplicationLinksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginUpdate"
@@ -675,7 +675,7 @@ func (client *ReplicationLinksClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

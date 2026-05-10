@@ -467,6 +467,27 @@ type DataMaskingRuleProperties struct {
 	ID *string
 }
 
+// DataSyncParticipantIdentity - Azure Active Directory identity configuration for a resource.
+type DataSyncParticipantIdentity struct {
+	// REQUIRED; The Datasync identity type
+	Type *DataSyncParticipantIdentityType
+
+	// The DataSync participant identity tenant id
+	TenantID *string
+
+	// The resource ids of the user assigned identities to use
+	UserAssignedIdentities map[string]*DataSyncParticipantUserAssignedIdentity
+}
+
+// DataSyncParticipantUserAssignedIdentity - Azure Active Directory identity configuration for a resource.
+type DataSyncParticipantUserAssignedIdentity struct {
+	// READ-ONLY; The Azure Active Directory client id.
+	ClientID *string
+
+	// READ-ONLY; The Azure Active Directory principal id.
+	PrincipalID *string
+}
+
 // DataWarehouseUserActivities - User activities of a data warehouse
 type DataWarehouseUserActivities struct {
 	// Resource properties.
@@ -1129,6 +1150,9 @@ type DatabaseProperties struct {
 	// READ-ONLY; The date when database was paused by user configuration or action(ISO8601 format). Null if the database is ready.
 	PausedDate *time.Time
 
+	// READ-ONLY; Specifies the provisioning state for this resource
+	ProvisioningState *string
+
 	// READ-ONLY; The requested service level objective name of the database.
 	RequestedServiceObjectiveName *string
 
@@ -1530,6 +1554,9 @@ type DatabaseUpdateProperties struct {
 
 	// READ-ONLY; The date when database was paused by user configuration or action(ISO8601 format). Null if the database is ready.
 	PausedDate *time.Time
+
+	// READ-ONLY; Specifies the provisioning state for this resource
+	ProvisioningState *string
 
 	// READ-ONLY; The requested service level objective name of the database.
 	RequestedServiceObjectiveName *string
@@ -2180,6 +2207,9 @@ type ElasticPoolProperties struct {
 	// READ-ONLY; The creation date of the elastic pool (ISO8601 format).
 	CreationDate *time.Time
 
+	// READ-ONLY; The name and tier of the current SKU.
+	CurrentSKU *SKU
+
 	// READ-ONLY; The state of the elastic pool.
 	State *ElasticPoolState
 }
@@ -2230,6 +2260,9 @@ type ElasticPoolUpdateProperties struct {
 	// Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across
 	// multiple availability zones.
 	ZoneRedundant *bool
+
+	// READ-ONLY; The name and tier of the current SKU.
+	CurrentSKU *SKU
 }
 
 // EncryptionProtector - The server encryption protector.
@@ -4794,6 +4827,9 @@ type ManagedInstanceDtcProperties struct {
 
 	// External dns suffix search list of managed instance DTC.
 	ExternalDNSSuffixSearchList []*string
+
+	// Status of FQDN of managed instance DTC. Toggling this setting might trigger a restart of the managed instance.
+	FqdnEnabled *bool
 
 	// Security settings of managed instance DTC.
 	SecuritySettings *ManagedInstanceDtcSecuritySettings
@@ -8523,6 +8559,9 @@ type SyncFullSchemaTableColumn struct {
 
 // SyncGroup - An Azure SQL Database sync group.
 type SyncGroup struct {
+	// Sync group authentication information.
+	Identity *DataSyncParticipantIdentity
+
 	// Resource properties.
 	Properties *SyncGroupProperties
 
@@ -8652,6 +8691,9 @@ type SyncGroupSchemaTableColumn struct {
 
 // SyncMember - An Azure SQL Database sync member.
 type SyncMember struct {
+	// Sync member authentication information.
+	Identity *DataSyncParticipantIdentity
+
 	// Resource properties.
 	Properties *SyncMemberProperties
 

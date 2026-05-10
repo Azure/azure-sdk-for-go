@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CancelElasticPoolOperation.json
+// Generated from example definition: 2025-02-01-preview/CancelElasticPoolOperation.json
 func ExampleElasticPoolOperationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleElasticPoolOperationsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListElasticPoolOperations.json
+// Generated from example definition: 2025-02-01-preview/ListElasticPoolOperations.json
 func ExampleElasticPoolOperationsClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

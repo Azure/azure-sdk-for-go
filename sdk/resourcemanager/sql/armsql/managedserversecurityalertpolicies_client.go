@@ -42,7 +42,7 @@ func NewManagedServerSecurityAlertPoliciesClient(subscriptionID string, credenti
 // BeginCreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - securityAlertPolicyName - The name of the security alert policy.
@@ -69,7 +69,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx 
 // CreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedServerSecurityAlertPoliciesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequ
 // Get - Get a managed server's threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - securityAlertPolicyName - The name of the security alert policy.
@@ -180,7 +180,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) getHandleResponse(resp *
 
 // NewListByInstancePager - Get the managed server's threat detection policies.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerSecurityAlertPoliciesClientListByInstanceOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.NewListByInstancePager
@@ -245,7 +245,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

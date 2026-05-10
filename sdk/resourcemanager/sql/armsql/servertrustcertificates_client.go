@@ -42,7 +42,7 @@ func NewServerTrustCertificatesClient(subscriptionID string, credential azcore.T
 // BeginCreateOrUpdate - Uploads a server trust certificate from SQL Server to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - certificateName - Name of of the certificate to get.
@@ -69,7 +69,7 @@ func (client *ServerTrustCertificatesClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Uploads a server trust certificate from SQL Server to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ServerTrustCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, parameters ServerTrustCertificate, options *ServerTrustCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerTrustCertificatesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *ServerTrustCertificatesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *ServerTrustCertificatesClient) createOrUpdateCreateRequest(ctx con
 // BeginDelete - Deletes a server trust certificate that was uploaded from SQL Server to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - certificateName - Name of of the certificate to get.
@@ -154,7 +154,7 @@ func (client *ServerTrustCertificatesClient) BeginDelete(ctx context.Context, re
 // Delete - Deletes a server trust certificate that was uploaded from SQL Server to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ServerTrustCertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, certificateName string, options *ServerTrustCertificatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerTrustCertificatesClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *ServerTrustCertificatesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *ServerTrustCertificatesClient) deleteCreateRequest(ctx context.Con
 // Get - Gets a server trust certificate that was uploaded from SQL Server to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - certificateName - Name of of the certificate to get.
@@ -260,7 +260,7 @@ func (client *ServerTrustCertificatesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *ServerTrustCertificatesClient) getHandleResponse(resp *http.Respon
 // NewListByInstancePager - Gets a list of the server trust certificates used to secure communication between SQL Server and
 // the specified SQL Managed Instance
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ServerTrustCertificatesClientListByInstanceOptions contains the optional parameters for the ServerTrustCertificatesClient.NewListByInstancePager
@@ -326,7 +326,7 @@ func (client *ServerTrustCertificatesClient) listByInstanceCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

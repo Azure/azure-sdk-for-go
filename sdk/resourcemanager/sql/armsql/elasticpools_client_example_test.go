@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateElasticPoolWithAvailabilityZone.json
+// Generated from example definition: 2025-02-01-preview/CreateElasticPoolWithAvailabilityZone.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWithAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolCreateOrUpdateMax.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateMax.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithAllParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolCreateOrUpdateMin.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateMin.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolCreateOrUpdateServerlessProperties.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateServerlessProperties.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWithServerlessProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithMaintenanceConfigurationParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolCreateWithDefaultPreferredEnclaveType.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateWithDefaultPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolCreateWithVBSPreferredEnclaveType.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateWithVBSPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsVbs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +417,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-01-01/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
+// Generated from example definition: 2025-02-01-preview/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElasticPoolWithHighAvailabilityReplicaCountParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElast
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolDelete.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolDelete.json
 func ExampleElasticPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -503,7 +503,7 @@ func ExampleElasticPoolsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverElasticPool.json
+// Generated from example definition: 2025-02-01-preview/FailoverElasticPool.json
 func ExampleElasticPoolsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,7 +529,7 @@ func ExampleElasticPoolsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolGet.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolGet.json
 func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -574,7 +574,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolGetWithPreferredEnclaveType.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolGetWithPreferredEnclaveType.json
 func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +623,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParam
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetElasticPoolWithAvailabilityZone.json
+// Generated from example definition: 2025-02-01-preview/GetElasticPoolWithAvailabilityZone.json
 func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -669,7 +669,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetElasticPoolWithServerlessProperties.json
+// Generated from example definition: 2025-02-01-preview/GetElasticPoolWithServerlessProperties.json
 func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -717,7 +717,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/HyperscaleElasticPoolGet.json
+// Generated from example definition: 2025-02-01-preview/HyperscaleElasticPoolGet.json
 func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -765,7 +765,7 @@ func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolListByServer.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolListByServer.json
 func ExampleElasticPoolsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,7 +858,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolUpdateAssignMaintenanceConfiguration.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateAssignMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -909,7 +909,7 @@ func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnEl
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolUpdateMax.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateMax.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -971,7 +971,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter()
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolUpdateMin.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateMin.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1017,7 +1017,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParamet
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolUpdateResetMaintenanceConfiguration.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateResetMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnElasticPoolToDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1067,7 +1067,7 @@ func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnEla
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolUpdateServerlessProperties.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateServerlessProperties.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithServerlessProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1131,7 +1131,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithServerlessProp
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolUpdateWithDefaultPreferredEnclaveType.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateWithDefaultPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEnclaveTypeParameterAsDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1190,7 +1190,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ElasticPoolUpdateWithVBSPreferredEnclaveType.json
+// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateWithVBSPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEnclaveTypeParameterAsVbs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1249,7 +1249,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// }
 }
 
-// Generated from example definition: 2025-01-01/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
+// Generated from example definition: 2025-02-01-preview/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
 func ExampleElasticPoolsClient_BeginUpdate_updateHighAvailabilityReplicaCountOfAHyperscaleElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

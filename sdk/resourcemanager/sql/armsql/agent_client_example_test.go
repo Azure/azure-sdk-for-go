@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/SqlAgentConfigurationPut.json
+// Generated from example definition: 2025-02-01-preview/SqlAgentConfigurationPut.json
 func ExampleAgentClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleAgentClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SqlAgentConfigurationGet.json
+// Generated from example definition: 2025-02-01-preview/SqlAgentConfigurationGet.json
 func ExampleAgentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

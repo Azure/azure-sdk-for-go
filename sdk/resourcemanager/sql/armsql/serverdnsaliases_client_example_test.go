@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerDnsAliasAcquire.json
+// Generated from example definition: 2025-02-01-preview/ServerDnsAliasAcquire.json
 func ExampleServerDNSAliasesClient_BeginAcquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleServerDNSAliasesClient_BeginAcquire() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDnsAliasCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/ServerDnsAliasCreateOrUpdate.json
 func ExampleServerDNSAliasesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleServerDNSAliasesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDnsAliasDelete.json
+// Generated from example definition: 2025-02-01-preview/ServerDnsAliasDelete.json
 func ExampleServerDNSAliasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleServerDNSAliasesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDnsAliasGet.json
+// Generated from example definition: 2025-02-01-preview/ServerDnsAliasGet.json
 func ExampleServerDNSAliasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleServerDNSAliasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerDnsAliasList.json
+// Generated from example definition: 2025-02-01-preview/ServerDnsAliasList.json
 func ExampleServerDNSAliasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ColumnSensitivityLabelCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ColumnSensitivityLabelCreateMax.json
 func ExampleSensitivityLabelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleSensitivityLabelsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ColumnSensitivityLabelDelete.json
+// Generated from example definition: 2025-02-01-preview/ColumnSensitivityLabelDelete.json
 func ExampleSensitivityLabelsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleSensitivityLabelsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/RecommendedColumnSensitivityLabelDisable.json
+// Generated from example definition: 2025-02-01-preview/RecommendedColumnSensitivityLabelDisable.json
 func ExampleSensitivityLabelsClient_DisableRecommendation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleSensitivityLabelsClient_DisableRecommendation() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/RecommendedColumnSensitivityLabelEnable.json
+// Generated from example definition: 2025-02-01-preview/RecommendedColumnSensitivityLabelEnable.json
 func ExampleSensitivityLabelsClient_EnableRecommendation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleSensitivityLabelsClient_EnableRecommendation() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ColumnSensitivityLabelGet.json
+// Generated from example definition: 2025-02-01-preview/ColumnSensitivityLabelGet.json
 func ExampleSensitivityLabelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleSensitivityLabelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SensitivityLabelsListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/SensitivityLabelsListByDatabase.json
 func ExampleSensitivityLabelsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +220,7 @@ func ExampleSensitivityLabelsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SensitivityLabelsListByDatabaseWithSourceCurrent.json
+// Generated from example definition: 2025-02-01-preview/SensitivityLabelsListByDatabaseWithSourceCurrent.json
 func ExampleSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SensitivityLabelsListByDatabaseWithSourceRecommended.json
+// Generated from example definition: 2025-02-01-preview/SensitivityLabelsListByDatabaseWithSourceRecommended.json
 func ExampleSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SensitivityLabelsCurrentUpdate.json
+// Generated from example definition: 2025-02-01-preview/SensitivityLabelsCurrentUpdate.json
 func ExampleSensitivityLabelsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

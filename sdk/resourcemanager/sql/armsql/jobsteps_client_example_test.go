@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobStepMax.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobStepMax.json
 func ExampleJobStepsClient_CreateOrUpdate_createOrUpdateAJobStepWithAllPropertiesSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleJobStepsClient_CreateOrUpdate_createOrUpdateAJobStepWithAllPropertie
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobStepMin.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobStepMin.json
 func ExampleJobStepsClient_CreateOrUpdate_createOrUpdateAJobStepWithMinimalPropertiesSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleJobStepsClient_CreateOrUpdate_createOrUpdateAJobStepWithMinimalPrope
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteJobStep.json
+// Generated from example definition: 2025-02-01-preview/DeleteJobStep.json
 func ExampleJobStepsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleJobStepsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetJobStepByJob.json
+// Generated from example definition: 2025-02-01-preview/GetJobStepByJob.json
 func ExampleJobStepsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +220,7 @@ func ExampleJobStepsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetJobStepByVersion.json
+// Generated from example definition: 2025-02-01-preview/GetJobStepByVersion.json
 func ExampleJobStepsClient_GetByVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,7 @@ func ExampleJobStepsClient_GetByVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobStepsByJob.json
+// Generated from example definition: 2025-02-01-preview/ListJobStepsByJob.json
 func ExampleJobStepsClient_NewListByJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +369,7 @@ func ExampleJobStepsClient_NewListByJobPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ListJobStepsByVersion.json
+// Generated from example definition: 2025-02-01-preview/ListJobStepsByVersion.json
 func ExampleJobStepsClient_NewListByVersionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

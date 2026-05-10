@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GetRestorableDroppedDatabase.json
+// Generated from example definition: 2025-02-01-preview/GetRestorableDroppedDatabase.json
 func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabase(
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetRestorableDroppedDatabaseWithExpandEqualsKeys.json
+// Generated from example definition: 2025-02-01-preview/GetRestorableDroppedDatabaseWithExpandEqualsKeys.json
 func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabaseWithExpandEqualsKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabaseW
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListRestorableDroppedDatabasesByServer.json
+// Generated from example definition: 2025-02-01-preview/ListRestorableDroppedDatabasesByServer.json
 func ExampleRestorableDroppedDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

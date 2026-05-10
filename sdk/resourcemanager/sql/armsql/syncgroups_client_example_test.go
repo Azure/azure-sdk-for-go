@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/SyncGroupCancelSync.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupCancelSync.json
 func ExampleSyncGroupsClient_CancelSync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleSyncGroupsClient_CancelSync() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupCreate.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupCreate.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,68 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupUpdate.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupCreateWithIdentity.json
+func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroupWithUserAssignedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSyncGroupsClient().BeginCreateOrUpdate(ctx, "syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187", armsql.SyncGroup{
+		Identity: &armsql.DataSyncParticipantIdentity{
+			Type: to.Ptr(armsql.DataSyncParticipantIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armsql.DataSyncParticipantUserAssignedIdentity{
+				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi": {},
+			},
+		},
+		Properties: &armsql.SyncGroupProperties{
+			Interval:                 to.Ptr[int32](-1),
+			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
+			SyncDatabaseID:           to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
+			UsePrivateLinkConnection: to.Ptr(false),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.SyncGroupsClientCreateOrUpdateResponse{
+	// 	SyncGroup: armsql.SyncGroup{
+	// 		Identity: &armsql.DataSyncParticipantIdentity{
+	// 			Type: to.Ptr(armsql.DataSyncParticipantIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armsql.DataSyncParticipantUserAssignedIdentity{
+	// 				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi": &armsql.DataSyncParticipantUserAssignedIdentity{
+	// 					ClientID: to.Ptr("0c29d9b7-0ae2-4014-96ea-faf8e0cf2bc7"),
+	// 					PrincipalID: to.Ptr("0c29d9b7-0ae2-4014-96ea-faf8e0cf2bc7"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armsql.SyncGroupProperties{
+	// 			Interval: to.Ptr[int32](-1),
+	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
+	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
+	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
+	// 			UsePrivateLinkConnection: to.Ptr(false),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187"),
+	// 		Name: to.Ptr("syncgroupcrud-3187"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/syncGroups"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-01-preview/SyncGroupUpdate.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_updateASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +193,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_updateASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupDelete.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupDelete.json
 func ExampleSyncGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,8 +219,8 @@ func ExampleSyncGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupGet.json
-func ExampleSyncGroupsClient_Get() {
+// Generated from example definition: 2025-02-01-preview/SyncGroupGet.json
+func ExampleSyncGroupsClient_Get_getASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -195,7 +256,52 @@ func ExampleSyncGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupGetWithIdentity.json
+func ExampleSyncGroupsClient_Get_getASyncGroupWithUserAssignedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSyncGroupsClient().Get(ctx, "syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.SyncGroupsClientGetResponse{
+	// 	SyncGroup: armsql.SyncGroup{
+	// 		Identity: &armsql.DataSyncParticipantIdentity{
+	// 			Type: to.Ptr(armsql.DataSyncParticipantIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armsql.DataSyncParticipantUserAssignedIdentity{
+	// 				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi": &armsql.DataSyncParticipantUserAssignedIdentity{
+	// 					ClientID: to.Ptr("0c29d9b7-0ae2-4014-96ea-faf8e0cf2bc7"),
+	// 					PrincipalID: to.Ptr("0c29d9b7-0ae2-4014-96ea-faf8e0cf2bc7"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armsql.SyncGroupProperties{
+	// 			Interval: to.Ptr[int32](-1),
+	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
+	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
+	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
+	// 			UsePrivateLinkConnection: to.Ptr(true),
+	// 			PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-3187"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187"),
+	// 		Name: to.Ptr("syncgroupcrud-3187"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/syncGroups"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-01-preview/SyncGroupListByDatabase.json
 func ExampleSyncGroupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +362,7 @@ func ExampleSyncGroupsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupGetHubSchema.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupGetHubSchema.json
 func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +422,7 @@ func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupGetLog.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupGetLog.json
 func ExampleSyncGroupsClient_NewListLogsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +469,7 @@ func ExampleSyncGroupsClient_NewListLogsPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupGetSyncDatabaseId.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupGetSyncDatabaseId.json
 func ExampleSyncGroupsClient_NewListSyncDatabaseIDsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +503,7 @@ func ExampleSyncGroupsClient_NewListSyncDatabaseIDsPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupRefreshHubSchema.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupRefreshHubSchema.json
 func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +529,7 @@ func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupTriggerSync.json
+// Generated from example definition: 2025-02-01-preview/SyncGroupTriggerSync.json
 func ExampleSyncGroupsClient_TriggerSync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,8 +551,8 @@ func ExampleSyncGroupsClient_TriggerSync() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SyncGroupPatch.json
-func ExampleSyncGroupsClient_BeginUpdate() {
+// Generated from example definition: 2025-02-01-preview/SyncGroupPatch.json
+func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -491,6 +597,129 @@ func ExampleSyncGroupsClient_BeginUpdate() {
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
 	// 			UsePrivateLinkConnection: to.Ptr(true),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-01-preview/SyncGroupPatchAddAndRemoveIdentity.json
+func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithNewUserAssignedIdentityAndRemoveOlderAssignedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSyncGroupsClient().BeginUpdate(ctx, "syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187", armsql.SyncGroup{
+		Identity: &armsql.DataSyncParticipantIdentity{
+			Type: to.Ptr(armsql.DataSyncParticipantIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armsql.DataSyncParticipantUserAssignedIdentity{
+				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi-2": {},
+			},
+		},
+		Properties: &armsql.SyncGroupProperties{
+			Interval:                 to.Ptr[int32](-1),
+			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
+			SyncDatabaseID:           to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
+			UsePrivateLinkConnection: to.Ptr(false),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.SyncGroupsClientUpdateResponse{
+	// 	SyncGroup: armsql.SyncGroup{
+	// 		Identity: &armsql.DataSyncParticipantIdentity{
+	// 			Type: to.Ptr(armsql.DataSyncParticipantIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armsql.DataSyncParticipantUserAssignedIdentity{
+	// 				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi-2": &armsql.DataSyncParticipantUserAssignedIdentity{
+	// 					ClientID: to.Ptr("e09c8507-0000-0000-97e2-18c5beec59dc"),
+	// 					PrincipalID: to.Ptr("e09c8507-0000-0000-97e2-18c5beec59dc"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armsql.SyncGroupProperties{
+	// 			Interval: to.Ptr[int32](-1),
+	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
+	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
+	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
+	// 			UsePrivateLinkConnection: to.Ptr(false),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187"),
+	// 		Name: to.Ptr("syncgroup"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/syncGroups"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-01-preview/SyncGroupPatchWithIdentity.json
+func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithUserAssignedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSyncGroupsClient().BeginUpdate(ctx, "syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187", armsql.SyncGroup{
+		Identity: &armsql.DataSyncParticipantIdentity{
+			Type: to.Ptr(armsql.DataSyncParticipantIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armsql.DataSyncParticipantUserAssignedIdentity{
+				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi": {},
+			},
+		},
+		Properties: &armsql.SyncGroupProperties{
+			Interval:                 to.Ptr[int32](-1),
+			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
+			SyncDatabaseID:           to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
+			UsePrivateLinkConnection: to.Ptr(true),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.SyncGroupsClientUpdateResponse{
+	// 	SyncGroup: armsql.SyncGroup{
+	// 		Identity: &armsql.DataSyncParticipantIdentity{
+	// 			Type: to.Ptr(armsql.DataSyncParticipantIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armsql.DataSyncParticipantUserAssignedIdentity{
+	// 				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi": &armsql.DataSyncParticipantUserAssignedIdentity{
+	// 					ClientID: to.Ptr("e09c8507-0000-0000-97e2-18c5beec59dc"),
+	// 					PrincipalID: to.Ptr("0c29d9b7-0ae2-4014-96ea-faf8e0cf2bc7"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armsql.SyncGroupProperties{
+	// 			Interval: to.Ptr[int32](-1),
+	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
+	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
+	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
+	// 			UsePrivateLinkConnection: to.Ptr(true),
+	// 			PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-3187"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187"),
+	// 		Name: to.Ptr("syncgroup"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases/syncGroups"),
 	// 	},
 	// }
 }

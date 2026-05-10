@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseColumnGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseColumnGet.json
 func ExampleManagedDatabaseColumnsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleManagedDatabaseColumnsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedColumnsListByDatabaseMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedColumnsListByDatabaseMax.json
 func ExampleManagedDatabaseColumnsClient_NewListByDatabasePager_filterManagedDatabaseColumns() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleManagedDatabaseColumnsClient_NewListByDatabasePager_filterManagedDat
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedColumnsListByDatabaseMin.json
+// Generated from example definition: 2025-02-01-preview/ManagedColumnsListByDatabaseMin.json
 func ExampleManagedDatabaseColumnsClient_NewListByDatabasePager_listManagedDatabaseColumns() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleManagedDatabaseColumnsClient_NewListByDatabasePager_listManagedDatab
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseColumnListByTable.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseColumnListByTable.json
 func ExampleManagedDatabaseColumnsClient_NewListByTablePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

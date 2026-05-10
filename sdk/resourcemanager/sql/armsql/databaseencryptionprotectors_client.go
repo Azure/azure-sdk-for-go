@@ -42,7 +42,7 @@ func NewDatabaseEncryptionProtectorsClient(subscriptionID string, credential azc
 // BeginRevalidate - Revalidates an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -69,7 +69,7 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevalidate(ctx context.Co
 // Revalidate - Revalidates an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevalidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevalidate"
@@ -119,7 +119,7 @@ func (client *DatabaseEncryptionProtectorsClient) revalidateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -127,7 +127,7 @@ func (client *DatabaseEncryptionProtectorsClient) revalidateCreateRequest(ctx co
 // BeginRevert - Reverts an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -154,7 +154,7 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevert(ctx context.Contex
 // Revert - Reverts an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevertOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevert"
@@ -204,7 +204,7 @@ func (client *DatabaseEncryptionProtectorsClient) revertCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

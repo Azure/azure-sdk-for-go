@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateShortTermRetentionPolicy.json
+// Generated from example definition: 2025-02-01-preview/CreateShortTermRetentionPolicy.json
 func ExampleBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetShortTermRetentionPolicy.json
+// Generated from example definition: 2025-02-01-preview/GetShortTermRetentionPolicy.json
 func ExampleBackupShortTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListShortTermRetentionPoliciesByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ListShortTermRetentionPoliciesByDatabase.json
 func ExampleBackupShortTermRetentionPoliciesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/UpdateShortTermRetentionPolicy.json
+// Generated from example definition: 2025-02-01-preview/UpdateShortTermRetentionPolicy.json
 func ExampleBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

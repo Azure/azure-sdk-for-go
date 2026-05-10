@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ListInstancePoolUsage.json
+// Generated from example definition: 2025-02-01-preview/ListInstancePoolUsage.json
 func ExampleUsagesClient_NewListByInstancePoolPager_listInstancePoolUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleUsagesClient_NewListByInstancePoolPager_listInstancePoolUsages() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/ListInstancePoolUsageExpanded.json
+// Generated from example definition: 2025-02-01-preview/ListInstancePoolUsageExpanded.json
 func ExampleUsagesClient_NewListByInstancePoolPager_listInstancePoolUsagesExpandedWithChildren() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

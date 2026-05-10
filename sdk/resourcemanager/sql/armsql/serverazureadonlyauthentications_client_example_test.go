@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/AzureADOnlyAuthCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/AzureADOnlyAuthCreateOrUpdate.json
 func ExampleServerAzureADOnlyAuthenticationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleServerAzureADOnlyAuthenticationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AzureADOnlyAuthDelete.json
+// Generated from example definition: 2025-02-01-preview/AzureADOnlyAuthDelete.json
 func ExampleServerAzureADOnlyAuthenticationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleServerAzureADOnlyAuthenticationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AzureADOnlyAuthGet.json
+// Generated from example definition: 2025-02-01-preview/AzureADOnlyAuthGet.json
 func ExampleServerAzureADOnlyAuthenticationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleServerAzureADOnlyAuthenticationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AzureADOnlyAuthList.json
+// Generated from example definition: 2025-02-01-preview/AzureADOnlyAuthList.json
 func ExampleServerAzureADOnlyAuthenticationsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -42,7 +42,7 @@ func NewServerConnectionPoliciesClient(subscriptionID string, credential azcore.
 // BeginCreateOrUpdate - Updates a server connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - connectionPolicyName - The name of the connection policy.
@@ -69,7 +69,7 @@ func (client *ServerConnectionPoliciesClient) BeginCreateOrUpdate(ctx context.Co
 // CreateOrUpdate - Updates a server connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ServerConnectionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerConnectionPoliciesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx co
 // Get - Gets a server connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - connectionPolicyName - The name of the connection policy.
@@ -180,7 +180,7 @@ func (client *ServerConnectionPoliciesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *ServerConnectionPoliciesClient) getHandleResponse(resp *http.Respo
 
 // NewListByServerPager - Lists connection policy
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerConnectionPoliciesClientListByServerOptions contains the optional parameters for the ServerConnectionPoliciesClient.NewListByServerPager
@@ -245,7 +245,7 @@ func (client *ServerConnectionPoliciesClient) listByServerCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

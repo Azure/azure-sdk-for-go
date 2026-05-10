@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerKeyCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/ServerKeyCreateOrUpdate.json
 func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKey() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerKeyCreateOrUpdateWithVersionlessKey.json
+// Generated from example definition: 2025-02-01-preview/ServerKeyCreateOrUpdateWithVersionlessKey.json
 func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKeyWithVersionlessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKeyWithV
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerKeyDelete.json
+// Generated from example definition: 2025-02-01-preview/ServerKeyDelete.json
 func ExampleServerKeysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleServerKeysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerKeyGet.json
+// Generated from example definition: 2025-02-01-preview/ServerKeyGet.json
 func ExampleServerKeysClient_Get_getTheServerKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleServerKeysClient_Get_getTheServerKey() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerKeyGetWithVersionlessKey.json
+// Generated from example definition: 2025-02-01-preview/ServerKeyGetWithVersionlessKey.json
 func ExampleServerKeysClient_Get_getTheServerKeyWithVersionlessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleServerKeysClient_Get_getTheServerKeyWithVersionlessKey() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerKeyList.json
+// Generated from example definition: 2025-02-01-preview/ServerKeyList.json
 func ExampleServerKeysClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ServerAdvancedThreatProtectionSettingsCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ServerAdvancedThreatProtectionSettingsCreateMax.json
 func ExampleServerAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_updateAServerSAdvancedThreatProtectionSettingsWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleServerAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_upd
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerAdvancedThreatProtectionSettingsCreateMin.json
+// Generated from example definition: 2025-02-01-preview/ServerAdvancedThreatProtectionSettingsCreateMin.json
 func ExampleServerAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_updateAServerSAdvancedThreatProtectionSettingsWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleServerAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_upd
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerAdvancedThreatProtectionSettingsGet.json
+// Generated from example definition: 2025-02-01-preview/ServerAdvancedThreatProtectionSettingsGet.json
 func ExampleServerAdvancedThreatProtectionSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleServerAdvancedThreatProtectionSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ServerAdvancedThreatProtectionSettingsListByServer.json
+// Generated from example definition: 2025-02-01-preview/ServerAdvancedThreatProtectionSettingsListByServer.json
 func ExampleServerAdvancedThreatProtectionSettingsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

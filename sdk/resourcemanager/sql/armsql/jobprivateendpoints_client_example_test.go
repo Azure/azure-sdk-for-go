@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobPrivateEndpoint.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobPrivateEndpoint.json
 func ExampleJobPrivateEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleJobPrivateEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteJobPrivateEndpoint.json
+// Generated from example definition: 2025-02-01-preview/DeleteJobPrivateEndpoint.json
 func ExampleJobPrivateEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleJobPrivateEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetJobPrivateEndpoint.json
+// Generated from example definition: 2025-02-01-preview/GetJobPrivateEndpoint.json
 func ExampleJobPrivateEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleJobPrivateEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobPrivateEndpointsByAgent.json
+// Generated from example definition: 2025-02-01-preview/ListJobPrivateEndpointsByAgent.json
 func ExampleJobPrivateEndpointsClient_NewListByAgentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

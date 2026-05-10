@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseAdvancedThreatProtectionSettingsCreateMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseAdvancedThreatProtectionSettingsCreateMax.json
 func ExampleManagedDatabaseAdvancedThreatProtectionSettingsClient_CreateOrUpdate_updateAManagedDatabaseSAdvancedThreatProtectionSettingsWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleManagedDatabaseAdvancedThreatProtectionSettingsClient_CreateOrUpdate
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseAdvancedThreatProtectionSettingsCreateMin.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseAdvancedThreatProtectionSettingsCreateMin.json
 func ExampleManagedDatabaseAdvancedThreatProtectionSettingsClient_CreateOrUpdate_updateAManagedDatabaseSAdvancedThreatProtectionSettingsWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleManagedDatabaseAdvancedThreatProtectionSettingsClient_CreateOrUpdate
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseAdvancedThreatProtectionSettingsGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseAdvancedThreatProtectionSettingsGet.json
 func ExampleManagedDatabaseAdvancedThreatProtectionSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleManagedDatabaseAdvancedThreatProtectionSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedDatabaseAdvancedThreatProtectionSettingsListByDatabase.json
+// Generated from example definition: 2025-02-01-preview/ManagedDatabaseAdvancedThreatProtectionSettingsListByDatabase.json
 func ExampleManagedDatabaseAdvancedThreatProtectionSettingsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

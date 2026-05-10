@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/FailoverGroupCreateOrUpdate.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupCreateOrUpdate.json
 func ExampleFailoverGroupsClient_BeginCreateOrUpdate_createFailoverGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleFailoverGroupsClient_BeginCreateOrUpdate_createFailoverGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupCreateOrUpdateStandbySecondary.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupCreateOrUpdateStandbySecondary.json
 func ExampleFailoverGroupsClient_BeginCreateOrUpdate_createFailoverGroupWithStandbySecondaryDatabaseOnPartnerServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleFailoverGroupsClient_BeginCreateOrUpdate_createFailoverGroupWithStan
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupDelete.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupDelete.json
 func ExampleFailoverGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleFailoverGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupFailover.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupFailover.json
 func ExampleFailoverGroupsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleFailoverGroupsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupForceFailoverAllowDataLoss.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupForceFailoverAllowDataLoss.json
 func ExampleFailoverGroupsClient_BeginForceFailoverAllowDataLoss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleFailoverGroupsClient_BeginForceFailoverAllowDataLoss() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupGet.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupGet.json
 func ExampleFailoverGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleFailoverGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupList.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupList.json
 func ExampleFailoverGroupsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +433,7 @@ func ExampleFailoverGroupsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupTryPlannedBeforeForcedFailover.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupTryPlannedBeforeForcedFailover.json
 func ExampleFailoverGroupsClient_BeginTryPlannedBeforeForcedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleFailoverGroupsClient_BeginTryPlannedBeforeForcedFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupUpdate.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupUpdate.json
 func ExampleFailoverGroupsClient_BeginUpdate_updateFailoverGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +552,7 @@ func ExampleFailoverGroupsClient_BeginUpdate_updateFailoverGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FailoverGroupUpdateStandbySecondary.json
+// Generated from example definition: 2025-02-01-preview/FailoverGroupUpdateStandbySecondary.json
 func ExampleFailoverGroupsClient_BeginUpdate_addDatabaseToFailoverGroupWithStandbySecondaryOnPartnerServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

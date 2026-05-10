@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/GetInstancePoolOperation.json
+// Generated from example definition: 2025-02-01-preview/GetInstancePoolOperation.json
 func ExampleInstancePoolOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleInstancePoolOperationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListInstancePoolOperations.json
+// Generated from example definition: 2025-02-01-preview/ListInstancePoolOperations.json
 func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInstancePoolManagementOperationsWithSomeResults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInsta
 	}
 }
 
-// Generated from example definition: 2025-01-01/ListInstancePoolOperationsEmpty.json
+// Generated from example definition: 2025-02-01-preview/ListInstancePoolOperationsEmpty.json
 func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInstancePoolManagementOperationsWithNoResults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

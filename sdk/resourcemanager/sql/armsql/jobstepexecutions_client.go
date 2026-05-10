@@ -44,7 +44,7 @@ func NewJobStepExecutionsClient(subscriptionID string, credential azcore.TokenCr
 // Get - Gets a step execution of a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -110,7 +110,7 @@ func (client *JobStepExecutionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -127,7 +127,7 @@ func (client *JobStepExecutionsClient) getHandleResponse(resp *http.Response) (J
 
 // NewListByJobExecutionPager - Lists the step executions of a job execution.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -196,7 +196,7 @@ func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	if options != nil && options.CreateTimeMax != nil {
 		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
 	}

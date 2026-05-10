@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CreateOrUpdateJobCredential.json
+// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobCredential.json
 func ExampleJobCredentialsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleJobCredentialsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DeleteJobCredential.json
+// Generated from example definition: 2025-02-01-preview/DeleteJobCredential.json
 func ExampleJobCredentialsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleJobCredentialsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/GetJobCredential.json
+// Generated from example definition: 2025-02-01-preview/GetJobCredential.json
 func ExampleJobCredentialsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleJobCredentialsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ListJobCredentialsByAgent.json
+// Generated from example definition: 2025-02-01-preview/ListJobCredentialsByAgent.json
 func ExampleJobCredentialsClient_NewListByAgentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

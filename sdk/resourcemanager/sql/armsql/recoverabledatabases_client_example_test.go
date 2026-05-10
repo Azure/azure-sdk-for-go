@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/RecoverableDatabaseGet.json
+// Generated from example definition: 2025-02-01-preview/RecoverableDatabaseGet.json
 func ExampleRecoverableDatabasesClient_Get_getARecoverableDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleRecoverableDatabasesClient_Get_getARecoverableDatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/RecoverableDatabaseGetWithExpandEqualsKeys.json
+// Generated from example definition: 2025-02-01-preview/RecoverableDatabaseGetWithExpandEqualsKeys.json
 func ExampleRecoverableDatabasesClient_Get_getsARecoverableDatabaseWithExpandEqualsKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleRecoverableDatabasesClient_Get_getsARecoverableDatabaseWithExpandEqu
 	// }
 }
 
-// Generated from example definition: 2025-01-01/RecoverableDatabaseList.json
+// Generated from example definition: 2025-02-01-preview/RecoverableDatabaseList.json
 func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

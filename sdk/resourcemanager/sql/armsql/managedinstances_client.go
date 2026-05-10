@@ -43,7 +43,7 @@ func NewManagedInstancesClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Creates or updates a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - parameters - The requested managed instance resource state.
@@ -69,7 +69,7 @@ func (client *ManagedInstancesClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Creates or updates a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstance, options *ManagedInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginCreateOrUpdate"
@@ -111,7 +111,7 @@ func (client *ManagedInstancesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -124,7 +124,7 @@ func (client *ManagedInstancesClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientBeginDeleteOptions contains the optional parameters for the ManagedInstancesClient.BeginDelete
@@ -149,7 +149,7 @@ func (client *ManagedInstancesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginDelete"
@@ -191,7 +191,7 @@ func (client *ManagedInstancesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -199,7 +199,7 @@ func (client *ManagedInstancesClient) deleteCreateRequest(ctx context.Context, r
 // BeginFailover - Failovers a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientBeginFailoverOptions contains the optional parameters for the ManagedInstancesClient.BeginFailover
@@ -224,7 +224,7 @@ func (client *ManagedInstancesClient) BeginFailover(ctx context.Context, resourc
 // Failover - Failovers a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) failover(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginFailover"
@@ -266,7 +266,7 @@ func (client *ManagedInstancesClient) failoverCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	if options != nil && options.ReplicaType != nil {
 		reqQP.Set("replicaType", string(*options.ReplicaType))
 	}
@@ -277,7 +277,7 @@ func (client *ManagedInstancesClient) failoverCreateRequest(ctx context.Context,
 // Get - Gets a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientGetOptions contains the optional parameters for the ManagedInstancesClient.Get method.
@@ -326,7 +326,7 @@ func (client *ManagedInstancesClient) getCreateRequest(ctx context.Context, reso
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *ManagedInstancesClient) getHandleResponse(resp *http.Response) (Ma
 
 // NewListPager - Gets a list of all managed instances in the subscription.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - options - ManagedInstancesClientListOptions contains the optional parameters for the ManagedInstancesClient.NewListPager
 //     method.
 func (client *ManagedInstancesClient) NewListPager(options *ManagedInstancesClientListOptions) *runtime.Pager[ManagedInstancesClientListResponse] {
@@ -384,7 +384,7 @@ func (client *ManagedInstancesClient) listCreateRequest(ctx context.Context, opt
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -401,7 +401,7 @@ func (client *ManagedInstancesClient) listHandleResponse(resp *http.Response) (M
 
 // NewListByInstancePoolPager - Gets a list of all managed instances in an instance pool.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancePoolName - The name of the instance pool to be retrieved.
 //   - options - ManagedInstancesClientListByInstancePoolOptions contains the optional parameters for the ManagedInstancesClient.NewListByInstancePoolPager
@@ -452,7 +452,7 @@ func (client *ManagedInstancesClient) listByInstancePoolCreateRequest(ctx contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -469,7 +469,7 @@ func (client *ManagedInstancesClient) listByInstancePoolHandleResponse(resp *htt
 
 // NewListByManagedInstancePager - Get top resource consuming queries of a managed instance.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstancesClient.NewListByManagedInstancePager
@@ -520,7 +520,7 @@ func (client *ManagedInstancesClient) listByManagedInstanceCreateRequest(ctx con
 	if options != nil && options.AggregationFunction != nil {
 		reqQP.Set("aggregationFunction", string(*options.AggregationFunction))
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	if options != nil && options.Databases != nil {
 		reqQP.Set("databases", *options.Databases)
 	}
@@ -555,7 +555,7 @@ func (client *ManagedInstancesClient) listByManagedInstanceHandleResponse(resp *
 
 // NewListByResourceGroupPager - Gets a list of managed instances in a resource group.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedInstancesClientListByResourceGroupOptions contains the optional parameters for the ManagedInstancesClient.NewListByResourceGroupPager
 //     method.
@@ -601,7 +601,7 @@ func (client *ManagedInstancesClient) listByResourceGroupCreateRequest(ctx conte
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -619,7 +619,7 @@ func (client *ManagedInstancesClient) listByResourceGroupHandleResponse(resp *ht
 // NewListOutboundNetworkDependenciesByManagedInstancePager - Gets the collection of outbound network dependencies for the
 // given managed instance.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceOptions contains the optional parameters
@@ -667,7 +667,7 @@ func (client *ManagedInstancesClient) listOutboundNetworkDependenciesByManagedIn
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -685,7 +685,7 @@ func (client *ManagedInstancesClient) listOutboundNetworkDependenciesByManagedIn
 // BeginReevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of all managed databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions contains the optional parameters for the
@@ -710,7 +710,7 @@ func (client *ManagedInstancesClient) BeginReevaluateInaccessibleDatabaseState(c
 // ReevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of all managed databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) reevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginReevaluateInaccessibleDatabaseState"
@@ -752,7 +752,7 @@ func (client *ManagedInstancesClient) reevaluateInaccessibleDatabaseStateCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -760,7 +760,7 @@ func (client *ManagedInstancesClient) reevaluateInaccessibleDatabaseStateCreateR
 // BeginRefreshStatus - Refresh external governance enablement status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientBeginRefreshStatusOptions contains the optional parameters for the ManagedInstancesClient.BeginRefreshStatus
@@ -785,7 +785,7 @@ func (client *ManagedInstancesClient) BeginRefreshStatus(ctx context.Context, re
 // RefreshStatus - Refresh external governance enablement status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) refreshStatus(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginRefreshStatusOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginRefreshStatus"
@@ -827,7 +827,7 @@ func (client *ManagedInstancesClient) refreshStatusCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -836,7 +836,7 @@ func (client *ManagedInstancesClient) refreshStatusCreateRequest(ctx context.Con
 // BeginStart - Starts the managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientBeginStartOptions contains the optional parameters for the ManagedInstancesClient.BeginStart
@@ -861,7 +861,7 @@ func (client *ManagedInstancesClient) BeginStart(ctx context.Context, resourceGr
 // Start - Starts the managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) start(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginStart"
@@ -903,7 +903,7 @@ func (client *ManagedInstancesClient) startCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -912,7 +912,7 @@ func (client *ManagedInstancesClient) startCreateRequest(ctx context.Context, re
 // BeginStop - Stops the managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientBeginStopOptions contains the optional parameters for the ManagedInstancesClient.BeginStop
@@ -937,7 +937,7 @@ func (client *ManagedInstancesClient) BeginStop(ctx context.Context, resourceGro
 // Stop - Stops the managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) stop(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginStop"
@@ -979,7 +979,7 @@ func (client *ManagedInstancesClient) stopCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -988,7 +988,7 @@ func (client *ManagedInstancesClient) stopCreateRequest(ctx context.Context, res
 // BeginUpdate - Updates a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - parameters - The requested managed instance resource state.
@@ -1014,7 +1014,7 @@ func (client *ManagedInstancesClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, options *ManagedInstancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginUpdate"
@@ -1056,7 +1056,7 @@ func (client *ManagedInstancesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1069,7 +1069,7 @@ func (client *ManagedInstancesClient) updateCreateRequest(ctx context.Context, r
 // BeginValidateAzureKeyVaultEncryptionKey - Validates customer managed key.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - parameters - The validate azure key vault encryption key parameters.
@@ -1095,7 +1095,7 @@ func (client *ManagedInstancesClient) BeginValidateAzureKeyVaultEncryptionKey(ct
 // ValidateAzureKeyVaultEncryptionKey - Validates customer managed key.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 func (client *ManagedInstancesClient) validateAzureKeyVaultEncryptionKey(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest, options *ManagedInstancesClientBeginValidateAzureKeyVaultEncryptionKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstancesClient.BeginValidateAzureKeyVaultEncryptionKey"
@@ -1137,7 +1137,7 @@ func (client *ManagedInstancesClient) validateAzureKeyVaultEncryptionKeyCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

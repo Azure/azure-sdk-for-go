@@ -42,7 +42,7 @@ func NewInstancePoolOperationsClient(subscriptionID string, credential azcore.To
 // Get - Gets a management operation on a instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancePoolName - The name of the instance pool to be retrieved.
 //   - options - InstancePoolOperationsClientGetOptions contains the optional parameters for the InstancePoolOperationsClient.Get
@@ -93,7 +93,7 @@ func (client *InstancePoolOperationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *InstancePoolOperationsClient) getHandleResponse(resp *http.Respons
 
 // NewListByInstancePoolPager - Gets a list of operations performed on the instance pool.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancePoolName - The name of the instance pool to be retrieved.
 //   - options - InstancePoolOperationsClientListByInstancePoolOptions contains the optional parameters for the InstancePoolOperationsClient.NewListByInstancePoolPager
@@ -158,7 +158,7 @@ func (client *InstancePoolOperationsClient) listByInstancePoolCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

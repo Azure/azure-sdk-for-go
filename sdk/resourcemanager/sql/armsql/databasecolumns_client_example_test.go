@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseColumnGet.json
+// Generated from example definition: 2025-02-01-preview/DatabaseColumnGet.json
 func ExampleDatabaseColumnsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleDatabaseColumnsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ColumnsListByDatabaseMax.json
+// Generated from example definition: 2025-02-01-preview/ColumnsListByDatabaseMax.json
 func ExampleDatabaseColumnsClient_NewListByDatabasePager_filterDatabaseColumns() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleDatabaseColumnsClient_NewListByDatabasePager_filterDatabaseColumns()
 	}
 }
 
-// Generated from example definition: 2025-01-01/ColumnsListByDatabaseMin.json
+// Generated from example definition: 2025-02-01-preview/ColumnsListByDatabaseMin.json
 func ExampleDatabaseColumnsClient_NewListByDatabasePager_listDatabaseColumns() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleDatabaseColumnsClient_NewListByDatabasePager_listDatabaseColumns() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/DatabaseColumnListByTable.json
+// Generated from example definition: 2025-02-01-preview/DatabaseColumnListByTable.json
 func ExampleDatabaseColumnsClient_NewListByTablePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

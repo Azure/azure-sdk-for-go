@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/DatabaseRecommendedActionGet.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRecommendedActionGet.json
 func ExampleDatabaseRecommendedActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleDatabaseRecommendedActionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseRecommendedActionList.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRecommendedActionList.json
 func ExampleDatabaseRecommendedActionsClient_ListByDatabaseAdvisor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleDatabaseRecommendedActionsClient_ListByDatabaseAdvisor() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/DatabaseRecommendedActionUpdate.json
+// Generated from example definition: 2025-02-01-preview/DatabaseRecommendedActionUpdate.json
 func ExampleDatabaseRecommendedActionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

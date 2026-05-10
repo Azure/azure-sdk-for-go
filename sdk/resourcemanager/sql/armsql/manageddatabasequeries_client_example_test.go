@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/ManagedInstanceQueryGet.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceQueryGet.json
 func ExampleManagedDatabaseQueriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleManagedDatabaseQueriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceQueryStatisticsList.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceQueryStatisticsList.json
 func ExampleManagedDatabaseQueriesClient_NewListByQueryPager_obtainQueryExecutionStatistics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExampleManagedDatabaseQueriesClient_NewListByQueryPager_obtainQueryExecutio
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceQueryStatisticsListMax.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceQueryStatisticsListMax.json
 func ExampleManagedDatabaseQueriesClient_NewListByQueryPager_obtainQueryExecutionStatisticsExampleWithAllRequestParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,7 +440,7 @@ func ExampleManagedDatabaseQueriesClient_NewListByQueryPager_obtainQueryExecutio
 	}
 }
 
-// Generated from example definition: 2025-01-01/ManagedInstanceQueryStatisticsListMin.json
+// Generated from example definition: 2025-02-01-preview/ManagedInstanceQueryStatisticsListMin.json
 func ExampleManagedDatabaseQueriesClient_NewListByQueryPager_obtainQueryExecutionStatisticsMinimalExampleWithOnlyMandatoryRequestParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

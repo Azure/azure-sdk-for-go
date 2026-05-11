@@ -159,6 +159,8 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
+					priorityLevel:                options.PriorityLevel,
+					throughputBucket:             options.ThroughputBucket,
 				},
 				&globalEndpointManagerPolicy{gem: gem},
 			},
@@ -640,5 +642,7 @@ func getAllowedHeaders() []string {
 		cosmosHeaderIsPartitionKeyDeletePending,
 		cosmosHeaderQueryExecutionInfo,
 		headerXmsItemCount,
+		cosmosHeaderPriorityLevel,
+		cosmosHeaderThroughputBucket,
 	}
 }

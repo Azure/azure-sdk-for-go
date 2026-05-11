@@ -260,6 +260,8 @@ func (c *ContainerClient) CreateItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -317,6 +319,8 @@ func (c *ContainerClient) UpsertItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -372,6 +376,8 @@ func (c *ContainerClient) ReplaceItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -423,6 +429,9 @@ func (c *ContainerClient) ReadItem(
 
 	if o == nil {
 		o = &ItemOptions{}
+	} else {
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -530,6 +539,8 @@ func (c *ContainerClient) DeleteItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -557,7 +568,7 @@ func (c *ContainerClient) DeleteItem(
 	return response, err
 }
 
-// NewQueryItemsPager executes a single partition query in a Cosmos container.
+// NewQueryItemsPagerexecutes a single partition query in a Cosmos container.
 // query - The SQL query to execute.
 // partitionKey - The partition key to scope the query on. See below for more information on cross partition queries.
 // o - Options for the operation.
@@ -588,6 +599,8 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 	if o != nil {
 		originalOptions := *o
 		queryOptions = &originalOptions
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -669,6 +682,8 @@ func (c *ContainerClient) PatchItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -697,7 +712,7 @@ func (c *ContainerClient) PatchItem(
 	return response, err
 }
 
-// NewTransactionalBatch creates a batch of operations to be committed as a single unit.
+// NewTransactionalBatchcreates a batch of operations to be committed as a single unit.
 // See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
 func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {
 	return TransactionalBatch{partitionKey: partitionKey}
@@ -725,6 +740,8 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 		o = &TransactionalBatchOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	// If contentResponseOnWrite is not enabled at the client level the
@@ -831,9 +848,18 @@ func (c *ContainerClient) getChangeFeedForEPKRange(
 		}
 	}
 
+	h := headerOptionsOverride{}
+	if options.PriorityLevel != nil {
+		h.priorityLevel = options.PriorityLevel
+	}
+	if options.ThroughputBucket != nil {
+		h.throughputBucket = options.ThroughputBucket
+	}
+
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		headerOptionsOverride: &h,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)

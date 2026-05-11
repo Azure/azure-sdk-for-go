@@ -23,6 +23,10 @@ type TransactionalBatchOptions struct {
 	// When EnableContentResponseOnWrite is false, the operations in the batch response will have no body, except when they are Read operations.
 	// The default is false.
 	EnableContentResponseOnWrite bool
+	// PriorityLevel overrides the client-level default priority for this operation.
+	PriorityLevel *PriorityLevel
+	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	ThroughputBucket *int32
 }
 
 // TransactionalBatchItemOptions includes options for the specific operation inside a TransactionalBatch

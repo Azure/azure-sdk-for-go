@@ -25,6 +25,10 @@ type ReadManyOptions struct {
 	// MaxConcurrency indicates the maximum number of concurrent operations to use when reading many items.
 	// If not set, the SDK will determine an optimal number of concurrent operations to use.
 	MaxConcurrency *int32
+	// PriorityLevel overrides the client-level default priority for this operation.
+	PriorityLevel *PriorityLevel
+	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	ThroughputBucket *int32
 }
 
 func (options *ReadManyOptions) toHeaders() *map[string]string {

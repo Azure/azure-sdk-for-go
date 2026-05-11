@@ -29,6 +29,11 @@ type ChangeFeedOptions struct {
 
 	// CompositeContinuation is used to continue reading the change feed from a specific point.
 	Continuation *string
+
+	// PriorityLevel overrides the client-level default priority for this operation.
+	PriorityLevel *PriorityLevel
+	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	ThroughputBucket *int32
 }
 
 func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRange) *map[string]string {

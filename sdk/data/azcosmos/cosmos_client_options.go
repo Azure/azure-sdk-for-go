@@ -15,4 +15,10 @@ type ClientOptions struct {
 	EnableContentResponseOnWrite bool
 	// PreferredRegions is a list of regions to be used when initializing the client in case the default region fails.
 	PreferredRegions []string
+	// PriorityLevel defines the default priority level for all requests made by this client.
+	// Can be overridden per-request via the operation options.
+	PriorityLevel *PriorityLevel
+	// ThroughputBucket defines the default throughput bucket for all requests made by this client.
+	// Can be overridden per-request via the operation options.
+	ThroughputBucket *int32
 }

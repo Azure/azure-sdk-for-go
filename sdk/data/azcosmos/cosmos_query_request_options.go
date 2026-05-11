@@ -49,6 +49,10 @@ type QueryOptions struct {
 	// QueryEngine can be set to enable the use of an external query engine for processing cross-partition queries.
 	// This is a preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes.
 	QueryEngine queryengine.QueryEngine
+	// PriorityLevel overrides the client-level default priority for this operation.
+	PriorityLevel *PriorityLevel
+	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	ThroughputBucket *int32
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {

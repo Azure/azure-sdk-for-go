@@ -288,6 +288,8 @@ func (c *ContainerClient) executeReadManyWithQueries(
 		queryOpts.ConsistencyLevel = readManyOptions.ConsistencyLevel
 		queryOpts.SessionToken = readManyOptions.SessionToken
 		queryOpts.DedicatedGatewayRequestOptions = readManyOptions.DedicatedGatewayRequestOptions
+		queryOpts.PriorityLevel = readManyOptions.PriorityLevel
+		queryOpts.ThroughputBucket = readManyOptions.ThroughputBucket
 	}
 
 	results, err := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)

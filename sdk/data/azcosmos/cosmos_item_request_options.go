@@ -37,6 +37,10 @@ type ItemOptions struct {
 	IfMatchEtag *azcore.ETag
 	// Options for operations in the dedicated gateway.
 	DedicatedGatewayRequestOptions *DedicatedGatewayRequestOptions
+	// PriorityLevel overrides the client-level default priority for this operation.
+	PriorityLevel *PriorityLevel
+	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	ThroughputBucket *int32
 }
 
 func (options *ItemOptions) toHeaders() *map[string]string {

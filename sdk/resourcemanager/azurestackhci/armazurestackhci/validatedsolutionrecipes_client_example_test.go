@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/ValidatedSolutionRecipes_Get.json
+// Generated from example definition: 2026-04-01-preview/ValidatedSolutionRecipes_Get.json
 func ExampleValidatedSolutionRecipesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleValidatedSolutionRecipesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ValidatedSolutionRecipes_ListBySubscriptionLocationResource.json
+// Generated from example definition: 2026-04-01-preview/ValidatedSolutionRecipes_ListBySubscriptionLocationResource.json
 func ExampleValidatedSolutionRecipesClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

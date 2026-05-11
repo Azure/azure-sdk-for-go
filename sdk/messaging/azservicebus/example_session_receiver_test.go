@@ -18,7 +18,7 @@ func ExampleClient_AcceptSessionForQueue() {
 		panic(err)
 	}
 
-	defer sessionReceiver.Close(context.TODO())
+	defer func() { _ = sessionReceiver.Close(context.TODO()) }()
 
 	// session receivers work just like non-session receivers
 	// with one difference - instead of a lock per message there is a lock
@@ -55,7 +55,7 @@ func ExampleClient_AcceptSessionForSubscription() {
 		panic(err)
 	}
 
-	defer sessionReceiver.Close(context.TODO())
+	defer func() { _ = sessionReceiver.Close(context.TODO()) }()
 
 	// see ExampleClient_AcceptSessionForQueue() for usage of the SessionReceiver.
 }
@@ -78,7 +78,7 @@ func ExampleClient_AcceptNextSessionForQueue() {
 				}
 			}
 
-			defer sessionReceiver.Close(context.TODO())
+			defer func() { _ = sessionReceiver.Close(context.TODO()) }()
 
 			fmt.Printf("Session receiver was assigned session ID \"%s\"", sessionReceiver.SessionID())
 
@@ -105,7 +105,7 @@ func ExampleClient_AcceptNextSessionForSubscription() {
 				}
 			}
 
-			defer sessionReceiver.Close(context.TODO())
+			defer func() { _ = sessionReceiver.Close(context.TODO()) }()
 
 			fmt.Printf("Session receiver was assigned session ID \"%s\"", sessionReceiver.SessionID())
 

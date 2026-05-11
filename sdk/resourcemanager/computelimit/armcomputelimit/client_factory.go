@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewFeaturesClient creates a new instance of FeaturesClient.
+func (c *ClientFactory) NewFeaturesClient() *FeaturesClient {
+	return &FeaturesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewGuestSubscriptionsClient creates a new instance of GuestSubscriptionsClient.
 func (c *ClientFactory) NewGuestSubscriptionsClient() *GuestSubscriptionsClient {
 	return &GuestSubscriptionsClient{
@@ -50,6 +58,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewSharedLimitsClient creates a new instance of SharedLimitsClient.
 func (c *ClientFactory) NewSharedLimitsClient() *SharedLimitsClient {
 	return &SharedLimitsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVMFamiliesClient creates a new instance of VMFamiliesClient.
+func (c *ClientFactory) NewVMFamiliesClient() *VMFamiliesClient {
+	return &VMFamiliesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

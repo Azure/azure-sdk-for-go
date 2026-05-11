@@ -5,6 +5,9 @@ package lease_test
 
 import (
 	"context"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -13,8 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
@@ -288,7 +289,7 @@ func (l *LeaseRecordedTestsSuite) TestShareBreakLeaseNonDefault() {
 	_require.Error(err)
 
 	// wait for lease to expire
-	time.Sleep(6 * time.Second)
+	recording.Sleep(6 * time.Second)
 
 	_, err = shareClient.Delete(ctx, nil)
 	_require.NoError(err)

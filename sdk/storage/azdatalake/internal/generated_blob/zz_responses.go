@@ -652,6 +652,9 @@ type BlobClientGetPropertiesResponse struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
+	// SmartAccessTier contains the information returned from the x-ms-smart-access-tier header response.
+	SmartAccessTier *string
+
 	// TagCount contains the information returned from the x-ms-tag-count header response.
 	TagCount *int64
 
@@ -1190,6 +1193,9 @@ type BlockBlobClientStageBlockResponse struct {
 type BlockBlobClientUploadResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
+
+	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	ContentCRC64 []byte
 
 	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 []byte

@@ -18,6 +18,9 @@ type SetAccessControlResponse = generated.PathClientSetAccessControlResponse
 // GetAccessControlResponse contains the response fields for the GetAccessControl operation.
 type GetAccessControlResponse = generated.PathClientGetPropertiesResponse
 
+// GetSystemPropertiesResponse contains the response fields for the GetSystemProperties operation.
+type GetSystemPropertiesResponse = generated.PathClientGetPropertiesResponse
+
 // UpdateAccessControlResponse contains the response fields for the UpdateAccessControlRecursive operation.
 type UpdateAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
 
@@ -339,3 +342,9 @@ func FormatSetHTTPHeadersResponse(r *SetHTTPHeadersResponse, blobResp *blob.SetH
 	r.RequestID = blobResp.RequestID
 	r.Version = blobResp.Version
 }
+
+// GetTagsResponse contains the response fields for the GetTags operation.
+type GetTagsResponse = blob.GetTagsResponse
+
+// SetTagsResponse contains the response fields for the SetTags operation.
+type SetTagsResponse = blob.SetTagsResponse

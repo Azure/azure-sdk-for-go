@@ -4,6 +4,30 @@
 
 package armcomputelimit
 
+// FeaturesClientDisableResponse contains the response from method FeaturesClient.BeginDisable.
+type FeaturesClientDisableResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// FeaturesClientEnableResponse contains the response from method FeaturesClient.BeginEnable.
+type FeaturesClientEnableResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// FeaturesClientGetResponse contains the response from method FeaturesClient.Get.
+type FeaturesClientGetResponse struct {
+	// Compute limit feature.
+	Feature
+}
+
+// FeaturesClientListBySubscriptionLocationResourceResponse contains the response from method FeaturesClient.NewListBySubscriptionLocationResourcePager.
+type FeaturesClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a Feature list operation.
+	FeatureListResult
+}
+
 // GuestSubscriptionsClientCreateResponse contains the response from method GuestSubscriptionsClient.Create.
 type GuestSubscriptionsClientCreateResponse struct {
 	// Guest subscription that consumes shared compute limits.
@@ -54,4 +78,16 @@ type SharedLimitsClientGetResponse struct {
 type SharedLimitsClientListBySubscriptionLocationResourceResponse struct {
 	// The response of a SharedLimit list operation.
 	SharedLimitListResult
+}
+
+// VMFamiliesClientGetResponse contains the response from method VMFamiliesClient.Get.
+type VMFamiliesClientGetResponse struct {
+	// VM family resource representing a virtual machine family and its category.
+	VMFamily
+}
+
+// VMFamiliesClientListBySubscriptionLocationResourceResponse contains the response from method VMFamiliesClient.NewListBySubscriptionLocationResourcePager.
+type VMFamiliesClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a VmFamily list operation.
+	VMFamilyListResult
 }

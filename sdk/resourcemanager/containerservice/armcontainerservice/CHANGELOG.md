@@ -1,11 +1,11 @@
 # Release History
 
-## 9.1.0-beta.1 (2026-03-30)
+## 9.2.0-beta.1 (2026-04-21)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
 - New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
-- New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUWindows2025`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
+- New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
 - New value `OutboundTypeManagedNATGatewayV2` added to enum type `OutboundType`
 - New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
 - New value `SnapshotTypeManagedCluster` added to enum type `SnapshotType`
@@ -14,15 +14,14 @@
 - New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
 - New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
 - New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
+- New enum type `ControlPlaneScalingSize` with values `ControlPlaneScalingSizeH2`, `ControlPlaneScalingSizeH4`, `ControlPlaneScalingSizeH8`
 - New enum type `DriftAction` with values `DriftActionRecreate`, `DriftActionSynced`
 - New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
-- New enum type `GatewayAPIIstioEnabled` with values `GatewayAPIIstioEnabledDisabled`, `GatewayAPIIstioEnabledEnabled`
 - New enum type `GuardrailsSupport` with values `GuardrailsSupportPreview`, `GuardrailsSupportStable`
 - New enum type `IdentityBindingProvisioningState` with values `IdentityBindingProvisioningStateCanceled`, `IdentityBindingProvisioningStateCreating`, `IdentityBindingProvisioningStateDeleting`, `IdentityBindingProvisioningStateFailed`, `IdentityBindingProvisioningStateSucceeded`, `IdentityBindingProvisioningStateUpdating`
 - New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
 - New enum type `IpvsScheduler` with values `IpvsSchedulerLeastConnection`, `IpvsSchedulerRoundRobin`
 - New enum type `JWTAuthenticatorProvisioningState` with values `JWTAuthenticatorProvisioningStateCanceled`, `JWTAuthenticatorProvisioningStateCreating`, `JWTAuthenticatorProvisioningStateDeleting`, `JWTAuthenticatorProvisioningStateFailed`, `JWTAuthenticatorProvisioningStateSucceeded`, `JWTAuthenticatorProvisioningStateUpdating`
-- New enum type `ManagedGatewayType` with values `ManagedGatewayTypeDisabled`, `ManagedGatewayTypeStandard`
 - New enum type `ManagementMode` with values `ManagementModeManaged`, `ManagementModeUnmanaged`
 - New enum type `MeshMembershipProvisioningState` with values `MeshMembershipProvisioningStateCanceled`, `MeshMembershipProvisioningStateCreating`, `MeshMembershipProvisioningStateDeleting`, `MeshMembershipProvisioningStateFailed`, `MeshMembershipProvisioningStateSucceeded`, `MeshMembershipProvisioningStateUpdating`
 - New enum type `MigStrategy` with values `MigStrategyMixed`, `MigStrategyNone`, `MigStrategySingle`
@@ -122,17 +121,14 @@
 - New struct `MachineOSProfileLinuxProfile`
 - New struct `MachineSecurityProfile`
 - New struct `MachineStatus`
-- New struct `ManagedClusterAppRoutingIstio`
-- New struct `ManagedClusterAzureMonitorProfileAppMonitoring`
-- New struct `ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation`
-- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
 - New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
 - New struct `ManagedClusterAzureMonitorProfileContainerInsights`
+- New struct `ManagedClusterAzureMonitorProfileMetricsControlPlane`
+- New struct `ManagedClusterControlPlaneScalingProfile`
 - New struct `ManagedClusterHealthMonitorProfile`
-- New struct `ManagedClusterHostedSystemProfile`
 - New struct `ManagedClusterIngressDefaultDomainProfile`
 - New struct `ManagedClusterIngressProfileApplicationLoadBalancer`
-- New struct `ManagedClusterIngressProfileGatewayConfiguration`
 - New struct `ManagedClusterNATGatewayProfileOutboundIPPrefixes`
 - New struct `ManagedClusterNATGatewayProfileOutboundIPs`
 - New struct `ManagedClusterPropertiesForSnapshot`
@@ -143,7 +139,6 @@
 - New struct `ManagedClusterSnapshot`
 - New struct `ManagedClusterSnapshotListResult`
 - New struct `ManagedClusterSnapshotProperties`
-- New struct `ManagedClusterWebAppRoutingGatewayAPIImplementations`
 - New struct `MeshMembership`
 - New struct `MeshMembershipPrivateConnectProfile`
 - New struct `MeshMembershipProperties`
@@ -151,12 +146,12 @@
 - New struct `NetworkProfileForSnapshot`
 - New struct `NetworkProfileKubeProxyConfig`
 - New struct `NetworkProfileKubeProxyConfigIpvsConfig`
-- New struct `NodeCustomizationProfile`
 - New struct `NodeImageVersion`
 - New struct `NodeImageVersionsListResult`
 - New struct `NvidiaGPUProfile`
 - New struct `OperationStatusResult`
 - New struct `OperationStatusResultList`
+- New struct `PreparedImageSpecificationProfile`
 - New struct `RebalanceLoadBalancersRequestBody`
 - New struct `ResourceSKU`
 - New struct `ResourceSKUCapabilities`
@@ -181,18 +176,20 @@
 - New field `SeccompDefault` in struct `KubeletConfig`
 - New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
 - New field `Billing`, `ETag`, `EvictionPolicy`, `Hardware`, `Kubernetes`, `LocalDNSProfile`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
-- New field `ArtifactStreamingProfile`, `EnableOSDiskFullCaching`, `NodeCustomizationProfile`, `NodeInitializationTaints`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
-- New field `ArtifactStreamingProfile`, `EnableOSDiskFullCaching`, `NodeCustomizationProfile`, `NodeInitializationTaints`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
-- New field `AppMonitoring`, `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
+- New field `ArtifactStreamingProfile`, `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
+- New field `ArtifactStreamingProfile`, `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
+- New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New field `ControlPlane` in struct `ManagedClusterAzureMonitorProfileMetrics`
 - New field `EffectiveNoProxy` in struct `ManagedClusterHTTPProxyConfig`
-- New field `ApplicationLoadBalancer`, `GatewayAPI` in struct `ManagedClusterIngressProfile`
-- New field `DefaultDomain`, `GatewayAPIImplementations` in struct `ManagedClusterIngressProfileWebAppRouting`
+- New field `ApplicationLoadBalancer` in struct `ManagedClusterIngressProfile`
+- New field `DefaultDomain` in struct `ManagedClusterIngressProfileWebAppRouting`
 - New field `ClusterServiceLoadBalancerHealthProbeMode` in struct `ManagedClusterLoadBalancerProfile`
 - New field `CountIPv6` in struct `ManagedClusterManagedOutboundIPProfile`
 - New field `OutboundIPPrefixes`, `OutboundIPs` in struct `ManagedClusterNATGatewayProfile`
 - New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
 - New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
-- New field `CreationData`, `EnableNamespaceResources`, `HealthMonitorProfile`, `HostedSystemProfile`, `SchedulerProfile` in struct `ManagedClusterProperties`
+- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableNamespaceResources`, `HealthMonitorProfile`, `SchedulerProfile` in struct `ManagedClusterProperties`
 - New field `ImageIntegrity`, `KubernetesResourceObjectEncryptionProfile`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
 - New field `SecurityGating` in struct `ManagedClusterSecurityProfileDefender`
 - New field `Version` in struct `ManagedClusterStorageProfileDiskCSIDriver`
@@ -200,6 +197,24 @@
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
 - New field `KubeProxyConfig`, `PodLinkLocalAccess` in struct `NetworkProfile`
 - New field `Autoscale` in struct `ScaleProfile`
+
+
+## 9.1.0 (2026-04-20)
+### Features Added
+
+- New value `OSSKUWindows2025` added to enum type `OSSKU`
+- New enum type `GatewayAPIIstioEnabled` with values `GatewayAPIIstioEnabledDisabled`, `GatewayAPIIstioEnabledEnabled`
+- New enum type `ManagedGatewayType` with values `ManagedGatewayTypeDisabled`, `ManagedGatewayTypeStandard`
+- New struct `ManagedClusterAppRoutingIstio`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation`
+- New struct `ManagedClusterHostedSystemProfile`
+- New struct `ManagedClusterIngressProfileGatewayConfiguration`
+- New struct `ManagedClusterWebAppRoutingGatewayAPIImplementations`
+- New field `AppMonitoring` in struct `ManagedClusterAzureMonitorProfile`
+- New field `GatewayAPI` in struct `ManagedClusterIngressProfile`
+- New field `GatewayAPIImplementations` in struct `ManagedClusterIngressProfileWebAppRouting`
+- New field `HostedSystemProfile` in struct `ManagedClusterProperties`
 
 
 ## 9.0.0 (2026-03-17)

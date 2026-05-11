@@ -1,6 +1,6 @@
 # Release History
 
-## 5.0.0-beta.1 (2026-02-27)
+## 5.0.0-beta.1 (2026-04-24)
 ### Breaking Changes
 
 - Enum `ContainerType` has been removed
@@ -10,6 +10,12 @@
 - Enum `JobStatus` has been removed
 - Enum `RestorePointQueryType` has been removed
 - Enum `Type` has been removed
+- Function `NewClient` has been removed
+- Function `*Client.GetOperationStatus` has been removed
+- Function `*Client.BeginBMSPrepareDataMove` has been removed
+- Function `*Client.BeginBMSTriggerDataMove` has been removed
+- Function `*Client.BeginMoveRecoveryPoint` has been removed
+- Function `*ClientFactory.NewClient` has been removed
 - Operation `*ProtectedItemsClient.CreateOrUpdate` has been changed to LRO, use `*ProtectedItemsClient.BeginCreateOrUpdate` instead.
 - Struct `BMSBackupEngineQueryObject` has been removed
 - Struct `BMSBackupEnginesQueryObject` has been removed
@@ -47,11 +53,68 @@
 - New function `*AzureVMWorkloadSAPHanaScaleoutProtectableItem.GetWorkloadProtectableItem() *WorkloadProtectableItem`
 - New function `*AzureVMWorkloadSQLInstanceProtectedItem.GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem`
 - New function `*AzureVMWorkloadSQLInstanceProtectedItem.GetProtectedItem() *ProtectedItem`
+- New function `*ClientFactory.NewRecoveryServicesClient() *RecoveryServicesClient`
 - New function `*RecoveryPointsClient.Update(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters UpdateRecoveryPointRequest, options *RecoveryPointsClientUpdateOptions) (RecoveryPointsClientUpdateResponse, error)`
+- New function `NewRecoveryServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryServicesClient, error)`
+- New function `*RecoveryServicesClient.GetOperationStatus(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *RecoveryServicesClientGetOperationStatusOptions) (RecoveryServicesClientGetOperationStatusResponse, error)`
+- New function `*RecoveryServicesClient.BeginBMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *RecoveryServicesClientBeginBMSPrepareDataMoveOptions) (*runtime.Poller[RecoveryServicesClientBMSPrepareDataMoveResponse], error)`
+- New function `*RecoveryServicesClient.BeginBMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *RecoveryServicesClientBeginBMSTriggerDataMoveOptions) (*runtime.Poller[RecoveryServicesClientBMSTriggerDataMoveResponse], error)`
+- New function `*RecoveryServicesClient.BeginMoveRecoveryPoint(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, options *RecoveryServicesClientBeginMoveRecoveryPointOptions) (*runtime.Poller[RecoveryServicesClientMoveRecoveryPointResponse], error)`
+- New function `*RecoveryServicesClient.NewBMSPrepareDataMoveOperationResultClient() *BMSPrepareDataMoveOperationResultClient`
+- New function `*RecoveryServicesClient.NewBackupEnginesClient() *BackupEnginesClient`
+- New function `*RecoveryServicesClient.NewBackupJobsClient() *BackupJobsClient`
+- New function `*RecoveryServicesClient.NewBackupOperationResultsClient() *BackupOperationResultsClient`
+- New function `*RecoveryServicesClient.NewBackupOperationStatusesClient() *BackupOperationStatusesClient`
+- New function `*RecoveryServicesClient.NewBackupPoliciesClient() *BackupPoliciesClient`
+- New function `*RecoveryServicesClient.NewBackupProtectableItemsClient() *BackupProtectableItemsClient`
+- New function `*RecoveryServicesClient.NewBackupProtectedItemsClient() *BackupProtectedItemsClient`
+- New function `*RecoveryServicesClient.NewBackupProtectionContainersClient() *BackupProtectionContainersClient`
+- New function `*RecoveryServicesClient.NewBackupProtectionIntentClient() *BackupProtectionIntentClient`
+- New function `*RecoveryServicesClient.NewBackupResourceEncryptionConfigsClient() *BackupResourceEncryptionConfigsClient`
+- New function `*RecoveryServicesClient.NewBackupResourceStorageConfigsNonCRRClient() *BackupResourceStorageConfigsNonCRRClient`
+- New function `*RecoveryServicesClient.NewBackupResourceVaultConfigsClient() *BackupResourceVaultConfigsClient`
+- New function `*RecoveryServicesClient.NewBackupStatusClient() *BackupStatusClient`
+- New function `*RecoveryServicesClient.NewBackupUsageSummariesClient() *BackupUsageSummariesClient`
+- New function `*RecoveryServicesClient.NewBackupWorkloadItemsClient() *BackupWorkloadItemsClient`
+- New function `*RecoveryServicesClient.NewBackupsClient() *BackupsClient`
+- New function `*RecoveryServicesClient.NewDeletedProtectionContainersClient() *DeletedProtectionContainersClient`
+- New function `*RecoveryServicesClient.NewExportJobsOperationResultsClient() *ExportJobsOperationResultsClient`
+- New function `*RecoveryServicesClient.NewFeatureSupportClient() *FeatureSupportClient`
+- New function `*RecoveryServicesClient.NewFetchTieringCostClient() *FetchTieringCostClient`
+- New function `*RecoveryServicesClient.NewGetTieringCostOperationResultClient() *GetTieringCostOperationResultClient`
+- New function `*RecoveryServicesClient.NewItemLevelRecoveryConnectionsClient() *ItemLevelRecoveryConnectionsClient`
+- New function `*RecoveryServicesClient.NewJobCancellationsClient() *JobCancellationsClient`
+- New function `*RecoveryServicesClient.NewJobDetailsClient() *JobDetailsClient`
+- New function `*RecoveryServicesClient.NewJobOperationResultsClient() *JobOperationResultsClient`
+- New function `*RecoveryServicesClient.NewJobsClient() *JobsClient`
+- New function `*RecoveryServicesClient.NewOperationClient() *OperationClient`
+- New function `*RecoveryServicesClient.NewOperationsClient() *OperationsClient`
+- New function `*RecoveryServicesClient.NewPrivateEndpointClient() *PrivateEndpointClient`
+- New function `*RecoveryServicesClient.NewPrivateEndpointConnectionClient() *PrivateEndpointConnectionClient`
+- New function `*RecoveryServicesClient.NewProtectableContainersClient() *ProtectableContainersClient`
+- New function `*RecoveryServicesClient.NewProtectedItemOperationResultsClient() *ProtectedItemOperationResultsClient`
+- New function `*RecoveryServicesClient.NewProtectedItemOperationStatusesClient() *ProtectedItemOperationStatusesClient`
+- New function `*RecoveryServicesClient.NewProtectedItemsClient() *ProtectedItemsClient`
+- New function `*RecoveryServicesClient.NewProtectionContainerOperationResultsClient() *ProtectionContainerOperationResultsClient`
+- New function `*RecoveryServicesClient.NewProtectionContainerRefreshOperationResultsClient() *ProtectionContainerRefreshOperationResultsClient`
+- New function `*RecoveryServicesClient.NewProtectionContainersClient() *ProtectionContainersClient`
+- New function `*RecoveryServicesClient.NewProtectionIntentClient() *ProtectionIntentClient`
+- New function `*RecoveryServicesClient.NewProtectionPoliciesClient() *ProtectionPoliciesClient`
+- New function `*RecoveryServicesClient.NewProtectionPolicyOperationResultsClient() *ProtectionPolicyOperationResultsClient`
+- New function `*RecoveryServicesClient.NewProtectionPolicyOperationStatusesClient() *ProtectionPolicyOperationStatusesClient`
+- New function `*RecoveryServicesClient.NewRecoveryPointsClient() *RecoveryPointsClient`
+- New function `*RecoveryServicesClient.NewRecoveryPointsRecommendedForMoveClient() *RecoveryPointsRecommendedForMoveClient`
+- New function `*RecoveryServicesClient.NewResourceGuardProxiesClient() *ResourceGuardProxiesClient`
+- New function `*RecoveryServicesClient.NewResourceGuardProxyClient() *ResourceGuardProxyClient`
+- New function `*RecoveryServicesClient.NewRestoresClient() *RestoresClient`
+- New function `*RecoveryServicesClient.NewSecurityPINsClient() *SecurityPINsClient`
+- New function `*RecoveryServicesClient.NewTieringCostOperationStatusClient() *TieringCostOperationStatusClient`
+- New function `*RecoveryServicesClient.NewValidateOperationClient() *ValidateOperationClient`
+- New function `*RecoveryServicesClient.NewValidateOperationResultsClient() *ValidateOperationResultsClient`
+- New function `*RecoveryServicesClient.NewValidateOperationStatusesClient() *ValidateOperationStatusesClient`
 - New struct `AzureVMWorkloadSAPHanaScaleoutProtectableItem`
 - New struct `AzureVMWorkloadSQLInstanceProtectedItem`
 - New struct `DatabaseInRP`
-- New struct `OkResponse`
 - New struct `PatchRecoveryPointInput`
 - New struct `PatchRecoveryPointPropertiesInput`
 - New struct `SourceSideScanInfo`
@@ -85,8 +148,6 @@
 - New field `SystemData` in struct `BackupResourceEncryptionConfigExtendedResource`
 - New field `SystemData` in struct `BackupResourceEncryptionConfigResource`
 - New field `SystemData` in struct `BackupResourceVaultConfigResource`
-- New anonymous field `OkResponse` in struct `ClientBMSPrepareDataMoveResponse`
-- New anonymous field `OkResponse` in struct `ClientBMSTriggerDataMoveResponse`
 - New field `SourceSideScanInfo` in struct `DPMProtectedItem`
 - New field `SourceSideScanInfo` in struct `GenericProtectedItem`
 - New field `ThreatInfo`, `ThreatStatus` in struct `GenericRecoveryPoint`

@@ -52,7 +52,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	queryRequestCharge := newResponse(azResponse).RequestCharge
+	queryRequestCharge := readRequestCharge(azResponse)
 	if len(theOffers.Offers) == 0 {
 		azResponse.StatusCode = http.StatusNotFound
 		azResponse.Header.Add(cosmosHeaderRequestCharge, fmt.Sprint(queryRequestCharge))

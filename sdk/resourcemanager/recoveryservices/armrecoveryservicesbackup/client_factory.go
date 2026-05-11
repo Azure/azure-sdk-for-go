@@ -168,14 +168,6 @@ func (c *ClientFactory) NewBackupsClient() *BackupsClient {
 	}
 }
 
-// NewClient creates a new instance of Client.
-func (c *ClientFactory) NewClient() *Client {
-	return &Client{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewDeletedProtectionContainersClient creates a new instance of DeletedProtectionContainersClient.
 func (c *ClientFactory) NewDeletedProtectionContainersClient() *DeletedProtectionContainersClient {
 	return &DeletedProtectionContainersClient{
@@ -386,6 +378,14 @@ func (c *ClientFactory) NewRecoveryPointsClient() *RecoveryPointsClient {
 // NewRecoveryPointsRecommendedForMoveClient creates a new instance of RecoveryPointsRecommendedForMoveClient.
 func (c *ClientFactory) NewRecoveryPointsRecommendedForMoveClient() *RecoveryPointsRecommendedForMoveClient {
 	return &RecoveryPointsRecommendedForMoveClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRecoveryServicesClient creates a new instance of RecoveryServicesClient.
+func (c *ClientFactory) NewRecoveryServicesClient() *RecoveryServicesClient {
+	return &RecoveryServicesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

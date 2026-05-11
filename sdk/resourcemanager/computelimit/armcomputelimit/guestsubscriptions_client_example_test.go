@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_Create.json
+// Generated from example definition: 2026-04-30/GuestSubscriptions_Create.json
 func ExampleGuestSubscriptionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleGuestSubscriptionsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputelimit.GuestSubscriptionsClientCreateResponse{
-	// 	GuestSubscription: &armcomputelimit.GuestSubscription{
+	// 	GuestSubscription: armcomputelimit.GuestSubscription{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/guestSubscriptions/11111111-1111-1111-1111-111111111111"),
 	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/guestSubscriptions"),
@@ -43,7 +43,7 @@ func ExampleGuestSubscriptionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_Delete.json
+// Generated from example definition: 2026-04-30/GuestSubscriptions_Delete.json
 func ExampleGuestSubscriptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleGuestSubscriptionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_Get.json
+// Generated from example definition: 2026-04-30/GuestSubscriptions_Get.json
 func ExampleGuestSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleGuestSubscriptionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputelimit.GuestSubscriptionsClientGetResponse{
-	// 	GuestSubscription: &armcomputelimit.GuestSubscription{
+	// 	GuestSubscription: armcomputelimit.GuestSubscription{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/guestSubscriptions/11111111-1111-1111-1111-111111111111"),
 	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/guestSubscriptions"),
@@ -95,7 +95,7 @@ func ExampleGuestSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-15/GuestSubscriptions_List.json
+// Generated from example definition: 2026-04-30/GuestSubscriptions_List.json
 func ExampleGuestSubscriptionsClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

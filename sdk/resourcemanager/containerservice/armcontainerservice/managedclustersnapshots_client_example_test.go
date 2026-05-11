@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/ManagedClusterSnapshotsCreate.json
+// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsCreate.json
 func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/ManagedClusterSnapshotsDelete.json
+// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsDelete.json
 func ExampleManagedClusterSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleManagedClusterSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/ManagedClusterSnapshotsGet.json
+// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsGet.json
 func ExampleManagedClusterSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/ManagedClusterSnapshotsList.json
+// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsList.json
 func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
 func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-02-preview/ManagedClusterSnapshotsUpdateTags.json
+// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsUpdateTags.json
 func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,8 +346,8 @@ func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("val1"),
-	// 			"key2": to.Ptr("val2"),
+	// 			"key2": to.Ptr("new-val2"),
+	// 			"key3": to.Ptr("val3"),
 	// 		},
 	// 	},
 	// }

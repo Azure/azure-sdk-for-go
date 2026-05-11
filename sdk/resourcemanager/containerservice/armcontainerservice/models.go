@@ -1078,6 +1078,9 @@ type Machine struct {
 	// The properties of the machine
 	Properties *MachineProperties
 
+	// The Availability zone in which machine is located.
+	Zones []*string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
@@ -1089,9 +1092,6 @@ type Machine struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-
-	// READ-ONLY; The Availability zone in which machine is located.
-	Zones []*string
 }
 
 // MachineBillingProfile - The properties having to do with machine billing.
@@ -1263,6 +1263,9 @@ type MachineProperties struct {
 	// Machine only allows 'System' and 'User' mode.
 	Mode *AgentPoolMode
 
+	// network properties of the machine
+	Network *MachineNetworkProperties
+
 	// The operating system and disk used by the machine.
 	OperatingSystem *MachineOSProfile
 
@@ -1279,9 +1282,6 @@ type MachineProperties struct {
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable optimistic
 	// concurrency per the normal eTag convention.
 	ETag *string
-
-	// READ-ONLY; network properties of the machine
-	Network *MachineNetworkProperties
 
 	// READ-ONLY; The version of node image.
 	NodeImageVersion *string
@@ -1650,8 +1650,8 @@ type ManagedClusterAgentPoolProfile struct {
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
 
-	// Settings to determine the node customization used to provision nodes in a pool.
-	NodeCustomizationProfile *NodeCustomizationProfile
+	// The version of node image
+	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
 	// and can be removed with a kubectl call. This field can be modified after node pool is created, but nodes will not be recreated
@@ -1706,6 +1706,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// can be stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
 	// charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded
 	PowerState *PowerState
+
+	// Settings to determine the prepared image specification used to provision nodes in a pool.
+	PreparedImageSpecificationProfile *PreparedImageSpecificationProfile
 
 	// The ID for Proximity Placement Group.
 	ProximityPlacementGroupID *string
@@ -1778,9 +1781,6 @@ type ManagedClusterAgentPoolProfile struct {
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable optimistic
 	// concurrency per the normal eTag convention.
 	ETag *string
-
-	// READ-ONLY; The version of node image
-	NodeImageVersion *string
 
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string
@@ -1878,8 +1878,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
 
-	// Settings to determine the node customization used to provision nodes in a pool.
-	NodeCustomizationProfile *NodeCustomizationProfile
+	// The version of node image
+	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
 	// and can be removed with a kubectl call. This field can be modified after node pool is created, but nodes will not be recreated
@@ -1934,6 +1934,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// can be stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
 	// charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded
 	PowerState *PowerState
+
+	// Settings to determine the prepared image specification used to provision nodes in a pool.
+	PreparedImageSpecificationProfile *PreparedImageSpecificationProfile
 
 	// The ID for Proximity Placement Group.
 	ProximityPlacementGroupID *string
@@ -2007,9 +2010,6 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// concurrency per the normal eTag convention.
 	ETag *string
 
-	// READ-ONLY; The version of node image
-	NodeImageVersion *string
-
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string
 }
@@ -2049,54 +2049,58 @@ type ManagedClusterAzureMonitorProfile struct {
 	Metrics *ManagedClusterAzureMonitorProfileMetrics
 }
 
-// ManagedClusterAzureMonitorProfileAppMonitoring - Application Monitoring Profile for Kubernetes Application Container. Collects
-// application logs, metrics and traces through auto-instrumentation of the application using Azure Monitor OpenTelemetry
-// based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+// ManagedClusterAzureMonitorProfileAppMonitoring - Application Monitoring profile for AKS.
 type ManagedClusterAzureMonitorProfileAppMonitoring struct {
-	// Application Monitoring Auto Instrumentation for Kubernetes Application Container. Deploys web hook to auto-instrument Azure
-	// Monitor OpenTelemetry based SDKs to collect OpenTelemetry metrics, logs and traces of the application. See aka.ms/AzureMonitorApplicationMonitoring
+	// Application Monitoring auto-instrumentation for AKS. Deploys a webhook that auto-instruments workloads with Microsoft OpenTelemetry
+	// Distros to collect OpenTelemetry metrics, logs, and traces. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
 	// for an overview.
 	AutoInstrumentation *ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation
 
-	// Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Logs and Traces. Collects OpenTelemetry
-	// logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring
+	// Application Monitoring Open Telemetry Logs and Traces Profile for AKS. Collects OpenTelemetry logs and traces of the application
+	// using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
 	// for an overview.
-	OpenTelemetryLogs *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs
+	OpenTelemetryLogsAndTraces *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces
 
-	// Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Metrics. Collects OpenTelemetry
-	// metrics of the application using Azure Monitor OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for
-	// an overview.
+	// Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application using
+	// Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
+	// for an overview.
 	OpenTelemetryMetrics *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
 }
 
-// ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation - Application Monitoring Auto Instrumentation for Kubernetes
-// Application Container. Deploys web hook to auto-instrument Azure Monitor OpenTelemetry based SDKs to collect OpenTelemetry
-// metrics, logs and traces of the application. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+// ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation - Application Monitoring auto-instrumentation for AKS.
+// Deploys a webhook that auto-instruments workloads with Microsoft OpenTelemetry Distros to collect OpenTelemetry metrics,
+// logs, and traces. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation struct {
-	// Indicates if Application Monitoring Auto Instrumentation is enabled or not.
+	// Indicates if Application Monitoring Auto-instrumentation is enabled or not.
 	Enabled *bool
 }
 
-// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs - Application Monitoring Open Telemetry Metrics Profile
-// for Kubernetes Application Container Logs and Traces. Collects OpenTelemetry logs and traces of the application using Azure
-// Monitor OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
-type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs struct {
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces - Application Monitoring Open Telemetry Logs and
+// Traces Profile for AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based
+// SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces struct {
 	// Indicates if Application Monitoring Open Telemetry Logs and traces is enabled or not.
 	Enabled *bool
 
-	// The Open Telemetry host port for Open Telemetry logs and traces. If not specified, the default port is 28331.
-	Port *int64
+	// The host port for Open Telemetry GRPC logs and traces. If not specified, the default port is 28332.
+	GrpcPort *int64
+
+	// The host port for Open Telemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
+	HTTPPort *int64
 }
 
 // ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics - Application Monitoring Open Telemetry Metrics Profile
-// for Kubernetes Application Container Metrics. Collects OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry
-// based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+// for AKS. Collects OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs
+// and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics struct {
 	// Indicates if Application Monitoring Open Telemetry Metrics is enabled or not.
 	Enabled *bool
 
-	// The Open Telemetry host port for Open Telemetry metrics. If not specified, the default port is 28333.
-	Port *int64
+	// The host port for Open Telemetry GRPC metrics. If not specified, the default port is 28334.
+	GrpcPort *int64
+
+	// The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
+	HTTPPort *int64
 }
 
 // ManagedClusterAzureMonitorProfileContainerInsights - Azure Monitor Container Insights Profile for Kubernetes Events, Inventory
@@ -2147,9 +2151,22 @@ type ManagedClusterAzureMonitorProfileMetrics struct {
 	// for details on enabling and disabling.
 	Enabled *bool
 
+	// Control plane metrics collection profile for the Azure Managed Prometheus addon. Configures collection of operational runtime
+	// metrics from managed control plane components (kube-apiserver, etcd, etc). See aka.ms/aks/controlplane-metrics for an overview.
+	ControlPlane *ManagedClusterAzureMonitorProfileMetricsControlPlane
+
 	// Kube State Metrics profile for the Azure Managed Prometheus addon. These optional settings are for the kube-state-metrics
 	// pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters for details.
 	KubeStateMetrics *ManagedClusterAzureMonitorProfileKubeStateMetrics
+}
+
+// ManagedClusterAzureMonitorProfileMetricsControlPlane - Control plane metrics collection profile for the Azure Managed Prometheus
+// addon. Configures collection of operational runtime metrics from managed control plane components (kube-apiserver, etcd,
+// etc). See aka.ms/aks/controlplane-metrics for an overview.
+type ManagedClusterAzureMonitorProfileMetricsControlPlane struct {
+	// Whether to enable or disable collection of control plane metrics by the Azure Managed Prometheus addon. Defaults to disabled.
+	// See aka.ms/aks/controlplane-metrics for details.
+	Enabled *bool
 }
 
 // ManagedClusterBootstrapProfile - The bootstrap profile.
@@ -2159,6 +2176,15 @@ type ManagedClusterBootstrapProfile struct {
 
 	// The resource Id of Azure Container Registry. The registry must have private network access, premium SKU and zone redundancy.
 	ContainerRegistryID *string
+}
+
+// ManagedClusterControlPlaneScalingProfile - Profile for providing scaled and performance guaranteed control plane capacity
+// to deliver consistent performance under high workload. Requires Kubernetes version 1.33.0 or later.
+type ManagedClusterControlPlaneScalingProfile struct {
+	// REQUIRED; The scaling size of the control plane. Scaling sizes offer guaranteed capacity and predictable Kubernetes performance
+	// beyond standard tier defaults. Higher H sizes provide increased performance guarantees. See https://aka.ms/aks/hyperscale
+	// for performance metrics details for each size.
+	ScalingSize *ControlPlaneScalingSize
 }
 
 // ManagedClusterCostAnalysis - The cost analysis configuration for the cluster
@@ -2205,6 +2231,18 @@ type ManagedClusterHealthMonitorProfile struct {
 type ManagedClusterHostedSystemProfile struct {
 	// Whether to enable hosted system addons for the cluster.
 	Enabled *bool
+
+	// The ID of the subnet that will be joined by worker nodes managed by node auto provisioner for running workload pods in
+	// your tenant. This must be provided together with `systemNodeSubnetID` and `apiserverAccessProfile.subnetId`, and all three
+	// subnet IDs must be in the same VNet. If you don’t specify it, AKS will create a subnet in the managed resource group using
+	// a default /16 CIDR.
+	NodeSubnetID *string
+
+	// The ID of the subnet that will be joined by system nodes managed and hosted by AKS for running critical system addons.
+	// This ID must be provided together with `nodeSubnetID` and `apiserverAccessProfile.subnetId`, and all three subnet IDs must
+	// belong to the same VNet. If you don’t specify it, AKS will create a subnet in the managed resource group using a default
+	// /26 CIDR.
+	SystemNodeSubnetID *string
 }
 
 // ManagedClusterIdentity - Identity for the managed cluster.
@@ -2258,7 +2296,7 @@ type ManagedClusterIngressProfileApplicationLoadBalancer struct {
 	Identity *UserAssignedIdentity
 }
 
-// ManagedClusterIngressProfileGatewayConfiguration - Configuration for the ingress managed gateway. See https://aka.ms/k8s-gateway-api
+// ManagedClusterIngressProfileGatewayConfiguration - Configuration for managed Gateway API CRDs. See https://aka.ms/k8s-gateway-api
 // for more details.
 type ManagedClusterIngressProfileGatewayConfiguration struct {
 	// Configuration for the managed Gateway API installation. If not specified, the default is 'Disabled'. See https://aka.ms/k8s-gateway-api
@@ -2577,6 +2615,10 @@ type ManagedClusterProperties struct {
 	// Profile of the cluster bootstrap configuration.
 	BootstrapProfile *ManagedClusterBootstrapProfile
 
+	// Profile for providing scaled and performance guaranteed control plane capacity to deliver consistent performance under
+	// high workload. Requires Kubernetes version 1.33.0 or later.
+	ControlPlaneScalingProfile *ManagedClusterControlPlaneScalingProfile
+
 	// CreationData to be used to specify the source Snapshot ID if the cluster will be created/upgraded using a snapshot.
 	CreationData *CreationData
 
@@ -2807,17 +2849,17 @@ type ManagedClusterPropertiesAutoScalerProfile struct {
 
 // ManagedClusterPropertiesForSnapshot - managed cluster properties for snapshot, these properties are read only.
 type ManagedClusterPropertiesForSnapshot struct {
-	// Whether the cluster has enabled Kubernetes Role-Based Access Control or not.
+	// READ-ONLY; Whether the cluster has enabled Kubernetes Role-Based Access Control or not.
 	EnableRbac *bool
 
-	// The current kubernetes version.
+	// READ-ONLY; The current kubernetes version.
 	KubernetesVersion *string
-
-	// The current managed cluster sku.
-	SKU *ManagedClusterSKU
 
 	// READ-ONLY; The current network profile.
 	NetworkProfile *NetworkProfileForSnapshot
+
+	// READ-ONLY; The current managed cluster sku.
+	SKU *ManagedClusterSKU
 }
 
 // ManagedClusterSKU - The SKU of a Managed Cluster.
@@ -3510,13 +3552,6 @@ type NetworkProfileKubeProxyConfigIpvsConfig struct {
 	UDPTimeoutSeconds *int32
 }
 
-// NodeCustomizationProfile - Settings to determine the node customization used to provision nodes in a pool.
-type NodeCustomizationProfile struct {
-	// The resource ID of the node customization resource to use. This can be a version. Omitting the version will use the latest
-	// version of the node customization.
-	NodeCustomizationID *string
-}
-
 // NodeImageVersion - node image version profile for given major.minor.patch release.
 type NodeImageVersion struct {
 	// The OS + SKU + version of the node image. Example: AKSUbuntu-1804gen2containerd-2024.02.02
@@ -3661,6 +3696,14 @@ type PortRange struct {
 type PowerState struct {
 	// Tells whether the cluster is Running or Stopped
 	Code *Code
+}
+
+// PreparedImageSpecificationProfile - Settings to determine the prepared image specification used to provision nodes in a
+// pool.
+type PreparedImageSpecificationProfile struct {
+	// The resource ID of the prepared image specification resource to use. This can include a version. Omitting the version will
+	// use the latest version of the prepared image specification.
+	PreparedImageSpecificationID *string
 }
 
 // PrivateEndpoint - Private endpoint which a connection belongs to.
@@ -3990,7 +4033,10 @@ type SafeguardsAvailableVersionsProperties struct {
 // ScaleProfile - Specifications on how to scale a VirtualMachines agent pool.
 type ScaleProfile struct {
 	// Specifications on how to auto-scale the VirtualMachines agent pool within a predefined size range.
-	Autoscale *AutoScaleProfile
+	// Each profile targets a specific VM SKU and is evaluated independently.
+	// Scaling decisions across profiles are governed by the cluster autoscaler expander,
+	// configurable via `ManagedCluster.properties.autoScalerProfile.expander`.
+	Autoscale []*AutoScaleProfile
 
 	// Specifications on how to scale the VirtualMachines agent pool to a fixed size.
 	Manual []*ManualScaleProfile

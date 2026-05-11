@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/TrustedAccessRoleBindings_CreateOrUpdate.json
+// Generated from example definition: 2026-02-02-preview/TrustedAccessRoleBindings_CreateOrUpdate.json
 func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/TrustedAccessRoleBindings_Delete.json
+// Generated from example definition: 2026-02-02-preview/TrustedAccessRoleBindings_Delete.json
 func ExampleTrustedAccessRoleBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleTrustedAccessRoleBindingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-02-preview/TrustedAccessRoleBindings_Get.json
+// Generated from example definition: 2026-02-02-preview/TrustedAccessRoleBindings_Get.json
 func ExampleTrustedAccessRoleBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleTrustedAccessRoleBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-02-preview/TrustedAccessRoleBindings_List.json
+// Generated from example definition: 2026-02-02-preview/TrustedAccessRoleBindings_List.json
 func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

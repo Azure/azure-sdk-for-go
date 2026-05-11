@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Common/ListJobs.json
+// Generated from example definition: 2026-01-31-preview/Common/ListJobs.json
 func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Common/ListJobsWithAllSupportedFilters.json
+// Generated from example definition: 2026-01-31-preview/Common/ListJobsWithAllSupportedFilters.json
 func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+// Generated from example definition: 2026-01-31-preview/Common/ListJobsWithStartTimeAndEndTimeFilters.json
 func ExampleBackupJobsClient_NewListPager_listJobsWithTimeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

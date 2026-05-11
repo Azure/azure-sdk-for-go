@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Common/TriggerCancelJob.json
+// Generated from example definition: 2026-01-31-preview/Common/TriggerCancelJob.json
 func ExampleJobCancellationsClient_Trigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -42,7 +42,7 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 // BeginDelete - Delete Private Endpoint requests. This call is made by Backup Admin.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
 //     method.
@@ -66,7 +66,7 @@ func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, 
 // Delete - Delete Private Endpoint requests. This call is made by Backup Admin.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionClient.BeginDelete"
@@ -112,7 +112,7 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -120,7 +120,7 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 // Get - Get Private Endpoint Connection. This call is made by Backup Admin.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateEndpointConnectionClientGetOptions contains the optional parameters for the PrivateEndpointConnectionClient.Get
 //     method.
@@ -170,7 +170,7 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Resp
 // BeginPut - Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateEndpointConnectionClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginPut
 //     method.
@@ -212,7 +212,7 @@ func (client *PrivateEndpointConnectionClient) BeginPut(ctx context.Context, vau
 // Put - Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 func (client *PrivateEndpointConnectionClient) put(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionClient.BeginPut"
@@ -258,7 +258,7 @@ func (client *PrivateEndpointConnectionClient) putCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

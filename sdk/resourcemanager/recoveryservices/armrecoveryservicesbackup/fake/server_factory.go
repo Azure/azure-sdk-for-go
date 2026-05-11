@@ -66,9 +66,6 @@ type ServerFactory struct {
 	// BackupsServer contains the fakes for client BackupsClient
 	BackupsServer BackupsServer
 
-	// Server contains the fakes for client Client
-	Server Server
-
 	// DeletedProtectionContainersServer contains the fakes for client DeletedProtectionContainersClient
 	DeletedProtectionContainersServer DeletedProtectionContainersServer
 
@@ -150,6 +147,9 @@ type ServerFactory struct {
 	// RecoveryPointsRecommendedForMoveServer contains the fakes for client RecoveryPointsRecommendedForMoveClient
 	RecoveryPointsRecommendedForMoveServer RecoveryPointsRecommendedForMoveServer
 
+	// RecoveryServicesServer contains the fakes for client RecoveryServicesClient
+	RecoveryServicesServer RecoveryServicesServer
+
 	// ResourceGuardProxiesServer contains the fakes for client ResourceGuardProxiesClient
 	ResourceGuardProxiesServer ResourceGuardProxiesServer
 
@@ -206,7 +206,6 @@ type ServerFactoryTransport struct {
 	trBackupUsageSummariesServer                       *BackupUsageSummariesServerTransport
 	trBackupWorkloadItemsServer                        *BackupWorkloadItemsServerTransport
 	trBackupsServer                                    *BackupsServerTransport
-	trServer                                           *ServerTransport
 	trDeletedProtectionContainersServer                *DeletedProtectionContainersServerTransport
 	trExportJobsOperationResultsServer                 *ExportJobsOperationResultsServerTransport
 	trFeatureSupportServer                             *FeatureSupportServerTransport
@@ -234,6 +233,7 @@ type ServerFactoryTransport struct {
 	trProtectionPolicyOperationStatusesServer          *ProtectionPolicyOperationStatusesServerTransport
 	trRecoveryPointsServer                             *RecoveryPointsServerTransport
 	trRecoveryPointsRecommendedForMoveServer           *RecoveryPointsRecommendedForMoveServerTransport
+	trRecoveryServicesServer                           *RecoveryServicesServerTransport
 	trResourceGuardProxiesServer                       *ResourceGuardProxiesServerTransport
 	trResourceGuardProxyServer                         *ResourceGuardProxyServerTransport
 	trRestoresServer                                   *RestoresServerTransport
@@ -258,247 +258,249 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "BMSPrepareDataMoveOperationResultClient":
-		initServer(s, &s.trBMSPrepareDataMoveOperationResultServer, func() *BMSPrepareDataMoveOperationResultServerTransport {
+		initServer(&s.trMu, &s.trBMSPrepareDataMoveOperationResultServer, func() *BMSPrepareDataMoveOperationResultServerTransport {
 			return NewBMSPrepareDataMoveOperationResultServerTransport(&s.srv.BMSPrepareDataMoveOperationResultServer)
 		})
 		resp, err = s.trBMSPrepareDataMoveOperationResultServer.Do(req)
 	case "BackupEnginesClient":
-		initServer(s, &s.trBackupEnginesServer, func() *BackupEnginesServerTransport {
+		initServer(&s.trMu, &s.trBackupEnginesServer, func() *BackupEnginesServerTransport {
 			return NewBackupEnginesServerTransport(&s.srv.BackupEnginesServer)
 		})
 		resp, err = s.trBackupEnginesServer.Do(req)
 	case "BackupJobsClient":
-		initServer(s, &s.trBackupJobsServer, func() *BackupJobsServerTransport { return NewBackupJobsServerTransport(&s.srv.BackupJobsServer) })
+		initServer(&s.trMu, &s.trBackupJobsServer, func() *BackupJobsServerTransport { return NewBackupJobsServerTransport(&s.srv.BackupJobsServer) })
 		resp, err = s.trBackupJobsServer.Do(req)
 	case "BackupOperationResultsClient":
-		initServer(s, &s.trBackupOperationResultsServer, func() *BackupOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trBackupOperationResultsServer, func() *BackupOperationResultsServerTransport {
 			return NewBackupOperationResultsServerTransport(&s.srv.BackupOperationResultsServer)
 		})
 		resp, err = s.trBackupOperationResultsServer.Do(req)
 	case "BackupOperationStatusesClient":
-		initServer(s, &s.trBackupOperationStatusesServer, func() *BackupOperationStatusesServerTransport {
+		initServer(&s.trMu, &s.trBackupOperationStatusesServer, func() *BackupOperationStatusesServerTransport {
 			return NewBackupOperationStatusesServerTransport(&s.srv.BackupOperationStatusesServer)
 		})
 		resp, err = s.trBackupOperationStatusesServer.Do(req)
 	case "BackupPoliciesClient":
-		initServer(s, &s.trBackupPoliciesServer, func() *BackupPoliciesServerTransport {
+		initServer(&s.trMu, &s.trBackupPoliciesServer, func() *BackupPoliciesServerTransport {
 			return NewBackupPoliciesServerTransport(&s.srv.BackupPoliciesServer)
 		})
 		resp, err = s.trBackupPoliciesServer.Do(req)
 	case "BackupProtectableItemsClient":
-		initServer(s, &s.trBackupProtectableItemsServer, func() *BackupProtectableItemsServerTransport {
+		initServer(&s.trMu, &s.trBackupProtectableItemsServer, func() *BackupProtectableItemsServerTransport {
 			return NewBackupProtectableItemsServerTransport(&s.srv.BackupProtectableItemsServer)
 		})
 		resp, err = s.trBackupProtectableItemsServer.Do(req)
 	case "BackupProtectedItemsClient":
-		initServer(s, &s.trBackupProtectedItemsServer, func() *BackupProtectedItemsServerTransport {
+		initServer(&s.trMu, &s.trBackupProtectedItemsServer, func() *BackupProtectedItemsServerTransport {
 			return NewBackupProtectedItemsServerTransport(&s.srv.BackupProtectedItemsServer)
 		})
 		resp, err = s.trBackupProtectedItemsServer.Do(req)
 	case "BackupProtectionContainersClient":
-		initServer(s, &s.trBackupProtectionContainersServer, func() *BackupProtectionContainersServerTransport {
+		initServer(&s.trMu, &s.trBackupProtectionContainersServer, func() *BackupProtectionContainersServerTransport {
 			return NewBackupProtectionContainersServerTransport(&s.srv.BackupProtectionContainersServer)
 		})
 		resp, err = s.trBackupProtectionContainersServer.Do(req)
 	case "BackupProtectionIntentClient":
-		initServer(s, &s.trBackupProtectionIntentServer, func() *BackupProtectionIntentServerTransport {
+		initServer(&s.trMu, &s.trBackupProtectionIntentServer, func() *BackupProtectionIntentServerTransport {
 			return NewBackupProtectionIntentServerTransport(&s.srv.BackupProtectionIntentServer)
 		})
 		resp, err = s.trBackupProtectionIntentServer.Do(req)
 	case "BackupResourceEncryptionConfigsClient":
-		initServer(s, &s.trBackupResourceEncryptionConfigsServer, func() *BackupResourceEncryptionConfigsServerTransport {
+		initServer(&s.trMu, &s.trBackupResourceEncryptionConfigsServer, func() *BackupResourceEncryptionConfigsServerTransport {
 			return NewBackupResourceEncryptionConfigsServerTransport(&s.srv.BackupResourceEncryptionConfigsServer)
 		})
 		resp, err = s.trBackupResourceEncryptionConfigsServer.Do(req)
 	case "BackupResourceStorageConfigsNonCRRClient":
-		initServer(s, &s.trBackupResourceStorageConfigsNonCRRServer, func() *BackupResourceStorageConfigsNonCRRServerTransport {
+		initServer(&s.trMu, &s.trBackupResourceStorageConfigsNonCRRServer, func() *BackupResourceStorageConfigsNonCRRServerTransport {
 			return NewBackupResourceStorageConfigsNonCRRServerTransport(&s.srv.BackupResourceStorageConfigsNonCRRServer)
 		})
 		resp, err = s.trBackupResourceStorageConfigsNonCRRServer.Do(req)
 	case "BackupResourceVaultConfigsClient":
-		initServer(s, &s.trBackupResourceVaultConfigsServer, func() *BackupResourceVaultConfigsServerTransport {
+		initServer(&s.trMu, &s.trBackupResourceVaultConfigsServer, func() *BackupResourceVaultConfigsServerTransport {
 			return NewBackupResourceVaultConfigsServerTransport(&s.srv.BackupResourceVaultConfigsServer)
 		})
 		resp, err = s.trBackupResourceVaultConfigsServer.Do(req)
 	case "BackupStatusClient":
-		initServer(s, &s.trBackupStatusServer, func() *BackupStatusServerTransport { return NewBackupStatusServerTransport(&s.srv.BackupStatusServer) })
+		initServer(&s.trMu, &s.trBackupStatusServer, func() *BackupStatusServerTransport { return NewBackupStatusServerTransport(&s.srv.BackupStatusServer) })
 		resp, err = s.trBackupStatusServer.Do(req)
 	case "BackupUsageSummariesClient":
-		initServer(s, &s.trBackupUsageSummariesServer, func() *BackupUsageSummariesServerTransport {
+		initServer(&s.trMu, &s.trBackupUsageSummariesServer, func() *BackupUsageSummariesServerTransport {
 			return NewBackupUsageSummariesServerTransport(&s.srv.BackupUsageSummariesServer)
 		})
 		resp, err = s.trBackupUsageSummariesServer.Do(req)
 	case "BackupWorkloadItemsClient":
-		initServer(s, &s.trBackupWorkloadItemsServer, func() *BackupWorkloadItemsServerTransport {
+		initServer(&s.trMu, &s.trBackupWorkloadItemsServer, func() *BackupWorkloadItemsServerTransport {
 			return NewBackupWorkloadItemsServerTransport(&s.srv.BackupWorkloadItemsServer)
 		})
 		resp, err = s.trBackupWorkloadItemsServer.Do(req)
 	case "BackupsClient":
-		initServer(s, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
+		initServer(&s.trMu, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
 		resp, err = s.trBackupsServer.Do(req)
-	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
-		resp, err = s.trServer.Do(req)
 	case "DeletedProtectionContainersClient":
-		initServer(s, &s.trDeletedProtectionContainersServer, func() *DeletedProtectionContainersServerTransport {
+		initServer(&s.trMu, &s.trDeletedProtectionContainersServer, func() *DeletedProtectionContainersServerTransport {
 			return NewDeletedProtectionContainersServerTransport(&s.srv.DeletedProtectionContainersServer)
 		})
 		resp, err = s.trDeletedProtectionContainersServer.Do(req)
 	case "ExportJobsOperationResultsClient":
-		initServer(s, &s.trExportJobsOperationResultsServer, func() *ExportJobsOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trExportJobsOperationResultsServer, func() *ExportJobsOperationResultsServerTransport {
 			return NewExportJobsOperationResultsServerTransport(&s.srv.ExportJobsOperationResultsServer)
 		})
 		resp, err = s.trExportJobsOperationResultsServer.Do(req)
 	case "FeatureSupportClient":
-		initServer(s, &s.trFeatureSupportServer, func() *FeatureSupportServerTransport {
+		initServer(&s.trMu, &s.trFeatureSupportServer, func() *FeatureSupportServerTransport {
 			return NewFeatureSupportServerTransport(&s.srv.FeatureSupportServer)
 		})
 		resp, err = s.trFeatureSupportServer.Do(req)
 	case "FetchTieringCostClient":
-		initServer(s, &s.trFetchTieringCostServer, func() *FetchTieringCostServerTransport {
+		initServer(&s.trMu, &s.trFetchTieringCostServer, func() *FetchTieringCostServerTransport {
 			return NewFetchTieringCostServerTransport(&s.srv.FetchTieringCostServer)
 		})
 		resp, err = s.trFetchTieringCostServer.Do(req)
 	case "GetTieringCostOperationResultClient":
-		initServer(s, &s.trGetTieringCostOperationResultServer, func() *GetTieringCostOperationResultServerTransport {
+		initServer(&s.trMu, &s.trGetTieringCostOperationResultServer, func() *GetTieringCostOperationResultServerTransport {
 			return NewGetTieringCostOperationResultServerTransport(&s.srv.GetTieringCostOperationResultServer)
 		})
 		resp, err = s.trGetTieringCostOperationResultServer.Do(req)
 	case "ItemLevelRecoveryConnectionsClient":
-		initServer(s, &s.trItemLevelRecoveryConnectionsServer, func() *ItemLevelRecoveryConnectionsServerTransport {
+		initServer(&s.trMu, &s.trItemLevelRecoveryConnectionsServer, func() *ItemLevelRecoveryConnectionsServerTransport {
 			return NewItemLevelRecoveryConnectionsServerTransport(&s.srv.ItemLevelRecoveryConnectionsServer)
 		})
 		resp, err = s.trItemLevelRecoveryConnectionsServer.Do(req)
 	case "JobCancellationsClient":
-		initServer(s, &s.trJobCancellationsServer, func() *JobCancellationsServerTransport {
+		initServer(&s.trMu, &s.trJobCancellationsServer, func() *JobCancellationsServerTransport {
 			return NewJobCancellationsServerTransport(&s.srv.JobCancellationsServer)
 		})
 		resp, err = s.trJobCancellationsServer.Do(req)
 	case "JobDetailsClient":
-		initServer(s, &s.trJobDetailsServer, func() *JobDetailsServerTransport { return NewJobDetailsServerTransport(&s.srv.JobDetailsServer) })
+		initServer(&s.trMu, &s.trJobDetailsServer, func() *JobDetailsServerTransport { return NewJobDetailsServerTransport(&s.srv.JobDetailsServer) })
 		resp, err = s.trJobDetailsServer.Do(req)
 	case "JobOperationResultsClient":
-		initServer(s, &s.trJobOperationResultsServer, func() *JobOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trJobOperationResultsServer, func() *JobOperationResultsServerTransport {
 			return NewJobOperationResultsServerTransport(&s.srv.JobOperationResultsServer)
 		})
 		resp, err = s.trJobOperationResultsServer.Do(req)
 	case "JobsClient":
-		initServer(s, &s.trJobsServer, func() *JobsServerTransport { return NewJobsServerTransport(&s.srv.JobsServer) })
+		initServer(&s.trMu, &s.trJobsServer, func() *JobsServerTransport { return NewJobsServerTransport(&s.srv.JobsServer) })
 		resp, err = s.trJobsServer.Do(req)
 	case "OperationClient":
-		initServer(s, &s.trOperationServer, func() *OperationServerTransport { return NewOperationServerTransport(&s.srv.OperationServer) })
+		initServer(&s.trMu, &s.trOperationServer, func() *OperationServerTransport { return NewOperationServerTransport(&s.srv.OperationServer) })
 		resp, err = s.trOperationServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateEndpointClient":
-		initServer(s, &s.trPrivateEndpointServer, func() *PrivateEndpointServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointServer, func() *PrivateEndpointServerTransport {
 			return NewPrivateEndpointServerTransport(&s.srv.PrivateEndpointServer)
 		})
 		resp, err = s.trPrivateEndpointServer.Do(req)
 	case "PrivateEndpointConnectionClient":
-		initServer(s, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
 			return NewPrivateEndpointConnectionServerTransport(&s.srv.PrivateEndpointConnectionServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionServer.Do(req)
 	case "ProtectableContainersClient":
-		initServer(s, &s.trProtectableContainersServer, func() *ProtectableContainersServerTransport {
+		initServer(&s.trMu, &s.trProtectableContainersServer, func() *ProtectableContainersServerTransport {
 			return NewProtectableContainersServerTransport(&s.srv.ProtectableContainersServer)
 		})
 		resp, err = s.trProtectableContainersServer.Do(req)
 	case "ProtectedItemOperationResultsClient":
-		initServer(s, &s.trProtectedItemOperationResultsServer, func() *ProtectedItemOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trProtectedItemOperationResultsServer, func() *ProtectedItemOperationResultsServerTransport {
 			return NewProtectedItemOperationResultsServerTransport(&s.srv.ProtectedItemOperationResultsServer)
 		})
 		resp, err = s.trProtectedItemOperationResultsServer.Do(req)
 	case "ProtectedItemOperationStatusesClient":
-		initServer(s, &s.trProtectedItemOperationStatusesServer, func() *ProtectedItemOperationStatusesServerTransport {
+		initServer(&s.trMu, &s.trProtectedItemOperationStatusesServer, func() *ProtectedItemOperationStatusesServerTransport {
 			return NewProtectedItemOperationStatusesServerTransport(&s.srv.ProtectedItemOperationStatusesServer)
 		})
 		resp, err = s.trProtectedItemOperationStatusesServer.Do(req)
 	case "ProtectedItemsClient":
-		initServer(s, &s.trProtectedItemsServer, func() *ProtectedItemsServerTransport {
+		initServer(&s.trMu, &s.trProtectedItemsServer, func() *ProtectedItemsServerTransport {
 			return NewProtectedItemsServerTransport(&s.srv.ProtectedItemsServer)
 		})
 		resp, err = s.trProtectedItemsServer.Do(req)
 	case "ProtectionContainerOperationResultsClient":
-		initServer(s, &s.trProtectionContainerOperationResultsServer, func() *ProtectionContainerOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trProtectionContainerOperationResultsServer, func() *ProtectionContainerOperationResultsServerTransport {
 			return NewProtectionContainerOperationResultsServerTransport(&s.srv.ProtectionContainerOperationResultsServer)
 		})
 		resp, err = s.trProtectionContainerOperationResultsServer.Do(req)
 	case "ProtectionContainerRefreshOperationResultsClient":
-		initServer(s, &s.trProtectionContainerRefreshOperationResultsServer, func() *ProtectionContainerRefreshOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trProtectionContainerRefreshOperationResultsServer, func() *ProtectionContainerRefreshOperationResultsServerTransport {
 			return NewProtectionContainerRefreshOperationResultsServerTransport(&s.srv.ProtectionContainerRefreshOperationResultsServer)
 		})
 		resp, err = s.trProtectionContainerRefreshOperationResultsServer.Do(req)
 	case "ProtectionContainersClient":
-		initServer(s, &s.trProtectionContainersServer, func() *ProtectionContainersServerTransport {
+		initServer(&s.trMu, &s.trProtectionContainersServer, func() *ProtectionContainersServerTransport {
 			return NewProtectionContainersServerTransport(&s.srv.ProtectionContainersServer)
 		})
 		resp, err = s.trProtectionContainersServer.Do(req)
 	case "ProtectionIntentClient":
-		initServer(s, &s.trProtectionIntentServer, func() *ProtectionIntentServerTransport {
+		initServer(&s.trMu, &s.trProtectionIntentServer, func() *ProtectionIntentServerTransport {
 			return NewProtectionIntentServerTransport(&s.srv.ProtectionIntentServer)
 		})
 		resp, err = s.trProtectionIntentServer.Do(req)
 	case "ProtectionPoliciesClient":
-		initServer(s, &s.trProtectionPoliciesServer, func() *ProtectionPoliciesServerTransport {
+		initServer(&s.trMu, &s.trProtectionPoliciesServer, func() *ProtectionPoliciesServerTransport {
 			return NewProtectionPoliciesServerTransport(&s.srv.ProtectionPoliciesServer)
 		})
 		resp, err = s.trProtectionPoliciesServer.Do(req)
 	case "ProtectionPolicyOperationResultsClient":
-		initServer(s, &s.trProtectionPolicyOperationResultsServer, func() *ProtectionPolicyOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trProtectionPolicyOperationResultsServer, func() *ProtectionPolicyOperationResultsServerTransport {
 			return NewProtectionPolicyOperationResultsServerTransport(&s.srv.ProtectionPolicyOperationResultsServer)
 		})
 		resp, err = s.trProtectionPolicyOperationResultsServer.Do(req)
 	case "ProtectionPolicyOperationStatusesClient":
-		initServer(s, &s.trProtectionPolicyOperationStatusesServer, func() *ProtectionPolicyOperationStatusesServerTransport {
+		initServer(&s.trMu, &s.trProtectionPolicyOperationStatusesServer, func() *ProtectionPolicyOperationStatusesServerTransport {
 			return NewProtectionPolicyOperationStatusesServerTransport(&s.srv.ProtectionPolicyOperationStatusesServer)
 		})
 		resp, err = s.trProtectionPolicyOperationStatusesServer.Do(req)
 	case "RecoveryPointsClient":
-		initServer(s, &s.trRecoveryPointsServer, func() *RecoveryPointsServerTransport {
+		initServer(&s.trMu, &s.trRecoveryPointsServer, func() *RecoveryPointsServerTransport {
 			return NewRecoveryPointsServerTransport(&s.srv.RecoveryPointsServer)
 		})
 		resp, err = s.trRecoveryPointsServer.Do(req)
 	case "RecoveryPointsRecommendedForMoveClient":
-		initServer(s, &s.trRecoveryPointsRecommendedForMoveServer, func() *RecoveryPointsRecommendedForMoveServerTransport {
+		initServer(&s.trMu, &s.trRecoveryPointsRecommendedForMoveServer, func() *RecoveryPointsRecommendedForMoveServerTransport {
 			return NewRecoveryPointsRecommendedForMoveServerTransport(&s.srv.RecoveryPointsRecommendedForMoveServer)
 		})
 		resp, err = s.trRecoveryPointsRecommendedForMoveServer.Do(req)
+	case "RecoveryServicesClient":
+		initServer(&s.trMu, &s.trRecoveryServicesServer, func() *RecoveryServicesServerTransport {
+			return NewRecoveryServicesServerTransport(&s.srv.RecoveryServicesServer)
+		})
+		resp, err = s.trRecoveryServicesServer.Do(req)
 	case "ResourceGuardProxiesClient":
-		initServer(s, &s.trResourceGuardProxiesServer, func() *ResourceGuardProxiesServerTransport {
+		initServer(&s.trMu, &s.trResourceGuardProxiesServer, func() *ResourceGuardProxiesServerTransport {
 			return NewResourceGuardProxiesServerTransport(&s.srv.ResourceGuardProxiesServer)
 		})
 		resp, err = s.trResourceGuardProxiesServer.Do(req)
 	case "ResourceGuardProxyClient":
-		initServer(s, &s.trResourceGuardProxyServer, func() *ResourceGuardProxyServerTransport {
+		initServer(&s.trMu, &s.trResourceGuardProxyServer, func() *ResourceGuardProxyServerTransport {
 			return NewResourceGuardProxyServerTransport(&s.srv.ResourceGuardProxyServer)
 		})
 		resp, err = s.trResourceGuardProxyServer.Do(req)
 	case "RestoresClient":
-		initServer(s, &s.trRestoresServer, func() *RestoresServerTransport { return NewRestoresServerTransport(&s.srv.RestoresServer) })
+		initServer(&s.trMu, &s.trRestoresServer, func() *RestoresServerTransport { return NewRestoresServerTransport(&s.srv.RestoresServer) })
 		resp, err = s.trRestoresServer.Do(req)
 	case "SecurityPINsClient":
-		initServer(s, &s.trSecurityPINsServer, func() *SecurityPINsServerTransport { return NewSecurityPINsServerTransport(&s.srv.SecurityPINsServer) })
+		initServer(&s.trMu, &s.trSecurityPINsServer, func() *SecurityPINsServerTransport { return NewSecurityPINsServerTransport(&s.srv.SecurityPINsServer) })
 		resp, err = s.trSecurityPINsServer.Do(req)
 	case "TieringCostOperationStatusClient":
-		initServer(s, &s.trTieringCostOperationStatusServer, func() *TieringCostOperationStatusServerTransport {
+		initServer(&s.trMu, &s.trTieringCostOperationStatusServer, func() *TieringCostOperationStatusServerTransport {
 			return NewTieringCostOperationStatusServerTransport(&s.srv.TieringCostOperationStatusServer)
 		})
 		resp, err = s.trTieringCostOperationStatusServer.Do(req)
 	case "ValidateOperationClient":
-		initServer(s, &s.trValidateOperationServer, func() *ValidateOperationServerTransport {
+		initServer(&s.trMu, &s.trValidateOperationServer, func() *ValidateOperationServerTransport {
 			return NewValidateOperationServerTransport(&s.srv.ValidateOperationServer)
 		})
 		resp, err = s.trValidateOperationServer.Do(req)
 	case "ValidateOperationResultsClient":
-		initServer(s, &s.trValidateOperationResultsServer, func() *ValidateOperationResultsServerTransport {
+		initServer(&s.trMu, &s.trValidateOperationResultsServer, func() *ValidateOperationResultsServerTransport {
 			return NewValidateOperationResultsServerTransport(&s.srv.ValidateOperationResultsServer)
 		})
 		resp, err = s.trValidateOperationResultsServer.Do(req)
 	case "ValidateOperationStatusesClient":
-		initServer(s, &s.trValidateOperationStatusesServer, func() *ValidateOperationStatusesServerTransport {
+		initServer(&s.trMu, &s.trValidateOperationStatusesServer, func() *ValidateOperationStatusesServerTransport {
 			return NewValidateOperationStatusesServerTransport(&s.srv.ValidateOperationStatusesServer)
 		})
 		resp, err = s.trValidateOperationStatusesServer.Do(req)
@@ -511,12 +513,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

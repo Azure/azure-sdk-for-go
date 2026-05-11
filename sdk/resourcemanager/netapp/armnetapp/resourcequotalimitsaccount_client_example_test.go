@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-15-preview/NetAppResourceQuotaLimitsAccount_Get.json
+// Generated from example definition: 2026-01-01/NetAppResourceQuotaLimitsAccount_Get.json
 func ExampleResourceQuotaLimitsAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -31,7 +31,7 @@ func ExampleResourceQuotaLimitsAccountClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceQuotaLimitsAccountClientGetResponse{
 	// 	SubscriptionQuotaItem: &armnetapp.SubscriptionQuotaItem{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
+	// 		ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
 	// 		Name: to.Ptr("myAccount/poolsPerAccount"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/quotaLimits"),
 	// 		Properties: &armnetapp.SubscriptionQuotaItemProperties{
@@ -43,14 +43,14 @@ func ExampleResourceQuotaLimitsAccountClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-15-preview/NetAppResourceQuotaLimitsAccount_List.json
+// Generated from example definition: 2026-01-01/NetAppResourceQuotaLimitsAccount_List.json
 func ExampleResourceQuotaLimitsAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -69,7 +69,7 @@ func ExampleResourceQuotaLimitsAccountClient_NewListPager() {
 		// 	SubscriptionQuotaItemList: armnetapp.SubscriptionQuotaItemList{
 		// 		Value: []*armnetapp.SubscriptionQuotaItem{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
+		// 				ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
 		// 				Name: to.Ptr("myAccount/poolsPerAccount"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/quotaLimits"),
 		// 				Properties: &armnetapp.SubscriptionQuotaItemProperties{

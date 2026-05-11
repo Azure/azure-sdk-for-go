@@ -574,11 +574,16 @@ func PossibleInquiryStatusValues() []InquiryStatus {
 type InstanceProtectionReadiness string
 
 const (
+	// InstanceProtectionReadinessPartialProtection - Instance is partially protected
 	InstanceProtectionReadinessPartialProtection InstanceProtectionReadiness = "PartialProtection"
-	InstanceProtectionReadinessProtectionError   InstanceProtectionReadiness = "ProtectionError"
-	InstanceProtectionReadinessReady             InstanceProtectionReadiness = "Ready"
-	InstanceProtectionReadinessScheduleDisabled  InstanceProtectionReadiness = "ScheduleDisabled"
-	InstanceProtectionReadinessUnknown           InstanceProtectionReadiness = "Unknown"
+	// InstanceProtectionReadinessProtectionError - Instance protection encountered an error
+	InstanceProtectionReadinessProtectionError InstanceProtectionReadiness = "ProtectionError"
+	// InstanceProtectionReadinessReady - Instance is ready for protection
+	InstanceProtectionReadinessReady InstanceProtectionReadiness = "Ready"
+	// InstanceProtectionReadinessScheduleDisabled - Backup schedule is disabled for this instance
+	InstanceProtectionReadinessScheduleDisabled InstanceProtectionReadiness = "ScheduleDisabled"
+	// InstanceProtectionReadinessUnknown - Instance protection readiness is unknown
+	InstanceProtectionReadinessUnknown InstanceProtectionReadiness = "Unknown"
 )
 
 // PossibleInstanceProtectionReadinessValues returns the possible values for the InstanceProtectionReadiness const type.
@@ -969,7 +974,9 @@ func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 type ProtectionLevel string
 
 const (
-	ProtectionLevelDatabase              ProtectionLevel = "Database"
+	// ProtectionLevelDatabase - Protected at database level
+	ProtectionLevelDatabase ProtectionLevel = "Database"
+	// ProtectionLevelDatabaseUnderInstance - Database protected under an instance
 	ProtectionLevelDatabaseUnderInstance ProtectionLevel = "DatabaseUnderInstance"
 )
 
@@ -1323,8 +1330,11 @@ func PossibleSoftDeleteFeatureStateValues() []SoftDeleteFeatureState {
 type SourceSideScanStatus string
 
 const (
-	SourceSideScanStatusConfigured    SourceSideScanStatus = "Configured"
+	// SourceSideScanStatusConfigured - Source side scan is configured
+	SourceSideScanStatusConfigured SourceSideScanStatus = "Configured"
+	// SourceSideScanStatusNotApplicable - Source side scan is not applicable
 	SourceSideScanStatusNotApplicable SourceSideScanStatus = "NotApplicable"
+	// SourceSideScanStatusNotConfigured - Source side scan is not configured
 	SourceSideScanStatusNotConfigured SourceSideScanStatus = "NotConfigured"
 )
 
@@ -1341,10 +1351,14 @@ func PossibleSourceSideScanStatusValues() []SourceSideScanStatus {
 type SourceSideScanSummary string
 
 const (
-	SourceSideScanSummaryHealthy       SourceSideScanSummary = "Healthy"
+	// SourceSideScanSummaryHealthy - Scan summary indicates healthy state
+	SourceSideScanSummaryHealthy SourceSideScanSummary = "Healthy"
+	// SourceSideScanSummaryNotApplicable - Scan summary is not applicable
 	SourceSideScanSummaryNotApplicable SourceSideScanSummary = "NotApplicable"
-	SourceSideScanSummarySuspicious    SourceSideScanSummary = "Suspicious"
-	SourceSideScanSummaryUnknown       SourceSideScanSummary = "Unknown"
+	// SourceSideScanSummarySuspicious - Scan summary is suspicious
+	SourceSideScanSummarySuspicious SourceSideScanSummary = "Suspicious"
+	// SourceSideScanSummaryUnknown - Scan summary is unknown
+	SourceSideScanSummaryUnknown SourceSideScanSummary = "Unknown"
 )
 
 // PossibleSourceSideScanSummaryValues returns the possible values for the SourceSideScanSummary const type.
@@ -1442,10 +1456,14 @@ func PossibleTargetDiskNetworkAccessOptionValues() []TargetDiskNetworkAccessOpti
 type ThreatSeverity string
 
 const (
-	ThreatSeverityCritical      ThreatSeverity = "Critical"
-	ThreatSeverityHigh          ThreatSeverity = "High"
+	// ThreatSeverityCritical - Critical severity level
+	ThreatSeverityCritical ThreatSeverity = "Critical"
+	// ThreatSeverityHigh - High severity level
+	ThreatSeverityHigh ThreatSeverity = "High"
+	// ThreatSeverityInformational - Informational severity level
 	ThreatSeverityInformational ThreatSeverity = "Informational"
-	ThreatSeverityWarning       ThreatSeverity = "Warning"
+	// ThreatSeverityWarning - Warning severity level
+	ThreatSeverityWarning ThreatSeverity = "Warning"
 )
 
 // PossibleThreatSeverityValues returns the possible values for the ThreatSeverity const type.
@@ -1462,10 +1480,14 @@ func PossibleThreatSeverityValues() []ThreatSeverity {
 type ThreatState string
 
 const (
-	ThreatStateActive     ThreatState = "Active"
-	ThreatStateIgnored    ThreatState = "Ignored"
+	// ThreatStateActive - Threat is active
+	ThreatStateActive ThreatState = "Active"
+	// ThreatStateIgnored - Threat has been ignored
+	ThreatStateIgnored ThreatState = "Ignored"
+	// ThreatStateInProgress - Threat remediation is in progress
 	ThreatStateInProgress ThreatState = "InProgress"
-	ThreatStateResolved   ThreatState = "Resolved"
+	// ThreatStateResolved - Threat has been resolved
+	ThreatStateResolved ThreatState = "Resolved"
 )
 
 // PossibleThreatStateValues returns the possible values for the ThreatState const type.
@@ -1482,11 +1504,16 @@ func PossibleThreatStateValues() []ThreatState {
 type ThreatStatus string
 
 const (
-	ThreatStatusHealthy      ThreatStatus = "Healthy"
+	// ThreatStatusHealthy - Recovery point is healthy
+	ThreatStatusHealthy ThreatStatus = "Healthy"
+	// ThreatStatusNotAvailable - Threat status is not available
 	ThreatStatusNotAvailable ThreatStatus = "NotAvailable"
-	ThreatStatusUnHealthy    ThreatStatus = "UnHealthy"
-	ThreatStatusUnknown      ThreatStatus = "Unknown"
-	ThreatStatusWarning      ThreatStatus = "Warning"
+	// ThreatStatusUnHealthy - Recovery point is unhealthy
+	ThreatStatusUnHealthy ThreatStatus = "UnHealthy"
+	// ThreatStatusUnknown - Threat status is unknown
+	ThreatStatusUnknown ThreatStatus = "Unknown"
+	// ThreatStatusWarning - Recovery point has warning-level threats
+	ThreatStatusWarning ThreatStatus = "Warning"
 )
 
 // PossibleThreatStatusValues returns the possible values for the ThreatStatus const type.
@@ -1551,10 +1578,14 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 type VMWorkloadPolicyType string
 
 const (
-	VMWorkloadPolicyTypeInvalid    VMWorkloadPolicyType = "Invalid"
+	// VMWorkloadPolicyTypeInvalid - Invalid policy type
+	VMWorkloadPolicyTypeInvalid VMWorkloadPolicyType = "Invalid"
+	// VMWorkloadPolicyTypeSnapshotV1 - Snapshot V1 policy type
 	VMWorkloadPolicyTypeSnapshotV1 VMWorkloadPolicyType = "SnapshotV1"
+	// VMWorkloadPolicyTypeSnapshotV2 - Snapshot V2 policy type
 	VMWorkloadPolicyTypeSnapshotV2 VMWorkloadPolicyType = "SnapshotV2"
-	VMWorkloadPolicyTypeStreaming  VMWorkloadPolicyType = "Streaming"
+	// VMWorkloadPolicyTypeStreaming - Streaming policy type
+	VMWorkloadPolicyTypeStreaming VMWorkloadPolicyType = "Streaming"
 )
 
 // PossibleVMWorkloadPolicyTypeValues returns the possible values for the VMWorkloadPolicyType const type.

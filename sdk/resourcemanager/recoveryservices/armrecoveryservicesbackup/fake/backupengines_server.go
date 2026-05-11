@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // BackupEnginesServer is a fake server for instances of the armrecoveryservicesbackup.BackupEnginesClient type.
@@ -58,9 +59,7 @@ func (b *BackupEnginesServerTransport) Do(req *http.Request) (*http.Response, er
 }
 
 func (b *BackupEnginesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (b *BackupEnginesServerTransport) dispatchToMethodFake(req *http.Request, m
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -115,16 +111,8 @@ func (b *BackupEnginesServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-	if err != nil {
-		return nil, err
-	}
-	filterParam := getOptional(filterUnescaped)
-	skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-	if err != nil {
-		return nil, err
-	}
-	skipTokenParam := getOptional(skipTokenUnescaped)
+	filterParam := getOptional(qp.Get("$filter"))
+	skipTokenParam := getOptional(qp.Get("$skipToken"))
 	var options *armrecoveryservicesbackup.BackupEnginesClientGetOptions
 	if filterParam != nil || skipTokenParam != nil {
 		options = &armrecoveryservicesbackup.BackupEnginesClientGetOptions{
@@ -137,7 +125,7 @@ func (b *BackupEnginesServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupEngineBaseResource, req)
@@ -168,16 +156,8 @@ func (b *BackupEnginesServerTransport) dispatchNewListPager(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armrecoveryservicesbackup.BackupEnginesClientListOptions
 		if filterParam != nil || skipTokenParam != nil {
 			options = &armrecoveryservicesbackup.BackupEnginesClientListOptions{
@@ -196,7 +176,7 @@ func (b *BackupEnginesServerTransport) dispatchNewListPager(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		b.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

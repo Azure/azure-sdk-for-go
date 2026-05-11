@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/PutExtension.json
+// Generated from example definition: 2026-04-01-preview/PutExtension.json
 func ExampleExtensionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleExtensionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/DeleteExtension.json
+// Generated from example definition: 2026-04-01-preview/DeleteExtension.json
 func ExampleExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleExtensionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/GetExtension.json
+// Generated from example definition: 2026-04-01-preview/GetExtension.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleExtensionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ListExtensionsByArcSetting.json
+// Generated from example definition: 2026-04-01-preview/ListExtensionsByArcSetting.json
 func ExampleExtensionsClient_NewListByArcSettingPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +342,7 @@ func ExampleExtensionsClient_NewListByArcSettingPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/PatchExtension.json
+// Generated from example definition: 2026-04-01-preview/PatchExtension.json
 func ExampleExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +447,7 @@ func ExampleExtensionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/Extensions_Upgrade.json
+// Generated from example definition: 2026-04-01-preview/Extensions_Upgrade.json
 func ExampleExtensionsClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

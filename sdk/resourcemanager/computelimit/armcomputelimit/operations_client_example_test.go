@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-15/Operations_List.json
+// Generated from example definition: 2026-04-30/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,6 +115,33 @@ func ExampleOperationsClient_NewListPager() {
 		// 					Resource: to.Ptr("Shared Limits"),
 		// 					Operation: to.Ptr("Delete Shared Limit"),
 		// 					Description: to.Ptr("Deletes a shared compute limit"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.ComputeLimit/locations/features/read"),
+		// 				Display: &armcomputelimit.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft ComputeLimit"),
+		// 					Resource: to.Ptr("Features"),
+		// 					Operation: to.Ptr("List Features"),
+		// 					Description: to.Ptr("Lists all compute limit features for the subscription at the specified location"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.ComputeLimit/locations/features/read"),
+		// 				Display: &armcomputelimit.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft ComputeLimit"),
+		// 					Resource: to.Ptr("Features"),
+		// 					Operation: to.Ptr("Get Feature"),
+		// 					Description: to.Ptr("Gets a specific compute limit feature for the subscription at the specified location"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.ComputeLimit/locations/features/enable/action"),
+		// 				Display: &armcomputelimit.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft ComputeLimit"),
+		// 					Resource: to.Ptr("Features"),
+		// 					Operation: to.Ptr("Enable Feature"),
+		// 					Description: to.Ptr("Enables a compute limit feature for the subscription at the specified location"),
 		// 				},
 		// 			},
 		// 		},

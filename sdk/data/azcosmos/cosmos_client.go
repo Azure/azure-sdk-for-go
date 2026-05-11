@@ -234,7 +234,7 @@ func (c *Client) CreateDatabase(
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 
 	if o == nil {
@@ -299,7 +299,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 			if err != nil {
 				return QueryDatabasesResponse{}, err
 			}
-			ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+			ctx, endSpan := startSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
@@ -500,6 +500,8 @@ func (c *Client) createRequest(
 		requestEnricher(req)
 	}
 
+	req = attachRequestDiagnostics(req, operationContext)
+
 	return req, nil
 }
 
@@ -523,18 +525,37 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 
 func (c *Client) executeAndEnsureSuccessResponse(ctx context.Context, request *policy.Request) (*http.Response, error) {
 	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
+	state := requestDiagnosticsStateFromContext(request.Raw().Context())
+	finalizeRequestTrace := func() {
+		if state != nil && state.requestTrace != nil {
+			state.requestTrace.End()
+		}
+	}
+
 	response, err := c.internal.Pipeline().Do(request)
 	if err != nil {
-		return nil, err
+		var responseErr *azcore.ResponseError
+		if errors.As(err, &responseErr) && responseErr.RawResponse != nil {
+			addPointOperationStatisticsFromResponse(responseErr.RawResponse, responseErr.Error(), traceDatumKeyPointOperationStatistics)
+			finalizeRequestTrace()
+			return nil, err
+		}
+
+		finalizeRequestTrace()
+		return nil, wrapRequestError(err, diagnosticsFromContext(request.Raw().Context()))
 	}
 
 	c.addResponseValuesToSpan(ctx, response)
 
 	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
 	if successResponse {
+		addPointOperationStatisticsFromResponse(response, "", traceDatumKeyPointOperationStatistics)
+		finalizeRequestTrace()
 		return response, nil
 	}
 
+	addPointOperationStatisticsFromResponse(response, response.Status, traceDatumKeyPointOperationStatistics)
+	finalizeRequestTrace()
 	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 
@@ -545,7 +566,7 @@ func (c *Client) accountEndpointUrl() *url.URL {
 func (c *Client) addResponseValuesToSpan(ctx context.Context, resp *http.Response) {
 	span := c.internal.Tracer().SpanFromContext(ctx)
 	span.SetAttributes(
-		tracing.Attribute{Key: "db.cosmosdb.request_charge", Value: newResponse(resp).RequestCharge},
+		tracing.Attribute{Key: "db.cosmosdb.request_charge", Value: readRequestCharge(resp)},
 		tracing.Attribute{Key: "db.cosmosdb.status_code", Value: resp.StatusCode},
 	)
 }

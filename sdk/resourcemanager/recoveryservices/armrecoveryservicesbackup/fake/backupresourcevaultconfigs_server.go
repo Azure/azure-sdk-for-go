@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // BackupResourceVaultConfigsServer is a fake server for instances of the armrecoveryservicesbackup.BackupResourceVaultConfigsClient type.
@@ -57,9 +58,7 @@ func (b *BackupResourceVaultConfigsServerTransport) Do(req *http.Request) (*http
 }
 
 func (b *BackupResourceVaultConfigsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -79,10 +78,7 @@ func (b *BackupResourceVaultConfigsServerTransport) dispatchToMethodFake(req *ht
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -116,7 +112,7 @@ func (b *BackupResourceVaultConfigsServerTransport) dispatchGet(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupResourceVaultConfigResource, req)
@@ -160,7 +156,7 @@ func (b *BackupResourceVaultConfigsServerTransport) dispatchPut(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupResourceVaultConfigResource, req)
@@ -204,7 +200,7 @@ func (b *BackupResourceVaultConfigsServerTransport) dispatchUpdate(req *http.Req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupResourceVaultConfigResource, req)

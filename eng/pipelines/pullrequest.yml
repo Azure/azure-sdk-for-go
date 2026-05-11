@@ -10,9 +10,6 @@ pr:
     include:
     - "*"
 
-    exclude:
-    - sdk/data/azcosmos/
-
 parameters:
   - name: Service
     type: string

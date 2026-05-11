@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // BackupProtectionIntentServer is a fake server for instances of the armrecoveryservicesbackup.BackupProtectionIntentClient type.
@@ -53,9 +54,7 @@ func (b *BackupProtectionIntentServerTransport) Do(req *http.Request) (*http.Res
 }
 
 func (b *BackupProtectionIntentServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (b *BackupProtectionIntentServerTransport) dispatchToMethodFake(req *http.R
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -106,16 +102,8 @@ func (b *BackupProtectionIntentServerTransport) dispatchNewListPager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armrecoveryservicesbackup.BackupProtectionIntentClientListOptions
 		if filterParam != nil || skipTokenParam != nil {
 			options = &armrecoveryservicesbackup.BackupProtectionIntentClientListOptions{
@@ -134,7 +122,7 @@ func (b *BackupProtectionIntentServerTransport) dispatchNewListPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		b.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureStorage/ProtectableContainers_List.json
+// Generated from example definition: 2026-01-31-preview/AzureStorage/ProtectableContainers_List.json
 func ExampleProtectableContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/PrivateLinkResourceGet.json
+// Generated from example definition: 2025-08-01-preview/PrivateLinkResourceGet.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armappconfiguration.PrivateLinkResource{
+	// 	PrivateLinkResource: armappconfiguration.PrivateLinkResource{
 	// 		Name: to.Ptr("configurationStores"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso/privateLinkResources/configurationStores"),
@@ -47,7 +47,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/PrivateLinkResourcesListByConfigurationStore.json
+// Generated from example definition: 2025-08-01-preview/PrivateLinkResourcesListByConfigurationStore.json
 func ExamplePrivateLinkResourcesClient_NewListByConfigurationStorePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

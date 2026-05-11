@@ -41,7 +41,7 @@ func NewBackupJobsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewListPager - Provides a pageable list of jobs.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupJobsClientListOptions contains the optional parameters for the BackupJobsClient.NewListPager method.
 func (client *BackupJobsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupJobsClientListOptions) *runtime.Pager[BackupJobsClientListResponse] {
@@ -93,7 +93,7 @@ func (client *BackupJobsClient) listCreateRequest(ctx context.Context, vaultName
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -283,6 +283,30 @@ func PossibleContainerNetworkLogsValues() []ContainerNetworkLogs {
 	}
 }
 
+// ControlPlaneScalingSize - The scaling size of the control plane. Scaling sizes offer guaranteed capacity and predictable
+// Kubernetes performance beyond standard tier defaults. Higher H sizes provide increased performance guarantees. See https://aka.ms/aks/hyperscale
+// for performance metrics details for each size.
+type ControlPlaneScalingSize string
+
+const (
+	// ControlPlaneScalingSizeH2 - H2 is the smallest scaling size with guaranteed capacity and predictable performance beyond
+	// standard tier defaults.
+	ControlPlaneScalingSizeH2 ControlPlaneScalingSize = "H2"
+	// ControlPlaneScalingSizeH4 - H4 scaling size provides increased guaranteed performance over H2.
+	ControlPlaneScalingSizeH4 ControlPlaneScalingSize = "H4"
+	// ControlPlaneScalingSizeH8 - H8 scaling size provides increased guaranteed performance over H4.
+	ControlPlaneScalingSizeH8 ControlPlaneScalingSize = "H8"
+)
+
+// PossibleControlPlaneScalingSizeValues returns the possible values for the ControlPlaneScalingSize const type.
+func PossibleControlPlaneScalingSizeValues() []ControlPlaneScalingSize {
+	return []ControlPlaneScalingSize{
+		ControlPlaneScalingSizeH2,
+		ControlPlaneScalingSizeH4,
+		ControlPlaneScalingSizeH8,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -972,8 +996,8 @@ type ManagedGatewayType string
 const (
 	// ManagedGatewayTypeDisabled - Gateway API CRDs will not be reconciled on your cluster.
 	ManagedGatewayTypeDisabled ManagedGatewayType = "Disabled"
-	// ManagedGatewayTypeStandard - The latest Gateway CRD bundle from the standard channel that is compatible with your Kubernetes
-	// version will be reconciled onto your cluster. See https://gateway-api.sigs.k8s.io/concepts/versioning/ for more details.
+	// ManagedGatewayTypeStandard - Gateway API CRDs from the standard release channel will be reconciled onto your cluster. See
+	// https://aka.ms/gateway-api-versions to see which bundle will be installed for your Kubernetes version.
 	ManagedGatewayTypeStandard ManagedGatewayType = "Standard"
 )
 

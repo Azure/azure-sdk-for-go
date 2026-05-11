@@ -42,7 +42,7 @@ func NewFetchSecondaryRecoveryPointsClient(subscriptionID string, credential azc
 // NewListPager - Returns a list of Secondary Recovery Points for a DataSource in a vault, that can be used for Cross Region
 // Restore.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of the Azure region.
 //   - parameters - Request body for operation
@@ -97,7 +97,7 @@ func (client *FetchSecondaryRecoveryPointsClient) listCreateRequest(ctx context.
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

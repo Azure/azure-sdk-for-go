@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-02-01/PutDeploymentSettings.json
+// Generated from example definition: 2026-04-01-preview/PutDeploymentSettings.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -492,7 +492,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-02-01/PutDeploymentSettingsWithADLess.json
+// Generated from example definition: 2026-04-01-preview/PutDeploymentSettingsWithADLess.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettingsWithoutActiveDirectoryIntegration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -975,7 +975,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-02-01/DeleteDeploymentSettings.json
+// Generated from example definition: 2026-04-01-preview/DeleteDeploymentSettings.json
 func ExampleDeploymentSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -996,7 +996,7 @@ func ExampleDeploymentSettingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/GetDeploymentSettings.json
+// Generated from example definition: 2026-04-01-preview/GetDeploymentSettings.json
 func ExampleDeploymentSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1276,7 +1276,7 @@ func ExampleDeploymentSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ListDeploymentSettingsByCluster.json
+// Generated from example definition: 2026-04-01-preview/ListDeploymentSettingsByCluster.json
 func ExampleDeploymentSettingsClient_NewListByClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/BackupFeature_Validate.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/BackupFeature_Validate.json
 func ExampleFeatureSupportClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleFeatureSupportClient_Validate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FeatureSupportClientValidateResponse{
-	// 	AzureVMResourceFeatureSupportResponse: &armrecoveryservicesbackup.AzureVMResourceFeatureSupportResponse{
+	// 	AzureVMResourceFeatureSupportResponse: armrecoveryservicesbackup.AzureVMResourceFeatureSupportResponse{
 	// 		SupportStatus: to.Ptr(armrecoveryservicesbackup.SupportStatusDefaultOFF),
 	// 	},
 	// }

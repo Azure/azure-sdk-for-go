@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-02-preview/NodeImageVersions_List.json
+// Generated from example definition: 2026-02-02-preview/NodeImageVersions_List.json
 func ExampleClient_NewListNodeImageVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -258,8 +258,8 @@ type headerPoliciesVerify struct {
 	isEnableContentResponseOnWriteHeaderSet bool
 	isPartitionKeyHeaderSet                 string
 	isCorrelatedActivityIdSet               string
-	priorityLevelHeaderValue               string
-	throughputBucketHeaderValue            string
+	priorityLevelHeaderValue                string
+	throughputBucketHeaderValue             string
 }
 
 func (p *headerPoliciesVerify) Do(req *policy.Request) (*http.Response, error) {

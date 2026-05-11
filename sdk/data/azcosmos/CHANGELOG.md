@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Adds `PriorityLevel` and `ThroughputBucket` options at the client and per-request level for item, query, change-feed, batch, and read-many operations. See [PR 26750](https://github.com/Azure/azure-sdk-for-go/pull/26750)
+
 ### Breaking Changes
 
 ### Bugs Fixed

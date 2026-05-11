@@ -429,10 +429,9 @@ func (c *ContainerClient) ReadItem(
 
 	if o == nil {
 		o = &ItemOptions{}
-	} else {
-		h.priorityLevel = o.PriorityLevel
-		h.throughputBucket = o.ThroughputBucket
 	}
+	h.priorityLevel = o.PriorityLevel
+	h.throughputBucket = o.ThroughputBucket
 
 	operationContext := pipelineRequestOptions{
 		resourceType:          resourceTypeDocument,
@@ -484,9 +483,15 @@ func (c *ContainerClient) ReadManyItems(
 		readManyOptions = &originalOptions
 	}
 
+	h := headerOptionsOverride{
+		priorityLevel:    readManyOptions.PriorityLevel,
+		throughputBucket: readManyOptions.ThroughputBucket,
+	}
+
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		headerOptionsOverride: &h,
 	}
 
 	return c.executeReadManyWithQueries(ctx, itemIdentities, readManyOptions, operationContext)
@@ -568,7 +573,7 @@ func (c *ContainerClient) DeleteItem(
 	return response, err
 }
 
-// NewQueryItemsPagerexecutes a single partition query in a Cosmos container.
+// NewQueryItemsPager executes a single partition query in a Cosmos container.
 // query - The SQL query to execute.
 // partitionKey - The partition key to scope the query on. See below for more information on cross partition queries.
 // o - Options for the operation.
@@ -712,7 +717,7 @@ func (c *ContainerClient) PatchItem(
 	return response, err
 }
 
-// NewTransactionalBatchcreates a batch of operations to be committed as a single unit.
+// NewTransactionalBatch creates a batch of operations to be committed as a single unit.
 // See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
 func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {
 	return TransactionalBatch{partitionKey: partitionKey}
@@ -848,12 +853,9 @@ func (c *ContainerClient) getChangeFeedForEPKRange(
 		}
 	}
 
-	h := headerOptionsOverride{}
-	if options.PriorityLevel != nil {
-		h.priorityLevel = options.PriorityLevel
-	}
-	if options.ThroughputBucket != nil {
-		h.throughputBucket = options.ThroughputBucket
+	h := headerOptionsOverride{
+		priorityLevel:    options.PriorityLevel,
+		throughputBucket: options.ThroughputBucket,
 	}
 
 	operationContext := pipelineRequestOptions{

@@ -284,11 +284,10 @@ func TestPriorityLevelHeaderFromClientDefault(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	req.SetOperationValue(pipelineRequestOptions{})
-
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
+	req.SetOperationValue(pipelineRequestOptions{})
 
 	_, err = pl.Do(req)
 	if err != nil {
@@ -312,16 +311,15 @@ func TestPriorityLevelHeaderRequestOverridesClient(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	requestPriority := PriorityLevelLow
 	req.SetOperationValue(pipelineRequestOptions{
 		headerOptionsOverride: &headerOptionsOverride{
 			priorityLevel: &requestPriority,
 		},
 	})
-
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
 
 	_, err = pl.Do(req)
 	if err != nil {
@@ -342,11 +340,10 @@ func TestPriorityLevelHeaderNotSetWhenNil(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	req.SetOperationValue(pipelineRequestOptions{})
-
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
+	req.SetOperationValue(pipelineRequestOptions{})
 
 	_, err = pl.Do(req)
 	if err != nil {
@@ -370,11 +367,10 @@ func TestThroughputBucketHeaderFromClientDefault(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	req.SetOperationValue(pipelineRequestOptions{})
-
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
+	req.SetOperationValue(pipelineRequestOptions{})
 
 	_, err = pl.Do(req)
 	if err != nil {
@@ -398,16 +394,15 @@ func TestThroughputBucketHeaderRequestOverridesClient(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	requestBucket := int32(5)
 	req.SetOperationValue(pipelineRequestOptions{
 		headerOptionsOverride: &headerOptionsOverride{
 			throughputBucket: &requestBucket,
 		},
 	})
-
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
 
 	_, err = pl.Do(req)
 	if err != nil {
@@ -428,6 +423,9 @@ func TestThroughputBucketHeaderNotSetWhenNil(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	req.SetOperationValue(pipelineRequestOptions{})
 
 	if err != nil {

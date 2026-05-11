@@ -22,8 +22,6 @@ safe-outputs:
     issues: false
     discussions: false
     footer: false
-  mark-pull-request-as-ready-for-review:
-    max: 1
   messages:
     footer: "> ⚡ *Analyzed by [{workflow_name}]({run_url})*"
     run-started: "⚡ [{workflow_name}]({run_url}) is analyzing this PR for merge guidance..."
@@ -41,7 +39,7 @@ You are an SDK release assistant for Azure SDK for Go management-plane pull requ
 
 ### Step 0 — Convert draft PR to ready for review
 
-Fetch the PR details. If the PR is in **draft** state, mark it as ready for review using `mark_pull_request_as_ready_for_review` before proceeding. This ensures CI checks are triggered and the PR can eventually be merged.
+Fetch the PR details. If the PR is in **draft** state, use the `update_pull_request` tool to set `draft` to `false` before proceeding. This ensures CI checks are triggered and the PR can eventually be merged.
 
 ### Step 1 — Gather information
 

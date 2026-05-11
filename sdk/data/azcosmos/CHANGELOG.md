@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Configured HTTP/2 PING-based connection health checks (`ReadIdleTimeout=1s`, `PingTimeout=2s`) on the SDK's default HTTP transport to detect broken connections more aggressively than the `azcore` baseline (`10s`/`5s`). This addresses the persistent unexplained 5xx errors caused by broken TCP connections being reused from Go's HTTP/2 connection pool ([golang/go#59690](https://github.com/golang/go/issues/59690)). Customers supplying their own `ClientOptions.Transport` are unaffected.
+
 ## 1.5.0-beta.5 (2026-03-09)
 
 ### Features Added

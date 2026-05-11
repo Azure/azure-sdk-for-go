@@ -150,15 +150,13 @@ func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*
 }
 
 func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *ClientOptions) (*azcore.Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
+	localOptions := optionsWithDefaultTransport(options)
 	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
 			PerCall: []policy.Policy{
 				&headerPolicies{
-					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
+					enableContentResponseOnWrite: localOptions.EnableContentResponseOnWrite,
 				},
 				&globalEndpointManagerPolicy{gem: gem},
 			},
@@ -170,13 +168,11 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 				Namespace: "Microsoft.DocumentDB",
 			},
 		},
-		&options.ClientOptions)
+		&localOptions.ClientOptions)
 }
 
 func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
-	if options == nil {
-		options = &ClientOptions{}
-	}
+	localOptions := optionsWithDefaultTransport(options)
 	return azruntime.NewPipeline(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
@@ -184,7 +180,24 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 				authPolicy,
 			},
 		},
-		&options.ClientOptions)
+		&localOptions.ClientOptions)
+}
+
+// optionsWithDefaultTransport returns a shallow copy of options with the
+// Cosmos default HTTP client (HTTP/2 PING-based health checks) installed
+// when the caller did not supply their own Transport. The caller's options
+// struct is never mutated, so it is safe to reuse a single ClientOptions
+// value across multiple client constructions, including concurrently.
+// Customer-supplied transports are preserved unchanged.
+func optionsWithDefaultTransport(options *ClientOptions) ClientOptions {
+	var localOptions ClientOptions
+	if options != nil {
+		localOptions = *options
+	}
+	if localOptions.Transport == nil {
+		localOptions.Transport = defaultCosmosHTTPClient
+	}
+	return localOptions
 }
 
 func createScopeFromEndpoint(endpoint *url.URL) ([]string, error) {

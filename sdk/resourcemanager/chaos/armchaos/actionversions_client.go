@@ -16,61 +16,62 @@ import (
 	"strings"
 )
 
-// TargetTypesClient contains the methods for the TargetTypes group.
-// Don't use this type directly, use NewTargetTypesClient() instead.
-type TargetTypesClient struct {
+// ActionVersionsClient contains the methods for the ActionVersions group.
+// Don't use this type directly, use NewActionVersionsClient() instead.
+type ActionVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewTargetTypesClient creates a new instance of TargetTypesClient with the specified values.
+// NewActionVersionsClient creates a new instance of ActionVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TargetTypesClient, error) {
+func NewActionVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActionVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &TargetTypesClient{
+	client := &ActionVersionsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Get a Target Type resources for given location.
+// Get - Get an Action Version resource for a given location and action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
-//   - targetTypeName - String that represents a Target Type resource name.
-//   - options - TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
-func (client *TargetTypesClient) Get(ctx context.Context, location string, targetTypeName string, options *TargetTypesClientGetOptions) (TargetTypesClientGetResponse, error) {
+//   - actionName - String that represents an Action resource name.
+//   - versionName - String that represents an Action Version resource name.
+//   - options - ActionVersionsClientGetOptions contains the optional parameters for the ActionVersionsClient.Get method.
+func (client *ActionVersionsClient) Get(ctx context.Context, location string, actionName string, versionName string, options *ActionVersionsClientGetOptions) (ActionVersionsClientGetResponse, error) {
 	var err error
-	const operationName = "TargetTypesClient.Get"
+	const operationName = "ActionVersionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, location, targetTypeName, options)
+	req, err := client.getCreateRequest(ctx, location, actionName, versionName, options)
 	if err != nil {
-		return TargetTypesClientGetResponse{}, err
+		return ActionVersionsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return TargetTypesClientGetResponse{}, err
+		return ActionVersionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return TargetTypesClientGetResponse{}, err
+		return ActionVersionsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *TargetTypesClient) getCreateRequest(ctx context.Context, location string, targetTypeName string, _ *TargetTypesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/targetTypes/{targetTypeName}"
+func (client *ActionVersionsClient) getCreateRequest(ctx context.Context, location string, actionName string, versionName string, _ *ActionVersionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/actions/{actionName}/versions/{versionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -79,10 +80,14 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, location 
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if targetTypeName == "" {
-		return nil, errors.New("parameter targetTypeName cannot be empty")
+	if actionName == "" {
+		return nil, errors.New("parameter actionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetTypeName}", url.PathEscape(targetTypeName))
+	urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
+	if versionName == "" {
+		return nil, errors.New("parameter versionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{versionName}", url.PathEscape(versionName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -95,35 +100,36 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, location 
 }
 
 // getHandleResponse handles the Get response.
-func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetTypesClientGetResponse, error) {
-	result := TargetTypesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TargetType); err != nil {
-		return TargetTypesClientGetResponse{}, err
+func (client *ActionVersionsClient) getHandleResponse(resp *http.Response) (ActionVersionsClientGetResponse, error) {
+	result := ActionVersionsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ActionVersion); err != nil {
+		return ActionVersionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Get a list of Target Type resources for given location.
+// NewListPager - Get a list of Action Version resources for a given location and action.
 //
 // Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
-//   - options - TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.NewListPager method.
-func (client *TargetTypesClient) NewListPager(location string, options *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[TargetTypesClientListResponse]{
-		More: func(page TargetTypesClientListResponse) bool {
+//   - actionName - String that represents an Action resource name.
+//   - options - ActionVersionsClientListOptions contains the optional parameters for the ActionVersionsClient.NewListPager method.
+func (client *ActionVersionsClient) NewListPager(location string, actionName string, options *ActionVersionsClientListOptions) *runtime.Pager[ActionVersionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ActionVersionsClientListResponse]{
+		More: func(page ActionVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *TargetTypesClientListResponse) (TargetTypesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TargetTypesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *ActionVersionsClientListResponse) (ActionVersionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActionVersionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, options)
+				return client.listCreateRequest(ctx, location, actionName, options)
 			}, nil)
 			if err != nil {
-				return TargetTypesClientListResponse{}, err
+				return ActionVersionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -132,8 +138,8 @@ func (client *TargetTypesClient) NewListPager(location string, options *TargetTy
 }
 
 // listCreateRequest creates the List request.
-func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location string, options *TargetTypesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/targetTypes"
+func (client *ActionVersionsClient) listCreateRequest(ctx context.Context, location string, actionName string, options *ActionVersionsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/actions/{actionName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -142,6 +148,10 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if actionName == "" {
+		return nil, errors.New("parameter actionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -157,10 +167,10 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 }
 
 // listHandleResponse handles the List response.
-func (client *TargetTypesClient) listHandleResponse(resp *http.Response) (TargetTypesClientListResponse, error) {
-	result := TargetTypesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TargetTypeListResult); err != nil {
-		return TargetTypesClientListResponse{}, err
+func (client *ActionVersionsClient) listHandleResponse(resp *http.Response) (ActionVersionsClientListResponse, error) {
+	result := ActionVersionsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ActionVersionListResult); err != nil {
+		return ActionVersionsClientListResponse{}, err
 	}
 	return result, nil
 }

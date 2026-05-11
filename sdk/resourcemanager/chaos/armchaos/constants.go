@@ -4,6 +4,72 @@
 
 package armchaos
 
+// ActionDependencyType - Enum for action dependency type.
+type ActionDependencyType string
+
+const (
+	// ActionDependencyTypeAction - Action dependency type.
+	ActionDependencyTypeAction ActionDependencyType = "Action"
+)
+
+// PossibleActionDependencyTypeValues returns the possible values for the ActionDependencyType const type.
+func PossibleActionDependencyTypeValues() []ActionDependencyType {
+	return []ActionDependencyType{
+		ActionDependencyTypeAction,
+	}
+}
+
+// ActionKind - Union of action types.
+type ActionKind string
+
+const (
+	// ActionKindCancelable - Cancelable action type.
+	ActionKindCancelable ActionKind = "Cancelable"
+	// ActionKindContinuous - Continuous action type.
+	ActionKindContinuous ActionKind = "Continuous"
+	// ActionKindDiscrete - Discrete action type.
+	ActionKindDiscrete ActionKind = "Discrete"
+)
+
+// PossibleActionKindValues returns the possible values for the ActionKind const type.
+func PossibleActionKindValues() []ActionKind {
+	return []ActionKind{
+		ActionKindCancelable,
+		ActionKindContinuous,
+		ActionKindDiscrete,
+	}
+}
+
+// ActionLifecycle - Enum for action lifecycle states.
+type ActionLifecycle string
+
+const (
+	// ActionLifecycleAnyTerminal - Trigger when action reaches any terminal state.
+	ActionLifecycleAnyTerminal ActionLifecycle = "AnyTerminal"
+	// ActionLifecycleFailure - Trigger on failure.
+	ActionLifecycleFailure ActionLifecycle = "Failure"
+	// ActionLifecycleRunning - Trigger when action is running.
+	ActionLifecycleRunning ActionLifecycle = "Running"
+	// ActionLifecycleSkipped - Trigger when action is skipped.
+	ActionLifecycleSkipped ActionLifecycle = "Skipped"
+	// ActionLifecycleStart - Trigger when action starts.
+	ActionLifecycleStart ActionLifecycle = "Start"
+	// ActionLifecycleSuccess - Trigger on success.
+	ActionLifecycleSuccess ActionLifecycle = "Success"
+)
+
+// PossibleActionLifecycleValues returns the possible values for the ActionLifecycle const type.
+func PossibleActionLifecycleValues() []ActionLifecycle {
+	return []ActionLifecycle{
+		ActionLifecycleAnyTerminal,
+		ActionLifecycleFailure,
+		ActionLifecycleRunning,
+		ActionLifecycleSkipped,
+		ActionLifecycleStart,
+		ActionLifecycleSuccess,
+	}
+}
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -122,6 +188,84 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// ParameterType - Enum for parameter types.
+type ParameterType string
+
+const (
+	// ParameterTypeArray - Array parameter type.
+	ParameterTypeArray ParameterType = "array"
+	// ParameterTypeBoolean - Boolean parameter type.
+	ParameterTypeBoolean ParameterType = "boolean"
+	// ParameterTypeNumber - Number parameter type.
+	ParameterTypeNumber ParameterType = "number"
+	// ParameterTypeObject - Object parameter type.
+	ParameterTypeObject ParameterType = "object"
+	// ParameterTypeString - String parameter type.
+	ParameterTypeString ParameterType = "string"
+)
+
+// PossibleParameterTypeValues returns the possible values for the ParameterType const type.
+func PossibleParameterTypeValues() []ParameterType {
+	return []ParameterType{
+		ParameterTypeArray,
+		ParameterTypeBoolean,
+		ParameterTypeNumber,
+		ParameterTypeObject,
+		ParameterTypeString,
+	}
+}
+
+// PermissionsFixState - Enum of the permission fix state.
+type PermissionsFixState string
+
+const (
+	// PermissionsFixStateFailed - All role assignments failed.
+	PermissionsFixStateFailed PermissionsFixState = "Failed"
+	// PermissionsFixStateInProgress - The permission fix is in progress.
+	PermissionsFixStateInProgress PermissionsFixState = "InProgress"
+	// PermissionsFixStateNotStarted - The permission fix has not started.
+	PermissionsFixStateNotStarted PermissionsFixState = "NotStarted"
+	// PermissionsFixStatePartiallySucceeded - Some role assignments succeeded and some failed.
+	PermissionsFixStatePartiallySucceeded PermissionsFixState = "PartiallySucceeded"
+	// PermissionsFixStateSucceeded - All role assignments succeeded.
+	PermissionsFixStateSucceeded PermissionsFixState = "Succeeded"
+	// PermissionsFixStateWhatIfCompleted - What-if analysis completed (no changes made).
+	PermissionsFixStateWhatIfCompleted PermissionsFixState = "WhatIfCompleted"
+)
+
+// PossiblePermissionsFixStateValues returns the possible values for the PermissionsFixState const type.
+func PossiblePermissionsFixStateValues() []PermissionsFixState {
+	return []PermissionsFixState{
+		PermissionsFixStateFailed,
+		PermissionsFixStateInProgress,
+		PermissionsFixStateNotStarted,
+		PermissionsFixStatePartiallySucceeded,
+		PermissionsFixStateSucceeded,
+		PermissionsFixStateWhatIfCompleted,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	// PrivateEndpointServiceConnectionStatusApproved - Approved status.
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	// PrivateEndpointServiceConnectionStatusPending - Pending status.
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
+	// PrivateEndpointServiceConnectionStatusRejected - Rejected status.
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
 // ProvisioningState - Current provisioning state for a given Azure Chaos resource.
 type ProvisioningState string
 
@@ -134,6 +278,8 @@ const (
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateRunning - Action is running.
+	ProvisioningStateRunning ProvisioningState = "Running"
 	// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 	// ProvisioningStateUpdating - Update in progress.
@@ -147,8 +293,234 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
+		ProvisioningStateRunning,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
+	}
+}
+
+// PublicNetworkAccessOption - Public Network Access Control for PrivateAccess resource.
+type PublicNetworkAccessOption string
+
+const (
+	// PublicNetworkAccessOptionDisabled - Disabled access.
+	PublicNetworkAccessOptionDisabled PublicNetworkAccessOption = "Disabled"
+	// PublicNetworkAccessOptionEnabled - Enabled access.
+	PublicNetworkAccessOptionEnabled PublicNetworkAccessOption = "Enabled"
+)
+
+// PossiblePublicNetworkAccessOptionValues returns the possible values for the PublicNetworkAccessOption const type.
+func PossiblePublicNetworkAccessOptionValues() []PublicNetworkAccessOption {
+	return []PublicNetworkAccessOption{
+		PublicNetworkAccessOptionDisabled,
+		PublicNetworkAccessOptionEnabled,
+	}
+}
+
+// RecommendationStatus - Enum of the scenario validation state.
+type RecommendationStatus string
+
+const (
+	// RecommendationStatusEvaluating - The scenario recommendation status is currently being evaluated.
+	RecommendationStatusEvaluating RecommendationStatus = "Evaluating"
+	// RecommendationStatusEvaluationCancelled - The scenario recommendation evaluation was cancelled.
+	RecommendationStatusEvaluationCancelled RecommendationStatus = "EvaluationCancelled"
+	// RecommendationStatusEvaluationFailed - The scenario recommendation evaluation has failed.
+	RecommendationStatusEvaluationFailed RecommendationStatus = "EvaluationFailed"
+	// RecommendationStatusNotApplicable - The scenario recommendation status is not applicable.
+	RecommendationStatusNotApplicable RecommendationStatus = "NotApplicable"
+	// RecommendationStatusNotEvaluated - The scenario recommendation status has not been evaluated.
+	RecommendationStatusNotEvaluated RecommendationStatus = "NotEvaluated"
+	// RecommendationStatusRecommended - The scenario recommendation status is recommended.
+	RecommendationStatusRecommended RecommendationStatus = "Recommended"
+)
+
+// PossibleRecommendationStatusValues returns the possible values for the RecommendationStatus const type.
+func PossibleRecommendationStatusValues() []RecommendationStatus {
+	return []RecommendationStatus{
+		RecommendationStatusEvaluating,
+		RecommendationStatusEvaluationCancelled,
+		RecommendationStatusEvaluationFailed,
+		RecommendationStatusNotApplicable,
+		RecommendationStatusNotEvaluated,
+		RecommendationStatusRecommended,
+	}
+}
+
+// RoleAssignmentStatus - Enum of the role assignment status.
+type RoleAssignmentStatus string
+
+const (
+	// RoleAssignmentStatusFailed - The role assignment failed.
+	RoleAssignmentStatusFailed RoleAssignmentStatus = "Failed"
+	// RoleAssignmentStatusPending - The role assignment is pending (what-if mode).
+	RoleAssignmentStatusPending RoleAssignmentStatus = "Pending"
+	// RoleAssignmentStatusSkipped - The role assignment was skipped (already exists).
+	RoleAssignmentStatusSkipped RoleAssignmentStatus = "Skipped"
+	// RoleAssignmentStatusSucceeded - The role assignment succeeded.
+	RoleAssignmentStatusSucceeded RoleAssignmentStatus = "Succeeded"
+)
+
+// PossibleRoleAssignmentStatusValues returns the possible values for the RoleAssignmentStatus const type.
+func PossibleRoleAssignmentStatusValues() []RoleAssignmentStatus {
+	return []RoleAssignmentStatus{
+		RoleAssignmentStatusFailed,
+		RoleAssignmentStatusPending,
+		RoleAssignmentStatusSkipped,
+		RoleAssignmentStatusSucceeded,
+	}
+}
+
+// RunAfterBehavior - Enum for run after behavior.
+type RunAfterBehavior string
+
+const (
+	// RunAfterBehaviorAll - All dependencies must be satisfied to continue.
+	RunAfterBehaviorAll RunAfterBehavior = "All"
+	// RunAfterBehaviorAny - Always continues after all dependencies (like a finally block).
+	RunAfterBehaviorAny RunAfterBehavior = "Any"
+	// RunAfterBehaviorAtLeastOne - At least one dependency must be satisfied to continue.
+	RunAfterBehaviorAtLeastOne RunAfterBehavior = "AtLeastOne"
+)
+
+// PossibleRunAfterBehaviorValues returns the possible values for the RunAfterBehavior const type.
+func PossibleRunAfterBehaviorValues() []RunAfterBehavior {
+	return []RunAfterBehavior{
+		RunAfterBehaviorAll,
+		RunAfterBehaviorAny,
+		RunAfterBehaviorAtLeastOne,
+	}
+}
+
+// ScenarioRunState - Enum of the scenario run state.
+type ScenarioRunState string
+
+const (
+	// ScenarioRunStateCanceled - The scenario run has been canceled.
+	ScenarioRunStateCanceled ScenarioRunState = "Canceled"
+	// ScenarioRunStateCanceling - The scenario run is in the process of being canceled.
+	ScenarioRunStateCanceling ScenarioRunState = "Canceling"
+	// ScenarioRunStateCleaningUp - The scenario run is in the process of being cleaned up.
+	ScenarioRunStateCleaningUp ScenarioRunState = "CleaningUp"
+	// ScenarioRunStateFailed - The scenario run has failed.
+	ScenarioRunStateFailed ScenarioRunState = "Failed"
+	// ScenarioRunStateGenerating - The scenario run is in the process of being generated.
+	ScenarioRunStateGenerating ScenarioRunState = "Generating"
+	// ScenarioRunStatePreparing - The scenario run is in the process of being prepared.
+	ScenarioRunStatePreparing ScenarioRunState = "Preparing"
+	// ScenarioRunStateQueued - The scenario run has been queued and is waiting to start.
+	ScenarioRunStateQueued ScenarioRunState = "Queued"
+	// ScenarioRunStateResolving - The scenario run is in the process of being resolved.
+	ScenarioRunStateResolving ScenarioRunState = "Resolving"
+	// ScenarioRunStateRunning - The scenario run is in the process of running.
+	ScenarioRunStateRunning ScenarioRunState = "Running"
+	// ScenarioRunStateStarting - The scenario run is in the process of being started.
+	ScenarioRunStateStarting ScenarioRunState = "Starting"
+	// ScenarioRunStateSucceeded - The scenario run has completed successfully.
+	ScenarioRunStateSucceeded ScenarioRunState = "Succeeded"
+	// ScenarioRunStateValidating - The scenario run is in the process of being validated.
+	ScenarioRunStateValidating ScenarioRunState = "Validating"
+	// ScenarioRunStateValidationSucceeded - The scenario run validation has completed successfully.
+	ScenarioRunStateValidationSucceeded ScenarioRunState = "ValidationSucceeded"
+)
+
+// PossibleScenarioRunStateValues returns the possible values for the ScenarioRunState const type.
+func PossibleScenarioRunStateValues() []ScenarioRunState {
+	return []ScenarioRunState{
+		ScenarioRunStateCanceled,
+		ScenarioRunStateCanceling,
+		ScenarioRunStateCleaningUp,
+		ScenarioRunStateFailed,
+		ScenarioRunStateGenerating,
+		ScenarioRunStatePreparing,
+		ScenarioRunStateQueued,
+		ScenarioRunStateResolving,
+		ScenarioRunStateRunning,
+		ScenarioRunStateStarting,
+		ScenarioRunStateSucceeded,
+		ScenarioRunStateValidating,
+		ScenarioRunStateValidationSucceeded,
+	}
+}
+
+// ScenarioSummaryState - Enum of the scenario run summary action state.
+type ScenarioSummaryState string
+
+const (
+	// ScenarioSummaryStateCanceled - The action has been canceled.
+	ScenarioSummaryStateCanceled ScenarioSummaryState = "Canceled"
+	// ScenarioSummaryStateCanceling - The action is in the process of being canceled.
+	ScenarioSummaryStateCanceling ScenarioSummaryState = "Canceling"
+	// ScenarioSummaryStateFailed - The action has failed.
+	ScenarioSummaryStateFailed ScenarioSummaryState = "Failed"
+	// ScenarioSummaryStateFailingOnError - The action is failing due to an error.
+	ScenarioSummaryStateFailingOnError ScenarioSummaryState = "FailingOnError"
+	// ScenarioSummaryStatePending - The action is pending and has not started.
+	ScenarioSummaryStatePending ScenarioSummaryState = "Pending"
+	// ScenarioSummaryStateRunning - The action is in the process of running.
+	ScenarioSummaryStateRunning ScenarioSummaryState = "Running"
+	// ScenarioSummaryStateSkipped - The action was skipped.
+	ScenarioSummaryStateSkipped ScenarioSummaryState = "Skipped"
+	// ScenarioSummaryStateStarting - The action is in the process of starting.
+	ScenarioSummaryStateStarting ScenarioSummaryState = "Starting"
+	// ScenarioSummaryStateStopping - The action is in the process of stopping.
+	ScenarioSummaryStateStopping ScenarioSummaryState = "Stopping"
+	// ScenarioSummaryStateSucceeded - The action has completed successfully.
+	ScenarioSummaryStateSucceeded ScenarioSummaryState = "Succeeded"
+)
+
+// PossibleScenarioSummaryStateValues returns the possible values for the ScenarioSummaryState const type.
+func PossibleScenarioSummaryStateValues() []ScenarioSummaryState {
+	return []ScenarioSummaryState{
+		ScenarioSummaryStateCanceled,
+		ScenarioSummaryStateCanceling,
+		ScenarioSummaryStateFailed,
+		ScenarioSummaryStateFailingOnError,
+		ScenarioSummaryStatePending,
+		ScenarioSummaryStateRunning,
+		ScenarioSummaryStateSkipped,
+		ScenarioSummaryStateStarting,
+		ScenarioSummaryStateStopping,
+		ScenarioSummaryStateSucceeded,
+	}
+}
+
+// ScenarioValidationState - Enum of the scenario validation state.
+type ScenarioValidationState string
+
+const (
+	// ScenarioValidationStateAccepted - The scenario validation has been accepted.
+	ScenarioValidationStateAccepted ScenarioValidationState = "Accepted"
+	// ScenarioValidationStateGenerating - The scenario validation is in a generating state.
+	ScenarioValidationStateGenerating ScenarioValidationState = "Generating"
+	// ScenarioValidationStateNoResolvedResources - The scenario validation found no valid resources to perform fault behaviors
+	// against.
+	// This is a terminal failure state.
+	ScenarioValidationStateNoResolvedResources ScenarioValidationState = "NoResolvedResources"
+	// ScenarioValidationStateNotStarted - The scenario validation has not yet started.
+	ScenarioValidationStateNotStarted ScenarioValidationState = "NotStarted"
+	// ScenarioValidationStateRequiresAttention - The scenario validation reflects a state that requires attention.
+	// This is a terminal failure state indicating validation issues were found.
+	ScenarioValidationStateRequiresAttention ScenarioValidationState = "RequiresAttention"
+	// ScenarioValidationStateResolving - The scenario validation is in a resolving state.
+	ScenarioValidationStateResolving ScenarioValidationState = "Resolving"
+	// ScenarioValidationStateSucceeded - The scenario validation completed successfully and the scenario is ready to execute.
+	ScenarioValidationStateSucceeded ScenarioValidationState = "Succeeded"
+	// ScenarioValidationStateValidating - The scenario validation is in a validating state.
+	ScenarioValidationStateValidating ScenarioValidationState = "Validating"
+)
+
+// PossibleScenarioValidationStateValues returns the possible values for the ScenarioValidationState const type.
+func PossibleScenarioValidationStateValues() []ScenarioValidationState {
+	return []ScenarioValidationState{
+		ScenarioValidationStateAccepted,
+		ScenarioValidationStateGenerating,
+		ScenarioValidationStateNoResolvedResources,
+		ScenarioValidationStateNotStarted,
+		ScenarioValidationStateRequiresAttention,
+		ScenarioValidationStateResolving,
+		ScenarioValidationStateSucceeded,
+		ScenarioValidationStateValidating,
 	}
 }
 
@@ -182,5 +554,58 @@ const (
 func PossibleTargetReferenceTypeValues() []TargetReferenceType {
 	return []TargetReferenceType{
 		TargetReferenceTypeChaosTarget,
+	}
+}
+
+// WorkspaceEvaluationStatus - Enum of the workspace evaluation status.
+type WorkspaceEvaluationStatus string
+
+const (
+	// WorkspaceEvaluationStatusCanceled - The evaluation was canceled.
+	WorkspaceEvaluationStatusCanceled WorkspaceEvaluationStatus = "Canceled"
+	// WorkspaceEvaluationStatusFailed - The evaluation failed.
+	WorkspaceEvaluationStatusFailed WorkspaceEvaluationStatus = "Failed"
+	// WorkspaceEvaluationStatusInProgress - The evaluation is in progress.
+	WorkspaceEvaluationStatusInProgress WorkspaceEvaluationStatus = "InProgress"
+	// WorkspaceEvaluationStatusPartiallySucceeded - The evaluation partially succeeded — some scenarios succeeded while others
+	// failed.
+	WorkspaceEvaluationStatusPartiallySucceeded WorkspaceEvaluationStatus = "PartiallySucceeded"
+	// WorkspaceEvaluationStatusPending - The evaluation is pending and has not started.
+	WorkspaceEvaluationStatusPending WorkspaceEvaluationStatus = "Pending"
+	// WorkspaceEvaluationStatusQueued - The evaluation has been accepted and is queued for execution.
+	WorkspaceEvaluationStatusQueued WorkspaceEvaluationStatus = "Queued"
+	// WorkspaceEvaluationStatusSucceeded - The evaluation completed successfully.
+	WorkspaceEvaluationStatusSucceeded WorkspaceEvaluationStatus = "Succeeded"
+)
+
+// PossibleWorkspaceEvaluationStatusValues returns the possible values for the WorkspaceEvaluationStatus const type.
+func PossibleWorkspaceEvaluationStatusValues() []WorkspaceEvaluationStatus {
+	return []WorkspaceEvaluationStatus{
+		WorkspaceEvaluationStatusCanceled,
+		WorkspaceEvaluationStatusFailed,
+		WorkspaceEvaluationStatusInProgress,
+		WorkspaceEvaluationStatusPartiallySucceeded,
+		WorkspaceEvaluationStatusPending,
+		WorkspaceEvaluationStatusQueued,
+		WorkspaceEvaluationStatusSucceeded,
+	}
+}
+
+// ZoneResolutionMode - The zone resolution mode for a scenario run.
+type ZoneResolutionMode string
+
+const (
+	// ZoneResolutionModeLogical - Logical zone mode — customer specified logical zone identifiers directly.
+	ZoneResolutionModeLogical ZoneResolutionMode = "logical"
+	// ZoneResolutionModePhysical - Physical zone mode — system resolved physical zones to per-subscription
+	// logical zones at execution time.
+	ZoneResolutionModePhysical ZoneResolutionMode = "physical"
+)
+
+// PossibleZoneResolutionModeValues returns the possible values for the ZoneResolutionMode const type.
+func PossibleZoneResolutionModeValues() []ZoneResolutionMode {
+	return []ZoneResolutionMode{
+		ZoneResolutionModeLogical,
+		ZoneResolutionModePhysical,
 	}
 }

@@ -5,27 +5,19 @@ package azcosmos
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestPriorityLevelValues(t *testing.T) {
 	values := PriorityLevelValues()
-	if len(values) != 2 {
-		t.Fatalf("expected 2 priority levels, got %d", len(values))
-	}
-	if values[0] != PriorityLevelHigh {
-		t.Errorf("expected first value to be High, got %v", values[0])
-	}
-	if values[1] != PriorityLevelLow {
-		t.Errorf("expected second value to be Low, got %v", values[1])
-	}
+	require.Len(t, values, 2, "expected 2 priority levels")
+	require.Equal(t, PriorityLevelHigh, values[0], "expected first value to be High")
+	require.Equal(t, PriorityLevelLow, values[1], "expected second value to be Low")
 }
 
 func TestPriorityLevelToPtr(t *testing.T) {
 	ptr := PriorityLevelHigh.ToPtr()
-	if ptr == nil {
-		t.Fatal("expected non-nil pointer")
-	}
-	if *ptr != PriorityLevelHigh {
-		t.Errorf("expected High, got %v", *ptr)
-	}
+	require.NotNil(t, ptr, "expected non-nil pointer")
+	require.Equal(t, PriorityLevelHigh, *ptr, "expected High")
 }

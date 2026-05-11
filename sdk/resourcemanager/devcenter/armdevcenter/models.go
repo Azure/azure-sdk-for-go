@@ -279,11 +279,27 @@ type CheckScopedNameAvailabilityRequest struct {
 // CustomerManagedKeyEncryption - Customer-managed key encryption properties for the resource.
 type CustomerManagedKeyEncryption struct {
 	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
-	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
+	KeyEncryptionKeyIdentity *CustomerManagedKeyEncryptionKeyIdentity
 
 	// key encryption key Url, versioned or non-versioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
 	// or https://contosovault.vault.azure.net/keys/contosokek.
 	KeyEncryptionKeyURL *string
+}
+
+// CustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining which identity
+// should be used to auth to Key Vault.
+type CustomerManagedKeyEncryptionKeyIdentity struct {
+	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
+	// and userAssignedIdentity - internal use only.
+	DelegatedIdentityClientID *string
+
+	// The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or delegatedResourceIdentity.
+	IdentityType *KeyEncryptionKeyIdentityType
+
+	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity.
+	UserAssignedIdentityResourceID *string
 }
 
 // CustomizationTask - Represents a Task to be used in customizing a Dev Box.
@@ -1226,45 +1242,10 @@ type InheritedSettingsForProject struct {
 	ProjectCatalogSettings *ProjectCatalogSettingsInfo
 }
 
-// KeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining which identity should
-// be used to auth to Key Vault.
+// KeyEncryptionKeyIdentity - The managed identity configuration used for key vault access.
 type KeyEncryptionKeyIdentity struct {
-	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
-	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
-	// and userAssignedIdentity - internal use only.
-	DelegatedIdentityClientID *string
-
-	// The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or delegatedResourceIdentity.
-	IdentityType *KeyEncryptionKeyIdentityType
-
 	// The type of managed identity to use for key vault access.
 	Type *CmkIdentityType
-
-	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
-	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity.
-	UserAssignedIdentityResourceID *string
-
-	// For system assigned identity, this will be null. For user assigned identity, this should be the resource ID of the identity.
-	UserAssignedIdentityResourceID *string
-}
-
-// KeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining which identity should
-// be used to auth to Key Vault.
-type KeyEncryptionKeyIdentity struct {
-	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
-	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
-	// and userAssignedIdentity - internal use only.
-	DelegatedIdentityClientID *string
-
-	// The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or delegatedResourceIdentity.
-	IdentityType *KeyEncryptionKeyIdentityType
-
-	// The type of managed identity to use for key vault access.
-	Type *CmkIdentityType
-
-	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
-	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity.
-	UserAssignedIdentityResourceID *string
 
 	// For system assigned identity, this will be null. For user assigned identity, this should be the resource ID of the identity.
 	UserAssignedIdentityResourceID *string

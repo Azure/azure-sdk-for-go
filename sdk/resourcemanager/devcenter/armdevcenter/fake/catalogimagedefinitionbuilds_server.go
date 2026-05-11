@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CatalogImageDefinitionBuildsServer is a fake server for instances of the armdevcenter.CatalogImageDefinitionBuildsClient type.
@@ -53,9 +54,7 @@ func (c *CatalogImageDefinitionBuildsServerTransport) Do(req *http.Request) (*ht
 }
 
 func (c *CatalogImageDefinitionBuildsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (c *CatalogImageDefinitionBuildsServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -124,7 +120,7 @@ func (c *CatalogImageDefinitionBuildsServerTransport) dispatchNewListByImageDefi
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListByImageDefinitionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

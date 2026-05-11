@@ -799,6 +799,41 @@ func (c *CustomerManagedKeyEncryption) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type CustomerManagedKeyEncryptionKeyIdentity.
+func (c CustomerManagedKeyEncryptionKeyIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "delegatedIdentityClientId", c.DelegatedIdentityClientID)
+	populate(objectMap, "identityType", c.IdentityType)
+	populate(objectMap, "userAssignedIdentityResourceId", c.UserAssignedIdentityResourceID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomerManagedKeyEncryptionKeyIdentity.
+func (c *CustomerManagedKeyEncryptionKeyIdentity) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "delegatedIdentityClientId":
+			err = unpopulate(val, "DelegatedIdentityClientID", &c.DelegatedIdentityClientID)
+			delete(rawMsg, key)
+		case "identityType":
+			err = unpopulate(val, "IdentityType", &c.IdentityType)
+			delete(rawMsg, key)
+		case "userAssignedIdentityResourceId":
+			err = unpopulate(val, "UserAssignedIdentityResourceID", &c.UserAssignedIdentityResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CustomizationTask.
 func (c CustomizationTask) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3254,10 +3289,7 @@ func (i *InheritedSettingsForProject) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type KeyEncryptionKeyIdentity.
 func (k KeyEncryptionKeyIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "delegatedIdentityClientId", k.DelegatedIdentityClientID)
-	populate(objectMap, "identityType", k.IdentityType)
 	populate(objectMap, "type", k.Type)
-	populate(objectMap, "userAssignedIdentityResourceId", k.UserAssignedIdentityResourceID)
 	populate(objectMap, "userAssignedIdentityResourceId", k.UserAssignedIdentityResourceID)
 	return json.Marshal(objectMap)
 }
@@ -3271,60 +3303,8 @@ func (k *KeyEncryptionKeyIdentity) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "delegatedIdentityClientId":
-			err = unpopulate(val, "DelegatedIdentityClientID", &k.DelegatedIdentityClientID)
-			delete(rawMsg, key)
-		case "identityType":
-			err = unpopulate(val, "IdentityType", &k.IdentityType)
-			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &k.Type)
-			delete(rawMsg, key)
-		case "userAssignedIdentityResourceId":
-			err = unpopulate(val, "UserAssignedIdentityResourceID", &k.UserAssignedIdentityResourceID)
-			delete(rawMsg, key)
-		case "userAssignedIdentityResourceId":
-			err = unpopulate(val, "UserAssignedIdentityResourceID", &k.UserAssignedIdentityResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", k, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyEncryptionKeyIdentity.
-func (k KeyEncryptionKeyIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "delegatedIdentityClientId", k.DelegatedIdentityClientID)
-	populate(objectMap, "identityType", k.IdentityType)
-	populate(objectMap, "type", k.Type)
-	populate(objectMap, "userAssignedIdentityResourceId", k.UserAssignedIdentityResourceID)
-	populate(objectMap, "userAssignedIdentityResourceId", k.UserAssignedIdentityResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyEncryptionKeyIdentity.
-func (k *KeyEncryptionKeyIdentity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", k, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "delegatedIdentityClientId":
-			err = unpopulate(val, "DelegatedIdentityClientID", &k.DelegatedIdentityClientID)
-			delete(rawMsg, key)
-		case "identityType":
-			err = unpopulate(val, "IdentityType", &k.IdentityType)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &k.Type)
-			delete(rawMsg, key)
-		case "userAssignedIdentityResourceId":
-			err = unpopulate(val, "UserAssignedIdentityResourceID", &k.UserAssignedIdentityResourceID)
 			delete(rawMsg, key)
 		case "userAssignedIdentityResourceId":
 			err = unpopulate(val, "UserAssignedIdentityResourceID", &k.UserAssignedIdentityResourceID)

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter/v3"
 	"net/http"
 	"regexp"
+	"slices"
 )
 
 // CheckScopedNameAvailabilityServer is a fake server for instances of the armdevcenter.CheckScopedNameAvailabilityClient type.
@@ -48,9 +49,7 @@ func (c *CheckScopedNameAvailabilityServerTransport) Do(req *http.Request) (*htt
 }
 
 func (c *CheckScopedNameAvailabilityServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -66,10 +65,7 @@ func (c *CheckScopedNameAvailabilityServerTransport) dispatchToMethodFake(req *h
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -99,7 +95,7 @@ func (c *CheckScopedNameAvailabilityServerTransport) dispatchExecute(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)

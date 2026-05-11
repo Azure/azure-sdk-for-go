@@ -1,14 +1,13 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-03-19)
+## 3.0.0-beta.1 (2026-05-11)
 ### Breaking Changes
 
-- Type of `CustomerManagedKeyEncryption.KeyEncryptionKeyIdentity` has been changed from `*CustomerManagedKeyEncryptionKeyIdentity` to `*KeyEncryptionKeyIdentity`
+- Type of `CustomerManagedKeyEncryptionKeyIdentity.IdentityType` has been changed from `*IdentityType` to `*KeyEncryptionKeyIdentityType`
 - Type of `OperationStatus.PercentComplete` has been changed from `*float32` to `*float64`
 - Type of `OperationStatus.Properties` has been changed from `any` to `map[string]any`
 - Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
 - Enum `IdentityType` has been removed
-- Struct `CustomerManagedKeyEncryptionKeyIdentity` has been removed
 - Field `ResourceID` of struct `OperationStatus` has been removed
 - Field `ResourceID` of struct `OperationStatusResult` has been removed
 - Field `Top` of struct `SchedulesClientGetOptions` has been removed

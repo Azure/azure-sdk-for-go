@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -81,9 +82,7 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -109,10 +108,7 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -163,7 +159,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -210,7 +206,7 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -236,24 +232,12 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	if err != nil {
 		return nil, err
 	}
-	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	expandParam := getOptional(armmanagementgroups.ManagementGroupExpandType(qp.Get("$expand")))
+	recurseParam, err := parseOptional(qp.Get("$recurse"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	expandParam := getOptional(armmanagementgroups.ManagementGroupExpandType(expandUnescaped))
-	recurseUnescaped, err := url.QueryUnescape(qp.Get("$recurse"))
-	if err != nil {
-		return nil, err
-	}
-	recurseParam, err := parseOptional(recurseUnescaped, strconv.ParseBool)
-	if err != nil {
-		return nil, err
-	}
-	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-	if err != nil {
-		return nil, err
-	}
-	filterParam := getOptional(filterUnescaped)
+	filterParam := getOptional(qp.Get("$filter"))
 	cacheControlParam := getOptional(getHeaderValue(req.Header, "Cache-Control"))
 	var options *armmanagementgroups.ClientGetOptions
 	if expandParam != nil || recurseParam != nil || filterParam != nil || cacheControlParam != nil {
@@ -269,7 +253,7 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagementGroup, req)
@@ -296,16 +280,8 @@ func (s *ServerTransport) dispatchNewGetDescendantsPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam := getOptional(skiptokenUnescaped)
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -333,7 +309,7 @@ func (s *ServerTransport) dispatchNewGetDescendantsPager(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newGetDescendantsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -351,11 +327,7 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	if newListPager == nil {
 		qp := req.URL.Query()
 		cacheControlParam := getOptional(getHeaderValue(req.Header, "Cache-Control"))
-		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam := getOptional(skiptokenUnescaped)
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		var options *armmanagementgroups.ClientListOptions
 		if cacheControlParam != nil || skiptokenParam != nil {
 			options = &armmanagementgroups.ClientListOptions{
@@ -374,7 +346,7 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -414,7 +386,7 @@ func (s *ServerTransport) dispatchUpdate(req *http.Request) (*http.Response, err
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagementGroup, req)

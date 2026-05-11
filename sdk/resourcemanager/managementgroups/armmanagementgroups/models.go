@@ -32,6 +32,24 @@ type CheckNameAvailabilityResult struct {
 	Reason *Reason
 }
 
+// CreateManagementGroupChildInfo - The child information of a management group used during creation.
+type CreateManagementGroupChildInfo struct {
+	// READ-ONLY; The list of children.
+	Children []*CreateManagementGroupChildInfo
+
+	// READ-ONLY; The friendly name of the child resource.
+	DisplayName *string
+
+	// READ-ONLY; The fully qualified ID for the child resource (management group or subscription). For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+	ID *string
+
+	// READ-ONLY; The name of the child entity.
+	Name *string
+
+	// READ-ONLY; The fully qualified resource type which includes provider namespace (e.g. Microsoft.Management/managementGroups)
+	Type *ManagementGroupChildType
+}
+
 // CreateManagementGroupDetails - The details of a management group used during creation.
 type CreateManagementGroupDetails struct {
 	// (Optional) The ID of the parent management group used during creation.

@@ -1,11 +1,10 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-03-19)
+## 2.0.0-beta.1 (2026-05-11)
 ### Breaking Changes
 
 - Type of `Operation.Display` has been changed from `*OperationDisplayProperties` to `*OperationDisplay`
 - Struct `AzureAsyncOperationResults` has been removed
-- Struct `CreateManagementGroupChildInfo` has been removed
 - Struct `EntityHierarchyItem` has been removed
 - Struct `EntityHierarchyItemProperties` has been removed
 - Struct `ErrorDetails` has been removed

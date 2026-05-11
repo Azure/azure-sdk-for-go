@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Management": "2023-04-01"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.11.0"
 }

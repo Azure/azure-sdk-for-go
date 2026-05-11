@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups/v2"
 	"net/http"
-	"net/url"
+	"slices"
 	"strconv"
 )
 
@@ -53,9 +53,7 @@ func (e *EntitiesServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (e *EntitiesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (e *EntitiesServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -92,16 +87,8 @@ func (e *EntitiesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
 		qp := req.URL.Query()
-		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam := getOptional(skiptokenUnescaped)
-		skipUnescaped, err := url.QueryUnescape(qp.Get("$skip"))
-		if err != nil {
-			return nil, err
-		}
-		skipParam, err := parseOptional(skipUnescaped, func(v string) (int32, error) {
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		skipParam, err := parseOptional(qp.Get("$skip"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -111,11 +98,7 @@ func (e *EntitiesServerTransport) dispatchNewListPager(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -125,31 +108,11 @@ func (e *EntitiesServerTransport) dispatchNewListPager(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
-		if err != nil {
-			return nil, err
-		}
-		selectParam := getOptional(selectUnescaped)
-		searchUnescaped, err := url.QueryUnescape(qp.Get("$search"))
-		if err != nil {
-			return nil, err
-		}
-		searchParam := getOptional(armmanagementgroups.EntitySearchType(searchUnescaped))
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		viewUnescaped, err := url.QueryUnescape(qp.Get("$view"))
-		if err != nil {
-			return nil, err
-		}
-		viewParam := getOptional(armmanagementgroups.EntityViewParameterType(viewUnescaped))
-		groupNameUnescaped, err := url.QueryUnescape(qp.Get("groupName"))
-		if err != nil {
-			return nil, err
-		}
-		groupNameParam := getOptional(groupNameUnescaped)
+		selectParam := getOptional(qp.Get("$select"))
+		searchParam := getOptional(armmanagementgroups.EntitySearchType(qp.Get("$search")))
+		filterParam := getOptional(qp.Get("$filter"))
+		viewParam := getOptional(armmanagementgroups.EntityViewParameterType(qp.Get("$view")))
+		groupNameParam := getOptional(qp.Get("groupName"))
 		cacheControlParam := getOptional(getHeaderValue(req.Header, "Cache-Control"))
 		var options *armmanagementgroups.EntitiesClientListOptions
 		if skiptokenParam != nil || skipParam != nil || topParam != nil || selectParam != nil || searchParam != nil || filterParam != nil || viewParam != nil || groupNameParam != nil || cacheControlParam != nil {
@@ -176,7 +139,7 @@ func (e *EntitiesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

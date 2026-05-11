@@ -42,7 +42,7 @@ func NewResourceGuardProxyClient(subscriptionID string, credential azcore.TokenC
 // Delete - Delete ResourceGuardProxy under vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ResourceGuardProxyClientDeleteOptions contains the optional parameters for the ResourceGuardProxyClient.Delete
 //     method.
@@ -91,7 +91,7 @@ func (client *ResourceGuardProxyClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -99,7 +99,7 @@ func (client *ResourceGuardProxyClient) deleteCreateRequest(ctx context.Context,
 // Get - Returns ResourceGuardProxy under vault and with the name referenced in request
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ResourceGuardProxyClientGetOptions contains the optional parameters for the ResourceGuardProxyClient.Get method.
 func (client *ResourceGuardProxyClient) Get(ctx context.Context, vaultName string, resourceGroupName string, resourceGuardProxyName string, options *ResourceGuardProxyClientGetOptions) (ResourceGuardProxyClientGetResponse, error) {
@@ -148,7 +148,7 @@ func (client *ResourceGuardProxyClient) getCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +167,7 @@ func (client *ResourceGuardProxyClient) getHandleResponse(resp *http.Response) (
 // Secures vault critical operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ResourceGuardProxyClientPutOptions contains the optional parameters for the ResourceGuardProxyClient.Put method.
 func (client *ResourceGuardProxyClient) Put(ctx context.Context, vaultName string, resourceGroupName string, resourceGuardProxyName string, parameters ResourceGuardProxyBaseResource, options *ResourceGuardProxyClientPutOptions) (ResourceGuardProxyClientPutResponse, error) {
@@ -216,7 +216,7 @@ func (client *ResourceGuardProxyClient) putCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -238,7 +238,7 @@ func (client *ResourceGuardProxyClient) putHandleResponse(resp *http.Response) (
 // UnlockDelete - Secures delete ResourceGuardProxy operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ResourceGuardProxyClientUnlockDeleteOptions contains the optional parameters for the ResourceGuardProxyClient.UnlockDelete
 //     method.
@@ -288,7 +288,7 @@ func (client *ResourceGuardProxyClient) unlockDeleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/BackupResourceEncryptionConfig_Get.json
+// Generated from example definition: 2026-01-31-preview/BackupResourceEncryptionConfig_Get.json
 func ExampleBackupResourceEncryptionConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleBackupResourceEncryptionConfigsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.BackupResourceEncryptionConfigsClientGetResponse{
-	// 	BackupResourceEncryptionConfigExtendedResource: &armrecoveryservicesbackup.BackupResourceEncryptionConfigExtendedResource{
+	// 	BackupResourceEncryptionConfigExtendedResource: armrecoveryservicesbackup.BackupResourceEncryptionConfigExtendedResource{
 	// 		Name: to.Ptr("backupResourceEncryptionConfig"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupEncryptionConfigs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rishgrp/providers/Microsoft.RecoveryServicesBVTD2/vaults/rishTestVault/backupEncryptionConfigs/backupResourceEncryptionConfig"),
@@ -48,7 +48,7 @@ func ExampleBackupResourceEncryptionConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/BackupResourceEncryptionConfig_Put.json
+// Generated from example definition: 2026-01-31-preview/BackupResourceEncryptionConfig_Put.json
 func ExampleBackupResourceEncryptionConfigsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

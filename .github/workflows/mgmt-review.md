@@ -49,13 +49,12 @@ Fetch the PR details. If the PR is in **draft** state, mark it as ready for revi
 2. Identify the module path from the changed files (e.g., `sdk/resourcemanager/<service>/arm<package>/`).
 3. Determine if this is a **first on-board service** (first beta version): check whether the PR adds a new `ci.yml` file under the module path (i.e., `ci.yml` appears in the changed files with status `added`). If so, record this for the Step 5 comment.
 
-### Step 2 — Wait for all pipeline checks to complete
+### Step 2 — Check pipeline status
 
-Before analyzing CI results, ensure all pipeline checks have finished running.
+Fetch **check runs** for the PR head commit. Find the `go - pullrequest` parent check and its child jobs (`go - pullrequest (Build <job_name>)`). These are **Azure DevOps pipeline** results — do NOT call `get_job_logs` (returns 404).
 
-1. Fetch **check runs** for the PR head commit. Find the `go - pullrequest` parent check and its child jobs (`go - pullrequest (Build <job_name>)`). These are **Azure DevOps pipeline** results — do NOT call `get_job_logs` (returns 404).
-2. If the `go - pullrequest` parent check or any of its child jobs have a `status` of `queued` or `in_progress`, poll check runs periodically (e.g., every 60 seconds) until **all** pipeline checks reach a **completed** status. If checks have not completed within **30 minutes**, stop waiting and analyze whatever results are available — note incomplete checks in the Step 5 comment.
-3. Once all checks are completed, read success/failure from the `conclusion` field and extract the `target_url` for ADO log links. NEVER fabricate ADO URLs.
+- If the `go - pullrequest` parent check is **not present**, or any checks still have a `status` of `queued` or `in_progress`, **do not wait**. Skip to Step 5 and post a comment telling the user that pipeline checks have not completed yet and to re-trigger this workflow (by removing and re-adding the `mgmt-review-needed` label) after the pipelines finish.
+- If **all** pipeline checks have reached `completed` status, read success/failure from the `conclusion` field and extract the `target_url` for ADO log links. NEVER fabricate ADO URLs. Proceed to Step 3.
 
 ### Step 3 — Check for manual edits to auto-generated files
 
@@ -110,7 +109,17 @@ For failures not covered above, reference the [troubleshooting guide](https://gi
 
 Post **exactly one** PR comment via `add_comment`. Include the marker `<!-- gh-aw-workflow-id: mgmt-review -->` in the body.
 
-**If nothing blocks and this is NOT a first on-board service** → post only:
+**If pipeline checks have not completed** (detected in Step 2) → post only:
+
+```markdown
+## ⏳ Pipeline Checks Still Running
+
+The `go - pullrequest` pipeline checks have not completed yet. Analysis cannot proceed until all checks finish.
+
+**Action required:** Re-trigger this workflow by removing and re-adding the `mgmt-review-needed` label after the pipeline checks have completed.
+```
+
+**If all checks completed, nothing blocks, and this is NOT a first on-board service** → post only:
 
 ```
 ## PR is ready to merge

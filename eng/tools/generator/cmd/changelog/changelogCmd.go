@@ -19,13 +19,14 @@ import (
 
 // ChangelogResult represents the result of a changelog operation
 type ChangelogResult struct {
-	Success       bool   `json:"success"`
-	Message       string `json:"message"`
-	PackagePath   string `json:"package_path,omitempty"`
-	PackageStatus string `json:"package_status,omitempty"`
-	Version       string `json:"version,omitempty"`
-	ReleaseDate   string `json:"release_date,omitempty"`
-	ChangelogMD   string `json:"changelog_md,omitempty"`
+	Success           bool   `json:"success"`
+	Message           string `json:"message"`
+	PackagePath       string `json:"package_path,omitempty"`
+	PackageStatus     string `json:"package_status,omitempty"`
+	Version           string `json:"version,omitempty"`
+	ReleaseDate       string `json:"release_date,omitempty"`
+	HasBreakingChange bool   `json:"hasBreakingChange"`
+	ChangelogMD       string `json:"changelog_md,omitempty"`
 }
 
 // Command returns the changelog command
@@ -177,6 +178,7 @@ func handleNewPackage(modulePath string, sdkRepo repo.SDKRepository, result *Cha
 	}
 
 	result.ChangelogMD = "New package"
+	result.HasBreakingChange = false
 
 	if verbose {
 		log.Printf("Created new package changelog for %s", modulePath)
@@ -216,6 +218,8 @@ func handleExistingPackage(modulePath string, sdkRepo repo.SDKRepository, result
 	}
 
 	result.Version = newVersion.String()
+
+	result.HasBreakingChange = changelogResult.ChangelogData.HasBreakingChanges()
 
 	// Update changelog file
 	changelogMd, err := changelog.AddChangelogToFileWithReplacement(changelogResult.ChangelogData, newVersion, modulePath, result.ReleaseDate)

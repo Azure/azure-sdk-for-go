@@ -165,9 +165,11 @@ func isCompleteSetOfRanges(ranges []partitionKeyRange) bool {
 		return false
 	}
 
-	// Each range's MinInclusive must equal the previous range's MaxExclusive
+	// Each range's MinInclusive must equal the previous range's MaxExclusive.
+	// Use CompareEPK for length-aware comparison — HPK containers can return
+	// mixed-length boundaries that are semantically equal (zero-padded).
 	for i := 1; i < len(ranges); i++ {
-		if ranges[i].MinInclusive != ranges[i-1].MaxExclusive {
+		if epk.CompareEPK(ranges[i].MinInclusive, ranges[i-1].MaxExclusive) != 0 {
 			return false
 		}
 	}

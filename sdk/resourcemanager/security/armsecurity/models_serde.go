@@ -10740,6 +10740,49 @@ func (h *HealthReportProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type HealthReportStatus.
+func (h HealthReportStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", h.Code)
+	populateTime[datetime.RFC3339](objectMap, "firstEvaluationDate", h.FirstEvaluationDate)
+	populateTime[datetime.RFC3339](objectMap, "lastScannedDate", h.LastScannedDate)
+	populate(objectMap, "reason", h.Reason)
+	populateTime[datetime.RFC3339](objectMap, "statusChangeDate", h.StatusChangeDate)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HealthReportStatus.
+func (h *HealthReportStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", h, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+			err = unpopulate(val, "Code", &h.Code)
+			delete(rawMsg, key)
+		case "firstEvaluationDate":
+			err = unpopulateTime[datetime.RFC3339](val, "FirstEvaluationDate", &h.FirstEvaluationDate)
+			delete(rawMsg, key)
+		case "lastScannedDate":
+			err = unpopulateTime[datetime.RFC3339](val, "LastScannedDate", &h.LastScannedDate)
+			delete(rawMsg, key)
+		case "reason":
+			err = unpopulate(val, "Reason", &h.Reason)
+			delete(rawMsg, key)
+		case "statusChangeDate":
+			err = unpopulateTime[datetime.RFC3339](val, "StatusChangeDate", &h.StatusChangeDate)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", h, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type HealthReportsList.
 func (h HealthReportsList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -16933,49 +16976,6 @@ func (s *StandardProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "supportedClouds":
 			err = unpopulate(val, "SupportedClouds", &s.SupportedClouds)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Status.
-func (s Status) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "code", s.Code)
-	populateTime[datetime.RFC3339](objectMap, "firstEvaluationDate", s.FirstEvaluationDate)
-	populateTime[datetime.RFC3339](objectMap, "lastScannedDate", s.LastScannedDate)
-	populate(objectMap, "reason", s.Reason)
-	populateTime[datetime.RFC3339](objectMap, "statusChangeDate", s.StatusChangeDate)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Status.
-func (s *Status) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &s.Code)
-			delete(rawMsg, key)
-		case "firstEvaluationDate":
-			err = unpopulateTime[datetime.RFC3339](val, "FirstEvaluationDate", &s.FirstEvaluationDate)
-			delete(rawMsg, key)
-		case "lastScannedDate":
-			err = unpopulateTime[datetime.RFC3339](val, "LastScannedDate", &s.LastScannedDate)
-			delete(rawMsg, key)
-		case "reason":
-			err = unpopulate(val, "Reason", &s.Reason)
-			delete(rawMsg, key)
-		case "statusChangeDate":
-			err = unpopulateTime[datetime.RFC3339](val, "StatusChangeDate", &s.StatusChangeDate)
 			delete(rawMsg, key)
 		}
 		if err != nil {

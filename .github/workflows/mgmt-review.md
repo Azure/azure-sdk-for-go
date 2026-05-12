@@ -81,7 +81,7 @@ The child job names follow the pattern `go - pullrequest (Build <job_name>)`. Ma
 
 | Child Job Name Pattern | What It Validates | Failure Signal | Fix Action |
 |---|---|---|---|
-| `Build/Test on <os>_go_<ver>` (×4: ubuntu/windows × 2 Go versions) | `go build`, `go vet`, `go test` in playback mode | `output.title` contains `failed` | Read `output.summary` for error/warning counts. Compile errors → fix code. Test failures → check assertions, re-record per [test guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/testing.md) |
+| `Build/Test on <os>_go_<ver>` (×4: ubuntu/windows × 2 Go versions) | `go build`, `go vet`, `go test` in playback mode | `output.title` contains `failed` | Read `output.summary` for error details. Include the guidance in the Step 5 comment. |
 | `Analyze` | Lint, format check, copyright headers, license check, go mod tidy, go.mod validation, link verification, changelog validation, dependency check | `output.title` contains `failed` | See Analyze sub-check table below |
 | `generate_job_matrix` | Determines which modules to test | `output.title` contains `failed` | Usually an infra issue — retry the pipeline |
 
@@ -143,7 +143,7 @@ This PR adds a new service. Release pipelines have not been created yet.
 Only failed checks and required actions are listed below.
 
 - ❌ `go - pullrequest (Build Build/Test on ubuntu_go_1261)`: <short reason>. [ADO logs](<real target_url>)
-  - Fix: `<specific command or step>`
+  - Fix: Confirm whether the removals/changes were intended in the source spec or example at [azure-rest-api-specs](https://github.com/Azure/azure-rest-api-specs). If intended, report the issue with the PR link in the **Azure SDK Language - Go** Teams channel. If not intended, fix the spec or example metadata and retrigger the SDK generation pipeline.
 - ❌ `go - pullrequest (Build Analyze)`: <sub-check>: <short reason>. [ADO logs](<real target_url>)
   - Fix: `<specific command, e.g. gofmt -s -w .>`
 ```

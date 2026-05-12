@@ -428,10 +428,6 @@ func TestThroughputBucketHeaderNotSetWhenNil(t *testing.T) {
 	}
 	req.SetOperationValue(pipelineRequestOptions{})
 
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-
 	_, err = pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

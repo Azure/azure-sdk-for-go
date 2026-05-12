@@ -71,7 +71,7 @@ type IssueServer struct {
 
 	// Update is the fake for method IssueClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties armmonitor.IssueResource, options *armmonitor.IssueClientUpdateOptions) (resp azfake.Responder[armmonitor.IssueClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties armmonitor.IssueResourceUpdate, options *armmonitor.IssueClientUpdateOptions) (resp azfake.Responder[armmonitor.IssueClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewIssueServerTransport creates a new instance of IssueServerTransport with the provided implementation.
@@ -652,7 +652,7 @@ func (i *IssueServerTransport) dispatchUpdate(req *http.Request) (*http.Response
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armmonitor.IssueResource](req)
+	body, err := server.UnmarshalRequestAsJSON[armmonitor.IssueResourceUpdate](req)
 	if err != nil {
 		return nil, err
 	}

@@ -897,7 +897,7 @@ func (client *IssueClient) setBackgroundVisualizationCreateRequest(ctx context.C
 //   - issueName - The name of the IssueResource
 //   - properties - The resource properties to be updated.
 //   - options - IssueClientUpdateOptions contains the optional parameters for the IssueClient.Update method.
-func (client *IssueClient) Update(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties IssueResource, options *IssueClientUpdateOptions) (IssueClientUpdateResponse, error) {
+func (client *IssueClient) Update(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties IssueResourceUpdate, options *IssueClientUpdateOptions) (IssueClientUpdateResponse, error) {
 	var err error
 	const operationName = "IssueClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -920,7 +920,7 @@ func (client *IssueClient) Update(ctx context.Context, resourceGroupName string,
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IssueClient) updateCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties IssueResource, _ *IssueClientUpdateOptions) (*policy.Request, error) {
+func (client *IssueClient) updateCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties IssueResourceUpdate, _ *IssueClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

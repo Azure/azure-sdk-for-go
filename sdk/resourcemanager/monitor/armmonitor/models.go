@@ -8,6 +8,9 @@ import "time"
 
 // AzureMonitorWorkspace - Properties of an Azure Monitor Workspace
 type AzureMonitorWorkspace struct {
+	// Properties related to the metrics container in the Azure Monitor Workspace
+	Metrics *AzureMonitorWorkspaceMetrics
+
 	// Gets or sets allow or disallow public network access to Azure Monitor Workspace
 	PublicNetworkAccess *PublicNetworkAccess
 
@@ -16,9 +19,6 @@ type AzureMonitorWorkspace struct {
 
 	// READ-ONLY; The Data Collection Rule and Endpoint used for ingestion by default.
 	DefaultIngestionSettings *AzureMonitorWorkspaceDefaultIngestionSettings
-
-	// READ-ONLY; Properties related to the metrics container in the Azure Monitor Workspace
-	Metrics *AzureMonitorWorkspaceMetrics
 
 	// READ-ONLY; List of private endpoint connections
 	PrivateEndpointConnections []*PrivateEndpointConnection
@@ -88,6 +88,18 @@ type AzureMonitorWorkspaceResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// AzureMonitorWorkspaceResourceUpdate - The type used for updating an Azure Monitor Workspace
+type AzureMonitorWorkspaceResourceUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource properties
+	Properties *AzureMonitorWorkspace
+
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // Background - The issue background information
@@ -212,6 +224,27 @@ type IssueProperties struct {
 	ProvisioningState *ResourceProvisioningState
 }
 
+// IssuePropertiesUpdate - The issue properties for update
+type IssuePropertiesUpdate struct {
+	// The issue background information
+	Background *Background
+
+	// The issue impact time (in UTC)
+	ImpactTime *time.Time
+
+	// The issue notification settings
+	Notifications *Notifications
+
+	// The issue severity
+	Severity *string
+
+	// The issue status
+	Status *Status
+
+	// The issue title
+	Title *string
+}
+
 // IssueResource - The Issue resource
 type IssueResource struct {
 	// The resource-specific properties for this resource.
@@ -237,6 +270,12 @@ type IssueResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// IssueResourceUpdate - The Issue resource update
+type IssueResourceUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *IssuePropertiesUpdate
 }
 
 // ListParameter - Parameters for listing related entities

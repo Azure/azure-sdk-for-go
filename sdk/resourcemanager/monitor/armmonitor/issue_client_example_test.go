@@ -556,8 +556,8 @@ func ExampleIssueClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewIssueClient().Update(ctx, "rg1", "myWorkspace", "3f29e1b2b05f8371595dc761fed8e8b3", armmonitor.IssueResource{
-		Properties: &armmonitor.IssueProperties{
+	res, err := clientFactory.NewIssueClient().Update(ctx, "rg1", "myWorkspace", "3f29e1b2b05f8371595dc761fed8e8b3", armmonitor.IssueResourceUpdate{
+		Properties: &armmonitor.IssuePropertiesUpdate{
 			Title:      to.Ptr("Alert fired on VM CPU"),
 			Status:     to.Ptr(armmonitor.StatusNew),
 			Severity:   to.Ptr("Sev2"),

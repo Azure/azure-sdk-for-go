@@ -373,7 +373,7 @@ func (client *AzureMonitorWorkspacesClient) listBySubscriptionHandleResponse(res
 //   - properties - The resource properties to be updated.
 //   - options - AzureMonitorWorkspacesClientUpdateOptions contains the optional parameters for the AzureMonitorWorkspacesClient.Update
 //     method.
-func (client *AzureMonitorWorkspacesClient) Update(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties AzureMonitorWorkspaceResource, options *AzureMonitorWorkspacesClientUpdateOptions) (AzureMonitorWorkspacesClientUpdateResponse, error) {
+func (client *AzureMonitorWorkspacesClient) Update(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties AzureMonitorWorkspaceResourceUpdate, options *AzureMonitorWorkspacesClientUpdateOptions) (AzureMonitorWorkspacesClientUpdateResponse, error) {
 	var err error
 	const operationName = "AzureMonitorWorkspacesClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -396,7 +396,7 @@ func (client *AzureMonitorWorkspacesClient) Update(ctx context.Context, resource
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AzureMonitorWorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties AzureMonitorWorkspaceResource, _ *AzureMonitorWorkspacesClientUpdateOptions) (*policy.Request, error) {
+func (client *AzureMonitorWorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties AzureMonitorWorkspaceResourceUpdate, _ *AzureMonitorWorkspacesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

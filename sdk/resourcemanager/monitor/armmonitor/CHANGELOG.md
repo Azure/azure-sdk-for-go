@@ -1,9 +1,9 @@
 # Release History
 
-## 1.0.0 (2026-04-29)
+## 1.0.0 (2026-05-12)
 ### Breaking Changes
 
-- Function `*AzureMonitorWorkspacesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties AzureMonitorWorkspaceResource, options *AzureMonitorWorkspacesClientUpdateOptions)`
+- Function `*AzureMonitorWorkspacesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties AzureMonitorWorkspaceResourceUpdate, options *AzureMonitorWorkspacesClientUpdateOptions)`
 - Type of `AzureMonitorWorkspace.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceProvisioningState`
 - Type of `AzureMonitorWorkspaceResource.Properties` has been changed from `*AzureMonitorWorkspaceResourceProperties` to `*AzureMonitorWorkspace`
 - `PublicNetworkAccessSecuredByPerimeter` from enum `PublicNetworkAccess` has been removed
@@ -198,7 +198,7 @@
 - Function `*MultiMetricCriteria.GetMultiMetricCriteria` has been removed
 - Function `NewOperationsForMonitorClient` has been removed
 - Function `*OperationsForMonitorClient.NewListPager` has been removed
-- Function `PossibleAggregationTypeValues` has been removed
+- Function `PossibleTimeAggregationValues` has been removed
 - Function `NewPredictiveMetricClient` has been removed
 - Function `*PredictiveMetricClient.Get` has been removed
 - Function `NewPrivateEndpointConnectionsClient` has been removed
@@ -544,7 +544,7 @@
 - New function `*IssueClient.NewListPager(resourceGroupName string, azureMonitorWorkspaceName string, options *IssueClientListOptions) *runtime.Pager[IssueClientListResponse]`
 - New function `*IssueClient.ListResources(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, options *IssueClientListResourcesOptions) (IssueClientListResourcesResponse, error)`
 - New function `*IssueClient.SetBackgroundVisualization(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body BackgroundVisualization, options *IssueClientSetBackgroundVisualizationOptions) (IssueClientSetBackgroundVisualizationResponse, error)`
-- New function `*IssueClient.Update(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties IssueResource, options *IssueClientUpdateOptions) (IssueClientUpdateResponse, error)`
+- New function `*IssueClient.Update(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, properties IssueResourceUpdate, options *IssueClientUpdateOptions) (IssueClientUpdateResponse, error)`
 - New function `*IssueCreationNotificationType.GetIssueNotificationType() *IssueNotificationType`
 - New function `*IssueNotificationType.GetIssueNotificationType() *IssueNotificationType`
 - New function `NewMetricsContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricsContainersClient, error)`
@@ -553,6 +553,7 @@
 - New function `*MetricsContainersClient.NewListByAzureMonitorWorkspacePager(resourceGroupName string, azureMonitorWorkspaceName string, options *MetricsContainersClientListByAzureMonitorWorkspaceOptions) *runtime.Pager[MetricsContainersClientListByAzureMonitorWorkspaceResponse]`
 - New function `*OnChangeNotificationType.GetIssueNotificationType() *IssueNotificationType`
 - New function `*TimeBasedUpdatesNotificationType.GetIssueNotificationType() *IssueNotificationType`
+- New struct `AzureMonitorWorkspaceResourceUpdate`
 - New struct `Background`
 - New struct `BackgroundDetails`
 - New struct `BackgroundVisualization`
@@ -562,8 +563,10 @@
 - New struct `InvestigationResult`
 - New struct `IssueCreationNotificationType`
 - New struct `IssueProperties`
+- New struct `IssuePropertiesUpdate`
 - New struct `IssueResource`
 - New struct `IssueResourceListResult`
+- New struct `IssueResourceUpdate`
 - New struct `ListParameter`
 - New struct `MetricsContainer`
 - New struct `MetricsContainerResource`

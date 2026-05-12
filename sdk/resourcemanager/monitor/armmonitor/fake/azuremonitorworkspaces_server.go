@@ -43,7 +43,7 @@ type AzureMonitorWorkspacesServer struct {
 
 	// Update is the fake for method AzureMonitorWorkspacesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties armmonitor.AzureMonitorWorkspaceResource, options *armmonitor.AzureMonitorWorkspacesClientUpdateOptions) (resp azfake.Responder[armmonitor.AzureMonitorWorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, properties armmonitor.AzureMonitorWorkspaceResourceUpdate, options *armmonitor.AzureMonitorWorkspacesClientUpdateOptions) (resp azfake.Responder[armmonitor.AzureMonitorWorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAzureMonitorWorkspacesServerTransport creates a new instance of AzureMonitorWorkspacesServerTransport with the provided implementation.
@@ -310,7 +310,7 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchUpdate(req *http.Request
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armmonitor.AzureMonitorWorkspaceResource](req)
+	body, err := server.UnmarshalRequestAsJSON[armmonitor.AzureMonitorWorkspaceResourceUpdate](req)
 	if err != nil {
 		return nil, err
 	}

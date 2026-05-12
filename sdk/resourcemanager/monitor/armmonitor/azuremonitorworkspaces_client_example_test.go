@@ -578,7 +578,7 @@ func ExampleAzureMonitorWorkspacesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAzureMonitorWorkspacesClient().Update(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", armmonitor.AzureMonitorWorkspaceResource{
+	res, err := clientFactory.NewAzureMonitorWorkspacesClient().Update(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", armmonitor.AzureMonitorWorkspaceResourceUpdate{
 		Tags: map[string]*string{},
 		Properties: &armmonitor.AzureMonitorWorkspace{
 			PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),

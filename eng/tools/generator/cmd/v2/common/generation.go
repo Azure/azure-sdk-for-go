@@ -635,6 +635,22 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (
 	}, nil
 }
 
+func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
+	// When migrating from Swagger to TypeSpec for the first time, the generated comment
+	// header in the previous swagger-generated files differs from the one written by the
+	// TypeSpec emitter, so the emitter's cleanup logic won't remove them. Detect this
+	// migration case via the presence of autorest.md and clean up the previously
+	// generated files before regenerating.
+	autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
+	if _, err := os.Stat(autorestMdPath); err == nil {
+		log.Printf("Detected migration from Swagger to TypeSpec, remove all the previously generated files ...")
+		if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 	err := t.TypeSpecCommonGenerator.Generate(generateParam)
 	if err != nil {

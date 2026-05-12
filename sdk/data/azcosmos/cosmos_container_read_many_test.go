@@ -385,6 +385,34 @@ func TestComputeEPKRange_NonMultiHashPartialKey(t *testing.T) {
 	require.Contains(t, err.Error(), "non-MultiHash")
 }
 
+func TestComputeEPKRange_UndefinedPK(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/pk"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKey()
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "undefined PK should be a point, not a range")
+	require.NotEmpty(t, r.Min)
+	require.Equal(t, r.Min, r.Max)
+}
+
+func TestComputeEPKRange_UndefinedPK_MultiHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+	pk := NewPartitionKey()
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "undefined PK should be a point even for MultiHash")
+	require.NotEmpty(t, r.Min)
+	require.Equal(t, r.Min, r.Max)
+}
+
 func TestFindPhysicalRangeForEPK_MixedLengthBoundaries(t *testing.T) {
 	// Simulate HPK boundaries where one is 32-char partial and the next is 64-char zero-padded
 	partial := "06AB34CFE4E482236BCACBBF50E234AB"

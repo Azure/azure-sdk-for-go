@@ -172,6 +172,7 @@ func (c *containerPropertiesCache) updateRIDIndex(entry *containerPropsCacheEntr
 // refreshEntry fetches container properties directly from the service.
 // This bypasses container.Read() to avoid deadlock — the caller already holds entry.mu,
 // and Read() calls cache.set() which would try to re-acquire the same lock.
+// It uses readContainerRaw() to share the HTTP call logic with Read().
 // Caller must hold entry.mu.
 // NOTE: This method must NOT acquire c.mu — callers update the RID index
 // after releasing entry.mu via updateRIDIndex() to prevent lock-order inversion.
@@ -180,27 +181,7 @@ func (c *containerPropertiesCache) refreshEntry(
 	container *ContainerClient,
 	entry *containerPropsCacheEntry,
 ) (*ContainerProperties, error) {
-	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
-		resourceAddress: container.link,
-	}
-
-	path, err := generatePathForNameBased(resourceTypeCollection, container.link, false)
-	if err != nil {
-		return nil, err
-	}
-
-	azResponse, err := container.database.client.sendGetRequest(
-		path,
-		ctx,
-		operationContext,
-		&ReadContainerOptions{},
-		nil)
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := newContainerResponse(azResponse)
+	response, err := container.readContainerRaw(ctx, nil)
 	if err != nil {
 		return nil, err
 	}

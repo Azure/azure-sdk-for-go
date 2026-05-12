@@ -396,6 +396,8 @@ func isPKRangeGoneResponseError(err error) bool {
 		subStatus := respErr.RawResponse.Header.Get(cosmosHeaderSubstatus)
 		return isPartitionKeyRangeGoneError(respErr.StatusCode, subStatus)
 	}
-	// If no raw response, any 410 Gone could be a PKRange gone
+	// If no raw response (unusual — typically means the HTTP response couldn't be read),
+	// conservatively treat any 410 Gone as a PKRange gone. The worst case is
+	// unnecessary cache refresh + retry (3x), which is preferable to failing permanently.
 	return true
 }

@@ -65,6 +65,22 @@ func (c *ContainerClient) Read(
 	}
 	ctx, endSpan := startSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
+
+	response, err := c.readContainerRaw(ctx, o)
+	if err == nil && c.database.client.containerCache != nil && response.ContainerProperties != nil {
+		// Populate the container properties cache on successful Read
+		c.database.client.containerCache.set(c.link, response.ContainerProperties)
+	}
+	return response, err
+}
+
+// readContainerRaw performs the HTTP call to read container properties.
+// It is the shared implementation used by both Read() and the container
+// properties cache refresh, ensuring consistent request construction.
+func (c *ContainerClient) readContainerRaw(
+	ctx context.Context,
+	o *ReadContainerOptions,
+) (ContainerResponse, error) {
 	if o == nil {
 		o = &ReadContainerOptions{}
 	}
@@ -89,12 +105,7 @@ func (c *ContainerClient) Read(
 		return ContainerResponse{}, err
 	}
 
-	response, err := newContainerResponse(azResponse)
-	if err == nil && c.database.client.containerCache != nil && response.ContainerProperties != nil {
-		// Populate the container properties cache on successful Read
-		c.database.client.containerCache.set(c.link, response.ContainerProperties)
-	}
-	return response, err
+	return newContainerResponse(azResponse)
 }
 
 // Replace a Cosmos container.

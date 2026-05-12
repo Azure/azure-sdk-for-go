@@ -121,8 +121,8 @@ func (c *partitionKeyRangeCache) invalidate(containerRID string) {
 }
 
 // maxIncrementalRefreshIterations caps the number of incremental fetch loops
-// to prevent runaway requests during large-scale splits.
-const maxIncrementalRefreshIterations = 10
+// to prevent runaway requests during large-scale splits. Aligned with the Rust SDK.
+const maxIncrementalRefreshIterations = 1000
 
 // refreshEntry fetches PK ranges from the service and populates the entry.
 // It attempts an incremental refresh if a previous routing map with an ETag exists,

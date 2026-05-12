@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"testing"
@@ -75,4 +76,37 @@ func Test_isPKRangeGoneResponseError_410WithNilRawResponse(t *testing.T) {
 	}
 	// Conservative: any 410 without a raw response is treated as PKRange gone
 	require.True(t, isPKRangeGoneResponseError(err))
+}
+
+func Test_hasAnyPKRangeGoneError_findsGoneAmongCancelled(t *testing.T) {
+	// Simulates the concurrent chunk cancellation scenario: a context.Canceled
+	// error at a lower index masks the actual 410 at a higher index.
+	header := http.Header{}
+	header.Set(cosmosHeaderSubstatus, subStatusCompletingSplit)
+	results := []chunkResult{
+		{err: nil},
+		{err: context.Canceled},
+		{err: &azcore.ResponseError{
+			StatusCode:  http.StatusGone,
+			RawResponse: &http.Response{StatusCode: http.StatusGone, Header: header},
+		}},
+	}
+	require.True(t, hasAnyPKRangeGoneError(results))
+}
+
+func Test_hasAnyPKRangeGoneError_noGone(t *testing.T) {
+	results := []chunkResult{
+		{err: nil},
+		{err: context.Canceled},
+		{err: errors.New("some other error")},
+	}
+	require.False(t, hasAnyPKRangeGoneError(results))
+}
+
+func Test_hasAnyPKRangeGoneError_allNil(t *testing.T) {
+	results := []chunkResult{
+		{err: nil},
+		{err: nil},
+	}
+	require.False(t, hasAnyPKRangeGoneError(results))
 }

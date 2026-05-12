@@ -174,3 +174,42 @@ func TestCompareEPK_FFSentinel(t *testing.T) {
 	require.Equal(t, 1, CompareEPK("FF", "3FFFFFFFFFFFFFFF"))
 	require.Equal(t, -1, CompareEPK("3FFFFFFFFFFFFFFF", "FF"))
 }
+
+func TestMaskTopBitsForRouting(t *testing.T) {
+	// Already valid (first byte ≤ 0x3F) — unchanged
+	require.Equal(t, "3FAABBCC", maskTopBitsForRouting("3FAABBCC"))
+	// 0xFF & 0x3F = 0x3F
+	require.Equal(t, "3FAABBCC", maskTopBitsForRouting("FFAABBCC"))
+	// 0xC0 & 0x3F = 0x00
+	require.Equal(t, "00AABBCC", maskTopBitsForRouting("C0AABBCC"))
+	// 0x80 & 0x3F = 0x00
+	require.Equal(t, "00112233", maskTopBitsForRouting("80112233"))
+	// 0x40 & 0x3F = 0x00
+	require.Equal(t, "00112233", maskTopBitsForRouting("40112233"))
+	// Edge: empty string
+	require.Equal(t, "", maskTopBitsForRouting(""))
+	// Edge: single char
+	require.Equal(t, "A", maskTopBitsForRouting("A"))
+}
+
+func TestComputeV2HashForRouting_MaskingApplied(t *testing.T) {
+	// null produces a raw V2 hash with first byte 0x77, which should be masked to 0x37
+	result := ComputeV2HashForRouting([]interface{}{nil})
+	require.True(t, len(result) >= 2, "result should be at least 2 hex chars")
+	// After masking, the first hex digit must be in [0-3]
+	firstDigit := result[0]
+	require.True(t, firstDigit >= '0' && firstDigit <= '3',
+		"first hex digit should be in [0-3] after masking, got %c", firstDigit)
+}
+
+func TestComputeV2MultiHashForRouting_MaskingApplied(t *testing.T) {
+	// Each 32-char component should have its first byte masked independently
+	result := ComputeV2MultiHashForRouting([]interface{}{"hello", "world"})
+	require.Equal(t, 64, len(result), "two components should produce 64 hex chars")
+	// Check first byte of each 32-char component is in [0x00, 0x3F]
+	for i := 0; i < 2; i++ {
+		firstDigit := result[i*32]
+		require.True(t, firstDigit >= '0' && firstDigit <= '3',
+			"component %d first hex digit should be in [0-3] after masking, got %c", i, firstDigit)
+	}
+}

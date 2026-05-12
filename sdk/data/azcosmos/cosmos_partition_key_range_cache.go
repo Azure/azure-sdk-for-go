@@ -141,6 +141,9 @@ func (c *partitionKeyRangeCache) refreshEntry(
 		// Incremental refresh loop: keep fetching until 304 or iteration cap
 		currentMap := previousMap
 		for i := 0; i < maxIncrementalRefreshIterations; i++ {
+			if err := ctx.Err(); err != nil {
+				return nil, err
+			}
 			ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, currentMap, client)
 			if err != nil {
 				return nil, err
@@ -219,7 +222,7 @@ func fetchPartitionKeyRanges(
 		o,
 		func(req *policy.Request) {
 			if changeFeedETag != "" {
-				req.Raw().Header.Set(cosmosHeaderChangeFeed, "Incremental Feed")
+				req.Raw().Header.Set(cosmosHeaderChangeFeed, cosmosHeaderValuesChangeFeed)
 				req.Raw().Header.Set(headerIfNoneMatch, changeFeedETag)
 			}
 		})

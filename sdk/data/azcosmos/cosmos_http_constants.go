@@ -98,6 +98,10 @@ const (
 )
 
 // Substatus Codes
+// NOTE: Some substatus values are reused across different HTTP status codes.
+// Always check the HTTP status code first before interpreting the substatus.
+// - 1002: ReadSessionNotAvailable (404) / PartitionKeyRangeGone (410)
+// - 1008: DatabaseAccountNotFound (403) / CompletingPartitionMigration (410)
 const (
 	subStatusWriteForbidden               string = "3"
 	subStatusDatabaseAccountNotFound      string = "1008"

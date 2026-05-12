@@ -266,6 +266,19 @@ func collectChunkResults(results []chunkResult) (ReadManyItemsResponse, error) {
 	return ReadManyItemsResponse{RequestCharge: totalCharge, Items: allItems}, nil
 }
 
+// hasAnyPKRangeGoneError scans all chunk results for a partition key range gone error.
+// This is needed because concurrent chunk cancellation can cause a context.Canceled
+// error to appear at a lower index than the actual 410/Gone error, masking it from
+// collectChunkResults which returns the first error it encounters.
+func hasAnyPKRangeGoneError(results []chunkResult) bool {
+	for _, res := range results {
+		if res.err != nil && isPKRangeGoneResponseError(res.err) {
+			return true
+		}
+	}
+	return false
+}
+
 // executeReadManyWithQueries groups items by physical partition range using EPK
 // hashing, builds parameterized SQL queries (one per physical range, chunked at
 // maxItemsPerQuery), and executes them concurrently. This replaces the previous
@@ -335,7 +348,10 @@ func (c *ContainerClient) executeReadManyWithQueries(
 
 		resp, err := collectChunkResults(results)
 		if err != nil {
-			if attempt < maxPKRangeGoneRetries && isPKRangeGoneResponseError(err) {
+			// Check all results for 410/Gone, not just the first error returned by
+			// collectChunkResults. Concurrent chunk cancellation can cause a
+			// context.Canceled error at a lower index to mask the actual 410 error.
+			if attempt < maxPKRangeGoneRetries && (isPKRangeGoneResponseError(err) || hasAnyPKRangeGoneError(results)) {
 				if refreshErr := c.refreshPKRangeCache(ctx); refreshErr != nil {
 					return ReadManyItemsResponse{}, refreshErr
 				}

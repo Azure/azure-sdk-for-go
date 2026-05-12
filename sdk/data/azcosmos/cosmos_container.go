@@ -909,6 +909,7 @@ func (c *ContainerClient) getSpanForItems(operationType operationType) (span, er
 }
 
 func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitionKeyRangeOptions) (partitionKeyRangeResponse, error) {
+	var err error
 	spanName, err := c.getSpanForContainer(operationTypeRead, resourceTypePartitionKeyRange, c.id)
 	if err != nil {
 		return partitionKeyRangeResponse{}, err
@@ -918,12 +919,14 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 
 	// Use the cache if available, otherwise fall back to direct fetch
 	if c.database.client.pkRangeCache != nil {
-		containerRID, err := c.getContainerRID(ctx)
+		var containerRID string
+		containerRID, err = c.getContainerRID(ctx)
 		if err != nil {
 			return partitionKeyRangeResponse{}, err
 		}
 
-		routingMap, err := c.database.client.pkRangeCache.getRoutingMap(ctx, containerRID, c.link, c.database.client)
+		var routingMap *collectionRoutingMap
+		routingMap, err = c.database.client.pkRangeCache.getRoutingMap(ctx, containerRID, c.link, c.database.client)
 		if err != nil {
 			return partitionKeyRangeResponse{}, err
 		}

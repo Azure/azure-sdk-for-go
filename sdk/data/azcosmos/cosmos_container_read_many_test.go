@@ -5,8 +5,10 @@ package azcosmos
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"sync/atomic"
 	"testing"
 
@@ -539,4 +541,196 @@ func TestRefreshPKRangeCache_InvalidatesContainerCache(t *testing.T) {
 	// The stale RID entry should have been invalidated and replaced with the new one
 	require.Nil(t, cache.getPropertiesByRID("staleRID"), "stale RID should be invalidated from container cache")
 	require.NotNil(t, cache.getPropertiesByRID("newRID"), "new RID should be in container cache after refresh")
+}
+
+// returnGoneOnQueryPolicy is a pipeline policy that returns a 410/Gone response
+// with a configurable substatus on query requests. After maxGone 410s have been
+// returned, subsequent queries pass through to the server normally.
+type returnGoneOnQueryPolicy struct {
+	maxGone   int32        // how many queries to fail with 410
+	substatus string       // substatus header value (e.g. "1002")
+	count     atomic.Int32 // queries seen so far
+}
+
+func (p *returnGoneOnQueryPolicy) Do(req *policy.Request) (*http.Response, error) {
+	isQuery := req.Raw().Header.Get(cosmosHeaderQuery) == "True"
+	if !isQuery {
+		return req.Next()
+	}
+	n := p.count.Add(1)
+	if n <= p.maxGone {
+		// Return a synthetic 410 response with substatus header
+		headers := http.Header{}
+		headers.Set(cosmosHeaderSubstatus, p.substatus)
+		return &http.Response{
+			StatusCode: http.StatusGone,
+			Status:     "410 Gone",
+			Header:     headers,
+			Body:       io.NopCloser(strings.NewReader(`{"message":"Gone"}`)),
+			Request:    req.Raw(),
+		}, nil
+	}
+	return req.Next()
+}
+
+// createReadManyTestClient builds a *Client with pre-populated container and PK range
+// caches, wired to the given mock server with the specified per-call policies.
+func createReadManyTestClient(t *testing.T, srv *mock.Server, policies []policy.Policy) *Client {
+	t.Helper()
+	defaultEndpoint, err := url.Parse(srv.URL())
+	require.NoError(t, err)
+
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: policies},
+		&policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
+
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	containerCache := newContainerPropertiesCache()
+	pkRangeCache := newPartitionKeyRangeCache()
+
+	client := &Client{
+		endpoint:       srv.URL(),
+		endpointUrl:    defaultEndpoint,
+		internal:       internalClient,
+		gem:            gem,
+		containerCache: containerCache,
+		pkRangeCache:   pkRangeCache,
+	}
+
+	// Pre-populate container cache
+	containerLink := "dbs/databaseId/colls/containerId"
+	containerCache.set(containerLink, &ContainerProperties{
+		ID:         "containerId",
+		ResourceID: "testRID",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Kind:    PartitionKeyKindHash,
+			Version: 2,
+		},
+	})
+
+	// Pre-populate PK range cache with one range covering the full key space
+	pkRangeCache.entries["testRID"] = &pkRangeCacheEntry{
+		routingMap: newCollectionRoutingMap([]partitionKeyRange{
+			{ID: "0", MinInclusive: "", MaxExclusive: "FF", ResourceID: "testRID"},
+		}, "etag1"),
+	}
+
+	return client
+}
+
+func TestReadMany_410_retrySucceeds(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	gonePolicy := &returnGoneOnQueryPolicy{maxGone: 1, substatus: subStatusPartitionKeyRangeGone}
+	client := createReadManyTestClient(t, srv, []policy.Policy{gonePolicy})
+
+	// After the 410, refreshPKRangeCache will:
+	// 1. Invalidate container cache → re-fetch container props
+	// 2. Force refresh PK range cache → fetch PK ranges (incremental loop needs 304 to stop)
+	// Then the retry will execute the query again (passes through policy since maxGone=1)
+	containerPropsResp := []byte(`{
+		"id": "containerId",
+		"_rid": "testRID",
+		"_self": "dbs/db1/colls/containerId/",
+		"partitionKey": {"paths": ["/pk"], "kind": "Hash", "version": 2}
+	}`)
+	pkRangeResp := []byte(`{
+		"_rid": "testRID",
+		"PartitionKeyRanges": [{"_rid": "testRID", "id": "0", "minInclusive": "", "maxExclusive": "FF"}],
+		"_count": 1
+	}`)
+	queryResp := []byte(`{"Documents":[{"id":"item1","pk":"pkA"}]}`)
+
+	// Sequence: container props (re-fetch) → PK ranges (refresh) → 304 (end incremental loop) → query (retry succeeds)
+	srv.AppendResponse(mock.WithBody(containerPropsResp), mock.WithStatusCode(200))
+	srv.AppendResponse(mock.WithBody(pkRangeResp), mock.WithStatusCode(200),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"))
+	srv.AppendResponse(mock.WithStatusCode(304)) // End incremental refresh loop
+	srv.AppendResponse(mock.WithBody(queryResp), mock.WithStatusCode(200),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.0"))
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	items := []ItemIdentity{{ID: "item1", PartitionKey: NewPartitionKeyString("pkA")}}
+	resp, err := container.ReadManyItems(context.Background(), items, nil)
+	require.NoError(t, err)
+	require.Len(t, resp.Items, 1)
+	require.Equal(t, int32(2), gonePolicy.count.Load(), "expected 2 query attempts: 1 failed + 1 retry")
+}
+
+func TestReadMany_410_exhaustedRetries(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Return 410 on ALL query attempts (maxPKRangeGoneRetries+1 = 4)
+	gonePolicy := &returnGoneOnQueryPolicy{maxGone: 100, substatus: subStatusPartitionKeyRangeGone}
+	client := createReadManyTestClient(t, srv, []policy.Policy{gonePolicy})
+
+	containerPropsResp := []byte(`{
+		"id": "containerId",
+		"_rid": "testRID",
+		"_self": "dbs/db1/colls/containerId/",
+		"partitionKey": {"paths": ["/pk"], "kind": "Hash", "version": 2}
+	}`)
+	pkRangeResp := []byte(`{
+		"_rid": "testRID",
+		"PartitionKeyRanges": [{"_rid": "testRID", "id": "0", "minInclusive": "", "maxExclusive": "FF"}],
+		"_count": 1
+	}`)
+
+	// Each retry needs container props + PK range re-fetch (with ETag) + 304 (end incremental loop).
+	// The PK range response must include an ETag header so changeFeedETag stays non-empty,
+	// ensuring subsequent retries use the incremental refresh path consistently.
+	// maxPKRangeGoneRetries=3, so we get 3 retries (attempts 0-2 trigger refresh), attempt 3 fails.
+	for i := 0; i < maxPKRangeGoneRetries; i++ {
+		srv.AppendResponse(mock.WithBody(containerPropsResp), mock.WithStatusCode(200))
+		srv.AppendResponse(mock.WithBody(pkRangeResp), mock.WithStatusCode(200),
+			mock.WithHeader(cosmosHeaderEtag, "etag-refresh"))
+		srv.AppendResponse(mock.WithStatusCode(304)) // End incremental refresh loop
+	}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	items := []ItemIdentity{{ID: "item1", PartitionKey: NewPartitionKeyString("pkA")}}
+	_, err := container.ReadManyItems(context.Background(), items, nil)
+	require.Error(t, err)
+
+	// On the last attempt (attempt == maxPKRangeGoneRetries), the 410 error is
+	// returned directly since there are no retries remaining.
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusGone, respErr.StatusCode)
+
+	// Verify all 4 attempts were made (initial + 3 retries)
+	require.Equal(t, int32(maxPKRangeGoneRetries+1), gonePolicy.count.Load(),
+		"expected initial attempt + maxPKRangeGoneRetries retry attempts")
+}
+
+func TestReadMany_410_nonGoneSubstatus_notRetried(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Return 410 with substatus "0" (NameCacheIsStale) — not a PKRange gone condition
+	gonePolicy := &returnGoneOnQueryPolicy{maxGone: 1, substatus: "0"}
+	client := createReadManyTestClient(t, srv, []policy.Policy{gonePolicy})
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	items := []ItemIdentity{{ID: "item1", PartitionKey: NewPartitionKeyString("pkA")}}
+	_, err := container.ReadManyItems(context.Background(), items, nil)
+	require.Error(t, err)
+
+	// Should have made only 1 query attempt (no retry for non-gone substatus)
+	require.Equal(t, int32(1), gonePolicy.count.Load(), "should not retry for non-PKRangeGone substatus")
+
+	// Verify it's a 410 error
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusGone, respErr.StatusCode)
 }

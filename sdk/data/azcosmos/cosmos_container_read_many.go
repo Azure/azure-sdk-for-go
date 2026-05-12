@@ -366,8 +366,13 @@ func (c *ContainerClient) executeReadManyWithQueries(
 }
 
 // refreshPKRangeCache forces a refresh of the partition key range cache for this container.
+// It also invalidates the container properties cache so that getContainerRID fetches the
+// current RID, which is necessary when a container is deleted and recreated with the same name.
 // Returns an error if the refresh fails, allowing the caller to fail fast.
 func (c *ContainerClient) refreshPKRangeCache(ctx context.Context) error {
+	if c.database.client.containerCache != nil {
+		c.database.client.containerCache.invalidate(c.link)
+	}
 	if c.database.client.pkRangeCache != nil {
 		containerRID, err := c.getContainerRID(ctx)
 		if err != nil {

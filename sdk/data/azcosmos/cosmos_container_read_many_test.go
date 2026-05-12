@@ -471,3 +471,72 @@ func TestGroupItemsByPhysicalRange_MultiHashPrefixFanout(t *testing.T) {
 	require.Len(t, groups["0"], 1)
 	require.Len(t, groups["1"], 1)
 }
+
+func TestRefreshPKRangeCache_InvalidatesContainerCache(t *testing.T) {
+	cache := newContainerPropertiesCache()
+
+	// Pre-populate the container cache with a stale entry
+	staleProps := &ContainerProperties{
+		ID:         "containerId",
+		ResourceID: "staleRID",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Version: 2,
+		},
+	}
+	containerLink := "dbs/databaseId/colls/containerId"
+	cache.set(containerLink, staleProps)
+
+	// Verify stale RID is in the cache
+	require.NotNil(t, cache.getPropertiesByRID("staleRID"))
+
+	// Set up a mock server that serves container properties for the re-fetch after invalidation
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	containerPropsResponse := []byte(`{
+		"id": "containerId",
+		"_rid": "newRID",
+		"_self": "dbs/db1/colls/containerId/",
+		"partitionKey": {"paths": ["/pk"], "kind": "Hash", "version": 2}
+	}`)
+
+	pkRangeResponse := []byte(`{
+		"_rid": "newRID",
+		"PartitionKeyRanges": [{
+			"_rid": "newRID",
+			"id": "0",
+			"minInclusive": "",
+			"maxExclusive": "FF"
+		}],
+		"_count": 1
+	}`)
+
+	// First request: container props re-fetch (after invalidation)
+	// Second request: PK range fetch
+	srv.AppendResponse(mock.WithBody(containerPropsResponse), mock.WithStatusCode(200))
+	srv.AppendResponse(mock.WithBody(pkRangeResponse), mock.WithStatusCode(200))
+
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{
+		endpoint:       srv.URL(),
+		endpointUrl:    defaultEndpoint,
+		internal:       internalClient,
+		gem:            gem,
+		pkRangeCache:   newPartitionKeyRangeCache(),
+		containerCache: cache,
+	}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// Call refreshPKRangeCache — should invalidate container cache, re-fetch props, then refresh PK ranges
+	err := container.refreshPKRangeCache(context.TODO())
+	require.NoError(t, err)
+
+	// The stale RID entry should have been invalidated and replaced with the new one
+	require.Nil(t, cache.getPropertiesByRID("staleRID"), "stale RID should be invalidated from container cache")
+	require.NotNil(t, cache.getPropertiesByRID("newRID"), "new RID should be in container cache after refresh")
+}

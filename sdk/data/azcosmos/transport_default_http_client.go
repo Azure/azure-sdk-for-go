@@ -21,8 +21,14 @@ import (
 // underlying Go issue this works around.
 var defaultCosmosHTTPClient *http.Client
 
+// defaultCosmosHTTP2Transport is the *http2.Transport captured at init()
+// time so tests can assert the production singleton (not just a freshly
+// built one) actually carries the configured PING values. It is nil when
+// http2.ConfigureTransports failed during init().
+var defaultCosmosHTTP2Transport *http2.Transport
+
 func init() {
-	defaultCosmosHTTPClient, _ = newDefaultCosmosHTTPClient()
+	defaultCosmosHTTPClient, defaultCosmosHTTP2Transport = newDefaultCosmosHTTPClient()
 }
 
 // newDefaultCosmosHTTPClient builds the Cosmos default *http.Client and

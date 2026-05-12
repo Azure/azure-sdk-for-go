@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"crypto/tls"
 	"net/http"
+	"sync"
 	"testing"
 	"time"
 
@@ -33,6 +34,19 @@ func TestNewDefaultCosmosHTTPClient_HTTP2PingValues(t *testing.T) {
 
 	require.Equal(t, 1*time.Second, h2.ReadIdleTimeout, "Cosmos default ReadIdleTimeout must be 1s")
 	require.Equal(t, 2*time.Second, h2.PingTimeout, "Cosmos default PingTimeout must be 2s")
+}
+
+// TestSingleton_HasHTTP2PingsConfigured asserts the *http2.Transport captured
+// during init() — i.e. the transport that production traffic actually flows
+// through — has the expected PING values. The TestNewDefaultCosmosHTTPClient_*
+// tests above exercise a freshly built transport; this one closes the gap by
+// pinning the singleton itself, so a future drift between the helper and
+// init() (or a silent http2.ConfigureTransports failure on a new Go release)
+// surfaces here instead of in production.
+func TestSingleton_HasHTTP2PingsConfigured(t *testing.T) {
+	require.NotNil(t, defaultCosmosHTTP2Transport, "init() must capture the *http2.Transport")
+	require.Equal(t, 1*time.Second, defaultCosmosHTTP2Transport.ReadIdleTimeout, "singleton ReadIdleTimeout must be 1s")
+	require.Equal(t, 2*time.Second, defaultCosmosHTTP2Transport.PingTimeout, "singleton PingTimeout must be 2s")
 }
 
 func TestNewDefaultCosmosHTTPClient_TransportTuning(t *testing.T) {
@@ -112,4 +126,24 @@ func TestNewInternalPipeline_PreservesCustomerTransport(t *testing.T) {
 	_ = newInternalPipeline(fakePolicy{}, opts)
 
 	require.Same(t, custom, opts.Transport, "customer-supplied Transport must be preserved through newInternalPipeline")
+}
+
+// TestNewClient_ConcurrentSafe_SharedOptions exercises the property the PR
+// description sells: a single *ClientOptions reused across many concurrent
+// newClient calls is never mutated. Run under `go test -race` this also
+// catches any future regression that swaps the shallow-copy helper back to
+// in-place mutation.
+func TestNewClient_ConcurrentSafe_SharedOptions(t *testing.T) {
+	opts := &ClientOptions{} // no Transport set; helper must install the singleton without mutating opts
+	var wg sync.WaitGroup
+	for i := 0; i < 64; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			gem := &globalEndpointManager{preferredLocations: []string{}}
+			_, _ = newClient(fakePolicy{}, gem, opts)
+		}()
+	}
+	wg.Wait()
+	require.Nil(t, opts.Transport, "shared ClientOptions must not be mutated by concurrent newClient calls")
 }

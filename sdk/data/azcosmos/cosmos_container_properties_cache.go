@@ -105,6 +105,8 @@ func (c *containerPropertiesCache) getPropertiesByRID(resourceID string) *Contai
 
 // invalidate removes the cached properties for the given container link,
 // forcing the next access to fetch fresh data. Also removes the RID index entry.
+// This is called during 410/Gone retry paths to handle scenarios where a container
+// has been deleted and recreated with the same name but a new ResourceID.
 func (c *containerPropertiesCache) invalidate(containerLink string) {
 	c.mu.RLock()
 	entry, exists := c.entries[containerLink]

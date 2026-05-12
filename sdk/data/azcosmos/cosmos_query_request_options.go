@@ -50,8 +50,10 @@ type QueryOptions struct {
 	// This is a preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes.
 	QueryEngine queryengine.QueryEngine
 	// PriorityLevel overrides the client-level default priority for this operation.
+	// Valid values are PriorityLevelHigh and PriorityLevelLow.
 	PriorityLevel *PriorityLevel
 	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	// The valid range is 1 to 5 (inclusive).
 	ThroughputBucket *int32
 }
 

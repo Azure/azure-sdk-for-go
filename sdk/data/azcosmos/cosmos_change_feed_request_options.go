@@ -31,8 +31,10 @@ type ChangeFeedOptions struct {
 	Continuation *string
 
 	// PriorityLevel overrides the client-level default priority for this operation.
+	// Valid values are PriorityLevelHigh and PriorityLevelLow.
 	PriorityLevel *PriorityLevel
 	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	// The valid range is 1 to 5 (inclusive).
 	ThroughputBucket *int32
 }
 

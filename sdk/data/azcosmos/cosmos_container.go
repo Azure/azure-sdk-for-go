@@ -948,5 +948,40 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 		}, nil
 	}
 
-	return partitionKeyRangeResponse{}, fmt.Errorf("failed to get partition key ranges")
+	// Fallback: direct fetch without caching
+	return c.fetchPartitionKeyRangesDirect(ctx, o)
+}
+
+// fetchPartitionKeyRangesDirect fetches partition key ranges directly from the service
+// without using the cache.
+func (c *ContainerClient) fetchPartitionKeyRangesDirect(ctx context.Context, o *partitionKeyRangeOptions) (partitionKeyRangeResponse, error) {
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypePartitionKeyRange,
+		resourceAddress: c.link,
+	}
+
+	if o == nil {
+		o = &partitionKeyRangeOptions{}
+	}
+
+	path, err := generatePathForNameBased(resourceTypePartitionKeyRange, operationContext.resourceAddress, true)
+	if err != nil {
+		return partitionKeyRangeResponse{}, err
+	}
+
+	azResponse, err := c.database.client.sendGetRequest(
+		path,
+		ctx,
+		operationContext,
+		o,
+		nil)
+	if err != nil {
+		return partitionKeyRangeResponse{}, err
+	}
+
+	response, err := newPartitionKeyRangeResponse(azResponse)
+	if err != nil {
+		return partitionKeyRangeResponse{}, err
+	}
+	return response, nil
 }

@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 	"sync"
 )
 
@@ -186,6 +187,10 @@ func (c *containerPropertiesCache) refreshEntry(
 	response, err := container.readContainerRaw(ctx, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	if response.ContainerProperties == nil {
+		return nil, errors.New("container properties response contained no properties")
 	}
 
 	entry.props = response.ContainerProperties

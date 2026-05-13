@@ -290,22 +290,6 @@ func (c *ContainerClient) executeReadManyWithQueries(
 	readManyOptions *ReadManyOptions,
 	operationContext pipelineRequestOptions,
 ) (ReadManyItemsResponse, error) {
-	var pkDef PartitionKeyDefinition
-	if c.database.client.containerCache != nil {
-		containerProps, err := c.database.client.containerCache.getProperties(ctx, c)
-		if err != nil {
-			return ReadManyItemsResponse{}, err
-		}
-		pkDef = containerProps.PartitionKeyDefinition
-	} else {
-		// Fallback: direct fetch without caching
-		containerResp, err := c.Read(ctx, nil)
-		if err != nil {
-			return ReadManyItemsResponse{}, err
-		}
-		pkDef = containerResp.ContainerProperties.PartitionKeyDefinition
-	}
-
 	concurrency := determineConcurrency(nil)
 	if readManyOptions != nil {
 		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
@@ -318,8 +302,27 @@ func (c *ContainerClient) executeReadManyWithQueries(
 		queryOpts.DedicatedGatewayRequestOptions = readManyOptions.DedicatedGatewayRequestOptions
 	}
 
-	// Retry loop for partition key range gone (splits/merges)
+	// Retry loop for partition key range gone (splits/merges).
+	// pkDef is resolved inside the loop so that after a 410-triggered cache
+	// invalidation (e.g., container deleted and recreated with a different
+	// partition key definition), we pick up the new schema — not just the new ranges.
 	for attempt := 0; attempt <= maxPKRangeGoneRetries; attempt++ {
+		var pkDef PartitionKeyDefinition
+		if c.database.client.containerCache != nil {
+			containerProps, err := c.database.client.containerCache.getProperties(ctx, c)
+			if err != nil {
+				return ReadManyItemsResponse{}, err
+			}
+			pkDef = containerProps.PartitionKeyDefinition
+		} else {
+			// Fallback: direct fetch without caching
+			containerResp, err := c.Read(ctx, nil)
+			if err != nil {
+				return ReadManyItemsResponse{}, err
+			}
+			pkDef = containerResp.ContainerProperties.PartitionKeyDefinition
+		}
+
 		pkRangeResp, err := c.getPartitionKeyRanges(ctx, nil)
 		if err != nil {
 			return ReadManyItemsResponse{}, err

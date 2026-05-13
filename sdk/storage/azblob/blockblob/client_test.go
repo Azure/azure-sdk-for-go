@@ -15,6 +15,7 @@ import (
 	"hash/crc64"
 	"io"
 	"net/http"
+	"slices"
 	"os"
 	"strconv"
 	"strings"
@@ -6375,7 +6376,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockCommitWithStructuredMessag
 	downloadedData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 
-	expectedData := append(block1Content, block2Content...)
+	expectedData := slices.Concat(block1Content, block2Content)
 	_require.Equal(expectedData, downloadedData)
 }
 

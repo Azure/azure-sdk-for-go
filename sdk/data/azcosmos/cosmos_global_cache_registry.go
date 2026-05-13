@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"net/url"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -24,9 +25,18 @@ type sharedCacheSet struct {
 var globalCacheRegistry sync.Map // map[string]*sharedCacheSet
 
 // normalizeEndpoint returns a canonical form of the endpoint for use as a
-// registry key. It lowercases and strips the trailing slash.
+// registry key. It lowercases the host and strips ports and paths so that
+// endpoints like "https://account.documents.azure.com:443/" and
+// "https://account.documents.azure.com" resolve to the same key. Ports are
+// stripped entirely because the same account is the same account regardless
+// of the port used to reach it.
 func normalizeEndpoint(endpoint string) string {
-	return strings.TrimRight(strings.ToLower(endpoint), "/")
+	u, err := url.Parse(strings.TrimSpace(endpoint))
+	if err != nil || u.Host == "" {
+		// Fallback for malformed input
+		return strings.TrimRight(strings.ToLower(endpoint), "/")
+	}
+	return u.Scheme + "://" + strings.ToLower(u.Hostname())
 }
 
 // acquireCaches returns the shared cache set for the given endpoint, creating

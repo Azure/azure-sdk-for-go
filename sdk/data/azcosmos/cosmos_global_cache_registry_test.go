@@ -20,8 +20,12 @@ func TestNormalizeEndpoint(t *testing.T) {
 		{"https://MyAccount.documents.azure.com/", "https://myaccount.documents.azure.com"},
 		{"https://MyAccount.documents.azure.com", "https://myaccount.documents.azure.com"},
 		{"https://MYACCOUNT.DOCUMENTS.AZURE.COM///", "https://myaccount.documents.azure.com"},
-		{"https://localhost:8081/", "https://localhost:8081"},
-		{"https://localhost:8081", "https://localhost:8081"},
+		{"https://myaccount.documents.azure.com:443/", "https://myaccount.documents.azure.com"},
+		{"https://myaccount.documents.azure.com:443", "https://myaccount.documents.azure.com"},
+		{"http://myaccount.documents.azure.com:80", "http://myaccount.documents.azure.com"},
+		{"https://localhost:8081/", "https://localhost"},
+		{"https://localhost:8081", "https://localhost"},
+		{"  https://myaccount.documents.azure.com  ", "https://myaccount.documents.azure.com"},
 	}
 
 	for _, tt := range tests {

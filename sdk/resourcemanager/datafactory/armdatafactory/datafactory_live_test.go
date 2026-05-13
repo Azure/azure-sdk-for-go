@@ -58,7 +58,7 @@ func (testsuite *DatafactoryTestSuite) SetupSuite() {
 	testsuite.linkedServiceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "linkedse", 8+6, false)
 	testsuite.locationId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "location", 8+6, false)
 	testsuite.managedPrivateEndpointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "managedp", 8+6, false)
-	testsuite.managedVirtualNetworkName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "managedv", 8+6, false)
+	testsuite.managedVirtualNetworkName = "default"
 	testsuite.nodeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "nodename", 8+6, false)
 	testsuite.pipelineName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "pipeline", 8+6, false)
 	testsuite.runId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "runid", 8+6, false)
@@ -820,7 +820,7 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -834,6 +834,7 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 							"name": "default",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.0.0/24",
+								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -907,12 +908,13 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
 					"addressPrefix":                     "10.0.0.0/24",
+					"defaultOutboundAccess":             false,
 					"delegations":                       []any{},
 					"privateEndpointNetworkPolicies":    "Disabled",
 					"privateLinkServiceNetworkPolicies": "Enabled",

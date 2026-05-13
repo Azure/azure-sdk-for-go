@@ -105,7 +105,7 @@ func ExampleDataConnectorDefinitionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorDefinitionsClientCreateOrUpdateResponse{
-	// 	CustomizableConnectorDefinition: &armsecurityinsights.CustomizableConnectorDefinition{
+	// 	DataConnectorDefinitionClassification: &armsecurityinsights.CustomizableConnectorDefinition{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectorDefinitions"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -227,7 +227,7 @@ func ExampleDataConnectorDefinitionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorDefinitionsClientGetResponse{
-	// 	CustomizableConnectorDefinition: &armsecurityinsights.CustomizableConnectorDefinition{
+	// 	DataConnectorDefinitionClassification: &armsecurityinsights.CustomizableConnectorDefinition{
 	// 		Name: to.Ptr("763f9fa1-c2d3-4fa2-93e9-bccd4899aa12"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectorDefinitions"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),

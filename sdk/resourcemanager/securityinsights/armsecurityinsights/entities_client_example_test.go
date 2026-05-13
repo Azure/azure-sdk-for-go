@@ -92,7 +92,7 @@ func ExampleEntitiesClient_Get_getAnAccountEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	AccountEntity: &armsecurityinsights.AccountEntity{
+	// 	EntityClassification: &armsecurityinsights.AccountEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -133,7 +133,7 @@ func ExampleEntitiesClient_Get_getAnAzureResourceEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	AzureResourceEntity: &armsecurityinsights.AzureResourceEntity{
+	// 	EntityClassification: &armsecurityinsights.AzureResourceEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -166,7 +166,7 @@ func ExampleEntitiesClient_Get_getACloudApplicationEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	CloudApplicationEntity: &armsecurityinsights.CloudApplicationEntity{
+	// 	EntityClassification: &armsecurityinsights.CloudApplicationEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -200,7 +200,7 @@ func ExampleEntitiesClient_Get_getADnsEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	DNSEntity: &armsecurityinsights.DNSEntity{
+	// 	EntityClassification: &armsecurityinsights.DNSEntity{
 	// 		Name: to.Ptr("f4e74920-f2c0-4412-a45f-66d94fdf01f8"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/f4e74920-f2c0-4412-a45f-66d94fdf01f8"),
@@ -235,7 +235,7 @@ func ExampleEntitiesClient_Get_getAFileEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	FileEntity: &armsecurityinsights.FileEntity{
+	// 	EntityClassification: &armsecurityinsights.FileEntity{
 	// 		Name: to.Ptr("af378b21-b4aa-4fe7-bc70-13f8621a322f"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/af378b21-b4aa-4fe7-bc70-13f8621a322f"),
@@ -268,7 +268,7 @@ func ExampleEntitiesClient_Get_getAFileHashEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	FileHashEntity: &armsecurityinsights.FileHashEntity{
+	// 	EntityClassification: &armsecurityinsights.FileHashEntity{
 	// 		Name: to.Ptr("ea359fa6-c1e5-f878-e105-6344f3e399a1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/ea359fa6-c1e5-f878-e105-6344f3e399a1"),
@@ -301,7 +301,7 @@ func ExampleEntitiesClient_Get_getAHostEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	HostEntity: &armsecurityinsights.HostEntity{
+	// 	EntityClassification: &armsecurityinsights.HostEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -341,7 +341,7 @@ func ExampleEntitiesClient_Get_getAnIoTDeviceEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	IoTDeviceEntity: &armsecurityinsights.IoTDeviceEntity{
+	// 	EntityClassification: &armsecurityinsights.IoTDeviceEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -395,7 +395,7 @@ func ExampleEntitiesClient_Get_getAnIPEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	IPEntity: &armsecurityinsights.IPEntity{
+	// 	EntityClassification: &armsecurityinsights.IPEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -427,7 +427,7 @@ func ExampleEntitiesClient_Get_getAMailClusterEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	MailClusterEntity: &armsecurityinsights.MailClusterEntity{
+	// 	EntityClassification: &armsecurityinsights.MailClusterEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -480,7 +480,7 @@ func ExampleEntitiesClient_Get_getAMailMessageEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	MailMessageEntity: &armsecurityinsights.MailMessageEntity{
+	// 	EntityClassification: &armsecurityinsights.MailMessageEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -537,7 +537,7 @@ func ExampleEntitiesClient_Get_getAMailboxEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	MailboxEntity: &armsecurityinsights.MailboxEntity{
+	// 	EntityClassification: &armsecurityinsights.MailboxEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -572,7 +572,7 @@ func ExampleEntitiesClient_Get_getAMalwareEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	MalwareEntity: &armsecurityinsights.MalwareEntity{
+	// 	EntityClassification: &armsecurityinsights.MalwareEntity{
 	// 		Name: to.Ptr("af378b21-b4aa-4fe7-bc70-13f8621a322f"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/af378b21-b4aa-4fe7-bc70-13f8621a322f"),
@@ -605,7 +605,7 @@ func ExampleEntitiesClient_Get_getAProcessEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	ProcessEntity: &armsecurityinsights.ProcessEntity{
+	// 	EntityClassification: &armsecurityinsights.ProcessEntity{
 	// 		Name: to.Ptr("7264685c-038c-42c6-948c-38e14ef1fb98"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/7264685c-038c-42c6-948c-38e14ef1fb98"),
@@ -639,7 +639,7 @@ func ExampleEntitiesClient_Get_getARegistryKeyEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	RegistryKeyEntity: &armsecurityinsights.RegistryKeyEntity{
+	// 	EntityClassification: &armsecurityinsights.RegistryKeyEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -672,7 +672,7 @@ func ExampleEntitiesClient_Get_getARegistryValueEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	RegistryValueEntity: &armsecurityinsights.RegistryValueEntity{
+	// 	EntityClassification: &armsecurityinsights.RegistryValueEntity{
 	// 		Name: to.Ptr("dc44bd11-b348-4d76-ad29-37bf7aa41356"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/dc44bd11-b348-4d76-ad29-37bf7aa41356"),
@@ -707,7 +707,7 @@ func ExampleEntitiesClient_Get_getASecurityAlertEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	SecurityAlert: &armsecurityinsights.SecurityAlert{
+	// 	EntityClassification: &armsecurityinsights.SecurityAlert{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/4aa486e0-6f85-41af-99ea-7acdce7be6c8"),
@@ -767,7 +767,7 @@ func ExampleEntitiesClient_Get_getASecurityGroupEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	SecurityGroupEntity: &armsecurityinsights.SecurityGroupEntity{
+	// 	EntityClassification: &armsecurityinsights.SecurityGroupEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -801,7 +801,7 @@ func ExampleEntitiesClient_Get_getASubmissionMailEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	SubmissionMailEntity: &armsecurityinsights.SubmissionMailEntity{
+	// 	EntityClassification: &armsecurityinsights.SubmissionMailEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),
@@ -839,7 +839,7 @@ func ExampleEntitiesClient_Get_getAUrlEntity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntitiesClientGetResponse{
-	// 	URLEntity: &armsecurityinsights.URLEntity{
+	// 	EntityClassification: &armsecurityinsights.URLEntity{
 	// 		Name: to.Ptr("e1d3d618-e11f-478b-98e3-bb381539a8e1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entities"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entities/e1d3d618-e11f-478b-98e3-bb381539a8e1"),

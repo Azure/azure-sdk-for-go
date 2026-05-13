@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultEntityRelationsClientVersion string = "2025-07-01-preview"
+
 // EntityRelationsClient contains the methods for the EntityRelations group.
 // Don't use this type directly, use NewEntityRelationsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type EntityRelationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewEntityRelationsClient(subscriptionID string, credential azcore.TokenCred
 
 // GetRelation - Gets an entity relation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - entityID - entity ID
@@ -99,8 +101,8 @@ func (client *EntityRelationsClient) getRelationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEntityRelationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

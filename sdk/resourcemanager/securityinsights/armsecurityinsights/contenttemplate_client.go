@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultContentTemplateClientVersion string = "2025-07-01-preview"
+
 // ContentTemplateClient contains the methods for the ContentTemplate group.
 // Don't use this type directly, use NewContentTemplateClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ContentTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewContentTemplateClient(subscriptionID string, credential azcore.TokenCred
 
 // Delete - Delete an installed template.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - templateID - template Id
@@ -92,8 +94,8 @@ func (client *ContentTemplateClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -102,8 +104,6 @@ func (client *ContentTemplateClient) deleteCreateRequest(ctx context.Context, re
 // - properties/mainTemplate
 // - properties/dependantTemplates
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - templateID - template Id
@@ -154,8 +154,8 @@ func (client *ContentTemplateClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -171,8 +171,6 @@ func (client *ContentTemplateClient) getHandleResponse(resp *http.Response) (Con
 
 // Install - Install a template.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - templateID - template Id
@@ -224,8 +222,8 @@ func (client *ContentTemplateClient) installCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, templateInstallationProperties); err != nil {

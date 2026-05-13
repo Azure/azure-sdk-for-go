@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAutomationRulesClientVersion string = "2025-07-01-preview"
+
 // AutomationRulesClient contains the methods for the AutomationRules group.
 // Don't use this type directly, use NewAutomationRulesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type AutomationRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Creates or updates the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - automationRuleID - The automation rule ID.
@@ -95,8 +97,8 @@ func (client *AutomationRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAutomationRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, automationRuleToUpsert); err != nil {
@@ -116,8 +118,6 @@ func (client *AutomationRulesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - automationRuleID - Automation rule ID
@@ -168,8 +168,8 @@ func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAutomationRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -185,8 +185,6 @@ func (client *AutomationRulesClient) deleteHandleResponse(resp *http.Response) (
 
 // Get - Gets the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - automationRuleID - Automation rule ID
@@ -237,8 +235,8 @@ func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAutomationRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -253,8 +251,6 @@ func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (Aut
 }
 
 // NewListPager - Gets all automation rules.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.NewListPager
@@ -302,8 +298,8 @@ func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAutomationRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

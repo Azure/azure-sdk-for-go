@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultProductTemplatesClientVersion string = "2025-07-01-preview"
+
 // ProductTemplatesClient contains the methods for the ProductTemplates group.
 // Don't use this type directly, use NewProductTemplatesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ProductTemplatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewProductTemplatesClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListPager - Gets all templates in the catalog.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - ProductTemplatesClientListOptions contains the optional parameters for the ProductTemplatesClient.NewListPager
@@ -111,8 +113,8 @@ func (client *ProductTemplatesClient) listCreateRequest(ctx context.Context, res
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductTemplatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

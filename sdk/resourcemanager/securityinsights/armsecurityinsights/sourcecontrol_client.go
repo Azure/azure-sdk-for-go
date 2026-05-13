@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSourceControlClientVersion string = "2025-07-01-preview"
+
 // SourceControlClient contains the methods for the SourceControl group.
 // Don't use this type directly, use NewSourceControlClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type SourceControlClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +44,6 @@ func NewSourceControlClient(subscriptionID string, credential azcore.TokenCreden
 }
 
 // NewListRepositoriesPager - Gets a list of repositories metadata.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - repositoryAccess - The content of the action request
@@ -90,8 +92,8 @@ func (client *SourceControlClient) listRepositoriesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourceControlClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, repositoryAccess); err != nil {

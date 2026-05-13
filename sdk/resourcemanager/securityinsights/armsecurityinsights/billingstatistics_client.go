@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultBillingStatisticsClientVersion string = "2025-07-01-preview"
+
 // BillingStatisticsClient contains the methods for the BillingStatistics group.
 // Don't use this type directly, use NewBillingStatisticsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type BillingStatisticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewBillingStatisticsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Gets a billing statistic
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - billingStatisticName - The name of the billing statistic
@@ -93,8 +95,8 @@ func (client *BillingStatisticsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultBillingStatisticsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +111,6 @@ func (client *BillingStatisticsClient) getHandleResponse(resp *http.Response) (B
 }
 
 // NewListPager - Gets all Microsoft Sentinel billing statistics.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - BillingStatisticsClientListOptions contains the optional parameters for the BillingStatisticsClient.NewListPager
@@ -158,8 +158,8 @@ func (client *BillingStatisticsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultBillingStatisticsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultThreatIntelligenceClientVersion string = "2025-07-01-preview"
+
 // ThreatIntelligenceClient contains the methods for the ThreatIntelligence group.
 // Don't use this type directly, use NewThreatIntelligenceClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ThreatIntelligenceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewThreatIntelligenceClient(subscriptionID string, credential azcore.TokenC
 
 // Count - Gets the count of all TI objects for the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - tiType - TI type
@@ -94,8 +96,8 @@ func (client *ThreatIntelligenceClient) countCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Query != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -117,8 +119,6 @@ func (client *ThreatIntelligenceClient) countHandleResponse(resp *http.Response)
 }
 
 // NewQueryPager - Gets all TI objects for the workspace.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - tiType - TI type
@@ -171,8 +171,8 @@ func (client *ThreatIntelligenceClient) queryCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Query != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultOfficeConsentsClientVersion string = "2025-07-01-preview"
+
 // OfficeConsentsClient contains the methods for the OfficeConsents group.
 // Don't use this type directly, use NewOfficeConsentsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type OfficeConsentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewOfficeConsentsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Delete - Delete the office365 consent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - consentID - consent ID
@@ -92,15 +94,13 @@ func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOfficeConsentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an office365 consent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - consentID - consent ID
@@ -151,8 +151,8 @@ func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOfficeConsentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -167,8 +167,6 @@ func (client *OfficeConsentsClient) getHandleResponse(resp *http.Response) (Offi
 }
 
 // NewListPager - Gets all office365 consents.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.NewListPager method.
@@ -215,8 +213,8 @@ func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOfficeConsentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultGetTriggeredAnalyticsRuleRunsClientVersion string = "2025-07-01-preview"
+
 // GetTriggeredAnalyticsRuleRunsClient contains the methods for the GetTriggeredAnalyticsRuleRuns group.
 // Don't use this type directly, use NewGetTriggeredAnalyticsRuleRunsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type GetTriggeredAnalyticsRuleRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +44,6 @@ func NewGetTriggeredAnalyticsRuleRunsClient(subscriptionID string, credential az
 }
 
 // NewListPager - Gets the triggered analytics rule runs.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - GetTriggeredAnalyticsRuleRunsClientListOptions contains the optional parameters for the GetTriggeredAnalyticsRuleRunsClient.NewListPager
@@ -89,8 +91,8 @@ func (client *GetTriggeredAnalyticsRuleRunsClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGetTriggeredAnalyticsRuleRunsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

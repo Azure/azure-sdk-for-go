@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSentinelOnboardingStatesClientVersion string = "2025-07-01-preview"
+
 // SentinelOnboardingStatesClient contains the methods for the SentinelOnboardingStates group.
 // Don't use this type directly, use NewSentinelOnboardingStatesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type SentinelOnboardingStatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewSentinelOnboardingStatesClient(subscriptionID string, credential azcore.
 
 // Create - Create Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
@@ -95,8 +97,8 @@ func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sentinelOnboardingStateParameter); err != nil {
@@ -116,8 +118,6 @@ func (client *SentinelOnboardingStatesClient) createHandleResponse(resp *http.Re
 
 // Delete - Delete Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
@@ -168,15 +168,13 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
@@ -228,8 +226,8 @@ func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -245,8 +243,6 @@ func (client *SentinelOnboardingStatesClient) getHandleResponse(resp *http.Respo
 
 // List - Gets all Sentinel onboarding states
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - SentinelOnboardingStatesClientListOptions contains the optional parameters for the SentinelOnboardingStatesClient.List
@@ -293,8 +289,8 @@ func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

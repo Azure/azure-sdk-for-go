@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultReevaluateClientVersion string = "2025-07-01-preview"
+
 // ReevaluateClient contains the methods for the Reevaluate group.
 // Don't use this type directly, use NewReevaluateClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ReevaluateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewReevaluateClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Recommendation - Reevaluate a recommendation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - recommendationID - Recommendation Id.
@@ -94,8 +96,8 @@ func (client *ReevaluateClient) recommendationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultReevaluateClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

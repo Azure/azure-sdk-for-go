@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultFileImportsClientVersion string = "2025-07-01-preview"
+
 // FileImportsClient contains the methods for the FileImports group.
 // Don't use this type directly, use NewFileImportsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type FileImportsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewFileImportsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Create - Creates the file import.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - fileImportID - File import ID
@@ -95,8 +97,8 @@ func (client *FileImportsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFileImportsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fileImport); err != nil {
@@ -116,8 +118,6 @@ func (client *FileImportsClient) createHandleResponse(resp *http.Response) (File
 
 // BeginDelete - Delete the file import.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - fileImportID - File import ID
@@ -141,8 +141,6 @@ func (client *FileImportsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Delete the file import.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 func (client *FileImportsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, options *FileImportsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FileImportsClient.BeginDelete"
@@ -188,16 +186,14 @@ func (client *FileImportsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFileImportsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a file import.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - fileImportID - File import ID
@@ -248,8 +244,8 @@ func (client *FileImportsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFileImportsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,8 +260,6 @@ func (client *FileImportsClient) getHandleResponse(resp *http.Response) (FileImp
 }
 
 // NewListPager - Gets all file imports.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - FileImportsClientListOptions contains the optional parameters for the FileImportsClient.NewListPager method.
@@ -324,8 +318,8 @@ func (client *FileImportsClient) listCreateRequest(ctx context.Context, resource
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFileImportsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

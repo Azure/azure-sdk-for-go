@@ -31,7 +31,7 @@ func ExampleEntityQueryTemplatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntityQueryTemplatesClientGetResponse{
-	// 	ActivityEntityQueryTemplate: &armsecurityinsights.ActivityEntityQueryTemplate{
+	// 	EntityQueryTemplateClassification: &armsecurityinsights.ActivityEntityQueryTemplate{
 	// 		Name: to.Ptr("07da3cc8-c8ad-4710-a44e-334cdcb7882b"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entityQueryTemplate"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entityQueryTemplates/07da3cc8-c8ad-4710-a44e-334cdcb7882b"),

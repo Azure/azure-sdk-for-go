@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultProductPackageClientVersion string = "2025-07-01-preview"
+
 // ProductPackageClient contains the methods for the ProductPackage group.
 // Don't use this type directly, use NewProductPackageClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ProductPackageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewProductPackageClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets a package by its identifier from the catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - packageID - package Id
@@ -93,8 +95,8 @@ func (client *ProductPackageClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductPackageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

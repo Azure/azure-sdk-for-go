@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultContentTemplatesClientVersion string = "2025-07-01-preview"
+
 // ContentTemplatesClient contains the methods for the ContentTemplates group.
 // Don't use this type directly, use NewContentTemplatesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ContentTemplatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +48,6 @@ func NewContentTemplatesClient(subscriptionID string, credential azcore.TokenCre
 // Expandable properties:
 // - properties/mainTemplate
 // - properties/dependantTemplates
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - ContentTemplatesClientListOptions contains the optional parameters for the ContentTemplatesClient.NewListPager
@@ -117,8 +119,8 @@ func (client *ContentTemplatesClient) listCreateRequest(ctx context.Context, res
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentTemplatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

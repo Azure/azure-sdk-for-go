@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultContentPackagesClientVersion string = "2025-07-01-preview"
+
 // ContentPackagesClient contains the methods for the ContentPackages group.
 // Don't use this type directly, use NewContentPackagesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ContentPackagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewContentPackagesClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Gets an installed packages by its id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - packageID - package Id
@@ -94,8 +96,8 @@ func (client *ContentPackagesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentPackagesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +112,6 @@ func (client *ContentPackagesClient) getHandleResponse(resp *http.Response) (Con
 }
 
 // NewListPager - Gets all installed packages.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - ContentPackagesClientListOptions contains the optional parameters for the ContentPackagesClient.NewListPager
@@ -180,8 +180,8 @@ func (client *ContentPackagesClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentPackagesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

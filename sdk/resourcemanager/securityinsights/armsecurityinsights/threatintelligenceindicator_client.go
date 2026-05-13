@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultThreatIntelligenceIndicatorClientVersion string = "2025-07-01-preview"
+
 // ThreatIntelligenceIndicatorClient contains the methods for the ThreatIntelligenceIndicator group.
 // Don't use this type directly, use NewThreatIntelligenceIndicatorClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ThreatIntelligenceIndicatorClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azco
 
 // AppendTags - Append tags to a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - name - Threat intelligence indicator name field.
@@ -94,8 +96,8 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceAppendTags); err != nil {
 		return nil, err
@@ -105,8 +107,6 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 
 // Create - Update a threat Intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - name - Threat intelligence indicator name field.
@@ -159,8 +159,8 @@ func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceProperties); err != nil {
@@ -180,8 +180,6 @@ func (client *ThreatIntelligenceIndicatorClient) createHandleResponse(resp *http
 
 // CreateIndicator - Create a new threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - threatIntelligenceProperties - The content of the action request
@@ -229,8 +227,8 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceProperties); err != nil {
@@ -250,8 +248,6 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorHandleResponse(r
 
 // Delete - Delete a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - name - Threat intelligence indicator name field.
@@ -302,15 +298,13 @@ func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - View a threat intelligence indicator by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - name - Threat intelligence indicator name field.
@@ -362,8 +356,8 @@ func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -378,8 +372,6 @@ func (client *ThreatIntelligenceIndicatorClient) getHandleResponse(resp *http.Re
 }
 
 // NewQueryIndicatorsPager - Query threat intelligence indicators as per filtering criteria.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - threatIntelligenceFilteringCriteria - The content of the action request
@@ -428,8 +420,8 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceFilteringCriteria); err != nil {
@@ -449,8 +441,6 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsHandleResponse(r
 
 // ReplaceTags - Replace tags added to a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - name - Threat intelligence indicator name field.
@@ -503,8 +493,8 @@ func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceReplaceTags); err != nil {

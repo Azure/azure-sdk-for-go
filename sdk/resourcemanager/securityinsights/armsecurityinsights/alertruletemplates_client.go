@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAlertRuleTemplatesClientVersion string = "2025-07-01-preview"
+
 // AlertRuleTemplatesClient contains the methods for the AlertRuleTemplates group.
 // Don't use this type directly, use NewAlertRuleTemplatesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type AlertRuleTemplatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewAlertRuleTemplatesClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets the alert rule template.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - alertRuleTemplateID - Alert rule template ID
@@ -93,8 +95,8 @@ func (client *AlertRuleTemplatesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAlertRuleTemplatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +111,6 @@ func (client *AlertRuleTemplatesClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets all alert rule templates.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.NewListPager
@@ -158,8 +158,8 @@ func (client *AlertRuleTemplatesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAlertRuleTemplatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultDataConnectorDefinitionsClientVersion string = "2025-07-01-preview"
+
 // DataConnectorDefinitionsClient contains the methods for the DataConnectorDefinitions group.
 // Don't use this type directly, use NewDataConnectorDefinitionsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type DataConnectorDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewDataConnectorDefinitionsClient(subscriptionID string, credential azcore.
 
 // CreateOrUpdate - Creates or updates the data connector definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - dataConnectorDefinitionName - The data connector definition name.
@@ -95,8 +97,8 @@ func (client *DataConnectorDefinitionsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectorDefinitionInput); err != nil {
@@ -116,8 +118,6 @@ func (client *DataConnectorDefinitionsClient) createOrUpdateHandleResponse(resp 
 
 // Delete - Delete the data connector definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - dataConnectorDefinitionName - The data connector definition name.
@@ -168,15 +168,13 @@ func (client *DataConnectorDefinitionsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a data connector definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - dataConnectorDefinitionName - The data connector definition name.
@@ -228,8 +226,8 @@ func (client *DataConnectorDefinitionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -244,8 +242,6 @@ func (client *DataConnectorDefinitionsClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListPager - Gets all data connector definitions.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - DataConnectorDefinitionsClientListOptions contains the optional parameters for the DataConnectorDefinitionsClient.NewListPager
@@ -293,8 +289,8 @@ func (client *DataConnectorDefinitionsClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

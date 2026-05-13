@@ -277,7 +277,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientCreateOrUpdateResponse{
-	// 	FusionAlertRule: &armsecurityinsights.FusionAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.FusionAlertRule{
 	// 		Name: to.Ptr("myFirstFusionRule"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"260090e2-0000-0d00-0000-5d6fb8670000\""),
@@ -824,7 +824,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRuleWith
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientCreateOrUpdateResponse{
-	// 	FusionAlertRule: &armsecurityinsights.FusionAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.FusionAlertRule{
 	// 		Name: to.Ptr("myFirstFusionRule"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"260090e2-0000-0d00-0000-5d6fb8670000\""),
@@ -1133,7 +1133,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAMicrosoftSecurityIn
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientCreateOrUpdateResponse{
-	// 	MicrosoftSecurityIncidentCreationAlertRule: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRule{
 	// 		Name: to.Ptr("microsoftSecurityIncidentCreationRuleExample"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"260097e0-0000-0d00-0000-5d6fa88f0000\""),
@@ -1204,7 +1204,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientCreateOrUpdateResponse{
-	// 	NrtAlertRule: &armsecurityinsights.NrtAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.NrtAlertRule{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1360,7 +1360,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAScheduledAlertRule(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientCreateOrUpdateResponse{
-	// 	ScheduledAlertRule: &armsecurityinsights.ScheduledAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.ScheduledAlertRule{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"01005144-0000-0d00-0000-6058632c0000\""),
@@ -1483,7 +1483,7 @@ func ExampleAlertRulesClient_Get_getAFusionAlertRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientGetResponse{
-	// 	FusionAlertRule: &armsecurityinsights.FusionAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.FusionAlertRule{
 	// 		Name: to.Ptr("myFirstFusionRule"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"260090e2-0000-0d00-0000-5d6fb8670000\""),
@@ -1794,7 +1794,7 @@ func ExampleAlertRulesClient_Get_getAMicrosoftSecurityIncidentCreationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientGetResponse{
-	// 	MicrosoftSecurityIncidentCreationAlertRule: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRule{
 	// 		Name: to.Ptr("microsoftSecurityIncidentCreationRuleExample"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"260097e0-0000-0d00-0000-5d6fa88f0000\""),
@@ -1829,7 +1829,7 @@ func ExampleAlertRulesClient_Get_getAnNrtAlertRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientGetResponse{
-	// 	NrtAlertRule: &armsecurityinsights.NrtAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.NrtAlertRule{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1892,7 +1892,7 @@ func ExampleAlertRulesClient_Get_getAScheduledAlertRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRulesClientGetResponse{
-	// 	ScheduledAlertRule: &armsecurityinsights.ScheduledAlertRule{
+	// 	AlertRuleClassification: &armsecurityinsights.ScheduledAlertRule{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/alertRules"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),

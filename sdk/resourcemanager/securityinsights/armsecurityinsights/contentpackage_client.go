@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultContentPackageClientVersion string = "2025-07-01-preview"
+
 // ContentPackageClient contains the methods for the ContentPackage group.
 // Don't use this type directly, use NewContentPackageClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ContentPackageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewContentPackageClient(subscriptionID string, credential azcore.TokenCrede
 
 // Install - Install a package to the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - packageID - package Id
@@ -94,8 +96,8 @@ func (client *ContentPackageClient) installCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentPackageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, packageInstallationProperties); err != nil {
@@ -115,8 +117,6 @@ func (client *ContentPackageClient) installHandleResponse(resp *http.Response) (
 
 // Uninstall - Uninstall a package from the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - packageID - package Id
@@ -167,7 +167,7 @@ func (client *ContentPackageClient) uninstallCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContentPackageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

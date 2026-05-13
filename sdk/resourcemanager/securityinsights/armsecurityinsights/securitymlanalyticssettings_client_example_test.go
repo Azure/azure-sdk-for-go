@@ -104,7 +104,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse{
-	// 	AnomalySecurityMLAnalyticsSettings: &armsecurityinsights.AnomalySecurityMLAnalyticsSettings{
+	// 	SecurityMLAnalyticsSettingClassification: &armsecurityinsights.AnomalySecurityMLAnalyticsSettings{
 	// 		Name: to.Ptr("f209187f-1d17-4431-94af-c141bf5f23db"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/securityMLAnalyticsSettings"),
 	// 		Etag: to.Ptr("\"01005144-0000-0d00-0000-6058632c0000\""),
@@ -226,7 +226,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.SecurityMLAnalyticsSettingsClientGetResponse{
-	// 	AnomalySecurityMLAnalyticsSettings: &armsecurityinsights.AnomalySecurityMLAnalyticsSettings{
+	// 	SecurityMLAnalyticsSettingClassification: &armsecurityinsights.AnomalySecurityMLAnalyticsSettings{
 	// 		Name: to.Ptr("f209187f-1d17-4431-94af-c141bf5f23db"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/securityMLAnalyticsSettings"),
 	// 		Etag: to.Ptr("\"260090e2-0000-0d00-0000-5d6fb8670000\""),

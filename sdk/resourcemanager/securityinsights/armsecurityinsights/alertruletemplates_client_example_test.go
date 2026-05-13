@@ -30,7 +30,7 @@ func ExampleAlertRuleTemplatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.AlertRuleTemplatesClientGetResponse{
-	// 	ScheduledAlertRuleTemplate: &armsecurityinsights.ScheduledAlertRuleTemplate{
+	// 	AlertRuleTemplateClassification: &armsecurityinsights.ScheduledAlertRuleTemplate{
 	// 		Name: to.Ptr("65360bb0-8986-4ade-a89d-af3cf44d28aa"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/AlertRuleTemplates"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRuleTemplates/65360bb0-8986-4ade-a89d-af3cf44d28aa"),

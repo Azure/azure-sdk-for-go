@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultProductSettingsClientVersion string = "2025-07-01-preview"
+
 // ProductSettingsClient contains the methods for the ProductSettings group.
 // Don't use this type directly, use NewProductSettingsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ProductSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewProductSettingsClient(subscriptionID string, credential azcore.TokenCred
 
 // Delete - Delete setting of the product.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
@@ -92,15 +94,13 @@ func (client *ProductSettingsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductSettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
@@ -151,8 +151,8 @@ func (client *ProductSettingsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductSettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -167,8 +167,6 @@ func (client *ProductSettingsClient) getHandleResponse(resp *http.Response) (Pro
 }
 
 // NewListPager - List of all the settings
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - ProductSettingsClientListOptions contains the optional parameters for the ProductSettingsClient.NewListPager
@@ -216,8 +214,8 @@ func (client *ProductSettingsClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductSettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -233,8 +231,6 @@ func (client *ProductSettingsClient) listHandleResponse(resp *http.Response) (Pr
 
 // Update - Updates setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
@@ -286,8 +282,8 @@ func (client *ProductSettingsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductSettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, settings); err != nil {

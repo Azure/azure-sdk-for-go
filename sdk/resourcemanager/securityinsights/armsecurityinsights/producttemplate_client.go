@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultProductTemplateClientVersion string = "2025-07-01-preview"
+
 // ProductTemplateClient contains the methods for the ProductTemplate group.
 // Don't use this type directly, use NewProductTemplateClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ProductTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewProductTemplateClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Gets a template by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - templateID - template Id
@@ -93,8 +95,8 @@ func (client *ProductTemplateClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductTemplateClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

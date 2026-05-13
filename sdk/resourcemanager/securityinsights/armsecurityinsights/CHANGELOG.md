@@ -1,139 +1,154 @@
 # Release History
 
-## 2.0.0-beta.5 (2026-05-06)
+## 2.0.0 (2026-05-13)
 ### Breaking Changes
 
 - Function `*AutomationRulesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, automationRuleToUpsert AutomationRule, options *AutomationRulesClientCreateOrUpdateOptions)`
 - Function `*SentinelOnboardingStatesClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, options *SentinelOnboardingStatesClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, sentinelOnboardingStateParameter SentinelOnboardingState, options *SentinelOnboardingStatesClientCreateOptions)`
-- Function `*SourceControlClient.NewListRepositoriesPager` parameter(s) have been changed from `(resourceGroupName string, workspaceName string, repoType RepoType, options *SourceControlClientListRepositoriesOptions)` to `(resourceGroupName string, workspaceName string, repositoryAccess RepositoryAccessProperties, options *SourceControlClientListRepositoriesOptions)`
-- Function `*SourceControlsClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, repositoryAccess RepositoryAccessProperties, options *SourceControlsClientDeleteOptions)`
-- Type of `AccountEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `AzureResourceEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `CloudApplicationEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `DNSEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `Entity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `EntityQueriesClientListOptions.Kind` has been changed from `*Enum13` to `*EntityQueryTemplateKind`
-- Type of `EntityQueryTemplatesClientListOptions.Kind` has been changed from `*Enum15` to `*EntityQueryTemplateKind`
-- Type of `ExpansionResultAggregation.EntityKind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `FileEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `FileHashEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `HostEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `HuntingBookmark.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `IPEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `IncidentEntitiesResultsMetadata.EntityKind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `IoTDeviceEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed.LookbackPeriod` has been changed from `*string` to `*time.Time`
-- Type of `MailClusterEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `MailMessageEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `MailboxEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `MalwareEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `MetadataProperties.Kind` has been changed from `*Kind` to `*string`
-- Type of `MetadataPropertiesPatch.Kind` has been changed from `*Kind` to `*string`
-- Type of `NicEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `ProcessEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `RegistryKeyEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `RegistryValueEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `SecurityAlert.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `SecurityGroupEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `SubmissionMailEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `ThreatIntelligenceIndicatorModel.Kind` has been changed from `*ThreatIntelligenceResourceKindEnum` to `*ThreatIntelligenceResourceInnerKind`
-- Type of `ThreatIntelligenceInformation.Kind` has been changed from `*ThreatIntelligenceResourceKindEnum` to `*ThreatIntelligenceResourceInnerKind`
-- Type of `ThreatIntelligenceSortingCriteria.SortOrder` has been changed from `*ThreatIntelligenceSortingCriteriaEnum` to `*ThreatIntelligenceSortingOrder`
-- Type of `URLEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `Webhook.WebhookSecretUpdateTime` has been changed from `*string` to `*time.Time`
-- `ContentTypeAnalyticRule` from enum `ContentType` has been removed
-- `OperatorAND`, `OperatorOR` from enum `Operator` has been removed
-- `RepoTypeDevOps` from enum `RepoType` has been removed
-- `SourceTypeLocalFile`, `SourceTypeRemoteStorage` from enum `SourceType` has been removed
-- Enum `EntityKind` has been removed
-- Enum `Enum13` has been removed
-- Enum `Enum15` has been removed
-- Enum `ThreatIntelligenceResourceKindEnum` has been removed
-- Enum `ThreatIntelligenceSortingCriteriaEnum` has been removed
-- Function `*ClientFactory.NewDomainWhoisClient` has been removed
-- Function `*ClientFactory.NewIPGeodataClient` has been removed
-- Function `NewDomainWhoisClient` has been removed
-- Function `*DomainWhoisClient.Get` has been removed
-- Function `NewIPGeodataClient` has been removed
-- Function `*IPGeodataClient.Get` has been removed
-- Function `*IncidentsClient.CreateTeam` has been removed
+- Type of `IncidentPropertiesAction.Owner` has been changed from `*IncidentOwnerInfoAutoGenerated` to `*IncidentOwnerInfo`
+- Type of `WatchlistProperties.Source` has been changed from `*Source` to `*string`
+- Enum `Source` has been removed
 - Operation `*WatchlistsClient.CreateOrUpdate` has been changed to LRO, use `*WatchlistsClient.BeginCreateOrUpdate` instead.
 - Operation `*WatchlistsClient.Delete` has been changed to LRO, use `*WatchlistsClient.BeginDelete` instead.
-- Operation `*EntitiesClient.Queries` has supported pagination, use `*EntitiesClient.NewQueriesPager` instead.
-- Operation `*ProductSettingsClient.List` has supported pagination, use `*ProductSettingsClient.NewListPager` instead.
-- Struct `ContentPathMap` has been removed
-- Struct `MSTIDataConnectorDataTypesBingSafetyPhishingURL` has been removed
-- Struct `TeamProperties` has been removed
+- Struct `IncidentOwnerInfoAutoGenerated` has been removed
 - Field `AutomationRuleToUpsert` of struct `AutomationRulesClientCreateOrUpdateOptions` has been removed
-- Field `CityCf`, `CountryCf`, `StateCf` of struct `EnrichmentIPGeodata` has been removed
-- Field `BingSafetyPhishingURL` of struct `MSTIDataConnectorDataTypes` has been removed
-- Field `PathMapping` of struct `Repository` has been removed
 - Field `SentinelOnboardingStateParameter` of struct `SentinelOnboardingStatesClientCreateOptions` has been removed
 
 ### Features Added
 
-- Type of `WatchlistItemProperties.EntityMapping` has been changed from `map[string]any` to `any`
-- Type of `WatchlistItemProperties.ItemsKeyValue` has been changed from `map[string]any` to `any`
 - New value `ActionTypeAddIncidentTask` added to enum type `ActionType`
-- New value `AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAllItems` added to enum type `AutomationRulePropertyArrayConditionSupportedArrayConditionType`
-- New value `AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels` added to enum type `AutomationRulePropertyArrayConditionSupportedArrayType`
-- New value `AutomationRulePropertyConditionSupportedPropertyIncidentAlertTitle`, `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetectionRuleIDs` added to enum type `AutomationRulePropertyConditionSupportedProperty`
-- New value `ContentTypeAnalyticsRule`, `ContentTypeAutomationRule`, `ContentTypeHuntingQuery`, `ContentTypeParser`, `ContentTypePlaybook` added to enum type `ContentType`
-- New value `DataConnectorKindGCP`, `DataConnectorKindMicrosoftPurviewInformationProtection`, `DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence`, `DataConnectorKindPurviewAudit`, `DataConnectorKindRestAPIPoller` added to enum type `DataConnectorKind`
-- New value `EntityQueryTemplateKindAnomaly`, `EntityQueryTemplateKindBookmark`, `EntityQueryTemplateKindExpansion`, `EntityQueryTemplateKindGuidedInsight`, `EntityQueryTemplateKindInsight`, `EntityQueryTemplateKindSecurityAlert` added to enum type `EntityQueryTemplateKind`
-- New value `KindCustomDetection`, `KindNotebook`, `KindResourcesDataConnector`, `KindStandalone`, `KindSummaryRule` added to enum type `Kind`
-- New value `OperatorAfterAbsolute`, `OperatorAfterRelative`, `OperatorArrayContains`, `OperatorArrayNotContains`, `OperatorBeforeAbsolute`, `OperatorBeforeRelative`, `OperatorEquals`, `OperatorGreaterThan`, `OperatorGreaterThanEqual`, `OperatorIsFalse`, `OperatorIsNull`, `OperatorIsTrue`, `OperatorLessThan`, `OperatorLessThanEqual`, `OperatorNotEquals`, `OperatorOnOrAfterAbsolute`, `OperatorOnOrAfterRelative`, `OperatorOnOrBeforeAbsolute`, `OperatorOnOrBeforeRelative`, `OperatorStringContains`, `OperatorStringEndsWith`, `OperatorStringIsEmpty`, `OperatorStringNotContains`, `OperatorStringNotEndsWith`, `OperatorStringNotStartsWith`, `OperatorStringStartsWith` added to enum type `Operator`
-- New value `RepoTypeAzureDevOps` added to enum type `RepoType`
-- New value `SourceTypeAzureStorage`, `SourceTypeLocal` added to enum type `SourceType`
+- New value `AlertRuleKindMLBehaviorAnalytics`, `AlertRuleKindNRT`, `AlertRuleKindThreatIntelligence` added to enum type `AlertRuleKind`
+- New value `AttackTacticImpairProcessControl`, `AttackTacticInhibitResponseFunction`, `AttackTacticReconnaissance`, `AttackTacticResourceDevelopment` added to enum type `AttackTactic`
+- New value `AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs`, `AutomationRulePropertyConditionSupportedPropertyIncidentAlertTitle`, `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey`, `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue`, `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetectionRuleIDs`, `AutomationRulePropertyConditionSupportedPropertyIncidentUpdatedBySource` added to enum type `AutomationRulePropertyConditionSupportedProperty`
+- New value `ConditionTypeBoolean`, `ConditionTypePropertyArray`, `ConditionTypePropertyArrayChanged`, `ConditionTypePropertyChanged` added to enum type `ConditionType`
+- New value `DataConnectorKindAPIPolling`, `DataConnectorKindAmazonWebServicesS3`, `DataConnectorKindDynamics365`, `DataConnectorKindGCP`, `DataConnectorKindGenericUI`, `DataConnectorKindIOT`, `DataConnectorKindMicrosoftPurviewInformationProtection`, `DataConnectorKindMicrosoftThreatIntelligence`, `DataConnectorKindMicrosoftThreatProtection`, `DataConnectorKindOffice365Project`, `DataConnectorKindOfficeATP`, `DataConnectorKindOfficeIRM`, `DataConnectorKindOfficePowerBI`, `DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence`, `DataConnectorKindPurviewAudit`, `DataConnectorKindRestAPIPoller`, `DataConnectorKindThreatIntelligenceTaxii` added to enum type `DataConnectorKind`
+- New value `EntityKindEnumNic` added to enum type `EntityKindEnum`
+- New value `MicrosoftSecurityProductNameMicrosoftDefenderAdvancedThreatProtection`, `MicrosoftSecurityProductNameOffice365AdvancedThreatProtection` added to enum type `MicrosoftSecurityProductName`
+- New value `TriggersOnAlerts` added to enum type `TriggersOn`
+- New value `TriggersWhenUpdated` added to enum type `TriggersWhen`
 - New enum type `AlertProperty` with values `AlertPropertyAlertLink`, `AlertPropertyConfidenceLevel`, `AlertPropertyConfidenceScore`, `AlertPropertyExtendedLinks`, `AlertPropertyProductComponentName`, `AlertPropertyProductName`, `AlertPropertyProviderName`, `AlertPropertyRemediationSteps`, `AlertPropertySubTechniques`, `AlertPropertyTechniques`
+- New enum type `AutomationRuleBooleanConditionSupportedOperator` with values `AutomationRuleBooleanConditionSupportedOperatorAnd`, `AutomationRuleBooleanConditionSupportedOperatorOr`
+- New enum type `AutomationRulePropertyArrayChangedConditionSupportedArrayType` with values `AutomationRulePropertyArrayChangedConditionSupportedArrayTypeAlerts`, `AutomationRulePropertyArrayChangedConditionSupportedArrayTypeComments`, `AutomationRulePropertyArrayChangedConditionSupportedArrayTypeLabels`, `AutomationRulePropertyArrayChangedConditionSupportedArrayTypeTactics`
+- New enum type `AutomationRulePropertyArrayChangedConditionSupportedChangeType` with values `AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded`
+- New enum type `AutomationRulePropertyArrayConditionSupportedArrayConditionType` with values `AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAllItems`, `AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem`
+- New enum type `AutomationRulePropertyArrayConditionSupportedArrayType` with values `AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues`, `AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails`, `AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels`
+- New enum type `AutomationRulePropertyChangedConditionSupportedChangedType` with values `AutomationRulePropertyChangedConditionSupportedChangedTypeChangedFrom`, `AutomationRulePropertyChangedConditionSupportedChangedTypeChangedTo`
+- New enum type `AutomationRulePropertyChangedConditionSupportedPropertyType` with values `AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentOwner`, `AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentSeverity`, `AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentStatus`
 - New enum type `BillingStatisticKind` with values `BillingStatisticKindSapSolutionUsage`
 - New enum type `CcpAuthType` with values `CcpAuthTypeAPIKey`, `CcpAuthTypeAWS`, `CcpAuthTypeBasic`, `CcpAuthTypeGCP`, `CcpAuthTypeGitHub`, `CcpAuthTypeJwtToken`, `CcpAuthTypeNone`, `CcpAuthTypeOAuth2`, `CcpAuthTypeOracle`, `CcpAuthTypeServiceBus`, `CcpAuthTypeSession`
+- New enum type `ConnectAuthKind` with values `ConnectAuthKindAPIKey`, `ConnectAuthKindBasic`, `ConnectAuthKindOAuth2`
 - New enum type `Connective` with values `ConnectiveAnd`, `ConnectiveOr`
+- New enum type `ConnectivityType` with values `ConnectivityTypeIsConnectedQuery`
+- New enum type `ContentType` with values `ContentTypeAnalyticsRule`, `ContentTypeAutomationRule`, `ContentTypeHuntingQuery`, `ContentTypeParser`, `ContentTypePlaybook`, `ContentTypeWorkbook`
+- New enum type `CustomEntityQueryKind` with values `CustomEntityQueryKindActivity`
+- New enum type `DataConnectorAuthorizationState` with values `DataConnectorAuthorizationStateInvalid`, `DataConnectorAuthorizationStateValid`
 - New enum type `DataConnectorDefinitionKind` with values `DataConnectorDefinitionKindCustomizable`
+- New enum type `DataConnectorLicenseState` with values `DataConnectorLicenseStateInvalid`, `DataConnectorLicenseStateUnknown`, `DataConnectorLicenseStateValid`
+- New enum type `DeleteStatus` with values `DeleteStatusDeleted`, `DeleteStatusNotDeleted`, `DeleteStatusUnspecified`
+- New enum type `DeploymentFetchStatus` with values `DeploymentFetchStatusNotFound`, `DeploymentFetchStatusSuccess`, `DeploymentFetchStatusUnauthorized`
+- New enum type `DeploymentResult` with values `DeploymentResultCanceled`, `DeploymentResultFailed`, `DeploymentResultSuccess`
+- New enum type `DeploymentState` with values `DeploymentStateCanceling`, `DeploymentStateCompleted`, `DeploymentStateInProgress`, `DeploymentStateQueued`
+- New enum type `DeviceImportance` with values `DeviceImportanceHigh`, `DeviceImportanceLow`, `DeviceImportanceNormal`, `DeviceImportanceUnknown`
 - New enum type `EnrichmentType` with values `EnrichmentTypeMain`
-- New enum type `EntityKindEnum` with values `EntityKindEnumAccount`, `EntityKindEnumAzureResource`, `EntityKindEnumBookmark`, `EntityKindEnumCloudApplication`, `EntityKindEnumDNSResolution`, `EntityKindEnumFile`, `EntityKindEnumFileHash`, `EntityKindEnumHost`, `EntityKindEnumIP`, `EntityKindEnumIoTDevice`, `EntityKindEnumMailCluster`, `EntityKindEnumMailMessage`, `EntityKindEnumMailbox`, `EntityKindEnumMalware`, `EntityKindEnumNic`, `EntityKindEnumProcess`, `EntityKindEnumRegistryKey`, `EntityKindEnumRegistryValue`, `EntityKindEnumSecurityAlert`, `EntityKindEnumSecurityGroup`, `EntityKindEnumSubmissionMail`, `EntityKindEnumURL`
+- New enum type `EntityItemQueryKind` with values `EntityItemQueryKindInsight`
+- New enum type `EntityProviders` with values `EntityProvidersActiveDirectory`, `EntityProvidersAzureActiveDirectory`
+- New enum type `EntityQueryKind` with values `EntityQueryKindActivity`, `EntityQueryKindExpansion`, `EntityQueryKindInsight`
+- New enum type `EntityQueryTemplateKind` with values `EntityQueryTemplateKindActivity`, `EntityQueryTemplateKindAnomaly`, `EntityQueryTemplateKindBookmark`, `EntityQueryTemplateKindExpansion`, `EntityQueryTemplateKindGuidedInsight`, `EntityQueryTemplateKindInsight`, `EntityQueryTemplateKindSecurityAlert`
+- New enum type `EntityTimelineKind` with values `EntityTimelineKindActivity`, `EntityTimelineKindAnomaly`, `EntityTimelineKindBookmark`, `EntityTimelineKindSecurityAlert`
+- New enum type `EntityType` with values `EntityTypeAccount`, `EntityTypeAzureResource`, `EntityTypeCloudApplication`, `EntityTypeDNS`, `EntityTypeFile`, `EntityTypeFileHash`, `EntityTypeHost`, `EntityTypeHuntingBookmark`, `EntityTypeIP`, `EntityTypeIoTDevice`, `EntityTypeMailCluster`, `EntityTypeMailMessage`, `EntityTypeMailbox`, `EntityTypeMalware`, `EntityTypeNic`, `EntityTypeProcess`, `EntityTypeRegistryKey`, `EntityTypeRegistryValue`, `EntityTypeSecurityAlert`, `EntityTypeSecurityGroup`, `EntityTypeSubmissionMail`, `EntityTypeURL`
+- New enum type `FileFormat` with values `FileFormatCSV`, `FileFormatJSON`, `FileFormatUnspecified`
+- New enum type `FileImportContentType` with values `FileImportContentTypeBasicIndicator`, `FileImportContentTypeStixIndicator`, `FileImportContentTypeUnspecified`
+- New enum type `FileImportState` with values `FileImportStateFatalError`, `FileImportStateInProgress`, `FileImportStateIngested`, `FileImportStateIngestedWithErrors`, `FileImportStateInvalid`, `FileImportStateUnspecified`, `FileImportStateWaitingForUpload`
 - New enum type `Flag` with values `FlagFalse`, `FlagTrue`
+- New enum type `GetInsightsError` with values `GetInsightsErrorInsight`
 - New enum type `HTTPMethodVerb` with values `HTTPMethodVerbDELETE`, `HTTPMethodVerbGET`, `HTTPMethodVerbPOST`, `HTTPMethodVerbPUT`
 - New enum type `HypothesisStatus` with values `HypothesisStatusInvalidated`, `HypothesisStatusUnknown`, `HypothesisStatusValidated`
 - New enum type `IncidentTaskStatus` with values `IncidentTaskStatusCompleted`, `IncidentTaskStatusNew`
+- New enum type `IngestionMode` with values `IngestionModeIngestAnyValidRecords`, `IngestionModeIngestOnlyIfAllAreValid`, `IngestionModeUnspecified`
+- New enum type `Kind` with values `KindAnalyticsRule`, `KindAnalyticsRuleTemplate`, `KindAutomationRule`, `KindAzureFunction`, `KindCustomDetection`, `KindDataConnector`, `KindDataType`, `KindHuntingQuery`, `KindInvestigationQuery`, `KindLogicAppsCustomConnector`, `KindNotebook`, `KindParser`, `KindPlaybook`, `KindPlaybookTemplate`, `KindResourcesDataConnector`, `KindSolution`, `KindStandalone`, `KindSummaryRule`, `KindWatchlist`, `KindWatchlistTemplate`, `KindWorkbook`, `KindWorkbookTemplate`
 - New enum type `Mode` with values `ModeDisabled`, `ModeEnabled`
 - New enum type `MtpProvider` with values `MtpProviderMicrosoftDefenderForCloudApps`, `MtpProviderMicrosoftDefenderForIdentity`
+- New enum type `Operator` with values `OperatorAfterAbsolute`, `OperatorAfterRelative`, `OperatorArrayContains`, `OperatorArrayNotContains`, `OperatorBeforeAbsolute`, `OperatorBeforeRelative`, `OperatorEquals`, `OperatorGreaterThan`, `OperatorGreaterThanEqual`, `OperatorIsFalse`, `OperatorIsNull`, `OperatorIsTrue`, `OperatorLessThan`, `OperatorLessThanEqual`, `OperatorNotEquals`, `OperatorOnOrAfterAbsolute`, `OperatorOnOrAfterRelative`, `OperatorOnOrBeforeAbsolute`, `OperatorOnOrBeforeRelative`, `OperatorStringContains`, `OperatorStringEndsWith`, `OperatorStringIsEmpty`, `OperatorStringNotContains`, `OperatorStringNotEndsWith`, `OperatorStringNotStartsWith`, `OperatorStringStartsWith`
+- New enum type `OutputType` with values `OutputTypeDate`, `OutputTypeEntity`, `OutputTypeNumber`, `OutputTypeString`
 - New enum type `PackageKind` with values `PackageKindSolution`, `PackageKindStandalone`
+- New enum type `PermissionProviderScope` with values `PermissionProviderScopeResourceGroup`, `PermissionProviderScopeSubscription`, `PermissionProviderScopeWorkspace`
+- New enum type `PollingFrequency` with values `PollingFrequencyOnceADay`, `PollingFrequencyOnceAMinute`, `PollingFrequencyOnceAnHour`
+- New enum type `ProviderName` with values `ProviderNameMicrosoftAadiamDiagnosticSettings`, `ProviderNameMicrosoftAuthorizationPolicyAssignments`, `ProviderNameMicrosoftOperationalInsightsSolutions`, `ProviderNameMicrosoftOperationalInsightsWorkspaces`, `ProviderNameMicrosoftOperationalInsightsWorkspacesDatasources`, `ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys`
 - New enum type `ProviderPermissionsScope` with values `ProviderPermissionsScopeResourceGroup`, `ProviderPermissionsScopeSubscription`, `ProviderPermissionsScopeWorkspace`
 - New enum type `ProvisioningState` with values `ProvisioningStateAccepted`, `ProvisioningStateCanceled`, `ProvisioningStateFailed`, `ProvisioningStateInProgress`, `ProvisioningStateSucceeded`
+- New enum type `RepoType` with values `RepoTypeAzureDevOps`, `RepoTypeGithub`
 - New enum type `RepositoryAccessKind` with values `RepositoryAccessKindApp`, `RepositoryAccessKindOAuth`, `RepositoryAccessKindPAT`
 - New enum type `RestAPIPollerRequestPagingKind` with values `RestAPIPollerRequestPagingKindCountBasedPaging`, `RestAPIPollerRequestPagingKindLinkHeader`, `RestAPIPollerRequestPagingKindNextPageToken`, `RestAPIPollerRequestPagingKindNextPageURL`, `RestAPIPollerRequestPagingKindOffset`, `RestAPIPollerRequestPagingKindPersistentLinkHeader`, `RestAPIPollerRequestPagingKindPersistentToken`
+- New enum type `SecurityMLAnalyticsSettingsKind` with values `SecurityMLAnalyticsSettingsKindAnomaly`
+- New enum type `SettingKind` with values `SettingKindAnomalies`, `SettingKindEntityAnalytics`, `SettingKindEyesOn`, `SettingKindUeba`
+- New enum type `SettingType` with values `SettingTypeCopyableLabel`, `SettingTypeInfoMessage`, `SettingTypeInstructionStepsGroup`
+- New enum type `SettingsStatus` with values `SettingsStatusFlighting`, `SettingsStatusProduction`
 - New enum type `SortingDirection` with values `SortingDirectionASC`, `SortingDirectionDESC`
+- New enum type `SourceKind` with values `SourceKindCommunity`, `SourceKindLocalWorkspace`, `SourceKindSolution`, `SourceKindSourceRepository`
+- New enum type `SourceType` with values `SourceTypeAzureStorage`, `SourceTypeLocal`
 - New enum type `State` with values `StateActive`, `StateCompletedBySystem`, `StateCompletedByUser`, `StateDismissed`, `StateInProgress`
 - New enum type `Status` with values `StatusActive`, `StatusApproved`, `StatusBacklog`, `StatusClosed`, `StatusFailed`, `StatusInProgress`, `StatusNew`, `StatusSucceeded`
+- New enum type `SupportTier` with values `SupportTierCommunity`, `SupportTierMicrosoft`, `SupportTierPartner`
 - New enum type `TIObjectKind` with values `TIObjectKindAttackPattern`, `TIObjectKindIdentity`, `TIObjectKindIndicator`, `TIObjectKindRelationship`, `TIObjectKindThreatActor`
-- New enum type `ThreatIntelligenceResourceInnerKind` with values `ThreatIntelligenceResourceInnerKindIndicator`
-- New enum type `ThreatIntelligenceSortingOrder` with values `ThreatIntelligenceSortingOrderAscending`, `ThreatIntelligenceSortingOrderDescending`, `ThreatIntelligenceSortingOrderUnsorted`
 - New enum type `TiType` with values `TiTypeMain`
+- New enum type `UebaDataSources` with values `UebaDataSourcesAuditLogs`, `UebaDataSourcesAzureActivity`, `UebaDataSourcesSecurityEvent`, `UebaDataSourcesSigninLogs`
+- New enum type `Version` with values `VersionV1`, `VersionV2`
 - New enum type `WarningCode` with values `WarningCodeSourceControlDeletedWithWarnings`, `WarningCodeSourceControlWarningDeletePipelineFromAzureDevOps`, `WarningCodeSourceControlWarningDeleteRoleAssignment`, `WarningCodeSourceControlWarningDeleteServicePrincipal`, `WarningCodeSourceControlWarningDeleteWorkflowAndSecretFromGitHub`
+- New function `*AADCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*AATPCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
 - New function `*APIKeyAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
+- New function `*ASCCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
 - New function `*AWSAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
+- New function `*ActivityCustomEntityQuery.GetCustomEntityQuery() *CustomEntityQuery`
+- New function `*ActivityEntityQuery.GetEntityQuery() *EntityQuery`
+- New function `*ActivityEntityQueryTemplate.GetEntityQueryTemplate() *EntityQueryTemplate`
+- New function `*ActivityTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
 - New function `NewAlertRuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertRuleClient, error)`
 - New function `*AlertRuleClient.BeginTriggerRuleRun(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, analyticsRuleRunTriggerParameter AnalyticsRuleRunTrigger, options *AlertRuleClientBeginTriggerRuleRunOptions) (*runtime.Poller[AlertRuleClientTriggerRuleRunResponse], error)`
+- New function `*Anomalies.GetSettings() *Settings`
+- New function `*AnomalySecurityMLAnalyticsSettings.GetSecurityMLAnalyticsSetting() *SecurityMLAnalyticsSetting`
+- New function `*AnomalyTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
 - New function `*AttackPattern.GetTIObject() *TIObject`
 - New function `*AutomationRuleAddIncidentTaskAction.GetAutomationRuleAction() *AutomationRuleAction`
+- New function `*AwsCloudTrailCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*AwsS3CheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*AwsS3DataConnector.GetDataConnector() *DataConnector`
 - New function `*BasicAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
 - New function `*BillingStatistic.GetBillingStatistic() *BillingStatistic`
 - New function `NewBillingStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BillingStatisticsClient, error)`
 - New function `*BillingStatisticsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, billingStatisticName string, options *BillingStatisticsClientGetOptions) (BillingStatisticsClientGetResponse, error)`
 - New function `*BillingStatisticsClient.NewListPager(resourceGroupName string, workspaceName string, options *BillingStatisticsClientListOptions) *runtime.Pager[BillingStatisticsClientListResponse]`
+- New function `NewBookmarkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BookmarkClient, error)`
+- New function `*BookmarkClient.Expand(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, parameters BookmarkExpandParameters, options *BookmarkClientExpandOptions) (BookmarkClientExpandResponse, error)`
+- New function `NewBookmarkRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BookmarkRelationsClient, error)`
+- New function `*BookmarkRelationsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, relationName string, relation Relation, options *BookmarkRelationsClientCreateOrUpdateOptions) (BookmarkRelationsClientCreateOrUpdateResponse, error)`
+- New function `*BookmarkRelationsClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, relationName string, options *BookmarkRelationsClientDeleteOptions) (BookmarkRelationsClientDeleteResponse, error)`
+- New function `*BookmarkRelationsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, relationName string, options *BookmarkRelationsClientGetOptions) (BookmarkRelationsClientGetResponse, error)`
+- New function `*BookmarkRelationsClient.NewListPager(resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarkRelationsClientListOptions) *runtime.Pager[BookmarkRelationsClientListResponse]`
+- New function `*BookmarkTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
+- New function `*BooleanConditionProperties.GetAutomationRuleCondition() *AutomationRuleCondition`
 - New function `*CcpAuthConfig.GetCcpAuthConfig() *CcpAuthConfig`
 - New function `NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error)`
 - New function `*Client.ListGeodataByIP(ctx context.Context, resourceGroupName string, workspaceName string, enrichmentType EnrichmentType, ipAddressBody EnrichmentIPAddressBody, options *ClientListGeodataByIPOptions) (ClientListGeodataByIPResponse, error)`
 - New function `*Client.ListWhoisByDomain(ctx context.Context, resourceGroupName string, workspaceName string, enrichmentType EnrichmentType, domainBody EnrichmentDomainBody, options *ClientListWhoisByDomainOptions) (ClientListWhoisByDomainResponse, error)`
 - New function `*ClientFactory.NewAlertRuleClient() *AlertRuleClient`
 - New function `*ClientFactory.NewBillingStatisticsClient() *BillingStatisticsClient`
+- New function `*ClientFactory.NewBookmarkClient() *BookmarkClient`
+- New function `*ClientFactory.NewBookmarkRelationsClient() *BookmarkRelationsClient`
 - New function `*ClientFactory.NewClient() *Client`
 - New function `*ClientFactory.NewContentPackageClient() *ContentPackageClient`
 - New function `*ClientFactory.NewContentPackagesClient() *ContentPackagesClient`
 - New function `*ClientFactory.NewContentTemplateClient() *ContentTemplateClient`
 - New function `*ClientFactory.NewContentTemplatesClient() *ContentTemplatesClient`
 - New function `*ClientFactory.NewDataConnectorDefinitionsClient() *DataConnectorDefinitionsClient`
+- New function `*ClientFactory.NewDataConnectorsCheckRequirementsClient() *DataConnectorsCheckRequirementsClient`
+- New function `*ClientFactory.NewEntitiesClient() *EntitiesClient`
+- New function `*ClientFactory.NewEntitiesGetTimelineClient() *EntitiesGetTimelineClient`
+- New function `*ClientFactory.NewEntitiesRelationsClient() *EntitiesRelationsClient`
+- New function `*ClientFactory.NewEntityQueriesClient() *EntityQueriesClient`
+- New function `*ClientFactory.NewEntityQueryTemplatesClient() *EntityQueryTemplatesClient`
+- New function `*ClientFactory.NewEntityRelationsClient() *EntityRelationsClient`
+- New function `*ClientFactory.NewFileImportsClient() *FileImportsClient`
 - New function `*ClientFactory.NewGetClient() *GetClient`
 - New function `*ClientFactory.NewGetRecommendationsClient() *GetRecommendationsClient`
 - New function `*ClientFactory.NewGetTriggeredAnalyticsRuleRunsClient() *GetTriggeredAnalyticsRuleRunsClient`
@@ -141,11 +156,17 @@
 - New function `*ClientFactory.NewHuntRelationsClient() *HuntRelationsClient`
 - New function `*ClientFactory.NewHuntsClient() *HuntsClient`
 - New function `*ClientFactory.NewIncidentTasksClient() *IncidentTasksClient`
+- New function `*ClientFactory.NewMetadataClient() *MetadataClient`
+- New function `*ClientFactory.NewOfficeConsentsClient() *OfficeConsentsClient`
 - New function `*ClientFactory.NewProductPackageClient() *ProductPackageClient`
 - New function `*ClientFactory.NewProductPackagesClient() *ProductPackagesClient`
+- New function `*ClientFactory.NewProductSettingsClient() *ProductSettingsClient`
 - New function `*ClientFactory.NewProductTemplateClient() *ProductTemplateClient`
 - New function `*ClientFactory.NewProductTemplatesClient() *ProductTemplatesClient`
 - New function `*ClientFactory.NewReevaluateClient() *ReevaluateClient`
+- New function `*ClientFactory.NewSecurityMLAnalyticsSettingsClient() *SecurityMLAnalyticsSettingsClient`
+- New function `*ClientFactory.NewSourceControlClient() *SourceControlClient`
+- New function `*ClientFactory.NewSourceControlsClient() *SourceControlsClient`
 - New function `*ClientFactory.NewThreatIntelligenceClient() *ThreatIntelligenceClient`
 - New function `*ClientFactory.NewTriggeredAnalyticsRuleRunClient() *TriggeredAnalyticsRuleRunClient`
 - New function `*ClientFactory.NewUpdateClient() *UpdateClient`
@@ -154,6 +175,8 @@
 - New function `*ClientFactory.NewWorkspaceManagerConfigurationsClient() *WorkspaceManagerConfigurationsClient`
 - New function `*ClientFactory.NewWorkspaceManagerGroupsClient() *WorkspaceManagerGroupsClient`
 - New function `*ClientFactory.NewWorkspaceManagerMembersClient() *WorkspaceManagerMembersClient`
+- New function `*CodelessAPIPollingDataConnector.GetDataConnector() *DataConnector`
+- New function `*CodelessUIDataConnector.GetDataConnector() *DataConnector`
 - New function `NewContentPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentPackageClient, error)`
 - New function `*ContentPackageClient.Install(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, packageInstallationProperties PackageModel, options *ContentPackageClientInstallOptions) (ContentPackageClientInstallResponse, error)`
 - New function `*ContentPackageClient.Uninstall(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, options *ContentPackageClientUninstallOptions) (ContentPackageClientUninstallResponse, error)`
@@ -166,6 +189,7 @@
 - New function `*ContentTemplateClient.Install(ctx context.Context, resourceGroupName string, workspaceName string, templateID string, templateInstallationProperties TemplateModel, options *ContentTemplateClientInstallOptions) (ContentTemplateClientInstallResponse, error)`
 - New function `NewContentTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentTemplatesClient, error)`
 - New function `*ContentTemplatesClient.NewListPager(resourceGroupName string, workspaceName string, options *ContentTemplatesClientListOptions) *runtime.Pager[ContentTemplatesClientListResponse]`
+- New function `*CustomEntityQuery.GetCustomEntityQuery() *CustomEntityQuery`
 - New function `*CustomizableConnectorDefinition.GetDataConnectorDefinition() *DataConnectorDefinition`
 - New function `*DataConnectorDefinition.GetDataConnectorDefinition() *DataConnectorDefinition`
 - New function `NewDataConnectorDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataConnectorDefinitionsClient, error)`
@@ -173,7 +197,46 @@
 - New function `*DataConnectorDefinitionsClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorDefinitionName string, options *DataConnectorDefinitionsClientDeleteOptions) (DataConnectorDefinitionsClientDeleteResponse, error)`
 - New function `*DataConnectorDefinitionsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorDefinitionName string, options *DataConnectorDefinitionsClientGetOptions) (DataConnectorDefinitionsClientGetResponse, error)`
 - New function `*DataConnectorDefinitionsClient.NewListPager(resourceGroupName string, workspaceName string, options *DataConnectorDefinitionsClientListOptions) *runtime.Pager[DataConnectorDefinitionsClientListResponse]`
+- New function `*DataConnectorsCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `NewDataConnectorsCheckRequirementsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataConnectorsCheckRequirementsClient, error)`
+- New function `*DataConnectorsCheckRequirementsClient.Post(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorsCheckRequirements DataConnectorsCheckRequirementsClassification, options *DataConnectorsCheckRequirementsClientPostOptions) (DataConnectorsCheckRequirementsClientPostResponse, error)`
+- New function `*DataConnectorsClient.Connect(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, connectBody DataConnectorConnectBody, options *DataConnectorsClientConnectOptions) (DataConnectorsClientConnectResponse, error)`
+- New function `*DataConnectorsClient.Disconnect(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *DataConnectorsClientDisconnectOptions) (DataConnectorsClientDisconnectResponse, error)`
+- New function `*Dynamics365CheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*Dynamics365DataConnector.GetDataConnector() *DataConnector`
+- New function `NewEntitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesClient, error)`
+- New function `*EntitiesClient.Expand(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityExpandParameters, options *EntitiesClientExpandOptions) (EntitiesClientExpandResponse, error)`
+- New function `*EntitiesClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, options *EntitiesClientGetOptions) (EntitiesClientGetResponse, error)`
+- New function `*EntitiesClient.GetInsights(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityGetInsightsParameters, options *EntitiesClientGetInsightsOptions) (EntitiesClientGetInsightsResponse, error)`
+- New function `*EntitiesClient.NewListPager(resourceGroupName string, workspaceName string, options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse]`
+- New function `*EntitiesClient.NewQueriesPager(resourceGroupName string, workspaceName string, entityID string, kind EntityItemQueryKind, options *EntitiesClientQueriesOptions) *runtime.Pager[EntitiesClientQueriesResponse]`
 - New function `*EntitiesClient.RunPlaybook(ctx context.Context, resourceGroupName string, workspaceName string, entityIdentifier string, options *EntitiesClientRunPlaybookOptions) (EntitiesClientRunPlaybookResponse, error)`
+- New function `NewEntitiesGetTimelineClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesGetTimelineClient, error)`
+- New function `*EntitiesGetTimelineClient.List(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityTimelineParameters, options *EntitiesGetTimelineClientListOptions) (EntitiesGetTimelineClientListResponse, error)`
+- New function `NewEntitiesRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesRelationsClient, error)`
+- New function `*EntitiesRelationsClient.NewListPager(resourceGroupName string, workspaceName string, entityID string, options *EntitiesRelationsClientListOptions) *runtime.Pager[EntitiesRelationsClientListResponse]`
+- New function `*EntityAnalytics.GetSettings() *Settings`
+- New function `NewEntityQueriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntityQueriesClient, error)`
+- New function `*EntityQueriesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryID string, entityQuery CustomEntityQueryClassification, options *EntityQueriesClientCreateOrUpdateOptions) (EntityQueriesClientCreateOrUpdateResponse, error)`
+- New function `*EntityQueriesClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryID string, options *EntityQueriesClientDeleteOptions) (EntityQueriesClientDeleteResponse, error)`
+- New function `*EntityQueriesClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryID string, options *EntityQueriesClientGetOptions) (EntityQueriesClientGetResponse, error)`
+- New function `*EntityQueriesClient.NewListPager(resourceGroupName string, workspaceName string, options *EntityQueriesClientListOptions) *runtime.Pager[EntityQueriesClientListResponse]`
+- New function `*EntityQuery.GetEntityQuery() *EntityQuery`
+- New function `*EntityQueryItem.GetEntityQueryItem() *EntityQueryItem`
+- New function `*EntityQueryTemplate.GetEntityQueryTemplate() *EntityQueryTemplate`
+- New function `NewEntityQueryTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntityQueryTemplatesClient, error)`
+- New function `*EntityQueryTemplatesClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryTemplateID string, options *EntityQueryTemplatesClientGetOptions) (EntityQueryTemplatesClientGetResponse, error)`
+- New function `*EntityQueryTemplatesClient.NewListPager(resourceGroupName string, workspaceName string, options *EntityQueryTemplatesClientListOptions) *runtime.Pager[EntityQueryTemplatesClientListResponse]`
+- New function `NewEntityRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntityRelationsClient, error)`
+- New function `*EntityRelationsClient.GetRelation(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, relationName string, options *EntityRelationsClientGetRelationOptions) (EntityRelationsClientGetRelationResponse, error)`
+- New function `*EntityTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
+- New function `*ExpansionEntityQuery.GetEntityQuery() *EntityQuery`
+- New function `*EyesOn.GetSettings() *Settings`
+- New function `NewFileImportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileImportsClient, error)`
+- New function `*FileImportsClient.Create(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, fileImport FileImport, options *FileImportsClientCreateOptions) (FileImportsClientCreateResponse, error)`
+- New function `*FileImportsClient.BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, options *FileImportsClientBeginDeleteOptions) (*runtime.Poller[FileImportsClientDeleteResponse], error)`
+- New function `*FileImportsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, options *FileImportsClientGetOptions) (FileImportsClientGetResponse, error)`
+- New function `*FileImportsClient.NewListPager(resourceGroupName string, workspaceName string, options *FileImportsClientListOptions) *runtime.Pager[FileImportsClientListResponse]`
 - New function `*GCPAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
 - New function `*GCPDataConnector.GetDataConnector() *DataConnector`
 - New function `*GenericBlobSbsAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
@@ -205,21 +268,59 @@
 - New function `*IncidentTasksClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incidentTaskID string, options *IncidentTasksClientDeleteOptions) (IncidentTasksClientDeleteResponse, error)`
 - New function `*IncidentTasksClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incidentTaskID string, options *IncidentTasksClientGetOptions) (IncidentTasksClientGetResponse, error)`
 - New function `*IncidentTasksClient.NewListPager(resourceGroupName string, workspaceName string, incidentID string, options *IncidentTasksClientListOptions) *runtime.Pager[IncidentTasksClientListResponse]`
+- New function `*IncidentsClient.RunPlaybook(ctx context.Context, resourceGroupName string, workspaceName string, incidentIdentifier string, options *IncidentsClientRunPlaybookOptions) (IncidentsClientRunPlaybookResponse, error)`
 - New function `*Indicator.GetTIObject() *TIObject`
+- New function `*InsightQueryItem.GetEntityQueryItem() *EntityQueryItem`
+- New function `*IoTCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*IoTDataConnector.GetDataConnector() *DataConnector`
 - New function `*JwtAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
+- New function `*MCASCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*MDATPCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*MLBehaviorAnalyticsAlertRule.GetAlertRule() *AlertRule`
+- New function `*MLBehaviorAnalyticsAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New function `*MSTICheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*MSTIDataConnector.GetDataConnector() *DataConnector`
+- New function `*MTPDataConnector.GetDataConnector() *DataConnector`
+- New function `NewMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetadataClient, error)`
+- New function `*MetadataClient.Create(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadata MetadataModel, options *MetadataClientCreateOptions) (MetadataClientCreateResponse, error)`
+- New function `*MetadataClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientDeleteOptions) (MetadataClientDeleteResponse, error)`
+- New function `*MetadataClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientGetOptions) (MetadataClientGetResponse, error)`
+- New function `*MetadataClient.NewListPager(resourceGroupName string, workspaceName string, options *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse]`
+- New function `*MetadataClient.Update(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadataPatch MetadataPatch, options *MetadataClientUpdateOptions) (MetadataClientUpdateResponse, error)`
 - New function `*MicrosoftPurviewInformationProtectionCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
 - New function `*MicrosoftPurviewInformationProtectionDataConnector.GetDataConnector() *DataConnector`
+- New function `*MtpCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
 - New function `*OAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
+- New function `*Office365ProjectCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*Office365ProjectDataConnector.GetDataConnector() *DataConnector`
+- New function `*OfficeATPCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*OfficeATPDataConnector.GetDataConnector() *DataConnector`
+- New function `NewOfficeConsentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OfficeConsentsClient, error)`
+- New function `*OfficeConsentsClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, options *OfficeConsentsClientDeleteOptions) (OfficeConsentsClientDeleteResponse, error)`
+- New function `*OfficeConsentsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, options *OfficeConsentsClientGetOptions) (OfficeConsentsClientGetResponse, error)`
+- New function `*OfficeConsentsClient.NewListPager(resourceGroupName string, workspaceName string, options *OfficeConsentsClientListOptions) *runtime.Pager[OfficeConsentsClientListResponse]`
+- New function `*OfficeIRMCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*OfficeIRMDataConnector.GetDataConnector() *DataConnector`
+- New function `*OfficePowerBICheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*OfficePowerBIDataConnector.GetDataConnector() *DataConnector`
 - New function `*OracleAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
 - New function `*PremiumMicrosoftDefenderForThreatIntelligence.GetDataConnector() *DataConnector`
 - New function `NewProductPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductPackageClient, error)`
 - New function `*ProductPackageClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, options *ProductPackageClientGetOptions) (ProductPackageClientGetResponse, error)`
 - New function `NewProductPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductPackagesClient, error)`
 - New function `*ProductPackagesClient.NewListPager(resourceGroupName string, workspaceName string, options *ProductPackagesClientListOptions) *runtime.Pager[ProductPackagesClientListResponse]`
+- New function `NewProductSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductSettingsClient, error)`
+- New function `*ProductSettingsClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, settingsName string, options *ProductSettingsClientDeleteOptions) (ProductSettingsClientDeleteResponse, error)`
+- New function `*ProductSettingsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, settingsName string, options *ProductSettingsClientGetOptions) (ProductSettingsClientGetResponse, error)`
+- New function `*ProductSettingsClient.NewListPager(resourceGroupName string, workspaceName string, options *ProductSettingsClientListOptions) *runtime.Pager[ProductSettingsClientListResponse]`
+- New function `*ProductSettingsClient.Update(ctx context.Context, resourceGroupName string, workspaceName string, settingsName string, settings SettingsClassification, options *ProductSettingsClientUpdateOptions) (ProductSettingsClientUpdateResponse, error)`
 - New function `NewProductTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductTemplateClient, error)`
 - New function `*ProductTemplateClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, templateID string, options *ProductTemplateClientGetOptions) (ProductTemplateClientGetResponse, error)`
 - New function `NewProductTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductTemplatesClient, error)`
 - New function `*ProductTemplatesClient.NewListPager(resourceGroupName string, workspaceName string, options *ProductTemplatesClientListOptions) *runtime.Pager[ProductTemplatesClientListResponse]`
+- New function `*PropertyArrayChangedConditionProperties.GetAutomationRuleCondition() *AutomationRuleCondition`
+- New function `*PropertyArrayConditionProperties.GetAutomationRuleCondition() *AutomationRuleCondition`
+- New function `*PropertyChangedConditionProperties.GetAutomationRuleCondition() *AutomationRuleCondition`
 - New function `*PurviewAuditCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
 - New function `*PurviewAuditDataConnector.GetDataConnector() *DataConnector`
 - New function `NewReevaluateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReevaluateClient, error)`
@@ -227,14 +328,35 @@
 - New function `*Relationship.GetTIObject() *TIObject`
 - New function `*RestAPIPollerDataConnector.GetDataConnector() *DataConnector`
 - New function `*SapSolutionUsageStatistic.GetBillingStatistic() *BillingStatistic`
+- New function `*SecurityAlertTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
+- New function `*SecurityMLAnalyticsSetting.GetSecurityMLAnalyticsSetting() *SecurityMLAnalyticsSetting`
+- New function `NewSecurityMLAnalyticsSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityMLAnalyticsSettingsClient, error)`
+- New function `*SecurityMLAnalyticsSettingsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, settingsResourceName string, securityMLAnalyticsSetting SecurityMLAnalyticsSettingClassification, options *SecurityMLAnalyticsSettingsClientCreateOrUpdateOptions) (SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse, error)`
+- New function `*SecurityMLAnalyticsSettingsClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, settingsResourceName string, options *SecurityMLAnalyticsSettingsClientDeleteOptions) (SecurityMLAnalyticsSettingsClientDeleteResponse, error)`
+- New function `*SecurityMLAnalyticsSettingsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, settingsResourceName string, options *SecurityMLAnalyticsSettingsClientGetOptions) (SecurityMLAnalyticsSettingsClientGetResponse, error)`
+- New function `*SecurityMLAnalyticsSettingsClient.NewListPager(resourceGroupName string, workspaceName string, options *SecurityMLAnalyticsSettingsClientListOptions) *runtime.Pager[SecurityMLAnalyticsSettingsClientListResponse]`
 - New function `*SessionAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
+- New function `*Settings.GetSettings() *Settings`
+- New function `NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlClient, error)`
+- New function `*SourceControlClient.NewListRepositoriesPager(resourceGroupName string, workspaceName string, repositoryAccess RepositoryAccessProperties, options *SourceControlClientListRepositoriesOptions) *runtime.Pager[SourceControlClientListRepositoriesResponse]`
+- New function `NewSourceControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlsClient, error)`
+- New function `*SourceControlsClient.Create(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, sourceControl SourceControl, options *SourceControlsClientCreateOptions) (SourceControlsClientCreateResponse, error)`
+- New function `*SourceControlsClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, repositoryAccess RepositoryAccessProperties, options *SourceControlsClientDeleteOptions) (SourceControlsClientDeleteResponse, error)`
+- New function `*SourceControlsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientGetOptions) (SourceControlsClientGetResponse, error)`
+- New function `*SourceControlsClient.NewListPager(resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) *runtime.Pager[SourceControlsClientListResponse]`
+- New function `*TICheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
 - New function `*TIObject.GetTIObject() *TIObject`
 - New function `*ThreatActor.GetTIObject() *TIObject`
+- New function `*ThreatIntelligenceAlertRule.GetAlertRule() *AlertRule`
+- New function `*ThreatIntelligenceAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
 - New function `NewThreatIntelligenceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThreatIntelligenceClient, error)`
 - New function `*ThreatIntelligenceClient.Count(ctx context.Context, resourceGroupName string, workspaceName string, tiType TiType, options *ThreatIntelligenceClientCountOptions) (ThreatIntelligenceClientCountResponse, error)`
 - New function `*ThreatIntelligenceClient.NewQueryPager(resourceGroupName string, workspaceName string, tiType TiType, options *ThreatIntelligenceClientQueryOptions) *runtime.Pager[ThreatIntelligenceClientQueryResponse]`
+- New function `*TiTaxiiCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*TiTaxiiDataConnector.GetDataConnector() *DataConnector`
 - New function `NewTriggeredAnalyticsRuleRunClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggeredAnalyticsRuleRunClient, error)`
 - New function `*TriggeredAnalyticsRuleRunClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleRunID string, options *TriggeredAnalyticsRuleRunClientGetOptions) (TriggeredAnalyticsRuleRunClientGetResponse, error)`
+- New function `*Ueba.GetSettings() *Settings`
 - New function `NewUpdateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdateClient, error)`
 - New function `*UpdateClient.Recommendation(ctx context.Context, resourceGroupName string, workspaceName string, recommendationID string, recommendationPatch RecommendationPatch, options *UpdateClientRecommendationOptions) (UpdateClientRecommendationResponse, error)`
 - New function `NewWorkspaceManagerAssignmentJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceManagerAssignmentJobsClient, error)`
@@ -262,21 +384,77 @@
 - New function `*WorkspaceManagerMembersClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, workspaceManagerMemberName string, options *WorkspaceManagerMembersClientDeleteOptions) (WorkspaceManagerMembersClientDeleteResponse, error)`
 - New function `*WorkspaceManagerMembersClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, workspaceManagerMemberName string, options *WorkspaceManagerMembersClientGetOptions) (WorkspaceManagerMembersClientGetResponse, error)`
 - New function `*WorkspaceManagerMembersClient.NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceManagerMembersClientListOptions) *runtime.Pager[WorkspaceManagerMembersClientListResponse]`
+- New function `*NicEntity.GetEntity() *Entity`
 - New function `*NoneAuthModel.GetCcpAuthConfig() *CcpAuthConfig`
+- New function `*NrtAlertRule.GetAlertRule() *AlertRule`
+- New function `*NrtAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New struct `AADCheckRequirements`
+- New struct `AADCheckRequirementsProperties`
+- New struct `AATPCheckRequirements`
+- New struct `AATPCheckRequirementsProperties`
 - New struct `APIKeyAuthModel`
+- New struct `APIPollingParameters`
+- New struct `ASCCheckRequirements`
+- New struct `ASCCheckRequirementsProperties`
 - New struct `AWSAuthModel`
+- New struct `ActivityCustomEntityQuery`
+- New struct `ActivityEntityQueriesProperties`
+- New struct `ActivityEntityQueriesPropertiesQueryDefinitions`
+- New struct `ActivityEntityQuery`
+- New struct `ActivityEntityQueryTemplate`
+- New struct `ActivityEntityQueryTemplateProperties`
+- New struct `ActivityEntityQueryTemplatePropertiesQueryDefinitions`
+- New struct `ActivityTimelineItem`
 - New struct `AddIncidentTaskActionProperties`
 - New struct `AlertPropertyMapping`
 - New struct `AnalyticsRuleRunTrigger`
 - New struct `AnalyticsRuleRunTriggerProperties`
+- New struct `Anomalies`
+- New struct `AnomaliesSettingsProperties`
+- New struct `AnomalySecurityMLAnalyticsSettings`
+- New struct `AnomalySecurityMLAnalyticsSettingsProperties`
+- New struct `AnomalyTimelineItem`
 - New struct `AssignmentItem`
 - New struct `AttackPattern`
 - New struct `AutomationRuleAddIncidentTaskAction`
+- New struct `AutomationRuleBooleanCondition`
+- New struct `AutomationRulePropertyArrayChangedValuesCondition`
+- New struct `AutomationRulePropertyArrayValuesCondition`
+- New struct `AutomationRulePropertyValuesChangedCondition`
+- New struct `Availability`
+- New struct `AwsCloudTrailCheckRequirements`
+- New struct `AwsS3CheckRequirements`
+- New struct `AwsS3DataConnector`
+- New struct `AwsS3DataConnectorDataTypes`
+- New struct `AwsS3DataConnectorDataTypesLogs`
+- New struct `AwsS3DataConnectorProperties`
+- New struct `AzureDevOpsResourceInfo`
 - New struct `BasicAuthModel`
 - New struct `BillingStatisticList`
+- New struct `BookmarkEntityMappings`
+- New struct `BookmarkExpandParameters`
+- New struct `BookmarkExpandResponse`
+- New struct `BookmarkExpandResponseValue`
+- New struct `BookmarkTimelineItem`
+- New struct `BooleanConditionProperties`
 - New struct `CcpResponseConfig`
+- New struct `CodelessAPIPollingDataConnector`
+- New struct `CodelessConnectorPollingAuthProperties`
+- New struct `CodelessConnectorPollingConfigProperties`
+- New struct `CodelessConnectorPollingPagingProperties`
+- New struct `CodelessConnectorPollingRequestProperties`
+- New struct `CodelessConnectorPollingResponseProperties`
+- New struct `CodelessParameters`
+- New struct `CodelessUIConnectorConfigProperties`
+- New struct `CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem`
+- New struct `CodelessUIConnectorConfigPropertiesDataTypesItem`
+- New struct `CodelessUIConnectorConfigPropertiesGraphQueriesItem`
+- New struct `CodelessUIConnectorConfigPropertiesInstructionStepsItem`
+- New struct `CodelessUIConnectorConfigPropertiesSampleQueriesItem`
+- New struct `CodelessUIDataConnector`
 - New struct `ConditionClause`
 - New struct `ConditionProperties`
+- New struct `ConnectedEntity`
 - New struct `ConnectivityCriterion`
 - New struct `ConnectorDataType`
 - New struct `ConnectorDefinitionsAvailability`
@@ -289,18 +467,74 @@
 - New struct `CustomizableConnectorDefinitionProperties`
 - New struct `CustomizableConnectorUIConfig`
 - New struct `DCRConfiguration`
+- New struct `DataConnectorConnectBody`
 - New struct `DataConnectorDefinitionArmCollectionWrapper`
+- New struct `DataConnectorRequirementsState`
+- New struct `DataTypeDefinitions`
+- New struct `Deployment`
+- New struct `DeploymentInfo`
+- New struct `Dynamics365CheckRequirements`
+- New struct `Dynamics365CheckRequirementsProperties`
+- New struct `Dynamics365DataConnector`
+- New struct `Dynamics365DataConnectorDataTypes`
+- New struct `Dynamics365DataConnectorDataTypesDynamics365CdsActivities`
+- New struct `Dynamics365DataConnectorProperties`
 - New struct `EnrichmentDomainBody`
+- New struct `EnrichmentDomainWhois`
+- New struct `EnrichmentDomainWhoisContact`
+- New struct `EnrichmentDomainWhoisContacts`
+- New struct `EnrichmentDomainWhoisDetails`
+- New struct `EnrichmentDomainWhoisRegistrarDetails`
 - New struct `EnrichmentIPAddressBody`
+- New struct `EnrichmentIPGeodata`
+- New struct `EntityAnalytics`
+- New struct `EntityAnalyticsProperties`
+- New struct `EntityEdges`
+- New struct `EntityExpandParameters`
+- New struct `EntityExpandResponse`
+- New struct `EntityExpandResponseValue`
+- New struct `EntityFieldMapping`
+- New struct `EntityGetInsightsParameters`
+- New struct `EntityGetInsightsResponse`
+- New struct `EntityInsightItem`
+- New struct `EntityInsightItemQueryTimeInterval`
+- New struct `EntityList`
 - New struct `EntityManualTriggerRequestBody`
+- New struct `EntityQueryItemPropertiesDataTypesItem`
+- New struct `EntityQueryList`
+- New struct `EntityQueryTemplateList`
+- New struct `EntityTimelineParameters`
+- New struct `EntityTimelineResponse`
 - New struct `Error`
+- New struct `ExpansionEntityQueriesProperties`
+- New struct `ExpansionEntityQuery`
+- New struct `ExpansionResultAggregation`
+- New struct `ExpansionResultsMetadata`
+- New struct `EyesOn`
+- New struct `EyesOnSettingsProperties`
+- New struct `FileImport`
+- New struct `FileImportList`
+- New struct `FileImportProperties`
+- New struct `FileMetadata`
+- New struct `FusionScenarioExclusionPattern`
+- New struct `FusionSourceSettings`
+- New struct `FusionSourceSubTypeSetting`
+- New struct `FusionSubTypeSeverityFilter`
+- New struct `FusionSubTypeSeverityFiltersItem`
+- New struct `FusionTemplateSourceSetting`
+- New struct `FusionTemplateSourceSubType`
+- New struct `FusionTemplateSubTypeSeverityFilter`
 - New struct `GCPAuthModel`
 - New struct `GCPAuthProperties`
 - New struct `GCPDataConnector`
 - New struct `GCPDataConnectorProperties`
 - New struct `GCPRequestProperties`
 - New struct `GenericBlobSbsAuthModel`
+- New struct `GetInsightsErrorKind`
+- New struct `GetInsightsResultsMetadata`
+- New struct `GetQueriesResponse`
 - New struct `GitHubAuthModel`
+- New struct `GitHubResourceInfo`
 - New struct `GraphQuery`
 - New struct `Hunt`
 - New struct `HuntComment`
@@ -318,27 +552,106 @@
 - New struct `IncidentTaskProperties`
 - New struct `Indicator`
 - New struct `IndicatorObservablesItem`
+- New struct `InsightQueryItem`
+- New struct `InsightQueryItemProperties`
+- New struct `InsightQueryItemPropertiesAdditionalQuery`
+- New struct `InsightQueryItemPropertiesDefaultTimeRange`
+- New struct `InsightQueryItemPropertiesReferenceTimeRange`
+- New struct `InsightQueryItemPropertiesTableQuery`
+- New struct `InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem`
+- New struct `InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem`
+- New struct `InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem`
+- New struct `InsightsTableResult`
+- New struct `InsightsTableResultColumnsItem`
 - New struct `InstructionStep`
 - New struct `InstructionStepDetails`
+- New struct `InstructionStepsInstructionsItem`
+- New struct `IoTCheckRequirements`
+- New struct `IoTCheckRequirementsProperties`
+- New struct `IoTDataConnector`
+- New struct `IoTDataConnectorProperties`
 - New struct `Job`
 - New struct `JobItem`
 - New struct `JobList`
 - New struct `JobProperties`
 - New struct `JwtAuthModel`
+- New struct `MCASCheckRequirements`
+- New struct `MCASCheckRequirementsProperties`
+- New struct `MDATPCheckRequirements`
+- New struct `MDATPCheckRequirementsProperties`
+- New struct `MLBehaviorAnalyticsAlertRule`
+- New struct `MLBehaviorAnalyticsAlertRuleProperties`
+- New struct `MLBehaviorAnalyticsAlertRuleTemplate`
+- New struct `MLBehaviorAnalyticsAlertRuleTemplateProperties`
+- New struct `MSTICheckRequirements`
+- New struct `MSTICheckRequirementsProperties`
+- New struct `MSTIDataConnector`
+- New struct `MSTIDataConnectorDataTypes`
+- New struct `MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed`
+- New struct `MSTIDataConnectorProperties`
+- New struct `MTPCheckRequirementsProperties`
+- New struct `MTPDataConnector`
+- New struct `MTPDataConnectorDataTypes`
 - New struct `MTPDataConnectorDataTypesAlerts`
+- New struct `MTPDataConnectorDataTypesIncidents`
+- New struct `MTPDataConnectorProperties`
+- New struct `ManualTriggerRequestBody`
+- New struct `MetadataAuthor`
+- New struct `MetadataCategories`
+- New struct `MetadataDependencies`
+- New struct `MetadataList`
+- New struct `MetadataModel`
+- New struct `MetadataPatch`
+- New struct `MetadataProperties`
+- New struct `MetadataPropertiesPatch`
+- New struct `MetadataSource`
+- New struct `MetadataSupport`
 - New struct `MicrosoftPurviewInformationProtectionCheckRequirements`
 - New struct `MicrosoftPurviewInformationProtectionCheckRequirementsProperties`
 - New struct `MicrosoftPurviewInformationProtectionConnectorDataTypes`
 - New struct `MicrosoftPurviewInformationProtectionConnectorDataTypesLogs`
 - New struct `MicrosoftPurviewInformationProtectionDataConnector`
 - New struct `MicrosoftPurviewInformationProtectionDataConnectorProperties`
+- New struct `MtpCheckRequirements`
 - New struct `MtpFilteredProviders`
+- New struct `NicEntity`
+- New struct `NicEntityProperties`
 - New struct `NoneAuthModel`
+- New struct `NrtAlertRule`
+- New struct `NrtAlertRuleProperties`
+- New struct `NrtAlertRuleTemplate`
+- New struct `NrtAlertRuleTemplateProperties`
 - New struct `OAuthModel`
+- New struct `Office365ProjectCheckRequirements`
+- New struct `Office365ProjectCheckRequirementsProperties`
+- New struct `Office365ProjectConnectorDataTypes`
+- New struct `Office365ProjectConnectorDataTypesLogs`
+- New struct `Office365ProjectDataConnector`
+- New struct `Office365ProjectDataConnectorProperties`
+- New struct `OfficeATPCheckRequirements`
+- New struct `OfficeATPCheckRequirementsProperties`
+- New struct `OfficeATPDataConnector`
+- New struct `OfficeATPDataConnectorProperties`
+- New struct `OfficeConsent`
+- New struct `OfficeConsentList`
+- New struct `OfficeConsentProperties`
+- New struct `OfficeIRMCheckRequirements`
+- New struct `OfficeIRMCheckRequirementsProperties`
+- New struct `OfficeIRMDataConnector`
+- New struct `OfficeIRMDataConnectorProperties`
+- New struct `OfficePowerBICheckRequirements`
+- New struct `OfficePowerBICheckRequirementsProperties`
+- New struct `OfficePowerBIConnectorDataTypes`
+- New struct `OfficePowerBIConnectorDataTypesLogs`
+- New struct `OfficePowerBIDataConnector`
+- New struct `OfficePowerBIDataConnectorProperties`
 - New struct `OracleAuthModel`
 - New struct `PackageList`
 - New struct `PackageModel`
 - New struct `PackageProperties`
+- New struct `Permissions`
+- New struct `PermissionsCustomsItem`
+- New struct `PermissionsResourceProviderItem`
 - New struct `PremiumMdtiDataConnectorDataTypes`
 - New struct `PremiumMdtiDataConnectorDataTypesConnector`
 - New struct `PremiumMdtiDataConnectorProperties`
@@ -349,6 +662,9 @@
 - New struct `ProductTemplateList`
 - New struct `ProductTemplateModel`
 - New struct `ProductTemplateProperties`
+- New struct `PropertyArrayChangedConditionProperties`
+- New struct `PropertyArrayConditionProperties`
+- New struct `PropertyChangedConditionProperties`
 - New struct `PullRequest`
 - New struct `PurviewAuditCheckRequirements`
 - New struct `PurviewAuditCheckRequirementsProperties`
@@ -369,9 +685,14 @@
 - New struct `ReevaluateResponse`
 - New struct `Relationship`
 - New struct `RelationshipHint`
+- New struct `Repo`
+- New struct `RepoList`
+- New struct `Repository`
 - New struct `RepositoryAccess`
 - New struct `RepositoryAccessObject`
 - New struct `RepositoryAccessProperties`
+- New struct `RepositoryResourceInfo`
+- New struct `RequiredPermissions`
 - New struct `ResourceProviderRequiredPermissions`
 - New struct `RestAPIPollerDataConnector`
 - New struct `RestAPIPollerDataConnectorProperties`
@@ -379,21 +700,48 @@
 - New struct `RestAPIPollerRequestPagingConfig`
 - New struct `SapSolutionUsageStatistic`
 - New struct `SapSolutionUsageStatisticProperties`
+- New struct `SecurityAlertTimelineItem`
+- New struct `SecurityMLAnalyticsSettingsDataSource`
+- New struct `SecurityMLAnalyticsSettingsList`
 - New struct `SentinelEntityMapping`
 - New struct `ServicePrincipal`
 - New struct `SessionAuthModel`
+- New struct `SettingList`
+- New struct `SourceControl`
+- New struct `SourceControlList`
+- New struct `SourceControlProperties`
+- New struct `TICheckRequirements`
+- New struct `TICheckRequirementsProperties`
 - New struct `TIObjectCommonProperties`
+- New struct `TeamInformation`
 - New struct `TemplateList`
 - New struct `TemplateModel`
 - New struct `TemplateProperties`
 - New struct `ThreatActor`
+- New struct `ThreatIntelligenceAlertRule`
+- New struct `ThreatIntelligenceAlertRuleProperties`
+- New struct `ThreatIntelligenceAlertRuleTemplate`
+- New struct `ThreatIntelligenceAlertRuleTemplateProperties`
 - New struct `ThreatIntelligenceCount`
 - New struct `ThreatIntelligenceList`
+- New struct `TiTaxiiCheckRequirements`
+- New struct `TiTaxiiCheckRequirementsProperties`
+- New struct `TiTaxiiDataConnector`
+- New struct `TiTaxiiDataConnectorDataTypes`
+- New struct `TiTaxiiDataConnectorDataTypesTaxiiClient`
+- New struct `TiTaxiiDataConnectorProperties`
+- New struct `TimelineAggregation`
+- New struct `TimelineError`
+- New struct `TimelineResultsMetadata`
 - New struct `TriggeredAnalyticsRuleRun`
 - New struct `TriggeredAnalyticsRuleRunProperties`
 - New struct `TriggeredAnalyticsRuleRuns`
+- New struct `Ueba`
+- New struct `UebaProperties`
+- New struct `ValidationError`
 - New struct `Warning`
 - New struct `WarningBody`
+- New struct `Webhook`
 - New struct `WorkloadIdentityFederation`
 - New struct `WorkspaceManagerAssignment`
 - New struct `WorkspaceManagerAssignmentList`
@@ -408,31 +756,16 @@
 - New struct `WorkspaceManagerMemberProperties`
 - New struct `WorkspaceManagerMembersList`
 - New field `AlertDynamicProperties` in struct `AlertDetailsOverride`
-- New field `CityConfidenceFactor`, `CountryConfidenceFactor`, `StateConfidenceFactor` in struct `EnrichmentIPGeodata`
-- New field `SubTechniques` in struct `FusionAlertRuleProperties`
-- New field `SubTechniques` in struct `FusionAlertRuleTemplateProperties`
-- New field `NextLink` in struct `GetQueriesResponse`
-- New field `MergedIncidentNumber`, `MergedIncidentURL` in struct `IncidentAdditionalData`
-- New field `SubTechniques` in struct `MLBehaviorAnalyticsAlertRuleProperties`
-- New field `Alerts` in struct `MTPDataConnectorDataTypes`
-- New field `FilteredProviders` in struct `MTPDataConnectorProperties`
-- New field `SentinelEntitiesMappings`, `SubTechniques` in struct `NrtAlertRuleProperties`
-- New field `SentinelEntitiesMappings` in struct `NrtAlertRuleTemplateProperties`
-- New field `InstallationID` in struct `Repo`
-- New field `SentinelEntitiesMappings`, `SubTechniques` in struct `ScheduledAlertRuleProperties`
-- New field `SentinelEntitiesMappings`, `SubTechniques` in struct `ScheduledAlertRuleTemplateProperties`
-- New field `Intent`, `Techniques` in struct `SecurityAlertTimelineItem`
-- New field `NextLink` in struct `SettingList`
-- New field `PullRequest`, `RepositoryAccess`, `ServicePrincipal`, `WorkloadIdentityFederation` in struct `SourceControlProperties`
-- New anonymous field `Warning` in struct `SourceControlsClientDeleteResponse`
-- New field `SubTechniques` in struct `ThreatIntelligenceAlertRuleProperties`
-- New field `ProvisioningState` in struct `WatchlistProperties`
-
-
-## 2.0.0-beta.4 (2024-06-14)
-### Features Added
-
-- Support for test fakes and OpenTelemetry trace spans.
+- New field `EntityMappings`, `Tactics`, `Techniques` in struct `BookmarkProperties`
+- New field `ScenarioExclusionPatterns`, `SourceSettings`, `SubTechniques`, `Techniques` in struct `FusionAlertRuleProperties`
+- New field `SourceSettings`, `SubTechniques`, `Techniques` in struct `FusionAlertRuleTemplateProperties`
+- New field `MergedIncidentNumber`, `MergedIncidentURL`, `ProviderIncidentURL`, `Techniques` in struct `IncidentAdditionalData`
+- New field `OwnerType` in struct `IncidentOwnerInfo`
+- New field `ProviderIncidentID`, `ProviderName`, `TeamInformation` in struct `IncidentProperties`
+- New field `DeviceSubType`, `Importance`, `IsAuthorized`, `IsProgramming`, `IsScanner`, `NicEntityIDs`, `Owners`, `PurdueLayer`, `Sensor`, `Site`, `Zone` in struct `IoTDeviceEntityProperties`
+- New field `SentinelEntitiesMappings`, `SubTechniques`, `Techniques` in struct `ScheduledAlertRuleProperties`
+- New field `SentinelEntitiesMappings`, `SubTechniques`, `Techniques` in struct `ScheduledAlertRuleTemplateProperties`
+- New field `ProvisioningState`, `SourceType` in struct `WatchlistProperties`
 
 
 ## 1.2.0 (2023-11-24)

@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultProductPackagesClientVersion string = "2025-07-01-preview"
+
 // ProductPackagesClient contains the methods for the ProductPackages group.
 // Don't use this type directly, use NewProductPackagesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ProductPackagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +48,6 @@ func NewProductPackagesClient(subscriptionID string, credential azcore.TokenCred
 // Expandable properties:
 // - properties/installed
 // - properties/packagedContent
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - ProductPackagesClientListOptions contains the optional parameters for the ProductPackagesClient.NewListPager
@@ -108,8 +110,8 @@ func (client *ProductPackagesClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProductPackagesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

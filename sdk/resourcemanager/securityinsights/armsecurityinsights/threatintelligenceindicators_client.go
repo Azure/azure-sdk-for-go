@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultThreatIntelligenceIndicatorsClientVersion string = "2025-07-01-preview"
+
 // ThreatIntelligenceIndicatorsClient contains the methods for the ThreatIntelligenceIndicators group.
 // Don't use this type directly, use NewThreatIntelligenceIndicatorsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type ThreatIntelligenceIndicatorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewThreatIntelligenceIndicatorsClient(subscriptionID string, credential azc
 }
 
 // NewListPager - Get all threat intelligence indicators.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.NewListPager
@@ -102,8 +104,8 @@ func (client *ThreatIntelligenceIndicatorsClient) listCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

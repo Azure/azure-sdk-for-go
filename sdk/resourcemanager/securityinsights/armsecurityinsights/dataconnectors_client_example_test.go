@@ -6,12 +6,11 @@ package armsecurityinsights_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
+	"log"
+	"time"
 )
 
 // Generated from example definition: 2025-07-01-preview/dataConnectors/ConnectAPIPolling.json
@@ -100,7 +99,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 				Availability: &armsecurityinsights.Availability{
 					IsPreview: to.Ptr(true),
-					Status:    to.Ptr(int32(1)),
+					Status:    to.Ptr[int32](1),
 				},
 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 					{
@@ -216,7 +215,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	CodelessAPIPollingDataConnector: &armsecurityinsights.CodelessAPIPollingDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.CodelessAPIPollingDataConnector{
 	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
@@ -226,7 +225,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(1),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -369,7 +368,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesADynamics365Data
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	Dynamics365DataConnector: &armsecurityinsights.Dynamics365DataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.Dynamics365DataConnector{
 	// 		Name: to.Ptr("c2541efb-c9a6-47fe-9501-87d1017d1512"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -404,7 +403,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 				Availability: &armsecurityinsights.Availability{
 					IsPreview: to.Ptr(true),
-					Status:    to.Ptr(int32(1)),
+					Status:    to.Ptr[int32](1),
 				},
 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 					{
@@ -543,7 +542,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	CodelessUIDataConnector: &armsecurityinsights.CodelessUIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.CodelessUIDataConnector{
 	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
@@ -553,7 +552,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(1),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -728,7 +727,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGcpDataConnecto
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	GCPDataConnector: &armsecurityinsights.GCPDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.GCPDataConnector{
 	// 		Name: to.Ptr("GCP_fce27b90-d6f5-4d30-991a-af509a2b50a1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -787,7 +786,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnMicrosoftPurvi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	MicrosoftPurviewInformationProtectionDataConnector: &armsecurityinsights.MicrosoftPurviewInformationProtectionDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MicrosoftPurviewInformationProtectionDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -835,7 +834,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	MSTIDataConnector: &armsecurityinsights.MSTIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MSTIDataConnector{
 	// 		Name: to.Ptr("c345bf40-8509-4ed2-b947-50cb773aaf04"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("d12423f6-a60b-4ca5-88c0-feb1a182d0f0"),
@@ -892,7 +891,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	MTPDataConnector: &armsecurityinsights.MTPDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MTPDataConnector{
 	// 		Name: to.Ptr("595c870a-5b74-4a23-984c-9ddba29cefe3"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("2b61bd0c-62b4-4968-8f9a-71b91be61127"),
@@ -948,7 +947,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365Proje
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	Office365ProjectDataConnector: &armsecurityinsights.Office365ProjectDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.Office365ProjectDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1002,7 +1001,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataC
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	OfficeDataConnector: &armsecurityinsights.OfficeDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.OfficeDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1056,7 +1055,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOfficePowerBiD
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	OfficePowerBIDataConnector: &armsecurityinsights.OfficePowerBIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.OfficePowerBIDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1104,7 +1103,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosof
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	PremiumMicrosoftDefenderForThreatIntelligence: &armsecurityinsights.PremiumMicrosoftDefenderForThreatIntelligence{
+	// 	DataConnectorClassification: &armsecurityinsights.PremiumMicrosoftDefenderForThreatIntelligence{
 	// 		Name: to.Ptr("3deede2e-c6d1-4ee6-afc8-e0190ac34200"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("56003401-0000-0100-0000-67314b0b0000"),
@@ -1161,7 +1160,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPurviewAuditDat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	PurviewAuditDataConnector: &armsecurityinsights.PurviewAuditDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.PurviewAuditDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1211,7 +1210,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	TIDataConnector: &armsecurityinsights.TIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.TIDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1268,7 +1267,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntellige
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
-	// 	TiTaxiiDataConnector: &armsecurityinsights.TiTaxiiDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.TiTaxiiDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("d12423f6-a60b-4ca5-88c0-feb1a182d0f0"),
@@ -1553,7 +1552,7 @@ func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	CodelessAPIPollingDataConnector: &armsecurityinsights.CodelessAPIPollingDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.CodelessAPIPollingDataConnector{
 	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
@@ -1563,7 +1562,7 @@ func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(1),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -1696,7 +1695,7 @@ func ExampleDataConnectorsClient_Get_getAnAwsCloudTrailDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	AwsCloudTrailDataConnector: &armsecurityinsights.AwsCloudTrailDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.AwsCloudTrailDataConnector{
 	// 		Name: to.Ptr("c345bf40-8509-4ed2-b947-50cb773aaf04"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1733,7 +1732,7 @@ func ExampleDataConnectorsClient_Get_getAnAwsS3DataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	AwsS3DataConnector: &armsecurityinsights.AwsS3DataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.AwsS3DataConnector{
 	// 		Name: to.Ptr("afef3743-0c88-469c-84ff-ca2e87dc1e48"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1774,7 +1773,7 @@ func ExampleDataConnectorsClient_Get_getAnAadipAzureActiveDirectoryIdentityProte
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	AADDataConnector: &armsecurityinsights.AADDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.AADDataConnector{
 	// 		Name: to.Ptr("f0cd27d2-5f03-4c06-ba31-d2dc82dcb51d"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1811,7 +1810,7 @@ func ExampleDataConnectorsClient_Get_getAnAatpDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	AATPDataConnector: &armsecurityinsights.AATPDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.AATPDataConnector{
 	// 		Name: to.Ptr("07e42cb3-e658-4e90-801c-efa0f29d3d44"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1848,7 +1847,7 @@ func ExampleDataConnectorsClient_Get_getAAscDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	ASCDataConnector: &armsecurityinsights.ASCDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.ASCDataConnector{
 	// 		Name: to.Ptr("763f9fa1-c2d3-4fa2-93e9-bccd4899aa12"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1885,7 +1884,7 @@ func ExampleDataConnectorsClient_Get_getADynamics365DataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	Dynamics365DataConnector: &armsecurityinsights.Dynamics365DataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.Dynamics365DataConnector{
 	// 		Name: to.Ptr("c2541efb-c9a6-47fe-9501-87d1017d1512"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -1922,7 +1921,7 @@ func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	CodelessUIDataConnector: &armsecurityinsights.CodelessUIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.CodelessUIDataConnector{
 	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
@@ -1932,7 +1931,7 @@ func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(1),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -2087,7 +2086,7 @@ func ExampleDataConnectorsClient_Get_getAGcpDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	GCPDataConnector: &armsecurityinsights.GCPDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.GCPDataConnector{
 	// 		Name: to.Ptr("GCP_fce27b90-d6f5-4d30-991a-af509a2b50a1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2130,7 +2129,7 @@ func ExampleDataConnectorsClient_Get_getAIoTDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	IoTDataConnector: &armsecurityinsights.IoTDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.IoTDataConnector{
 	// 		Name: to.Ptr("d2e5dc7a-f3a2-429d-954b-939fa8c2932e"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2167,7 +2166,7 @@ func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	MCASDataConnector: &armsecurityinsights.MCASDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MCASDataConnector{
 	// 		Name: to.Ptr("b96d014d-b5c2-4a01-9aba-a8058f629d42"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2207,7 +2206,7 @@ func ExampleDataConnectorsClient_Get_getAMdatpDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	MDATPDataConnector: &armsecurityinsights.MDATPDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MDATPDataConnector{
 	// 		Name: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2244,7 +2243,7 @@ func ExampleDataConnectorsClient_Get_getAnOfficeIrmDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	OfficeIRMDataConnector: &armsecurityinsights.OfficeIRMDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.OfficeIRMDataConnector{
 	// 		Name: to.Ptr("3d3e955e-33eb-401d-89a7-251c81ddd660"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2281,7 +2280,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftPurviewInformationProtectionDa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	MicrosoftPurviewInformationProtectionDataConnector: &armsecurityinsights.MicrosoftPurviewInformationProtectionDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MicrosoftPurviewInformationProtectionDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2318,7 +2317,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnecto
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	MSTIDataConnector: &armsecurityinsights.MSTIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MSTIDataConnector{
 	// 		Name: to.Ptr("c345bf40-8509-4ed2-b947-50cb773aaf04"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2356,7 +2355,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatProtectionDataConnector(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	MTPDataConnector: &armsecurityinsights.MTPDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.MTPDataConnector{
 	// 		Name: to.Ptr("c345bf40-8509-4ed2-b947-50cb773aaf04"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2401,7 +2400,7 @@ func ExampleDataConnectorsClient_Get_getAnOfficeAtpDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	OfficeATPDataConnector: &armsecurityinsights.OfficeATPDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.OfficeATPDataConnector{
 	// 		Name: to.Ptr("3d3e955e-33eb-401d-89a7-251c81ddd660"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2438,7 +2437,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365ProjectDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	Office365ProjectDataConnector: &armsecurityinsights.Office365ProjectDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.Office365ProjectDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2475,7 +2474,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	OfficeDataConnector: &armsecurityinsights.OfficeDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.OfficeDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2518,7 +2517,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365PowerBiDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	OfficePowerBIDataConnector: &armsecurityinsights.OfficePowerBIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.OfficePowerBIDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2555,7 +2554,7 @@ func ExampleDataConnectorsClient_Get_getAPremiumMicrosoftDefenderForThreatIntell
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	PremiumMicrosoftDefenderForThreatIntelligence: &armsecurityinsights.PremiumMicrosoftDefenderForThreatIntelligence{
+	// 	DataConnectorClassification: &armsecurityinsights.PremiumMicrosoftDefenderForThreatIntelligence{
 	// 		Name: to.Ptr("8c569548-a86c-4fb4-8ae4-d1e35a6146f8"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("d30049a2-0000-0800-0000-658ca2270000"),
@@ -2594,7 +2593,7 @@ func ExampleDataConnectorsClient_Get_getAPurviewAuditDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	PurviewAuditDataConnector: &armsecurityinsights.PurviewAuditDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.PurviewAuditDataConnector{
 	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2633,7 +2632,7 @@ func ExampleDataConnectorsClient_Get_getARestApiPollerDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	RestAPIPollerDataConnector: &armsecurityinsights.RestAPIPollerDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.RestAPIPollerDataConnector{
 	// 		Name: to.Ptr("RestApiPoller_fce27b90-d6f5-4d30-991a-af509a2b50a1"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2701,7 +2700,7 @@ func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	TIDataConnector: &armsecurityinsights.TIDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.TIDataConnector{
 	// 		Name: to.Ptr("c345bf40-8509-4ed2-b947-50cb773aaf04"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -2739,7 +2738,7 @@ func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.DataConnectorsClientGetResponse{
-	// 	TiTaxiiDataConnector: &armsecurityinsights.TiTaxiiDataConnector{
+	// 	DataConnectorClassification: &armsecurityinsights.TiTaxiiDataConnector{
 	// 		Name: to.Ptr("c39bb458-02a7-4b3f-b0c8-71a1d2692652"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -3047,7 +3046,7 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 					ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 		// 						Availability: &armsecurityinsights.Availability{
 		// 							IsPreview: to.Ptr(true),
-		// 							Status: to.Ptr(1),
+		// 							Status: to.Ptr[int32](1),
 		// 						},
 		// 						ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 		// 							{
@@ -3190,7 +3189,7 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 					ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 		// 						Availability: &armsecurityinsights.Availability{
 		// 							IsPreview: to.Ptr(true),
-		// 							Status: to.Ptr(1),
+		// 							Status: to.Ptr[int32](1),
 		// 						},
 		// 						ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 		// 							{

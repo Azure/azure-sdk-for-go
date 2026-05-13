@@ -53,7 +53,7 @@ func ExampleProductSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.ProductSettingsClientGetResponse{
-	// 	EyesOn: &armsecurityinsights.EyesOn{
+	// 	SettingsClassification: &armsecurityinsights.EyesOn{
 	// 		Name: to.Ptr("EyesOn"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/settings"),
 	// 		ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/mms-eus/providers/Microsoft.OperationalInsights/workspaces/avdvirInt/providers/Microsoft.SecurityInsights/settings/EyesOn"),
@@ -128,7 +128,7 @@ func ExampleProductSettingsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.ProductSettingsClientUpdateResponse{
-	// 	EyesOn: &armsecurityinsights.EyesOn{
+	// 	SettingsClassification: &armsecurityinsights.EyesOn{
 	// 		Name: to.Ptr("EyesOn"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/settings"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),

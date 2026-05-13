@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSourceControlsClientVersion string = "2025-07-01-preview"
+
 // SourceControlsClient contains the methods for the SourceControls group.
 // Don't use this type directly, use NewSourceControlsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type SourceControlsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewSourceControlsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Create - Creates a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - sourceControlID - Source control Id
@@ -94,8 +96,8 @@ func (client *SourceControlsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourceControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sourceControl); err != nil {
@@ -115,8 +117,6 @@ func (client *SourceControlsClient) createHandleResponse(resp *http.Response) (S
 
 // Delete - Delete a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - sourceControlID - Source control Id
@@ -168,8 +168,8 @@ func (client *SourceControlsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourceControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, repositoryAccess); err != nil {
@@ -189,8 +189,6 @@ func (client *SourceControlsClient) deleteHandleResponse(resp *http.Response) (S
 
 // Get - Gets a source control byt its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - sourceControlID - Source control Id
@@ -241,8 +239,8 @@ func (client *SourceControlsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourceControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -257,8 +255,6 @@ func (client *SourceControlsClient) getHandleResponse(resp *http.Response) (Sour
 }
 
 // NewListPager - Gets all source controls, without source control items.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - options - SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.NewListPager method.
@@ -305,8 +301,8 @@ func (client *SourceControlsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourceControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

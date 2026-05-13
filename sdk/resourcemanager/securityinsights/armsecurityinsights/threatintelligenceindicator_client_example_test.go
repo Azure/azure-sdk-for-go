@@ -6,11 +6,10 @@ package armsecurityinsights_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
+	"log"
 )
 
 // Generated from example definition: 2025-07-01-preview/threatintelligence/AppendTagsThreatIntelligence.json
@@ -84,7 +83,7 @@ func ExampleThreatIntelligenceIndicatorClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.ThreatIntelligenceIndicatorClientCreateResponse{
-	// 	ThreatIntelligenceIndicatorModel: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
+	// 	ThreatIntelligenceInformationClassification: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
 	// 		Name: to.Ptr("180105c7-a28d-b1a2-4a78-234f6ec80fd6"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		Etag: to.Ptr("\"0000322c-0000-0800-0000-5e976c960000\""),
@@ -164,7 +163,7 @@ func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.ThreatIntelligenceIndicatorClientCreateIndicatorResponse{
-	// 	ThreatIntelligenceIndicatorModel: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
+	// 	ThreatIntelligenceInformationClassification: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
 	// 		Name: to.Ptr("180105c7-a28d-b1a2-4a78-234f6ec80fd6"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		Etag: to.Ptr("\"0000322c-0000-0800-0000-5e976c960000\""),
@@ -241,7 +240,7 @@ func ExampleThreatIntelligenceIndicatorClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.ThreatIntelligenceIndicatorClientGetResponse{
-	// 	ThreatIntelligenceIndicatorModel: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
+	// 	ThreatIntelligenceInformationClassification: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
 	// 		Name: to.Ptr("e16ef847-962e-d7b6-9c8b-a33e4bd30e47"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		Etag: to.Ptr("\"00002a2c-0000-0800-0000-5e97683b0000\""),
@@ -431,7 +430,7 @@ func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.ThreatIntelligenceIndicatorClientReplaceTagsResponse{
-	// 	ThreatIntelligenceIndicatorModel: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
+	// 	ThreatIntelligenceInformationClassification: &armsecurityinsights.ThreatIntelligenceIndicatorModel{
 	// 		Name: to.Ptr("e16ef847-962e-d7b6-9c8b-a33e4bd30e47"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		Etag: to.Ptr("\"00002a2c-0000-0800-0000-5e97683b0000\""),

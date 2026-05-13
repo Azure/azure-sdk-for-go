@@ -19,18 +19,18 @@ func unmarshalAlertRuleClassification(rawMsg json.RawMessage) (armsecurityinsigh
 	}
 	var b armsecurityinsights.AlertRuleClassification
 	switch m["kind"] {
-	case string(armsecurityinsights.AlertRuleKindMLBehaviorAnalytics):
-		b = &armsecurityinsights.MLBehaviorAnalyticsAlertRule{}
 	case string(armsecurityinsights.AlertRuleKindFusion):
 		b = &armsecurityinsights.FusionAlertRule{}
-	case string(armsecurityinsights.AlertRuleKindThreatIntelligence):
-		b = &armsecurityinsights.ThreatIntelligenceAlertRule{}
+	case string(armsecurityinsights.AlertRuleKindMLBehaviorAnalytics):
+		b = &armsecurityinsights.MLBehaviorAnalyticsAlertRule{}
 	case string(armsecurityinsights.AlertRuleKindMicrosoftSecurityIncidentCreation):
 		b = &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRule{}
-	case string(armsecurityinsights.AlertRuleKindScheduled):
-		b = &armsecurityinsights.ScheduledAlertRule{}
 	case string(armsecurityinsights.AlertRuleKindNRT):
 		b = &armsecurityinsights.NrtAlertRule{}
+	case string(armsecurityinsights.AlertRuleKindScheduled):
+		b = &armsecurityinsights.ScheduledAlertRule{}
+	case string(armsecurityinsights.AlertRuleKindThreatIntelligence):
+		b = &armsecurityinsights.ThreatIntelligenceAlertRule{}
 	default:
 		b = &armsecurityinsights.AlertRule{}
 	}
@@ -71,56 +71,56 @@ func unmarshalDataConnectorClassification(rawMsg json.RawMessage) (armsecurityin
 	}
 	var b armsecurityinsights.DataConnectorClassification
 	switch m["kind"] {
-	case string(armsecurityinsights.DataConnectorKindAzureActiveDirectory):
-		b = &armsecurityinsights.AADDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindMicrosoftThreatIntelligence):
-		b = &armsecurityinsights.MSTIDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence):
-		b = &armsecurityinsights.PremiumMicrosoftDefenderForThreatIntelligence{}
-	case string(armsecurityinsights.DataConnectorKindMicrosoftThreatProtection):
-		b = &armsecurityinsights.MTPDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindAzureAdvancedThreatProtection):
-		b = &armsecurityinsights.AATPDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindAzureSecurityCenter):
-		b = &armsecurityinsights.ASCDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindAPIPolling):
+		b = &armsecurityinsights.CodelessAPIPollingDataConnector{}
 	case string(armsecurityinsights.DataConnectorKindAmazonWebServicesCloudTrail):
 		b = &armsecurityinsights.AwsCloudTrailDataConnector{}
 	case string(armsecurityinsights.DataConnectorKindAmazonWebServicesS3):
 		b = &armsecurityinsights.AwsS3DataConnector{}
-	case string(armsecurityinsights.DataConnectorKindRestAPIPoller):
-		b = &armsecurityinsights.RestAPIPollerDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindGCP):
-		b = &armsecurityinsights.GCPDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindMicrosoftCloudAppSecurity):
-		b = &armsecurityinsights.MCASDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindAzureActiveDirectory):
+		b = &armsecurityinsights.AADDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindAzureAdvancedThreatProtection):
+		b = &armsecurityinsights.AATPDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindAzureSecurityCenter):
+		b = &armsecurityinsights.ASCDataConnector{}
 	case string(armsecurityinsights.DataConnectorKindDynamics365):
 		b = &armsecurityinsights.Dynamics365DataConnector{}
-	case string(armsecurityinsights.DataConnectorKindOfficeATP):
-		b = &armsecurityinsights.OfficeATPDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindMicrosoftPurviewInformationProtection):
-		b = &armsecurityinsights.MicrosoftPurviewInformationProtectionDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindOffice365Project):
-		b = &armsecurityinsights.Office365ProjectDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindOfficePowerBI):
-		b = &armsecurityinsights.OfficePowerBIDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindPurviewAudit):
-		b = &armsecurityinsights.PurviewAuditDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindOfficeIRM):
-		b = &armsecurityinsights.OfficeIRMDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindGCP):
+		b = &armsecurityinsights.GCPDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindGenericUI):
+		b = &armsecurityinsights.CodelessUIDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindIOT):
+		b = &armsecurityinsights.IoTDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindMicrosoftCloudAppSecurity):
+		b = &armsecurityinsights.MCASDataConnector{}
 	case string(armsecurityinsights.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection):
 		b = &armsecurityinsights.MDATPDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindMicrosoftPurviewInformationProtection):
+		b = &armsecurityinsights.MicrosoftPurviewInformationProtectionDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindMicrosoftThreatIntelligence):
+		b = &armsecurityinsights.MSTIDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindMicrosoftThreatProtection):
+		b = &armsecurityinsights.MTPDataConnector{}
 	case string(armsecurityinsights.DataConnectorKindOffice365):
 		b = &armsecurityinsights.OfficeDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindOffice365Project):
+		b = &armsecurityinsights.Office365ProjectDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindOfficeATP):
+		b = &armsecurityinsights.OfficeATPDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindOfficeIRM):
+		b = &armsecurityinsights.OfficeIRMDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindOfficePowerBI):
+		b = &armsecurityinsights.OfficePowerBIDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence):
+		b = &armsecurityinsights.PremiumMicrosoftDefenderForThreatIntelligence{}
+	case string(armsecurityinsights.DataConnectorKindPurviewAudit):
+		b = &armsecurityinsights.PurviewAuditDataConnector{}
+	case string(armsecurityinsights.DataConnectorKindRestAPIPoller):
+		b = &armsecurityinsights.RestAPIPollerDataConnector{}
 	case string(armsecurityinsights.DataConnectorKindThreatIntelligence):
 		b = &armsecurityinsights.TIDataConnector{}
 	case string(armsecurityinsights.DataConnectorKindThreatIntelligenceTaxii):
 		b = &armsecurityinsights.TiTaxiiDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindIOT):
-		b = &armsecurityinsights.IoTDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindGenericUI):
-		b = &armsecurityinsights.CodelessUIDataConnector{}
-	case string(armsecurityinsights.DataConnectorKindAPIPolling):
-		b = &armsecurityinsights.CodelessAPIPollingDataConnector{}
 	default:
 		b = &armsecurityinsights.DataConnector{}
 	}
@@ -161,34 +161,36 @@ func unmarshalDataConnectorsCheckRequirementsClassification(rawMsg json.RawMessa
 	}
 	var b armsecurityinsights.DataConnectorsCheckRequirementsClassification
 	switch m["kind"] {
+	case string(armsecurityinsights.DataConnectorKindAmazonWebServicesCloudTrail):
+		b = &armsecurityinsights.AwsCloudTrailCheckRequirements{}
+	case string(armsecurityinsights.DataConnectorKindAmazonWebServicesS3):
+		b = &armsecurityinsights.AwsS3CheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindAzureActiveDirectory):
 		b = &armsecurityinsights.AADCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindAzureAdvancedThreatProtection):
 		b = &armsecurityinsights.AATPCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindAzureSecurityCenter):
 		b = &armsecurityinsights.ASCCheckRequirements{}
-	case string(armsecurityinsights.DataConnectorKindAmazonWebServicesCloudTrail):
-		b = &armsecurityinsights.AwsCloudTrailCheckRequirements{}
-	case string(armsecurityinsights.DataConnectorKindAmazonWebServicesS3):
-		b = &armsecurityinsights.AwsS3CheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindDynamics365):
 		b = &armsecurityinsights.Dynamics365CheckRequirements{}
+	case string(armsecurityinsights.DataConnectorKindIOT):
+		b = &armsecurityinsights.IoTCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindMicrosoftCloudAppSecurity):
 		b = &armsecurityinsights.MCASCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection):
 		b = &armsecurityinsights.MDATPCheckRequirements{}
+	case string(armsecurityinsights.DataConnectorKindMicrosoftPurviewInformationProtection):
+		b = &armsecurityinsights.MicrosoftPurviewInformationProtectionCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindMicrosoftThreatIntelligence):
 		b = &armsecurityinsights.MSTICheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindMicrosoftThreatProtection):
 		b = &armsecurityinsights.MtpCheckRequirements{}
+	case string(armsecurityinsights.DataConnectorKindOffice365Project):
+		b = &armsecurityinsights.Office365ProjectCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindOfficeATP):
 		b = &armsecurityinsights.OfficeATPCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindOfficeIRM):
 		b = &armsecurityinsights.OfficeIRMCheckRequirements{}
-	case string(armsecurityinsights.DataConnectorKindMicrosoftPurviewInformationProtection):
-		b = &armsecurityinsights.MicrosoftPurviewInformationProtectionCheckRequirements{}
-	case string(armsecurityinsights.DataConnectorKindOffice365Project):
-		b = &armsecurityinsights.Office365ProjectCheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindOfficePowerBI):
 		b = &armsecurityinsights.OfficePowerBICheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindPurviewAudit):
@@ -197,8 +199,6 @@ func unmarshalDataConnectorsCheckRequirementsClassification(rawMsg json.RawMessa
 		b = &armsecurityinsights.TICheckRequirements{}
 	case string(armsecurityinsights.DataConnectorKindThreatIntelligenceTaxii):
 		b = &armsecurityinsights.TiTaxiiCheckRequirements{}
-	case string(armsecurityinsights.DataConnectorKindIOT):
-		b = &armsecurityinsights.IoTCheckRequirements{}
 	default:
 		b = &armsecurityinsights.DataConnectorsCheckRequirements{}
 	}
@@ -241,10 +241,10 @@ func unmarshalSettingsClassification(rawMsg json.RawMessage) (armsecurityinsight
 	switch m["kind"] {
 	case string(armsecurityinsights.SettingKindAnomalies):
 		b = &armsecurityinsights.Anomalies{}
-	case string(armsecurityinsights.SettingKindEyesOn):
-		b = &armsecurityinsights.EyesOn{}
 	case string(armsecurityinsights.SettingKindEntityAnalytics):
 		b = &armsecurityinsights.EntityAnalytics{}
+	case string(armsecurityinsights.SettingKindEyesOn):
+		b = &armsecurityinsights.EyesOn{}
 	case string(armsecurityinsights.SettingKindUeba):
 		b = &armsecurityinsights.Ueba{}
 	default:

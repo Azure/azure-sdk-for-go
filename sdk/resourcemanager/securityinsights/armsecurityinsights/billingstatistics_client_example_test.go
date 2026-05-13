@@ -30,7 +30,7 @@ func ExampleBillingStatisticsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.BillingStatisticsClientGetResponse{
-	// 	SapSolutionUsageStatistic: &armsecurityinsights.SapSolutionUsageStatistic{
+	// 	BillingStatisticClassification: &armsecurityinsights.SapSolutionUsageStatistic{
 	// 		Name: to.Ptr("sapSolutionUsage"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/billingStatistics"),
 	// 		Etag: to.Ptr("\"3f6451dd-1b58-4bef-bce7-72eba6b354d7\""),

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultDataConnectorsCheckRequirementsClientVersion string = "2025-07-01-preview"
+
 // DataConnectorsCheckRequirementsClient contains the methods for the DataConnectorsCheckRequirements group.
 // Don't use this type directly, use NewDataConnectorsCheckRequirementsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type DataConnectorsCheckRequirementsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewDataConnectorsCheckRequirementsClient(subscriptionID string, credential 
 
 // Post - Get requirements state for a data connector type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - dataConnectorsCheckRequirements - The parameters for requirements check message
@@ -90,8 +92,8 @@ func (client *DataConnectorsCheckRequirementsClient) postCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDataConnectorsCheckRequirementsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, dataConnectorsCheckRequirements); err != nil {

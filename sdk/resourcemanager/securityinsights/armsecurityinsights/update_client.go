@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultUpdateClientVersion string = "2025-07-01-preview"
+
 // UpdateClient contains the methods for the Update group.
 // Don't use this type directly, use NewUpdateClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type UpdateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewUpdateClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // Recommendation - Patch a recommendation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - recommendationID - Recommendation Id.
@@ -94,8 +96,8 @@ func (client *UpdateClient) recommendationCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultUpdateClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, recommendationPatch); err != nil {

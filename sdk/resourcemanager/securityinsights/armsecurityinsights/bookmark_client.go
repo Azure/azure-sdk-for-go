@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultBookmarkClientVersion string = "2025-07-01-preview"
+
 // BookmarkClient contains the methods for the Bookmark group.
 // Don't use this type directly, use NewBookmarkClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type BookmarkClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewBookmarkClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Expand - Expand an bookmark
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - bookmarkID - Bookmark ID
@@ -94,8 +96,8 @@ func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultBookmarkClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

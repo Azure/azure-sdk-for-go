@@ -65,7 +65,7 @@ func ExampleEntityQueriesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntityQueriesClientCreateOrUpdateResponse{
-	// 	ActivityEntityQuery: &armsecurityinsights.ActivityEntityQuery{
+	// 	EntityQueryClassification: &armsecurityinsights.ActivityEntityQuery{
 	// 		Name: to.Ptr("07da3cc8-c8ad-4710-a44e-334cdcb7882b"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entityQueries"),
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
@@ -149,7 +149,7 @@ func ExampleEntityQueriesClient_Get_getAnActivityEntityQuery() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntityQueriesClientGetResponse{
-	// 	ActivityEntityQuery: &armsecurityinsights.ActivityEntityQuery{
+	// 	EntityQueryClassification: &armsecurityinsights.ActivityEntityQuery{
 	// 		Name: to.Ptr("07da3cc8-c8ad-4710-a44e-334cdcb7882b"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entityQueries"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entityQueries/07da3cc8-c8ad-4710-a44e-334cdcb7882b"),
@@ -210,7 +210,7 @@ func ExampleEntityQueriesClient_Get_getAnExpansionEntityQuery() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurityinsights.EntityQueriesClientGetResponse{
-	// 	ExpansionEntityQuery: &armsecurityinsights.ExpansionEntityQuery{
+	// 	EntityQueryClassification: &armsecurityinsights.ExpansionEntityQuery{
 	// 		Name: to.Ptr("07da3cc8-c8ad-4710-a44e-334cdcb7882b"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/entityQueries"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/entityQueries/07da3cc8-c8ad-4710-a44e-334cdcb7882b"),

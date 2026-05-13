@@ -16,18 +16,18 @@ func unmarshalAlertRuleClassification(rawMsg json.RawMessage) (AlertRuleClassifi
 	}
 	var b AlertRuleClassification
 	switch m["kind"] {
-	case string(AlertRuleKindMLBehaviorAnalytics):
-		b = &MLBehaviorAnalyticsAlertRule{}
 	case string(AlertRuleKindFusion):
 		b = &FusionAlertRule{}
-	case string(AlertRuleKindThreatIntelligence):
-		b = &ThreatIntelligenceAlertRule{}
+	case string(AlertRuleKindMLBehaviorAnalytics):
+		b = &MLBehaviorAnalyticsAlertRule{}
 	case string(AlertRuleKindMicrosoftSecurityIncidentCreation):
 		b = &MicrosoftSecurityIncidentCreationAlertRule{}
-	case string(AlertRuleKindScheduled):
-		b = &ScheduledAlertRule{}
 	case string(AlertRuleKindNRT):
 		b = &NrtAlertRule{}
+	case string(AlertRuleKindScheduled):
+		b = &ScheduledAlertRule{}
+	case string(AlertRuleKindThreatIntelligence):
+		b = &ThreatIntelligenceAlertRule{}
 	default:
 		b = &AlertRule{}
 	}
@@ -66,18 +66,18 @@ func unmarshalAlertRuleTemplateClassification(rawMsg json.RawMessage) (AlertRule
 	}
 	var b AlertRuleTemplateClassification
 	switch m["kind"] {
-	case string(AlertRuleKindMLBehaviorAnalytics):
-		b = &MLBehaviorAnalyticsAlertRuleTemplate{}
 	case string(AlertRuleKindFusion):
 		b = &FusionAlertRuleTemplate{}
-	case string(AlertRuleKindThreatIntelligence):
-		b = &ThreatIntelligenceAlertRuleTemplate{}
+	case string(AlertRuleKindMLBehaviorAnalytics):
+		b = &MLBehaviorAnalyticsAlertRuleTemplate{}
 	case string(AlertRuleKindMicrosoftSecurityIncidentCreation):
 		b = &MicrosoftSecurityIncidentCreationAlertRuleTemplate{}
-	case string(AlertRuleKindScheduled):
-		b = &ScheduledAlertRuleTemplate{}
 	case string(AlertRuleKindNRT):
 		b = &NrtAlertRuleTemplate{}
+	case string(AlertRuleKindScheduled):
+		b = &ScheduledAlertRuleTemplate{}
+	case string(AlertRuleKindThreatIntelligence):
+		b = &ThreatIntelligenceAlertRuleTemplate{}
 	default:
 		b = &AlertRuleTemplate{}
 	}
@@ -162,14 +162,14 @@ func unmarshalAutomationRuleConditionClassification(rawMsg json.RawMessage) (Aut
 	switch m["conditionType"] {
 	case string(ConditionTypeBoolean):
 		b = &BooleanConditionProperties{}
-	case string(ConditionTypePropertyArrayChanged):
-		b = &PropertyArrayChangedConditionProperties{}
-	case string(ConditionTypePropertyArray):
-		b = &PropertyArrayConditionProperties{}
-	case string(ConditionTypePropertyChanged):
-		b = &PropertyChangedConditionProperties{}
 	case string(ConditionTypeProperty):
 		b = &PropertyConditionProperties{}
+	case string(ConditionTypePropertyArray):
+		b = &PropertyArrayConditionProperties{}
+	case string(ConditionTypePropertyArrayChanged):
+		b = &PropertyArrayChangedConditionProperties{}
+	case string(ConditionTypePropertyChanged):
+		b = &PropertyChangedConditionProperties{}
 	default:
 		b = &AutomationRuleCondition{}
 	}
@@ -256,18 +256,18 @@ func unmarshalCcpAuthConfigClassification(rawMsg json.RawMessage) (CcpAuthConfig
 		b = &BasicAuthModel{}
 	case string(CcpAuthTypeGCP):
 		b = &GCPAuthModel{}
-	case string(CcpAuthTypeServiceBus):
-		b = &GenericBlobSbsAuthModel{}
 	case string(CcpAuthTypeGitHub):
 		b = &GitHubAuthModel{}
-	case string(CcpAuthTypeNone):
-		b = &NoneAuthModel{}
 	case string(CcpAuthTypeJwtToken):
 		b = &JwtAuthModel{}
+	case string(CcpAuthTypeNone):
+		b = &NoneAuthModel{}
 	case string(CcpAuthTypeOAuth2):
 		b = &OAuthModel{}
 	case string(CcpAuthTypeOracle):
 		b = &OracleAuthModel{}
+	case string(CcpAuthTypeServiceBus):
+		b = &GenericBlobSbsAuthModel{}
 	case string(CcpAuthTypeSession):
 		b = &SessionAuthModel{}
 	default:
@@ -289,56 +289,56 @@ func unmarshalDataConnectorClassification(rawMsg json.RawMessage) (DataConnector
 	}
 	var b DataConnectorClassification
 	switch m["kind"] {
-	case string(DataConnectorKindAzureActiveDirectory):
-		b = &AADDataConnector{}
-	case string(DataConnectorKindMicrosoftThreatIntelligence):
-		b = &MSTIDataConnector{}
-	case string(DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence):
-		b = &PremiumMicrosoftDefenderForThreatIntelligence{}
-	case string(DataConnectorKindMicrosoftThreatProtection):
-		b = &MTPDataConnector{}
-	case string(DataConnectorKindAzureAdvancedThreatProtection):
-		b = &AATPDataConnector{}
-	case string(DataConnectorKindAzureSecurityCenter):
-		b = &ASCDataConnector{}
+	case string(DataConnectorKindAPIPolling):
+		b = &CodelessAPIPollingDataConnector{}
 	case string(DataConnectorKindAmazonWebServicesCloudTrail):
 		b = &AwsCloudTrailDataConnector{}
 	case string(DataConnectorKindAmazonWebServicesS3):
 		b = &AwsS3DataConnector{}
-	case string(DataConnectorKindRestAPIPoller):
-		b = &RestAPIPollerDataConnector{}
-	case string(DataConnectorKindGCP):
-		b = &GCPDataConnector{}
-	case string(DataConnectorKindMicrosoftCloudAppSecurity):
-		b = &MCASDataConnector{}
+	case string(DataConnectorKindAzureActiveDirectory):
+		b = &AADDataConnector{}
+	case string(DataConnectorKindAzureAdvancedThreatProtection):
+		b = &AATPDataConnector{}
+	case string(DataConnectorKindAzureSecurityCenter):
+		b = &ASCDataConnector{}
 	case string(DataConnectorKindDynamics365):
 		b = &Dynamics365DataConnector{}
-	case string(DataConnectorKindOfficeATP):
-		b = &OfficeATPDataConnector{}
-	case string(DataConnectorKindMicrosoftPurviewInformationProtection):
-		b = &MicrosoftPurviewInformationProtectionDataConnector{}
-	case string(DataConnectorKindOffice365Project):
-		b = &Office365ProjectDataConnector{}
-	case string(DataConnectorKindOfficePowerBI):
-		b = &OfficePowerBIDataConnector{}
-	case string(DataConnectorKindPurviewAudit):
-		b = &PurviewAuditDataConnector{}
-	case string(DataConnectorKindOfficeIRM):
-		b = &OfficeIRMDataConnector{}
+	case string(DataConnectorKindGCP):
+		b = &GCPDataConnector{}
+	case string(DataConnectorKindGenericUI):
+		b = &CodelessUIDataConnector{}
+	case string(DataConnectorKindIOT):
+		b = &IoTDataConnector{}
+	case string(DataConnectorKindMicrosoftCloudAppSecurity):
+		b = &MCASDataConnector{}
 	case string(DataConnectorKindMicrosoftDefenderAdvancedThreatProtection):
 		b = &MDATPDataConnector{}
+	case string(DataConnectorKindMicrosoftPurviewInformationProtection):
+		b = &MicrosoftPurviewInformationProtectionDataConnector{}
+	case string(DataConnectorKindMicrosoftThreatIntelligence):
+		b = &MSTIDataConnector{}
+	case string(DataConnectorKindMicrosoftThreatProtection):
+		b = &MTPDataConnector{}
 	case string(DataConnectorKindOffice365):
 		b = &OfficeDataConnector{}
+	case string(DataConnectorKindOffice365Project):
+		b = &Office365ProjectDataConnector{}
+	case string(DataConnectorKindOfficeATP):
+		b = &OfficeATPDataConnector{}
+	case string(DataConnectorKindOfficeIRM):
+		b = &OfficeIRMDataConnector{}
+	case string(DataConnectorKindOfficePowerBI):
+		b = &OfficePowerBIDataConnector{}
+	case string(DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence):
+		b = &PremiumMicrosoftDefenderForThreatIntelligence{}
+	case string(DataConnectorKindPurviewAudit):
+		b = &PurviewAuditDataConnector{}
+	case string(DataConnectorKindRestAPIPoller):
+		b = &RestAPIPollerDataConnector{}
 	case string(DataConnectorKindThreatIntelligence):
 		b = &TIDataConnector{}
 	case string(DataConnectorKindThreatIntelligenceTaxii):
 		b = &TiTaxiiDataConnector{}
-	case string(DataConnectorKindIOT):
-		b = &IoTDataConnector{}
-	case string(DataConnectorKindGenericUI):
-		b = &CodelessUIDataConnector{}
-	case string(DataConnectorKindAPIPolling):
-		b = &CodelessAPIPollingDataConnector{}
 	default:
 		b = &DataConnector{}
 	}
@@ -417,14 +417,12 @@ func unmarshalEntityClassification(rawMsg json.RawMessage) (EntityClassification
 	}
 	var b EntityClassification
 	switch m["kind"] {
-	case string(EntityKindEnumSecurityAlert):
-		b = &SecurityAlert{}
-	case string(EntityKindEnumBookmark):
-		b = &HuntingBookmark{}
 	case string(EntityKindEnumAccount):
 		b = &AccountEntity{}
 	case string(EntityKindEnumAzureResource):
 		b = &AzureResourceEntity{}
+	case string(EntityKindEnumBookmark):
+		b = &HuntingBookmark{}
 	case string(EntityKindEnumCloudApplication):
 		b = &CloudApplicationEntity{}
 	case string(EntityKindEnumDNSResolution):
@@ -435,32 +433,34 @@ func unmarshalEntityClassification(rawMsg json.RawMessage) (EntityClassification
 		b = &FileHashEntity{}
 	case string(EntityKindEnumHost):
 		b = &HostEntity{}
-	case string(EntityKindEnumIoTDevice):
-		b = &IoTDeviceEntity{}
 	case string(EntityKindEnumIP):
 		b = &IPEntity{}
-	case string(EntityKindEnumMailbox):
-		b = &MailboxEntity{}
+	case string(EntityKindEnumIoTDevice):
+		b = &IoTDeviceEntity{}
 	case string(EntityKindEnumMailCluster):
 		b = &MailClusterEntity{}
 	case string(EntityKindEnumMailMessage):
 		b = &MailMessageEntity{}
+	case string(EntityKindEnumMailbox):
+		b = &MailboxEntity{}
 	case string(EntityKindEnumMalware):
 		b = &MalwareEntity{}
+	case string(EntityKindEnumNic):
+		b = &NicEntity{}
 	case string(EntityKindEnumProcess):
 		b = &ProcessEntity{}
 	case string(EntityKindEnumRegistryKey):
 		b = &RegistryKeyEntity{}
 	case string(EntityKindEnumRegistryValue):
 		b = &RegistryValueEntity{}
+	case string(EntityKindEnumSecurityAlert):
+		b = &SecurityAlert{}
 	case string(EntityKindEnumSecurityGroup):
 		b = &SecurityGroupEntity{}
 	case string(EntityKindEnumSubmissionMail):
 		b = &SubmissionMailEntity{}
 	case string(EntityKindEnumURL):
 		b = &URLEntity{}
-	case string(EntityKindEnumNic):
-		b = &NicEntity{}
 	default:
 		b = &Entity{}
 	}
@@ -499,10 +499,10 @@ func unmarshalEntityQueryClassification(rawMsg json.RawMessage) (EntityQueryClas
 	}
 	var b EntityQueryClassification
 	switch m["kind"] {
-	case string(EntityQueryKindExpansion):
-		b = &ExpansionEntityQuery{}
 	case string(EntityQueryKindActivity):
 		b = &ActivityEntityQuery{}
+	case string(EntityQueryKindExpansion):
+		b = &ExpansionEntityQuery{}
 	default:
 		b = &EntityQuery{}
 	}
@@ -623,10 +623,10 @@ func unmarshalEntityTimelineItemClassification(rawMsg json.RawMessage) (EntityTi
 	switch m["kind"] {
 	case string(EntityTimelineKindActivity):
 		b = &ActivityTimelineItem{}
-	case string(EntityTimelineKindBookmark):
-		b = &BookmarkTimelineItem{}
 	case string(EntityTimelineKindAnomaly):
 		b = &AnomalyTimelineItem{}
+	case string(EntityTimelineKindBookmark):
+		b = &BookmarkTimelineItem{}
 	case string(EntityTimelineKindSecurityAlert):
 		b = &SecurityAlertTimelineItem{}
 	default:
@@ -709,10 +709,10 @@ func unmarshalSettingsClassification(rawMsg json.RawMessage) (SettingsClassifica
 	switch m["kind"] {
 	case string(SettingKindAnomalies):
 		b = &Anomalies{}
-	case string(SettingKindEyesOn):
-		b = &EyesOn{}
 	case string(SettingKindEntityAnalytics):
 		b = &EntityAnalytics{}
+	case string(SettingKindEyesOn):
+		b = &EyesOn{}
 	case string(SettingKindUeba):
 		b = &Ueba{}
 	default:
@@ -753,16 +753,16 @@ func unmarshalTIObjectClassification(rawMsg json.RawMessage) (TIObjectClassifica
 	}
 	var b TIObjectClassification
 	switch m["kind"] {
-	case string(TIObjectKindThreatActor):
-		b = &ThreatActor{}
 	case string(TIObjectKindAttackPattern):
 		b = &AttackPattern{}
 	case string(TIObjectKindIdentity):
 		b = &Identity{}
-	case string(TIObjectKindRelationship):
-		b = &Relationship{}
 	case string(TIObjectKindIndicator):
 		b = &Indicator{}
+	case string(TIObjectKindRelationship):
+		b = &Relationship{}
+	case string(TIObjectKindThreatActor):
+		b = &ThreatActor{}
 	default:
 		b = &TIObject{}
 	}

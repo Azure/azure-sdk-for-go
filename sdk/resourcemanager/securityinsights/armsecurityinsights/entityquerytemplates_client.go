@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultEntityQueryTemplatesClientVersion string = "2025-07-01-preview"
+
 // EntityQueryTemplatesClient contains the methods for the EntityQueryTemplates group.
 // Don't use this type directly, use NewEntityQueryTemplatesClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type EntityQueryTemplatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewEntityQueryTemplatesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Gets an entity query.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - entityQueryTemplateID - entity query template ID
@@ -94,8 +96,8 @@ func (client *EntityQueryTemplatesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEntityQueryTemplatesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +112,6 @@ func (client *EntityQueryTemplatesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Gets all entity query templates.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - EntityQueryTemplatesClientListOptions contains the optional parameters for the EntityQueryTemplatesClient.NewListPager
@@ -159,11 +159,11 @@ func (client *EntityQueryTemplatesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", defaultEntityQueryTemplatesClientVersion)
 	if options != nil && options.Kind != nil {
 		reqQP.Set("kind", string(*options.Kind))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

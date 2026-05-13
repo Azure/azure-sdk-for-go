@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAlertRuleClientVersion string = "2025-07-01-preview"
+
 // AlertRuleClient contains the methods for the AlertRule group.
 // Don't use this type directly, use NewAlertRuleClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type AlertRuleClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewAlertRuleClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginTriggerRuleRun - triggers analytics rule run
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
 //   - ruleID - Alert rule ID
@@ -68,8 +70,6 @@ func (client *AlertRuleClient) BeginTriggerRuleRun(ctx context.Context, resource
 
 // TriggerRuleRun - triggers analytics rule run
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 func (client *AlertRuleClient) triggerRuleRun(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, analyticsRuleRunTriggerParameter AnalyticsRuleRunTrigger, options *AlertRuleClientBeginTriggerRuleRunOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AlertRuleClient.BeginTriggerRuleRun"
@@ -115,8 +115,8 @@ func (client *AlertRuleClient) triggerRuleRunCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAlertRuleClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, analyticsRuleRunTriggerParameter); err != nil {
 		return nil, err

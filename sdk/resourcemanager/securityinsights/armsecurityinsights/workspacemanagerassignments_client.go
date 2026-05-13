@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultWorkspaceManagerAssignmentsClientVersion string = "2025-07-01-preview"
+
 // WorkspaceManagerAssignmentsClient contains the methods for the WorkspaceManagerAssignments group.
 // Don't use this type directly, use NewWorkspaceManagerAssignmentsClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type WorkspaceManagerAssignmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewWorkspaceManagerAssignmentsClient(subscriptionID string, credential azco
 
 // CreateOrUpdate - Creates or updates a workspace manager assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - workspaceManagerAssignmentName - The name of the workspace manager assignment
@@ -96,8 +98,8 @@ func (client *WorkspaceManagerAssignmentsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workspaceManagerAssignment); err != nil {
@@ -117,8 +119,6 @@ func (client *WorkspaceManagerAssignmentsClient) createOrUpdateHandleResponse(re
 
 // Delete - Deletes a workspace manager assignment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - workspaceManagerAssignmentName - The name of the workspace manager assignment
@@ -169,15 +169,13 @@ func (client *WorkspaceManagerAssignmentsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a workspace manager assignment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - workspaceManagerAssignmentName - The name of the workspace manager assignment
@@ -229,8 +227,8 @@ func (client *WorkspaceManagerAssignmentsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -245,8 +243,6 @@ func (client *WorkspaceManagerAssignmentsClient) getHandleResponse(resp *http.Re
 }
 
 // NewListPager - Get all workspace manager assignments for the Sentinel workspace manager.
-//
-// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - WorkspaceManagerAssignmentsClientListOptions contains the optional parameters for the WorkspaceManagerAssignmentsClient.NewListPager
@@ -303,8 +299,8 @@ func (client *WorkspaceManagerAssignmentsClient) listCreateRequest(ctx context.C
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

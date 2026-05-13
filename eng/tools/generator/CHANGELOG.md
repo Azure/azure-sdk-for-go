@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.11 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed preview API version detection to recognize const-based API version declarations in newly generated code.
+
 ## 0.4.10 (2026-05-12)
 
 ### Bugs Fixed

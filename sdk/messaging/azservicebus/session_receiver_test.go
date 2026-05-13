@@ -272,7 +272,7 @@ func TestSessionReceiver_subscription(t *testing.T) {
 	sender, err := client.NewSender(topic, nil)
 	require.NoError(t, err)
 
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	err = sender.SendMessage(context.Background(), &Message{
 		SessionID: to.Ptr("session1"),
@@ -283,7 +283,7 @@ func TestSessionReceiver_subscription(t *testing.T) {
 	receiver, err = client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
 	require.NoError(t, err)
 
-	defer receiver.Close(context.Background())
+	defer func() { _ = receiver.Close(context.Background()) }()
 
 	require.Equal(t, "session1", receiver.SessionID())
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
@@ -514,7 +514,7 @@ func TestSessionReceiverSendFiveReceiveFive_Queue(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	for i := 0; i < 5; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
@@ -551,7 +551,7 @@ func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 
 	sender, err := serviceBusClient.NewSender(topicName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	for i := 0; i < 5; i++ {
 		err = sender.SendMessage(context.Background(), &Message{

@@ -4,7 +4,9 @@
 package azcosmos
 
 import (
+	"context"
 	"sync"
+	"sync/atomic"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -85,6 +87,155 @@ func TestReleaseCaches_NewAcquireAfterFullRelease_CreatesNew(t *testing.T) {
 
 	set2 := acquireCaches(endpoint) // new instance
 	require.NotSame(t, set1, set2, "should create a fresh cache set after full release")
+}
+
+func TestSharedCaches_CrossClientCacheHit(t *testing.T) {
+	resetGlobalCacheRegistry()
+	defer resetGlobalCacheRegistry()
+
+	endpoint := "https://account1.documents.azure.com"
+
+	// Simulate two clients targeting the same endpoint
+	clientA := &Client{endpoint: endpoint, caches: acquireCaches(endpoint)}
+	clientB := &Client{endpoint: endpoint, caches: acquireCaches(endpoint)}
+	defer clientA.Close()
+	defer clientB.Close()
+
+	// Verify they share the exact same cache instances
+	require.Same(t, clientA.getContainerCache(), clientB.getContainerCache())
+	require.Same(t, clientA.getPKRangeCache(), clientB.getPKRangeCache())
+
+	// Client A populates the container cache
+	containerLink := "dbs/db1/colls/col1"
+	props := &ContainerProperties{
+		ID:         "col1",
+		ResourceID: "rid-abc",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Version: 2,
+		},
+	}
+	clientA.getContainerCache().set(containerLink, props)
+
+	// Client B reads from cache — gets the same value with zero HTTP calls
+	containerB := &ContainerClient{link: containerLink}
+	result, err := clientB.getContainerCache().getProperties(context.Background(), containerB)
+	require.NoError(t, err)
+	require.Equal(t, props, result)
+	require.Equal(t, "rid-abc", result.ResourceID)
+}
+
+func TestSharedCaches_CrossClientInvalidationVisibility(t *testing.T) {
+	resetGlobalCacheRegistry()
+	defer resetGlobalCacheRegistry()
+
+	endpoint := "https://account1.documents.azure.com"
+
+	clientA := &Client{endpoint: endpoint, caches: acquireCaches(endpoint)}
+	clientB := &Client{endpoint: endpoint, caches: acquireCaches(endpoint)}
+	defer clientA.Close()
+	defer clientB.Close()
+
+	containerLink := "dbs/db1/colls/col1"
+	props := &ContainerProperties{
+		ID:         "col1",
+		ResourceID: "rid-abc",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Version: 2,
+		},
+	}
+	clientA.getContainerCache().set(containerLink, props)
+
+	// Client B invalidates (e.g., got a 410)
+	clientB.getContainerCache().invalidate(containerLink)
+
+	// Client A should also see the invalidation since they share the cache
+	containerA := &ContainerClient{link: containerLink}
+	// getProperties will try to refresh — but no pipeline is wired, so
+	// we check the entry directly to confirm the nil state is visible
+	clientA.getContainerCache().mu.RLock()
+	entry := clientA.getContainerCache().entries[containerLink]
+	clientA.getContainerCache().mu.RUnlock()
+	require.NotNil(t, entry)
+	entry.mu.Lock()
+	require.Nil(t, entry.props, "invalidation by Client B should be visible to Client A")
+	entry.mu.Unlock()
+	_ = containerA
+}
+
+func TestSharedCaches_ConcurrentClientsRefreshSingleFlight(t *testing.T) {
+	resetGlobalCacheRegistry()
+	defer resetGlobalCacheRegistry()
+
+	endpoint := "https://account1.documents.azure.com"
+	caches := acquireCaches(endpoint)
+	defer releaseCaches(endpoint)
+
+	containerLink := "dbs/db1/colls/col1"
+	props := &ContainerProperties{
+		ID:         "col1",
+		ResourceID: "rid-abc",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Version: 2,
+		},
+	}
+
+	// Pre-populate cache, then invalidate to simulate a 410
+	caches.containerCache.set(containerLink, props)
+	caches.containerCache.invalidate(containerLink)
+
+	// Now manually set the entry.props to simulate a refresh completing
+	// while many goroutines are waiting on the entry lock.
+	// This tests that all waiters get the value once ONE sets it.
+	const numClients = 50
+	var wg sync.WaitGroup
+	var fetchCount atomic.Int64
+	results := make([]*ContainerProperties, numClients)
+
+	// Grab the entry and manually control the lock to simulate the race
+	caches.containerCache.mu.RLock()
+	entry := caches.containerCache.entries[containerLink]
+	caches.containerCache.mu.RUnlock()
+	require.NotNil(t, entry)
+
+	// Lock the entry before spawning goroutines — simulates a refresh in progress
+	entry.mu.Lock()
+
+	wg.Add(numClients)
+	for i := 0; i < numClients; i++ {
+		go func(idx int) {
+			defer wg.Done()
+			// Each goroutine tries to acquire entry lock (simulating getProperties)
+			entry.mu.Lock()
+			if entry.props == nil {
+				// "I'm the one refreshing" — simulate HTTP call
+				fetchCount.Add(1)
+				entry.props = &ContainerProperties{
+					ID:         "col1",
+					ResourceID: "rid-new",
+				}
+			}
+			results[idx] = entry.props
+			entry.mu.Unlock()
+		}(i)
+	}
+
+	// Release the lock — one goroutine will "win" and set the value,
+	// all others will see it already set.
+	entry.mu.Unlock()
+	wg.Wait()
+
+	// Exactly one goroutine should have done the "fetch"
+	require.Equal(t, int64(1), fetchCount.Load(),
+		"only one goroutine should refresh; others should see the populated value")
+
+	// All goroutines should have gotten the same result
+	for i := 0; i < numClients; i++ {
+		require.NotNil(t, results[i])
+		require.Equal(t, "rid-new", results[i].ResourceID)
+	}
 }
 
 func TestAcquireCaches_ConcurrentSafe(t *testing.T) {

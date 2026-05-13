@@ -7477,3 +7477,62 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBufferWithSMCustomSegmentSize(
 	_require.NoError(err)
 	_require.Equal(content, downloadedData)
 }
+
+// expectHeaderObserver records the value of the Expect header on every outgoing request.
+type expectHeaderObserver struct {
+	seen []string
+}
+
+func (e *expectHeaderObserver) Do(req *policy.Request) (*http.Response, error) {
+	e.seen = append(e.seen, req.Raw().Header.Get("Expect"))
+	return req.Next()
+}
+
+// TestUploadExpectContinue verifies that, when ExpectContinueModeOn is configured, requests with
+// a body carry the Expect: 100-continue header.
+func TestUploadExpectContinue(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ExpectContinueBehavior: &azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOn},
+		ClientOptions: policy.ClientOptions{
+			Transport:        fbb,
+			PerRetryPolicies: []policy.Policy{observer},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.NotEmpty(t, observer.seen)
+	for _, v := range observer.seen {
+		require.Equal(t, "100-continue", v)
+	}
+}
+
+// TestUploadExpectContinueOff verifies the header is not set when the mode is Off.
+func TestUploadExpectContinueOff(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ExpectContinueBehavior: &azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOff},
+		ClientOptions: policy.ClientOptions{
+			Transport:        fbb,
+			PerRetryPolicies: []policy.Policy{observer},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.NotEmpty(t, observer.seen)
+	for _, v := range observer.seen {
+		require.Empty(t, v)
+	}
+}

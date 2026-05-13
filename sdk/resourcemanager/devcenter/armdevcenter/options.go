@@ -8,13 +8,13 @@ package armdevcenter
 // AttachedNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedNetworksClient.BeginCreateOrUpdate
 // method.
 type AttachedNetworksClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AttachedNetworksClientBeginDeleteOptions contains the optional parameters for the AttachedNetworksClient.BeginDelete method.
 type AttachedNetworksClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -44,33 +44,84 @@ type AttachedNetworksClientListByProjectOptions struct {
 	Top *int32
 }
 
+// CatalogImageDefinitionBuildClientBeginCancelOptions contains the optional parameters for the CatalogImageDefinitionBuildClient.BeginCancel
+// method.
+type CatalogImageDefinitionBuildClientBeginCancelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CatalogImageDefinitionBuildClientGetBuildDetailsOptions contains the optional parameters for the CatalogImageDefinitionBuildClient.GetBuildDetails
+// method.
+type CatalogImageDefinitionBuildClientGetBuildDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CatalogImageDefinitionBuildClientGetOptions contains the optional parameters for the CatalogImageDefinitionBuildClient.Get
+// method.
+type CatalogImageDefinitionBuildClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CatalogImageDefinitionBuildsClientListByImageDefinitionOptions contains the optional parameters for the CatalogImageDefinitionBuildsClient.NewListByImageDefinitionPager
+// method.
+type CatalogImageDefinitionBuildsClientListByImageDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CatalogImageDefinitionsClientBeginBuildImageOptions contains the optional parameters for the CatalogImageDefinitionsClient.BeginBuildImage
+// method.
+type CatalogImageDefinitionsClientBeginBuildImageOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CatalogImageDefinitionsClientGetByDevCenterCatalogOptions contains the optional parameters for the CatalogImageDefinitionsClient.GetByDevCenterCatalog
+// method.
+type CatalogImageDefinitionsClientGetByDevCenterCatalogOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CatalogImageDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the CatalogImageDefinitionsClient.GetErrorDetails
+// method.
+type CatalogImageDefinitionsClientGetErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CatalogImageDefinitionsClientListByDevCenterCatalogOptions contains the optional parameters for the CatalogImageDefinitionsClient.NewListByDevCenterCatalogPager
+// method.
+type CatalogImageDefinitionsClientListByDevCenterCatalogOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
 // CatalogsClientBeginConnectOptions contains the optional parameters for the CatalogsClient.BeginConnect method.
 type CatalogsClientBeginConnectOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CatalogsClientBeginCreateOrUpdateOptions contains the optional parameters for the CatalogsClient.BeginCreateOrUpdate method.
 type CatalogsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CatalogsClientBeginDeleteOptions contains the optional parameters for the CatalogsClient.BeginDelete method.
 type CatalogsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CatalogsClientBeginSyncOptions contains the optional parameters for the CatalogsClient.BeginSync method.
 type CatalogsClientBeginSyncOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CatalogsClientBeginUpdateOptions contains the optional parameters for the CatalogsClient.BeginUpdate method.
 type CatalogsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -102,24 +153,42 @@ type CheckScopedNameAvailabilityClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CustomizationTasksClientGetErrorDetailsOptions contains the optional parameters for the CustomizationTasksClient.GetErrorDetails
+// method.
+type CustomizationTasksClientGetErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomizationTasksClientGetOptions contains the optional parameters for the CustomizationTasksClient.Get method.
+type CustomizationTasksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomizationTasksClientListByCatalogOptions contains the optional parameters for the CustomizationTasksClient.NewListByCatalogPager
+// method.
+type CustomizationTasksClientListByCatalogOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
 // DevBoxDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginCreateOrUpdate
 // method.
 type DevBoxDefinitionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevBoxDefinitionsClientBeginDeleteOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginDelete
 // method.
 type DevBoxDefinitionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevBoxDefinitionsClientBeginUpdateOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginUpdate
 // method.
 type DevBoxDefinitionsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -151,19 +220,19 @@ type DevBoxDefinitionsClientListByProjectOptions struct {
 // DevCentersClientBeginCreateOrUpdateOptions contains the optional parameters for the DevCentersClient.BeginCreateOrUpdate
 // method.
 type DevCentersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevCentersClientBeginDeleteOptions contains the optional parameters for the DevCentersClient.BeginDelete method.
 type DevCentersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevCentersClientBeginUpdateOptions contains the optional parameters for the DevCentersClient.BeginUpdate method.
 type DevCentersClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -182,6 +251,36 @@ type DevCentersClientListByResourceGroupOptions struct {
 // DevCentersClientListBySubscriptionOptions contains the optional parameters for the DevCentersClient.NewListBySubscriptionPager
 // method.
 type DevCentersClientListBySubscriptionOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
+// EncryptionSetsClientBeginCreateOrUpdateOptions contains the optional parameters for the EncryptionSetsClient.BeginCreateOrUpdate
+// method.
+type EncryptionSetsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EncryptionSetsClientBeginDeleteOptions contains the optional parameters for the EncryptionSetsClient.BeginDelete method.
+type EncryptionSetsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EncryptionSetsClientBeginUpdateOptions contains the optional parameters for the EncryptionSetsClient.BeginUpdate method.
+type EncryptionSetsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EncryptionSetsClientGetOptions contains the optional parameters for the EncryptionSetsClient.Get method.
+type EncryptionSetsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EncryptionSetsClientListOptions contains the optional parameters for the EncryptionSetsClient.NewListPager method.
+type EncryptionSetsClientListOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
@@ -247,13 +346,13 @@ type EnvironmentTypesClientUpdateOptions struct {
 // GalleriesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleriesClient.BeginCreateOrUpdate
 // method.
 type GalleriesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GalleriesClientBeginDeleteOptions contains the optional parameters for the GalleriesClient.BeginDelete method.
 type GalleriesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -269,6 +368,11 @@ type GalleriesClientListByDevCenterOptions struct {
 	Top *int32
 }
 
+// ImageVersionsClientGetByProjectOptions contains the optional parameters for the ImageVersionsClient.GetByProject method.
+type ImageVersionsClientGetByProjectOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ImageVersionsClientGetOptions contains the optional parameters for the ImageVersionsClient.Get method.
 type ImageVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -277,6 +381,17 @@ type ImageVersionsClientGetOptions struct {
 // ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.NewListByImagePager
 // method.
 type ImageVersionsClientListByImageOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ImageVersionsClientListByProjectOptions contains the optional parameters for the ImageVersionsClient.NewListByProjectPager
+// method.
+type ImageVersionsClientListByProjectOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ImagesClientGetByProjectOptions contains the optional parameters for the ImagesClient.GetByProject method.
+type ImagesClientGetByProjectOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -297,31 +412,36 @@ type ImagesClientListByGalleryOptions struct {
 	Top *int32
 }
 
+// ImagesClientListByProjectOptions contains the optional parameters for the ImagesClient.NewListByProjectPager method.
+type ImagesClientListByProjectOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NetworkConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginCreateOrUpdate
 // method.
 type NetworkConnectionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // NetworkConnectionsClientBeginDeleteOptions contains the optional parameters for the NetworkConnectionsClient.BeginDelete
 // method.
 type NetworkConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // NetworkConnectionsClientBeginRunHealthChecksOptions contains the optional parameters for the NetworkConnectionsClient.BeginRunHealthChecks
 // method.
 type NetworkConnectionsClientBeginRunHealthChecksOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // NetworkConnectionsClientBeginUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginUpdate
 // method.
 type NetworkConnectionsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -376,25 +496,25 @@ type OperationsClientListOptions struct {
 
 // PoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the PoolsClient.BeginCreateOrUpdate method.
 type PoolsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
 type PoolsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PoolsClientBeginRunHealthChecksOptions contains the optional parameters for the PoolsClient.BeginRunHealthChecks method.
 type PoolsClientBeginRunHealthChecksOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // PoolsClientBeginUpdateOptions contains the optional parameters for the PoolsClient.BeginUpdate method.
 type PoolsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -428,34 +548,85 @@ type ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ProjectCatalogImageDefinitionBuildClientBeginCancelOptions contains the optional parameters for the ProjectCatalogImageDefinitionBuildClient.BeginCancel
+// method.
+type ProjectCatalogImageDefinitionBuildClientBeginCancelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProjectCatalogImageDefinitionBuildClientGetBuildDetailsOptions contains the optional parameters for the ProjectCatalogImageDefinitionBuildClient.GetBuildDetails
+// method.
+type ProjectCatalogImageDefinitionBuildClientGetBuildDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogImageDefinitionBuildClientGetOptions contains the optional parameters for the ProjectCatalogImageDefinitionBuildClient.Get
+// method.
+type ProjectCatalogImageDefinitionBuildClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogImageDefinitionBuildsClientListByImageDefinitionOptions contains the optional parameters for the ProjectCatalogImageDefinitionBuildsClient.NewListByImageDefinitionPager
+// method.
+type ProjectCatalogImageDefinitionBuildsClientListByImageDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogImageDefinitionsClientBeginBuildImageOptions contains the optional parameters for the ProjectCatalogImageDefinitionsClient.BeginBuildImage
+// method.
+type ProjectCatalogImageDefinitionsClientBeginBuildImageOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProjectCatalogImageDefinitionsClientGetByProjectCatalogOptions contains the optional parameters for the ProjectCatalogImageDefinitionsClient.GetByProjectCatalog
+// method.
+type ProjectCatalogImageDefinitionsClientGetByProjectCatalogOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogImageDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the ProjectCatalogImageDefinitionsClient.GetErrorDetails
+// method.
+type ProjectCatalogImageDefinitionsClientGetErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogImageDefinitionsClientListByProjectCatalogOptions contains the optional parameters for the ProjectCatalogImageDefinitionsClient.NewListByProjectCatalogPager
+// method.
+type ProjectCatalogImageDefinitionsClientListByProjectCatalogOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
 // ProjectCatalogsClientBeginConnectOptions contains the optional parameters for the ProjectCatalogsClient.BeginConnect method.
 type ProjectCatalogsClientBeginConnectOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProjectCatalogsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectCatalogsClient.BeginCreateOrUpdate
 // method.
 type ProjectCatalogsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProjectCatalogsClientBeginDeleteOptions contains the optional parameters for the ProjectCatalogsClient.BeginDelete method.
 type ProjectCatalogsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProjectCatalogsClientBeginPatchOptions contains the optional parameters for the ProjectCatalogsClient.BeginPatch method.
 type ProjectCatalogsClientBeginPatchOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProjectCatalogsClientBeginSyncOptions contains the optional parameters for the ProjectCatalogsClient.BeginSync method.
 type ProjectCatalogsClientBeginSyncOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -506,22 +677,59 @@ type ProjectEnvironmentTypesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ProjectPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectPoliciesClient.BeginCreateOrUpdate
+// method.
+type ProjectPoliciesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProjectPoliciesClientBeginDeleteOptions contains the optional parameters for the ProjectPoliciesClient.BeginDelete method.
+type ProjectPoliciesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProjectPoliciesClientBeginUpdateOptions contains the optional parameters for the ProjectPoliciesClient.BeginUpdate method.
+type ProjectPoliciesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProjectPoliciesClientGetOptions contains the optional parameters for the ProjectPoliciesClient.Get method.
+type ProjectPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectPoliciesClientListByDevCenterOptions contains the optional parameters for the ProjectPoliciesClient.NewListByDevCenterPager
+// method.
+type ProjectPoliciesClientListByDevCenterOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
 // ProjectsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectsClient.BeginCreateOrUpdate method.
 type ProjectsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProjectsClientBeginDeleteOptions contains the optional parameters for the ProjectsClient.BeginDelete method.
 type ProjectsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ProjectsClientBeginUpdateOptions contains the optional parameters for the ProjectsClient.BeginUpdate method.
 type ProjectsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// ProjectsClientGetInheritedSettingsOptions contains the optional parameters for the ProjectsClient.GetInheritedSettings
+// method.
+type ProjectsClientGetInheritedSettingsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ProjectsClientGetOptions contains the optional parameters for the ProjectsClient.Get method.
@@ -543,6 +751,11 @@ type ProjectsClientListBySubscriptionOptions struct {
 	Top *int32
 }
 
+// SKUsClientListByProjectOptions contains the optional parameters for the SKUsClient.NewListByProjectPager method.
+type SKUsClientListByProjectOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SKUsClientListBySubscriptionOptions contains the optional parameters for the SKUsClient.NewListBySubscriptionPager method.
 type SKUsClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -552,7 +765,7 @@ type SKUsClientListBySubscriptionOptions struct {
 // SchedulesClientBeginCreateOrUpdateOptions contains the optional parameters for the SchedulesClient.BeginCreateOrUpdate
 // method.
 type SchedulesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -561,7 +774,7 @@ type SchedulesClientBeginCreateOrUpdateOptions struct {
 
 // SchedulesClientBeginDeleteOptions contains the optional parameters for the SchedulesClient.BeginDelete method.
 type SchedulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -570,7 +783,7 @@ type SchedulesClientBeginDeleteOptions struct {
 
 // SchedulesClientBeginUpdateOptions contains the optional parameters for the SchedulesClient.BeginUpdate method.
 type SchedulesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 
 	// The maximum number of resources to return from the operation. Example: '$top=10'.

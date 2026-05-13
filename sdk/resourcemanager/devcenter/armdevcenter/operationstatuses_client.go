@@ -27,7 +27,7 @@ type OperationStatusesClient struct {
 // NewOperationStatusesClient creates a new instance of OperationStatusesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCr
 // Get - Gets the current status of an async operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - location - The Azure region
 //   - operationID - The ID of an ongoing async operation
 //   - options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
@@ -70,7 +70,7 @@ func (client *OperationStatusesClient) Get(ctx context.Context, location string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationStatusesClientGetOptions) (*policy.Request, error) {
+func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *OperationStatusesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/locations/{location}/operationStatuses/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +89,7 @@ func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

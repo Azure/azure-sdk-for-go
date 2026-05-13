@@ -16,29 +16,101 @@ import (
 
 // ServerFactory is a fake server for instances of the armdevcenter.ClientFactory type.
 type ServerFactory struct {
-	AttachedNetworksServer                     AttachedNetworksServer
-	CatalogsServer                             CatalogsServer
-	CheckNameAvailabilityServer                CheckNameAvailabilityServer
-	CheckScopedNameAvailabilityServer          CheckScopedNameAvailabilityServer
-	DevBoxDefinitionsServer                    DevBoxDefinitionsServer
-	DevCentersServer                           DevCentersServer
-	EnvironmentDefinitionsServer               EnvironmentDefinitionsServer
-	EnvironmentTypesServer                     EnvironmentTypesServer
-	GalleriesServer                            GalleriesServer
-	ImageVersionsServer                        ImageVersionsServer
-	ImagesServer                               ImagesServer
-	NetworkConnectionsServer                   NetworkConnectionsServer
-	OperationStatusesServer                    OperationStatusesServer
-	OperationsServer                           OperationsServer
-	PoolsServer                                PoolsServer
-	ProjectAllowedEnvironmentTypesServer       ProjectAllowedEnvironmentTypesServer
+	// AttachedNetworksServer contains the fakes for client AttachedNetworksClient
+	AttachedNetworksServer AttachedNetworksServer
+
+	// CatalogImageDefinitionBuildServer contains the fakes for client CatalogImageDefinitionBuildClient
+	CatalogImageDefinitionBuildServer CatalogImageDefinitionBuildServer
+
+	// CatalogImageDefinitionBuildsServer contains the fakes for client CatalogImageDefinitionBuildsClient
+	CatalogImageDefinitionBuildsServer CatalogImageDefinitionBuildsServer
+
+	// CatalogImageDefinitionsServer contains the fakes for client CatalogImageDefinitionsClient
+	CatalogImageDefinitionsServer CatalogImageDefinitionsServer
+
+	// CatalogsServer contains the fakes for client CatalogsClient
+	CatalogsServer CatalogsServer
+
+	// CheckNameAvailabilityServer contains the fakes for client CheckNameAvailabilityClient
+	CheckNameAvailabilityServer CheckNameAvailabilityServer
+
+	// CheckScopedNameAvailabilityServer contains the fakes for client CheckScopedNameAvailabilityClient
+	CheckScopedNameAvailabilityServer CheckScopedNameAvailabilityServer
+
+	// CustomizationTasksServer contains the fakes for client CustomizationTasksClient
+	CustomizationTasksServer CustomizationTasksServer
+
+	// DevBoxDefinitionsServer contains the fakes for client DevBoxDefinitionsClient
+	DevBoxDefinitionsServer DevBoxDefinitionsServer
+
+	// DevCentersServer contains the fakes for client DevCentersClient
+	DevCentersServer DevCentersServer
+
+	// EncryptionSetsServer contains the fakes for client EncryptionSetsClient
+	EncryptionSetsServer EncryptionSetsServer
+
+	// EnvironmentDefinitionsServer contains the fakes for client EnvironmentDefinitionsClient
+	EnvironmentDefinitionsServer EnvironmentDefinitionsServer
+
+	// EnvironmentTypesServer contains the fakes for client EnvironmentTypesClient
+	EnvironmentTypesServer EnvironmentTypesServer
+
+	// GalleriesServer contains the fakes for client GalleriesClient
+	GalleriesServer GalleriesServer
+
+	// ImageVersionsServer contains the fakes for client ImageVersionsClient
+	ImageVersionsServer ImageVersionsServer
+
+	// ImagesServer contains the fakes for client ImagesClient
+	ImagesServer ImagesServer
+
+	// NetworkConnectionsServer contains the fakes for client NetworkConnectionsClient
+	NetworkConnectionsServer NetworkConnectionsServer
+
+	// OperationStatusesServer contains the fakes for client OperationStatusesClient
+	OperationStatusesServer OperationStatusesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PoolsServer contains the fakes for client PoolsClient
+	PoolsServer PoolsServer
+
+	// ProjectAllowedEnvironmentTypesServer contains the fakes for client ProjectAllowedEnvironmentTypesClient
+	ProjectAllowedEnvironmentTypesServer ProjectAllowedEnvironmentTypesServer
+
+	// ProjectCatalogEnvironmentDefinitionsServer contains the fakes for client ProjectCatalogEnvironmentDefinitionsClient
 	ProjectCatalogEnvironmentDefinitionsServer ProjectCatalogEnvironmentDefinitionsServer
-	ProjectCatalogsServer                      ProjectCatalogsServer
-	ProjectEnvironmentTypesServer              ProjectEnvironmentTypesServer
-	ProjectsServer                             ProjectsServer
-	SKUsServer                                 SKUsServer
-	SchedulesServer                            SchedulesServer
-	UsagesServer                               UsagesServer
+
+	// ProjectCatalogImageDefinitionBuildServer contains the fakes for client ProjectCatalogImageDefinitionBuildClient
+	ProjectCatalogImageDefinitionBuildServer ProjectCatalogImageDefinitionBuildServer
+
+	// ProjectCatalogImageDefinitionBuildsServer contains the fakes for client ProjectCatalogImageDefinitionBuildsClient
+	ProjectCatalogImageDefinitionBuildsServer ProjectCatalogImageDefinitionBuildsServer
+
+	// ProjectCatalogImageDefinitionsServer contains the fakes for client ProjectCatalogImageDefinitionsClient
+	ProjectCatalogImageDefinitionsServer ProjectCatalogImageDefinitionsServer
+
+	// ProjectCatalogsServer contains the fakes for client ProjectCatalogsClient
+	ProjectCatalogsServer ProjectCatalogsServer
+
+	// ProjectEnvironmentTypesServer contains the fakes for client ProjectEnvironmentTypesClient
+	ProjectEnvironmentTypesServer ProjectEnvironmentTypesServer
+
+	// ProjectPoliciesServer contains the fakes for client ProjectPoliciesClient
+	ProjectPoliciesServer ProjectPoliciesServer
+
+	// ProjectsServer contains the fakes for client ProjectsClient
+	ProjectsServer ProjectsServer
+
+	// SKUsServer contains the fakes for client SKUsClient
+	SKUsServer SKUsServer
+
+	// SchedulesServer contains the fakes for client SchedulesClient
+	SchedulesServer SchedulesServer
+
+	// UsagesServer contains the fakes for client UsagesClient
+	UsagesServer UsagesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -56,11 +128,16 @@ type ServerFactoryTransport struct {
 	srv                                          *ServerFactory
 	trMu                                         sync.Mutex
 	trAttachedNetworksServer                     *AttachedNetworksServerTransport
+	trCatalogImageDefinitionBuildServer          *CatalogImageDefinitionBuildServerTransport
+	trCatalogImageDefinitionBuildsServer         *CatalogImageDefinitionBuildsServerTransport
+	trCatalogImageDefinitionsServer              *CatalogImageDefinitionsServerTransport
 	trCatalogsServer                             *CatalogsServerTransport
 	trCheckNameAvailabilityServer                *CheckNameAvailabilityServerTransport
 	trCheckScopedNameAvailabilityServer          *CheckScopedNameAvailabilityServerTransport
+	trCustomizationTasksServer                   *CustomizationTasksServerTransport
 	trDevBoxDefinitionsServer                    *DevBoxDefinitionsServerTransport
 	trDevCentersServer                           *DevCentersServerTransport
+	trEncryptionSetsServer                       *EncryptionSetsServerTransport
 	trEnvironmentDefinitionsServer               *EnvironmentDefinitionsServerTransport
 	trEnvironmentTypesServer                     *EnvironmentTypesServerTransport
 	trGalleriesServer                            *GalleriesServerTransport
@@ -72,8 +149,12 @@ type ServerFactoryTransport struct {
 	trPoolsServer                                *PoolsServerTransport
 	trProjectAllowedEnvironmentTypesServer       *ProjectAllowedEnvironmentTypesServerTransport
 	trProjectCatalogEnvironmentDefinitionsServer *ProjectCatalogEnvironmentDefinitionsServerTransport
+	trProjectCatalogImageDefinitionBuildServer   *ProjectCatalogImageDefinitionBuildServerTransport
+	trProjectCatalogImageDefinitionBuildsServer  *ProjectCatalogImageDefinitionBuildsServerTransport
+	trProjectCatalogImageDefinitionsServer       *ProjectCatalogImageDefinitionsServerTransport
 	trProjectCatalogsServer                      *ProjectCatalogsServerTransport
 	trProjectEnvironmentTypesServer              *ProjectEnvironmentTypesServerTransport
+	trProjectPoliciesServer                      *ProjectPoliciesServerTransport
 	trProjectsServer                             *ProjectsServerTransport
 	trSKUsServer                                 *SKUsServerTransport
 	trSchedulesServer                            *SchedulesServerTransport
@@ -98,6 +179,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAttachedNetworksServerTransport(&s.srv.AttachedNetworksServer)
 		})
 		resp, err = s.trAttachedNetworksServer.Do(req)
+	case "CatalogImageDefinitionBuildClient":
+		initServer(s, &s.trCatalogImageDefinitionBuildServer, func() *CatalogImageDefinitionBuildServerTransport {
+			return NewCatalogImageDefinitionBuildServerTransport(&s.srv.CatalogImageDefinitionBuildServer)
+		})
+		resp, err = s.trCatalogImageDefinitionBuildServer.Do(req)
+	case "CatalogImageDefinitionBuildsClient":
+		initServer(s, &s.trCatalogImageDefinitionBuildsServer, func() *CatalogImageDefinitionBuildsServerTransport {
+			return NewCatalogImageDefinitionBuildsServerTransport(&s.srv.CatalogImageDefinitionBuildsServer)
+		})
+		resp, err = s.trCatalogImageDefinitionBuildsServer.Do(req)
+	case "CatalogImageDefinitionsClient":
+		initServer(s, &s.trCatalogImageDefinitionsServer, func() *CatalogImageDefinitionsServerTransport {
+			return NewCatalogImageDefinitionsServerTransport(&s.srv.CatalogImageDefinitionsServer)
+		})
+		resp, err = s.trCatalogImageDefinitionsServer.Do(req)
 	case "CatalogsClient":
 		initServer(s, &s.trCatalogsServer, func() *CatalogsServerTransport { return NewCatalogsServerTransport(&s.srv.CatalogsServer) })
 		resp, err = s.trCatalogsServer.Do(req)
@@ -111,6 +207,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCheckScopedNameAvailabilityServerTransport(&s.srv.CheckScopedNameAvailabilityServer)
 		})
 		resp, err = s.trCheckScopedNameAvailabilityServer.Do(req)
+	case "CustomizationTasksClient":
+		initServer(s, &s.trCustomizationTasksServer, func() *CustomizationTasksServerTransport {
+			return NewCustomizationTasksServerTransport(&s.srv.CustomizationTasksServer)
+		})
+		resp, err = s.trCustomizationTasksServer.Do(req)
 	case "DevBoxDefinitionsClient":
 		initServer(s, &s.trDevBoxDefinitionsServer, func() *DevBoxDefinitionsServerTransport {
 			return NewDevBoxDefinitionsServerTransport(&s.srv.DevBoxDefinitionsServer)
@@ -119,6 +220,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DevCentersClient":
 		initServer(s, &s.trDevCentersServer, func() *DevCentersServerTransport { return NewDevCentersServerTransport(&s.srv.DevCentersServer) })
 		resp, err = s.trDevCentersServer.Do(req)
+	case "EncryptionSetsClient":
+		initServer(s, &s.trEncryptionSetsServer, func() *EncryptionSetsServerTransport {
+			return NewEncryptionSetsServerTransport(&s.srv.EncryptionSetsServer)
+		})
+		resp, err = s.trEncryptionSetsServer.Do(req)
 	case "EnvironmentDefinitionsClient":
 		initServer(s, &s.trEnvironmentDefinitionsServer, func() *EnvironmentDefinitionsServerTransport {
 			return NewEnvironmentDefinitionsServerTransport(&s.srv.EnvironmentDefinitionsServer)
@@ -166,6 +272,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProjectCatalogEnvironmentDefinitionsServerTransport(&s.srv.ProjectCatalogEnvironmentDefinitionsServer)
 		})
 		resp, err = s.trProjectCatalogEnvironmentDefinitionsServer.Do(req)
+	case "ProjectCatalogImageDefinitionBuildClient":
+		initServer(s, &s.trProjectCatalogImageDefinitionBuildServer, func() *ProjectCatalogImageDefinitionBuildServerTransport {
+			return NewProjectCatalogImageDefinitionBuildServerTransport(&s.srv.ProjectCatalogImageDefinitionBuildServer)
+		})
+		resp, err = s.trProjectCatalogImageDefinitionBuildServer.Do(req)
+	case "ProjectCatalogImageDefinitionBuildsClient":
+		initServer(s, &s.trProjectCatalogImageDefinitionBuildsServer, func() *ProjectCatalogImageDefinitionBuildsServerTransport {
+			return NewProjectCatalogImageDefinitionBuildsServerTransport(&s.srv.ProjectCatalogImageDefinitionBuildsServer)
+		})
+		resp, err = s.trProjectCatalogImageDefinitionBuildsServer.Do(req)
+	case "ProjectCatalogImageDefinitionsClient":
+		initServer(s, &s.trProjectCatalogImageDefinitionsServer, func() *ProjectCatalogImageDefinitionsServerTransport {
+			return NewProjectCatalogImageDefinitionsServerTransport(&s.srv.ProjectCatalogImageDefinitionsServer)
+		})
+		resp, err = s.trProjectCatalogImageDefinitionsServer.Do(req)
 	case "ProjectCatalogsClient":
 		initServer(s, &s.trProjectCatalogsServer, func() *ProjectCatalogsServerTransport {
 			return NewProjectCatalogsServerTransport(&s.srv.ProjectCatalogsServer)
@@ -176,6 +297,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProjectEnvironmentTypesServerTransport(&s.srv.ProjectEnvironmentTypesServer)
 		})
 		resp, err = s.trProjectEnvironmentTypesServer.Do(req)
+	case "ProjectPoliciesClient":
+		initServer(s, &s.trProjectPoliciesServer, func() *ProjectPoliciesServerTransport {
+			return NewProjectPoliciesServerTransport(&s.srv.ProjectPoliciesServer)
+		})
+		resp, err = s.trProjectPoliciesServer.Do(req)
 	case "ProjectsClient":
 		initServer(s, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)

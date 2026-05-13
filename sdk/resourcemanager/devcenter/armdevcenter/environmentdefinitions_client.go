@@ -28,7 +28,7 @@ type EnvironmentDefinitionsClient struct {
 // NewEnvironmentDefinitionsClient creates a new instance of EnvironmentDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEnvironmentDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewEnvironmentDefinitionsClient(subscriptionID string, credential azcore.To
 // Get - Gets an environment definition from the catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
@@ -74,7 +74,7 @@ func (client *EnvironmentDefinitionsClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetOptions) (*policy.Request, error) {
+func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, _ *EnvironmentDefinitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -101,7 +101,7 @@ func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,7 +119,7 @@ func (client *EnvironmentDefinitionsClient) getHandleResponse(resp *http.Respons
 // GetByProjectCatalog - Gets an environment definition from the catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - catalogName - The name of the Catalog.
@@ -149,7 +149,7 @@ func (client *EnvironmentDefinitionsClient) GetByProjectCatalog(ctx context.Cont
 }
 
 // getByProjectCatalogCreateRequest creates the GetByProjectCatalog request.
-func (client *EnvironmentDefinitionsClient) getByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetByProjectCatalogOptions) (*policy.Request, error) {
+func (client *EnvironmentDefinitionsClient) getByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, environmentDefinitionName string, _ *EnvironmentDefinitionsClientGetByProjectCatalogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -176,7 +176,7 @@ func (client *EnvironmentDefinitionsClient) getByProjectCatalogCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +194,7 @@ func (client *EnvironmentDefinitionsClient) getByProjectCatalogHandleResponse(re
 // GetErrorDetails - Gets Environment Definition error details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
@@ -224,7 +224,7 @@ func (client *EnvironmentDefinitionsClient) GetErrorDetails(ctx context.Context,
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
-func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
+func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, _ *EnvironmentDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}/getErrorDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -251,7 +251,7 @@ func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -268,7 +268,7 @@ func (client *EnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *
 
 // NewListByCatalogPager - List environment definitions in the catalog.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - catalogName - The name of the Catalog.
@@ -324,7 +324,7 @@ func (client *EnvironmentDefinitionsClient) listByCatalogCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +341,7 @@ func (client *EnvironmentDefinitionsClient) listByCatalogHandleResponse(resp *ht
 
 // NewListByProjectCatalogPager - Lists the environment definitions in this project catalog.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - catalogName - The name of the Catalog.
@@ -371,7 +371,7 @@ func (client *EnvironmentDefinitionsClient) NewListByProjectCatalogPager(resourc
 }
 
 // listByProjectCatalogCreateRequest creates the ListByProjectCatalog request.
-func (client *EnvironmentDefinitionsClient) listByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *EnvironmentDefinitionsClientListByProjectCatalogOptions) (*policy.Request, error) {
+func (client *EnvironmentDefinitionsClient) listByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, _ *EnvironmentDefinitionsClientListByProjectCatalogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -394,7 +394,7 @@ func (client *EnvironmentDefinitionsClient) listByProjectCatalogCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

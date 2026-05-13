@@ -27,7 +27,7 @@ type ProjectCatalogEnvironmentDefinitionsClient struct {
 // NewProjectCatalogEnvironmentDefinitionsClient creates a new instance of ProjectCatalogEnvironmentDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectCatalogEnvironmentDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectCatalogEnvironmentDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewProjectCatalogEnvironmentDefinitionsClient(subscriptionID string, creden
 // GetErrorDetails - Gets Environment Definition error details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - catalogName - The name of the Catalog.
@@ -73,7 +73,7 @@ func (client *ProjectCatalogEnvironmentDefinitionsClient) GetErrorDetails(ctx co
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
-func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, environmentDefinitionName string, options *ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
+func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, environmentDefinitionName string, _ *ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}/getErrorDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -100,7 +100,7 @@ func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

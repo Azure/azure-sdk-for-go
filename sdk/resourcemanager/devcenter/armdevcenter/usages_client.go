@@ -27,7 +27,7 @@ type UsagesClient struct {
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListByLocationPager - Lists the current usages and limits in this location for the provided subscription.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - location - The Azure region
 //   - options - UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager
 //     method.
@@ -70,7 +70,7 @@ func (client *UsagesClient) NewListByLocationPager(location string, options *Usa
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesClientListByLocationOptions) (*policy.Request, error) {
+func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, _ *UsagesClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -85,7 +85,7 @@ func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

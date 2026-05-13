@@ -27,7 +27,7 @@ type CheckNameAvailabilityClient struct {
 // NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.Tok
 // Execute - Check the availability of name for resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - nameAvailabilityRequest - The required parameters for checking if resource name is available.
 //   - options - CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
 //     method.
@@ -70,7 +70,7 @@ func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvai
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest CheckNameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (*policy.Request, error) {
+func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest CheckNameAvailabilityRequest, _ *CheckNameAvailabilityClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +81,7 @@ func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

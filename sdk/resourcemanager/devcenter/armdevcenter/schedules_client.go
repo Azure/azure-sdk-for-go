@@ -28,7 +28,7 @@ type SchedulesClient struct {
 // NewSchedulesClient creates a new instance of SchedulesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchedulesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreateOrUpdate - Creates or updates a Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - poolName - Name of the pool.
@@ -73,7 +73,7 @@ func (client *SchedulesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // CreateOrUpdate - Creates or updates a Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 func (client *SchedulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body Schedule, options *SchedulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulesClient.BeginCreateOrUpdate"
@@ -126,7 +126,7 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -138,7 +138,7 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Deletes a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - poolName - Name of the pool.
@@ -165,7 +165,7 @@ func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 func (client *SchedulesClient) deleteOperation(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulesClient.BeginDelete"
@@ -218,7 +218,7 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -227,7 +227,7 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets a schedule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - poolName - Name of the pool.
@@ -286,7 +286,7 @@ func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +303,7 @@ func (client *SchedulesClient) getHandleResponse(resp *http.Response) (Schedules
 
 // NewListByPoolPager - Lists schedules for a pool
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - poolName - Name of the pool.
@@ -359,7 +359,7 @@ func (client *SchedulesClient) listByPoolCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,7 +377,7 @@ func (client *SchedulesClient) listByPoolHandleResponse(resp *http.Response) (Sc
 // BeginUpdate - Partially updates a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - poolName - Name of the pool.
@@ -405,7 +405,7 @@ func (client *SchedulesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Update - Partially updates a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-07-01-preview
 func (client *SchedulesClient) update(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulesClient.BeginUpdate"
@@ -458,7 +458,7 @@ func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resource
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

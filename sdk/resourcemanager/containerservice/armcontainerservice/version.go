@@ -6,5 +6,5 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v9.2.0-beta.1"
+	moduleVersion = "v10.0.0-beta.1"
 )

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v10"
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/ListAvailableContainerServiceVmSkus.json
+// Generated from example definition: 2026-03-02-preview/ListAvailableContainerServiceVmSkus.json
 func ExampleVMSKUsClient_NewListPager_listsAllAvailableContainerServiceVMSkUsForALocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleVMSKUsClient_NewListPager_listsAllAvailableContainerServiceVMSkUsFor
 	}
 }
 
-// Generated from example definition: 2026-02-02-preview/ListAvailableContainerServiceVmSkusWithExtendedLocations.json
+// Generated from example definition: 2026-03-02-preview/ListAvailableContainerServiceVmSkusWithExtendedLocations.json
 func ExampleVMSKUsClient_NewListPager_listsAllAvailableContainerServiceVMSkUsWithExtendedLocationInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

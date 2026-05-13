@@ -5034,11 +5034,29 @@ type HealthReportProperties struct {
 	ResourceDetails *ResourceDetails
 
 	// The status of the health report
-	Status *Status
+	Status *HealthReportStatus
 
 	// READ-ONLY; Additional data for the given health report, this field can include more details on the resource and the health
 	// scenario.
 	ReportAdditionalData map[string]*string
+}
+
+// HealthReportStatus - The status of the health report
+type HealthReportStatus struct {
+	// The status of the health report
+	Code *StatusName
+
+	// READ-ONLY; The date of when the resource of the health report was scanned in the first time
+	FirstEvaluationDate *time.Time
+
+	// READ-ONLY; The date of when the resource was scanned in the last time
+	LastScannedDate *time.Time
+
+	// READ-ONLY; The reason of the given status
+	Reason *string
+
+	// READ-ONLY; The date of when the status of the health report was changed in the last time
+	StatusChangeDate *time.Time
 }
 
 // HealthReportsList - Page of health reports list
@@ -5647,7 +5665,7 @@ type JitNetworkAccessRequestPort struct {
 	Number *int32
 
 	// REQUIRED; The status of the port
-	Status *StatusEnum
+	Status *Status
 
 	// REQUIRED; A description of why the `status` has its value
 	StatusReason *StatusReason
@@ -7753,24 +7771,6 @@ type StandardProperties struct {
 
 	// READ-ONLY; standard type (Custom or BuiltIn only currently)
 	StandardType *string
-}
-
-// Status - The status of the health report
-type Status struct {
-	// The status of the health report
-	Code *StatusName
-
-	// READ-ONLY; The date of when the resource of the health report was scanned in the first time
-	FirstEvaluationDate *time.Time
-
-	// READ-ONLY; The date of when the resource was scanned in the last time
-	LastScannedDate *time.Time
-
-	// READ-ONLY; The reason of the given status
-	Reason *string
-
-	// READ-ONLY; The date of when the status of the health report was changed in the last time
-	StatusChangeDate *time.Time
 }
 
 // SubAssessment - Security sub-assessment on a resource

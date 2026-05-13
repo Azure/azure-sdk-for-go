@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultContactsClientVersion string = "2023-12-01-preview"
+
 // ContactsClient contains the methods for the Contacts group.
 // Don't use this type directly, use NewContactsClient() instead.
+//
+// Generated from API version 2023-12-01-preview
 type ContactsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewContactsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Create - Create security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-12-01-preview
 //   - securityContactName - Name of the security contact object
 //   - securityContact - Security contact object
 //   - options - ContactsClientCreateOptions contains the optional parameters for the ContactsClient.Create method.
@@ -84,8 +86,8 @@ func (client *ContactsClient) createCreateRequest(ctx context.Context, securityC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContactsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, securityContact); err != nil {
@@ -105,8 +107,6 @@ func (client *ContactsClient) createHandleResponse(resp *http.Response) (Contact
 
 // Delete - Delete security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-12-01-preview
 //   - securityContactName - Name of the security contact object
 //   - options - ContactsClientDeleteOptions contains the optional parameters for the ContactsClient.Delete method.
 func (client *ContactsClient) Delete(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientDeleteOptions) (ContactsClientDeleteResponse, error) {
@@ -146,15 +146,13 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContactsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Default Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-12-01-preview
 //   - securityContactName - Name of the security contact object
 //   - options - ContactsClientGetOptions contains the optional parameters for the ContactsClient.Get method.
 func (client *ContactsClient) Get(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientGetOptions) (ContactsClientGetResponse, error) {
@@ -195,8 +193,8 @@ func (client *ContactsClient) getCreateRequest(ctx context.Context, securityCont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContactsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -211,8 +209,6 @@ func (client *ContactsClient) getHandleResponse(resp *http.Response) (ContactsCl
 }
 
 // NewListPager - List all security contact configurations for the subscription
-//
-// Generated from API version 2023-12-01-preview
 //   - options - ContactsClientListOptions contains the optional parameters for the ContactsClient.NewListPager method.
 func (client *ContactsClient) NewListPager(options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContactsClientListResponse]{
@@ -249,8 +245,8 @@ func (client *ContactsClient) listCreateRequest(ctx context.Context, _ *Contacts
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContactsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

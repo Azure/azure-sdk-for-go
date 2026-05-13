@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSecureScoreControlDefinitionsClientVersion string = "2020-01-01"
+
 // SecureScoreControlDefinitionsClient contains the methods for the SecureScoreControlDefinitions group.
 // Don't use this type directly, use NewSecureScoreControlDefinitionsClient() instead.
+//
+// Generated from API version 2020-01-01
 type SecureScoreControlDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +44,6 @@ func NewSecureScoreControlDefinitionsClient(subscriptionID string, credential az
 }
 
 // NewListPager - List the available security controls, their assessments, and the max score
-//
-// Generated from API version 2020-01-01
 //   - options - SecureScoreControlDefinitionsClientListOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.NewListPager
 //     method.
 func (client *SecureScoreControlDefinitionsClient) NewListPager(options *SecureScoreControlDefinitionsClientListOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListResponse] {
@@ -75,8 +77,8 @@ func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSecureScoreControlDefinitionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -92,8 +94,6 @@ func (client *SecureScoreControlDefinitionsClient) listHandleResponse(resp *http
 
 // NewListBySubscriptionPager - For a specified subscription, list the available security controls, their assessments, and
 // the max score
-//
-// Generated from API version 2020-01-01
 //   - options - SecureScoreControlDefinitionsClientListBySubscriptionOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.NewListBySubscriptionPager
 //     method.
 func (client *SecureScoreControlDefinitionsClient) NewListBySubscriptionPager(options *SecureScoreControlDefinitionsClientListBySubscriptionOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListBySubscriptionResponse] {
@@ -131,8 +131,8 @@ func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSecureScoreControlDefinitionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

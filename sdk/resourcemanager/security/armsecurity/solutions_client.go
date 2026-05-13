@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSolutionsClientVersion string = "2020-01-01"
+
 // SolutionsClient contains the methods for the Solutions group.
 // Don't use this type directly, use NewSolutionsClient() instead.
+//
+// Generated from API version 2020-01-01
 type SolutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Gets a specific Security Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2020-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - securitySolutionName - Name of security solution.
@@ -93,8 +95,8 @@ func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSolutionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +111,6 @@ func (client *SolutionsClient) getHandleResponse(resp *http.Response) (Solutions
 }
 
 // NewListPager - Gets a list of Security Solutions for the subscription.
-//
-// Generated from API version 2020-01-01
 //   - options - SolutionsClientListOptions contains the optional parameters for the SolutionsClient.NewListPager method.
 func (client *SolutionsClient) NewListPager(options *SolutionsClientListOptions) *runtime.Pager[SolutionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SolutionsClientListResponse]{
@@ -147,8 +147,8 @@ func (client *SolutionsClient) listCreateRequest(ctx context.Context, _ *Solutio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSolutionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSettingsClientVersion string = "2022-05-01"
+
 // SettingsClient contains the methods for the Settings group.
 // Don't use this type directly, use NewSettingsClient() instead.
+//
+// Generated from API version 2022-05-01
 type SettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewSettingsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Get - Settings of different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-05-01
 //   - settingName - The name of the setting
 //   - options - SettingsClientGetOptions contains the optional parameters for the SettingsClient.Get method.
 func (client *SettingsClient) Get(ctx context.Context, settingName SettingName, options *SettingsClientGetOptions) (SettingsClientGetResponse, error) {
@@ -83,8 +85,8 @@ func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +101,6 @@ func (client *SettingsClient) getHandleResponse(resp *http.Response) (SettingsCl
 }
 
 // NewListPager - Settings about different configurations in Microsoft Defender for Cloud
-//
-// Generated from API version 2022-05-01
 //   - options - SettingsClientListOptions contains the optional parameters for the SettingsClient.NewListPager method.
 func (client *SettingsClient) NewListPager(options *SettingsClientListOptions) *runtime.Pager[SettingsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SettingsClientListResponse]{
@@ -137,8 +137,8 @@ func (client *SettingsClient) listCreateRequest(ctx context.Context, _ *Settings
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -154,8 +154,6 @@ func (client *SettingsClient) listHandleResponse(resp *http.Response) (SettingsC
 
 // Update - updating settings about different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-05-01
 //   - settingName - The name of the setting
 //   - setting - Setting object
 //   - options - SettingsClientUpdateOptions contains the optional parameters for the SettingsClient.Update method.
@@ -197,8 +195,8 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, setting); err != nil {

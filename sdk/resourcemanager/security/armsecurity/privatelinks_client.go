@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultPrivateLinksClientVersion string = "2026-01-01"
+
 // PrivateLinksClient contains the methods for the PrivateLinks group.
 // Don't use this type directly, use NewPrivateLinksClient() instead.
+//
+// Generated from API version 2026-01-01
 type PrivateLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredent
 // connections to Microsoft Defender for Cloud services. For updates to existing resources, use the PATCH operation. The operation
 // is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
 //   - options - PrivateLinksClientBeginCreateOptions contains the optional parameters for the PrivateLinksClient.BeginCreate
@@ -70,8 +72,6 @@ func (client *PrivateLinksClient) BeginCreate(ctx context.Context, resourceGroup
 // connections to Microsoft Defender for Cloud services. For updates to existing resources, use the PATCH operation. The operation
 // is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *PrivateLinksClient) create(ctx context.Context, resourceGroupName string, privateLink PrivateLinkResource, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinksClient.BeginCreate"
@@ -113,8 +113,8 @@ func (client *PrivateLinksClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPrivateLinksClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateLink); err != nil {
@@ -126,8 +126,6 @@ func (client *PrivateLinksClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete a private link resource. This operation will remove the private link infrastructure and disconnect
 // all associated private endpoints. This operation is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
 //   - options - PrivateLinksClientBeginDeleteOptions contains the optional parameters for the PrivateLinksClient.BeginDelete
@@ -153,8 +151,6 @@ func (client *PrivateLinksClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Delete a private link resource. This operation will remove the private link infrastructure and disconnect all
 // associated private endpoints. This operation is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *PrivateLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinksClient.BeginDelete"
@@ -196,16 +192,14 @@ func (client *PrivateLinksClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPrivateLinksClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a private link resource. Returns the configuration and status of private endpoint connectivity for Microsoft
 // Defender for Cloud services in the specified region.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
 //   - options - PrivateLinksClientGetOptions contains the optional parameters for the PrivateLinksClient.Get method.
@@ -251,8 +245,8 @@ func (client *PrivateLinksClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPrivateLinksClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,8 +261,6 @@ func (client *PrivateLinksClient) getHandleResponse(resp *http.Response) (Privat
 }
 
 // Head - Checks whether private link exists.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
 //   - options - PrivateLinksClientHeadOptions contains the optional parameters for the PrivateLinksClient.Head method.
@@ -313,16 +305,14 @@ func (client *PrivateLinksClient) headCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPrivateLinksClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // NewListPager - Lists all the private links in the specified resource group. private links enable secure, private connectivity
 // to Microsoft Defender for Cloud services without exposing traffic to the public internet. Use the 'nextLink' property in
 // the response to get the next page of private links for the specified resource group.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.NewListPager method.
 func (client *PrivateLinksClient) NewListPager(resourceGroupName string, options *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse] {
@@ -364,8 +354,8 @@ func (client *PrivateLinksClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPrivateLinksClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -382,8 +372,6 @@ func (client *PrivateLinksClient) listHandleResponse(resp *http.Response) (Priva
 // NewListBySubscriptionPager - Lists all the private links in the specified subscription. private links enable secure, private
 // connectivity to Microsoft Defender for Cloud services without exposing traffic to the public internet. Use the 'nextLink'
 // property in the response to get the next page of private links for the specified subscription.
-//
-// Generated from API version 2026-01-01
 //   - options - PrivateLinksClientListBySubscriptionOptions contains the optional parameters for the PrivateLinksClient.NewListBySubscriptionPager
 //     method.
 func (client *PrivateLinksClient) NewListBySubscriptionPager(options *PrivateLinksClientListBySubscriptionOptions) *runtime.Pager[PrivateLinksClientListBySubscriptionResponse] {
@@ -421,8 +409,8 @@ func (client *PrivateLinksClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPrivateLinksClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -439,8 +427,6 @@ func (client *PrivateLinksClient) listBySubscriptionHandleResponse(resp *http.Re
 // Update - Update specific properties of a private link resource. Use this operation to update mutable properties like tags
 // without affecting the entire resource configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
 //   - options - PrivateLinksClientUpdateOptions contains the optional parameters for the PrivateLinksClient.Update method.
@@ -486,8 +472,8 @@ func (client *PrivateLinksClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPrivateLinksClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateLink); err != nil {

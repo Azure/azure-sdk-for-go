@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultInformationProtectionPoliciesClientVersion string = "2017-08-01-preview"
+
 // InformationProtectionPoliciesClient contains the methods for the InformationProtectionPolicies group.
 // Don't use this type directly, use NewInformationProtectionPoliciesClient() instead.
+//
+// Generated from API version 2017-08-01-preview
 type InformationProtectionPoliciesClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, o
 
 // CreateOrUpdate - Details of the information protection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2017-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - informationProtectionPolicyName - Name of the information protection policy.
 //   - informationProtectionPolicy - Information protection policy.
@@ -83,8 +85,8 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultInformationProtectionPoliciesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, informationProtectionPolicy); err != nil {
@@ -104,8 +106,6 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(
 
 // Get - Details of the information protection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2017-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - informationProtectionPolicyName - Name of the information protection policy.
 //   - options - InformationProtectionPoliciesClientGetOptions contains the optional parameters for the InformationProtectionPoliciesClient.Get
@@ -148,8 +148,8 @@ func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultInformationProtectionPoliciesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -164,8 +164,6 @@ func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.
 }
 
 // NewListPager - Information protection policies of a specific management group.
-//
-// Generated from API version 2017-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.NewListPager
 //     method.
@@ -204,8 +202,8 @@ func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultInformationProtectionPoliciesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

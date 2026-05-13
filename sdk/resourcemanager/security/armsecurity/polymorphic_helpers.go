@@ -16,10 +16,10 @@ func unmarshalAdditionalDataClassification(rawMsg json.RawMessage) (AdditionalDa
 	}
 	var b AdditionalDataClassification
 	switch m["assessedResourceType"] {
-	case string(AssessedResourceTypeSQLServerVulnerability):
-		b = &SQLServerVulnerabilityProperties{}
 	case string(AssessedResourceTypeContainerRegistryVulnerability):
 		b = &ContainerRegistryVulnerabilityProperties{}
+	case string(AssessedResourceTypeSQLServerVulnerability):
+		b = &SQLServerVulnerabilityProperties{}
 	case string(AssessedResourceTypeServerVulnerabilityAssessment):
 		b = &ServerVulnerabilityProperties{}
 	default:
@@ -129,10 +129,10 @@ func unmarshalAutomationActionClassification(rawMsg json.RawMessage) (Automation
 	}
 	var b AutomationActionClassification
 	switch m["actionType"] {
-	case string(ActionTypeLogicApp):
-		b = &AutomationActionLogicApp{}
 	case string(ActionTypeEventHub):
 		b = &AutomationActionEventHub{}
+	case string(ActionTypeLogicApp):
+		b = &AutomationActionLogicApp{}
 	case string(ActionTypeWorkspace):
 		b = &AutomationActionWorkspace{}
 	default:
@@ -173,10 +173,10 @@ func unmarshalAwsOrganizationalDataClassification(rawMsg json.RawMessage) (AwsOr
 	}
 	var b AwsOrganizationalDataClassification
 	switch m["organizationMembershipType"] {
-	case string(OrganizationMembershipTypeOrganization):
-		b = &AwsOrganizationalDataMaster{}
 	case string(OrganizationMembershipTypeMember):
 		b = &AwsOrganizationalDataMember{}
+	case string(OrganizationMembershipTypeOrganization):
+		b = &AwsOrganizationalDataMaster{}
 	default:
 		b = &AwsOrganizationalData{}
 	}
@@ -198,42 +198,42 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 	switch m["offeringType"] {
 	case string(OfferingTypeCspmMonitorAws):
 		b = &CspmMonitorAwsOffering{}
-	case string(OfferingTypeDefenderForContainersAws):
-		b = &DefenderForContainersAwsOffering{}
-	case string(OfferingTypeDefenderForServersAws):
-		b = &DefenderForServersAwsOffering{}
-	case string(OfferingTypeDefenderForDatabasesAws):
-		b = &DefenderFoDatabasesAwsOffering{}
-	case string(OfferingTypeCspmMonitorGcp):
-		b = &CspmMonitorGcpOffering{}
-	case string(OfferingTypeDefenderForServersGcp):
-		b = &DefenderForServersGcpOffering{}
-	case string(OfferingTypeDefenderForDatabasesGcp):
-		b = &DefenderForDatabasesGcpOffering{}
-	case string(OfferingTypeDefenderForContainersGcp):
-		b = &DefenderForContainersGcpOffering{}
-	case string(OfferingTypeCspmMonitorGithub):
-		b = &CspmMonitorGithubOffering{}
 	case string(OfferingTypeCspmMonitorAzureDevOps):
 		b = &CspmMonitorAzureDevOpsOffering{}
-	case string(OfferingTypeDefenderCspmAws):
-		b = &DefenderCspmAwsOffering{}
-	case string(OfferingTypeDefenderCspmGcp):
-		b = &DefenderCspmGcpOffering{}
-	case string(OfferingTypeCspmMonitorGitLab):
-		b = &CspmMonitorGitLabOffering{}
 	case string(OfferingTypeCspmMonitorDockerHub):
 		b = &CspmMonitorDockerHubOffering{}
-	case string(OfferingTypeDefenderForContainersDockerHub):
-		b = &DefenderForContainersDockerHubOffering{}
-	case string(OfferingTypeDefenderCspmDockerHub):
-		b = &DefenderCspmDockerHubOffering{}
+	case string(OfferingTypeCspmMonitorGcp):
+		b = &CspmMonitorGcpOffering{}
+	case string(OfferingTypeCspmMonitorGitLab):
+		b = &CspmMonitorGitLabOffering{}
+	case string(OfferingTypeCspmMonitorGithub):
+		b = &CspmMonitorGithubOffering{}
 	case string(OfferingTypeCspmMonitorJFrog):
 		b = &CspmMonitorJFrogOffering{}
-	case string(OfferingTypeDefenderForContainersJFrog):
-		b = &DefenderForContainersJFrogOffering{}
+	case string(OfferingTypeDefenderCspmAws):
+		b = &DefenderCspmAwsOffering{}
+	case string(OfferingTypeDefenderCspmDockerHub):
+		b = &DefenderCspmDockerHubOffering{}
+	case string(OfferingTypeDefenderCspmGcp):
+		b = &DefenderCspmGcpOffering{}
 	case string(OfferingTypeDefenderCspmJFrog):
 		b = &DefenderCspmJFrogOffering{}
+	case string(OfferingTypeDefenderForContainersAws):
+		b = &DefenderForContainersAwsOffering{}
+	case string(OfferingTypeDefenderForContainersDockerHub):
+		b = &DefenderForContainersDockerHubOffering{}
+	case string(OfferingTypeDefenderForContainersGcp):
+		b = &DefenderForContainersGcpOffering{}
+	case string(OfferingTypeDefenderForContainersJFrog):
+		b = &DefenderForContainersJFrogOffering{}
+	case string(OfferingTypeDefenderForDatabasesAws):
+		b = &DefenderFoDatabasesAwsOffering{}
+	case string(OfferingTypeDefenderForDatabasesGcp):
+		b = &DefenderForDatabasesGcpOffering{}
+	case string(OfferingTypeDefenderForServersAws):
+		b = &DefenderForServersAwsOffering{}
+	case string(OfferingTypeDefenderForServersGcp):
+		b = &DefenderForServersGcpOffering{}
 	default:
 		b = &CloudOffering{}
 	}
@@ -299,16 +299,16 @@ func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (Environment
 	switch m["environmentType"] {
 	case string(EnvironmentTypeAwsAccount):
 		b = &AwsEnvironmentData{}
+	case string(EnvironmentTypeAzureDevOpsScope):
+		b = &AzureDevOpsScopeEnvironmentData{}
+	case string(EnvironmentTypeDockerHubOrganization):
+		b = &DockerHubEnvironmentData{}
 	case string(EnvironmentTypeGcpProject):
 		b = &GcpProjectEnvironmentData{}
 	case string(EnvironmentTypeGithubScope):
 		b = &GithubScopeEnvironmentData{}
-	case string(EnvironmentTypeAzureDevOpsScope):
-		b = &AzureDevOpsScopeEnvironmentData{}
 	case string(EnvironmentTypeGitlabScope):
 		b = &GitlabScopeEnvironmentData{}
-	case string(EnvironmentTypeDockerHubOrganization):
-		b = &DockerHubEnvironmentData{}
 	case string(EnvironmentTypeJFrogArtifactory):
 		b = &JFrogEnvironmentData{}
 	default:
@@ -330,12 +330,12 @@ func unmarshalExternalSecuritySolutionClassification(rawMsg json.RawMessage) (Ex
 	}
 	var b ExternalSecuritySolutionClassification
 	switch m["kind"] {
-	case string(ExternalSecuritySolutionKindCEF):
-		b = &CefExternalSecuritySolution{}
-	case string(ExternalSecuritySolutionKindATA):
-		b = &AtaExternalSecuritySolution{}
 	case string(ExternalSecuritySolutionKindAAD):
 		b = &AADExternalSecuritySolution{}
+	case string(ExternalSecuritySolutionKindATA):
+		b = &AtaExternalSecuritySolution{}
+	case string(ExternalSecuritySolutionKindCEF):
+		b = &CefExternalSecuritySolution{}
 	default:
 		b = &ExternalSecuritySolution{}
 	}
@@ -374,10 +374,10 @@ func unmarshalGcpOrganizationalDataClassification(rawMsg json.RawMessage) (GcpOr
 	}
 	var b GcpOrganizationalDataClassification
 	switch m["organizationMembershipType"] {
-	case string(OrganizationMembershipTypeOrganization):
-		b = &GcpOrganizationalDataOrganization{}
 	case string(OrganizationMembershipTypeMember):
 		b = &GcpOrganizationalDataMember{}
+	case string(OrganizationMembershipTypeOrganization):
+		b = &GcpOrganizationalDataOrganization{}
 	default:
 		b = &GcpOrganizationalData{}
 	}
@@ -521,10 +521,10 @@ func unmarshalSettingClassification(rawMsg json.RawMessage) (SettingClassificati
 	}
 	var b SettingClassification
 	switch m["kind"] {
-	case string(SettingKindDataExportSettings):
-		b = &DataExportSettings{}
 	case string(SettingKindAlertSyncSettings):
 		b = &AlertSyncSettings{}
+	case string(SettingKindDataExportSettings):
+		b = &DataExportSettings{}
 	default:
 		b = &Setting{}
 	}

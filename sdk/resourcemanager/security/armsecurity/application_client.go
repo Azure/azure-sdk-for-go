@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultApplicationClientVersion string = "2022-07-01-preview"
+
 // ApplicationClient contains the methods for the Application group.
 // Don't use this type directly, use NewApplicationClient() instead.
+//
+// Generated from API version 2022-07-01-preview
 type ApplicationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewApplicationClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Creates or update a security application on the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-07-01-preview
 //   - applicationID - The security Application key - unique key for the standard application
 //   - application - Application over a subscription scope
 //   - options - ApplicationClientCreateOrUpdateOptions contains the optional parameters for the ApplicationClient.CreateOrUpdate
@@ -85,8 +87,8 @@ func (client *ApplicationClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultApplicationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, application); err != nil {
@@ -106,8 +108,6 @@ func (client *ApplicationClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Delete an Application over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-07-01-preview
 //   - applicationID - The security Application key - unique key for the standard application
 //   - options - ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
 func (client *ApplicationClient) Delete(ctx context.Context, applicationID string, options *ApplicationClientDeleteOptions) (ApplicationClientDeleteResponse, error) {
@@ -147,15 +147,13 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, applic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultApplicationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific application for the requested scope by applicationId
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-07-01-preview
 //   - applicationID - The security Application key - unique key for the standard application
 //   - options - ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
 func (client *ApplicationClient) Get(ctx context.Context, applicationID string, options *ApplicationClientGetOptions) (ApplicationClientGetResponse, error) {
@@ -196,8 +194,8 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, applicati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultApplicationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

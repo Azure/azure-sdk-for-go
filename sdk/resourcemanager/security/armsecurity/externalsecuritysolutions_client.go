@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultExternalSecuritySolutionsClientVersion string = "2020-01-01"
+
 // ExternalSecuritySolutionsClient contains the methods for the ExternalSecuritySolutions group.
 // Don't use this type directly, use NewExternalSecuritySolutionsClient() instead.
+//
+// Generated from API version 2020-01-01
 type ExternalSecuritySolutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewExternalSecuritySolutionsClient(subscriptionID string, credential azcore
 
 // Get - Gets a specific external Security Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2020-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - externalSecuritySolutionsName - Name of an external security solution.
@@ -94,8 +96,8 @@ func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultExternalSecuritySolutionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +112,6 @@ func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Gets a list of external security solutions for the subscription.
-//
-// Generated from API version 2020-01-01
 //   - options - ExternalSecuritySolutionsClientListOptions contains the optional parameters for the ExternalSecuritySolutionsClient.NewListPager
 //     method.
 func (client *ExternalSecuritySolutionsClient) NewListPager(options *ExternalSecuritySolutionsClientListOptions) *runtime.Pager[ExternalSecuritySolutionsClientListResponse] {
@@ -149,8 +149,8 @@ func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultExternalSecuritySolutionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -165,8 +165,6 @@ func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Res
 }
 
 // NewListByHomeRegionPager - Gets a list of external Security Solutions for the subscription and location.
-//
-// Generated from API version 2020-01-01
 //   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - options - ExternalSecuritySolutionsClientListByHomeRegionOptions contains the optional parameters for the ExternalSecuritySolutionsClient.NewListByHomeRegionPager
 //     method.
@@ -209,8 +207,8 @@ func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultExternalSecuritySolutionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

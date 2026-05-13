@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSecureScoresClientVersion string = "2020-01-01"
+
 // SecureScoresClient contains the methods for the SecureScores group.
 // Don't use this type directly, use NewSecureScoresClient() instead.
+//
+// Generated from API version 2020-01-01
 type SecureScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredent
 // Get - Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC Default
 // initiative, use 'ascScore'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2020-01-01
 //   - secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
 //   - options - SecureScoresClientGetOptions contains the optional parameters for the SecureScoresClient.Get method.
 func (client *SecureScoresClient) Get(ctx context.Context, secureScoreName string, options *SecureScoresClientGetOptions) (SecureScoresClientGetResponse, error) {
@@ -84,8 +86,8 @@ func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureSc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSecureScoresClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -100,8 +102,6 @@ func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (Secure
 }
 
 // NewListPager - List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
-//
-// Generated from API version 2020-01-01
 //   - options - SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.NewListPager method.
 func (client *SecureScoresClient) NewListPager(options *SecureScoresClientListOptions) *runtime.Pager[SecureScoresClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SecureScoresClientListResponse]{
@@ -138,8 +138,8 @@ func (client *SecureScoresClient) listCreateRequest(ctx context.Context, _ *Secu
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSecureScoresClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

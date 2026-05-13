@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAllowedConnectionsClientVersion string = "2020-01-01"
+
 // AllowedConnectionsClient contains the methods for the AllowedConnections group.
 // Don't use this type directly, use NewAllowedConnectionsClient() instead.
+//
+// Generated from API version 2020-01-01
 type AllowedConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewAllowedConnectionsClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets the list of all possible traffic between resources for the subscription and location, based on connection type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2020-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - connectionType - The type of allowed connections (Internal, External)
@@ -93,8 +95,8 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAllowedConnectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +111,6 @@ func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets the list of all possible traffic between resources for the subscription
-//
-// Generated from API version 2020-01-01
 //   - options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.NewListPager
 //     method.
 func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
@@ -148,8 +148,8 @@ func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAllowedConnectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -164,8 +164,6 @@ func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) 
 }
 
 // NewListByHomeRegionPager - Gets the list of all possible traffic between resources for the subscription and location.
-//
-// Generated from API version 2020-01-01
 //   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - options - AllowedConnectionsClientListByHomeRegionOptions contains the optional parameters for the AllowedConnectionsClient.NewListByHomeRegionPager
 //     method.
@@ -208,8 +206,8 @@ func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAllowedConnectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

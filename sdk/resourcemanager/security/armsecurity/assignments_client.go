@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAssignmentsClientVersion string = "2021-08-01-preview"
+
 // AssignmentsClient contains the methods for the Assignments group.
 // Don't use this type directly, use NewAssignmentsClient() instead.
+//
+// Generated from API version 2021-08-01-preview
 type AssignmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Create a security assignment on the given scope. Will create/update the required standard assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assignmentID - The security assignment key - unique key for the standard assignment
 //   - assignment - Custom standard assignment over a pre-defined scope
@@ -90,8 +92,8 @@ func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, assignment); err != nil {
@@ -111,8 +113,6 @@ func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Delete a standard assignment over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assignmentID - The security assignment key - unique key for the standard assignment
 //   - options - AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
@@ -157,15 +157,13 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific standard assignment for the requested scope by resourceId
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assignmentID - The security assignment key - unique key for the standard assignment
 //   - options - AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
@@ -211,8 +209,8 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -227,8 +225,6 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 }
 
 // NewListPager - Get a list of all relevant standardAssignments available for scope
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
 func (client *AssignmentsClient) NewListPager(resourceGroupName string, options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
@@ -270,8 +266,8 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -286,8 +282,6 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 }
 
 // NewListBySubscriptionPager - Get a list of all relevant standardAssignments over a subscription level scope
-//
-// Generated from API version 2021-08-01-preview
 //   - options - AssignmentsClientListBySubscriptionOptions contains the optional parameters for the AssignmentsClient.NewListBySubscriptionPager
 //     method.
 func (client *AssignmentsClient) NewListBySubscriptionPager(options *AssignmentsClientListBySubscriptionOptions) *runtime.Pager[AssignmentsClientListBySubscriptionResponse] {
@@ -325,8 +319,8 @@ func (client *AssignmentsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

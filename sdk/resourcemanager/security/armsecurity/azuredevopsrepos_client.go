@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAzureDevOpsReposClientVersion string = "2025-11-01-preview"
+
 // AzureDevOpsReposClient contains the methods for the AzureDevOpsRepos group.
 // Don't use this type directly, use NewAzureDevOpsReposClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type AzureDevOpsReposClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewAzureDevOpsReposClient(subscriptionID string, credential azcore.TokenCre
 //
 // Creates or updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - azureDevOpsRepository - The Azure DevOps repository resource payload.
@@ -71,8 +73,6 @@ func (client *AzureDevOpsReposClient) BeginCreateOrUpdate(ctx context.Context, r
 //
 // Creates or updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *AzureDevOpsReposClient) createOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, options *AzureDevOpsReposClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureDevOpsReposClient.BeginCreateOrUpdate"
@@ -126,8 +126,8 @@ func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureDevOpsRepository); err != nil {
@@ -140,8 +140,6 @@ func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Co
 //
 // Returns a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - AzureDevOpsReposClientGetOptions contains the optional parameters for the AzureDevOpsReposClient.Get method.
@@ -199,8 +197,8 @@ func (client *AzureDevOpsReposClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -217,8 +215,6 @@ func (client *AzureDevOpsReposClient) getHandleResponse(resp *http.Response) (Az
 // NewListPager - Returns a list of Azure DevOps repositories onboarded to the connector.
 //
 // Returns a list of Azure DevOps repositories onboarded to the connector.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - AzureDevOpsReposClientListOptions contains the optional parameters for the AzureDevOpsReposClient.NewListPager
@@ -274,8 +270,8 @@ func (client *AzureDevOpsReposClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -293,8 +289,6 @@ func (client *AzureDevOpsReposClient) listHandleResponse(resp *http.Response) (A
 //
 // Updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - azureDevOpsRepository - The Azure DevOps repository resource payload.
@@ -321,8 +315,6 @@ func (client *AzureDevOpsReposClient) BeginUpdate(ctx context.Context, resourceG
 //
 // Updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *AzureDevOpsReposClient) update(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, options *AzureDevOpsReposClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureDevOpsReposClient.BeginUpdate"
@@ -376,8 +368,8 @@ func (client *AzureDevOpsReposClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureDevOpsRepository); err != nil {

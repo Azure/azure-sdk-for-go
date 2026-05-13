@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAPICollectionsClientVersion string = "2023-11-15"
+
 // APICollectionsClient contains the methods for the APICollections group.
 // Don't use this type directly, use NewAPICollectionsClient() instead.
+//
+// Generated from API version 2023-11-15
 type APICollectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,8 +49,6 @@ func NewAPICollectionsClient(subscriptionID string, credential azcore.TokenCrede
 // is onboarded to Microsoft Defender for APIs, the system will monitor the operations within the Azure API Management API
 // for intrusive behaviors and provide alerts for attacks that have been detected.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - apiID - API revision identifier. Must be unique in the API Management service instance. Non-current revision has ;rev=n
@@ -99,8 +101,8 @@ func (client *APICollectionsClient) getByAzureAPIManagementServiceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -119,8 +121,6 @@ func (client *APICollectionsClient) getByAzureAPIManagementServiceHandleResponse
 // Gets a list of Azure API Management APIs that have been onboarded to Microsoft Defender for APIs. If an Azure API Management
 // API is onboarded to Microsoft Defender for APIs, the system will monitor the operations within the Azure API Management
 // API for intrusive behaviors and provide alerts for attacks that have been detected.
-//
-// Generated from API version 2023-11-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - APICollectionsClientListByAzureAPIManagementServiceOptions contains the optional parameters for the APICollectionsClient.NewListByAzureAPIManagementServicePager
@@ -168,8 +168,8 @@ func (client *APICollectionsClient) listByAzureAPIManagementServiceCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -186,8 +186,6 @@ func (client *APICollectionsClient) listByAzureAPIManagementServiceHandleRespons
 // NewListByResourceGroupPager - Gets a list of API collections within a resource group
 //
 // Gets a list of API collections within a resource group that have been onboarded to Microsoft Defender for APIs.
-//
-// Generated from API version 2023-11-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - APICollectionsClientListByResourceGroupOptions contains the optional parameters for the APICollectionsClient.NewListByResourceGroupPager
 //     method.
@@ -230,8 +228,8 @@ func (client *APICollectionsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -248,8 +246,6 @@ func (client *APICollectionsClient) listByResourceGroupHandleResponse(resp *http
 // NewListBySubscriptionPager - Gets a list of API collections within a subscription
 //
 // Gets a list of API collections within a subscription that have been onboarded to Microsoft Defender for APIs.
-//
-// Generated from API version 2023-11-15
 //   - options - APICollectionsClientListBySubscriptionOptions contains the optional parameters for the APICollectionsClient.NewListBySubscriptionPager
 //     method.
 func (client *APICollectionsClient) NewListBySubscriptionPager(options *APICollectionsClientListBySubscriptionOptions) *runtime.Pager[APICollectionsClientListBySubscriptionResponse] {
@@ -287,8 +283,8 @@ func (client *APICollectionsClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -307,8 +303,6 @@ func (client *APICollectionsClient) listBySubscriptionHandleResponse(resp *http.
 // Offboard an Azure API Management API from Microsoft Defender for APIs. The system will stop monitoring the operations within
 // the Azure API Management API for intrusive behaviors.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - apiID - API revision identifier. Must be unique in the API Management service instance. Non-current revision has ;rev=n
@@ -360,8 +354,8 @@ func (client *APICollectionsClient) offboardAzureAPIManagementAPICreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -370,8 +364,6 @@ func (client *APICollectionsClient) offboardAzureAPIManagementAPICreateRequest(c
 // Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the operations within
 // the Azure Management API for intrusive behaviors and provide alerts for attacks that have been detected.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - apiID - API revision identifier. Must be unique in the API Management service instance. Non-current revision has ;rev=n
@@ -400,8 +392,6 @@ func (client *APICollectionsClient) BeginOnboardAzureAPIManagementAPI(ctx contex
 // Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the operations within
 // the Azure Management API for intrusive behaviors and provide alerts for attacks that have been detected.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-15
 func (client *APICollectionsClient) onboardAzureAPIManagementAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*http.Response, error) {
 	var err error
 	const operationName = "APICollectionsClient.BeginOnboardAzureAPIManagementAPI"
@@ -447,8 +437,8 @@ func (client *APICollectionsClient) onboardAzureAPIManagementAPICreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

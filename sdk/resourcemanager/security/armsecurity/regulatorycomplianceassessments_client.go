@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultRegulatoryComplianceAssessmentsClientVersion string = "2019-01-01-preview"
+
 // RegulatoryComplianceAssessmentsClient contains the methods for the RegulatoryComplianceAssessments group.
 // Don't use this type directly, use NewRegulatoryComplianceAssessmentsClient() instead.
+//
+// Generated from API version 2019-01-01-preview
 type RegulatoryComplianceAssessmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, credential 
 
 // Get - Supported regulatory compliance details and state for selected assessment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01-preview
 //   - regulatoryComplianceStandardName - Name of the regulatory compliance standard object
 //   - regulatoryComplianceControlName - Name of the regulatory compliance control object
 //   - regulatoryComplianceAssessmentName - Name of the regulatory compliance assessment object
@@ -94,8 +96,8 @@ func (client *RegulatoryComplianceAssessmentsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRegulatoryComplianceAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +112,6 @@ func (client *RegulatoryComplianceAssessmentsClient) getHandleResponse(resp *htt
 }
 
 // NewListPager - Details and state of assessments mapped to selected regulatory compliance control
-//
-// Generated from API version 2019-01-01-preview
 //   - regulatoryComplianceStandardName - Name of the regulatory compliance standard object
 //   - regulatoryComplianceControlName - Name of the regulatory compliance control object
 //   - options - RegulatoryComplianceAssessmentsClientListOptions contains the optional parameters for the RegulatoryComplianceAssessmentsClient.NewListPager
@@ -162,8 +162,8 @@ func (client *RegulatoryComplianceAssessmentsClient) listCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRegulatoryComplianceAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

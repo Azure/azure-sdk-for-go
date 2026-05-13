@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAdvancedThreatProtectionClientVersion string = "2019-01-01"
+
 // AdvancedThreatProtectionClient contains the methods for the AdvancedThreatProtection group.
 // Don't use this type directly, use NewAdvancedThreatProtectionClient() instead.
+//
+// Generated from API version 2019-01-01
 type AdvancedThreatProtectionClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewAdvancedThreatProtectionClient(credential azcore.TokenCredential, option
 
 // Create - Creates or updates the Advanced Threat Protection settings on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - advancedThreatProtectionSetting - Advanced Threat Protection Settings
 //   - options - AdvancedThreatProtectionClientCreateOptions contains the optional parameters for the AdvancedThreatProtectionClient.Create
@@ -79,8 +81,8 @@ func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAdvancedThreatProtectionClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, advancedThreatProtectionSetting); err != nil {
@@ -100,8 +102,6 @@ func (client *AdvancedThreatProtectionClient) createHandleResponse(resp *http.Re
 
 // Get - Gets the Advanced Threat Protection settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - AdvancedThreatProtectionClientGetOptions contains the optional parameters for the AdvancedThreatProtectionClient.Get
 //     method.
@@ -140,8 +140,8 @@ func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAdvancedThreatProtectionClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

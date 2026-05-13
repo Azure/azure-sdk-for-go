@@ -40,10 +40,10 @@ func unmarshalSettingClassification(rawMsg json.RawMessage) (armsecurity.Setting
 	}
 	var b armsecurity.SettingClassification
 	switch m["kind"] {
-	case string(armsecurity.SettingKindDataExportSettings):
-		b = &armsecurity.DataExportSettings{}
 	case string(armsecurity.SettingKindAlertSyncSettings):
 		b = &armsecurity.AlertSyncSettings{}
+	case string(armsecurity.SettingKindDataExportSettings):
+		b = &armsecurity.DataExportSettings{}
 	default:
 		b = &armsecurity.Setting{}
 	}

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSecureScoreControlsClientVersion string = "2020-01-01"
+
 // SecureScoreControlsClient contains the methods for the SecureScoreControls group.
 // Don't use this type directly, use NewSecureScoreControlsClient() instead.
+//
+// Generated from API version 2020-01-01
 type SecureScoreControlsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +44,6 @@ func NewSecureScoreControlsClient(subscriptionID string, credential azcore.Token
 }
 
 // NewListPager - Get all security controls within a scope
-//
-// Generated from API version 2020-01-01
 //   - options - SecureScoreControlsClientListOptions contains the optional parameters for the SecureScoreControlsClient.NewListPager
 //     method.
 func (client *SecureScoreControlsClient) NewListPager(options *SecureScoreControlsClientListOptions) *runtime.Pager[SecureScoreControlsClientListResponse] {
@@ -82,8 +84,8 @@ func (client *SecureScoreControlsClient) listCreateRequest(ctx context.Context, 
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSecureScoreControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -98,8 +100,6 @@ func (client *SecureScoreControlsClient) listHandleResponse(resp *http.Response)
 }
 
 // NewListBySecureScorePager - Get all security controls for a specific initiative within a scope
-//
-// Generated from API version 2020-01-01
 //   - secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
 //   - options - SecureScoreControlsClientListBySecureScoreOptions contains the optional parameters for the SecureScoreControlsClient.NewListBySecureScorePager
 //     method.
@@ -145,8 +145,8 @@ func (client *SecureScoreControlsClient) listBySecureScoreCreateRequest(ctx cont
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2020-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSecureScoreControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

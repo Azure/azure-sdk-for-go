@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultGovernanceAssignmentsClientVersion string = "2022-01-01-preview"
+
 // GovernanceAssignmentsClient contains the methods for the GovernanceAssignments group.
 // Don't use this type directly, use NewGovernanceAssignmentsClient() instead.
+//
+// Generated from API version 2022-01-01-preview
 type GovernanceAssignmentsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewGovernanceAssignmentsClient(credential azcore.TokenCredential, options *
 
 // CreateOrUpdate - Creates or updates a governance assignment on the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-01-01-preview
 //   - scope - The scope of the governance assignment.
 //   - assessmentName - The assessment key of the governance assignment.
 //   - assignmentKey - The governance assignment key.
@@ -88,8 +90,8 @@ func (client *GovernanceAssignmentsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, governanceAssignment); err != nil {
@@ -109,8 +111,6 @@ func (client *GovernanceAssignmentsClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Delete a GovernanceAssignment over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-01-01-preview
 //   - scope - The scope of the governance assignment.
 //   - assessmentName - The assessment key of the governance assignment.
 //   - assignmentKey - The governance assignment key.
@@ -157,15 +157,13 @@ func (client *GovernanceAssignmentsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific governanceAssignment for the requested scope by AssignmentKey
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-01-01-preview
 //   - scope - The scope of the governance assignment.
 //   - assessmentName - The assessment key of the governance assignment.
 //   - assignmentKey - The governance assignment key.
@@ -213,8 +211,8 @@ func (client *GovernanceAssignmentsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -229,8 +227,6 @@ func (client *GovernanceAssignmentsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListPager - Get governance assignments on all of your resources inside a scope
-//
-// Generated from API version 2022-01-01-preview
 //   - scope - The scope of the governance assignment.
 //   - assessmentName - The assessment key of the governance assignment.
 //   - options - GovernanceAssignmentsClientListOptions contains the optional parameters for the GovernanceAssignmentsClient.NewListPager
@@ -274,8 +270,8 @@ func (client *GovernanceAssignmentsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

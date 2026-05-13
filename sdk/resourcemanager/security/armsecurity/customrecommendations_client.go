@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultCustomRecommendationsClientVersion string = "2024-08-01"
+
 // CustomRecommendationsClient contains the methods for the CustomRecommendations group.
 // Don't use this type directly, use NewCustomRecommendationsClient() instead.
+//
+// Generated from API version 2024-08-01
 type CustomRecommendationsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewCustomRecommendationsClient(credential azcore.TokenCredential, options *
 
 // CreateOrUpdate - Creates or updates a custom recommendation over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - customRecommendationName - Name of the Custom Recommendation.
 //   - customRecommendationBody - Custom Recommendation body
@@ -83,8 +85,8 @@ func (client *CustomRecommendationsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customRecommendationBody); err != nil {
@@ -104,8 +106,6 @@ func (client *CustomRecommendationsClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Delete a custom recommendation over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - customRecommendationName - Name of the Custom Recommendation.
 //   - options - CustomRecommendationsClientDeleteOptions contains the optional parameters for the CustomRecommendationsClient.Delete
@@ -147,15 +147,13 @@ func (client *CustomRecommendationsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific custom recommendation for the requested scope by customRecommendationName
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - customRecommendationName - Name of the Custom Recommendation.
 //   - options - CustomRecommendationsClientGetOptions contains the optional parameters for the CustomRecommendationsClient.Get
@@ -198,8 +196,8 @@ func (client *CustomRecommendationsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -214,8 +212,6 @@ func (client *CustomRecommendationsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListPager - Get a list of all relevant custom recommendations over a scope
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - CustomRecommendationsClientListOptions contains the optional parameters for the CustomRecommendationsClient.NewListPager
 //     method.
@@ -254,8 +250,8 @@ func (client *CustomRecommendationsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

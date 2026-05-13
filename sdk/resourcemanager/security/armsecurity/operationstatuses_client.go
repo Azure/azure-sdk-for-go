@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultOperationStatusesClientVersion string = "2025-10-01-preview"
+
 // OperationStatusesClient contains the methods for the OperationStatuses group.
 // Don't use this type directly, use NewOperationStatusesClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type OperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get the status of a long running azure asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - location - The name of the Azure region.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
@@ -88,8 +90,8 @@ func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOperationStatusesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultRegulatoryComplianceControlsClientVersion string = "2019-01-01-preview"
+
 // RegulatoryComplianceControlsClient contains the methods for the RegulatoryComplianceControls group.
 // Don't use this type directly, use NewRegulatoryComplianceControlsClient() instead.
+//
+// Generated from API version 2019-01-01-preview
 type RegulatoryComplianceControlsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewRegulatoryComplianceControlsClient(subscriptionID string, credential azc
 
 // Get - Selected regulatory compliance control details and state
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01-preview
 //   - regulatoryComplianceStandardName - Name of the regulatory compliance standard object
 //   - regulatoryComplianceControlName - Name of the regulatory compliance control object
 //   - options - RegulatoryComplianceControlsClientGetOptions contains the optional parameters for the RegulatoryComplianceControlsClient.Get
@@ -89,8 +91,8 @@ func (client *RegulatoryComplianceControlsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRegulatoryComplianceControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +107,6 @@ func (client *RegulatoryComplianceControlsClient) getHandleResponse(resp *http.R
 }
 
 // NewListPager - All supported regulatory compliance controls details and state for selected standard
-//
-// Generated from API version 2019-01-01-preview
 //   - regulatoryComplianceStandardName - Name of the regulatory compliance standard object
 //   - options - RegulatoryComplianceControlsClientListOptions contains the optional parameters for the RegulatoryComplianceControlsClient.NewListPager
 //     method.
@@ -152,8 +152,8 @@ func (client *RegulatoryComplianceControlsClient) listCreateRequest(ctx context.
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRegulatoryComplianceControlsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

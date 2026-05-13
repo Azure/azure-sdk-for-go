@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultDeviceSecurityGroupsClientVersion string = "2019-08-01"
+
 // DeviceSecurityGroupsClient contains the methods for the DeviceSecurityGroups group.
 // Don't use this type directly, use NewDeviceSecurityGroupsClient() instead.
+//
+// Generated from API version 2019-08-01
 type DeviceSecurityGroupsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *a
 
 // CreateOrUpdate - Use this method to creates or updates the device security group on a specified IoT Hub resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-08-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - deviceSecurityGroupName - The name of the device security group. Note that the name of the device security group is case
 //     insensitive.
@@ -84,8 +86,8 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDeviceSecurityGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deviceSecurityGroup); err != nil {
@@ -105,8 +107,6 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *htt
 
 // Delete - User this method to deletes the device security group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-08-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - deviceSecurityGroupName - The name of the device security group. Note that the name of the device security group is case
 //     insensitive.
@@ -149,15 +149,13 @@ func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDeviceSecurityGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Use this method to get the device security group for the specified IoT Hub resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-08-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - deviceSecurityGroupName - The name of the device security group. Note that the name of the device security group is case
 //     insensitive.
@@ -201,8 +199,8 @@ func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDeviceSecurityGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -217,8 +215,6 @@ func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Use this method get the list of device security groups for the specified IoT Hub resource.
-//
-// Generated from API version 2019-08-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - DeviceSecurityGroupsClientListOptions contains the optional parameters for the DeviceSecurityGroupsClient.NewListPager
 //     method.
@@ -257,8 +253,8 @@ func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDeviceSecurityGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultGitHubReposClientVersion string = "2025-11-01-preview"
+
 // GitHubReposClient contains the methods for the GitHubRepos group.
 // Don't use this type directly, use NewGitHubReposClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type GitHubReposClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewGitHubReposClient(subscriptionID string, credential azcore.TokenCredenti
 //
 // Returns a monitored GitHub repository.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitHubReposClientGetOptions contains the optional parameters for the GitHubReposClient.Get method.
@@ -98,8 +100,8 @@ func (client *GitHubReposClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGitHubReposClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -116,8 +118,6 @@ func (client *GitHubReposClient) getHandleResponse(resp *http.Response) (GitHubR
 // NewListPager - Returns a list of GitHub repositories onboarded to the connector.
 //
 // Returns a list of GitHub repositories onboarded to the connector.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitHubReposClientListOptions contains the optional parameters for the GitHubReposClient.NewListPager method.
@@ -168,8 +168,8 @@ func (client *GitHubReposClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGitHubReposClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

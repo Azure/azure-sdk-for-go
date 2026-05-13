@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAzureDevOpsOrgsClientVersion string = "2025-11-01-preview"
+
 // AzureDevOpsOrgsClient contains the methods for the AzureDevOpsOrgs group.
 // Don't use this type directly, use NewAzureDevOpsOrgsClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type AzureDevOpsOrgsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewAzureDevOpsOrgsClient(subscriptionID string, credential azcore.TokenCred
 //
 // Creates or updates monitored Azure DevOps organization details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - azureDevOpsOrg - The Azure DevOps organization resource payload.
@@ -71,8 +73,6 @@ func (client *AzureDevOpsOrgsClient) BeginCreateOrUpdate(ctx context.Context, re
 //
 // Creates or updates monitored Azure DevOps organization details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *AzureDevOpsOrgsClient) createOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureDevOpsOrgsClient.BeginCreateOrUpdate"
@@ -118,8 +118,8 @@ func (client *AzureDevOpsOrgsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsOrgsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureDevOpsOrg); err != nil {
@@ -132,8 +132,6 @@ func (client *AzureDevOpsOrgsClient) createOrUpdateCreateRequest(ctx context.Con
 //
 // Returns a monitored Azure DevOps organization resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - AzureDevOpsOrgsClientGetOptions contains the optional parameters for the AzureDevOpsOrgsClient.Get method.
@@ -183,8 +181,8 @@ func (client *AzureDevOpsOrgsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsOrgsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -201,8 +199,6 @@ func (client *AzureDevOpsOrgsClient) getHandleResponse(resp *http.Response) (Azu
 // NewListPager - Returns a list of Azure DevOps organizations onboarded to the connector.
 //
 // Returns a list of Azure DevOps organizations onboarded to the connector.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - AzureDevOpsOrgsClientListOptions contains the optional parameters for the AzureDevOpsOrgsClient.NewListPager
@@ -250,8 +246,8 @@ func (client *AzureDevOpsOrgsClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsOrgsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -269,8 +265,6 @@ func (client *AzureDevOpsOrgsClient) listHandleResponse(resp *http.Response) (Az
 //
 // Returns a list of all Azure DevOps organizations accessible by the user token consumed by the connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - AzureDevOpsOrgsClientListAvailableOptions contains the optional parameters for the AzureDevOpsOrgsClient.ListAvailable
@@ -317,8 +311,8 @@ func (client *AzureDevOpsOrgsClient) listAvailableCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsOrgsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -336,8 +330,6 @@ func (client *AzureDevOpsOrgsClient) listAvailableHandleResponse(resp *http.Resp
 //
 // Updates monitored Azure DevOps organization details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - azureDevOpsOrg - The Azure DevOps organization resource payload.
@@ -364,8 +356,6 @@ func (client *AzureDevOpsOrgsClient) BeginUpdate(ctx context.Context, resourceGr
 //
 // Updates monitored Azure DevOps organization details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *AzureDevOpsOrgsClient) update(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureDevOpsOrgsClient.BeginUpdate"
@@ -411,8 +401,8 @@ func (client *AzureDevOpsOrgsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAzureDevOpsOrgsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureDevOpsOrg); err != nil {

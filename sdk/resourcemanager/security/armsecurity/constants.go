@@ -2480,21 +2480,21 @@ func PossibleStateValues() []State {
 	}
 }
 
-// StatusEnum - The status of the port
-type StatusEnum string
+// Status - The status of the port
+type Status string
 
 const (
-	// StatusEnumInitiated - Initiated
-	StatusEnumInitiated StatusEnum = "Initiated"
-	// StatusEnumRevoked - Revoked
-	StatusEnumRevoked StatusEnum = "Revoked"
+	// StatusInitiated - Initiated
+	StatusInitiated Status = "Initiated"
+	// StatusRevoked - Revoked
+	StatusRevoked Status = "Revoked"
 )
 
-// PossibleStatusEnumValues returns the possible values for the StatusEnum const type.
-func PossibleStatusEnumValues() []StatusEnum {
-	return []StatusEnum{
-		StatusEnumInitiated,
-		StatusEnumRevoked,
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusInitiated,
+		StatusRevoked,
 	}
 }
 

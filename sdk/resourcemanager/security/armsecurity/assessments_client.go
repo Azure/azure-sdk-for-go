@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAssessmentsClientVersion string = "2025-05-04"
+
 // AssessmentsClient contains the methods for the Assessments group.
 // Don't use this type directly, use NewAssessmentsClient() instead.
+//
+// Generated from API version 2025-05-04
 type AssessmentsClient struct {
 	internal *arm.Client
 }
@@ -39,8 +43,6 @@ func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.Client
 // CreateOrUpdate - Create a security assessment on your resource. An assessment metadata that describes this assessment must
 // be predefined with the same name before inserting the assessment result
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-04
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - assessmentName - The Assessment Key - Unique key for the assessment type
 //   - assessment - Calculated assessment on a pre-defined assessment metadata
@@ -84,8 +86,8 @@ func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-04")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, assessment); err != nil {
@@ -106,8 +108,6 @@ func (client *AssessmentsClient) createOrUpdateHandleResponse(resp *http.Respons
 // Delete - Delete a security assessment on your resource. An assessment metadata that describes this assessment must be predefined
 // with the same name before inserting the assessment result
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-04
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - assessmentName - The Assessment Key - Unique key for the assessment type
 //   - options - AssessmentsClientDeleteOptions contains the optional parameters for the AssessmentsClient.Delete method.
@@ -148,15 +148,13 @@ func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-04")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a security assessment on your scanned resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-04
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - assessmentName - The Assessment Key - Unique key for the assessment type
 //   - options - AssessmentsClientGetOptions contains the optional parameters for the AssessmentsClient.Get method.
@@ -201,8 +199,8 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceI
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2025-05-04")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -217,8 +215,6 @@ func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (Assessm
 }
 
 // NewListPager - Get security assessments on all your scanned resources inside a scope
-//
-// Generated from API version 2025-05-04
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.NewListPager method.
 func (client *AssessmentsClient) NewListPager(scope string, options *AssessmentsClientListOptions) *runtime.Pager[AssessmentsClientListResponse] {
@@ -256,8 +252,8 @@ func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-04")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

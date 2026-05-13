@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultDefenderForStorageClientVersion string = "2025-09-01-preview"
+
 // DefenderForStorageClient contains the methods for the DefenderForStorage group.
 // Don't use this type directly, use NewDefenderForStorageClient() instead.
+//
+// Generated from API version 2025-09-01-preview
 type DefenderForStorageClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewDefenderForStorageClient(credential azcore.TokenCredential, options *arm
 
 // CancelMalwareScan - Cancels a Defender for Storage malware scan for the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - settingName - The defender for storage setting name.
 //   - scanID - The identifier of the scan. Can be either 'latest' or a GUID.
@@ -87,8 +89,8 @@ func (client *DefenderForStorageClient) cancelMalwareScanCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +106,6 @@ func (client *DefenderForStorageClient) cancelMalwareScanHandleResponse(resp *ht
 
 // Create - Creates or updates the Defender for Storage settings on a specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - settingName - The defender for storage setting name.
 //   - defenderForStorageSetting - Defender for Storage Settings
@@ -149,8 +149,8 @@ func (client *DefenderForStorageClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, defenderForStorageSetting); err != nil {
@@ -170,8 +170,6 @@ func (client *DefenderForStorageClient) createHandleResponse(resp *http.Response
 
 // Get - Gets the Defender for Storage settings for the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - settingName - The defender for storage setting name.
 //   - options - DefenderForStorageClientGetOptions contains the optional parameters for the DefenderForStorageClient.Get method.
@@ -213,8 +211,8 @@ func (client *DefenderForStorageClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -230,8 +228,6 @@ func (client *DefenderForStorageClient) getHandleResponse(resp *http.Response) (
 
 // GetMalwareScan - Gets the Defender for Storage malware scan for the specified storage resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - settingName - The defender for storage setting name.
 //   - scanID - The identifier of the scan. Can be either 'latest' or a GUID.
@@ -279,8 +275,8 @@ func (client *DefenderForStorageClient) getMalwareScanCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -295,8 +291,6 @@ func (client *DefenderForStorageClient) getMalwareScanHandleResponse(resp *http.
 }
 
 // NewListPager - Lists the Defender for Storage settings for the specified storage account.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - DefenderForStorageClientListOptions contains the optional parameters for the DefenderForStorageClient.NewListPager
 //     method.
@@ -335,8 +329,8 @@ func (client *DefenderForStorageClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -353,8 +347,6 @@ func (client *DefenderForStorageClient) listHandleResponse(resp *http.Response) 
 // StartMalwareScan - Initiate a Defender for Storage malware scan for the specified storage account. Blobs and Files will
 // be scanned for malware.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - settingName - The defender for storage setting name.
 //   - options - DefenderForStorageClientStartMalwareScanOptions contains the optional parameters for the DefenderForStorageClient.StartMalwareScan
@@ -397,8 +389,8 @@ func (client *DefenderForStorageClient) startMalwareScanCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

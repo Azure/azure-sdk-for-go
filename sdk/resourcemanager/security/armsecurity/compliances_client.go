@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultCompliancesClientVersion string = "2017-08-01-preview"
+
 // CompliancesClient contains the methods for the Compliances group.
 // Don't use this type directly, use NewCompliancesClient() instead.
+//
+// Generated from API version 2017-08-01-preview
 type CompliancesClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewCompliancesClient(credential azcore.TokenCredential, options *arm.Client
 
 // Get - Details of a specific Compliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2017-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - complianceName - name of the Compliance
 //   - options - CompliancesClientGetOptions contains the optional parameters for the CompliancesClient.Get method.
@@ -81,8 +83,8 @@ func (client *CompliancesClient) getCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultCompliancesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -97,8 +99,6 @@ func (client *CompliancesClient) getHandleResponse(resp *http.Response) (Complia
 }
 
 // NewListPager - The Compliance scores of the specific management group.
-//
-// Generated from API version 2017-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - CompliancesClientListOptions contains the optional parameters for the CompliancesClient.NewListPager method.
 func (client *CompliancesClient) NewListPager(scope string, options *CompliancesClientListOptions) *runtime.Pager[CompliancesClientListResponse] {
@@ -136,8 +136,8 @@ func (client *CompliancesClient) listCreateRequest(ctx context.Context, scope st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultCompliancesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

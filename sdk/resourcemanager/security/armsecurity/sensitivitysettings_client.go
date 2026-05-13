@@ -11,10 +11,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
+
+const defaultSensitivitySettingsClientVersion string = "2023-02-15-preview"
 
 // SensitivitySettingsClient contains the methods for the SensitivitySettings group.
 // Don't use this type directly, use NewSensitivitySettingsClient() instead.
+//
+// Generated from API version 2023-02-15-preview
 type SensitivitySettingsClient struct {
 	internal *arm.Client
 }
@@ -35,8 +40,6 @@ func NewSensitivitySettingsClient(credential azcore.TokenCredential, options *ar
 
 // CreateOrUpdate - Create or update data sensitivity settings for sensitive data discovery
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-15-preview
 //   - sensitivitySettings - The data sensitivity settings to update
 //   - options - SensitivitySettingsClientCreateOrUpdateOptions contains the optional parameters for the SensitivitySettingsClient.CreateOrUpdate
 //     method.
@@ -70,8 +73,8 @@ func (client *SensitivitySettingsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSensitivitySettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sensitivitySettings); err != nil {
@@ -91,8 +94,6 @@ func (client *SensitivitySettingsClient) createOrUpdateHandleResponse(resp *http
 
 // Get - Gets data sensitivity settings for sensitive data discovery
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-15-preview
 //   - options - SensitivitySettingsClientGetOptions contains the optional parameters for the SensitivitySettingsClient.Get method.
 func (client *SensitivitySettingsClient) Get(ctx context.Context, options *SensitivitySettingsClientGetOptions) (SensitivitySettingsClientGetResponse, error) {
 	var err error
@@ -124,8 +125,8 @@ func (client *SensitivitySettingsClient) getCreateRequest(ctx context.Context, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSensitivitySettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -141,8 +142,6 @@ func (client *SensitivitySettingsClient) getHandleResponse(resp *http.Response) 
 
 // List - Gets a list with a single sensitivity settings resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-15-preview
 //   - options - SensitivitySettingsClientListOptions contains the optional parameters for the SensitivitySettingsClient.List
 //     method.
 func (client *SensitivitySettingsClient) List(ctx context.Context, options *SensitivitySettingsClientListOptions) (SensitivitySettingsClientListResponse, error) {
@@ -175,8 +174,8 @@ func (client *SensitivitySettingsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSensitivitySettingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

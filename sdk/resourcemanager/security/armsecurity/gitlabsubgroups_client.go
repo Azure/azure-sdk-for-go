@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultGitLabSubgroupsClientVersion string = "2025-11-01-preview"
+
 // GitLabSubgroupsClient contains the methods for the GitLabSubgroups group.
 // Don't use this type directly, use NewGitLabSubgroupsClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type GitLabSubgroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewGitLabSubgroupsClient(subscriptionID string, credential azcore.TokenCred
 //
 // Gets nested subgroups of given GitLab Group which are onboarded to the connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitLabSubgroupsClientListOptions contains the optional parameters for the GitLabSubgroupsClient.List method.
@@ -94,8 +96,8 @@ func (client *GitLabSubgroupsClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGitLabSubgroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

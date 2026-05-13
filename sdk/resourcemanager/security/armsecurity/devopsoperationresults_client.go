@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultDevOpsOperationResultsClientVersion string = "2025-11-01-preview"
+
 // DevOpsOperationResultsClient contains the methods for the DevOpsOperationResults group.
 // Don't use this type directly, use NewDevOpsOperationResultsClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type DevOpsOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewDevOpsOperationResultsClient(subscriptionID string, credential azcore.To
 //
 // Get devops long running operation result.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - DevOpsOperationResultsClientGetOptions contains the optional parameters for the DevOpsOperationResultsClient.Get
@@ -95,8 +97,8 @@ func (client *DevOpsOperationResultsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDevOpsOperationResultsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

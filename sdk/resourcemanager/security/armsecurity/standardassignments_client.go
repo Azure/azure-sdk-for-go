@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultStandardAssignmentsClientVersion string = "2024-08-01"
+
 // StandardAssignmentsClient contains the methods for the StandardAssignments group.
 // Don't use this type directly, use NewStandardAssignmentsClient() instead.
+//
+// Generated from API version 2024-08-01
 type StandardAssignmentsClient struct {
 	internal *arm.Client
 }
@@ -42,8 +46,6 @@ func NewStandardAssignmentsClient(credential azcore.TokenCredential, options *ar
 // resources contained within their scope. For example, when you assign a policy at resource group scope, that policy applies
 // to all resources in the group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - standardAssignmentName - The standard assignments assignment key - unique key for the standard assignment
 //   - standardAssignment - Custom standard assignment over a pre-defined scope
@@ -87,8 +89,8 @@ func (client *StandardAssignmentsClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, standardAssignment); err != nil {
@@ -111,8 +113,6 @@ func (client *StandardAssignmentsClient) createHandleResponse(resp *http.Respons
 // This operation deletes a standard assignment, given its name and the scope it was created in. The scope of a standard assignment
 // is the part of its ID preceding '/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - standardAssignmentName - The standard assignments assignment key - unique key for the standard assignment
 //   - options - StandardAssignmentsClientDeleteOptions contains the optional parameters for the StandardAssignmentsClient.Delete
@@ -154,8 +154,8 @@ func (client *StandardAssignmentsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -163,8 +163,6 @@ func (client *StandardAssignmentsClient) deleteCreateRequest(ctx context.Context
 //
 // This operation retrieves a single standard assignment, given its name and the scope it was created at.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - standardAssignmentName - The standard assignments assignment key - unique key for the standard assignment
 //   - options - StandardAssignmentsClientGetOptions contains the optional parameters for the StandardAssignmentsClient.Get method.
@@ -206,8 +204,8 @@ func (client *StandardAssignmentsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -222,8 +220,6 @@ func (client *StandardAssignmentsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get a list of all relevant standard assignments over a scope
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - StandardAssignmentsClientListOptions contains the optional parameters for the StandardAssignmentsClient.NewListPager
 //     method.
@@ -262,8 +258,8 @@ func (client *StandardAssignmentsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

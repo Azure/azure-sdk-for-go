@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultGitHubIssuesClientVersion string = "2025-11-01-preview"
+
 // GitHubIssuesClient contains the methods for the GitHubIssues group.
 // Don't use this type directly, use NewGitHubIssuesClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type GitHubIssuesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewGitHubIssuesClient(subscriptionID string, credential azcore.TokenCredent
 //
 // Creates a GitHub issue for the specified repository and assessment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitHubIssuesClientBeginCreateOptions contains the optional parameters for the GitHubIssuesClient.BeginCreate
@@ -70,8 +72,6 @@ func (client *GitHubIssuesClient) BeginCreate(ctx context.Context, resourceGroup
 //
 // Creates a GitHub issue for the specified repository and assessment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *GitHubIssuesClient) create(ctx context.Context, resourceGroupName string, securityConnectorName string, ownerName string, repoName string, options *GitHubIssuesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GitHubIssuesClient.BeginCreate"
@@ -121,8 +121,8 @@ func (client *GitHubIssuesClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGitHubIssuesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.CreateIssueRequest != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.CreateIssueRequest); err != nil {

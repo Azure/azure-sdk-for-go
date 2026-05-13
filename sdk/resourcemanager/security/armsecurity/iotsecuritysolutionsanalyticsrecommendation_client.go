@@ -17,9 +17,13 @@ import (
 	"strings"
 )
 
+const defaultIotSecuritySolutionsAnalyticsRecommendationClientVersion string = "2019-08-01"
+
 // IotSecuritySolutionsAnalyticsRecommendationClient contains the methods for the IotSecuritySolutionsAnalyticsRecommendation
 // group.
 // Don't use this type directly, use NewIotSecuritySolutionsAnalyticsRecommendationClient() instead.
+//
+// Generated from API version 2019-08-01
 type IotSecuritySolutionsAnalyticsRecommendationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +48,6 @@ func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string,
 // Get - Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This aggregation
 // is performed by recommendation name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionName - The name of the IoT Security solution.
 //   - aggregatedRecommendationName - Name of the recommendation aggregated for this query.
@@ -97,8 +99,8 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultIotSecuritySolutionsAnalyticsRecommendationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -113,8 +115,6 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleRespon
 }
 
 // NewListPager - Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.
-//
-// Generated from API version 2019-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionName - The name of the IoT Security solution.
 //   - options - IotSecuritySolutionsAnalyticsRecommendationClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsRecommendationClient.NewListPager
@@ -165,8 +165,8 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateReque
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultIotSecuritySolutionsAnalyticsRecommendationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

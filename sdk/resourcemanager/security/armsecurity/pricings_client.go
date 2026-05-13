@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultPricingsClientVersion string = "2024-01-01"
+
 // PricingsClient contains the methods for the Pricings group.
 // Don't use this type directly, use NewPricingsClient() instead.
+//
+// Generated from API version 2024-01-01
 type PricingsClient struct {
 	internal *arm.Client
 }
@@ -39,8 +43,6 @@ func NewPricingsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // Delete - Deletes a provided Microsoft Defender for Cloud pricing configuration in a specific resource. Valid only for resource
 // scope (Supported resources are: 'VirtualMachines, VMSS, ARC Machines, and Containers').
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - scopeID - The fully qualified Azure Resource manager identifier of the resource.
 //   - pricingName - name of the pricing configuration
 //   - options - PricingsClientDeleteOptions contains the optional parameters for the PricingsClient.Delete method.
@@ -81,16 +83,14 @@ func (client *PricingsClient) deleteCreateRequest(ctx context.Context, scopeID s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPricingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a subscription
 // id). At the resource level, supported resource types are 'VirtualMachines, VMSS and ARC Machines'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - scopeID - The fully qualified Azure Resource manager identifier of the resource.
 //   - pricingName - name of the pricing configuration
 //   - options - PricingsClientGetOptions contains the optional parameters for the PricingsClient.Get method.
@@ -132,8 +132,8 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, scopeID stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPricingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -153,8 +153,6 @@ func (client *PricingsClient) getHandleResponse(resp *http.Response) (PricingsCl
 // If '$filter=name in (planName1,planName2)' is provided, the returned list includes the pricings set for 'planName1' and
 // 'planName2' only.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - scopeID - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - PricingsClientListOptions contains the optional parameters for the PricingsClient.List method.
 func (client *PricingsClient) List(ctx context.Context, scopeID string, options *PricingsClientListOptions) (PricingsClientListResponse, error) {
@@ -194,8 +192,8 @@ func (client *PricingsClient) listCreateRequest(ctx context.Context, scopeID str
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPricingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -213,8 +211,6 @@ func (client *PricingsClient) listHandleResponse(resp *http.Response) (PricingsC
 // id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and ARC Machines' and only for plan='VirtualMachines'
 // and subPlan='P1').
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - scopeID - The fully qualified Azure Resource manager identifier of the resource.
 //   - pricingName - name of the pricing configuration
 //   - pricing - Pricing object
@@ -257,8 +253,8 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, scopeID s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultPricingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, pricing); err != nil {

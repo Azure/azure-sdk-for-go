@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultOperatorsClientVersion string = "2023-01-01-preview"
+
 // OperatorsClient contains the methods for the Operators group.
 // Don't use this type directly, use NewOperatorsClient() instead.
+//
+// Generated from API version 2023-01-01-preview
 type OperatorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewOperatorsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Creates Microsoft Defender for Cloud security operator on the given scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01-preview
 //   - pricingName - Name of the pricing configuration.
 //   - securityOperatorName - Name of the security operator.
 //   - options - OperatorsClientCreateOrUpdateOptions contains the optional parameters for the OperatorsClient.CreateOrUpdate
@@ -89,8 +91,8 @@ func (client *OperatorsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -106,8 +108,6 @@ func (client *OperatorsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Delete Microsoft Defender for Cloud securityOperator in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01-preview
 //   - pricingName - Name of the pricing configuration.
 //   - securityOperatorName - Name of the security operator.
 //   - options - OperatorsClientDeleteOptions contains the optional parameters for the OperatorsClient.Delete method.
@@ -152,15 +152,13 @@ func (client *OperatorsClient) deleteCreateRequest(ctx context.Context, pricingN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific security operator for the requested scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01-preview
 //   - pricingName - Name of the pricing configuration.
 //   - securityOperatorName - Name of the security operator.
 //   - options - OperatorsClientGetOptions contains the optional parameters for the OperatorsClient.Get method.
@@ -206,8 +204,8 @@ func (client *OperatorsClient) getCreateRequest(ctx context.Context, pricingName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -222,8 +220,6 @@ func (client *OperatorsClient) getHandleResponse(resp *http.Response) (Operators
 }
 
 // NewListPager - Lists Microsoft Defender for Cloud securityOperators in the subscription.
-//
-// Generated from API version 2023-01-01-preview
 //   - pricingName - Name of the pricing configuration.
 //   - options - OperatorsClientListOptions contains the optional parameters for the OperatorsClient.NewListPager method.
 func (client *OperatorsClient) NewListPager(pricingName string, options *OperatorsClientListOptions) *runtime.Pager[OperatorsClientListResponse] {
@@ -266,8 +262,8 @@ func (client *OperatorsClient) listCreateRequest(ctx context.Context, pricingNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

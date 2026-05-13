@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultHealthReportsClientVersion string = "2023-05-01-preview"
+
 // HealthReportsClient contains the methods for the HealthReports group.
 // Don't use this type directly, use NewHealthReportsClient() instead.
+//
+// Generated from API version 2023-05-01-preview
 type HealthReportsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewHealthReportsClient(credential azcore.TokenCredential, options *arm.Clie
 
 // Get - Get health report of resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-05-01-preview
 //   - resourceID - The fully qualified Azure Resource manager identifier of the resource.
 //   - healthReportName - The health report key.
 //   - options - HealthReportsClientGetOptions contains the optional parameters for the HealthReportsClient.Get method.
@@ -81,8 +83,8 @@ func (client *HealthReportsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultHealthReportsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -98,8 +100,6 @@ func (client *HealthReportsClient) getHandleResponse(resp *http.Response) (Healt
 
 // NewListPager - Get a list of all health reports inside a scope. Valid scopes are: subscription (format: 'subscriptions/{subscriptionId}'),
 // or security connector (format: 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'
-//
-// Generated from API version 2023-05-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - HealthReportsClientListOptions contains the optional parameters for the HealthReportsClient.NewListPager method.
 func (client *HealthReportsClient) NewListPager(scope string, options *HealthReportsClientListOptions) *runtime.Pager[HealthReportsClientListResponse] {
@@ -137,8 +137,8 @@ func (client *HealthReportsClient) listCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultHealthReportsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

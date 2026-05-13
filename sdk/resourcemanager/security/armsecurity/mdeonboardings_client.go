@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultMdeOnboardingsClientVersion string = "2021-10-01-preview"
+
 // MdeOnboardingsClient contains the methods for the MdeOnboardings group.
 // Don't use this type directly, use NewMdeOnboardingsClient() instead.
+//
+// Generated from API version 2021-10-01-preview
 type MdeOnboardingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewMdeOnboardingsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - The default configuration or data needed to onboard the machine to MDE
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-10-01-preview
 //   - options - MdeOnboardingsClientGetOptions contains the optional parameters for the MdeOnboardingsClient.Get method.
 func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboardingsClientGetOptions) (MdeOnboardingsClientGetResponse, error) {
 	var err error
@@ -78,8 +80,8 @@ func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, _ *Mde
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMdeOnboardingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -95,8 +97,6 @@ func (client *MdeOnboardingsClient) getHandleResponse(resp *http.Response) (MdeO
 
 // List - The configuration or data needed to onboard the machine to MDE
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-10-01-preview
 //   - options - MdeOnboardingsClientListOptions contains the optional parameters for the MdeOnboardingsClient.List method.
 func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboardingsClientListOptions) (MdeOnboardingsClientListResponse, error) {
 	var err error
@@ -132,8 +132,8 @@ func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, _ *Md
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMdeOnboardingsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

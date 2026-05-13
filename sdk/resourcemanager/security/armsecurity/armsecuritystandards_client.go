@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultArmSecurityStandardsClientVersion string = "2024-08-01"
+
 // ArmSecurityStandardsClient contains the methods for the ArmSecurityStandards group.
 // Don't use this type directly, use NewArmSecurityStandardsClient() instead.
+//
+// Generated from API version 2024-08-01
 type ArmSecurityStandardsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewArmSecurityStandardsClient(credential azcore.TokenCredential, options *a
 
 // CreateOrUpdate - Creates or updates a security standard over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - standardID - The Security Standard key - unique key for the standard type
 //   - standard - Custom security standard over a pre-defined scope
@@ -83,8 +85,8 @@ func (client *ArmSecurityStandardsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultArmSecurityStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, standard); err != nil {
@@ -104,8 +106,6 @@ func (client *ArmSecurityStandardsClient) createOrUpdateHandleResponse(resp *htt
 
 // Delete - Delete a security standard over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - standardID - The Security Standard key - unique key for the standard type
 //   - options - ArmSecurityStandardsClientDeleteOptions contains the optional parameters for the ArmSecurityStandardsClient.Delete
@@ -147,15 +147,13 @@ func (client *ArmSecurityStandardsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultArmSecurityStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific security standard for the requested scope by standardId
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - standardID - The Security Standard key - unique key for the standard type
 //   - options - ArmSecurityStandardsClientGetOptions contains the optional parameters for the ArmSecurityStandardsClient.Get
@@ -198,8 +196,8 @@ func (client *ArmSecurityStandardsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultArmSecurityStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -214,8 +212,6 @@ func (client *ArmSecurityStandardsClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Get a list of all relevant security standards over a scope
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - ArmSecurityStandardsClientListOptions contains the optional parameters for the ArmSecurityStandardsClient.NewListPager
 //     method.
@@ -254,8 +250,8 @@ func (client *ArmSecurityStandardsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultArmSecurityStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

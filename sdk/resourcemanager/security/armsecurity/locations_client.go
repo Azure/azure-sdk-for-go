@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultLocationsClientVersion string = "2015-06-01-preview"
+
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
+//
+// Generated from API version 2015-06-01-preview
 type LocationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Details of a specific location
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2015-06-01-preview
 //   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, ascLocation string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
@@ -83,8 +85,8 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, ascLocation
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2015-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultLocationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -101,8 +103,6 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 // NewListPager - The location of the responsible ASC of the specific subscription (home region). For each subscription there
 // is only one responsible location. The location in the response should be used to read or write other resources in ASC according
 // to their ID.
-//
-// Generated from API version 2015-06-01-preview
 //   - options - LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
 func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
@@ -139,8 +139,8 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, _ *Locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2015-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultLocationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

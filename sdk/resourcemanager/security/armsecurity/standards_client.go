@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultStandardsClientVersion string = "2021-08-01-preview"
+
 // StandardsClient contains the methods for the Standards group.
 // Don't use this type directly, use NewStandardsClient() instead.
+//
+// Generated from API version 2021-08-01-preview
 type StandardsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewStandardsClient(subscriptionID string, credential azcore.TokenCredential
 // CreateOrUpdate - Create a security standard on the given scope. Available only for custom standards. Will create/update
 // the required standard definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standardID - The Security Standard key - unique key for the standard type
 //   - standard - Custom security standard over a pre-defined scope
@@ -91,8 +93,8 @@ func (client *StandardsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, standard); err != nil {
@@ -112,8 +114,6 @@ func (client *StandardsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Delete a security standard on a scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standardID - The Security Standard key - unique key for the standard type
 //   - options - StandardsClientDeleteOptions contains the optional parameters for the StandardsClient.Delete method.
@@ -158,15 +158,13 @@ func (client *StandardsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific security standard for the requested scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standardID - The Security Standard key - unique key for the standard type
 //   - options - StandardsClientGetOptions contains the optional parameters for the StandardsClient.Get method.
@@ -212,8 +210,8 @@ func (client *StandardsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -228,8 +226,6 @@ func (client *StandardsClient) getHandleResponse(resp *http.Response) (Standards
 }
 
 // NewListPager - Get security standards on all your resources inside a scope
-//
-// Generated from API version 2021-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StandardsClientListOptions contains the optional parameters for the StandardsClient.NewListPager method.
 func (client *StandardsClient) NewListPager(resourceGroupName string, options *StandardsClientListOptions) *runtime.Pager[StandardsClientListResponse] {
@@ -271,8 +267,8 @@ func (client *StandardsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -287,8 +283,6 @@ func (client *StandardsClient) listHandleResponse(resp *http.Response) (Standard
 }
 
 // NewListBySubscriptionPager - Get a list of all relevant security standards over a subscription level scope.
-//
-// Generated from API version 2021-08-01-preview
 //   - options - StandardsClientListBySubscriptionOptions contains the optional parameters for the StandardsClient.NewListBySubscriptionPager
 //     method.
 func (client *StandardsClient) NewListBySubscriptionPager(options *StandardsClientListBySubscriptionOptions) *runtime.Pager[StandardsClientListBySubscriptionResponse] {
@@ -326,8 +320,8 @@ func (client *StandardsClient) listBySubscriptionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultStandardsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

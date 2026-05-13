@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultConnectorApplicationClientVersion string = "2022-07-01-preview"
+
 // ConnectorApplicationClient contains the methods for the ConnectorApplication group.
 // Don't use this type directly, use NewConnectorApplicationClient() instead.
+//
+// Generated from API version 2022-07-01-preview
 type ConnectorApplicationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewConnectorApplicationClient(subscriptionID string, credential azcore.Toke
 
 // CreateOrUpdate - Creates or update a security Application on the given security connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - applicationID - The security Application key - unique key for the standard application
@@ -95,8 +97,8 @@ func (client *ConnectorApplicationClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConnectorApplicationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, application); err != nil {
@@ -116,8 +118,6 @@ func (client *ConnectorApplicationClient) createOrUpdateHandleResponse(resp *htt
 
 // Delete - Delete an Application over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - applicationID - The security Application key - unique key for the standard application
@@ -168,15 +168,13 @@ func (client *ConnectorApplicationClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConnectorApplicationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific application for the requested scope by applicationId
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - applicationID - The security Application key - unique key for the standard application
@@ -228,8 +226,8 @@ func (client *ConnectorApplicationClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConnectorApplicationClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

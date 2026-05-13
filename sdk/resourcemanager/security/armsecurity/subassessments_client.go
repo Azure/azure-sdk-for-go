@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSubAssessmentsClientVersion string = "2019-01-01-preview"
+
 // SubAssessmentsClient contains the methods for the SubAssessments group.
 // Don't use this type directly, use NewSubAssessmentsClient() instead.
+//
+// Generated from API version 2019-01-01-preview
 type SubAssessmentsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewSubAssessmentsClient(credential azcore.TokenCredential, options *arm.Cli
 
 // Get - Get a security sub-assessment on your scanned resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01-preview
 //   - scope - The scope of the sub-assessment.
 //   - assessmentName - The security assessment key - unique key for the assessment type
 //   - subAssessmentName - The Sub-Assessment Key - Unique key for the sub-assessment type
@@ -86,8 +88,8 @@ func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSubAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -102,8 +104,6 @@ func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response) (SubA
 }
 
 // NewListPager - Get security sub-assessments on all your scanned resources inside a scope
-//
-// Generated from API version 2019-01-01-preview
 //   - scope - The scope of the sub-assessment.
 //   - assessmentName - The security assessment key - unique key for the assessment type
 //   - options - SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.NewListPager method.
@@ -146,8 +146,8 @@ func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSubAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -162,8 +162,6 @@ func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response) (Sub
 }
 
 // NewListAllPager - Get security sub-assessments on all your scanned resources inside a subscription scope
-//
-// Generated from API version 2019-01-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - SubAssessmentsClientListAllOptions contains the optional parameters for the SubAssessmentsClient.NewListAllPager
 //     method.
@@ -202,8 +200,8 @@ func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSubAssessmentsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

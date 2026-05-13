@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultIotSecuritySolutionAnalyticsClientVersion string = "2019-08-01"
+
 // IotSecuritySolutionAnalyticsClient contains the methods for the IotSecuritySolutionAnalytics group.
 // Don't use this type directly, use NewIotSecuritySolutionAnalyticsClient() instead.
+//
+// Generated from API version 2019-08-01
 type IotSecuritySolutionAnalyticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azc
 
 // Get - Use this method to get IoT Security Analytics metrics.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionName - The name of the IoT Security solution.
 //   - options - IotSecuritySolutionAnalyticsClientGetOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.Get
@@ -89,8 +91,8 @@ func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultIotSecuritySolutionAnalyticsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -106,8 +108,6 @@ func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *http.R
 
 // List - Use this method to get IoT security Analytics metrics in an array.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionName - The name of the IoT Security solution.
 //   - options - IotSecuritySolutionAnalyticsClientListOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.List
@@ -154,8 +154,8 @@ func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultIotSecuritySolutionAnalyticsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

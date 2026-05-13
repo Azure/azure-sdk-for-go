@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultGitLabProjectsClientVersion string = "2025-11-01-preview"
+
 // GitLabProjectsClient contains the methods for the GitLabProjects group.
 // Don't use this type directly, use NewGitLabProjectsClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type GitLabProjectsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +47,6 @@ func NewGitLabProjectsClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Returns a monitored GitLab Project resource for a given fully-qualified group name and project name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitLabProjectsClientGetOptions contains the optional parameters for the GitLabProjectsClient.Get method.
@@ -98,8 +100,8 @@ func (client *GitLabProjectsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGitLabProjectsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -116,8 +118,6 @@ func (client *GitLabProjectsClient) getHandleResponse(resp *http.Response) (GitL
 // NewListPager - Gets a list of GitLab projects that are directly owned by given group and onboarded to the connector.
 //
 // Gets a list of GitLab projects that are directly owned by given group and onboarded to the connector.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitLabProjectsClientListOptions contains the optional parameters for the GitLabProjectsClient.NewListPager method.
@@ -168,8 +168,8 @@ func (client *GitLabProjectsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultGitLabProjectsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

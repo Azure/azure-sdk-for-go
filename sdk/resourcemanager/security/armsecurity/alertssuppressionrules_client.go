@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAlertsSuppressionRulesClientVersion string = "2019-01-01-preview"
+
 // AlertsSuppressionRulesClient contains the methods for the AlertsSuppressionRules group.
 // Don't use this type directly, use NewAlertsSuppressionRulesClient() instead.
+//
+// Generated from API version 2019-01-01-preview
 type AlertsSuppressionRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewAlertsSuppressionRulesClient(subscriptionID string, credential azcore.To
 
 // Delete - Delete dismiss alert rule for this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01-preview
 //   - alertsSuppressionRuleName - The unique name of the suppression alert rule
 //   - options - AlertsSuppressionRulesClientDeleteOptions contains the optional parameters for the AlertsSuppressionRulesClient.Delete
 //     method.
@@ -83,15 +85,13 @@ func (client *AlertsSuppressionRulesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01-preview
 //   - alertsSuppressionRuleName - The unique name of the suppression alert rule
 //   - options - AlertsSuppressionRulesClientGetOptions contains the optional parameters for the AlertsSuppressionRulesClient.Get
 //     method.
@@ -133,8 +133,8 @@ func (client *AlertsSuppressionRulesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -149,8 +149,6 @@ func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - List of all the dismiss rules for the given subscription
-//
-// Generated from API version 2019-01-01-preview
 //   - options - AlertsSuppressionRulesClientListOptions contains the optional parameters for the AlertsSuppressionRulesClient.NewListPager
 //     method.
 func (client *AlertsSuppressionRulesClient) NewListPager(options *AlertsSuppressionRulesClientListOptions) *runtime.Pager[AlertsSuppressionRulesClientListResponse] {
@@ -191,8 +189,8 @@ func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Contex
 	if options != nil && options.AlertType != nil {
 		reqQP.Set("AlertType", *options.AlertType)
 	}
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -208,8 +206,6 @@ func (client *AlertsSuppressionRulesClient) listHandleResponse(resp *http.Respon
 
 // Update - Update existing rule or create new rule if it doesn't exist
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-01-01-preview
 //   - alertsSuppressionRuleName - The unique name of the suppression alert rule
 //   - alertsSuppressionRule - Suppression rule object
 //   - options - AlertsSuppressionRulesClientUpdateOptions contains the optional parameters for the AlertsSuppressionRulesClient.Update
@@ -252,8 +248,8 @@ func (client *AlertsSuppressionRulesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, alertsSuppressionRule); err != nil {

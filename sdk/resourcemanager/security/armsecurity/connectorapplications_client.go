@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultConnectorApplicationsClientVersion string = "2022-07-01-preview"
+
 // ConnectorApplicationsClient contains the methods for the ConnectorApplications group.
 // Don't use this type directly, use NewConnectorApplicationsClient() instead.
+//
+// Generated from API version 2022-07-01-preview
 type ConnectorApplicationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +44,6 @@ func NewConnectorApplicationsClient(subscriptionID string, credential azcore.Tok
 }
 
 // NewListPager - Get a list of all relevant applications over a security connector level scope
-//
-// Generated from API version 2022-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - ConnectorApplicationsClientListOptions contains the optional parameters for the ConnectorApplicationsClient.NewListPager
@@ -89,8 +91,8 @@ func (client *ConnectorApplicationsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConnectorApplicationsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

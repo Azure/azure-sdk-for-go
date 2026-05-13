@@ -6,12 +6,15 @@ package shared
 import (
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"hash/crc64"
 	"io"
 	"net"
+	"net/http"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 const (
@@ -220,4 +223,20 @@ func validateSeekableStreamAt0(body io.ReadSeeker) error {
 		return errors.New("body stream must be set to position 0")
 	}
 	return nil
+}
+
+type policyFunc func(*policy.Request) (*http.Response, error)
+
+func (pf policyFunc) Do(req *policy.Request) (*http.Response, error) {
+	return pf(req)
+}
+
+func NewRangePolicy() policy.Policy {
+	return policyFunc(func(req *policy.Request) (*http.Response, error) {
+		if headerValue := req.Raw().Header.Get("Range"); headerValue != "" {
+			req.Raw().Header.Del("Range")
+			req.Raw().Header["x-ms-range"] = []string{headerValue}
+		}
+		return req.Next()
+	})
 }

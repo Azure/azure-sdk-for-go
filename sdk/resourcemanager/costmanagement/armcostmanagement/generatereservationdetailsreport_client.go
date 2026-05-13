@@ -25,7 +25,7 @@ type GenerateReservationDetailsReportClient struct {
 
 // NewGenerateReservationDetailsReportClient creates a new instance of GenerateReservationDetailsReportClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGenerateReservationDetailsReportClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateReservationDetailsReportClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewGenerateReservationDetailsReportClient(credential azcore.TokenCredential
 // on the roles see, https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - billingAccountID - Enrollment ID (Legacy BillingAccount ID)
 //   - startDate - Start Date
 //   - endDate - End Date
@@ -71,7 +71,7 @@ func (client *GenerateReservationDetailsReportClient) BeginByBillingAccountID(ct
 // on the roles see, https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 func (client *GenerateReservationDetailsReportClient) byBillingAccountID(ctx context.Context, billingAccountID string, startDate string, endDate string, options *GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GenerateReservationDetailsReportClient.BeginByBillingAccountID"
@@ -94,7 +94,7 @@ func (client *GenerateReservationDetailsReportClient) byBillingAccountID(ctx con
 }
 
 // byBillingAccountIDCreateRequest creates the ByBillingAccountID request.
-func (client *GenerateReservationDetailsReportClient) byBillingAccountIDCreateRequest(ctx context.Context, billingAccountID string, startDate string, endDate string, options *GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions) (*policy.Request, error) {
+func (client *GenerateReservationDetailsReportClient) byBillingAccountIDCreateRequest(ctx context.Context, billingAccountID string, startDate string, endDate string, _ *GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/generateReservationDetailsReport"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -105,9 +105,9 @@ func (client *GenerateReservationDetailsReportClient) byBillingAccountIDCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("startDate", startDate)
+	reqQP.Set("api-version", "2025-03-01")
 	reqQP.Set("endDate", endDate)
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("startDate", startDate)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,7 +118,7 @@ func (client *GenerateReservationDetailsReportClient) byBillingAccountIDCreateRe
 // details on the roles see, https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - billingAccountID - Billing account ID
 //   - billingProfileID - Billing profile ID.
 //   - startDate - Start Date
@@ -148,7 +148,7 @@ func (client *GenerateReservationDetailsReportClient) BeginByBillingProfileID(ct
 // details on the roles see, https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 func (client *GenerateReservationDetailsReportClient) byBillingProfileID(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string, options *GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GenerateReservationDetailsReportClient.BeginByBillingProfileID"
@@ -171,7 +171,7 @@ func (client *GenerateReservationDetailsReportClient) byBillingProfileID(ctx con
 }
 
 // byBillingProfileIDCreateRequest creates the ByBillingProfileID request.
-func (client *GenerateReservationDetailsReportClient) byBillingProfileIDCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string, options *GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions) (*policy.Request, error) {
+func (client *GenerateReservationDetailsReportClient) byBillingProfileIDCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string, _ *GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/generateReservationDetailsReport"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -186,9 +186,9 @@ func (client *GenerateReservationDetailsReportClient) byBillingProfileIDCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("startDate", startDate)
+	reqQP.Set("api-version", "2025-03-01")
 	reqQP.Set("endDate", endDate)
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("startDate", startDate)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

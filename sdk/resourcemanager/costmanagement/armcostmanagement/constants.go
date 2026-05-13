@@ -5,11 +5,6 @@
 
 package armcostmanagement
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
-	moduleVersion = "v2.1.0"
-)
-
 // AccumulatedType - Show costs accumulated over time.
 type AccumulatedType string
 
@@ -235,6 +230,116 @@ func PossibleBenefitKindValues() []BenefitKind {
 	}
 }
 
+// BenefitUtilizationSummaryReportSchema - The CSV file from the reportUrl and secondaryReportUrl blob link will consist of
+// the following columns of benefit utilization data. UtilizedPercentage will be 0 for savings plans reports and non data
+// bricks reservations. Utilization percentages will be 0 for data bricks reservations.
+type BenefitUtilizationSummaryReportSchema string
+
+const (
+	BenefitUtilizationSummaryReportSchemaAvgUtilizationPercentage BenefitUtilizationSummaryReportSchema = "AvgUtilizationPercentage"
+	BenefitUtilizationSummaryReportSchemaBenefitID                BenefitUtilizationSummaryReportSchema = "BenefitId"
+	BenefitUtilizationSummaryReportSchemaBenefitOrderID           BenefitUtilizationSummaryReportSchema = "BenefitOrderId"
+	BenefitUtilizationSummaryReportSchemaBenefitType              BenefitUtilizationSummaryReportSchema = "BenefitType"
+	BenefitUtilizationSummaryReportSchemaKind                     BenefitUtilizationSummaryReportSchema = "Kind"
+	BenefitUtilizationSummaryReportSchemaMaxUtilizationPercentage BenefitUtilizationSummaryReportSchema = "MaxUtilizationPercentage"
+	BenefitUtilizationSummaryReportSchemaMinUtilizationPercentage BenefitUtilizationSummaryReportSchema = "MinUtilizationPercentage"
+	BenefitUtilizationSummaryReportSchemaUsageDate                BenefitUtilizationSummaryReportSchema = "UsageDate"
+	BenefitUtilizationSummaryReportSchemaUtilizedPercentage       BenefitUtilizationSummaryReportSchema = "UtilizedPercentage"
+)
+
+// PossibleBenefitUtilizationSummaryReportSchemaValues returns the possible values for the BenefitUtilizationSummaryReportSchema const type.
+func PossibleBenefitUtilizationSummaryReportSchemaValues() []BenefitUtilizationSummaryReportSchema {
+	return []BenefitUtilizationSummaryReportSchema{
+		BenefitUtilizationSummaryReportSchemaAvgUtilizationPercentage,
+		BenefitUtilizationSummaryReportSchemaBenefitID,
+		BenefitUtilizationSummaryReportSchemaBenefitOrderID,
+		BenefitUtilizationSummaryReportSchemaBenefitType,
+		BenefitUtilizationSummaryReportSchemaKind,
+		BenefitUtilizationSummaryReportSchemaMaxUtilizationPercentage,
+		BenefitUtilizationSummaryReportSchemaMinUtilizationPercentage,
+		BenefitUtilizationSummaryReportSchemaUsageDate,
+		BenefitUtilizationSummaryReportSchemaUtilizedPercentage,
+	}
+}
+
+// BudgetNotificationOperatorType - The comparison operator.
+// Supported for CategoryType(s): Cost, ReservationUtilization.
+// Supported operators for CategoryType: Cost
+// * GreaterThan
+//
+// * GreaterThanOrEqualTo
+//
+// Supported operators for CategoryType: ReservationUtilization
+//
+// * LessThan
+type BudgetNotificationOperatorType string
+
+const (
+	// BudgetNotificationOperatorTypeEqualTo - Notification will be triggered if the evaluated cost is the same as threshold value.
+	// Note: It’s not recommended to use this OperatorType as there’s low chance of cost being exactly the same as threshold value,
+	// leading to missing of your alert. This OperatorType will be deprecated in future.
+	// Supported for CategoryType(s): Cost.
+	BudgetNotificationOperatorTypeEqualTo BudgetNotificationOperatorType = "EqualTo"
+	// BudgetNotificationOperatorTypeGreaterThan - Notification will be triggered if the evaluated cost is greater than the threshold
+	// value. Note: This is the recommended OperatorType while configuring Budget Alert.
+	// Supported for CategoryType(s): Cost.
+	BudgetNotificationOperatorTypeGreaterThan BudgetNotificationOperatorType = "GreaterThan"
+	// BudgetNotificationOperatorTypeGreaterThanOrEqualTo - Notification will be triggered if the evaluated cost is greater than
+	// or equal to the threshold value.
+	// Supported for CategoryType(s): Cost.
+	BudgetNotificationOperatorTypeGreaterThanOrEqualTo BudgetNotificationOperatorType = "GreaterThanOrEqualTo"
+	// BudgetNotificationOperatorTypeLessThan - Notification will be triggered if any Reservations in the scope of the Reservation
+	// Utilization Alert Rule have a utilization less than the threshold percentage.
+	// Supported for CategoryType(s): ReservationUtilization.
+	BudgetNotificationOperatorTypeLessThan BudgetNotificationOperatorType = "LessThan"
+)
+
+// PossibleBudgetNotificationOperatorTypeValues returns the possible values for the BudgetNotificationOperatorType const type.
+func PossibleBudgetNotificationOperatorTypeValues() []BudgetNotificationOperatorType {
+	return []BudgetNotificationOperatorType{
+		BudgetNotificationOperatorTypeEqualTo,
+		BudgetNotificationOperatorTypeGreaterThan,
+		BudgetNotificationOperatorTypeGreaterThanOrEqualTo,
+		BudgetNotificationOperatorTypeLessThan,
+	}
+}
+
+// BudgetOperatorType - The operator to use for comparison.
+type BudgetOperatorType string
+
+const (
+	BudgetOperatorTypeIn BudgetOperatorType = "In"
+)
+
+// PossibleBudgetOperatorTypeValues returns the possible values for the BudgetOperatorType const type.
+func PossibleBudgetOperatorTypeValues() []BudgetOperatorType {
+	return []BudgetOperatorType{
+		BudgetOperatorTypeIn,
+	}
+}
+
+// CategoryType - The category of the budget.
+// * 'Cost' defines a Budget.
+// * 'ReservationUtilization' defines a Reservation Utilization Alert Rule.
+type CategoryType string
+
+const (
+	// CategoryTypeCost - A Budget that evaluates monetary cost of Azure resources against an amount, and alerts based on a configured
+	// notification threshold.
+	CategoryTypeCost CategoryType = "Cost"
+	// CategoryTypeReservationUtilization - An Alert Rule that evaluates the utilization percentage of Azure Reservations, and
+	// alerts based on a configured notification threshold.
+	CategoryTypeReservationUtilization CategoryType = "ReservationUtilization"
+)
+
+// PossibleCategoryTypeValues returns the possible values for the CategoryType const type.
+func PossibleCategoryTypeValues() []CategoryType {
+	return []CategoryType{
+		CategoryTypeCost,
+		CategoryTypeReservationUtilization,
+	}
+}
+
 // ChartType - Chart type of the main view in Cost Analysis. Required.
 type ChartType string
 
@@ -270,6 +375,59 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 	return []CheckNameAvailabilityReason{
 		CheckNameAvailabilityReasonAlreadyExists,
 		CheckNameAvailabilityReasonInvalid,
+	}
+}
+
+// CompressionModeType - Allow customers to select compress data for exports. This setting will enable destination file compression
+// scheme at runtime. By default set to None. Gzip is for csv and snappy for parquet.
+type CompressionModeType string
+
+const (
+	CompressionModeTypeGzip   CompressionModeType = "gzip"
+	CompressionModeTypeNone   CompressionModeType = "none"
+	CompressionModeTypeSnappy CompressionModeType = "snappy"
+)
+
+// PossibleCompressionModeTypeValues returns the possible values for the CompressionModeType const type.
+func PossibleCompressionModeTypeValues() []CompressionModeType {
+	return []CompressionModeType{
+		CompressionModeTypeGzip,
+		CompressionModeTypeNone,
+		CompressionModeTypeSnappy,
+	}
+}
+
+// CostAllocationPolicyType - Method to use for allocating cost. FixedProportion indicates that cost will be split based on
+// specified percentage values.
+type CostAllocationPolicyType string
+
+const (
+	CostAllocationPolicyTypeFixedProportion CostAllocationPolicyType = "FixedProportion"
+)
+
+// PossibleCostAllocationPolicyTypeValues returns the possible values for the CostAllocationPolicyType const type.
+func PossibleCostAllocationPolicyTypeValues() []CostAllocationPolicyType {
+	return []CostAllocationPolicyType{
+		CostAllocationPolicyTypeFixedProportion,
+	}
+}
+
+// CostAllocationResourceType - Category of resource to use for allocation.
+type CostAllocationResourceType string
+
+const (
+	// CostAllocationResourceTypeDimension - Indicates an Azure dimension such as a subscription id or resource group name is
+	// being used for allocation.
+	CostAllocationResourceTypeDimension CostAllocationResourceType = "Dimension"
+	// CostAllocationResourceTypeTag - Allocates cost based on Azure Tag key value pairs.
+	CostAllocationResourceTypeTag CostAllocationResourceType = "Tag"
+)
+
+// PossibleCostAllocationResourceTypeValues returns the possible values for the CostAllocationResourceType const type.
+func PossibleCostAllocationResourceTypeValues() []CostAllocationResourceType {
+	return []CostAllocationResourceType{
+		CostAllocationResourceTypeDimension,
+		CostAllocationResourceTypeTag,
 	}
 }
 
@@ -347,6 +505,79 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// CultureCode - Language in which the recipient will receive the notification,
+// Supported for CategoryType(s): Cost, ReservationUtilization.
+type CultureCode string
+
+const (
+	CultureCodeCsCz CultureCode = "cs-cz"
+	CultureCodeDaDk CultureCode = "da-dk"
+	CultureCodeDeDe CultureCode = "de-de"
+	CultureCodeEnGb CultureCode = "en-gb"
+	CultureCodeEnUs CultureCode = "en-us"
+	CultureCodeEsEs CultureCode = "es-es"
+	CultureCodeFrFr CultureCode = "fr-fr"
+	CultureCodeHuHu CultureCode = "hu-hu"
+	CultureCodeItIt CultureCode = "it-it"
+	CultureCodeJaJp CultureCode = "ja-jp"
+	CultureCodeKoKr CultureCode = "ko-kr"
+	CultureCodeNbNo CultureCode = "nb-no"
+	CultureCodeNlNl CultureCode = "nl-nl"
+	CultureCodePlPl CultureCode = "pl-pl"
+	CultureCodePtBr CultureCode = "pt-br"
+	CultureCodePtPt CultureCode = "pt-pt"
+	CultureCodeRuRu CultureCode = "ru-ru"
+	CultureCodeSvSe CultureCode = "sv-se"
+	CultureCodeTrTr CultureCode = "tr-tr"
+	CultureCodeZhCn CultureCode = "zh-cn"
+	CultureCodeZhTw CultureCode = "zh-tw"
+)
+
+// PossibleCultureCodeValues returns the possible values for the CultureCode const type.
+func PossibleCultureCodeValues() []CultureCode {
+	return []CultureCode{
+		CultureCodeCsCz,
+		CultureCodeDaDk,
+		CultureCodeDeDe,
+		CultureCodeEnGb,
+		CultureCodeEnUs,
+		CultureCodeEsEs,
+		CultureCodeFrFr,
+		CultureCodeHuHu,
+		CultureCodeItIt,
+		CultureCodeJaJp,
+		CultureCodeKoKr,
+		CultureCodeNbNo,
+		CultureCodeNlNl,
+		CultureCodePlPl,
+		CultureCodePtBr,
+		CultureCodePtPt,
+		CultureCodeRuRu,
+		CultureCodeSvSe,
+		CultureCodeTrTr,
+		CultureCodeZhCn,
+		CultureCodeZhTw,
+	}
+}
+
+// DataOverwriteBehaviorType - Allow customers to select overwrite data(OverwritePreviousReport) for exports. This setting
+// will enable overwrite data for the same month in customer storage account. By default set to
+// CreateNewReport.
+type DataOverwriteBehaviorType string
+
+const (
+	DataOverwriteBehaviorTypeCreateNewReport         DataOverwriteBehaviorType = "CreateNewReport"
+	DataOverwriteBehaviorTypeOverwritePreviousReport DataOverwriteBehaviorType = "OverwritePreviousReport"
+)
+
+// PossibleDataOverwriteBehaviorTypeValues returns the possible values for the DataOverwriteBehaviorType const type.
+func PossibleDataOverwriteBehaviorTypeValues() []DataOverwriteBehaviorType {
+	return []DataOverwriteBehaviorType{
+		DataOverwriteBehaviorTypeCreateNewReport,
+		DataOverwriteBehaviorTypeOverwritePreviousReport,
+	}
+}
+
 // DaysOfWeek - Days of Week.
 type DaysOfWeek string
 
@@ -370,6 +601,20 @@ func PossibleDaysOfWeekValues() []DaysOfWeek {
 		DaysOfWeekThursday,
 		DaysOfWeekTuesday,
 		DaysOfWeekWednesday,
+	}
+}
+
+// DestinationType - The export delivery destination type. Currently only 'AzureBlob' is supported.
+type DestinationType string
+
+const (
+	DestinationTypeAzureBlob DestinationType = "AzureBlob"
+)
+
+// PossibleDestinationTypeValues returns the possible values for the DestinationType const type.
+func PossibleDestinationTypeValues() []DestinationType {
+	return []DestinationType{
+		DestinationTypeAzureBlob,
 	}
 }
 
@@ -415,13 +660,19 @@ func PossibleExecutionTypeValues() []ExecutionType {
 	}
 }
 
-// ExportType - The type of the query.
+// ExportType - The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that
+// do not yet provide data for charges or amortization for service reservations.
 type ExportType string
 
 const (
-	ExportTypeActualCost    ExportType = "ActualCost"
-	ExportTypeAmortizedCost ExportType = "AmortizedCost"
-	ExportTypeUsage         ExportType = "Usage"
+	ExportTypeActualCost                 ExportType = "ActualCost"
+	ExportTypeAmortizedCost              ExportType = "AmortizedCost"
+	ExportTypeFocusCost                  ExportType = "FocusCost"
+	ExportTypePriceSheet                 ExportType = "PriceSheet"
+	ExportTypeReservationDetails         ExportType = "ReservationDetails"
+	ExportTypeReservationRecommendations ExportType = "ReservationRecommendations"
+	ExportTypeReservationTransactions    ExportType = "ReservationTransactions"
+	ExportTypeUsage                      ExportType = "Usage"
 )
 
 // PossibleExportTypeValues returns the possible values for the ExportType const type.
@@ -429,6 +680,11 @@ func PossibleExportTypeValues() []ExportType {
 	return []ExportType{
 		ExportTypeActualCost,
 		ExportTypeAmortizedCost,
+		ExportTypeFocusCost,
+		ExportTypePriceSheet,
+		ExportTypeReservationDetails,
+		ExportTypeReservationRecommendations,
+		ExportTypeReservationTransactions,
 		ExportTypeUsage,
 	}
 }
@@ -459,6 +715,25 @@ const (
 func PossibleFileFormatValues() []FileFormat {
 	return []FileFormat{
 		FileFormatCSV,
+	}
+}
+
+// FilterItemNames - The name of the filter. This is currently only supported for Export Definition type of ReservationRecommendations.
+// Supported names are ['ReservationScope', 'LookBackPeriod', 'ResourceType']
+type FilterItemNames string
+
+const (
+	FilterItemNamesLookBackPeriod   FilterItemNames = "LookBackPeriod"
+	FilterItemNamesReservationScope FilterItemNames = "ReservationScope"
+	FilterItemNamesResourceType     FilterItemNames = "ResourceType"
+)
+
+// PossibleFilterItemNamesValues returns the possible values for the FilterItemNames const type.
+func PossibleFilterItemNamesValues() []FilterItemNames {
+	return []FilterItemNames{
+		FilterItemNamesLookBackPeriod,
+		FilterItemNamesReservationScope,
+		FilterItemNamesResourceType,
 	}
 }
 
@@ -508,17 +783,44 @@ func PossibleForecastTypeValues() []ForecastType {
 	}
 }
 
-// FormatType - The format of the export being delivered. Currently only 'Csv' is supported.
+// FormatType - The format of the export being delivered.
 type FormatType string
 
 const (
-	FormatTypeCSV FormatType = "Csv"
+	FormatTypeCSV     FormatType = "Csv"
+	FormatTypeParquet FormatType = "Parquet"
 )
 
 // PossibleFormatTypeValues returns the possible values for the FormatType const type.
 func PossibleFormatTypeValues() []FormatType {
 	return []FormatType{
 		FormatTypeCSV,
+		FormatTypeParquet,
+	}
+}
+
+// Frequency - Frequency of a notification. Represents how long the notification will be silent after triggering an alert
+// for a threshold breach. If not specified, the frequency will be set by default based on the
+// timeGrain (Weekly when timeGrain: Last7Days, Monthly when timeGrain: Last30Days).
+// Supported for CategoryType(s): ReservationUtilization.
+type Frequency string
+
+const (
+	// FrequencyDaily - After the threshold breaches and an Alert is fired, no further alerts will be sent until the next calendar
+	// day.
+	FrequencyDaily Frequency = "Daily"
+	// FrequencyMonthly - After the threshold breaches and an Alert is fired, no further alerts will be sent for 30 calendar days.
+	FrequencyMonthly Frequency = "Monthly"
+	// FrequencyWeekly - After the threshold breaches and an Alert is fired, no further alerts will be sent for 7 calendar days.
+	FrequencyWeekly Frequency = "Weekly"
+)
+
+// PossibleFrequencyValues returns the possible values for the Frequency const type.
+func PossibleFrequencyValues() []Frequency {
+	return []Frequency{
+		FrequencyDaily,
+		FrequencyMonthly,
+		FrequencyWeekly,
 	}
 }
 
@@ -613,17 +915,19 @@ func PossibleGrainParameterValues() []GrainParameter {
 	}
 }
 
-// GranularityType - The granularity of rows in the forecast.
+// GranularityType - The granularity of rows in the export. Currently 'Daily' is supported for most cases.
 type GranularityType string
 
 const (
-	GranularityTypeDaily GranularityType = "Daily"
+	GranularityTypeDaily   GranularityType = "Daily"
+	GranularityTypeMonthly GranularityType = "Monthly"
 )
 
 // PossibleGranularityTypeValues returns the possible values for the GranularityType const type.
 func PossibleGranularityTypeValues() []GranularityType {
 	return []GranularityType{
 		GranularityTypeDaily,
+		GranularityTypeMonthly,
 	}
 }
 
@@ -682,10 +986,11 @@ func PossibleMetricTypeValues() []MetricType {
 	}
 }
 
-// OperationStatusType - The status of the long running operation.
+// OperationStatusType - Enum representing the status of an async operation.
 type OperationStatusType string
 
 const (
+	OperationStatusTypeComplete  OperationStatusType = "Complete"
 	OperationStatusTypeCompleted OperationStatusType = "Completed"
 	OperationStatusTypeFailed    OperationStatusType = "Failed"
 	OperationStatusTypeRunning   OperationStatusType = "Running"
@@ -694,6 +999,7 @@ const (
 // PossibleOperationStatusTypeValues returns the possible values for the OperationStatusType const type.
 func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return []OperationStatusType{
+		OperationStatusTypeComplete,
 		OperationStatusTypeCompleted,
 		OperationStatusTypeFailed,
 		OperationStatusTypeRunning,
@@ -780,6 +1086,24 @@ const (
 func PossibleQueryOperatorTypeValues() []QueryOperatorType {
 	return []QueryOperatorType{
 		QueryOperatorTypeIn,
+	}
+}
+
+// Reason - The reason this name is not available.
+type Reason string
+
+const (
+	ReasonAlreadyExists Reason = "AlreadyExists"
+	ReasonInvalid       Reason = "Invalid"
+	ReasonValid         Reason = "Valid"
+)
+
+// PossibleReasonValues returns the possible values for the Reason const type.
+func PossibleReasonValues() []Reason {
+	return []Reason{
+		ReasonAlreadyExists,
+		ReasonInvalid,
+		ReasonValid,
 	}
 }
 
@@ -932,6 +1256,28 @@ func PossibleReservationReportSchemaValues() []ReservationReportSchema {
 	}
 }
 
+// RuleStatus - Current status of the rule.
+type RuleStatus string
+
+const (
+	// RuleStatusActive - Rule is saved and impacting cost allocation.
+	RuleStatusActive RuleStatus = "Active"
+	// RuleStatusNotActive - Rule is saved but not used to allocate costs.
+	RuleStatusNotActive RuleStatus = "NotActive"
+	// RuleStatusProcessing - Rule is saved and cost allocation is being updated. Readonly value that cannot be submitted in a
+	// put request.
+	RuleStatusProcessing RuleStatus = "Processing"
+)
+
+// PossibleRuleStatusValues returns the possible values for the RuleStatus const type.
+func PossibleRuleStatusValues() []RuleStatus {
+	return []RuleStatus{
+		RuleStatusActive,
+		RuleStatusNotActive,
+		RuleStatusProcessing,
+	}
+}
+
 // ScheduleFrequency - Frequency of the schedule.
 type ScheduleFrequency string
 
@@ -1011,7 +1357,37 @@ func PossibleScopeValues() []Scope {
 	}
 }
 
-// StatusType - The status of the export's schedule. If 'Inactive', the export's schedule is paused.
+type SettingType string
+
+const (
+	// SettingTypeTaginheritance - This setting applies billing profile, invoice section, subscription and resource group tags
+	// to current month's usage data of child resources.
+	SettingTypeTaginheritance SettingType = "taginheritance"
+)
+
+// PossibleSettingTypeValues returns the possible values for the SettingType const type.
+func PossibleSettingTypeValues() []SettingType {
+	return []SettingType{
+		SettingTypeTaginheritance,
+	}
+}
+
+// SettingsKind - Specifies the kind of settings.
+type SettingsKind string
+
+const (
+	SettingsKindTaginheritance SettingsKind = "taginheritance"
+)
+
+// PossibleSettingsKindValues returns the possible values for the SettingsKind const type.
+func PossibleSettingsKindValues() []SettingsKind {
+	return []SettingsKind{
+		SettingsKindTaginheritance,
+	}
+}
+
+// StatusType - The status of the export's schedule. If 'Inactive', the export's schedule is paused. To enable export set
+// the status to be Active and then make a PUT request.
 type StatusType string
 
 const (
@@ -1024,6 +1400,22 @@ func PossibleStatusTypeValues() []StatusType {
 	return []StatusType{
 		StatusTypeActive,
 		StatusTypeInactive,
+	}
+}
+
+// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
+type SystemAssignedServiceIdentityType string
+
+const (
+	SystemAssignedServiceIdentityTypeNone           SystemAssignedServiceIdentityType = "None"
+	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
+)
+
+// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
+func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
+	return []SystemAssignedServiceIdentityType{
+		SystemAssignedServiceIdentityTypeNone,
+		SystemAssignedServiceIdentityTypeSystemAssigned,
 	}
 }
 
@@ -1045,13 +1437,103 @@ func PossibleTermValues() []Term {
 	}
 }
 
-// TimeframeType - The time frame for pulling data for the query. If custom, then a specific time period must be provided.
+// ThresholdType - The type of threshold.
+// Supported for CategoryType(s): Cost.
+type ThresholdType string
+
+const (
+	// ThresholdTypeActual - Actual costs budget alerts notify when the actual accrued cost exceeds the allocated budget.
+	ThresholdTypeActual ThresholdType = "Actual"
+	// ThresholdTypeForecasted - Forecasted costs budget alerts provide advanced notification that your spending trends are likely
+	// to exceed your allocated budget, as it relies on forecasted cost predictions.
+	ThresholdTypeForecasted ThresholdType = "Forecasted"
+)
+
+// PossibleThresholdTypeValues returns the possible values for the ThresholdType const type.
+func PossibleThresholdTypeValues() []ThresholdType {
+	return []ThresholdType{
+		ThresholdTypeActual,
+		ThresholdTypeForecasted,
+	}
+}
+
+// TimeGrainType - The time covered by a budget. Tracking of the amount will be reset based on the time grain.
+// Supported for CategoryType(s): Cost, ReservationUtilization.
+// Supported timeGrainTypes for CategoryType: Cost
+// * Monthly
+//
+// * Quarterly
+//
+// * Annually
+//
+// * BillingMonth*
+//
+// * BillingQuarter*
+//
+// * BillingAnnual*
+//
+// *only supported for Web Direct customers.
+//
+// Supported timeGrainTypes for CategoryType: ReservationUtilization
+//
+// * Last7Days
+//
+// * Last30Days
+//
+// Required for CategoryType(s): Cost, ReservationUtilization.
+type TimeGrainType string
+
+const (
+	// TimeGrainTypeAnnually - The budget will track costs in the current calendar year against the amount.
+	// Supported for CategoryType: Cost only.
+	TimeGrainTypeAnnually TimeGrainType = "Annually"
+	// TimeGrainTypeBillingAnnual - The budget will track costs in the current billing year against the amount.
+	// Supported for CategoryType: Cost and Web Direct customers only.
+	TimeGrainTypeBillingAnnual TimeGrainType = "BillingAnnual"
+	// TimeGrainTypeBillingMonth - The budget will track costs in the current billing month against the amount.
+	// Supported for CategoryType: Cost and Web Direct customers only.
+	TimeGrainTypeBillingMonth TimeGrainType = "BillingMonth"
+	// TimeGrainTypeBillingQuarter - The budget will track costs in the current billing quarter against the amount.
+	// Supported for CategoryType: Cost and Web Direct customers only.
+	TimeGrainTypeBillingQuarter TimeGrainType = "BillingQuarter"
+	// TimeGrainTypeLast30Days - The Reservation Utilization Alert Rule will evaluate reservations based on their 30-Day utilization
+	// percentage.
+	// Supported for CategoryType: ReservationUtilization only.
+	TimeGrainTypeLast30Days TimeGrainType = "Last30Days"
+	// TimeGrainTypeLast7Days - The Reservation Utilization Alert Rule will evaluate reservations based on their 7-Day utilization
+	// percentage.
+	// Supported for CategoryType: ReservationUtilization only.
+	TimeGrainTypeLast7Days TimeGrainType = "Last7Days"
+	// TimeGrainTypeMonthly - The budget will track costs in the current calendar month against the amount.
+	// Supported for CategoryType: Cost only.
+	TimeGrainTypeMonthly TimeGrainType = "Monthly"
+	// TimeGrainTypeQuarterly - The budget will track costs in the current calendar quarter against the amount.
+	// Supported for CategoryType: Cost only.
+	TimeGrainTypeQuarterly TimeGrainType = "Quarterly"
+)
+
+// PossibleTimeGrainTypeValues returns the possible values for the TimeGrainType const type.
+func PossibleTimeGrainTypeValues() []TimeGrainType {
+	return []TimeGrainType{
+		TimeGrainTypeAnnually,
+		TimeGrainTypeBillingAnnual,
+		TimeGrainTypeBillingMonth,
+		TimeGrainTypeBillingQuarter,
+		TimeGrainTypeLast30Days,
+		TimeGrainTypeLast7Days,
+		TimeGrainTypeMonthly,
+		TimeGrainTypeQuarterly,
+	}
+}
+
+// TimeframeType - The time frame for pulling data for the export. If custom, then a specific time period must be provided.
 type TimeframeType string
 
 const (
 	TimeframeTypeBillingMonthToDate  TimeframeType = "BillingMonthToDate"
 	TimeframeTypeCustom              TimeframeType = "Custom"
 	TimeframeTypeMonthToDate         TimeframeType = "MonthToDate"
+	TimeframeTypeTheCurrentMonth     TimeframeType = "TheCurrentMonth"
 	TimeframeTypeTheLastBillingMonth TimeframeType = "TheLastBillingMonth"
 	TimeframeTypeTheLastMonth        TimeframeType = "TheLastMonth"
 	TimeframeTypeWeekToDate          TimeframeType = "WeekToDate"
@@ -1063,6 +1545,7 @@ func PossibleTimeframeTypeValues() []TimeframeType {
 		TimeframeTypeBillingMonthToDate,
 		TimeframeTypeCustom,
 		TimeframeTypeMonthToDate,
+		TimeframeTypeTheCurrentMonth,
 		TimeframeTypeTheLastBillingMonth,
 		TimeframeTypeTheLastMonth,
 		TimeframeTypeWeekToDate,

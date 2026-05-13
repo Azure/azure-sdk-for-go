@@ -22,3 +22,12 @@ type BenefitUtilizationSummaryClassification interface {
 	// GetBenefitUtilizationSummary returns the BenefitUtilizationSummary content of the underlying type.
 	GetBenefitUtilizationSummary() *BenefitUtilizationSummary
 }
+
+// SettingClassification provides polymorphic access to related types.
+// Call the interface's GetSetting() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *Setting, *TagInheritanceSetting
+type SettingClassification interface {
+	// GetSetting returns the Setting content of the underlying type.
+	GetSetting() *Setting
+}

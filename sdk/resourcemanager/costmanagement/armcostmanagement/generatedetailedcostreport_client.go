@@ -23,7 +23,7 @@ type GenerateDetailedCostReportClient struct {
 
 // NewGenerateDetailedCostReportClient creates a new instance of GenerateDetailedCostReportClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGenerateDetailedCostReportClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateDetailedCostReportClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewGenerateDetailedCostReportClient(credential azcore.TokenCredential, opti
 // cost report is being stored.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For details, see
 //     https://aka.ms/costmgmt/scopes.
 //   - parameters - Parameters supplied to the Create detailed cost report operation.
@@ -73,7 +73,7 @@ func (client *GenerateDetailedCostReportClient) BeginCreateOperation(ctx context
 // cost report is being stored.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 func (client *GenerateDetailedCostReportClient) createOperation(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportClientBeginCreateOperationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GenerateDetailedCostReportClient.BeginCreateOperation"
@@ -96,7 +96,7 @@ func (client *GenerateDetailedCostReportClient) createOperation(ctx context.Cont
 }
 
 // createOperationCreateRequest creates the CreateOperation request.
-func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportClientBeginCreateOperationOptions) (*policy.Request, error) {
+func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, _ *GenerateDetailedCostReportClientBeginCreateOperationOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/generateDetailedCostReport"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -104,7 +104,7 @@ func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

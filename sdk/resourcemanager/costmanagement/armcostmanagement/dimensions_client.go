@@ -26,7 +26,7 @@ type DimensionsClient struct {
 
 // NewDimensionsClient creates a new instance of DimensionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DimensionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewByExternalCloudProviderTypePager - Lists the dimensions by the external cloud provider type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
 //     'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
 //   - externalCloudProviderID - This can be '{externalSubscriptionId}' for linked account or '{externalBillingAccountId}' for
@@ -87,12 +87,11 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
@@ -100,6 +99,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +116,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *
 
 // NewListPager - Lists the dimensions by the defined scope.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -161,12 +161,11 @@ func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
@@ -174,6 +173,7 @@ func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope str
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

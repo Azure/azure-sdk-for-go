@@ -82,6 +82,54 @@ type BenefitUtilizationSummariesClientListBySavingsPlanOrderOptions struct {
 	GrainParameter *GrainParameter
 }
 
+// BudgetsClientCreateOrUpdateOptions contains the optional parameters for the BudgetsClient.CreateOrUpdate method.
+type BudgetsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BudgetsClientDeleteOptions contains the optional parameters for the BudgetsClient.Delete method.
+type BudgetsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BudgetsClientGetOptions contains the optional parameters for the BudgetsClient.Get method.
+type BudgetsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BudgetsClientListOptions contains the optional parameters for the BudgetsClient.NewListPager method.
+type BudgetsClientListOptions struct {
+	// OData filter option. May be used to filter budgets by properties/category. The filter supports 'eq' only.
+	Filter *string
+}
+
+// CostAllocationRulesClientCheckNameAvailabilityOptions contains the optional parameters for the CostAllocationRulesClient.CheckNameAvailability
+// method.
+type CostAllocationRulesClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CostAllocationRulesClientCreateOrUpdateOptions contains the optional parameters for the CostAllocationRulesClient.CreateOrUpdate
+// method.
+type CostAllocationRulesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CostAllocationRulesClientDeleteOptions contains the optional parameters for the CostAllocationRulesClient.Delete method.
+type CostAllocationRulesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CostAllocationRulesClientGetOptions contains the optional parameters for the CostAllocationRulesClient.Get method.
+type CostAllocationRulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CostAllocationRulesClientListOptions contains the optional parameters for the CostAllocationRulesClient.NewListPager method.
+type CostAllocationRulesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DimensionsClientByExternalCloudProviderTypeOptions contains the optional parameters for the DimensionsClient.NewByExternalCloudProviderTypePager
 // method.
 type DimensionsClientByExternalCloudProviderTypeOptions struct {
@@ -131,7 +179,8 @@ type ExportsClientDeleteOptions struct {
 
 // ExportsClientExecuteOptions contains the optional parameters for the ExportsClient.Execute method.
 type ExportsClientExecuteOptions struct {
-	// placeholder for future optional parameters
+	// Parameters supplied to the Execute Export operation.
+	Parameters *ExportRunRequest
 }
 
 // ExportsClientGetExecutionHistoryOptions contains the optional parameters for the ExportsClient.GetExecutionHistory method.
@@ -170,31 +219,73 @@ type ForecastClientUsageOptions struct {
 	Filter *string
 }
 
+// GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingAccountOptions contains the optional parameters for
+// the GenerateBenefitUtilizationSummariesReportClient.BeginGenerateByBillingAccount method.
+type GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingAccountOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingProfileOptions contains the optional parameters for
+// the GenerateBenefitUtilizationSummariesReportClient.BeginGenerateByBillingProfile method.
+type GenerateBenefitUtilizationSummariesReportClientBeginGenerateByBillingProfileOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationIDOptions contains the optional parameters for
+// the GenerateBenefitUtilizationSummariesReportClient.BeginGenerateByReservationID method.
+type GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationIDOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationOrderIDOptions contains the optional parameters
+// for the GenerateBenefitUtilizationSummariesReportClient.BeginGenerateByReservationOrderID method.
+type GenerateBenefitUtilizationSummariesReportClientBeginGenerateByReservationOrderIDOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanIDOptions contains the optional parameters for
+// the GenerateBenefitUtilizationSummariesReportClient.BeginGenerateBySavingsPlanID method.
+type GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanIDOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanOrderIDOptions contains the optional parameters
+// for the GenerateBenefitUtilizationSummariesReportClient.BeginGenerateBySavingsPlanOrderID method.
+type GenerateBenefitUtilizationSummariesReportClientBeginGenerateBySavingsPlanOrderIDOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // GenerateCostDetailsReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateCostDetailsReportClient.BeginCreateOperation
 // method.
 type GenerateCostDetailsReportClientBeginCreateOperationOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GenerateCostDetailsReportClientBeginGetOperationResultsOptions contains the optional parameters for the GenerateCostDetailsReportClient.BeginGetOperationResults
 // method.
 type GenerateCostDetailsReportClientBeginGetOperationResultsOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GenerateDetailedCostReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateDetailedCostReportClient.BeginCreateOperation
 // method.
 type GenerateDetailedCostReportClientBeginCreateOperationOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GenerateDetailedCostReportOperationResultsClientBeginGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationResultsClient.BeginGet
 // method.
 type GenerateDetailedCostReportOperationResultsClientBeginGetOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -207,14 +298,14 @@ type GenerateDetailedCostReportOperationStatusClientGetOptions struct {
 // GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions contains the optional parameters for the GenerateReservationDetailsReportClient.BeginByBillingAccountID
 // method.
 type GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions contains the optional parameters for the GenerateReservationDetailsReportClient.BeginByBillingProfileID
 // method.
 type GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -223,16 +314,24 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PriceSheetClientBeginDownloadByBillingProfileOptions contains the optional parameters for the PriceSheetClient.BeginDownloadByBillingProfile
+// PriceSheetClientBeginDownloadByBillingAccountOptions contains the optional parameters for the PriceSheetClient.BeginDownloadByBillingAccount
 // method.
-type PriceSheetClientBeginDownloadByBillingProfileOptions struct {
-	// Resumes the LRO from the provided token.
+type PriceSheetClientBeginDownloadByBillingAccountOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// PriceSheetClientBeginDownloadOptions contains the optional parameters for the PriceSheetClient.BeginDownload method.
-type PriceSheetClientBeginDownloadOptions struct {
-	// Resumes the LRO from the provided token.
+// PriceSheetClientBeginDownloadByBillingProfileOptions contains the optional parameters for the PriceSheetClient.BeginDownloadByBillingProfile
+// method.
+type PriceSheetClientBeginDownloadByBillingProfileOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PriceSheetClientBeginDownloadByInvoiceOptions contains the optional parameters for the PriceSheetClient.BeginDownloadByInvoice
+// method.
+type PriceSheetClientBeginDownloadByInvoiceOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -316,6 +415,27 @@ type ScheduledActionsClientRunByScopeOptions struct {
 
 // ScheduledActionsClientRunOptions contains the optional parameters for the ScheduledActionsClient.Run method.
 type ScheduledActionsClientRunOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SettingsClientCreateOrUpdateByScopeOptions contains the optional parameters for the SettingsClient.CreateOrUpdateByScope
+// method.
+type SettingsClientCreateOrUpdateByScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SettingsClientDeleteByScopeOptions contains the optional parameters for the SettingsClient.DeleteByScope method.
+type SettingsClientDeleteByScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SettingsClientGetByScopeOptions contains the optional parameters for the SettingsClient.GetByScope method.
+type SettingsClientGetByScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SettingsClientListOptions contains the optional parameters for the SettingsClient.List method.
+type SettingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

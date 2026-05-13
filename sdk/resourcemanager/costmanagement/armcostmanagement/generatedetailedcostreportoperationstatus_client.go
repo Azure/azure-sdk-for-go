@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// GenerateDetailedCostReportOperationStatusClient contains the methods for the GenerateDetailedCostReportOperationStatus group.
+// GenerateDetailedCostReportOperationStatusClient contains the methods for the GenerateDetailedCostReportOperationStatus
+// group.
 // Don't use this type directly, use NewGenerateDetailedCostReportOperationStatusClient() instead.
 type GenerateDetailedCostReportOperationStatusClient struct {
 	internal *arm.Client
@@ -25,7 +26,7 @@ type GenerateDetailedCostReportOperationStatusClient struct {
 
 // NewGenerateDetailedCostReportOperationStatusClient creates a new instance of GenerateDetailedCostReportOperationStatusClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGenerateDetailedCostReportOperationStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateDetailedCostReportOperationStatusClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,7 +42,7 @@ func NewGenerateDetailedCostReportOperationStatusClient(credential azcore.TokenC
 // response header.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - operationID - The target operation Id.
 //   - scope - The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For details, see
 //     https://aka.ms/costmgmt/scopes.
@@ -70,7 +71,7 @@ func (client *GenerateDetailedCostReportOperationStatusClient) Get(ctx context.C
 }
 
 // getCreateRequest creates the Get request.
-func (client *GenerateDetailedCostReportOperationStatusClient) getCreateRequest(ctx context.Context, operationID string, scope string, options *GenerateDetailedCostReportOperationStatusClientGetOptions) (*policy.Request, error) {
+func (client *GenerateDetailedCostReportOperationStatusClient) getCreateRequest(ctx context.Context, operationID string, scope string, _ *GenerateDetailedCostReportOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/operationStatus/{operationId}"
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
@@ -82,7 +83,7 @@ func (client *GenerateDetailedCostReportOperationStatusClient) getCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

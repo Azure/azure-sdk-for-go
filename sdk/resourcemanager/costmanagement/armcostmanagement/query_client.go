@@ -25,7 +25,7 @@ type QueryClient struct {
 
 // NewQueryClient creates a new instance of QueryClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQueryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*QueryClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewQueryClient(credential azcore.TokenCredential, options *arm.ClientOption
 // Usage - Query the usage data for scope defined.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with query and export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -76,7 +76,7 @@ func (client *QueryClient) Usage(ctx context.Context, scope string, parameters Q
 }
 
 // usageCreateRequest creates the Usage request.
-func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string, parameters QueryDefinition, options *QueryClientUsageOptions) (*policy.Request, error) {
+func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string, parameters QueryDefinition, _ *QueryClientUsageOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/query"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -84,7 +84,7 @@ func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -105,7 +105,7 @@ func (client *QueryClient) usageHandleResponse(resp *http.Response) (QueryClient
 // UsageByExternalCloudProviderType - Query the usage data for external cloud provider type defined.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
 //     'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
 //   - externalCloudProviderID - This can be '{externalSubscriptionId}' for linked account or '{externalBillingAccountId}' for
@@ -136,7 +136,7 @@ func (client *QueryClient) UsageByExternalCloudProviderType(ctx context.Context,
 }
 
 // usageByExternalCloudProviderTypeCreateRequest creates the UsageByExternalCloudProviderType request.
-func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, parameters QueryDefinition, options *QueryClientUsageByExternalCloudProviderTypeOptions) (*policy.Request, error) {
+func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, parameters QueryDefinition, _ *QueryClientUsageByExternalCloudProviderTypeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/query"
 	if externalCloudProviderType == "" {
 		return nil, errors.New("parameter externalCloudProviderType cannot be empty")
@@ -151,7 +151,7 @@ func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

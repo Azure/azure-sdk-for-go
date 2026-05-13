@@ -12,9 +12,10 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -66,31 +67,50 @@ func (e *ExportsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ExportsClient.CreateOrUpdate":
-		resp, err = e.dispatchCreateOrUpdate(req)
-	case "ExportsClient.Delete":
-		resp, err = e.dispatchDelete(req)
-	case "ExportsClient.Execute":
-		resp, err = e.dispatchExecute(req)
-	case "ExportsClient.Get":
-		resp, err = e.dispatchGet(req)
-	case "ExportsClient.GetExecutionHistory":
-		resp, err = e.dispatchGetExecutionHistory(req)
-	case "ExportsClient.List":
-		resp, err = e.dispatchList(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *ExportsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if exportsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = exportsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ExportsClient.CreateOrUpdate":
+				res.resp, res.err = e.dispatchCreateOrUpdate(req)
+			case "ExportsClient.Delete":
+				res.resp, res.err = e.dispatchDelete(req)
+			case "ExportsClient.Execute":
+				res.resp, res.err = e.dispatchExecute(req)
+			case "ExportsClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "ExportsClient.GetExecutionHistory":
+				res.resp, res.err = e.dispatchGetExecutionHistory(req)
+			case "ExportsClient.List":
+				res.resp, res.err = e.dispatchList(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *ExportsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -100,7 +120,7 @@ func (e *ExportsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armcostmanagement.Export](req)
@@ -137,7 +157,7 @@ func (e *ExportsServerTransport) dispatchDelete(req *http.Request) (*http.Respon
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -170,8 +190,12 @@ func (e *ExportsServerTransport) dispatchExecute(req *http.Request) (*http.Respo
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/run`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcostmanagement.ExportRunRequest](req)
+	if err != nil {
+		return nil, err
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 	if err != nil {
@@ -181,7 +205,13 @@ func (e *ExportsServerTransport) dispatchExecute(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.Execute(req.Context(), scopeParam, exportNameParam, nil)
+	var options *armcostmanagement.ExportsClientExecuteOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armcostmanagement.ExportsClientExecuteOptions{
+			Parameters: &body,
+		}
+	}
+	respr, errRespr := e.srv.Execute(req.Context(), scopeParam, exportNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -203,7 +233,7 @@ func (e *ExportsServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -248,7 +278,7 @@ func (e *ExportsServerTransport) dispatchGetExecutionHistory(req *http.Request) 
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runHistory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -281,7 +311,7 @@ func (e *ExportsServerTransport) dispatchList(req *http.Request) (*http.Response
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -313,4 +343,10 @@ func (e *ExportsServerTransport) dispatchList(req *http.Request) (*http.Response
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ExportsServerTransport
+var exportsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

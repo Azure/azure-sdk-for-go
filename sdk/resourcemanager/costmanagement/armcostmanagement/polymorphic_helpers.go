@@ -8,7 +8,7 @@ package armcostmanagement
 import "encoding/json"
 
 func unmarshalBenefitRecommendationPropertiesClassification(rawMsg json.RawMessage) (BenefitRecommendationPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -31,7 +31,7 @@ func unmarshalBenefitRecommendationPropertiesClassification(rawMsg json.RawMessa
 }
 
 func unmarshalBenefitUtilizationSummaryClassification(rawMsg json.RawMessage) (BenefitUtilizationSummaryClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -54,7 +54,7 @@ func unmarshalBenefitUtilizationSummaryClassification(rawMsg json.RawMessage) (B
 }
 
 func unmarshalBenefitUtilizationSummaryClassificationArray(rawMsg json.RawMessage) ([]BenefitUtilizationSummaryClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -64,6 +64,46 @@ func unmarshalBenefitUtilizationSummaryClassificationArray(rawMsg json.RawMessag
 	fArray := make([]BenefitUtilizationSummaryClassification, len(rawMessages))
 	for index, rawMessage := range rawMessages {
 		f, err := unmarshalBenefitUtilizationSummaryClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalSettingClassification(rawMsg json.RawMessage) (SettingClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SettingClassification
+	switch m["kind"] {
+	case string(SettingsKindTaginheritance):
+		b = &TagInheritanceSetting{}
+	default:
+		b = &Setting{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalSettingClassificationArray(rawMsg json.RawMessage) ([]SettingClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]SettingClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalSettingClassification(rawMessage)
 		if err != nil {
 			return nil, err
 		}

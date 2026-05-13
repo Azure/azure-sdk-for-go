@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -56,23 +56,42 @@ func (d *DimensionsServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DimensionsClient.NewByExternalCloudProviderTypePager":
-		resp, err = d.dispatchNewByExternalCloudProviderTypePager(req)
-	case "DimensionsClient.NewListPager":
-		resp, err = d.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DimensionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if dimensionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = dimensionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DimensionsClient.NewByExternalCloudProviderTypePager":
+				res.resp, res.err = d.dispatchNewByExternalCloudProviderTypePager(req)
+			case "DimensionsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DimensionsServerTransport) dispatchNewByExternalCloudProviderTypePager(req *http.Request) (*http.Response, error) {
@@ -84,7 +103,7 @@ func (d *DimensionsServerTransport) dispatchNewByExternalCloudProviderTypePager(
 		const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<externalCloudProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dimensions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -167,7 +186,7 @@ func (d *DimensionsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/dimensions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -229,4 +248,10 @@ func (d *DimensionsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		d.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DimensionsServerTransport
+var dimensionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

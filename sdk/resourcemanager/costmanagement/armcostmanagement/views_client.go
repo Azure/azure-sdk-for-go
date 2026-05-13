@@ -25,7 +25,7 @@ type ViewsClient struct {
 
 // NewViewsClient creates a new instance of ViewsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewViewsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ViewsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewViewsClient(credential azcore.TokenCredential, options *arm.ClientOption
 // require eTag.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - viewName - View name
 //   - parameters - Parameters supplied to the CreateOrUpdate View operation.
 //   - options - ViewsClientCreateOrUpdateOptions contains the optional parameters for the ViewsClient.CreateOrUpdate method.
@@ -69,7 +69,7 @@ func (client *ViewsClient) CreateOrUpdate(ctx context.Context, viewName string, 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ViewsClient) createOrUpdateCreateRequest(ctx context.Context, viewName string, parameters View, options *ViewsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ViewsClient) createOrUpdateCreateRequest(ctx context.Context, viewName string, parameters View, _ *ViewsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/views/{viewName}"
 	if viewName == "" {
 		return nil, errors.New("parameter viewName cannot be empty")
@@ -80,7 +80,7 @@ func (client *ViewsClient) createOrUpdateCreateRequest(ctx context.Context, view
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -103,7 +103,7 @@ func (client *ViewsClient) createOrUpdateHandleResponse(resp *http.Response) (Vi
 // require eTag.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 //     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 //     scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -144,7 +144,7 @@ func (client *ViewsClient) CreateOrUpdateByScope(ctx context.Context, scope stri
 }
 
 // createOrUpdateByScopeCreateRequest creates the CreateOrUpdateByScope request.
-func (client *ViewsClient) createOrUpdateByScopeCreateRequest(ctx context.Context, scope string, viewName string, parameters View, options *ViewsClientCreateOrUpdateByScopeOptions) (*policy.Request, error) {
+func (client *ViewsClient) createOrUpdateByScopeCreateRequest(ctx context.Context, scope string, viewName string, parameters View, _ *ViewsClientCreateOrUpdateByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/views/{viewName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -159,7 +159,7 @@ func (client *ViewsClient) createOrUpdateByScopeCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -180,7 +180,7 @@ func (client *ViewsClient) createOrUpdateByScopeHandleResponse(resp *http.Respon
 // Delete - The operation to delete a view.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - viewName - View name
 //   - options - ViewsClientDeleteOptions contains the optional parameters for the ViewsClient.Delete method.
 func (client *ViewsClient) Delete(ctx context.Context, viewName string, options *ViewsClientDeleteOptions) (ViewsClientDeleteResponse, error) {
@@ -205,7 +205,7 @@ func (client *ViewsClient) Delete(ctx context.Context, viewName string, options 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ViewsClient) deleteCreateRequest(ctx context.Context, viewName string, options *ViewsClientDeleteOptions) (*policy.Request, error) {
+func (client *ViewsClient) deleteCreateRequest(ctx context.Context, viewName string, _ *ViewsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/views/{viewName}"
 	if viewName == "" {
 		return nil, errors.New("parameter viewName cannot be empty")
@@ -216,7 +216,7 @@ func (client *ViewsClient) deleteCreateRequest(ctx context.Context, viewName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -225,7 +225,7 @@ func (client *ViewsClient) deleteCreateRequest(ctx context.Context, viewName str
 // DeleteByScope - The operation to delete a view.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 //     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 //     scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -263,7 +263,7 @@ func (client *ViewsClient) DeleteByScope(ctx context.Context, scope string, view
 }
 
 // deleteByScopeCreateRequest creates the DeleteByScope request.
-func (client *ViewsClient) deleteByScopeCreateRequest(ctx context.Context, scope string, viewName string, options *ViewsClientDeleteByScopeOptions) (*policy.Request, error) {
+func (client *ViewsClient) deleteByScopeCreateRequest(ctx context.Context, scope string, viewName string, _ *ViewsClientDeleteByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/views/{viewName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -278,7 +278,7 @@ func (client *ViewsClient) deleteByScopeCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -287,7 +287,7 @@ func (client *ViewsClient) deleteByScopeCreateRequest(ctx context.Context, scope
 // Get - Gets the view by view name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - viewName - View name
 //   - options - ViewsClientGetOptions contains the optional parameters for the ViewsClient.Get method.
 func (client *ViewsClient) Get(ctx context.Context, viewName string, options *ViewsClientGetOptions) (ViewsClientGetResponse, error) {
@@ -313,7 +313,7 @@ func (client *ViewsClient) Get(ctx context.Context, viewName string, options *Vi
 }
 
 // getCreateRequest creates the Get request.
-func (client *ViewsClient) getCreateRequest(ctx context.Context, viewName string, options *ViewsClientGetOptions) (*policy.Request, error) {
+func (client *ViewsClient) getCreateRequest(ctx context.Context, viewName string, _ *ViewsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/views/{viewName}"
 	if viewName == "" {
 		return nil, errors.New("parameter viewName cannot be empty")
@@ -324,7 +324,7 @@ func (client *ViewsClient) getCreateRequest(ctx context.Context, viewName string
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *ViewsClient) getHandleResponse(resp *http.Response) (ViewsClientGe
 // GetByScope - Gets the view for the defined scope by view name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 //     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 //     scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -381,7 +381,7 @@ func (client *ViewsClient) GetByScope(ctx context.Context, scope string, viewNam
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
-func (client *ViewsClient) getByScopeCreateRequest(ctx context.Context, scope string, viewName string, options *ViewsClientGetByScopeOptions) (*policy.Request, error) {
+func (client *ViewsClient) getByScopeCreateRequest(ctx context.Context, scope string, viewName string, _ *ViewsClientGetByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/views/{viewName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -396,7 +396,7 @@ func (client *ViewsClient) getByScopeCreateRequest(ctx context.Context, scope st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -413,7 +413,7 @@ func (client *ViewsClient) getByScopeHandleResponse(resp *http.Response) (ViewsC
 
 // NewListPager - Lists all views by tenant and object.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - options - ViewsClientListOptions contains the optional parameters for the ViewsClient.NewListPager method.
 func (client *ViewsClient) NewListPager(options *ViewsClientListOptions) *runtime.Pager[ViewsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ViewsClientListResponse]{
@@ -439,14 +439,14 @@ func (client *ViewsClient) NewListPager(options *ViewsClientListOptions) *runtim
 }
 
 // listCreateRequest creates the List request.
-func (client *ViewsClient) listCreateRequest(ctx context.Context, options *ViewsClientListOptions) (*policy.Request, error) {
+func (client *ViewsClient) listCreateRequest(ctx context.Context, _ *ViewsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/views"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -463,7 +463,7 @@ func (client *ViewsClient) listHandleResponse(resp *http.Response) (ViewsClientL
 
 // NewListByScopePager - Lists all views at the given scope.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for subscription scope,
 //     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 //     scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
@@ -502,7 +502,7 @@ func (client *ViewsClient) NewListByScopePager(scope string, options *ViewsClien
 }
 
 // listByScopeCreateRequest creates the ListByScope request.
-func (client *ViewsClient) listByScopeCreateRequest(ctx context.Context, scope string, options *ViewsClientListByScopeOptions) (*policy.Request, error) {
+func (client *ViewsClient) listByScopeCreateRequest(ctx context.Context, scope string, _ *ViewsClientListByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/views"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -513,7 +513,7 @@ func (client *ViewsClient) listByScopeCreateRequest(ctx context.Context, scope s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -194,6 +194,19 @@ type AllSavingsList struct {
 	Value []*AllSavingsBenefitDetails
 }
 
+// AsyncOperationStatusProperties - Object representing the report url and valid until date of the async report generated.
+type AsyncOperationStatusProperties struct {
+	// Sas url to the async benefit utilization summaries report. Will be empty if the report is in Running or Failed state.
+	ReportURL *BenefitUtilizationSummaryReportSchema
+
+	// Sas url to async benefit utilization summaries report in secondary storage in case of primary outage. Will be empty if
+	// the report is in Running or Failed state.
+	SecondaryReportURL *BenefitUtilizationSummaryReportSchema
+
+	// The date that the sas url provided in reportUrl expires.
+	ValidUntil *time.Time
+}
+
 // BenefitRecommendationModel - benefit plan recommendation details.
 type BenefitRecommendationModel struct {
 	// Reservation or SavingsPlan.
@@ -277,6 +290,52 @@ type BenefitUtilizationSummariesListResult struct {
 	Value []BenefitUtilizationSummaryClassification
 }
 
+// BenefitUtilizationSummariesOperationStatus - Status of a benefit utilization summaries report. Provides Async Benefit Utilization
+// Summaries Request input, status, and report sas url.
+type BenefitUtilizationSummariesOperationStatus struct {
+	// Input given to create the benefit utilization summaries report.
+	Input *BenefitUtilizationSummariesRequest
+
+	// Contains sas url to the async benefit utilization summaries report and a date that the url is valid until. These values
+	// will be empty if the report is in a Running or Failed state
+	Properties *AsyncOperationStatusProperties
+
+	// The status of the creation of the benefit utilization summaries report.
+	Status *OperationStatusType
+}
+
+// BenefitUtilizationSummariesRequest - Properties of an async benefit utilization summaries request.
+type BenefitUtilizationSummariesRequest struct {
+	// REQUIRED; The end date of the summaries data that will be served in the report.
+	EndDate *time.Time
+
+	// REQUIRED; The grain the summaries data is served at in the report. Accepted values are 'Daily' or 'Monthly'.
+	Grain *Grain
+
+	// REQUIRED; The start date of the summaries data that will be served in the report.
+	StartDate *time.Time
+
+	// Benefit id the benefit utilization summaries report is for. Required for benefit id scope. Not supported for benefit order
+	// or any billing scopes.
+	BenefitID *string
+
+	// Benefit order id the benefit utilization summaries report is for. Required for benefit order and benefit id scopes. Not
+	// supported for any billing scopes.
+	BenefitOrderID *string
+
+	// Billing account the benefit utilization summaries report is for. Required for billing account and billing profile scopes.
+	// Not supported for any benefit scopes.
+	BillingAccountID *string
+
+	// Billing profile id the benefit utilization summaries report is for. Required for billing profile scope. Not supported for
+	// billing account or any benefit scopes.
+	BillingProfileID *string
+
+	// The type of benefit data requested. Required for billing account and billing profile scopes. Implied and not to be passed
+	// at benefit scopes. Supported values are Reservation and SavingsPlan
+	Kind *BenefitKind
+}
+
 // BenefitUtilizationSummary - Benefit utilization summary resource.
 type BenefitUtilizationSummary struct {
 	// REQUIRED; Supported values: 'SavingsPlan'.
@@ -304,6 +363,173 @@ type BlobInfo struct {
 
 	// Bytes in the blob.
 	ByteCount *int64
+}
+
+// Budget - A budget resource.
+type Budget struct {
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string
+
+	// The properties of the budget.
+	Properties *BudgetProperties
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// BudgetComparisonExpression - The comparison expression to be used in the budgets.
+type BudgetComparisonExpression struct {
+	// REQUIRED; The name of the column to use in comparison.
+	Name *string
+
+	// REQUIRED; The operator to use for comparison.
+	Operator *BudgetOperatorType
+
+	// REQUIRED; Array of values to use for comparison
+	Values []*string
+}
+
+// BudgetFilter - May be used to filter budgets by user-specified dimensions and/or tags.
+// Supported for CategoryType(s): Cost, ReservationUtilization.
+type BudgetFilter struct {
+	// The logical "AND" expression. Must have at least 2 items.
+	// Supported for CategoryType(s): Cost.
+	And []*BudgetFilterProperties
+
+	// Has comparison expression for a dimension.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	// Supported dimension names for CategoryType: ReservationUtilization
+	// * ReservationId
+	// * ReservedResourceType
+	Dimensions *BudgetComparisonExpression
+
+	// Has comparison expression for a tag.
+	// Supported for CategoryType(s): Cost.
+	Tags *BudgetComparisonExpression
+}
+
+// BudgetFilterProperties - The Dimensions or Tags to filter a budget by.
+// Supported for CategoryType(s): Cost, ReservationUtilization.
+type BudgetFilterProperties struct {
+	// Has comparison expression for a dimension.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	// Supported dimension names for CategoryType: ReservationUtilization
+	// * ReservationId
+	// * ReservedResourceType
+	Dimensions *BudgetComparisonExpression
+
+	// Has comparison expression for a tag.
+	// Supported for CategoryType(s): Cost.
+	Tags *BudgetComparisonExpression
+}
+
+// BudgetProperties - The properties of the budget.
+type BudgetProperties struct {
+	// REQUIRED; The category of the budget.
+	// * 'Cost' defines a Budget.
+	// * 'ReservationUtilization' defines a Reservation Utilization Alert Rule.
+	Category *CategoryType
+
+	// REQUIRED; The time covered by a budget. Tracking of the amount will be reset based on the time grain.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	// Supported timeGrainTypes for CategoryType: Cost
+	// * Monthly
+	//
+	//
+	// * Quarterly
+	//
+	//
+	// * Annually
+	//
+	//
+	// * BillingMonth*
+	//
+	//
+	// * BillingQuarter*
+	//
+	//
+	// * BillingAnnual*
+	//
+	// *only supported for Web Direct customers.
+	//
+	// Supported timeGrainTypes for CategoryType: ReservationUtilization
+	//
+	//
+	// * Last7Days
+	//
+	//
+	// * Last30Days
+	//
+	// Required for CategoryType(s): Cost, ReservationUtilization.
+	TimeGrain *TimeGrainType
+
+	// REQUIRED; The time period that defines the active period of the budget. The budget will evaluate data on or after the startDate
+	// and will expire on the endDate.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	// Required for CategoryType(s): Cost, ReservationUtilization.
+	TimePeriod *BudgetTimePeriod
+
+	// The total amount of cost to track with the budget.
+	// Supported for CategoryType(s): Cost.
+	// Required for CategoryType(s): Cost.
+	Amount *float32
+
+	// May be used to filter budgets by user-specified dimensions and/or tags.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	Filter *BudgetFilter
+
+	// Dictionary of notifications associated with the budget.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	// * Constraints for CategoryType: Cost - Budget can have up to 5 notifications with thresholdType: Actual and 5 notifications
+	// with thresholdType: Forecasted.
+	// * Constraints for CategoryType: ReservationUtilization - Only one notification allowed. thresholdType is not applicable.
+	Notifications map[string]*Notification
+
+	// READ-ONLY; The current amount of cost which is being tracked for a budget.
+	// Supported for CategoryType(s): Cost.
+	CurrentSpend *CurrentSpend
+
+	// READ-ONLY; The forecasted cost which is being tracked for a budget.
+	// Supported for CategoryType(s): Cost.
+	ForecastSpend *ForecastSpend
+}
+
+// BudgetTimePeriod - The time period that defines the active period of the budget. The budget will evaluate data on or after
+// the startDate and will expire on the endDate.
+// Supported for CategoryType(s): Cost, ReservationUtilization.
+// Required for CategoryType(s): Cost, ReservationUtilization.
+type BudgetTimePeriod struct {
+	// REQUIRED; The start date for the budget.
+	// * Constraints for CategoryType: Cost - Must be first of the month and should be less than the end date. Budget start date
+	// must be on or after June 1, 2017. Future start date should not be more than
+	// twelve months. Past start date should be selected within the timegrain period.
+	//
+	//
+	// * Constraints for CategoryType: ReservationUtilization - Must be on or after the current date and less than the end date.
+	StartDate *time.Time
+
+	// The end date for the budget.
+	// * Constraints for CategoryType: Cost - No constraints. If not provided, we default this to 10 years from the start date.
+	//
+	//
+	// * Constraints for CategoryType: ReservationUtilization - End date cannot be more than 3 years after the start date.
+	EndDate *time.Time
+}
+
+// BudgetsListResult - Result of listing budgets. It contains a list of available budgets in the scope provided.
+type BudgetsListResult struct {
+	// READ-ONLY; The link (url) to the next page of results. It's null for now, added for future use.
+	NextLink *string
+
+	// READ-ONLY; The list of budgets.
+	Value []*Budget
 }
 
 // CheckNameAvailabilityRequest - The check availability request body.
@@ -335,12 +561,22 @@ type CommonExportProperties struct {
 	// REQUIRED; Has delivery information for the export.
 	DeliveryInfo *ExportDeliveryInfo
 
-	// The format of the export being delivered. Currently only 'Csv' is supported.
+	// Allow customers to select compress data for exports. This setting will enable destination file compression scheme at runtime.
+	// By default set to None. Gzip is for csv and snappy for parquet.
+	CompressionMode *CompressionModeType
+
+	// Allow customers to select overwrite data(OverwritePreviousReport) for exports. This setting will enable overwrite data
+	// for the same month in customer storage account. By default set to
+	// CreateNewReport.
+	DataOverwriteBehavior *DataOverwriteBehaviorType
+
+	// The export description set by customer at time of export creation/update.
+	ExportDescription *string
+
+	// The format of the export being delivered.
 	Format *FormatType
 
 	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
-	// Note: this option is currently available only for Microsoft Customer Agreement
-	// commerce scopes.
 	PartitionData *bool
 
 	// If requested, has the most recent run history for the export.
@@ -348,6 +584,92 @@ type CommonExportProperties struct {
 
 	// READ-ONLY; If the export has an active schedule, provides an estimate of the next run time.
 	NextRunTimeEstimate *time.Time
+
+	// READ-ONLY; The export suspension reason if export is in SystemSuspended state. This is not populated currently.
+	SystemSuspensionContext *ExportSuspensionContext
+}
+
+// CostAllocationProportion - Target resources and allocation
+type CostAllocationProportion struct {
+	// REQUIRED; Target resource for cost allocation
+	Name *string
+
+	// REQUIRED; Percentage of source cost to allocate to this resource. This value can be specified to two decimal places and
+	// the total percentage of all resources in this rule must sum to 100.00.
+	Percentage *float32
+}
+
+// CostAllocationRuleCheckNameAvailabilityRequest - The cost allocation rule check name availability request
+type CostAllocationRuleCheckNameAvailabilityRequest struct {
+	// Rule name
+	Name *string
+
+	// Resource type. This is expected to be Microsoft.CostManagement/costAllocationRules
+	Type *string
+}
+
+// CostAllocationRuleCheckNameAvailabilityResponse - The cost allocation rule check name availability response
+type CostAllocationRuleCheckNameAvailabilityResponse struct {
+	// Error message if the name is not available
+	Message *string
+
+	// Whether this rule name is available
+	NameAvailable *bool
+
+	// The reason this name is not available
+	Reason *Reason
+}
+
+// CostAllocationRuleDefinition - The cost allocation rule model definition
+type CostAllocationRuleDefinition struct {
+	// Cost allocation rule properties
+	Properties *CostAllocationRuleProperties
+
+	// READ-ONLY; Azure Resource Manager Id for the rule. This is a read ony value.
+	ID *string
+
+	// READ-ONLY; Name of the rule. This is a read only value.
+	Name *string
+
+	// READ-ONLY; Resource type of the rule. This is a read only value of Microsoft.CostManagement/CostAllocationRule.
+	Type *string
+}
+
+// CostAllocationRuleDetails - Resource details of the cost allocation rule
+type CostAllocationRuleDetails struct {
+	// Source resources for cost allocation. At this time, this list can contain no more than one element.
+	SourceResources []*SourceCostAllocationResource
+
+	// Target resources for cost allocation. At this time, this list can contain no more than one element.
+	TargetResources []*TargetCostAllocationResource
+}
+
+// CostAllocationRuleList - Result of listing cost allocation rules. It contains a list of available rules in the billing
+// account or enterprise enrollment provided.
+type CostAllocationRuleList struct {
+	// The list of cost allocation rules.
+	Value []*CostAllocationRuleDefinition
+
+	// READ-ONLY; URL to get the next set of rule list results if there are any.
+	NextLink *string
+}
+
+// CostAllocationRuleProperties - The properties of a cost allocation rule
+type CostAllocationRuleProperties struct {
+	// REQUIRED; Resource information for the cost allocation rule
+	Details *CostAllocationRuleDetails
+
+	// REQUIRED; Status of the rule
+	Status *RuleStatus
+
+	// Description of a cost allocation rule.
+	Description *string
+
+	// READ-ONLY; Time at which the rule was created. Rules that change cost for the same resource are applied in order of creation.
+	CreatedDate *time.Time
+
+	// READ-ONLY; Time at which the rule was last updated.
+	UpdatedDate *time.Time
 }
 
 // CostDetailsOperationResults - The result of the long running operation for cost details Api.
@@ -382,6 +704,16 @@ type CostDetailsTimePeriod struct {
 
 	// REQUIRED; The start date to pull data from. example format 2020-03-15
 	Start *string
+}
+
+// CurrentSpend - The current amount of cost which is being tracked for a budget.
+// Supported for CategoryType(s): Cost.
+type CurrentSpend struct {
+	// READ-ONLY; The total amount of cost which is being tracked by the budget.
+	Amount *float32
+
+	// READ-ONLY; The unit of measure for the budget amount.
+	Unit *string
 }
 
 // Dimension - List of Dimension.
@@ -465,6 +797,108 @@ type DownloadURL struct {
 	ExpiryTime *time.Time
 }
 
+// EAPriceSheetProperties - The properties of the EA price sheet. Properties supported with version 2025-03-01 are as below
+type EAPriceSheetProperties struct {
+	// READ-ONLY; The unit price at the time the customer signs on or the unit price at the time of service meter GA launch if
+	// it is after sign-on.
+	// This is applicable for Enterprise Agreement users
+	BasePrice *string
+
+	// READ-ONLY; Currency in which the Enterprise Agreement was signed
+	CurrencyCode *string
+
+	// READ-ONLY; Effective end date of the Price Sheet billing period
+	EffectiveEndDate *time.Time
+
+	// READ-ONLY; Effective start date of the Price Sheet billing period
+	EffectiveStartDate *time.Time
+
+	// READ-ONLY; Unique identifier for the EA billing account.
+	EnrollmentNumber *string
+
+	// READ-ONLY; Quantities of a specific service to which an EA customer is entitled to consume without incremental charges.
+	IncludedQuantity *string
+
+	// READ-ONLY; The current list price for a given product or service. This price is without any negotiations and is based on
+	// your Microsoft Agreement type.
+	// For PriceType Consumption, market price is reflected as the pay-as-you-go price.
+	// For PriceType Savings Plan, market price reflects the Savings plan benefit on top of pay-as-you-go price for the corresponding
+	// commitment term.
+	// For PriceType ReservedInstance, market price reflects the total price of the 1 or 3-year commitment.
+	// Note: For EA customers with no negotiations, market price may appear rounded to a different decimal precision than unit
+	// price.
+	MarketPrice *string
+
+	// READ-ONLY; Name of the classification category for the meter. For example, Cloud services, Networking, etc.
+	MeterCategory *string
+
+	// READ-ONLY; Unique identifier of the meter
+	MeterID *string
+
+	// READ-ONLY; Name of the meter. The meter represents the deployable resource of an Azure service.
+	MeterName *string
+
+	// READ-ONLY; Name of the Azure region where the meter for the service is available.
+	MeterRegion *string
+
+	// READ-ONLY; Name of the meter subclassification category.
+	MeterSubCategory *string
+
+	// READ-ONLY; Name of the meter type
+	MeterType *string
+
+	// READ-ONLY; Determines the Azure offer associated with this meter. Learn more about Azure offers [https://azure.microsoft.com/en-us/support/legal/offer-details/]
+	OfferID *string
+
+	// READ-ONLY; Part number associated with the meter
+	PartNumber *string
+
+	// READ-ONLY; Price type for a product. For example, an Azure resource with a pay-as-you-go rate with priceType as Consumption.
+	// Other price types include ReservedInstance and Savings Plan.
+	PriceType *string
+
+	// READ-ONLY; Name of the product accruing the charges.
+	Product *string
+
+	// READ-ONLY; Unique identifier for the product whose meter is consumed.
+	ProductID *string
+
+	// READ-ONLY; Unique identifier of the SKU
+	SKUID *string
+
+	// READ-ONLY; Type of Azure service. For example, Compute, Analytics, and Security.
+	ServiceFamily *float32
+
+	// READ-ONLY; Term length for Azure Savings Plan or Reservation term – one year or three years (P1Y or P3Y)
+	Term *string
+
+	// READ-ONLY; How usage is measured for the service. Note: The field “Unit” has been removed with version 2023-11-01 as a
+	// duplicate of “UnitofMeasure”, please use the field “UnitOfMeasure”.
+	UnitOfMeasure *string
+
+	// READ-ONLY; The per-unit price at the time of billing for a given product or service, inclusive of any negotiated discounts
+	// on top of the market price.
+	// For PriceType ReservedInstance, unit price reflects the total cost of the 1 or 3-year commitment including discounts.
+	// Note: The unit price isn't the same as the effective price in usage details downloads when services have differential prices
+	// across tiers.
+	// If services have multi-tiered pricing, the effective price is a blended rate across the tiers and doesn't show a tier-specific
+	// unit price. The blended price or effective price is the net price for the
+	// consumed quantity spanning across the multiple tiers (where each tier has a specific unit price).
+	UnitPrice *string
+}
+
+// EAPricesheetDownloadProperties - The properties of the price sheet download.
+type EAPricesheetDownloadProperties struct {
+	// The properties in downloaded file
+	DownloadFileProperties *EAPriceSheetProperties
+
+	// READ-ONLY; The link (url) to download the pricesheet.
+	DownloadURL *string
+
+	// READ-ONLY; Download link validity.
+	ValidTill *time.Time
+}
+
 // ErrorDetails - The details of the error.
 type ErrorDetails struct {
 	// READ-ONLY; Error code.
@@ -479,6 +913,12 @@ type Export struct {
 	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
 	// the latest version or not.
 	ETag *string
+
+	// The managed identity associated with Export
+	Identity *SystemAssignedServiceIdentity
+
+	// The location of the Export's managed identity. Only required when utilizing managed identity.
+	Location *string
 
 	// The properties of the export.
 	Properties *ExportProperties
@@ -498,16 +938,21 @@ type ExportDataset struct {
 	// The export dataset configuration.
 	Configuration *ExportDatasetConfiguration
 
-	// The granularity of rows in the export. Currently only 'Daily' is supported.
+	// The granularity of rows in the export. Currently 'Daily' is supported for most cases.
 	Granularity *GranularityType
 }
 
-// ExportDatasetConfiguration - The export dataset configuration. Allows columns to be selected for the export. If not provided
-// then the export will include all available columns.
+// ExportDatasetConfiguration - This is on path to deprecation and will not be supported going forward.
 type ExportDatasetConfiguration struct {
 	// Array of column names to be included in the export. If not provided then the export will include all available columns.
 	// The available columns can vary by customer channel (see examples).
 	Columns []*string
+
+	// The data version for the selected for the export. If not provided then the export will default to latest data version.
+	DataVersion *string
+
+	// Filters associated with the data sets.
+	Filters []*FilterItems
 }
 
 // ExportDefinition - The definition of an export.
@@ -560,6 +1005,9 @@ type ExportDeliveryDestination struct {
 	// The storage account where exports will be uploaded. For a restricted set of Azure customers this together with sasToken
 	// can be specified instead of resourceId.
 	StorageAccount *string
+
+	// The export delivery destination type. Currently only 'AzureBlob' is supported.
+	Type *DestinationType
 }
 
 // ExportDeliveryInfo - The delivery information associated with a export.
@@ -588,12 +1036,22 @@ type ExportProperties struct {
 	// REQUIRED; Has delivery information for the export.
 	DeliveryInfo *ExportDeliveryInfo
 
-	// The format of the export being delivered. Currently only 'Csv' is supported.
+	// Allow customers to select compress data for exports. This setting will enable destination file compression scheme at runtime.
+	// By default set to None. Gzip is for csv and snappy for parquet.
+	CompressionMode *CompressionModeType
+
+	// Allow customers to select overwrite data(OverwritePreviousReport) for exports. This setting will enable overwrite data
+	// for the same month in customer storage account. By default set to
+	// CreateNewReport.
+	DataOverwriteBehavior *DataOverwriteBehaviorType
+
+	// The export description set by customer at time of export creation/update.
+	ExportDescription *string
+
+	// The format of the export being delivered.
 	Format *FormatType
 
 	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
-	// Note: this option is currently available only for Microsoft Customer Agreement
-	// commerce scopes.
 	PartitionData *bool
 
 	// If requested, has the most recent run history for the export.
@@ -604,6 +1062,9 @@ type ExportProperties struct {
 
 	// READ-ONLY; If the export has an active schedule, provides an estimate of the next run time.
 	NextRunTimeEstimate *time.Time
+
+	// READ-ONLY; The export suspension reason if export is in SystemSuspended state. This is not populated currently.
+	SystemSuspensionContext *ExportSuspensionContext
 }
 
 // ExportRecurrencePeriod - The start and end date for recurrence schedule.
@@ -636,6 +1097,9 @@ type ExportRun struct {
 
 // ExportRunProperties - The properties of the export run.
 type ExportRunProperties struct {
+	// The end datetime for the export.
+	EndDate *time.Time
+
 	// The details of any error.
 	Error *ErrorDetails
 
@@ -645,6 +1109,9 @@ type ExportRunProperties struct {
 	// The name of the exported file.
 	FileName *string
 
+	// The manifest file location(URI location) for the exported files.
+	ManifestFile *string
+
 	// The time when the export run finished.
 	ProcessingEndTime *time.Time
 
@@ -653,6 +1120,9 @@ type ExportRunProperties struct {
 
 	// The export settings that were in effect for this run.
 	RunSettings *CommonExportProperties
+
+	// The start datetime for the export.
+	StartDate *time.Time
 
 	// The last known status of the export run.
 	Status *ExecutionStatus
@@ -665,6 +1135,12 @@ type ExportRunProperties struct {
 	SubmittedTime *time.Time
 }
 
+// ExportRunRequest - The export run request.
+type ExportRunRequest struct {
+	// Has time period for pulling data for the export.
+	TimePeriod *ExportTimePeriod
+}
+
 // ExportSchedule - The schedule associated with the export.
 type ExportSchedule struct {
 	// The schedule recurrence.
@@ -674,12 +1150,25 @@ type ExportSchedule struct {
 	// start date.
 	RecurrencePeriod *ExportRecurrencePeriod
 
-	// The status of the export's schedule. If 'Inactive', the export's schedule is paused.
+	// The status of the export's schedule. If 'Inactive', the export's schedule is paused. To enable export set the status to
+	// be Active and then make a PUT request.
 	Status *StatusType
 }
 
+// ExportSuspensionContext - The properties of the export run. This is not populated currently.
+type ExportSuspensionContext struct {
+	// The code for export suspension.
+	SuspensionCode *string
+
+	// The detailed reason for export suspension.
+	SuspensionReason *string
+
+	// The time when the export was suspended.
+	SuspensionTime *time.Time
+}
+
 // ExportTimePeriod - The date range for data in the export. This should only be specified with timeFrame set to 'Custom'.
-// The maximum date range is 3 months.
+// The maximum date range is 1 calendar month.
 type ExportTimePeriod struct {
 	// REQUIRED; The start date for export data.
 	From *time.Time
@@ -692,6 +1181,21 @@ type ExportTimePeriod struct {
 type FileDestination struct {
 	// Destination of the view data. Currently only CSV format is supported.
 	FileFormats []*FileFormat
+}
+
+// FilterItems - Will contain the filter name and value to operate on. This is currently only supported for Export Definition
+// type of ReservationRecommendations.
+type FilterItems struct {
+	// The name of the filter. This is currently only supported for Export Definition type of ReservationRecommendations. Supported
+	// names are ['ReservationScope', 'LookBackPeriod', 'ResourceType']
+	Name *FilterItemNames
+
+	// Value to filter by. Currently values supported per name are, for 'ReservationScope' supported values are ['Single', 'Shared'],
+	// for 'LookBackPeriod' supported values are ['Last7Days', 'Last30Days',
+	// 'Last60Days'] and for 'ResourceType' supported values are ['VirtualMachines', 'SQLDatabases', 'PostgreSQL', 'ManagedDisk',
+	// 'MySQL', 'RedHat', 'MariaDB', 'RedisCache', 'CosmosDB', 'SqlDataWarehouse',
+	// 'SUSELinux', 'AppService', 'BlockBlob', 'AzureDataExplorer', 'VMwareCloudSimple'].
+	Value *string
 }
 
 // ForecastAggregation - The aggregation expression to be used in the forecast.
@@ -821,6 +1325,17 @@ type ForecastResult struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// ForecastSpend - The forecasted cost which is being tracked for a budget.
+// Supported for CategoryType(s): Cost.
+type ForecastSpend struct {
+	// READ-ONLY; The forecasted cost for the total time period which is being tracked by the budget. This value is only provided
+	// if the budget contains a forecast alert type.
+	Amount *float32
+
+	// READ-ONLY; The unit of measure for the budget amount.
+	Unit *string
 }
 
 // ForecastTimePeriod - Has time period for pulling data for the forecast.
@@ -992,6 +1507,165 @@ type KpiProperties struct {
 	Type *KpiType
 }
 
+// MCAPriceSheetProperties - The properties of the price sheet.
+type MCAPriceSheetProperties struct {
+	// READ-ONLY; The unit price at the time the customer signs on or the unit price at the time of service meter GA launch if
+	// it is after sign-on.
+	// This is applicable for Enterprise Agreement users
+	BasePrice *string
+
+	// READ-ONLY; Unique identifier for the billing account.
+	BillingAccountID *string
+
+	// READ-ONLY; Name of the billing profile that is set up to receive invoices. The prices in the price sheet are associated
+	// with this billing profile.
+	BillingAccountName *string
+
+	// READ-ONLY; Currency in which charges are posted.
+	BillingCurrency *string
+
+	// READ-ONLY; Unique identifier for the billing profile.
+	BillingProfileID *string
+
+	// READ-ONLY; Name of the billing profile that is set up to receive invoices. The prices in the price sheet are associated
+	// with this billing profile.
+	BillingProfileName *string
+
+	// READ-ONLY; Currency in which all the prices are reflected.
+	Currency *string
+
+	// READ-ONLY; Effective end date of the Price Sheet billing period
+	EffectiveEndDate *time.Time
+
+	// READ-ONLY; Effective start date of the Price Sheet billing period
+	EffectiveStartDate *time.Time
+
+	// READ-ONLY; The current list price for a given product or service. This price is without any negotiations and is based on
+	// your Microsoft Agreement type.
+	// For PriceType Consumption, market price is reflected as the pay-as-you-go price.
+	// For PriceType Savings Plan, market price reflects the Savings plan benefit on top of pay-as-you-go price for the corresponding
+	// commitment term.
+	// For PriceType ReservedInstance, market price reflects the total price of the 1 or 3-year commitment.
+	MarketPrice *string
+
+	// READ-ONLY; Name of the classification category for the meter. For example, Cloud services, Networking, etc.
+	MeterCategory *string
+
+	// READ-ONLY; Unique identifier of the meter
+	MeterID *string
+
+	// READ-ONLY; Name of the meter. The meter represents the deployable resource of an Azure service.
+	MeterName *string
+
+	// READ-ONLY; Name of the Azure region where the meter for the service is available.
+	MeterRegion *string
+
+	// READ-ONLY; Name of the meter subclassification category.
+	MeterSubCategory *string
+
+	// READ-ONLY; Name of the meter type
+	MeterType *string
+
+	// READ-ONLY; Price type for a product. For example, an Azure resource with a pay-as-you-go rate with priceType as Consumption.
+	// Other price types include ReservedInstance and Savings Plan.
+	PriceType *string
+
+	// READ-ONLY; Name of the product accruing the charges.
+	Product *string
+
+	// READ-ONLY; Unique identifier for the product whose meter is consumed.
+	ProductID *string
+
+	// READ-ONLY; Name of the purchased product plan. Indicates if this pricing is standard Azure Plan pricing, Dev/Test pricing
+	// etc.
+	// Currently unavailable for Azure 3rd party and ReservedInstance meters.
+	ProductOrderName *string
+
+	// READ-ONLY; Unique identifier of the SKU
+	SKUID *string
+
+	// READ-ONLY; Type of Azure service. For example, Compute, Analytics, and Security.
+	ServiceFamily *float32
+
+	// READ-ONLY; Term length for Azure Savings Plan or Reservation term – one year or three years (P1Y or P3Y)
+	Term *string
+
+	// READ-ONLY; Defines the lower bound of the tier range for which prices are defined. For example, if the range is 0 to 100,
+	// tierMinimumUnits would be 0.
+	TierMinimumUnits *string
+
+	// READ-ONLY; How usage is measured for the service
+	UnitOfMeasure *string
+
+	// READ-ONLY; The per-unit price at the time of billing for a given product or service, inclusive of any negotiated discounts
+	// on top of the market price.
+	// For PriceType ReservedInstance, unit price reflects the total cost of the 1 or 3-year commitment including discounts.
+	// Note: The unit price isn't the same as the effective price in usage details downloads when services have differential prices
+	// across tiers.
+	// If services have multi-tiered pricing, the effective price is a blended rate across the tiers and doesn't show a tier-specific
+	// unit price. The blended price or effective price is the net price for the
+	// consumed quantity spanning across the multiple tiers (where each tier has a specific unit price).
+	UnitPrice *string
+}
+
+// Notification - The notification associated with a budget.
+// Supported for CategoryType(s): Cost, ReservationUtilization.
+type Notification struct {
+	// REQUIRED; Email addresses to send the notification to when the threshold is breached. Must have at least one contact email
+	// or contact group specified at the Subscription or Resource Group scopes. All other
+	// scopes must have at least one contact email specified.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	ContactEmails []*string
+
+	// REQUIRED; The notification is enabled or not.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	Enabled *bool
+
+	// REQUIRED; The comparison operator.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	// Supported operators for CategoryType: Cost
+	// * GreaterThan
+	//
+	//
+	// * GreaterThanOrEqualTo
+	//
+	// Supported operators for CategoryType: ReservationUtilization
+	//
+	//
+	// * LessThan
+	Operator *BudgetNotificationOperatorType
+
+	// REQUIRED; Threshold value associated with a notification. It is always percent with a maximum of 2 decimal places.
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	// CategoryType: Cost - Must be between 0 and 1000. Notification is sent when the cost exceeded the threshold.
+	// CategoryType: ReservationUtilization - Must be between 0 and 100. Notification is sent when a reservation has a utilization
+	// percentage below the threshold.
+	Threshold *float32
+
+	// Subscription or Resource Group scopes only. Action groups to send the notification to when the threshold is exceeded. Must
+	// be provided as a fully qualified Azure resource id.
+	// Supported for CategoryType(s): Cost.
+	ContactGroups []*string
+
+	// Subscription or Resource Group scopes only. Contact roles to send the notification to when the threshold is breached.
+	// Supported for CategoryType(s): Cost.
+	ContactRoles []*string
+
+	// Frequency of a notification. Represents how long the notification will be silent after triggering an alert for a threshold
+	// breach. If not specified, the frequency will be set by default based on the
+	// timeGrain (Weekly when timeGrain: Last7Days, Monthly when timeGrain: Last30Days).
+	// Supported for CategoryType(s): ReservationUtilization.
+	Frequency *Frequency
+
+	// Language in which the recipient will receive the notification,
+	// Supported for CategoryType(s): Cost, ReservationUtilization.
+	Locale *CultureCode
+
+	// The type of threshold.
+	// Supported for CategoryType(s): Cost.
+	ThresholdType *ThresholdType
+}
+
 // NotificationProperties - The properties of the scheduled action notification.
 type NotificationProperties struct {
 	// REQUIRED; Subject of the email. Length is limited to 70 characters.
@@ -1071,6 +1745,15 @@ type OperationStatus struct {
 	Status *OperationStatusType
 }
 
+// OperationStatusAutoGenerated - The status of the long running operation.
+type OperationStatusAutoGenerated struct {
+	// The properties of the resource generated.
+	Properties *EAPricesheetDownloadProperties
+
+	// The status of the long running operation.
+	Status *OperationStatusType
+}
+
 // PivotProperties - Each pivot must contain a 'type' and 'name'.
 type PivotProperties struct {
 	// Data field to show in view.
@@ -1078,6 +1761,18 @@ type PivotProperties struct {
 
 	// Data type to show in view.
 	Type *PivotType
+}
+
+// PricesheetDownloadProperties - The URL to download the generated report.
+type PricesheetDownloadProperties struct {
+	// The properties in downloaded file
+	DownloadFileProperties *MCAPriceSheetProperties
+
+	// The URL to download the generated report.
+	DownloadURL *string
+
+	// READ-ONLY; The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
+	ExpiryTime *time.Time
 }
 
 // QueryAggregation - The aggregation expression to be used in the query.
@@ -1428,7 +2123,7 @@ type SavingsPlanUtilizationSummaryProperties struct {
 	ArmSKUName *string
 
 	// READ-ONLY; This is the average hourly utilization for each date range that corresponds to given grain (Daily, Monthly).
-	// Suppose the API call is for usageDate > 2022-10-01 and usageDate < 2022-10-31 at a daily
+	// Suppose the API call is for usageDate > 2025-03-01 and usageDate < 2022-10-31 at a daily
 	// granularity. There will be one record per benefit id for each day. For a single day, the avgUtilizationPercentage value
 	// will be equal to the average of the set of values where the set contains 24
 	// utilization percentage entries one for each hour in a specific day.
@@ -1441,7 +2136,7 @@ type SavingsPlanUtilizationSummaryProperties struct {
 	BenefitOrderID *string
 
 	// READ-ONLY; This is the maximum hourly utilization for each date range that corresponds to given grain (Daily, Monthly).
-	// Suppose the API call is for usageDate > 2022-10-01 and usageDate < 2022-10-31 at a daily
+	// Suppose the API call is for usageDate > 2025-03-01 and usageDate < 2022-10-31 at a daily
 	// granularity. There will be one record per benefit id for each day. For a single day, the maxUtilizationPercentage value
 	// will be equal to the largest in the set of values where the set contains 24
 	// utilization percentage entries one for each hour in a specific day. If on the day 2022-10-18, the largest utilization percentage
@@ -1450,7 +2145,7 @@ type SavingsPlanUtilizationSummaryProperties struct {
 	MaxUtilizationPercentage *float64
 
 	// READ-ONLY; This is the minimum hourly utilization for each date range that corresponds to given grain (Daily, Monthly).
-	// Suppose the API call is for usageDate > 2022-10-01 and usageDate < 2022-10-31 at a daily
+	// Suppose the API call is for usageDate > 2025-03-01 and usageDate < 2022-10-31 at a daily
 	// granularity. There will be one record per benefit id for each day. For a single day, the minUtilizationPercentage value
 	// will be equal to the smallest in the set of values where the set contains 24
 	// utilization percentage entries one for each hour in a specific day. If on the day 2022-10-18, the lowest utilization percentage
@@ -1548,11 +2243,13 @@ type ScheduledActionProperties struct {
 	// Email address of the point of contact that should get the unsubscribe requests and notification emails.
 	NotificationEmail *string
 
-	// Cost Management scope like 'subscriptions/{subscriptionId}' for subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
-	// for resourceGroup scope,
-	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
-	// for Department
-	// scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+	// For private scheduled action(Create or Update), scope will be empty.
+	// For shared scheduled action(Create or Update By Scope), Cost Management scope can be 'subscriptions/{subscriptionId}' for
+	// subscription scope,
+	// 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
+	// for Billing Account scope,
+	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
 	// scope,
 	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile
 	// scope,
@@ -1562,6 +2259,30 @@ type ScheduledActionProperties struct {
 	// and
 	// '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription scope.
 	Scope *string
+}
+
+// Setting definition.
+type Setting struct {
+	// REQUIRED; Specifies the kind of settings.
+	Kind *SettingsKind
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetSetting implements the SettingClassification interface for type Setting.
+func (s *Setting) GetSetting() *Setting { return s }
+
+// SettingsListResult - Setting list result. It contains a list of settings.
+type SettingsListResult struct {
+	// READ-ONLY; The list of settings.
+	Value []SettingClassification
 }
 
 // SharedScopeBenefitRecommendationProperties - The properties of the benefit recommendation when scope is 'Shared'.
@@ -1694,10 +2415,36 @@ func (s *SingleScopeBenefitRecommendationProperties) GetBenefitRecommendationPro
 	}
 }
 
+// SourceCostAllocationResource - Source resources for cost allocation
+type SourceCostAllocationResource struct {
+	// REQUIRED; If resource type is dimension, this must be either ResourceGroupName or SubscriptionId. If resource type is tag,
+	// this must be a valid Azure tag
+	Name *string
+
+	// REQUIRED; Type of resources contained in this cost allocation rule
+	ResourceType *CostAllocationResourceType
+
+	// REQUIRED; Source Resources for cost allocation. This list cannot contain more than 25 values.
+	Values []*string
+}
+
 // Status - The status of the long running operation.
 type Status struct {
 	// The status of the long running operation.
 	Status *ReportOperationStatusType
+}
+
+// SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
+type SystemAssignedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (either system assigned, or none).
+	Type *SystemAssignedServiceIdentityType
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1719,6 +2466,61 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// TagInheritanceProperties - The properties of the tag inheritance setting.
+type TagInheritanceProperties struct {
+	// REQUIRED; This property defines the behavior when an inherited tag being applied matches a lower scope tag (Eg. Subscription
+	// tag matches the resource tag). If set to true - when tags match, the highest scope
+	// tags will be applied. Billing profile is the highest scope, followed by invoice sections, subscriptions and resource groups
+	// (allows overriding of lower scope tag values). If set to false - when tags
+	// match, the lowest scope tags will be applied. So, if a resource has the same tag as a subscription tag, the resource tag
+	// will be applied (does not allow overriding of lower scope tag values).
+	PreferContainerTags *bool
+}
+
+// TagInheritanceSetting - Tag Inheritance Setting definition.
+type TagInheritanceSetting struct {
+	// REQUIRED; Specifies the kind of settings.
+	Kind *SettingsKind
+
+	// The properties of the tag inheritance setting.
+	Properties *TagInheritanceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetSetting implements the SettingClassification interface for type TagInheritanceSetting.
+func (t *TagInheritanceSetting) GetSetting() *Setting {
+	return &Setting{
+		ID:   t.ID,
+		Kind: t.Kind,
+		Name: t.Name,
+		Type: t.Type,
+	}
+}
+
+// TargetCostAllocationResource - Target resources for cost allocation.
+type TargetCostAllocationResource struct {
+	// REQUIRED; If resource type is dimension, this must be either ResourceGroupName or SubscriptionId. If resource type is tag,
+	// this must be a valid Azure tag
+	Name *string
+
+	// REQUIRED; Method of cost allocation for the rule
+	PolicyType *CostAllocationPolicyType
+
+	// REQUIRED; Type of resources contained in this cost allocation rule
+	ResourceType *CostAllocationResourceType
+
+	// REQUIRED; Target resources for cost allocation. This list cannot contain more than 25 values.
+	Values []*CostAllocationProportion
 }
 
 // View - States and configurations of Cost Analysis.
@@ -1757,6 +2559,9 @@ type ViewProperties struct {
 	// Chart type of the main view in Cost Analysis. Required.
 	Chart *ChartType
 
+	// Date range of the current view.
+	DateRange *string
+
 	// User input name of the view. Required.
 	DisplayName *string
 
@@ -1765,6 +2570,9 @@ type ViewProperties struct {
 
 	// Metric to use when displaying costs.
 	Metric *MetricType
+
+	// Date when the user last modified this view.
+	ModifiedOn *time.Time
 
 	// Configuration of 3 sub-views in the Cost Analysis UI.
 	Pivots []*PivotProperties
@@ -1792,10 +2600,4 @@ type ViewProperties struct {
 
 	// READ-ONLY; Currency of the current view.
 	Currency *string
-
-	// READ-ONLY; Date range of the current view.
-	DateRange *string
-
-	// READ-ONLY; Date when the user last modified this view.
-	ModifiedOn *time.Time
 }

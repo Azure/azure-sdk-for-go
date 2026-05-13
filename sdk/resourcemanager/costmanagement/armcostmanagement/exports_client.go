@@ -25,7 +25,7 @@ type ExportsClient struct {
 
 // NewExportsClient creates a new instance of ExportsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExportsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExportsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewExportsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 // require eTag.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -79,7 +79,7 @@ func (client *ExportsClient) CreateOrUpdate(ctx context.Context, scope string, e
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, exportName string, parameters Export, options *ExportsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, exportName string, parameters Export, _ *ExportsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
@@ -91,7 +91,7 @@ func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -112,7 +112,7 @@ func (client *ExportsClient) createOrUpdateHandleResponse(resp *http.Response) (
 // Delete - The operation to delete a export.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -147,7 +147,7 @@ func (client *ExportsClient) Delete(ctx context.Context, scope string, exportNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsClientDeleteOptions) (*policy.Request, error) {
+func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope string, exportName string, _ *ExportsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
@@ -159,7 +159,7 @@ func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +168,7 @@ func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope stri
 // Execute - The operation to run an export.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -215,16 +215,22 @@ func (client *ExportsClient) executeCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Parameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
 	return req, nil
 }
 
 // Get - The operation to get the export for the defined scope by export name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -272,10 +278,10 @@ func (client *ExportsClient) getCreateRequest(ctx context.Context, scope string,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -293,7 +299,7 @@ func (client *ExportsClient) getHandleResponse(resp *http.Response) (ExportsClie
 // GetExecutionHistory - The operation to get the run history of an export for the defined scope and export name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -330,7 +336,7 @@ func (client *ExportsClient) GetExecutionHistory(ctx context.Context, scope stri
 }
 
 // getExecutionHistoryCreateRequest creates the GetExecutionHistory request.
-func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsClientGetExecutionHistoryOptions) (*policy.Request, error) {
+func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Context, scope string, exportName string, _ *ExportsClientGetExecutionHistoryOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}/runHistory"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
@@ -342,7 +348,7 @@ func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -360,7 +366,7 @@ func (client *ExportsClient) getExecutionHistoryHandleResponse(resp *http.Respon
 // List - The operation to list all exports at the given scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -403,10 +409,10 @@ func (client *ExportsClient) listCreateRequest(ctx context.Context, scope string
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

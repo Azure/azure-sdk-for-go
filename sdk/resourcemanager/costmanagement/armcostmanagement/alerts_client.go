@@ -25,7 +25,7 @@ type AlertsClient struct {
 
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewAlertsClient(credential azcore.TokenCredential, options *arm.ClientOptio
 // Dismiss - Dismisses the specified alert
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with alerts operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -77,7 +77,7 @@ func (client *AlertsClient) Dismiss(ctx context.Context, scope string, alertID s
 }
 
 // dismissCreateRequest creates the Dismiss request.
-func (client *AlertsClient) dismissCreateRequest(ctx context.Context, scope string, alertID string, parameters DismissAlertPayload, options *AlertsClientDismissOptions) (*policy.Request, error) {
+func (client *AlertsClient) dismissCreateRequest(ctx context.Context, scope string, alertID string, parameters DismissAlertPayload, _ *AlertsClientDismissOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/alerts/{alertId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)
@@ -86,7 +86,7 @@ func (client *AlertsClient) dismissCreateRequest(ctx context.Context, scope stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -107,7 +107,7 @@ func (client *AlertsClient) dismissHandleResponse(resp *http.Response) (AlertsCl
 // Get - Gets the alert for the scope by alert ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with alerts operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -143,7 +143,7 @@ func (client *AlertsClient) Get(ctx context.Context, scope string, alertID strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertsClient) getCreateRequest(ctx context.Context, scope string, alertID string, options *AlertsClientGetOptions) (*policy.Request, error) {
+func (client *AlertsClient) getCreateRequest(ctx context.Context, scope string, alertID string, _ *AlertsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/alerts/{alertId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", alertID)
@@ -152,7 +152,7 @@ func (client *AlertsClient) getCreateRequest(ctx context.Context, scope string, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,7 +170,7 @@ func (client *AlertsClient) getHandleResponse(resp *http.Response) (AlertsClient
 // List - Lists the alerts for scope defined.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - scope - The scope associated with alerts operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -205,7 +205,7 @@ func (client *AlertsClient) List(ctx context.Context, scope string, options *Ale
 }
 
 // listCreateRequest creates the List request.
-func (client *AlertsClient) listCreateRequest(ctx context.Context, scope string, options *AlertsClientListOptions) (*policy.Request, error) {
+func (client *AlertsClient) listCreateRequest(ctx context.Context, scope string, _ *AlertsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/alerts"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -213,7 +213,7 @@ func (client *AlertsClient) listCreateRequest(ctx context.Context, scope string,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -231,7 +231,7 @@ func (client *AlertsClient) listHandleResponse(resp *http.Response) (AlertsClien
 // ListExternal - Lists the Alerts for external cloud provider type defined.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-03-01
 //   - externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
 //     'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
 //   - externalCloudProviderID - This can be '{externalSubscriptionId}' for linked account or '{externalBillingAccountId}' for
@@ -260,7 +260,7 @@ func (client *AlertsClient) ListExternal(ctx context.Context, externalCloudProvi
 }
 
 // listExternalCreateRequest creates the ListExternal request.
-func (client *AlertsClient) listExternalCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *AlertsClientListExternalOptions) (*policy.Request, error) {
+func (client *AlertsClient) listExternalCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, _ *AlertsClientListExternalOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/alerts"
 	if externalCloudProviderType == "" {
 		return nil, errors.New("parameter externalCloudProviderType cannot be empty")
@@ -275,7 +275,7 @@ func (client *AlertsClient) listExternalCreateRequest(ctx context.Context, exter
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

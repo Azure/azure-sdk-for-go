@@ -89,11 +89,12 @@ func Run(ctx context.Context, cfg RunConfig) {
 func runIteration(ctx context.Context, op operations.Operation, cfg RunConfig) {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Fprintf(os.Stderr, "panic in operation %q: %v\n%s\n", op.Name(), r, debug.Stack())
+			stack := debug.Stack()
+			fmt.Fprintf(os.Stderr, "panic in operation %q: %v\n%s\n", op.Name(), r, stack)
 			cfg.Stats.RecordError(op.Name())
 			panicErr := fmt.Errorf("panic: %v", r)
 			errCtx, cancelErr := context.WithTimeout(context.Background(), 30*time.Second)
-			stats.UpsertError(errCtx, cfg.ResultsContainer, op.Name(), panicErr, cfg.WorkloadID, cfg.CommitSHA, cfg.Hostname)
+			stats.UpsertErrorWithSource(errCtx, cfg.ResultsContainer, op.Name(), panicErr, string(stack), cfg.WorkloadID, cfg.CommitSHA, cfg.Hostname)
 			cancelErr()
 		}
 	}()

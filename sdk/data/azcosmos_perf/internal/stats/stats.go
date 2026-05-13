@@ -458,6 +458,16 @@ func UpsertResults(ctx context.Context, container *azcosmos.ContainerClient, sum
 
 // UpsertError writes a single error document to Cosmos DB.
 func UpsertError(ctx context.Context, container *azcosmos.ContainerClient, operation string, err error, workloadID, commitSHA, hostname string) {
+	UpsertErrorWithSource(ctx, container, operation, err, "", workloadID, commitSHA, hostname)
+}
+
+// UpsertErrorWithSource writes an error document and lets the caller override the source_message
+// (used by the panic recover handler to persist the full goroutine stack trace alongside the panic message).
+func UpsertErrorWithSource(ctx context.Context, container *azcosmos.ContainerClient, operation string, err error, sourceOverride string, workloadID, commitSHA, hostname string) {
+	src := sourceMessage(err)
+	if sourceOverride != "" {
+		src = &sourceOverride
+	}
 	doc := ErrorResult{
 		ID:            uuid.NewString(),
 		PartitionKey:  uuid.NewString(),
@@ -467,7 +477,7 @@ func UpsertError(ctx context.Context, container *azcosmos.ContainerClient, opera
 		Timestamp:     time.Now().UTC().Format(time.RFC3339),
 		Operation:     operation,
 		ErrorMessage:  err.Error(),
-		SourceMessage: sourceMessage(err),
+		SourceMessage: src,
 	}
 	body, marshalErr := json.Marshal(doc)
 	if marshalErr == nil {

@@ -176,6 +176,8 @@ func BenchmarkDownload(b *testing.B) {
 		{"1MB", 1 * 1024 * 1024},
 		{"4MB", 4 * 1024 * 1024},
 		{"16MB", 16 * 1024 * 1024},
+		{"64MB", 64 * 1024 * 1024},
+		{"128MB", 128 * 1024 * 1024},
 	}
 
 	for _, sz := range sizes {
@@ -186,8 +188,7 @@ func BenchmarkDownload(b *testing.B) {
 			// Upload once, then benchmark download
 			blobName := fmt.Sprintf("dl-nosm-%s", sz.name)
 			bbClient := env.containerClient.NewBlockBlobClient(blobName)
-			_, err := bbClient.Upload(context.Background(),
-				streaming.NopCloser(bytes.NewReader(data)), nil)
+			_, err := bbClient.UploadBuffer(context.Background(), data, nil)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -208,8 +209,7 @@ func BenchmarkDownload(b *testing.B) {
 			// Upload once, then benchmark download with SM
 			blobName := fmt.Sprintf("dl-sm-%s", sz.name)
 			bbClient := env.containerClient.NewBlockBlobClient(blobName)
-			_, err := bbClient.Upload(context.Background(),
-				streaming.NopCloser(bytes.NewReader(data)), nil)
+			_, err := bbClient.UploadBuffer(context.Background(), data, nil)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -272,6 +272,60 @@ func BenchmarkUploadBuffer(b *testing.B) {
 				_, err := bbClient.UploadBuffer(context.Background(), data, &blockblob.UploadBufferOptions{
 					TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 				})
+				if err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
+// ── UploadStream multi-block benchmark: NoValidation vs SM CRC64 ──
+// UploadStream uses a different code path (copyFromReader) than UploadBuffer (uploadFromReader).
+// It reads from a non-seekable stream, buffering into blocks internally.
+
+func BenchmarkUploadStream(b *testing.B) {
+	sizes := []struct {
+		name string
+		size int
+	}{
+		{"16MB", 16 * 1024 * 1024},
+		{"64MB", 64 * 1024 * 1024},
+		{"128MB", 128 * 1024 * 1024},
+		{"256MB", 256 * 1024 * 1024},
+	}
+
+	for _, sz := range sizes {
+		data := makeBenchData(sz.size)
+
+		b.Run(fmt.Sprintf("NoSM/%s", sz.name), func(b *testing.B) {
+			env := setupBenchEnv(b)
+			b.SetBytes(int64(sz.size))
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				blobName := fmt.Sprintf("str-nosm-%s-%d", sz.name, i)
+				bbClient := env.containerClient.NewBlockBlobClient(blobName)
+				_, err := bbClient.UploadStream(context.Background(),
+					bytes.NewReader(data),
+					&blockblob.UploadStreamOptions{})
+				if err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+
+		b.Run(fmt.Sprintf("WithSM/%s", sz.name), func(b *testing.B) {
+			env := setupBenchEnv(b)
+			b.SetBytes(int64(sz.size))
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				blobName := fmt.Sprintf("str-sm-%s-%d", sz.name, i)
+				bbClient := env.containerClient.NewBlockBlobClient(blobName)
+				_, err := bbClient.UploadStream(context.Background(),
+					bytes.NewReader(data),
+					&blockblob.UploadStreamOptions{
+						TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+					})
 				if err != nil {
 					b.Fatal(err)
 				}

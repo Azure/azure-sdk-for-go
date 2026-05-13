@@ -31,6 +31,16 @@ type ChangeFeedOptions struct {
 	Continuation *string
 }
 
+// toHeaders is the legacy back-compat builder retained for tests and any
+// caller still using the impure exact-match flow. The change-feed loop now
+// uses buildRequestHeaders directly with a pre-resolved head range and
+// PK-range ID, side-stepping this method's silent-on-mismatch behavior.
+//
+// Returns nil when options.FeedRange is set but no exact-match PK range
+// can be found in partitionKeyRanges — matching pre-existing semantics so
+// the existing test contracts pass. The new GetChangeFeed path never relies
+// on this nil-on-mismatch behavior; it does its own overlap resolution
+// upstream and surfaces ErrFeedRangeUnresolved instead.
 func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRange) *map[string]string {
 	headers := make(map[string]string)
 
@@ -82,4 +92,43 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 	}
 
 	return &headers
+}
+
+// buildRequestHeaders constructs the exact headers needed for a single
+// change-feed request against one queue head. Pure builder: callers MUST
+// supply the head and the already-resolved PK-range ID (overlap-matched
+// via the routing map, NOT exact-matched).
+//
+// This is the path used by the new queue-driven GetChangeFeed loop. The
+// caller-options-level Continuation token is NOT consulted here — the
+// queue-head ETag drives If-None-Match because the queue may have been
+// split-expanded since the token was issued.
+func (options *ChangeFeedOptions) buildRequestHeaders(head changeFeedRange, resolvedPKRangeID string) map[string]string {
+	headers := make(map[string]string, 6)
+	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
+
+	if options != nil {
+		if options.MaxItemCount > 0 {
+			headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
+		}
+		if options.StartFrom != nil {
+			headers[cosmosHeaderIfModifiedSince] = options.StartFrom.UTC().Format(time.RFC1123)
+		}
+		if options.PartitionKey != nil {
+			pkJSON, err := options.PartitionKey.toJsonString()
+			if err == nil {
+				headers[cosmosHeaderPartitionKey] = string(pkJSON)
+			}
+		}
+	}
+
+	if head.ContinuationToken != nil && *head.ContinuationToken != "" {
+		headers[headerIfNoneMatch] = string(*head.ContinuationToken)
+	}
+
+	if resolvedPKRangeID != "" {
+		headers[headerXmsDocumentDbPartitionKeyRangeId] = resolvedPKRangeID
+	}
+
+	return headers
 }

@@ -6238,6 +6238,11 @@ func TestUploadLogEvent(t *testing.T) {
 			require.Equal(t, msg, "blob name path1/path2 actual size 270000000 block-size 4194304 block-count 65")
 		}
 	})
+	// Reset global log state so it doesn't leak into subsequent tests.
+	t.Cleanup(func() {
+		log.SetListener(nil)
+		log.SetEvents()
+	})
 
 	fbb := &fakeBlockBlob{}
 	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path1/path2", &blockblob.ClientOptions{
@@ -6288,6 +6293,11 @@ func TestRequestIDGeneration(t *testing.T) {
 		require.Contains(t, msg, "X-Ms-Client-Request-Id: azblob-test-request-id")
 		require.Contains(t, msg, "User-Agent: testApp/1.0.0-preview.2")
 		requestIdMatch = true
+	})
+	// Reset global log state so it doesn't leak into subsequent tests.
+	t.Cleanup(func() {
+		log.SetListener(nil)
+		log.SetEvents()
 	})
 
 	fbb := &fakeBlockBlob{}

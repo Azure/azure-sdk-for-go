@@ -42,7 +42,6 @@ const (
 // header to operations that include a request body.
 type ExpectContinueOptions = exported.ExpectContinueOptions
 
-
 // Type Declarations ---------------------------------------------------------------------
 
 // AccessConditions identifies blob-specific access conditions which you optionally set.

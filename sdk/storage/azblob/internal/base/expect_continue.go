@@ -54,7 +54,7 @@ func newExpectContinueEnvCheck() func() bool {
 	})
 }
 
-// NewExpectContinuePolicy returns a per-call policy that applies the "Expect: 100-continue" HTTP
+// NewExpectContinuePolicy returns a per-retry policy that applies the "Expect: 100-continue" HTTP
 // header to outgoing requests according to the provided options.
 //
 // When opts is nil the default behavior is ExpectContinueModeApplyOnThrottle, equivalent to

@@ -5,7 +5,7 @@ package exported
 
 import "time"
 
-// ExpectContinueMode is the mode for applying the HTTP "Expect: 100-continue" header to PUT requests.
+// ExpectContinueMode is the mode for applying the HTTP "Expect: 100-continue" header to requests with a body.
 type ExpectContinueMode int
 
 const (

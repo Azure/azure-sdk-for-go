@@ -5,7 +5,9 @@ package armservicefabric_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -13,21 +15,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric/v3"
 	"github.com/stretchr/testify/suite"
 )
 
 type ServicefabricTestSuite struct {
 	suite.Suite
 
-	ctx                 context.Context
-	cred                azcore.TokenCredential
-	options             *arm.ClientOptions
-	applicationTypeName string
-	clusterName         string
-	location            string
-	resourceGroupName   string
-	subscriptionId      string
+	ctx                   context.Context
+	cred                  azcore.TokenCredential
+	options               *arm.ClientOptions
+	applicationTypeName   string
+	clusterName           string
+	certificateThumbprint string
+	location              string
+	resourceGroupName     string
+	subscriptionId        string
 }
 
 func (testsuite *ServicefabricTestSuite) SetupSuite() {
@@ -40,6 +43,7 @@ func (testsuite *ServicefabricTestSuite) SetupSuite() {
 	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.certificateThumbprint = recording.GetEnvVariable("CERTIFICATE_THUMBPRINT", "5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -55,6 +59,17 @@ func (testsuite *ServicefabricTestSuite) TearDownSuite() {
 
 func TestServicefabricTestSuite(t *testing.T) {
 	suite.Run(t, new(ServicefabricTestSuite))
+}
+
+// isNoUpgradableVersions returns true when the cluster is already at the latest
+// runtime version and the service returns 400 instead of an empty list.
+func isNoUpgradableVersions(err error) bool {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return false
+	}
+	return strings.EqualFold(respErr.ErrorCode, "ClusterVersionNoPossibleDowngrades") ||
+		strings.EqualFold(respErr.ErrorCode, "ClusterVersionNoSupportedPath")
 }
 
 func (testsuite *ServicefabricTestSuite) Prepare() {
@@ -83,7 +98,7 @@ func (testsuite *ServicefabricTestSuite) Prepare() {
 							Value: to.Ptr("60"),
 						}},
 				}},
-			ManagementEndpoint: to.Ptr("http://" + testsuite.clusterName + ".eastus.cloudapp.azure.com:19080"),
+			ManagementEndpoint: to.Ptr("https://" + testsuite.clusterName + "." + testsuite.location + ".cloudapp.azure.com:19080"),
 			NodeTypes: []*armservicefabric.NodeTypeDescription{
 				{
 					Name: to.Ptr("nt1vm"),
@@ -103,6 +118,10 @@ func (testsuite *ServicefabricTestSuite) Prepare() {
 				}},
 			ReliabilityLevel: to.Ptr(armservicefabric.ReliabilityLevelSilver),
 			UpgradeMode:      to.Ptr(armservicefabric.UpgradeModeAutomatic),
+			Certificate: &armservicefabric.CertificateDescription{
+				Thumbprint:    to.Ptr(testsuite.certificateThumbprint),
+				X509StoreName: to.Ptr(armservicefabric.StoreName("My")),
+			},
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -151,11 +170,10 @@ func (testsuite *ServicefabricTestSuite) TestClusters() {
 
 	// From step Clusters_ListUpgradableVersions
 	fmt.Println("Call operation: Clusters_ListUpgradableVersions")
-	_, err = clustersClient.ListUpgradableVersions(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, &armservicefabric.ClustersClientListUpgradableVersionsOptions{VersionsDescription: &armservicefabric.UpgradableVersionsDescription{
-		TargetVersion: to.Ptr("9.1.1653.9590"),
-	},
-	})
-	testsuite.Require().NoError(err)
+	_, err = clustersClient.ListUpgradableVersions(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, nil)
+	if !isNoUpgradableVersions(err) {
+		testsuite.Require().NoError(err)
+	}
 }
 
 // Microsoft.ServiceFabric/locations/{location}/clusterVersions/{clusterVersion}

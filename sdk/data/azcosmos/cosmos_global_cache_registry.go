@@ -32,31 +32,44 @@ func normalizeEndpoint(endpoint string) string {
 // acquireCaches returns the shared cache set for the given endpoint, creating
 // one if it doesn't exist. The caller must call releaseCaches when the Client
 // is closed to allow cleanup.
+//
+// The implementation uses a verify-after-increment pattern to prevent a TOCTOU
+// race with releaseCaches: after incrementing the refCount, it confirms the
+// entry is still in the registry. If a concurrent release evicted it, the
+// increment is undone and the loop retries.
 func acquireCaches(endpoint string) *sharedCacheSet {
 	key := normalizeEndpoint(endpoint)
 
-	// Fast path: cache set already exists
-	if val, ok := globalCacheRegistry.Load(key); ok {
-		set := val.(*sharedCacheSet)
-		set.refCount.Add(1)
-		return set
-	}
+	for {
+		if val, ok := globalCacheRegistry.Load(key); ok {
+			set := val.(*sharedCacheSet)
+			set.refCount.Add(1)
+			// Verify the entry is still registered after we incremented.
+			// A concurrent releaseCaches could have evicted it between our
+			// Load and Add, leaving us with an orphaned cache set.
+			if val2, ok2 := globalCacheRegistry.Load(key); ok2 && val2 == val {
+				return set
+			}
+			// Entry was evicted — undo our increment and retry.
+			set.refCount.Add(-1)
+			continue
+		}
 
-	// Slow path: create new and use LoadOrStore to avoid races
-	newSet := &sharedCacheSet{
-		containerCache: newContainerPropertiesCache(),
-		pkRangeCache:   newPartitionKeyRangeCache(),
-	}
-	newSet.refCount.Store(1)
+		// Slow path: create new and use LoadOrStore to avoid races
+		newSet := &sharedCacheSet{
+			containerCache: newContainerPropertiesCache(),
+			pkRangeCache:   newPartitionKeyRangeCache(),
+		}
+		newSet.refCount.Store(1)
 
-	actual, loaded := globalCacheRegistry.LoadOrStore(key, newSet)
-	if loaded {
-		// Another goroutine created it first — use theirs
-		set := actual.(*sharedCacheSet)
-		set.refCount.Add(1)
-		return set
+		_, loaded := globalCacheRegistry.LoadOrStore(key, newSet)
+		if loaded {
+			// Another goroutine created it first — use theirs via the retry loop
+			// to get the verify-after-increment safety.
+			continue
+		}
+		return newSet
 	}
-	return newSet
 }
 
 // releaseCaches decrements the reference count for the given endpoint's cache

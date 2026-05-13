@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -34,6 +35,7 @@ type Client struct {
 	gem         *globalEndpointManager
 	endpointUrl *url.URL
 	caches      *sharedCacheSet
+	closeOnce   sync.Once
 }
 
 // getContainerCache returns the container properties cache for this client.
@@ -60,10 +62,13 @@ func (c *Client) Endpoint() string {
 // Close releases the shared cache reference for this client. The underlying
 // caches are removed from the global registry once all clients to the same
 // account endpoint have been closed. After Close, the client should not be used.
+// Close is idempotent; calling it multiple times is safe.
 func (c *Client) Close() {
-	if c.endpoint != "" {
-		releaseCaches(c.endpoint)
-	}
+	c.closeOnce.Do(func() {
+		if c.endpoint != "" {
+			releaseCaches(c.endpoint)
+		}
+	})
 }
 
 // NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.

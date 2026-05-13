@@ -263,3 +263,70 @@ func TestAcquireCaches_ConcurrentSafe(t *testing.T) {
 	}
 	require.Equal(t, int64(goroutines), results[0].refCount.Load())
 }
+
+func TestAcquireCaches_ResilientToInterleavedRelease(t *testing.T) {
+	resetGlobalCacheRegistry()
+	defer resetGlobalCacheRegistry()
+
+	endpoint := "https://account1.documents.azure.com"
+
+	// Simulate the TOCTOU scenario: acquire, then concurrent release+acquire.
+	// After the race, every acquire must still return the same registered instance.
+	set1 := acquireCaches(endpoint) // refCount = 1
+
+	// Release fully (refCount -> 0, entry removed)
+	releaseCaches(endpoint)
+
+	// Now a new acquire should create a fresh set (the old one is gone)
+	set2 := acquireCaches(endpoint)
+	require.NotSame(t, set1, set2, "after full release, a new set should be created")
+	require.Equal(t, int64(1), set2.refCount.Load())
+
+	// Stress test: interleave acquires and releases concurrently
+	const goroutines = 100
+	var wg sync.WaitGroup
+	wg.Add(goroutines)
+	for i := 0; i < goroutines; i++ {
+		go func() {
+			defer wg.Done()
+			s := acquireCaches(endpoint)
+			// Verify the returned set is actually in the registry
+			val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+			require.True(t, ok, "acquired set must be in registry")
+			require.Same(t, s, val.(*sharedCacheSet), "acquired set must match registry entry")
+			releaseCaches(endpoint)
+		}()
+	}
+	wg.Wait()
+
+	// set2 should still be valid (we haven't released it)
+	val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+	require.True(t, ok)
+	require.Same(t, set2, val.(*sharedCacheSet))
+	require.Equal(t, int64(1), set2.refCount.Load())
+	releaseCaches(endpoint)
+}
+
+func TestClientClose_Idempotent(t *testing.T) {
+	resetGlobalCacheRegistry()
+	defer resetGlobalCacheRegistry()
+
+	endpoint := "https://account1.documents.azure.com"
+	client := &Client{endpoint: endpoint, caches: acquireCaches(endpoint)}
+
+	// Also acquire a second reference so we can observe the refCount
+	_ = acquireCaches(endpoint) // refCount = 2
+
+	client.Close() // refCount -> 1
+	client.Close() // idempotent — should NOT decrement again
+	client.Close() // still idempotent
+
+	// RefCount should be 1 (the second acquire), not -1 or 0
+	val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+	require.True(t, ok, "entry should still exist — second reference is alive")
+	set := val.(*sharedCacheSet)
+	require.Equal(t, int64(1), set.refCount.Load())
+
+	// Clean up the second reference
+	releaseCaches(endpoint)
+}

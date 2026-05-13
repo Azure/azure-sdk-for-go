@@ -67,9 +67,9 @@ func (c *ContainerClient) Read(
 	defer func() { endSpan(err) }()
 
 	response, err := c.readContainerRaw(ctx, o)
-	if err == nil && c.database.client.containerCache != nil && response.ContainerProperties != nil {
+	if err == nil && c.database.client.getContainerCache() != nil && response.ContainerProperties != nil {
 		// Populate the container properties cache on successful Read
-		c.database.client.containerCache.set(c.link, response.ContainerProperties)
+		c.database.client.getContainerCache().set(c.link, response.ContainerProperties)
 	}
 	return response, err
 }
@@ -149,8 +149,8 @@ func (c *ContainerClient) Replace(
 	}
 
 	response, err := newContainerResponse(azResponse)
-	if err == nil && c.database.client.containerCache != nil && response.ContainerProperties != nil {
-		c.database.client.containerCache.set(c.link, response.ContainerProperties)
+	if err == nil && c.database.client.getContainerCache() != nil && response.ContainerProperties != nil {
+		c.database.client.getContainerCache().set(c.link, response.ContainerProperties)
 	}
 	return response, err
 }
@@ -901,8 +901,8 @@ func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 // getContainerRID resolves the container's ResourceID, using the container
 // properties cache if available, otherwise falling back to a direct Read.
 func (c *ContainerClient) getContainerRID(ctx context.Context) (string, error) {
-	if c.database.client.containerCache != nil {
-		props, err := c.database.client.containerCache.getProperties(ctx, c)
+	if c.database.client.getContainerCache() != nil {
+		props, err := c.database.client.getContainerCache().getProperties(ctx, c)
 		if err != nil {
 			return "", err
 		}
@@ -929,7 +929,7 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 	defer func() { endSpan(err) }()
 
 	// Use the cache if available, otherwise fall back to direct fetch
-	if c.database.client.pkRangeCache != nil {
+	if c.database.client.getPKRangeCache() != nil {
 		var containerRID string
 		containerRID, err = c.getContainerRID(ctx)
 		if err != nil {
@@ -937,7 +937,7 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitio
 		}
 
 		var routingMap *collectionRoutingMap
-		routingMap, err = c.database.client.pkRangeCache.getRoutingMap(ctx, containerRID, c.link, c.database.client)
+		routingMap, err = c.database.client.getPKRangeCache().getRoutingMap(ctx, containerRID, c.link, c.database.client)
 		if err != nil {
 			return partitionKeyRangeResponse{}, err
 		}

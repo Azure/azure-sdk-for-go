@@ -147,12 +147,14 @@ func createMockClientForPKRangeCache(srv *mock.Server) *Client {
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
 	return &Client{
-		endpoint:       srv.URL(),
-		endpointUrl:    defaultEndpoint,
-		internal:       internalClient,
-		gem:            gem,
-		pkRangeCache:   newPartitionKeyRangeCache(),
-		containerCache: newContainerPropertiesCache(),
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: newContainerPropertiesCache(),
+		},
 	}
 }
 
@@ -196,7 +198,7 @@ func Test_partitionKeyRangeCache_cacheMiss_fullRefresh(t *testing.T) {
 	require.Equal(t, "FF", resp.PartitionKeyRanges[1].MaxExclusive)
 
 	// Verify cache is populated
-	rm, err := client.pkRangeCache.getRoutingMap(context.Background(), "testRID", container.link, client)
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", container.link, client)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(rm.orderedRanges))
 	require.Equal(t, "etag1", rm.changeFeedETag)
@@ -234,12 +236,12 @@ func Test_partitionKeyRangeCache_incrementalRefresh_success(t *testing.T) {
 		{ID: "0", MinInclusive: "", MaxExclusive: "FF"},
 	}, "etag1")
 	entry := &pkRangeCacheEntry{routingMap: initialMap}
-	client.pkRangeCache.mu.Lock()
-	client.pkRangeCache.entries["testRID"] = entry
-	client.pkRangeCache.mu.Unlock()
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
 
 	// forceRefresh should do incremental refresh
-	rm, err := client.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(rm.orderedRanges))
 	require.Equal(t, "", rm.orderedRanges[0].MinInclusive)
@@ -270,11 +272,11 @@ func Test_partitionKeyRangeCache_incrementalRefresh_304_immediate(t *testing.T) 
 		{ID: "1", MinInclusive: "05C1E18D2D7F08", MaxExclusive: "FF"},
 	}, "etag1")
 	entry := &pkRangeCacheEntry{routingMap: initialMap}
-	client.pkRangeCache.mu.Lock()
-	client.pkRangeCache.entries["testRID"] = entry
-	client.pkRangeCache.mu.Unlock()
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
 
-	rm, err := client.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	// Ranges should be preserved
 	require.Equal(t, 2, len(rm.orderedRanges))
@@ -324,11 +326,11 @@ func Test_partitionKeyRangeCache_incrementalRefresh_mergeFailure_fullRefresh(t *
 		{ID: "0", MinInclusive: "", MaxExclusive: "FF"},
 	}, "etag1")
 	entry := &pkRangeCacheEntry{routingMap: initialMap}
-	client.pkRangeCache.mu.Lock()
-	client.pkRangeCache.entries["testRID"] = entry
-	client.pkRangeCache.mu.Unlock()
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
 
-	rm, err := client.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	// Should have the 3 ranges from full refresh
 	require.Equal(t, 3, len(rm.orderedRanges))
@@ -356,15 +358,15 @@ func Test_partitionKeyRangeCache_incrementalRefresh_contextCancelled(t *testing.
 		{ID: "0", MinInclusive: "", MaxExclusive: "FF"},
 	}, "etag1")
 	entry := &pkRangeCacheEntry{routingMap: initialMap}
-	client.pkRangeCache.mu.Lock()
-	client.pkRangeCache.entries["testRID"] = entry
-	client.pkRangeCache.mu.Unlock()
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
 
 	// Cancel context before calling forceRefresh
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 
-	_, err := client.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client)
+	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client)
 	require.Error(t, err)
 	require.ErrorIs(t, err, context.Canceled)
 

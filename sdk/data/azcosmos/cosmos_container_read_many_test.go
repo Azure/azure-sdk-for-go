@@ -523,12 +523,14 @@ func TestRefreshPKRangeCache_InvalidatesContainerCache(t *testing.T) {
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
 	client := &Client{
-		endpoint:       srv.URL(),
-		endpointUrl:    defaultEndpoint,
-		internal:       internalClient,
-		gem:            gem,
-		pkRangeCache:   newPartitionKeyRangeCache(),
-		containerCache: cache,
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: cache,
+		},
 	}
 
 	database, _ := newDatabase("databaseId", client)
@@ -590,12 +592,14 @@ func createReadManyTestClient(t *testing.T, srv *mock.Server, policies []policy.
 	pkRangeCache := newPartitionKeyRangeCache()
 
 	client := &Client{
-		endpoint:       srv.URL(),
-		endpointUrl:    defaultEndpoint,
-		internal:       internalClient,
-		gem:            gem,
-		containerCache: containerCache,
-		pkRangeCache:   pkRangeCache,
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			containerCache: containerCache,
+			pkRangeCache:   pkRangeCache,
+		},
 	}
 
 	// Pre-populate container cache

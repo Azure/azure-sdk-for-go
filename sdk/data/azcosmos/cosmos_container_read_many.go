@@ -308,8 +308,8 @@ func (c *ContainerClient) executeReadManyWithQueries(
 	// partition key definition), we pick up the new schema — not just the new ranges.
 	for attempt := 0; attempt <= maxPKRangeGoneRetries; attempt++ {
 		var pkDef PartitionKeyDefinition
-		if c.database.client.containerCache != nil {
-			containerProps, err := c.database.client.containerCache.getProperties(ctx, c)
+		if c.database.client.getContainerCache() != nil {
+			containerProps, err := c.database.client.getContainerCache().getProperties(ctx, c)
 			if err != nil {
 				return ReadManyItemsResponse{}, err
 			}
@@ -373,15 +373,15 @@ func (c *ContainerClient) executeReadManyWithQueries(
 // current RID, which is necessary when a container is deleted and recreated with the same name.
 // Returns an error if the refresh fails, allowing the caller to fail fast.
 func (c *ContainerClient) refreshPKRangeCache(ctx context.Context) error {
-	if c.database.client.containerCache != nil {
-		c.database.client.containerCache.invalidate(c.link)
+	if c.database.client.getContainerCache() != nil {
+		c.database.client.getContainerCache().invalidate(c.link)
 	}
-	if c.database.client.pkRangeCache != nil {
+	if c.database.client.getPKRangeCache() != nil {
 		containerRID, err := c.getContainerRID(ctx)
 		if err != nil {
 			return err
 		}
-		_, err = c.database.client.pkRangeCache.forceRefresh(ctx, containerRID, c.link, c.database.client)
+		_, err = c.database.client.getPKRangeCache().forceRefresh(ctx, containerRID, c.link, c.database.client)
 		if err != nil {
 			return err
 		}

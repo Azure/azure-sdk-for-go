@@ -199,12 +199,14 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
 	client := &Client{
-		endpoint:       srv.URL(),
-		endpointUrl:    defaultEndpoint,
-		internal:       internalClient,
-		gem:            gem,
-		pkRangeCache:   newPartitionKeyRangeCache(),
-		containerCache: newContainerPropertiesCache(),
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: newContainerPropertiesCache(),
+		},
 	}
 
 	database, _ := newDatabase("databaseId", client)

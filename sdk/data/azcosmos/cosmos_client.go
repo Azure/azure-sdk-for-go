@@ -29,17 +29,41 @@ const (
 
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
-	endpoint       string
-	internal       *azcore.Client
-	gem            *globalEndpointManager
-	endpointUrl    *url.URL
-	pkRangeCache   *partitionKeyRangeCache
-	containerCache *containerPropertiesCache
+	endpoint    string
+	internal    *azcore.Client
+	gem         *globalEndpointManager
+	endpointUrl *url.URL
+	caches      *sharedCacheSet
+}
+
+// getContainerCache returns the container properties cache for this client.
+func (c *Client) getContainerCache() *containerPropertiesCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.containerCache
+}
+
+// getPKRangeCache returns the partition key range cache for this client.
+func (c *Client) getPKRangeCache() *partitionKeyRangeCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.pkRangeCache
 }
 
 // Endpoint used to create the client.
 func (c *Client) Endpoint() string {
 	return c.endpoint
+}
+
+// Close releases the shared cache reference for this client. The underlying
+// caches are removed from the global registry once all clients to the same
+// account endpoint have been closed. After Close, the client should not be used.
+func (c *Client) Close() {
+	if c.endpoint != "" {
+		releaseCaches(c.endpoint)
+	}
 }
 
 // NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.
@@ -66,7 +90,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, pkRangeCache: newPartitionKeyRangeCache(), containerCache: newContainerPropertiesCache()}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -112,7 +136,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, pkRangeCache: newPartitionKeyRangeCache(), containerCache: newContainerPropertiesCache()}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.

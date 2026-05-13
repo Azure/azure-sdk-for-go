@@ -29,7 +29,7 @@ const (
 )
 
 var (
-	versionLineRegex    = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	versionLineRegex     = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
 	apiVersionConstRegex = regexp.MustCompile(`const\s+default\w+Version\s+string\s*=\s*"`)
 )
 

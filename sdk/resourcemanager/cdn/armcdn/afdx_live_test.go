@@ -22,6 +22,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
+// removeAcceptHeaderPolicy aligns Accept headers with recorded traffic during playback.
 type removeAcceptHeaderPolicy struct{}
 
 func (p *removeAcceptHeaderPolicy) Do(req *policy.Request) (*http.Response, error) {

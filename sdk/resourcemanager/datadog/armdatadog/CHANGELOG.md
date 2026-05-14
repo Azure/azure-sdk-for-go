@@ -1,5 +1,48 @@
 # Release History
 
+## 1.4.0 (2026-05-14)
+### Features Added
+
+- New enum type `ConnectorAction` with values `ConnectorActionAdd`, `ConnectorActionRemove`
+- New function `NewBillingInfoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BillingInfoClient, error)`
+- New function `*BillingInfoClient.Get(ctx context.Context, resourceGroupName string, monitorName string, options *BillingInfoClientGetOptions) (BillingInfoClientGetResponse, error)`
+- New function `*ClientFactory.NewBillingInfoClient() *BillingInfoClient`
+- New function `*ClientFactory.NewMonitorResourcesClient() *MonitorResourcesClient`
+- New function `*ClientFactory.NewOrganizationsClient() *OrganizationsClient`
+- New function `*ClientFactory.NewSaaSOperationGroupClient() *SaaSOperationGroupClient`
+- New function `NewMonitorResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorResourcesClient, error)`
+- New function `*MonitorResourcesClient.LatestLinkedSaaS(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorResourcesClientLatestLinkedSaaSOptions) (MonitorResourcesClientLatestLinkedSaaSResponse, error)`
+- New function `*MonitorResourcesClient.BeginLinkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorResourcesClientBeginLinkSaaSOptions) (*runtime.Poller[MonitorResourcesClientLinkSaaSResponse], error)`
+- New function `*MonitorsClient.GetDefaultApplicationKey(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetDefaultApplicationKeyOptions) (MonitorsClientGetDefaultApplicationKeyResponse, error)`
+- New function `*MonitorsClient.ManageSreAgentConnectors(ctx context.Context, resourceGroupName string, monitorName string, request SreAgentConnectorRequest, options *MonitorsClientManageSreAgentConnectorsOptions) (MonitorsClientManageSreAgentConnectorsResponse, error)`
+- New function `NewOrganizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OrganizationsClient, error)`
+- New function `*OrganizationsClient.BeginResubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*runtime.Poller[OrganizationsClientResubscribeResponse], error)`
+- New function `NewSaaSOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SaaSOperationGroupClient, error)`
+- New function `*SaaSOperationGroupClient.ActivateResource(ctx context.Context, body ActivateSaaSParameterRequest, options *SaaSOperationGroupClientActivateResourceOptions) (SaaSOperationGroupClientActivateResourceResponse, error)`
+- New struct `ActivateSaaSParameterRequest`
+- New struct `AgentRules`
+- New struct `ApplicationKey`
+- New struct `BillingInfoResponse`
+- New struct `LatestLinkedSaaSResponse`
+- New struct `MarketplaceOfferDetails`
+- New struct `MarketplaceSaaSInfo`
+- New struct `PartnerBillingEntity`
+- New struct `ResubscribeProperties`
+- New struct `SaaSData`
+- New struct `SaaSResourceDetailsResponse`
+- New struct `SreAgentConfiguration`
+- New struct `SreAgentConfigurationListResponse`
+- New struct `SreAgentConnectorRequest`
+- New field `NextLink` in struct `CreateResourceSupportedResponseList`
+- New field `Location` in struct `LinkedResource`
+- New field `MarketplaceOfferDetails`, `SaaSData`, `SreAgentConfiguration` in struct `MonitorProperties`
+- New field `ResourceCollection` in struct `MonitorUpdateProperties`
+- New field `SystemData` in struct `MonitoredSubscriptionProperties`
+- New field `NextLink` in struct `MonitoredSubscriptionPropertiesList`
+- New field `AgentRules`, `CustomMetrics` in struct `MonitoringTagRulesProperties`
+- New field `ResourceCollection` in struct `OrganizationProperties`
+
+
 ## 1.3.0 (2023-11-24)
 ### Features Added
 

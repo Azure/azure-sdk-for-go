@@ -5,6 +5,11 @@
 
 package armdatadog
 
+// BillingInfoClientGetOptions contains the optional parameters for the BillingInfoClient.Get method.
+type BillingInfoClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CreationSupportedClientGetOptions contains the optional parameters for the CreationSupportedClient.Get method.
 type CreationSupportedClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -18,6 +23,7 @@ type CreationSupportedClientListOptions struct {
 // MarketplaceAgreementsClientCreateOrUpdateOptions contains the optional parameters for the MarketplaceAgreementsClient.CreateOrUpdate
 // method.
 type MarketplaceAgreementsClientCreateOrUpdateOptions struct {
+	// The request body
 	Body *AgreementResource
 }
 
@@ -27,19 +33,32 @@ type MarketplaceAgreementsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MonitorResourcesClientBeginLinkSaaSOptions contains the optional parameters for the MonitorResourcesClient.BeginLinkSaaS
+// method.
+type MonitorResourcesClientBeginLinkSaaSOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitorResourcesClientLatestLinkedSaaSOptions contains the optional parameters for the MonitorResourcesClient.LatestLinkedSaaS
+// method.
+type MonitorResourcesClientLatestLinkedSaaSOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MonitoredSubscriptionsClientBeginCreateorUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginCreateorUpdate
 // method.
 type MonitoredSubscriptionsClientBeginCreateorUpdateOptions struct {
 	Body *MonitoredSubscriptionProperties
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // MonitoredSubscriptionsClientBeginDeleteOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginDelete
 // method.
 type MonitoredSubscriptionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -48,7 +67,7 @@ type MonitoredSubscriptionsClientBeginDeleteOptions struct {
 type MonitoredSubscriptionsClientBeginUpdateOptions struct {
 	Body *MonitoredSubscriptionProperties
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -67,13 +86,13 @@ type MonitoredSubscriptionsClientListOptions struct {
 type MonitorsClientBeginCreateOptions struct {
 	Body *MonitorResource
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
 type MonitorsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -81,8 +100,14 @@ type MonitorsClientBeginDeleteOptions struct {
 type MonitorsClientBeginUpdateOptions struct {
 	Body *MonitorResourceUpdateParameters
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// MonitorsClientGetDefaultApplicationKeyOptions contains the optional parameters for the MonitorsClient.GetDefaultApplicationKey
+// method.
+type MonitorsClientGetDefaultApplicationKeyOptions struct {
+	// placeholder for future optional parameters
 }
 
 // MonitorsClientGetDefaultKeyOptions contains the optional parameters for the MonitorsClient.GetDefaultKey method.
@@ -128,6 +153,12 @@ type MonitorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MonitorsClientManageSreAgentConnectorsOptions contains the optional parameters for the MonitorsClient.ManageSreAgentConnectors
+// method.
+type MonitorsClientManageSreAgentConnectorsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MonitorsClientRefreshSetPasswordLinkOptions contains the optional parameters for the MonitorsClient.RefreshSetPasswordLink
 // method.
 type MonitorsClientRefreshSetPasswordLinkOptions struct {
@@ -144,12 +175,28 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OrganizationsClientBeginResubscribeOptions contains the optional parameters for the OrganizationsClient.BeginResubscribe
+// method.
+type OrganizationsClientBeginResubscribeOptions struct {
+	// Resubscribe Properties
+	Body *ResubscribeProperties
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SaaSOperationGroupClientActivateResourceOptions contains the optional parameters for the SaaSOperationGroupClient.ActivateResource
+// method.
+type SaaSOperationGroupClientActivateResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnConfigurationsClient.BeginCreateOrUpdate
 // method.
 type SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions struct {
 	Body *SingleSignOnResource
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

@@ -27,7 +27,7 @@ type MonitorsClient struct {
 // NewMonitorsClient creates a new instance of MonitorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreate - Create a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
@@ -68,7 +68,7 @@ func (client *MonitorsClient) BeginCreate(ctx context.Context, resourceGroupName
 // Create - Create a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 func (client *MonitorsClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorsClient.BeginCreate"
@@ -110,7 +110,7 @@ func (client *MonitorsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -125,7 +125,7 @@ func (client *MonitorsClient) createCreateRequest(ctx context.Context, resourceG
 // BeginDelete - Delete a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
@@ -136,7 +136,8 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -149,7 +150,7 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorsClient.BeginDelete"
@@ -172,7 +173,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -191,7 +192,7 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +201,7 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the properties of a specific monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
@@ -227,7 +228,7 @@ func (client *MonitorsClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetOptions) (*policy.Request, error) {
+func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,7 +247,7 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,10 +262,75 @@ func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsCl
 	return result, nil
 }
 
+// GetDefaultApplicationKey - Get the default application key.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-12-26-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientGetDefaultApplicationKeyOptions contains the optional parameters for the MonitorsClient.GetDefaultApplicationKey
+//     method.
+func (client *MonitorsClient) GetDefaultApplicationKey(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetDefaultApplicationKeyOptions) (MonitorsClientGetDefaultApplicationKeyResponse, error) {
+	var err error
+	const operationName = "MonitorsClient.GetDefaultApplicationKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDefaultApplicationKeyCreateRequest(ctx, resourceGroupName, monitorName, options)
+	if err != nil {
+		return MonitorsClientGetDefaultApplicationKeyResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MonitorsClientGetDefaultApplicationKeyResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return MonitorsClientGetDefaultApplicationKeyResponse{}, err
+	}
+	resp, err := client.getDefaultApplicationKeyHandleResponse(httpResp)
+	return resp, err
+}
+
+// getDefaultApplicationKeyCreateRequest creates the GetDefaultApplicationKey request.
+func (client *MonitorsClient) getDefaultApplicationKeyCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientGetDefaultApplicationKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/getDefaultApplicationKey"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-12-26-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDefaultApplicationKeyHandleResponse handles the GetDefaultApplicationKey response.
+func (client *MonitorsClient) getDefaultApplicationKeyHandleResponse(resp *http.Response) (MonitorsClientGetDefaultApplicationKeyResponse, error) {
+	result := MonitorsClientGetDefaultApplicationKeyResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationKey); err != nil {
+		return MonitorsClientGetDefaultApplicationKeyResponse{}, err
+	}
+	return result, nil
+}
+
 // GetDefaultKey - Get the default api key.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientGetDefaultKeyOptions contains the optional parameters for the MonitorsClient.GetDefaultKey method.
@@ -291,7 +357,7 @@ func (client *MonitorsClient) GetDefaultKey(ctx context.Context, resourceGroupNa
 }
 
 // getDefaultKeyCreateRequest creates the GetDefaultKey request.
-func (client *MonitorsClient) getDefaultKeyCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetDefaultKeyOptions) (*policy.Request, error) {
+func (client *MonitorsClient) getDefaultKeyCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientGetDefaultKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/getDefaultKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -310,7 +376,7 @@ func (client *MonitorsClient) getDefaultKeyCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +393,7 @@ func (client *MonitorsClient) getDefaultKeyHandleResponse(resp *http.Response) (
 
 // NewListPager - List all monitors under the specified subscription.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - options - MonitorsClientListOptions contains the optional parameters for the MonitorsClient.NewListPager method.
 func (client *MonitorsClient) NewListPager(options *MonitorsClientListOptions) *runtime.Pager[MonitorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListResponse]{
@@ -353,7 +419,7 @@ func (client *MonitorsClient) NewListPager(options *MonitorsClientListOptions) *
 }
 
 // listCreateRequest creates the List request.
-func (client *MonitorsClient) listCreateRequest(ctx context.Context, options *MonitorsClientListOptions) (*policy.Request, error) {
+func (client *MonitorsClient) listCreateRequest(ctx context.Context, _ *MonitorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -364,7 +430,7 @@ func (client *MonitorsClient) listCreateRequest(ctx context.Context, options *Mo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +447,7 @@ func (client *MonitorsClient) listHandleResponse(resp *http.Response) (MonitorsC
 
 // NewListAPIKeysPager - List the api keys for a given monitor resource.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListAPIKeysOptions contains the optional parameters for the MonitorsClient.NewListAPIKeysPager
@@ -410,7 +476,7 @@ func (client *MonitorsClient) NewListAPIKeysPager(resourceGroupName string, moni
 }
 
 // listAPIKeysCreateRequest creates the ListAPIKeys request.
-func (client *MonitorsClient) listAPIKeysCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientListAPIKeysOptions) (*policy.Request, error) {
+func (client *MonitorsClient) listAPIKeysCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListAPIKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listApiKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -429,7 +495,7 @@ func (client *MonitorsClient) listAPIKeysCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -446,7 +512,7 @@ func (client *MonitorsClient) listAPIKeysHandleResponse(resp *http.Response) (Mo
 
 // NewListByResourceGroupPager - List all monitors under the specified resource group.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.NewListByResourceGroupPager
 //     method.
@@ -474,7 +540,7 @@ func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName stri
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *MonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -489,7 +555,7 @@ func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -506,7 +572,7 @@ func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListHostsPager - List the hosts for a given monitor resource.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.NewListHostsPager method.
@@ -534,7 +600,7 @@ func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monito
 }
 
 // listHostsCreateRequest creates the ListHosts request.
-func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientListHostsOptions) (*policy.Request, error) {
+func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListHostsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listHosts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -553,7 +619,7 @@ func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -570,7 +636,7 @@ func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response) (Moni
 
 // NewListLinkedResourcesPager - List all Azure resources associated to the same Datadog organization as the target resource.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListLinkedResourcesOptions contains the optional parameters for the MonitorsClient.NewListLinkedResourcesPager
@@ -599,7 +665,7 @@ func (client *MonitorsClient) NewListLinkedResourcesPager(resourceGroupName stri
 }
 
 // listLinkedResourcesCreateRequest creates the ListLinkedResources request.
-func (client *MonitorsClient) listLinkedResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientListLinkedResourcesOptions) (*policy.Request, error) {
+func (client *MonitorsClient) listLinkedResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListLinkedResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listLinkedResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -618,7 +684,7 @@ func (client *MonitorsClient) listLinkedResourcesCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -635,7 +701,7 @@ func (client *MonitorsClient) listLinkedResourcesHandleResponse(resp *http.Respo
 
 // NewListMonitoredResourcesPager - List the resources currently being monitored by the Datadog monitor resource.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.NewListMonitoredResourcesPager
@@ -664,7 +730,7 @@ func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName s
 }
 
 // listMonitoredResourcesCreateRequest creates the ListMonitoredResources request.
-func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) (*policy.Request, error) {
+func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListMonitoredResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listMonitoredResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -683,7 +749,7 @@ func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -698,10 +764,79 @@ func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Re
 	return result, nil
 }
 
+// ManageSreAgentConnectors - Manages Datadog MCP connectors to add/remove for the SRE Agent.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-12-26-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - request - The content of the action request
+//   - options - MonitorsClientManageSreAgentConnectorsOptions contains the optional parameters for the MonitorsClient.ManageSreAgentConnectors
+//     method.
+func (client *MonitorsClient) ManageSreAgentConnectors(ctx context.Context, resourceGroupName string, monitorName string, request SreAgentConnectorRequest, options *MonitorsClientManageSreAgentConnectorsOptions) (MonitorsClientManageSreAgentConnectorsResponse, error) {
+	var err error
+	const operationName = "MonitorsClient.ManageSreAgentConnectors"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.manageSreAgentConnectorsCreateRequest(ctx, resourceGroupName, monitorName, request, options)
+	if err != nil {
+		return MonitorsClientManageSreAgentConnectorsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MonitorsClientManageSreAgentConnectorsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return MonitorsClientManageSreAgentConnectorsResponse{}, err
+	}
+	resp, err := client.manageSreAgentConnectorsHandleResponse(httpResp)
+	return resp, err
+}
+
+// manageSreAgentConnectorsCreateRequest creates the ManageSreAgentConnectors request.
+func (client *MonitorsClient) manageSreAgentConnectorsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request SreAgentConnectorRequest, _ *MonitorsClientManageSreAgentConnectorsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/manageSreAgentConnectors"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-12-26-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, request); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// manageSreAgentConnectorsHandleResponse handles the ManageSreAgentConnectors response.
+func (client *MonitorsClient) manageSreAgentConnectorsHandleResponse(resp *http.Response) (MonitorsClientManageSreAgentConnectorsResponse, error) {
+	result := MonitorsClientManageSreAgentConnectorsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SreAgentConfigurationListResponse); err != nil {
+		return MonitorsClientManageSreAgentConnectorsResponse{}, err
+	}
+	return result, nil
+}
+
 // RefreshSetPasswordLink - Refresh the set password link and return a latest one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientRefreshSetPasswordLinkOptions contains the optional parameters for the MonitorsClient.RefreshSetPasswordLink
@@ -729,7 +864,7 @@ func (client *MonitorsClient) RefreshSetPasswordLink(ctx context.Context, resour
 }
 
 // refreshSetPasswordLinkCreateRequest creates the RefreshSetPasswordLink request.
-func (client *MonitorsClient) refreshSetPasswordLinkCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientRefreshSetPasswordLinkOptions) (*policy.Request, error) {
+func (client *MonitorsClient) refreshSetPasswordLinkCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientRefreshSetPasswordLinkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/refreshSetPasswordLink"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -748,7 +883,7 @@ func (client *MonitorsClient) refreshSetPasswordLinkCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -766,7 +901,7 @@ func (client *MonitorsClient) refreshSetPasswordLinkHandleResponse(resp *http.Re
 // SetDefaultKey - Set the default api key.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientSetDefaultKeyOptions contains the optional parameters for the MonitorsClient.SetDefaultKey method.
@@ -811,7 +946,7 @@ func (client *MonitorsClient) setDefaultKeyCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -826,7 +961,7 @@ func (client *MonitorsClient) setDefaultKeyCreateRequest(ctx context.Context, re
 // BeginUpdate - Update a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.
@@ -837,7 +972,8 @@ func (client *MonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -850,7 +986,7 @@ func (client *MonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Update a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 func (client *MonitorsClient) update(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorsClient.BeginUpdate"
@@ -892,7 +1028,7 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

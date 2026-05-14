@@ -22,16 +22,20 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-// removeAcceptHeaderPolicy aligns Accept headers with recorded traffic during playback.
+// removeAcceptHeaderPolicy aligns Accept headers with the recording assets.
+// It is attached in all modes so the same request shape is used consistently in record/live/playback.
 type removeAcceptHeaderPolicy struct{}
 
 func (p *removeAcceptHeaderPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if req.Raw().Method == http.MethodDelete {
+		// Recordings for DELETE operations were captured without Accept.
 		req.Raw().Header.Del("Accept")
 	} else if req.Raw().Method == http.MethodPost {
 		if strings.HasSuffix(req.Raw().URL.Path, "/purge") {
+			// Purge POST is also recorded without Accept.
 			req.Raw().Header.Del("Accept")
 		} else if req.Raw().Header.Get("Accept") == "" {
+			// Other POST operations require an explicit Accept in recordings.
 			req.Raw().Header.Set("Accept", "application/json")
 		}
 	}

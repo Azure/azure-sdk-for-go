@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestContainerGetFeedRanges(t *testing.T) {
@@ -141,4 +142,95 @@ func TestContainerGetFeedRangesEmpty(t *testing.T) {
 	if len(feedRanges) != 0 {
 		t.Fatalf("Expected 0 feed ranges, got %d", len(feedRanges))
 	}
+}
+
+func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
+	containerResponse := []byte(`{
+		"id": "containerId",
+		"_rid": "testRID",
+		"_self": "dbs/db1/colls/containerId/",
+		"partitionKey": {
+			"paths": ["/pk"],
+			"kind": "Hash",
+			"version": 2
+		}
+	}`)
+
+	pkRangeResponse := []byte(`{
+		"_rid": "testRID",
+		"PartitionKeyRanges": [
+			{
+				"_rid": "testRID_range0",
+				"id": "0",
+				"_etag": "\"etag0\"",
+				"minInclusive": "",
+				"maxExclusive": "05C1E18D2D7F08",
+				"status": "online",
+				"parents": []
+			},
+			{
+				"_rid": "testRID_range1",
+				"id": "1",
+				"_etag": "\"etag1\"",
+				"minInclusive": "05C1E18D2D7F08",
+				"maxExclusive": "FF",
+				"status": "online",
+				"parents": []
+			}
+		],
+		"_count": 2
+	}`)
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// First call will need: container read (for RID) + PK range fetch
+	srv.AppendResponse(
+		mock.WithBody(containerResponse),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithBody(pkRangeResponse),
+		mock.WithHeader(cosmosHeaderEtag, "changeFeedEtag1"),
+		mock.WithStatusCode(200),
+	)
+
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: newContainerPropertiesCache(),
+		},
+	}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// First call: populates caches, makes 2 HTTP requests
+	feedRanges, err := container.GetFeedRanges(context.TODO())
+	require.NoError(t, err)
+	require.Equal(t, 2, len(feedRanges))
+	require.Equal(t, "", feedRanges[0].MinInclusive)
+	require.Equal(t, "05C1E18D2D7F08", feedRanges[0].MaxExclusive)
+	require.Equal(t, "05C1E18D2D7F08", feedRanges[1].MinInclusive)
+	require.Equal(t, "FF", feedRanges[1].MaxExclusive)
+
+	requestsAfterFirstCall := srv.Requests()
+	require.Equal(t, 2, requestsAfterFirstCall, "first call should make 2 HTTP requests (container read + PK ranges)")
+
+	// Second call: should use caches, no additional HTTP requests
+	// (no more responses queued — would panic if a request was made)
+	feedRanges2, err := container.GetFeedRanges(context.TODO())
+	require.NoError(t, err)
+	require.Equal(t, 2, len(feedRanges2))
+	require.Equal(t, feedRanges[0], feedRanges2[0])
+	require.Equal(t, feedRanges[1], feedRanges2[1])
+
+	require.Equal(t, requestsAfterFirstCall, srv.Requests(), "second call should make 0 HTTP requests (cache hit)")
 }

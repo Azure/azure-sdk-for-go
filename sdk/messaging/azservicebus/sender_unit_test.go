@@ -105,3 +105,102 @@ func TestSenderNewMessageBatch_ConnectionClosed(t *testing.T) {
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 	require.Nil(t, batch)
 }
+
+func TestSenderNewMessageBatch_VendorPropertyOverridesMaxMessageSize(t *testing.T) {
+	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			return nil
+		},
+		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
+			if ms.Target != "$cbs" {
+				// Set MaxMessageSize to 100 MB and the vendor batch-size property to 1 MB
+				// so this test can verify the vendor property is used as the batch limit.
+				ms.EXPECT().MaxMessageSize().Return(uint64(100 * 1024 * 1024)).AnyTimes()
+				ms.EXPECT().Properties().Return(map[string]any{
+					"com.microsoft:max-message-batch-size": uint64(1048576),
+				}).AnyTimes()
+			}
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: noRetriesNeeded,
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	batch, err := sender.NewMessageBatch(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, batch)
+
+	// The batch should use the vendor property (1 MB), not MaxMessageSize (100 MB).
+	// A 1 MiB body plus AMQP envelope overhead exceeds the 1 MiB batch limit.
+	largeBody := make([]byte, 1048576)
+	err = batch.AddMessage(&Message{Body: largeBody}, nil)
+	require.ErrorIs(t, err, ErrMessageTooLarge, "A 1 MiB message should exceed the vendor batch limit minus overhead")
+}
+
+func TestSenderNewMessageBatch_FallsBackWhenVendorPropertyAbsent(t *testing.T) {
+	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			return nil
+		},
+		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
+			if ms.Target != "$cbs" {
+				ms.EXPECT().MaxMessageSize().Return(uint64(262144)).AnyTimes() // 256 KB
+				ms.EXPECT().Properties().Return(map[string]any(nil)).AnyTimes()
+			}
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: noRetriesNeeded,
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	batch, err := sender.NewMessageBatch(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, batch)
+
+	// Should fall back to MaxMessageSize (256 KB). A 256 KB body should be rejected.
+	body := make([]byte, 262144)
+	err = batch.AddMessage(&Message{Body: body}, nil)
+	require.ErrorIs(t, err, ErrMessageTooLarge, "A 256 KB message should exceed the link limit minus overhead")
+}
+
+func TestSenderNewMessageBatch_UserMaxBytesOverridesVendorProperty(t *testing.T) {
+	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			return nil
+		},
+		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
+			if ms.Target != "$cbs" {
+				ms.EXPECT().MaxMessageSize().Return(uint64(100 * 1024 * 1024)).AnyTimes()
+				ms.EXPECT().Properties().Return(map[string]any{
+					"com.microsoft:max-message-batch-size": uint64(1048576),
+				}).AnyTimes()
+			}
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: noRetriesNeeded,
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	batch, err := sender.NewMessageBatch(context.Background(), &MessageBatchOptions{
+		MaxBytes: 512,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, batch)
+
+	// User override of 512 bytes — a small message should still be rejected
+	body := make([]byte, 512)
+	err = batch.AddMessage(&Message{Body: body}, nil)
+	require.ErrorIs(t, err, ErrMessageTooLarge, "A 512-byte message should exceed the user-specified 512-byte limit minus overhead")
+}

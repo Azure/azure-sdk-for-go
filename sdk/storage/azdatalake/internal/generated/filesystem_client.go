@@ -4,16 +4,19 @@
 package generated
 
 import (
+	"context"
+	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // used to convert times from UTC to GMT before sending across the wire
 var gmt = time.FixedZone("GMT", 0)
 
 func (client *FileSystemClient) Endpoint() string {
-	return client.endpoint
+	return client.url
 }
 
 func (client *FileSystemClient) InternalClient() *azcore.Client {
@@ -26,8 +29,25 @@ func (client *FileSystemClient) InternalClient() *azcore.Client {
 func NewFileSystemClient(endpoint string, azClient *azcore.Client) *FileSystemClient {
 	client := &FileSystemClient{
 		internal: azClient,
-		endpoint: endpoint,
-		version:  ServiceVersion,
+		url:      endpoint,
 	}
 	return client
+}
+
+func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx context.Context, options *FileSystemClientListBlobHierarchySegmentOptions) (*policy.Request, error) {
+	return client.listBlobHierarchySegmentCreateRequest(ctx, options)
+}
+
+// ListBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
+func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListPathHierarchySegmentResponse, error) {
+	return client.listBlobHierarchySegmentHandleResponse(resp)
+}
+
+func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recursive bool, options *FileSystemClientListPathsOptions) (*policy.Request, error) {
+	return client.listPathsCreateRequest(ctx, recursive, options)
+}
+
+// ListPathsHandleResponse handles the ListPaths response.
+func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (FileSystemClientListPathsResponse, error) {
+	return client.listPathsHandleResponse(resp)
 }

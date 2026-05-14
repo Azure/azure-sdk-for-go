@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-// removeAcceptHeaderPolicy aligns Accept headers with the recording assets.
+// removeAcceptHeaderPolicy aligns Accept headers with the recording assets captured with v2 client behavior.
 // It is attached in all modes so the same request shape is used consistently in record/live/playback.
 type removeAcceptHeaderPolicy struct{}
 

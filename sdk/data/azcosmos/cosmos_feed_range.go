@@ -52,18 +52,6 @@ func NewFeedRange(minInclusive, maxExclusive string) FeedRange {
 	}
 }
 
-// findPartitionKeyRangeID finds the partition key range ID that matches the given FeedRange.
-// Exact-match path; returns an error wrapping ErrFeedRangeUnresolved if no match exists.
-// Used as a back-compat fallback when the PK range cache is unavailable.
-func findPartitionKeyRangeID(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) (string, error) {
-	for _, pkr := range partitionKeyRanges {
-		if feedRange.MinInclusive == pkr.MinInclusive && feedRange.MaxExclusive == pkr.MaxExclusive {
-			return pkr.ID, nil
-		}
-	}
-	return "", &feedRangeUnresolvedError{feedRange: feedRange}
-}
-
 // findOverlappingPartitionKeyRangeIDs returns the IDs of every PK range that
 // overlaps the given FeedRange. Used by GetChangeFeed to expand a parent feed
 // range into one entry per child after a split (or fold a child into a parent
@@ -99,6 +87,34 @@ func findOverlappingPartitionKeyRangeIDs(feedRange FeedRange, partitionKeyRanges
 		return nil, &feedRangeUnresolvedError{feedRange: feedRange}
 	}
 	return ids, nil
+}
+
+// overlappingPartitionKeyRanges returns the subset of partitionKeyRanges whose
+// boundaries overlap the given feedRange, preserving input order. Single-pass
+// equivalent of findOverlappingPartitionKeyRangeIDs that returns the ranges
+// themselves rather than IDs. Returns nil on no overlap (no error).
+//
+// Note: O(n) linear scan. For routing-map-backed lookups, prefer
+// collectionRoutingMap.getOverlappingRanges (binary search). This helper exists
+// for paths that operate on a flat snapshot returned by getPartitionKeyRanges.
+func overlappingPartitionKeyRanges(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) []partitionKeyRange {
+	if len(partitionKeyRanges) == 0 {
+		return nil
+	}
+
+	feedMin := feedRange.MinInclusive
+	feedMax := normalizeMaxBoundary(feedRange.MaxExclusive)
+	if epk.CompareEPK(feedMin, feedMax) >= 0 {
+		return nil
+	}
+
+	out := make([]partitionKeyRange, 0, 2)
+	for _, pkr := range partitionKeyRanges {
+		if rangesOverlap(feedMin, feedMax, pkr.MinInclusive, normalizeMaxBoundary(pkr.MaxExclusive)) {
+			out = append(out, pkr)
+		}
+	}
+	return out
 }
 
 // rangesOverlap reports whether [aMin, aMax) intersects [bMin, bMax).

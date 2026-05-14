@@ -1188,25 +1188,4 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 			*compositeToken.Continuation[0].ContinuationToken, "\"etag-12345\"")
 	}
 
-	// Now test using the continuation token in a subsequent request
-	options2 := &ChangeFeedOptions{
-		MaxItemCount: 10,
-		Continuation: &resp.ContinuationToken,
-	}
-
-	headers := options2.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("expected headers to be non-nil")
-	}
-
-	h := *headers
-	if h[headerIfNoneMatch] != "\"etag-12345\"" {
-		t.Errorf("unexpected IfNoneMatch header: got %q, want %q",
-			h[headerIfNoneMatch], "\"etag-12345\"")
-	}
-
-	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
-		t.Errorf("unexpected ChangeFeed header in continuation request: got %q, want %q",
-			h[cosmosHeaderChangeFeed], cosmosHeaderValuesChangeFeed)
-	}
 }

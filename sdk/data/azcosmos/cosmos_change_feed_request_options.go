@@ -4,7 +4,6 @@
 package azcosmos
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -30,69 +29,6 @@ type ChangeFeedOptions struct {
 
 	// CompositeContinuation is used to continue reading the change feed from a specific point.
 	Continuation *string
-}
-
-// toHeaders is the legacy back-compat builder retained for tests and any
-// caller still using the impure exact-match flow. The change-feed loop now
-// uses buildRequestHeaders directly with a pre-resolved head range and
-// PK-range ID, side-stepping this method's silent-on-mismatch behavior.
-//
-// Returns nil when options.FeedRange is set but no exact-match PK range
-// can be found in partitionKeyRanges — matching pre-existing semantics so
-// the existing test contracts pass. The new GetChangeFeed path never relies
-// on this nil-on-mismatch behavior; it does its own overlap resolution
-// upstream and surfaces ErrFeedRangeUnresolved instead.
-func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRange) *map[string]string {
-	headers := make(map[string]string)
-
-	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
-
-	if options.MaxItemCount > 0 {
-		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
-	}
-
-	if options.StartFrom != nil {
-		formatted := options.StartFrom.UTC().Format(time.RFC1123)
-		headers[cosmosHeaderIfModifiedSince] = formatted
-	}
-
-	if options.Continuation != nil && *options.Continuation != "" {
-		var compositeToken compositeContinuationToken
-		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil && len(compositeToken.Continuation) > 0 {
-			if compositeToken.Continuation[0].ContinuationToken != nil {
-				headers[headerIfNoneMatch] = string(*compositeToken.Continuation[0].ContinuationToken)
-			}
-			if options.FeedRange == nil {
-				options.FeedRange = &FeedRange{
-					MinInclusive: compositeToken.Continuation[0].MinInclusive,
-					MaxExclusive: compositeToken.Continuation[0].MaxExclusive,
-				}
-			}
-		} else {
-			headers[headerIfNoneMatch] = *options.Continuation
-		}
-	}
-
-	if options.PartitionKey != nil {
-		partitionKeyJSON, err := options.PartitionKey.toJsonString()
-		if err == nil {
-			headers[cosmosHeaderPartitionKey] = string(partitionKeyJSON)
-		}
-	}
-
-	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
-		if id, err := findPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
-			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
-		} else {
-			return nil
-		}
-	}
-
-	if len(headers) == 0 {
-		return nil
-	}
-
-	return &headers
 }
 
 // buildRequestHeaders constructs the exact headers needed for a single

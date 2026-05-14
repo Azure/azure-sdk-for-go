@@ -983,30 +983,6 @@ func (c *ContainerClient) resolveFeedRangeToChildren(
 	return []partitionKeyRange{passthrough}, []partitionKeyRange{passthrough}, nil
 }
 
-// overlappingPartitionKeyRanges returns the subset of partitionKeyRanges whose
-// boundaries overlap the given feedRange. Order in the returned slice mirrors
-// the input slice (the routing map is already sorted by MinInclusive).
-func overlappingPartitionKeyRanges(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) []partitionKeyRange {
-	if len(partitionKeyRanges) == 0 {
-		return nil
-	}
-	ids, err := findOverlappingPartitionKeyRangeIDs(feedRange, partitionKeyRanges)
-	if err != nil || len(ids) == 0 {
-		return nil
-	}
-	byID := make(map[string]partitionKeyRange, len(partitionKeyRanges))
-	for _, r := range partitionKeyRanges {
-		byID[r.ID] = r
-	}
-	out := make([]partitionKeyRange, 0, len(ids))
-	for _, id := range ids {
-		if r, ok := byID[id]; ok {
-			out = append(out, r)
-		}
-	}
-	return out
-}
-
 // buildChildQueueEntries materializes [].changeFeedRange entries for each
 // child range, copying the inheritETag pointer onto every child so no events
 // are skipped at the split boundary. inheritETag may be nil for fresh ranges

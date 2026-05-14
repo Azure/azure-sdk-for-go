@@ -1502,31 +1502,15 @@ func TestTransactionalBatchPriorityAndThroughputBucketHeaders(t *testing.T) {
 
 func TestChangeFeedPriorityAndThroughputBucketHeaders(t *testing.T) {
 	changeFeedBody := []byte(`{
-		"_rid": "test-resource-id",
+		"_rid": "testRID",
 		"Documents": [{"id": "doc1"}],
 		"_count": 1
 	}`)
 
-	pkRangesBody := []byte(`{
-		"_rid": "test-resource-id",
-		"PartitionKeyRanges": [{
-			"_rid": "range-rid",
-			"id": "0",
-			"minInclusive": "00",
-			"maxExclusive": "FF"
-		}],
-		"_count": 1
-	}`)
-
 	srv, close := mock.NewTLSServer()
-	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 
-	srv.AppendResponse(
-		mock.WithBody(pkRangesBody),
-		mock.WithHeader(cosmosHeaderActivityId, "pkRangesActivityId"),
-		mock.WithHeader(cosmosHeaderRequestCharge, "1.0"),
-		mock.WithStatusCode(200))
+	// Only the change-feed request hits the wire — caches are pre-wired.
 	srv.AppendResponse(
 		mock.WithBody(changeFeedBody),
 		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
@@ -1536,10 +1520,8 @@ func TestChangeFeedPriorityAndThroughputBucketHeaders(t *testing.T) {
 
 	verifier := pipelineVerifier{}
 	headerPolicy := &headerPolicies{}
-
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	ranges := []partitionKeyRange{{ID: "0", MinInclusive: "00", MaxExclusive: "FF", ResourceID: "testRID"}}
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{headerPolicy, &verifier}, ranges)
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
@@ -1559,8 +1541,7 @@ func TestChangeFeedPriorityAndThroughputBucketHeaders(t *testing.T) {
 		t.Fatalf("GetChangeFeed failed: %v", err)
 	}
 
-	// The second request is the change feed request (first is pk ranges)
-	h := verifier.requests[1].headers
+	h := verifier.requests[0].headers
 	if h.Get(cosmosHeaderPriorityLevel) != "High" {
 		t.Errorf("Expected priority level header to be High, got %v", h.Get(cosmosHeaderPriorityLevel))
 	}

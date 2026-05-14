@@ -218,6 +218,11 @@ func (c *ContainerClient) getChangeFeedForQueue(
 	// return an empty page so the caller can poll again. Starts at the queue
 	// length and grows whenever a split-expansion inserts children.
 	originalQueueLen := len(token.Continuation)
+	// Hard cap on the rotation budget — defends against bugs in overlap
+	// resolution (e.g., duplicate ranges in the snapshot) that would cause
+	// repeated split-expansion on the same head and an unbounded drain.
+	// Mirrors Java's FeedRangeCompositeContinuationImpl ~4×(N+1) defense.
+	maxQueueLen := 4 * (originalQueueLen + 1)
 	rotations := 0
 	pkRangeGoneAttempts := 0
 
@@ -292,6 +297,16 @@ func (c *ContainerClient) getChangeFeedForQueue(
 			children := buildChildQueueEntries(clamped, head.ContinuationToken)
 			token.replaceHeadWithChildren(children)
 			originalQueueLen += len(children) - 1
+			if originalQueueLen > maxQueueLen {
+				// Hit the safety cap. This shouldn't happen in practice
+				// (bounded by the service's physical-partition limit), but a
+				// bug in overlap resolution producing duplicate children
+				// would otherwise spin forever. Return what we have so far.
+				if lastResp.RawResponse != nil {
+					return finalize(lastResp)
+				}
+				return ChangeFeedResponse{}, fmt.Errorf("GetChangeFeed: drain queue exceeded safety cap of %d entries; suspected overlap-resolution bug", maxQueueLen)
+			}
 			pkRangeGoneAttempts = 0
 			continue
 		}

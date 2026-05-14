@@ -89,6 +89,8 @@ const (
 	headerXmsItemCount                             string = "x-ms-item-count"
 	headerDedicatedGatewayMaxAge                   string = "x-ms-dedicatedgateway-max-age"
 	headerDedicatedGatewayBypassCache              string = "x-ms-dedicatedgateway-bypass-cache"
+	cosmosHeaderPriorityLevel                      string = "x-ms-cosmos-priority-level"
+	cosmosHeaderThroughputBucket                   string = "x-ms-cosmos-throughput-bucket"
 )
 
 const (

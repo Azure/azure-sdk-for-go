@@ -311,6 +311,10 @@ func (c *ContainerClient) getChangeFeedForQueue(
 		operationContext := pipelineRequestOptions{
 			resourceType:    resourceTypeDocument,
 			resourceAddress: c.link,
+			headerOptionsOverride: &headerOptionsOverride{
+				priorityLevel:    options.PriorityLevel,
+				throughputBucket: options.ThroughputBucket,
+			},
 		}
 		path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 		if err != nil {

@@ -277,6 +277,8 @@ func (c *ContainerClient) CreateItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -334,6 +336,8 @@ func (c *ContainerClient) UpsertItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -389,6 +393,8 @@ func (c *ContainerClient) ReplaceItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -441,6 +447,8 @@ func (c *ContainerClient) ReadItem(
 	if o == nil {
 		o = &ItemOptions{}
 	}
+	h.priorityLevel = o.PriorityLevel
+	h.throughputBucket = o.ThroughputBucket
 
 	operationContext := pipelineRequestOptions{
 		resourceType:          resourceTypeDocument,
@@ -492,9 +500,15 @@ func (c *ContainerClient) ReadManyItems(
 		readManyOptions = &originalOptions
 	}
 
+	h := headerOptionsOverride{
+		priorityLevel:    readManyOptions.PriorityLevel,
+		throughputBucket: readManyOptions.ThroughputBucket,
+	}
+
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		headerOptionsOverride: &h,
 	}
 
 	ctx, endTrace := ensureOperationTrace(ctx, fmt.Sprintf("read_many_items %s", c.id))
@@ -555,6 +569,8 @@ func (c *ContainerClient) DeleteItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -613,6 +629,8 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 	if o != nil {
 		originalOptions := *o
 		queryOptions = &originalOptions
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -694,6 +712,8 @@ func (c *ContainerClient) PatchItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -750,6 +770,8 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 		o = &TransactionalBatchOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	// If contentResponseOnWrite is not enabled at the client level the

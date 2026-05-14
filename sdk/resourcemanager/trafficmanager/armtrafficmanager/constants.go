@@ -170,6 +170,27 @@ func PossibleProfileStatusValues() []ProfileStatus {
 	}
 }
 
+// RecordType - When record type is set, a traffic manager profile will allow only endpoints that match this type.
+type RecordType string
+
+const (
+	// RecordTypeA - A record type.
+	RecordTypeA RecordType = "A"
+	// RecordTypeAAAA - AAAA record type.
+	RecordTypeAAAA RecordType = "AAAA"
+	// RecordTypeCNAME - CNAME record type.
+	RecordTypeCNAME RecordType = "CNAME"
+)
+
+// PossibleRecordTypeValues returns the possible values for the RecordType const type.
+func PossibleRecordTypeValues() []RecordType {
+	return []RecordType{
+		RecordTypeA,
+		RecordTypeAAAA,
+		RecordTypeCNAME,
+	}
+}
+
 // TrafficRoutingMethod - The traffic routing method of the Traffic Manager profile.
 type TrafficRoutingMethod string
 

@@ -166,20 +166,25 @@ type GetSystemPropertiesOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func FormatGetSystemPropertiesOptions(o *GetSystemPropertiesOptions) (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func FormatGetSystemPropertiesOptions(o *GetSystemPropertiesOptions) *generated.PathClientGetPropertiesOptions {
 	action := generated.PathGetPropertiesActionGetStatus
 	if o == nil {
 		return &generated.PathClientGetPropertiesOptions{
 			Action: &action,
-		}, nil, nil
+		}
 	}
 
 	// call path formatter since we're hitting dfs in this operation
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientGetPropertiesOptions{
-		Upn:    o.UPN,
-		Action: &action,
-	}, leaseAccessConditions, modifiedAccessConditions
+		Upn:               o.UPN,
+		Action:            &action,
+		IfMatch:           modifiedAccessConditions.IfMatch,
+		IfModifiedSince:   modifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       modifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: modifiedAccessConditions.IfUnmodifiedSince,
+		LeaseID:           leaseAccessConditions.LeaseID,
+	}
 }
 
 // CPKInfo contains CPK related information.

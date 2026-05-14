@@ -211,8 +211,7 @@ func (f *Client) BlobURL() string {
 
 // Create creates a new file.
 func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
-	resp, err := f.generatedFileClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
+	resp, err := f.generatedFileClientWithDFS().Create(ctx, options.format())
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
@@ -220,7 +219,16 @@ func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 // Delete deletes a file.
 func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := path.FormatDeleteOptions(options, false)
-	resp, err := f.generatedFileClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+	if lac != nil {
+		deleteOpts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		deleteOpts.IfMatch = mac.IfMatch
+		deleteOpts.IfNoneMatch = mac.IfNoneMatch
+		deleteOpts.IfModifiedSince = mac.IfModifiedSince
+		deleteOpts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	resp, err := f.generatedFileClientWithDFS().Delete(ctx, deleteOpts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
@@ -294,7 +302,27 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(exported.ModuleName), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
-	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
+	if lac != nil {
+		createOpts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		createOpts.IfMatch = mac.IfMatch
+		createOpts.IfNoneMatch = mac.IfNoneMatch
+		createOpts.IfModifiedSince = mac.IfModifiedSince
+		createOpts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	if smac != nil {
+		createOpts.SourceIfMatch = smac.SourceIfMatch
+		createOpts.SourceIfNoneMatch = smac.SourceIfNoneMatch
+		createOpts.SourceIfModifiedSince = smac.SourceIfModifiedSince
+		createOpts.SourceIfUnmodifiedSince = smac.SourceIfUnmodifiedSince
+	}
+	if cpkOpts != nil {
+		createOpts.EncryptionAlgorithm = cpkOpts.EncryptionAlgorithm
+		createOpts.EncryptionKey = cpkOpts.EncryptionKey
+		createOpts.EncryptionKeySHA256 = cpkOpts.EncryptionKeySHA256
+	}
+	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts)
 	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 
@@ -318,7 +346,16 @@ func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 	if err != nil {
 		return SetAccessControlResponse{}, err
 	}
-	resp, err := f.generatedFileClientWithDFS().SetAccessControl(ctx, opts, lac, mac)
+	if lac != nil {
+		opts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		opts.IfMatch = mac.IfMatch
+		opts.IfNoneMatch = mac.IfNoneMatch
+		opts.IfModifiedSince = mac.IfModifiedSince
+		opts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	resp, err := f.generatedFileClientWithDFS().SetAccessControl(ctx, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
@@ -334,7 +371,16 @@ func (f *Client) UpdateAccessControl(ctx context.Context, acl string, options *U
 // GetAccessControl gets the owner, owning group, and permissions for a file.
 func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	opts, lac, mac := path.FormatGetAccessControlOptions(options)
-	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	if lac != nil {
+		opts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		opts.IfMatch = mac.IfMatch
+		opts.IfNoneMatch = mac.IfNoneMatch
+		opts.IfModifiedSince = mac.IfModifiedSince
+		opts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
@@ -428,22 +474,22 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 
 // AppendData appends data to existing file with a given offset.
 func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekCloser, options *AppendDataOptions) (AppendDataResponse, error) {
-	appendDataOptions, leaseAccessConditions, cpkInfo, err := options.format(offset, body)
+	appendDataOptions, err := options.format(offset, body)
 	if err != nil {
 		return AppendDataResponse{}, err
 	}
-	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions, nil, leaseAccessConditions, cpkInfo)
+	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions)
 	return resp, exported.ConvertToDFSError(err)
 }
 
 // FlushData commits appended data to file
 func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushDataOptions) (FlushDataResponse, error) {
-	flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, err := options.format(offset)
+	flushDataOpts, err := options.format(offset)
 	if err != nil {
 		return FlushDataResponse{}, err
 	}
 
-	resp, err := f.generatedFileClientWithDFS().FlushData(ctx, flushDataOpts, httpHeaderOpts, leaseAccessConditions, modifiedAccessConditions, cpkInfoOpts)
+	resp, err := f.generatedFileClientWithDFS().FlushData(ctx, flushDataOpts)
 	return resp, exported.ConvertToDFSError(err)
 }
 

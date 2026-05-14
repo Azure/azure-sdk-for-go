@@ -194,6 +194,11 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 		mock.WithHeader(cosmosHeaderEtag, "changeFeedEtag1"),
 		mock.WithStatusCode(200),
 	)
+	// 304 Not Modified — terminates the change-feed loop
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "changeFeedEtag1"),
+	)
 
 	defaultEndpoint, _ := url.Parse(srv.URL())
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
@@ -222,7 +227,7 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 	require.Equal(t, "FF", feedRanges[1].MaxExclusive)
 
 	requestsAfterFirstCall := srv.Requests()
-	require.Equal(t, 2, requestsAfterFirstCall, "first call should make 2 HTTP requests (container read + PK ranges)")
+	require.Equal(t, 3, requestsAfterFirstCall, "first call should make 3 HTTP requests (container read + PK ranges + 304)")
 
 	// Second call: should use caches, no additional HTTP requests
 	// (no more responses queued — would panic if a request was made)

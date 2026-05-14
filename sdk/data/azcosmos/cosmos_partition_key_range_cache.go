@@ -127,7 +127,9 @@ const maxIncrementalRefreshIterations = 1000
 // refreshEntry fetches PK ranges from the service and populates the entry.
 // It attempts an incremental refresh if a previous routing map with an ETag exists,
 // looping until 304 Not Modified (capped at maxIncrementalRefreshIterations).
-// Falls back to a full refresh if the incremental merge is incomplete.
+// Falls back to a full change-feed refresh if the incremental merge is incomplete.
+// The full refresh also uses the change-feed mechanism (A-IM: Incremental feed)
+// and loops until 304, matching the behavior of the .NET and Python SDKs.
 // Caller must hold entry.mu.
 func (c *partitionKeyRangeCache) refreshEntry(
 	ctx context.Context,
@@ -138,64 +140,99 @@ func (c *partitionKeyRangeCache) refreshEntry(
 	previousMap := entry.routingMap
 
 	if previousMap != nil && previousMap.changeFeedETag != "" {
-		// Incremental refresh loop: keep fetching until 304 or iteration cap
-		currentMap := previousMap
+		// Incremental refresh: accumulate ALL change-feed pages first, then
+		// call tryCombine once with the entire batch. This matches .NET behavior
+		// and handles cascading splits (A→B+C, B→D+E) that span multiple pages.
+		var allIncrementalRanges []partitionKeyRange
+		currentETag := previousMap.changeFeedETag
+		incrementalComplete := false
 		for i := 0; i < maxIncrementalRefreshIterations; i++ {
 			if err := ctx.Err(); err != nil {
 				return nil, err
 			}
-			ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, currentMap, client)
+			ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, currentETag, client)
 			if err != nil {
 				return nil, err
 			}
 
 			if len(ranges) == 0 {
-				// 304 Not Modified — no more changes
-				if newETag != "" && newETag != currentMap.changeFeedETag {
-					currentMap = &collectionRoutingMap{
-						orderedRanges:  currentMap.orderedRanges,
-						rangeByID:      currentMap.rangeByID,
-						goneRanges:     currentMap.goneRanges,
-						changeFeedETag: newETag,
-					}
+				// 304 Not Modified — all incremental changes collected
+				if newETag != "" {
+					currentETag = newETag
 				}
-				entry.routingMap = currentMap
-				return currentMap, nil
-			}
-
-			merged := currentMap.tryCombine(ranges, newETag)
-			if merged == nil {
-				// Incremental merge failed — fall through to full refresh
+				incrementalComplete = true
 				break
 			}
-			currentMap = merged
+			allIncrementalRanges = append(allIncrementalRanges, ranges...)
+			currentETag = newETag
 		}
 
-		// Loop exited without 304 — either iteration cap or merge failure.
-		// Fall through to full refresh to guarantee consistency with the service.
+		if incrementalComplete {
+			if len(allIncrementalRanges) == 0 {
+				// No changes since last refresh — update ETag if changed
+				if currentETag != previousMap.changeFeedETag {
+					entry.routingMap = &collectionRoutingMap{
+						orderedRanges:  previousMap.orderedRanges,
+						rangeByID:      previousMap.rangeByID,
+						goneRanges:     previousMap.goneRanges,
+						changeFeedETag: currentETag,
+					}
+				}
+				return entry.routingMap, nil
+			}
+
+			merged := previousMap.tryCombine(allIncrementalRanges, currentETag)
+			if merged != nil {
+				entry.routingMap = merged
+				return merged, nil
+			}
+		}
+
+		// Incremental merge failed or loop exhausted — fall through to full refresh.
 	}
 
-	// Full refresh: fetch all ranges without ETag
-	ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, nil, client)
-	if err != nil {
-		return nil, err
+	// Full change-feed refresh: fetch all ranges using A-IM without an ETag,
+	// looping until 304 Not Modified to accumulate all pages.
+	var allRanges []partitionKeyRange
+	var currentETag string
+	for i := 0; i < maxIncrementalRefreshIterations; i++ {
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
+		ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, currentETag, client)
+		if err != nil {
+			return nil, err
+		}
+		if len(ranges) == 0 {
+			// 304 Not Modified — all ranges collected
+			if newETag != "" {
+				currentETag = newETag
+			}
+			break
+		}
+		allRanges = append(allRanges, ranges...)
+		currentETag = newETag
 	}
 
-	newMap := newCollectionRoutingMap(ranges, newETag)
+	newMap := newCollectionRoutingMap(allRanges, currentETag)
 	if !isCompleteSetOfRanges(newMap.orderedRanges) {
-		return nil, fmt.Errorf("incomplete partition key range set after full refresh for %s", containerLink)
+		gap := describeRangeGap(newMap.orderedRanges)
+		return nil, fmt.Errorf("partition key range cache refresh failed: service returned an incomplete set of ranges for container %s (got %d ranges, issue: %s). This may indicate a transient issue during a partition split", containerLink, len(newMap.orderedRanges), gap)
 	}
 
 	entry.routingMap = newMap
 	return newMap, nil
 }
 
-// fetchPartitionKeyRanges fetches partition key ranges from the service.
-// If previousMap is non-nil and has an ETag, it uses incremental feed mode.
+// fetchPartitionKeyRanges fetches partition key ranges from the service using
+// the change-feed mechanism. It always sets A-IM: Incremental feed and
+// x-ms-max-item-count: -1 headers, matching the behavior of the .NET and
+// Python SDKs. If changeFeedETag is non-empty, it sets If-None-Match for
+// incremental updates; otherwise it fetches all ranges from the beginning.
 func fetchPartitionKeyRanges(
 	ctx context.Context,
 	containerLink string,
-	previousMap *collectionRoutingMap,
+	changeFeedETag string,
 	client *Client,
 ) ([]partitionKeyRange, string, error) {
 	operationContext := pipelineRequestOptions{
@@ -208,11 +245,6 @@ func fetchPartitionKeyRanges(
 		return nil, "", err
 	}
 
-	var changeFeedETag string
-	if previousMap != nil {
-		changeFeedETag = previousMap.changeFeedETag
-	}
-
 	o := &partitionKeyRangeOptions{}
 
 	azResponse, err := client.sendGetRequest(
@@ -221,8 +253,9 @@ func fetchPartitionKeyRanges(
 		operationContext,
 		o,
 		func(req *policy.Request) {
+			req.Raw().Header.Set(cosmosHeaderChangeFeed, cosmosHeaderValuesChangeFeed)
+			req.Raw().Header.Set(cosmosHeaderMaxItemCount, "-1")
 			if changeFeedETag != "" {
-				req.Raw().Header.Set(cosmosHeaderChangeFeed, cosmosHeaderValuesChangeFeed)
 				req.Raw().Header.Set(headerIfNoneMatch, changeFeedETag)
 			}
 		})

@@ -10,8 +10,10 @@ import (
 	"net/http"
 	"sync"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // partitionKeyRangeCache provides a client-level cache of partition key ranges
@@ -164,6 +166,7 @@ func fetchAllChangeFeedPages(
 		}
 	}
 	// Loop cap reached without 304
+	log.Writef(azlog.EventResponse, "partition key range change-feed loop exited without reaching 304 Not Modified after %d iterations for container %s (accumulated %d ranges)", maxChangeFeedIterations, containerLink, len(allRanges))
 	return changeFeedResult{ranges: allRanges, finalETag: currentETag, completed: false}, nil
 }
 

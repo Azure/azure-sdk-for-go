@@ -96,7 +96,7 @@ const (
 const (
 	cosmosHeaderValuesPreferMinimal string = "return=minimal"
 	cosmosHeaderValuesQuery         string = "application/query+json"
-	cosmosHeaderValuesChangeFeed    string = "Incremental feed"
+	cosmosHeaderValuesChangeFeed    string = "Incremental Feed"
 	cosmosHeaderValuesMaxItemAll    string = "-1"
 )
 

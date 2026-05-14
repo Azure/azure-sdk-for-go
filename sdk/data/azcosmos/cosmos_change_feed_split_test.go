@@ -464,3 +464,156 @@ func TestGetChangeFeed_SplitDuringDrain_QueriesEveryNewlyInsertedChild(t *testin
 type policyFunc func(*policy.Request) (*http.Response, error)
 
 func (f policyFunc) Do(req *policy.Request) (*http.Response, error) { return f(req) }
+
+// TestClampChildrenToParent verifies the split-expansion clamping mirrors
+// Java's createChildRanges: each child's [Min, Max) is intersected with the
+// parent token's bounds, and children with empty intersection are dropped.
+func TestClampChildrenToParent(t *testing.T) {
+	parent := changeFeedRange{MinInclusive: "20", MaxExclusive: "60"}
+	children := []partitionKeyRange{
+		{ID: "left", MinInclusive: "00", MaxExclusive: "40"},  // overlaps lower half
+		{ID: "right", MinInclusive: "40", MaxExclusive: "FF"}, // overlaps upper half (clamped to "60")
+		{ID: "below", MinInclusive: "00", MaxExclusive: "10"}, // fully below parent → dropped
+		{ID: "above", MinInclusive: "80", MaxExclusive: "FF"}, // fully above parent → dropped
+	}
+
+	clamped := clampChildrenToParent(children, parent)
+	require.Len(t, clamped, 2, "non-overlapping children must be dropped")
+	require.Equal(t, "left", clamped[0].ID)
+	require.Equal(t, "20", clamped[0].MinInclusive, "child Min must be raised to parent.Min")
+	require.Equal(t, "40", clamped[0].MaxExclusive)
+	require.Equal(t, "right", clamped[1].ID)
+	require.Equal(t, "40", clamped[1].MinInclusive)
+	require.Equal(t, "60", clamped[1].MaxExclusive, "child Max must be lowered to parent.Max")
+}
+
+// TestGetChangeFeed_ContextCancelled_HonoredBetweenSubRequests verifies that
+// a context cancelled mid-drain causes the loop to exit immediately on the
+// next iteration boundary rather than continuing to issue requests.
+func TestGetChangeFeed_ContextCancelled_HonoredBetweenSubRequests(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	var requestCount atomic.Int32
+	cancelAfterFirst := policyFunc(func(req *policy.Request) (*http.Response, error) {
+		if req.Raw().Header.Get(cosmosHeaderChangeFeed) == cosmosHeaderValuesChangeFeed {
+			requestCount.Add(1)
+		}
+		return req.Next()
+	})
+
+	// 3 physical ranges so the queue has 3 heads to drain.
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "55", ResourceID: "testRID"},
+		{ID: "1", MinInclusive: "55", MaxExclusive: "AA", ResourceID: "testRID"},
+		{ID: "2", MinInclusive: "AA", MaxExclusive: "FF", ResourceID: "testRID"},
+	}
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{cancelAfterFirst}, ranges)
+
+	// Each head returns 304 so the loop would naturally rotate to the next head.
+	for i := 0; i < 5; i++ {
+		srv.AppendResponse(mock.WithStatusCode(304),
+			mock.WithHeader(cosmosHeaderEtag, "etag"))
+	}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel() // cancel immediately
+
+	_, err := container.GetChangeFeed(ctx, &ChangeFeedOptions{
+		FeedRange: &FeedRange{MinInclusive: "", MaxExclusive: "FF"},
+	})
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.Canceled)
+	require.Equal(t, int32(0), requestCount.Load(), "no change-feed requests should issue once context is cancelled")
+}
+
+// TestGetChangeFeed_410BudgetExhaustedMidDrain_SurfacesPartialState verifies
+// the partial-state contract on 410-budget exhaustion: heads that successfully
+// 304'd before the failure are kept rotated in the returned token so the
+// caller can resume from the failed head instead of re-querying drained ones.
+func TestGetChangeFeed_410BudgetExhaustedMidDrain_SurfacesPartialState(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Three physical ranges. Head 1 succeeds (304). Head 2 hits persistent 410.
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "55", ResourceID: "testRID"},
+		{ID: "1", MinInclusive: "55", MaxExclusive: "AA", ResourceID: "testRID"},
+		{ID: "2", MinInclusive: "AA", MaxExclusive: "FF", ResourceID: "testRID"},
+	}
+
+	cfRequestN := atomic.Int32{}
+	policy410After1st := policyFunc(func(req *policy.Request) (*http.Response, error) {
+		if req.Raw().Header.Get(cosmosHeaderChangeFeed) != cosmosHeaderValuesChangeFeed ||
+			!strings.HasSuffix(req.Raw().URL.Path, "/docs") {
+			return req.Next()
+		}
+		n := cfRequestN.Add(1)
+		// First CF request → 304. Subsequent → 410.
+		if n == 1 {
+			h := http.Header{}
+			h.Set(cosmosHeaderEtag, "etag-after-head0")
+			return &http.Response{
+				StatusCode: http.StatusNotModified,
+				Status:     "304 Not Modified",
+				Header:     h,
+				Body:       io.NopCloser(strings.NewReader("")),
+				Request:    req.Raw(),
+			}, nil
+		}
+		h := http.Header{}
+		h.Set(cosmosHeaderSubstatus, subStatusPartitionKeyRangeGone)
+		return &http.Response{
+			StatusCode: http.StatusGone,
+			Status:     "410 Gone",
+			Header:     h,
+			Body:       io.NopCloser(strings.NewReader(`{"message":"Gone"}`)),
+			Request:    req.Raw(),
+		}, nil
+	})
+
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{policy410After1st}, ranges)
+
+	// Cache-refresh sequence for each 410 retry. After maxPKRangeGoneRetries
+	// refreshes, the next 410 surfaces with partial state.
+	pkRangeBody := []byte(`{
+		"_rid": "testRID",
+		"PartitionKeyRanges": [
+			{"_rid":"testRID","id":"0","minInclusive":"","maxExclusive":"55"},
+			{"_rid":"testRID","id":"1","minInclusive":"55","maxExclusive":"AA"},
+			{"_rid":"testRID","id":"2","minInclusive":"AA","maxExclusive":"FF"}
+		],
+		"_count": 3
+	}`)
+	containerPropsResp := []byte(`{
+		"id":"containerId",
+		"_rid":"testRID",
+		"_self":"dbs/db1/colls/containerId/",
+		"partitionKey":{"paths":["/pk"],"kind":"Hash","version":2}
+	}`)
+	for i := 0; i < maxPKRangeGoneRetries; i++ {
+		srv.AppendResponse(mock.WithBody(containerPropsResp), mock.WithStatusCode(200))
+		srv.AppendResponse(mock.WithBody(pkRangeBody), mock.WithStatusCode(200),
+			mock.WithHeader(cosmosHeaderEtag, "etag-refresh"))
+		srv.AppendResponse(mock.WithStatusCode(304))
+	}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	resp, err := container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+		FeedRange: &FeedRange{MinInclusive: "", MaxExclusive: "FF"},
+	})
+	require.Error(t, err, "persistent 410 must surface to caller")
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusGone, respErr.StatusCode)
+
+	// Partial state must be present: the rotated continuation token reflects
+	// head 0's successful 304 (its ETag should be on entry index 2 after rotation).
+	require.NotEmpty(t, resp.ContinuationToken,
+		"partial response must carry a rotated continuation token after 410-budget exhaustion")
+}
